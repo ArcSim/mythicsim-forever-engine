@@ -1051,7 +1051,9 @@ pub(crate) fn build_rotation(
     let Some(rotation) = rotation else {
         return Ok(());
     };
-    if rotation.enum_name("type") != "TypeAPL" {
+    // Go reads the lists whatever the rotation's type. The UI sends `TypeAuto` for a preset it
+    // has not edited, with the preset's list in full, so it runs exactly as `TypeAPL`.
+    if !matches!(rotation.enum_name("type").as_str(), "TypeAPL" | "TypeAuto") {
         return Err(Refusal::new(
             "rotation",
             "only APL rotations are prepared".to_string(),

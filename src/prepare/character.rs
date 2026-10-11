@@ -330,7 +330,9 @@ impl Sim {
                     .add(&items::stats_from_pseudo_stats(&bonus.f64s("pseudo_stats")));
                 self.character_mut(id).bonus_stats = stats;
             }
-            if bonus.has("pseudo_stats") {
+            // Go sets weapon damage and school hit from the pseudo stats; zeros, which the UI
+            // sends by default, change nothing.
+            if bonus.f64s("pseudo_stats").iter().any(|value| *value != 0.0) {
                 return Err(Refusal::new(
                     "bonus_stats",
                     "bonus pseudo stats are unsupported".to_string(),

@@ -621,7 +621,8 @@ pub fn parse(rotation: &Json) -> Result<Rotation, Vec<String>> {
     };
     for (key, value) in object {
         match key.as_str() {
-            "type" if value == "TypeAPL" => {}
+            // Go reads the lists whatever the type; the UI sends `TypeAuto` with a preset's list.
+            "type" if value == "TypeAPL" || value == "TypeAuto" => {}
             "type" => reasons.push(format!("rotation type {value} is unsupported")),
             "priorityList" | "prepullActions" | "groups" | "valueVariables" => {}
             other => reasons.push(format!("rotation field {other} is unsupported")),

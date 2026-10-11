@@ -6,6 +6,7 @@ use crate::contracts::request::Request;
 use crate::prepare::agent::{ClassSpellName, PrepAgent};
 use crate::prepare::consumable_effects::{consumable_item_effect, dragonbreath_chili_effect};
 
+#[derive(Clone)]
 struct FakeAgent {
     talents: Message,
 }

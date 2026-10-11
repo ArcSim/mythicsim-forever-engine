@@ -30,6 +30,7 @@ pub(crate) struct Encounter {
 }
 
 /// A prepared simulation: the arena, its one player and the class agent.
+#[derive(Clone)]
 pub(crate) struct Environment {
     pub sim: Sim,
     pub encounter: Encounter,
@@ -57,6 +58,8 @@ pub(crate) struct Environment {
         super::sim::AuraId,
         crate::contracts::prepared_v2::ExternalActivation,
     )>,
+    /// The first [`Environment::fresh`] simulation, which every later one copies.
+    pristine: Rc<std::cell::OnceCell<Environment>>,
 }
 
 /// Go `PostFinalizeEffect`: run once every unit is finalized, with the attack tables in place.
@@ -179,6 +182,7 @@ impl Environment {
             sim.unit_mut(*unit).current_target = Some(encounter.targets[0]);
         }
         let mut env = Environment {
+            pristine: Rc::default(),
             sim,
             encounter,
             player,
@@ -225,8 +229,19 @@ impl Environment {
     /// A separate reset simulation of the same request, as the exporter's `core.NewSim` followed
     /// by `Reset` for an effect read under other conditions. It cannot be refused: this
     /// request already prepared once.
+    ///
+    /// Building one reads only the request and static data, so each is a copy of the first,
+    /// which spares the effects that read one per combination of auras a build for each. A
+    /// copy shares the first's callbacks, so what a callback changes lives in the simulation
+    /// ([`StateSlot`](super::sim::StateSlot)), never in what the callback captures; a captured
+    /// cell is written only while the environment is built.
     pub(crate) fn fresh(&self) -> Environment {
-        Environment::new(&self.request, self.factory).expect("the request prepared once already")
+        self.pristine
+            .get_or_init(|| {
+                Environment::new(&self.request, self.factory)
+                    .expect("the request prepared once already")
+            })
+            .clone()
     }
 
     fn setup_tank_targets(&mut self, raid: &Message, encounter: &Message) -> Result<(), Refusal> {
@@ -286,7 +301,7 @@ impl Environment {
             .message("buffs")
             .cloned()
             .unwrap_or_else(|| Message::empty("proto.PartyBuffs"));
-        self.agent.add_party_buffs(&mut party_buffs);
+        self.agent.add_party_buffs(&self.sim, &mut party_buffs);
         self.party_buffs = party_buffs.clone();
         let individual = player
             .message("buffs")

@@ -195,6 +195,7 @@ static CLASS_SPELLS: &[ClassSpellName] = &[
 ];
 
 /// Go `Hunter`: the spells and auras its construction and initialization register.
+#[derive(Clone)]
 pub(crate) struct Hunter {
     pub unit: UnitId,
     pub talents: Message,
@@ -393,7 +394,7 @@ impl Hunter {
 }
 
 impl PrepAgent for Hunter {
-    fn add_party_buffs(&self, party_buffs: &mut Message) {
+    fn add_party_buffs(&self, _sim: &Sim, party_buffs: &mut Message) {
         if self.flag("trueshot_aura") {
             party_buffs.set_bool("trueshot_aura", true);
         }

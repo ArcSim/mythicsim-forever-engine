@@ -90,19 +90,17 @@ impl Druid {
                     AuraConfig {
                         label: "Wolfshead Helm".to_string(),
                         action_id: Some(ActionId::spell(17768)),
-                        on_gain: Some(Rc::new(move |_: &mut Sim, _| {
-                            gain.wolfshead_shifting_power_energy
-                                .set(gain.wolfshead_shifting_power_energy.get() + 20.0);
-                            gain.wolfshead_enrage_rage
-                                .set(gain.wolfshead_enrage_rage.get() + 5.0);
+                        on_gain: Some(Rc::new(move |sim: &mut Sim, _| {
+                            let energy = gain.wolfshead_shifting_power_energy;
+                            sim.set_state(energy, sim.state(energy) + 20.0);
+                            let rage = gain.wolfshead_enrage_rage;
+                            sim.set_state(rage, sim.state(rage) + 5.0);
                         })),
-                        on_expire: Some(Rc::new(move |_: &mut Sim, _| {
-                            expire
-                                .wolfshead_shifting_power_energy
-                                .set(expire.wolfshead_shifting_power_energy.get() - 20.0);
-                            expire
-                                .wolfshead_enrage_rage
-                                .set(expire.wolfshead_enrage_rage.get() - 5.0);
+                        on_expire: Some(Rc::new(move |sim: &mut Sim, _| {
+                            let energy = expire.wolfshead_shifting_power_energy;
+                            sim.set_state(energy, sim.state(energy) - 20.0);
+                            let rage = expire.wolfshead_enrage_rage;
+                            sim.set_state(rage, sim.state(rage) - 5.0);
                         })),
                         ..AuraConfig::default()
                     },

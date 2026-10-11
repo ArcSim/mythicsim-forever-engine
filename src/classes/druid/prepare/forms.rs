@@ -11,8 +11,8 @@ use crate::prepare::character::constants::{
     CHARACTER_LEVEL, DEFAULT_ATTACK_POWER_PER_DPS, MAX_MELEE_RANGE,
 };
 use crate::prepare::sim::{
-    AuraConfig, AuraId, BuildPhase, Duration, PowerBar, Sim, SpellId, UnitId, MILLISECOND,
-    NEVER_EXPIRES,
+    AuraConfig, AuraId, BuildPhase, PowerBar, Sim, SpellId, StateSlot, TimeSlot, UnitId,
+    MILLISECOND, NEVER_EXPIRES,
 };
 use crate::prepare::spell::{Cast, CastConfig, CostOptions, SpellConfig, SpellFlag, GCD_DEFAULT};
 use crate::prepare::spell_mod::{SpellModConfig, SpellModType};
@@ -35,7 +35,7 @@ pub(crate) const MOONKIN_FORM_ARMOR_MULTIPLIER: f64 = 4.6;
 /// The druid state Go keeps on the `Druid` and its callbacks read and write, shared with them.
 pub(crate) struct State {
     /// Go `druid.form`.
-    pub form: Cell<u8>,
+    pub form: StateSlot,
     pub starting_form: u8,
     pub cat_form_aura: Cell<Option<AuraId>>,
     pub bear_form_aura: Cell<Option<AuraId>>,
@@ -44,16 +44,17 @@ pub(crate) struct State {
     pub frenzied_regeneration_aura: Cell<Option<AuraId>>,
     pub maul_queue_aura: Cell<Option<AuraId>>,
     /// Go `WolfsheadShiftingPowerEnergy` and `WolfsheadEnrageRage`.
-    pub wolfshead_shifting_power_energy: Cell<f64>,
-    pub wolfshead_enrage_rage: Cell<f64>,
-    pub last_cat_form_energy: Cell<f64>,
-    pub last_cat_form_exit_at: Cell<Duration>,
+    pub wolfshead_shifting_power_energy: StateSlot,
+    pub wolfshead_enrage_rage: StateSlot,
+    pub last_cat_form_energy: StateSlot,
+    pub last_cat_form_exit_at: TimeSlot,
 }
 
 impl State {
-    pub(crate) fn new(starting_form: u8) -> State {
+    /// The state, with what Go's callbacks change kept in `sim` (see [`StateSlot`]).
+    pub(crate) fn new(sim: &mut Sim, starting_form: u8) -> State {
         State {
-            form: Cell::new(starting_form),
+            form: sim.new_state_slot(f64::from(starting_form)),
             starting_form,
             cat_form_aura: Cell::new(None),
             bear_form_aura: Cell::new(None),
@@ -61,34 +62,43 @@ impl State {
             enrage_aura: Cell::new(None),
             frenzied_regeneration_aura: Cell::new(None),
             maul_queue_aura: Cell::new(None),
-            wolfshead_shifting_power_energy: Cell::new(0.0),
-            wolfshead_enrage_rage: Cell::new(0.0),
-            last_cat_form_energy: Cell::new(0.0),
-            last_cat_form_exit_at: Cell::new(0),
+            wolfshead_shifting_power_energy: sim.new_state_slot(0.0),
+            wolfshead_enrage_rage: sim.new_state_slot(0.0),
+            last_cat_form_energy: sim.new_state_slot(0.0),
+            last_cat_form_exit_at: sim.new_time_slot(0),
         }
     }
 
+    /// Go `druid.form`.
+    pub(crate) fn form(&self, sim: &Sim) -> u8 {
+        sim.state(self.form) as u8
+    }
+
+    pub(crate) fn set_form(&self, sim: &mut Sim, form: u8) {
+        sim.set_state(self.form, f64::from(form));
+    }
+
     /// Go `druid.InForm`.
-    pub(crate) fn in_form(&self, form: u8) -> bool {
-        self.form.get() & form != 0
+    pub(crate) fn in_form(&self, sim: &Sim, form: u8) -> bool {
+        self.form(sim) & form != 0
     }
 
     /// Go `druid.ClearForm`.
     pub(crate) fn clear_form(&self, sim: &mut Sim, unit: UnitId) {
-        if self.in_form(CAT) {
+        if self.in_form(sim, CAT) {
             if let Some(aura) = self.cat_form_aura.get() {
                 sim.deactivate(aura);
             }
-        } else if self.in_form(BEAR) {
+        } else if self.in_form(sim, BEAR) {
             if let Some(aura) = self.bear_form_aura.get() {
                 sim.deactivate(aura);
             }
-        } else if self.in_form(MOONKIN) {
+        } else if self.in_form(sim, MOONKIN) {
             if let Some(aura) = self.moonkin_form_aura.get() {
                 sim.deactivate(aura);
             }
         }
-        self.form.set(HUMANOID);
+        self.set_form(sim, HUMANOID);
         sim.unit_mut(unit).current_power_bar = PowerBar::Mana;
     }
 }
@@ -241,10 +251,10 @@ impl Druid {
                     BuildPhase::NONE
                 },
                 on_gain: Some(Rc::new(move |sim: &mut Sim, _| {
-                    if !sim.measuring_stats && gain_state.form.get() != HUMANOID {
+                    if !sim.measuring_stats && gain_state.form(sim) != HUMANOID {
                         gain_state.clear_form(sim, unit);
                     }
-                    gain_state.form.set(CAT);
+                    gain_state.set_form(sim, CAT);
                     sim.unit_mut(unit).current_power_bar = PowerBar::Energy;
 
                     sim.unit_mut(unit).pseudo_stats.threat_multiplier *= CAT_FORM_THREAT_MULTIPLIER;
@@ -264,7 +274,7 @@ impl Druid {
                     }
                 })),
                 on_expire: Some(Rc::new(move |sim: &mut Sim, _| {
-                    expire_state.form.set(HUMANOID);
+                    expire_state.set_form(sim, HUMANOID);
 
                     sim.unit_mut(unit).pseudo_stats.threat_multiplier /= CAT_FORM_THREAT_MULTIPLIER;
                     sim.unit_mut(unit).pseudo_stats.spirit_regen_multiplier /=
@@ -278,10 +288,10 @@ impl Druid {
                     }
 
                     if !sim.measuring_stats {
-                        expire_state
-                            .last_cat_form_energy
-                            .set(sim.unit(unit).energy_bar.current_energy);
-                        expire_state.last_cat_form_exit_at.set(sim.current_time);
+                        let energy = sim.unit(unit).energy_bar.current_energy;
+                        sim.set_state(expire_state.last_cat_form_energy, energy);
+                        let now = sim.current_time;
+                        sim.set_time_state(expire_state.last_cat_form_exit_at, now);
 
                         let weapon = weapon_from_main_hand(sim, unit);
                         sim.unit_mut(unit).auto_attacks.mh = weapon;
@@ -396,10 +406,10 @@ impl Druid {
                     BuildPhase::NONE
                 },
                 on_gain: Some(Rc::new(move |sim: &mut Sim, _| {
-                    if !sim.measuring_stats && gain_state.form.get() != HUMANOID {
+                    if !sim.measuring_stats && gain_state.form(sim) != HUMANOID {
                         gain_state.clear_form(sim, unit);
                     }
-                    gain_state.form.set(BEAR);
+                    gain_state.set_form(sim, BEAR);
                     sim.unit_mut(unit).current_power_bar = PowerBar::Rage;
 
                     sim.unit_mut(unit).pseudo_stats.threat_multiplier *=
@@ -423,7 +433,7 @@ impl Druid {
                     }
                 })),
                 on_expire: Some(Rc::new(move |sim: &mut Sim, _| {
-                    expire_state.form.set(HUMANOID);
+                    expire_state.set_form(sim, HUMANOID);
 
                     sim.unit_mut(unit).pseudo_stats.threat_multiplier /=
                         BEAR_FORM_THREAT_MULTIPLIER;
@@ -518,7 +528,7 @@ impl Druid {
                     BuildPhase::NONE
                 },
                 on_gain: Some(Rc::new(move |sim: &mut Sim, _| {
-                    if !sim.measuring_stats && gain_state.form.get() != MOONKIN {
+                    if !sim.measuring_stats && gain_state.form(sim) != MOONKIN {
                         gain_state.clear_form(sim, unit);
                     }
 
@@ -528,7 +538,7 @@ impl Druid {
                         MOONKIN_FORM_ARMOR_MULTIPLIER,
                     );
 
-                    gain_state.form.set(MOONKIN);
+                    gain_state.set_form(sim, MOONKIN);
                     sim.unit_mut(unit).current_power_bar = PowerBar::Mana;
                 })),
                 on_expire: Some(Rc::new(move |sim: &mut Sim, _| {
@@ -537,7 +547,7 @@ impl Druid {
                         Stat::Armor,
                         1.0 / MOONKIN_FORM_ARMOR_MULTIPLIER,
                     );
-                    expire_state.form.set(HUMANOID);
+                    expire_state.set_form(sim, HUMANOID);
                 })),
                 ..AuraConfig::default()
             },

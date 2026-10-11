@@ -108,6 +108,7 @@ pub(crate) struct AuraConfig {
     pub dpm: Option<Rc<DynamicProcManager>>,
 }
 
+#[derive(Clone)]
 pub(crate) struct Aura {
     pub label: String,
     pub tag: String,
@@ -136,6 +137,9 @@ pub(crate) struct Aura {
     pub initialized: bool,
     pub start_time: Duration,
     pub expires: Duration,
+    /// Go `DamageAbsorptionAura.ShieldStrength`, for an absorption aura. It lives here, not in
+    /// a closure, so a copy of the simulation keeps its own.
+    pub shield_strength: f64,
 }
 
 impl Aura {
@@ -168,6 +172,7 @@ impl Aura {
     }
 }
 
+#[derive(Clone)]
 pub(crate) struct ExclusiveEffect {
     pub aura: AuraId,
     pub priority: f64,
@@ -177,6 +182,7 @@ pub(crate) struct ExclusiveEffect {
     pub is_enabled: bool,
 }
 
+#[derive(Clone)]
 pub(crate) struct ExclusiveCategory {
     pub name: String,
     pub single_aura: bool,
@@ -247,6 +253,7 @@ pub(crate) struct FocusBar {
 }
 
 /// One unit: Go's `Unit` with the fields preparation reads.
+#[derive(Clone)]
 pub(crate) struct Unit {
     pub unit_type: UnitType,
     pub index: i32,
@@ -386,6 +393,7 @@ pub(crate) enum EnvState {
 }
 
 /// The simulation preparation builds.
+#[derive(Clone)]
 pub(crate) struct Sim {
     pub state: EnvState,
     pub measuring_stats: bool,
@@ -405,7 +413,20 @@ pub(crate) struct Sim {
     /// Go `AttackTable.DamageDoneByCasterExtraMultiplier`: per (attacker, defender), which
     /// handler slots are set. See aura_helpers.rs `attach_ddbc`.
     pub damage_done_by_caster: std::collections::BTreeMap<(UnitId, UnitId), Vec<bool>>,
+    /// What effects' callbacks keep between calls (see [`StateSlot`]).
+    pub state_slots: Vec<f64>,
+    /// The times effects' callbacks keep between calls (see [`TimeSlot`]).
+    pub time_slots: Vec<Duration>,
 }
+
+/// A value an effect's callbacks keep between calls. Go keeps it in the closure; here it lives
+/// in the simulation, so a copy of the simulation keeps its own instead of sharing it.
+#[derive(Clone, Copy, Debug)]
+pub(crate) struct StateSlot(usize);
+
+/// A time an effect's callbacks keep between calls, as a [`StateSlot`] keeps a value.
+#[derive(Clone, Copy, Debug)]
+pub(crate) struct TimeSlot(usize);
 
 impl Sim {
     pub(crate) fn new() -> Sim {
@@ -423,7 +444,42 @@ impl Sim {
             timers: Vec::new(),
             env_units: Vec::new(),
             damage_done_by_caster: std::collections::BTreeMap::new(),
+            state_slots: Vec::new(),
+            time_slots: Vec::new(),
         }
+    }
+
+    /// A new [`TimeSlot`] holding `time`.
+    pub(crate) fn new_time_slot(&mut self, time: Duration) -> TimeSlot {
+        self.time_slots.push(time);
+        TimeSlot(self.time_slots.len() - 1)
+    }
+
+    pub(crate) fn set_time_state(&mut self, slot: TimeSlot, time: Duration) {
+        self.time_slots[slot.0] = time;
+    }
+
+    /// A new [`StateSlot`] holding `value`.
+    pub(crate) fn new_state_slot(&mut self, value: f64) -> StateSlot {
+        self.state_slots.push(value);
+        StateSlot(self.state_slots.len() - 1)
+    }
+
+    pub(crate) fn state(&self, slot: StateSlot) -> f64 {
+        self.state_slots[slot.0]
+    }
+
+    pub(crate) fn set_state(&mut self, slot: StateSlot, value: f64) {
+        self.state_slots[slot.0] = value;
+    }
+
+    /// A slot read as a flag: set when it is not zero.
+    pub(crate) fn state_flag(&self, slot: StateSlot) -> bool {
+        self.state(slot) != 0.0
+    }
+
+    pub(crate) fn set_state_flag(&mut self, slot: StateSlot, set: bool) {
+        self.set_state(slot, if set { 1.0 } else { 0.0 });
     }
 
     /// Go `env.AllUnits`.
@@ -748,6 +804,7 @@ impl Sim {
             initialized: false,
             start_time: 0,
             expires: 0,
+            shield_strength: 0.0,
         };
         self.auras.push(aura);
         let id = AuraId(self.auras.len() - 1);

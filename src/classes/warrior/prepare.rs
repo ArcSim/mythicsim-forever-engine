@@ -12,16 +12,13 @@ mod spells;
 mod stances;
 mod talents;
 
-use std::cell::Cell;
-use std::rc::Rc;
-
 use crate::contracts::request::Message;
 use crate::prepare::agent::{fill_talents, ClassSpellName, PrepAgent};
 use crate::prepare::attack::{AutoAttackOptions, Weapon};
 use crate::prepare::character::constants::DODGE_RATING_PER_DODGE_PERCENT;
 use crate::prepare::env::Environment;
 use crate::prepare::rage::RageBarOptions;
-use crate::prepare::sim::{Sim, UnitId};
+use crate::prepare::sim::{Sim, StateSlot, UnitId};
 use crate::prepare::spell::ProcMask;
 use crate::prepare::stats::Stat;
 use crate::prepare::Refusal;
@@ -224,15 +221,16 @@ pub(crate) struct Inputs {
 }
 
 /// Go `Warrior`: the talents and inputs the registrations read, and the spec.
+#[derive(Clone)]
 pub(crate) struct Warrior {
     talents: Message,
     inputs: Inputs,
     /// Go `Spec == proto.Spec_SpecDpsWarrior`.
     dps_spec: bool,
     /// Go `HasBsT2`, which Battlegear of Wrath's 3 piece sets when its aura is gained.
-    has_bs_t2: Rc<Cell<bool>>,
+    has_bs_t2: StateSlot,
     /// Go `thunderClapEffectBonus`, which Conqueror's Battlegear's 5 piece raises.
-    thunder_clap_effect_bonus: Rc<Cell<f64>>,
+    thunder_clap_effect_bonus: StateSlot,
     /// Effects on the attack tables, which exist only once the environment finalizes.
     post_finalize: std::cell::RefCell<Vec<crate::prepare::env::FinalizeEffect>>,
 }
@@ -358,8 +356,8 @@ pub(crate) fn new_warrior(
     sim.new_timer(unit);
 
     Ok(Box::new(Warrior {
-        has_bs_t2: Rc::new(Cell::new(inputs.has_bs_t2)),
-        thunder_clap_effect_bonus: Rc::new(Cell::new(0.0)),
+        has_bs_t2: sim.new_state_slot(if inputs.has_bs_t2 { 1.0 } else { 0.0 }),
+        thunder_clap_effect_bonus: sim.new_state_slot(0.0),
         post_finalize: std::cell::RefCell::default(),
         talents,
         inputs,

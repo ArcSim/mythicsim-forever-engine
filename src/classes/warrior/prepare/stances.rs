@@ -1,7 +1,6 @@
 //! Go sim/warrior/stances.go: the three stance auras, each in the exclusive "Stance" category,
 //! and the spells that cast them.
 
-use std::cell::Cell;
 use std::rc::Rc;
 
 use crate::prepare::aura_helpers::PseudoStatField;
@@ -125,18 +124,19 @@ impl Warrior {
                 .effect(dbcenums::A_MOD_THREAT, 127)
                 .multiplier_at(defiance_rank);
             // Defiance multiplies threat in Defensive Stance while the warrior can block.
-            let applied = Rc::new(Cell::new(false));
+            let applied = sim.new_state_slot(0.0);
             let refresh = move |sim: &mut Sim, unit: UnitId, in_stance: bool| {
                 let want = in_stance && sim.unit(unit).pseudo_stats.can_block;
+                let was = sim.state_flag(applied);
                 let threat = &mut sim.unit_mut(unit).pseudo_stats.threat_multiplier;
-                if want && !applied.get() {
+                if want && !was {
                     *threat *= defiance;
-                } else if !want && applied.get() {
+                } else if !want && was {
                     *threat /= defiance;
                 }
-                applied.set(want);
+                sim.set_state_flag(applied, want);
             };
-            let on_gain = refresh.clone();
+            let on_gain = refresh;
             sim.apply_on_gain(
                 aura,
                 Rc::new(move |sim: &mut Sim, aura| {

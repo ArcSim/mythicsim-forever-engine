@@ -62,6 +62,7 @@ pub(crate) mod cooldown_type {
 }
 
 /// The character half of a player unit.
+#[derive(Clone)]
 pub(crate) struct Character {
     pub name: String,
     pub race: String,

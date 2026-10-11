@@ -383,7 +383,7 @@ impl Warrior {
         let battle_shout = data.battle_shout.highest();
         if let Some(own) = sim.get_spell(unit, &spell_action(battle_shout.id)) {
             let mut value = generated::BATTLE_SHOUT.value(0);
-            if self.inputs.use_battle_shout && self.has_bs_t2.get() {
+            if self.inputs.use_battle_shout && sim.state_flag(self.has_bs_t2) {
                 value += super::shouts::BATTLE_SHOUT_T2_BONUS;
             }
             for aura in sim.auras_with_tag(unit, "BattleShout") {
@@ -583,7 +583,7 @@ impl Warrior {
         let clap_row = data.thunder_clap.highest();
         if let Some(clap) = Self::spell_of(sim, unit, clap_row) {
             let slow = clap_row.effects[1].base_value();
-            let bonus = self.thunder_clap_effect_bonus.get();
+            let bonus = sim.state(self.thunder_clap_effect_bonus);
             let aura = sim
                 .spell(clap)
                 .related_aura_arrays

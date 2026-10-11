@@ -10,6 +10,7 @@ use crate::prepare::sim::{AuraConfig, Sim, UnitType, NEVER_EXPIRES};
 use crate::prepare::stat_auras::{character_stat_auras, stat_auras_effect_reading, stat_layout};
 use std::rc::Rc;
 
+#[derive(Clone)]
 struct FakeAgent {
     talents: Message,
 }

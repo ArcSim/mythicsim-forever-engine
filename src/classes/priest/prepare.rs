@@ -115,6 +115,7 @@ static CLASS_SPELLS: &[ClassSpellName] = &[
 ];
 
 /// Go `Priest`: the talents, the class options and what the registrations keep.
+#[derive(Clone)]
 pub(crate) struct Priest {
     talents: Message,
     /// Go `SelfBuffs.UseShadowfiend`.

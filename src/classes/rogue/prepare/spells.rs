@@ -312,9 +312,8 @@ impl Rogue {
                 / 100.0,
         );
 
-        let multiplier = Rc::new(std::cell::Cell::new(0.0_f64));
+        let multiplier = sim.new_state_slot(0.0);
         let gain_state = Rc::clone(&state);
-        let gain_multiplier = Rc::clone(&multiplier);
         let aura = sim.register_aura(
             unit,
             AuraConfig {
@@ -324,11 +323,12 @@ impl Rogue {
                 // crash when used in APL prepull.
                 duration: super::SLICE_AND_DICE_DURATIONS[5],
                 on_gain: Some(Rc::new(move |sim: &mut Sim, _| {
-                    gain_multiplier.set(1.0 + gain_state.slice_and_dice_bonus_flat.get());
-                    sim.multiply_melee_speed(unit, gain_multiplier.get());
+                    let factor = 1.0 + gain_state.slice_and_dice_bonus_flat.get();
+                    sim.set_state(multiplier, factor);
+                    sim.multiply_melee_speed(unit, factor);
                 })),
                 on_expire: Some(Rc::new(move |sim: &mut Sim, _| {
-                    sim.multiply_melee_speed(unit, 1.0 / multiplier.get());
+                    sim.multiply_melee_speed(unit, 1.0 / sim.state(multiplier));
                 })),
                 ..AuraConfig::default()
             },

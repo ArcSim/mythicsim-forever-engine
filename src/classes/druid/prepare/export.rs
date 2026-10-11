@@ -472,7 +472,7 @@ impl Druid {
             effects.push(json!({
                 "kind": "shifting_power", "spell": spell_position(sim, unit, shifting_power),
                 "energy": Ladder::ranked(&[1322605]).highest().energize_effect().average(CHARACTER_LEVEL)
-                    + sim_wolfshead_energy(self),
+                    + sim_wolfshead_energy(sim, self),
             }));
         }
         if let (Some(faerie_fire), false) = (self.faerie_fire, self.faerie_fire_auras.is_empty()) {
@@ -590,7 +590,7 @@ impl Druid {
                     "kind": "enrage", "spell_id": rank.id, "aura": sim.aura(enrage_aura).label,
                     "instant_rage": rank.effect(A_NONE, 1).tenths()
                         + self.intensity_enrage_rage_bonus
-                        + self.st.wolfshead_enrage_rage.get(),
+                        + sim.state(self.st.wolfshead_enrage_rage),
                     "rage_per_tick": rank.effect(A_PERIODIC_ENERGIZE, 1).base_value() / 10.0,
                     "ticks": rank.duration() / SECOND,
                     "period_ns": nanos(SECOND),
@@ -801,6 +801,6 @@ impl Druid {
 }
 
 /// The Wolfshead Helm's extra Shifting Power energy as the druid state holds it.
-fn sim_wolfshead_energy(druid: &Druid) -> f64 {
-    druid.st.wolfshead_shifting_power_energy.get()
+fn sim_wolfshead_energy(sim: &Sim, druid: &Druid) -> f64 {
+    sim.state(druid.st.wolfshead_shifting_power_energy)
 }

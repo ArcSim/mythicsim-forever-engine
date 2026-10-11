@@ -34,13 +34,30 @@ pub(crate) struct ClassSpellName {
     pub name: &'static str,
 }
 
+/// A copy of a class agent, so an [`Environment`](super::env::Environment) can be copied with it.
+pub(crate) trait CloneAgent {
+    fn clone_agent(&self) -> Box<dyn PrepAgent>;
+}
+
+impl<T: PrepAgent + Clone + 'static> CloneAgent for T {
+    fn clone_agent(&self) -> Box<dyn PrepAgent> {
+        Box::new(self.clone())
+    }
+}
+
+impl Clone for Box<dyn PrepAgent> {
+    fn clone(&self) -> Self {
+        self.clone_agent()
+    }
+}
+
 /// One class: construction and initialization as Go's agent runs them, and the exporter's
 /// description of what Go keeps in closures.
-pub(crate) trait PrepAgent {
+pub(crate) trait PrepAgent: CloneAgent {
     /// Go `Agent.AddRaidBuffs`: the buffs the class brings to the raid.
     fn add_raid_buffs(&self, _raid_buffs: &mut Message) {}
     /// Go `Agent.AddPartyBuffs`.
-    fn add_party_buffs(&self, _party_buffs: &mut Message) {}
+    fn add_party_buffs(&self, _sim: &Sim, _party_buffs: &mut Message) {}
     /// What the agent's constructor does to the raid's debuffs the request carries (Go's
     /// `NewWarlock` clears the curse the warlock casts itself), before they are applied.
     fn adjust_raid_debuffs(&self, _debuffs: &mut Message) {}

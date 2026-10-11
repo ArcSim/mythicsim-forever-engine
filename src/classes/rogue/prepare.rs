@@ -174,7 +174,7 @@ pub(super) struct RogueState {
 }
 
 /// The spells Go keeps on the Rogue, which the exporter and the registrations read.
-#[derive(Default)]
+#[derive(Clone, Default)]
 pub(super) struct RogueSpells {
     pub ambush: Option<SpellId>,
     pub backstab: Option<SpellId>,
@@ -200,7 +200,7 @@ pub(super) struct RogueSpells {
 }
 
 /// The auras Go keeps on the Rogue. An aura array is by unit index, with the enemies' auras.
-#[derive(Default)]
+#[derive(Clone, Default)]
 pub(super) struct RogueAuras {
     pub adrenaline_rush: Option<AuraId>,
     pub blade_flurry: Option<AuraId>,
@@ -215,6 +215,7 @@ pub(super) struct RogueAuras {
 }
 
 /// Go `Rogue`: the talents, the registered spells and auras, and what the exporter reads.
+#[derive(Clone)]
 pub(crate) struct Rogue {
     talents: Message,
     state: Rc<RogueState>,

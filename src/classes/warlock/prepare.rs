@@ -161,6 +161,7 @@ static CLASS_SPELLS: &[ClassSpellName] = &[
 
 /// Go `Warlock`: the talents and options the registrations read, and the spells, auras and
 /// demons Go keeps on the struct.
+#[derive(Clone)]
 pub(crate) struct Warlock {
     pub(super) talents: Message,
     /// Go `Options`: the `WarlockOptions` of the player.
@@ -248,7 +249,7 @@ impl Warlock {
 impl PrepAgent for Warlock {
     /// A summoned Imp gives the party Blood Pact (11767). Forever's Improved Imp (18694) no
     /// longer raises it.
-    fn add_party_buffs(&self, party_buffs: &mut Message) {
+    fn add_party_buffs(&self, _sim: &Sim, party_buffs: &mut Message) {
         if self.options.enum_name("summon") == "Imp" && !self.sacrifice_summon() {
             party_buffs.set_bool("blood_pact", true);
         }

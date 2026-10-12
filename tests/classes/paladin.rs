@@ -522,3 +522,49 @@ fn eye_for_an_eye_reflects_onto_the_copy_that_crit() {
         );
     }
 }
+
+/// The seconds a log line was stamped at.
+fn stamp(line: &str) -> f64 {
+    line[1..line.find(']').unwrap()].parse().unwrap()
+}
+
+/// A completed hard cast restarts the melee swing timer in Forever (Go `HoldMeleeForCast`, beta
+/// logs 2701 and 2712): the next main hand swing comes a full weapon speed after the cast ends,
+/// even when one came due during the cast. Before the rule that swing landed as the cast
+/// completed, so a Holy Light chain of 2.5 seconds each ended with a swing at once. Holy Light,
+/// Holy Wrath and Light's Vigil hold the swing; Hammer of Wrath does too, unless Instrument of
+/// Law has made it instant.
+#[test]
+fn a_completed_hard_cast_restarts_the_swing_a_full_weapon_speed_later() {
+    for (case, spell) in [
+        ("shockadin-holy-light-self", 25292),
+        ("retribution-paladin-holy-wrath-3-targets", 10318),
+        ("shockadin-lights-vigil", 1311595),
+    ] {
+        let value = tank_json(case);
+        let speed = value["melee"]["main_hand"]["swing_speed"].as_f64().unwrap();
+        let log = first_fight_log(value);
+        let swings: Vec<f64> = log
+            .lines()
+            .filter(|line| line.contains("Completed cast {OtherID: 3, Tag: 1}"))
+            .map(stamp)
+            .collect();
+        let ends: Vec<f64> = log
+            .lines()
+            .filter(|line| line.contains(&format!("Completed cast {{SpellID: {spell}}}")))
+            .map(stamp)
+            .collect();
+        assert!(!ends.is_empty(), "{case}: no cast of {spell}");
+        let mut later = 0;
+        for end in ends {
+            if let Some(swing) = swings.iter().find(|&&swing| swing > end + 0.001) {
+                later += 1;
+                assert!(
+                    swing - end >= speed - 0.015,
+                    "{case}: a swing at {swing} follows the cast that ended at {end}"
+                );
+            }
+        }
+        assert!(later > 0, "{case}: no swing follows a cast");
+    }
+}

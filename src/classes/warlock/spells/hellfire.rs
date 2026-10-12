@@ -40,7 +40,8 @@ pub(crate) fn tick(fight: &mut Fight<WarlockAgent>, dot: DotId) {
         "the gate refuses a Hellfire whose burn cannot crit"
     );
     let spell = fight.dots[dot].spell;
-    let results = fight.calc_periodic_aoe_damage(dot, hellfire.tick_base, Outcome::TickMagicHitAndCrit);
+    let results =
+        fight.calc_periodic_aoe_damage(dot, hellfire.tick_base, Outcome::TickMagicHitAndCrit);
     fight.deal_batched_periodic_damage(spell, &results);
     fight.remove_health(hellfire.tick_base);
 }

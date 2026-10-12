@@ -6,8 +6,8 @@ use std::rc::Rc;
 use crate::{
     contracts::prepared_v2::{Effect, PreparedV2, Spell as ExportedSpell},
     core::fight::{
-        healing::Healing, school_damage_index, Agent, AuraRef, DotId, Fight, Side,
-        SpellBehavior, SpellId, SpellResult, MAX_TARGETS, PRIORITY_REGEN,
+        healing::Healing, school_damage_index, Agent, AuraRef, DotId, Fight, Side, SpellBehavior,
+        SpellId, SpellResult, MAX_TARGETS, PRIORITY_REGEN,
     },
 };
 

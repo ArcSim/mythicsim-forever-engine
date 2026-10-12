@@ -21,7 +21,7 @@ use super::{
         hurricane, innervate, insect_swarm, moonfire,
         per_dot::PerDot,
         prowl::{self, Prowl},
-        rake::Rake,
+        rake::{self, Rake},
         rip::{self, Rip},
         shifting_power::{self, ShiftingPower},
         starfire, wrath,
@@ -119,8 +119,8 @@ pub(crate) struct DruidAgent {
     rip: Option<Rc<Rip>>,
     pub(crate) rip_snapshot: PerDot<rip::Snapshot>,
     rake: Option<Rc<Rake>>,
-    /// Rake's stored tick.
-    pub(crate) rake_snapshot: PerDot<f64>,
+    /// Rake's stored tick and attack power.
+    pub(crate) rake_snapshot: PerDot<rake::Snapshot>,
     ferocious_bite: Option<FerociousBite>,
     shifting_power: Option<ShiftingPower>,
     faerie_fire: Option<FaerieFire>,
@@ -623,6 +623,7 @@ impl DruidAgent {
                 Effect::Rake {
                     flat_damage,
                     tick_base,
+                    attack_power_share,
                     tick_can_crit,
                     short_name,
                     ..
@@ -630,6 +631,7 @@ impl DruidAgent {
                     fight.agent.rake = Some(Rc::new(Rake {
                         flat_damage: *flat_damage,
                         tick_base: *tick_base,
+                        attack_power_share: *attack_power_share,
                         tick_can_crit: *tick_can_crit,
                         short_name: short_name.clone(),
                     }));

@@ -82,7 +82,7 @@ impl Paladin {
             // The damage shield's number is the rank's first effect.
             let mut aura_rank = aura_rank(rank);
             aura_rank.value = rank.effect_n(1).average(CHARACTER_LEVEL);
-            let aura = retribution_aura_buff(sim, unit, true, &aura_rank, 0.0);
+            let aura = retribution_aura_buff(sim, unit, true, &aura_rank);
             self.register_aura_spell(sim, unit, rank, aura, masks::RETRIBUTION_AURA);
         });
     }

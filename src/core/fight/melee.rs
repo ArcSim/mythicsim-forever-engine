@@ -57,6 +57,9 @@ pub(crate) struct WeaponAttack {
     cur_swing_speed: f64,
     pub(crate) cur_swing_duration: i64,
     pub(crate) enabled: bool,
+    /// Go `castResetAt`: the end of a hard cast in progress ([`Fight::hold_melee_for_cast`]). A
+    /// swing landing before it puts the next one a full swing after it.
+    cast_reset_at: i64,
 }
 
 impl WeaponAttack {
@@ -345,6 +348,8 @@ impl<A: Agent> Fight<A> {
             attack.swing_at = NEVER_EXPIRES;
         }
         autos.mh.extra_attacks = 0;
+        autos.mh.cast_reset_at = 0;
+        autos.oh.cast_reset_at = 0;
         if autos.melee {
             autos.mh.update_swing_duration(haste);
             autos.mh.previous_swing = -autos.mh.cur_swing_duration;
@@ -637,6 +642,12 @@ impl<A: Agent> Fight<A> {
         let attack = self.autos_of_mut(side).attack(hand);
         attack.previous_swing = attack.swing_at;
         attack.swing_at = now + attack.cur_swing_duration;
+        // A hard cast that started as this swing landed restarts the timer when it completes.
+        if attack.cast_reset_at > now {
+            attack.swing_at = attack
+                .swing_at
+                .max(attack.cast_reset_at + attack.cur_swing_duration);
+        }
         if attack.extra_attacks > 0 {
             attack.extra_attacks -= 1;
             attack.swing_at = now;
@@ -832,8 +843,9 @@ impl<A: Agent> Fight<A> {
         }
     }
 
-    /// Go `AutoAttacks.HoldMeleeForCast`: a swing due before the cast ends waits for it; a
-    /// later one restarts its timer from the cast's end.
+    /// Go `AutoAttacks.HoldMeleeForCast`: the next swing comes one full weapon speed after the
+    /// cast completes, whether or not a swing came due during it. A swing landing now, as the
+    /// cast starts, still lands, and `cast_reset_at` pushes the one after it past the cast.
     pub(crate) fn hold_melee_for_cast(&mut self, cast_end: i64) {
         if !self.autos.melee {
             return;
@@ -846,14 +858,11 @@ impl<A: Agent> Fight<A> {
         };
         for &hand in hands {
             let attack = self.autos.attack(hand);
+            attack.cast_reset_at = attack.cast_reset_at.max(cast_end);
             if attack.swing_at <= now + HELD_SWING_LAG {
                 continue;
             }
-            attack.swing_at = if attack.swing_at <= cast_end {
-                cast_end + HELD_SWING_LAG
-            } else {
-                cast_end + attack.cur_swing_duration
-            };
+            attack.swing_at = cast_end + attack.cur_swing_duration;
             // Go rescheduleWeaponAttack.
             let swing_at = attack.swing_at;
             self.autos.min_time = self.autos.min_time.min(swing_at);

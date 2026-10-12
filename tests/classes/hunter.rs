@@ -615,3 +615,45 @@ fn a_move_with_a_speed_aura_is_supported() {
     effect["speed_auras"] = json!(["Aspect of the Cheetah"]);
     assert!(super::refusal_codes(value).is_empty());
 }
+
+/// A Volley channel is a non-melee cast: it holds the melee swing too, and the swings restart a
+/// full swing after it ends (Go volley.go, community #743). The hunter's hands do not swing for
+/// the six seconds of the channel, and the first swing after it is not until a swing later.
+#[test]
+fn volley_holds_the_melee_swing_until_the_channel_ends() {
+    let mut value = fixture("production-survival-hunter-2-targets");
+    value["sim"]["iterations"] = json!(1);
+    let logs = simulate_prepared(&parse(value)).unwrap().result["logs"]
+        .as_str()
+        .unwrap()
+        .to_string();
+    let hunter = unit_lines(&logs, "survival-hunter (#1)");
+    let volley = hunter
+        .iter()
+        .copied()
+        .find(|line| line.contains("Casting {SpellID: 14295}"))
+        .map(at)
+        .expect("the hunter channels Volley");
+    let channel_end = volley + 6.0;
+    let swings: Vec<f64> = hunter
+        .iter()
+        .copied()
+        .filter(|line| {
+            line.contains("Completed cast {OtherID: 3, Tag: 1}")
+                || line.contains("Completed cast {OtherID: 3, Tag: 2}")
+        })
+        .map(at)
+        .collect();
+    assert!(
+        swings
+            .iter()
+            .all(|&swing| swing <= volley + 0.001 || swing >= channel_end),
+        "a swing lands in the channel: {swings:?}"
+    );
+    let first_after = swings
+        .iter()
+        .copied()
+        .find(|&swing| swing >= channel_end)
+        .expect("the hunter swings again");
+    assert!(first_after - channel_end >= 0.95, "{first_after}");
+}

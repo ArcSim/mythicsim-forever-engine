@@ -969,8 +969,10 @@ impl Agent for PaladinAgent {
 
     fn modify_cast(fight: &mut Fight<Self>, spell: SpellId, behavior: PaladinSpell) {
         match behavior {
-            PaladinSpell::HammerOfWrath => strikes::hammer_of_wrath_modify_cast(fight, spell),
-            PaladinSpell::HolyWrath => strikes::holy_wrath_modify_cast(fight, spell),
+            PaladinSpell::HammerOfWrath
+            | PaladinSpell::HolyWrath
+            | PaladinSpell::Heal(_)
+            | PaladinSpell::LightsVigil(_) => strikes::hold_melee_for_cast(fight, spell),
             _ => {}
         }
     }

@@ -148,6 +148,21 @@ The behavior changes preparation writes:
   Bite is a main hand attack, Holy Nova's heal carries its defense type, Ice Lance's coefficient is
   .1 (#726), Howling Idol and Guardian's Dualblade are registered.
 
+256 of the 584 Go goldens changed, 217 of them in DPS. The behavior changes the fight runtime
+follows:
+
+- A completed hard cast restarts the melee swing a full weapon speed after it ends, whether or not a
+  swing came due during the cast (the fork's `castResetAt`). Paladin heals and wraths, Shaman bolts
+  and druid casts hold the swing through it, and Volley holds it for its channel (#743).
+- Hellfire keeps channelling at low health (#735).
+- Thistle Tea may spill 15 energy, not 10 (patch 102), which moved every Rogue golden with it.
+- Rake adds 5.26% of attack power to its hit and every tick, the bleed reading it at each tick
+  (patch 99), and a potion no longer drops Bear or Cat Form (patch 111).
+- A Tallstrider holds Dust Cloud while Sunder Armor or Expose Armor is on the target (patch 110).
+
+Rust matches all of them: all 585 accepted fixtures with a Go golden, including the two accepted at
+the pin.
+
 The ledger lists the 73 commits: 31 bookkeeping, 17 rotation presets, 13 client data updates, 9
 behavior changes Rust prepares and 3 runtime changes the golden fixtures compare. The Mage
 area fixtures stand the mage at 20 yards, outside the point-blank radius, so Go never casts Cone of

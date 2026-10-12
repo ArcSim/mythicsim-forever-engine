@@ -4,12 +4,12 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `2d93e423e0303e93dbb16e190d435503248b68f9`, on community base `5c115f1725ede7419e4f8582a7d94cdb0247c829` |
-| [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `5c115f1725ede7419e4f8582a7d94cdb0247c829` (2026-10-07) |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `041dec8eff72164e804bde636697e34fdf83b14f`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
+| [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `f7598154eb8a138831290b34d4d321a532295224` (2026-10-10) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
 intentionally differ from inherited Classic behavior. Fixture client build:
-`1.60.1.70235`.
+`1.60.1.70338`.
 
 The pin is written once, in [upstream/sources.json](upstream/sources.json). The Rust
 build script, the Python tools and the Go helpers they build (through `-ldflags -X`)
@@ -127,6 +127,32 @@ which match Go, the 24 multi-target tank builds Rust refused at `cd7d44aec` amon
 other 956 are the Warlock multi-target census past its first 480 variants and the Warlock
 multi-target sweep past the first four variants of each base, generated and not compared
 ([record](validation/2026-10-07-reference-pin-2d93e423e-sweeps.json)).
+
+The pin moved from `2d93e423e` to `041dec8ef` on 2026-10-12, the fork's merge of community
+#720 to #763 (73 commits, 31 of them changelog or leaderboard bookkeeping) and its patches 100 to
+112. The client data moved from 70245 to 70338, a caster rebalance among other things: Frostbolt's
+gain per level cut from 0.5 to 0.2, Thorns 22 to 18, Retribution Aura 30 to 20, flat armor auras
+moved from aura 22 to 674, "Immolation Trap Effect" renamed, Predatory Instincts renamed Natural
+Instinct, Rule of Rage removed, and the Judgement of Light and Wisdom triggered ladders gained ranks.
+The behavior changes preparation writes:
+
+- Spell ranges: Mage, Warlock and Shaman spells state their client range, the point-blank area spells
+  (Arcane Explosion, Blast Wave, Cone of Cold, Frost Nova) reach 10 yards, and the talents Arcane
+  Geometry, Flame Throwing, Arctic Reach, Destructive Reach, Elemental Reach, Shadow Reach, Holy
+  Reach and Nature's Reach extend them (#728 to #733).
+- Retribution Aura reads the Holy spell power of the unit it is on, which retires the party's
+  `retribution_aura_spell_power` input (#736).
+- Firestone and Spellstone are weapon imbues, chosen by the new `weapon_stone` option, and a
+  temporary enchant sits beside an imbue (`mh_temp_enchant_id`, `oh_temp_enchant_id`).
+- Last Stand reads its 30% from client 70291's `A_MOD_INCREASE_HEALTH` aura (patch 112), Mongoose
+  Bite is a main hand attack, Holy Nova's heal carries its defense type, Ice Lance's coefficient is
+  .1 (#726), Howling Idol and Guardian's Dualblade are registered.
+
+The ledger lists the 73 commits: 31 bookkeeping, 17 rotation presets, 13 client data updates, 9
+behavior changes Rust prepares and 3 runtime changes the golden fixtures compare. The Mage
+area fixtures stand the mage at 20 yards, outside the point-blank radius, so Go never casts Cone of
+Cold or Blast Wave there; the same requests from 8 yards are accepted as
+`frost-mage-3-targets-point-blank-area-lines` and `fire-mage-2-targets-point-blank-blast-wave`.
 
 ## Ledger
 

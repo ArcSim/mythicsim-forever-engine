@@ -35,7 +35,8 @@ impl Rake {
 
     /// Go `rakeTickDamage`, fused the same way.
     fn tick_damage(&self, attack_power: f64) -> f64 {
-        self.attack_power_share.mul_add(attack_power, self.tick_base)
+        self.attack_power_share
+            .mul_add(attack_power, self.tick_base)
     }
 
     pub(crate) fn apply(&self, fight: &mut Fight<DruidAgent>, spell: SpellId, target: Side) {

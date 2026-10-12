@@ -234,7 +234,7 @@ fn thistle_tea_may_spill_fifteen_energy() {
         .find(|line| line.contains("Gained 100.000 energy from {ItemID: 7676}"))
         .expect("the first fight drinks Thistle Tea");
     let before: f64 = gained
-        .split(" (")
+        .split("} (")
         .nth(1)
         .and_then(|rest| rest.split(" -->").next())
         .and_then(|energy| energy.parse().ok())

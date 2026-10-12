@@ -818,7 +818,8 @@ impl Agent for HunterAgent {
                         // Go `DustCloudYieldsToSunderAndExpose` (mythicsim patch 110): the pet
                         // holds Dust Cloud while Sunder Armor or Expose Armor is on the target.
                         if DUST_CLOUD_YIELDS_TO_SUNDER_AND_EXPOSE
-                            && fight.exclusive_category_any_active(Side::Target, SUNDER_ARMOR_CATEGORY)
+                            && fight
+                                .exclusive_category_any_active(Side::Target, SUNDER_ARMOR_CATEGORY)
                         {
                             return false;
                         }

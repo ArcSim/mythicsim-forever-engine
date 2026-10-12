@@ -296,10 +296,27 @@ fn scorpid_poison_stacks_to_five() {
     assert!(logs.contains("Casting {SpellID: 3009}"), "{logs}");
 }
 
-/// Go newDustCloud: the pet casts it only while its target aura is down.
+/// The Tallstrider fixture with nothing holding the target's major armor reduction category:
+/// no permanent Expose Armor and no Sunder Armor ramp.
+fn tallstrider_without_armor_reductions() -> Value {
+    let mut value = fixture("beast-mastery-hunter-tallstrider");
+    for aura in value["target"]["auras"].as_array_mut().unwrap() {
+        if aura["tag"] == "MajorArmorReduction" {
+            aura["active"] = json!(false);
+        }
+    }
+    value["effects"]
+        .as_array_mut()
+        .unwrap()
+        .retain(|effect| effect["kind"] != "sunder_armor_ramp");
+    value
+}
+
+/// Go newDustCloud: the pet casts it only while its target aura is down (and, since patch 110,
+/// no Sunder Armor or Expose Armor holds the major armor reduction category).
 #[test]
 fn dust_cloud_is_cast_again_only_once_it_falls_off() {
-    let logs = first_fight_log(fixture("beast-mastery-hunter-tallstrider"));
+    let logs = first_fight_log(tallstrider_without_armor_reductions());
     let events: Vec<&str> = logs
         .lines()
         .filter(|line| {
@@ -656,4 +673,19 @@ fn volley_holds_the_melee_swing_until_the_channel_ends() {
         .find(|&swing| swing >= channel_end)
         .expect("the hunter swings again");
     assert!(first_after - channel_end >= 0.95, "{first_after}");
+}
+
+/// Dust Cloud yields to Sunder Armor and Expose Armor (mythicsim patch 110): a Tallstrider
+/// against a target with a permanent Expose Armor never casts it, and casts it once nothing
+/// holds the major armor reduction category.
+#[test]
+fn dust_cloud_yields_to_the_major_armor_reductions() {
+    let casts = |value: Value| {
+        first_fight_log(value)
+            .lines()
+            .filter(|line| line.contains("Casting {SpellID: 1265904}"))
+            .count()
+    };
+    assert_eq!(casts(fixture("beast-mastery-hunter-tallstrider")), 0);
+    assert!(casts(tallstrider_without_armor_reductions()) > 0);
 }

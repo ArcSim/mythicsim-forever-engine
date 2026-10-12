@@ -383,7 +383,7 @@ fn register_rage_on_avoid(
 
 /// The aura's gain: maximum health rises by the buff's share, which heals that much too.
 fn last_stand_on_gain(buff: &'static Row, bonus: StateSlot) -> AuraCallback {
-    let share = buff.effect(dbcenums::A_MOD_MAX_HEALTH, 0).percent();
+    let share = last_stand_share(buff);
     Rc::new(move |sim: &mut Sim, aura| {
         let unit = sim.aura(aura).unit;
         sim.set_state(bonus, sim.stat(unit, Stat::Health) * share);

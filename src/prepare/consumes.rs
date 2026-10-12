@@ -151,7 +151,9 @@ impl Sim {
 
     /// Go `Character.MHImbueFlatWeaponDamage`.
     pub(crate) fn mh_imbue_flat_weapon_damage(&self, unit: UnitId) -> f64 {
-        imbue_flat_weapon_damage(self.character(unit).consumables.i32("mhImbue_id"))
+        let consumables = &self.character(unit).consumables;
+        imbue_flat_weapon_damage(consumables.i32("mhImbue_id"))
+            + imbue_flat_weapon_damage(consumables.i32("mh_temp_enchant_id"))
     }
 }
 
@@ -320,6 +322,15 @@ pub(crate) fn apply_consume_effects(
     let oh_imbue = consumables.i32("ohImbue_id");
     if oh_imbue != 0 {
         register_static_imbue(env, oh_imbue, Hand::Off);
+    }
+    // A stone or oil beside a class imbue on the same hand (mythicsim patch 100).
+    let mh_temp_enchant = consumables.i32("mh_temp_enchant_id");
+    if mh_temp_enchant != 0 {
+        register_static_imbue(env, mh_temp_enchant, Hand::Main);
+    }
+    let oh_temp_enchant = consumables.i32("oh_temp_enchant_id");
+    if oh_temp_enchant != 0 {
+        register_static_imbue(env, oh_temp_enchant, Hand::Off);
     }
 
     // Scrolls.

@@ -235,10 +235,12 @@ mod tests {
         assert!((damage.min(60) - want_min).abs() < 1e-9);
         assert!((damage.max(60) - want_max).abs() < 1e-9);
 
-        // The same numbers off the store's own row.
+        // The store's own row. Client 1.60.1.70291 cut the rank's 0.5 a level to 0.2 (#758), so the
+        // four levels between its own 4 and its cap of 8 add under a point, which the client rounds
+        // down to nothing: Go's `ExampleSpell_EffectN` reads 19 at level 60.
         let stored = must_find(116).effect_n(2);
-        assert_eq!(stored.average(60), 21.0);
-        assert_eq!(stored.average(6), 20.0);
+        assert_eq!(stored.average(60), 19.0);
+        assert_eq!(stored.average(6), 19.0);
         assert_eq!(stored.average(2), 19.0);
     }
 

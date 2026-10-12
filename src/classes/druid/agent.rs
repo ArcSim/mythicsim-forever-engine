@@ -1121,6 +1121,14 @@ impl Agent for DruidAgent {
                 _ => fight.agent.form = forms::HUMANOID,
             }
         }
+        // Go `Druid.RegisterSpell`: a hard cast restarts the swing timer as it completes
+        // (mythicsim patch 105), as for a caster-form druid swinging a staff. A druid that does
+        // not auto attack, or a cast made instant, is untouched.
+        let cast_time = fight.spells[spell].cur_cast.cast_time;
+        let cast_time = fight.apply_cast_speed_for_spell(cast_time, spell);
+        if cast_time > 0 {
+            fight.hold_melee_for_cast(fight.now + cast_time);
+        }
     }
 
     fn should_activate(_fight: &Fight<Self>, _spell: SpellId, behavior: DruidSpell) -> bool {

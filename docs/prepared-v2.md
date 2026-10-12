@@ -269,7 +269,7 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `incinerate` | sim/warlock/incinerate.go | The bonus on a target burning with Immolate; the damage roll is the client row |
 | `bane_of_havoc` | sim/warlock/talents_destruction.go | The target aura the cast puts on the bane slot and the share of the warlock's damage to other targets that the listener copies onto the baned one, through the spell of the same ID with tag 1; with one target nothing is copied |
 | `rain_of_fire` | sim/warlock/rain_of_fire.go | The channel, an area dot on the warlock whose every tick casts the triggered tick spell: a fixed amount rolled to hit and to crit on each target. The cast itself rolls a hit on every target and deals no damage |
-| `hellfire` | sim/warlock/hellfire.go | The channel, an area dot on the warlock whose every tick rolls a fixed amount on each target and then burns the warlock for it; a burn that would kill re-enters the due tick as Go does |
+| `hellfire` | sim/warlock/hellfire.go | The channel, an area dot on the warlock whose every tick rolls a fixed amount on each target and then burns the warlock for it; the channel does not stop at low health, as in Go since #735 |
 | `fel_energy` | sim/warlock/talents_demonology.go | The Voidwalker sacrifice's share of maximum mana and period, from its periodic action |
 | `decimation` | sim/warlock/talents_demonology.go | The trigger spells, the 35% execute phase, and the aura's damage and Soul Fire cast time modifiers with the spells each names |
 | `demonic_brand` | sim/warlock/talents_demonology.go | The trigger spells, the target brand and its charges, the demon's marker and consumer auras, and the brand hit's roll and spell power share, Go literals |

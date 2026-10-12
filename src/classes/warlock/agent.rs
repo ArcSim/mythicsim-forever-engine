@@ -6,7 +6,7 @@ use std::rc::Rc;
 use crate::{
     contracts::prepared_v2::{Effect, PreparedV2, Spell as ExportedSpell},
     core::fight::{
-        healing::Healing, school_damage_index, Agent, AoeResults, AuraRef, DotId, Fight, Side,
+        healing::Healing, school_damage_index, Agent, AuraRef, DotId, Fight, Side,
         SpellBehavior, SpellId, SpellResult, MAX_TARGETS, PRIORITY_REGEN,
     },
 };
@@ -117,8 +117,6 @@ pub(crate) struct WarlockAgent {
     drain_life: Option<DrainLife>,
     wrack: Option<Wrack>,
     pub(crate) hellfire: Option<Hellfire>,
-    /// The results of Hellfire's latest tick calculation, Go's result slice of the spell.
-    pub(crate) hellfire_results: AoeResults,
     rain_of_fire: Option<RainOfFire>,
     /// Death Coil's base, its healing spell and the warlock's healing modifiers.
     death_coil: Option<(f64, SpellId, Healing)>,

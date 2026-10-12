@@ -57,41 +57,26 @@ fn rain_of_fire_ticks_four_times_two_seconds_apart() {
     }
 }
 
-/// When the warlock cannot survive a tick, stopping the channel runs the tick due now again
-/// before the channel ends, and that tick refills the spell's one result slice, so Go deals
-/// the second tick's results twice (sim/warlock/hellfire.go).
+/// The simulation has no healer, so Hellfire's burn does not cut the channel short: once the
+/// warlock's health is spent the channel keeps ticking, and every tick still burns the warlock
+/// (Go `TestHellfireChannelsAtLowHealth`, community #735). Stopping used to clip every channel
+/// after about 18 seconds into one-tick recasts.
 #[test]
-fn a_stopped_hellfire_deals_its_last_tick_twice() {
+fn hellfire_keeps_channelling_at_low_health() {
     let logs = first_fight_log(fixture("affliction-warlock-hellfire"));
     let lines: Vec<&str> = logs.lines().collect();
-    // The burn that takes the warlock's last health: the stopped channel's tick ran it.
-    let last_burn = lines
+    let empty = lines
         .iter()
-        .position(|line| {
-            line.contains("Spent 210.000 health")
-                && line.contains("--> 0.000)")
-                && !line.contains("(0.000 -->")
-        })
+        .position(|line| line.contains("Spent 210.000 health") && line.contains("--> 0.000)"))
         .expect("the warlock's health runs out");
-    let is_tick = |line: &str| line.contains("[Target 1] {SpellID: 11684} tick");
-    let before = lines[..last_burn]
-        .iter()
-        .rev()
-        .find(|line| is_tick(line))
-        .unwrap();
-    let after = lines[last_burn..]
-        .iter()
-        .find(|line| is_tick(line))
-        .unwrap();
-    assert_eq!(before, after);
-    // The outer tick then burns a warlock with nothing left.
-    assert!(
-        lines[last_burn..]
-            .iter()
-            .take(6)
-            .any(|line| line.contains("(0.000 --> 0.000)")),
-        "{logs}"
+    let is_tick = |line: &&str| line.contains("[Target 1] {SpellID: 11684} tick");
+    let burns = |line: &&str| line.contains("Spent 210.000 health from {OtherID: 9}");
+    let (ticks, burned) = (
+        lines[empty..].iter().filter(is_tick).count(),
+        lines[empty..].iter().filter(burns).count(),
     );
+    assert!(ticks >= 4, "{logs}");
+    assert_eq!(ticks, burned, "{logs}");
 }
 
 /// Hellfire burns the warlock for every tick it deals.

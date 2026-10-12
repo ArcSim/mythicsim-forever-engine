@@ -147,12 +147,16 @@ impl Environment {
 
         // construct
         let encounter = new_encounter(&mut sim, &encounter_options)?;
-        if raid.i32("num_active_parties") != 0 || raid.i32("target_dummies") != 0 {
+        // Go `NewRaid`: the active parties are the first `num_active_parties`, all of them when
+        // it is zero, and pets number from five indexes past each. The UI sends five.
+        let active_parties = raid.i32("num_active_parties");
+        if active_parties < 0 || raid.i32("target_dummies") != 0 {
             return Err(Refusal::new(
                 "raid",
                 "parties beyond one player are unsupported".to_string(),
             ));
         }
+        sim.first_pet_index = 5 * active_parties.max(1);
         let parties = raid.messages("parties");
         let players: Vec<&Message> = parties
             .first()
@@ -261,6 +265,9 @@ impl Environment {
                 let reference = tanks[tank_index as usize];
                 let tank = match reference.enum_name("type").as_str() {
                     "Player" if reference.i32("index") == 0 => self.player,
+                    // Go `setupTankTarget`: a raid index with no player behind it, as the UI's
+                    // default tanks name in a one-player raid, leaves the target without a tank.
+                    "Player" => continue,
                     _ => return Err(Refusal::new(
                         "tanks",
                         "tank assignments other than the player tanking the target are unsupported"
@@ -310,7 +317,15 @@ impl Environment {
         let unit = self.player;
         self.sim.unit_mut(unit).health_bar = true;
         // health.go trackChanceOfDeath.
-        let healing_model = player.message("healing_model");
+        // Go reads a healing model only for a player a target swings at (`trackChanceOfDeath`),
+        // and runs a presim for one with a cadence but no healing (`GetPresimOptions`). Any other
+        // model changes nothing: the UI's empty default, or a tank preset's in a fight the
+        // player does not tank.
+        let tanking = self.tanking();
+        let healing_model = player.message("healing_model").filter(|model| {
+            let presim = model.f64("hps") == 0.0 && model.f64("cadence_seconds") != 0.0;
+            presim || (tanking && !model.set_fields().is_empty())
+        });
         if healing_model.is_some() {
             return Err(Refusal::new(
                 "healing_model",

@@ -166,3 +166,60 @@ fn rust_preparation_matches_go_or_refuses() {
         mismatched.join("\n")
     );
 }
+
+/// The fields the UI sends with every request whatever the user chose: five active parties,
+/// tank slots that no player fills, an empty healing model, zero bonus pseudo stats and the
+/// `TypeAuto` of a preset the user has not edited. Go simulates the request as it does without
+/// them, so preparation gives the same state but for the request digest and the rotation's
+/// recorded type. The cases cover pets, a player who tanks, a bear and the other classes.
+#[test]
+fn the_ui_default_fields_prepare_as_without_them() {
+    let ids = [
+        "frost-reference",
+        "warrior-heroic-strike",
+        "demonology-warlock-voidwalker-pact",
+        "beast-mastery-hunter-pet-uptime-half",
+        "tank-ret-autos",
+        "protection-paladin-no-dynamite",
+        "feral-druid-faerie-fire-armor",
+        "feral-bear-druid-defensives",
+    ];
+    let cases = manifest().cases;
+    for id in ids {
+        let case = cases
+            .iter()
+            .find(|case| case.id == id)
+            .expect("a fixture case");
+        let mut request: Value = serde_json::from_slice(&request_bytes(case)).unwrap();
+        request["raid"]["numActiveParties"] = 5.into();
+        let tanks = request["raid"]["tanks"]
+            .as_array()
+            .cloned()
+            .unwrap_or_default();
+        let slots = [2, 9].map(|index| serde_json::json!({"type": "Player", "index": index}));
+        request["raid"]["tanks"] = tanks.into_iter().chain(slots).collect();
+        let player = &mut request["raid"]["parties"][0]["players"][0];
+        player["healingModel"] = serde_json::json!({});
+        player["bonusStats"]["pseudoStats"] = vec![0.0; 28].into();
+        if player["rotation"]["type"] == "TypeAPL" {
+            player["rotation"]["type"] = "TypeAuto".into();
+        }
+        let without = forever_engine::prepare_json(&request_bytes(case), id)
+            .unwrap_or_else(|err| panic!("{id}: {err}"));
+        let mut with = forever_engine::prepare_json(&serde_json::to_vec(&request).unwrap(), id)
+            .unwrap_or_else(|err| panic!("{id} with the UI's fields: {err}"));
+        with["request_sha256"] = without["request_sha256"].clone();
+        with["player"]["rotation"]["type"] = without["player"]["rotation"]["type"].clone();
+        let mut diffs = Vec::new();
+        differences(&without, &with, "", &mut diffs, 12);
+        assert!(
+            diffs.is_empty(),
+            "{id}:
+  {}",
+            diffs.join(
+                "
+  "
+            )
+        );
+    }
+}

@@ -432,12 +432,6 @@ pub(crate) fn new_druid(
             druid.options.starting_rage = spec_message
                 .message("options")
                 .map_or(0.0, |options| options.f64("starting_rage"));
-            if player.message("healing_model").is_some() {
-                return Err(Refusal::new(
-                    "healing_model",
-                    "healing models are unsupported".to_string(),
-                ));
-            }
             sim.enable_energy_bar(
                 unit,
                 EnergyBarOptions {

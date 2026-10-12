@@ -90,11 +90,12 @@ impl Sim {
             super::character::constants::MAX_MELEE_RANGE
         };
         // Go `Raid.getNextPetIndex`: pets number from the first index past the parties.
-        let pet_index = 5 + self
-            .units
-            .iter()
-            .filter(|unit| unit.unit_type == UnitType::Pet)
-            .count() as i32;
+        let pet_index = self.first_pet_index
+            + self
+                .units
+                .iter()
+                .filter(|unit| unit.unit_type == UnitType::Pet)
+                .count() as i32;
         let label = format!("{} - {}", self.unit(owner).label, config.name);
         let mut unit = super::sim::Unit::new(UnitType::Pet, label);
         unit.index = pet_index;

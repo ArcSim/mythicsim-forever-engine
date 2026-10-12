@@ -23,6 +23,10 @@ use super::masks;
 use super::spell_data::spell_data;
 use super::Mage;
 
+/// Go `pointBlankRadius`: Arcane Explosion, Blast Wave, Cone of Cold and Frost Nova reach the
+/// targets within 10 yards of the mage and state no cast range, so the radius is their range.
+pub(super) const POINT_BLANK_RADIUS: f64 = 10.0;
+
 fn spell_action(id: i32) -> ActionId {
     ActionId {
         spell_id: id,
@@ -128,6 +132,7 @@ impl Mage {
                 },
                 cast: default_cast(rank.gcd(), rank.cast_time()),
                 bonus_coefficient: rank.damage_effect().coeff(),
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, rank.id, masks::ARCANE_BLAST, SpellFlag::APL)
             },
         );
@@ -141,6 +146,7 @@ impl Mage {
                 cost: flat_cost(rank),
                 cast: default_cast(rank.gcd(), 0),
                 bonus_coefficient: rank.damage_effect().coeff(),
+                max_range: POINT_BLANK_RADIUS,
                 ..damage_config(rank, rank.id, masks::ARCANE_EXPLOSION, SpellFlag::APL)
             },
         );
@@ -193,6 +199,7 @@ impl Mage {
                 },
                 damage_multiplier: 0.0,
                 threat_multiplier: 0.0,
+                max_range: f64::from(rank.max_range),
                 ..damage_config(
                     rank,
                     rank.id,
@@ -262,6 +269,7 @@ impl Mage {
                 },
                 damage_multiplier: 0.0,
                 threat_multiplier: 0.0,
+                max_range: f64::from(rank.max_range),
                 ..damage_config(
                     rank,
                     rank.id,
@@ -287,6 +295,7 @@ impl Mage {
                     ..default_cast(rank.gcd(), 0)
                 },
                 bonus_coefficient: rank.damage_effect().coeff(),
+                max_range: POINT_BLANK_RADIUS,
                 ..damage_config(
                     rank,
                     rank.id,
@@ -308,6 +317,7 @@ impl Mage {
                     cost: flat_cost(rank),
                     cast: default_cast(rank.gcd(), rank.cast_time()),
                     bonus_coefficient: rank.damage_effect().coeff(),
+                    max_range: f64::from(rank.max_range),
                     ..damage_config(
                         rank,
                         rank.id,
@@ -342,6 +352,7 @@ impl Mage {
                         ..DotConfig::default()
                     },
                     bonus_coefficient: rank.damage_effect().coeff(),
+                    max_range: f64::from(rank.max_range),
                     ..damage_config(
                         rank,
                         rank.id,
@@ -451,6 +462,7 @@ impl Mage {
                         ..DotConfig::default()
                     },
                     bonus_coefficient: rank.damage_effect().coeff(),
+                    max_range: f64::from(rank.max_range),
                     ..damage_config(rank, rank.id, masks::FIREBALL, SpellFlag::APL)
                 },
             );
@@ -472,6 +484,7 @@ impl Mage {
                     ..default_cast(rank.gcd(), 0)
                 },
                 bonus_coefficient: rank.damage_effect().coeff(),
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, rank.id, masks::FIRE_BLAST, SpellFlag::APL)
             },
         );
@@ -492,6 +505,7 @@ impl Mage {
                     ..default_cast(rank.gcd(), 0)
                 },
                 bonus_coefficient: rank.damage_effect().coeff(),
+                max_range: POINT_BLANK_RADIUS,
                 ..damage_config(
                     rank,
                     rank.id,
@@ -507,8 +521,9 @@ impl Mage {
             return;
         }
         let rank = spell_data().ice_lance.highest();
-        // The client's damage effect carries no spell power coefficient (the row reads 0).
-        let ice_lance_coefficient = 0.143;
+        // The client's damage effect carries no spell power coefficient (the row reads 0), as Season
+        // of Discovery's reworked Ice Lance (400640) does. Go fits it to the beta logs: .10 (#726).
+        let ice_lance_coefficient = 0.1;
         sim.register_spell(
             unit,
             SpellConfig {
@@ -516,6 +531,7 @@ impl Mage {
                 cost: flat_cost(rank),
                 cast: default_cast(rank.gcd(), 0),
                 bonus_coefficient: ice_lance_coefficient,
+                max_range: f64::from(rank.max_range),
                 ..damage_config(
                     rank,
                     rank.id,
@@ -584,6 +600,7 @@ impl Mage {
                     cost: flat_cost(rank),
                     cast: default_cast(rank.gcd(), rank.cast_time()),
                     bonus_coefficient: rank.damage_effect().coeff(),
+                    max_range: f64::from(rank.max_range),
                     ..damage_config(rank, rank.id, masks::SCORCH, SpellFlag::APL)
                 },
             );
@@ -662,6 +679,7 @@ impl Mage {
                     bonus_coefficient: tick.coeff(),
                     ..DotConfig::default()
                 },
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, rank.id, masks::FLAMESTRIKE, SpellFlag::APL)
             },
         );
@@ -847,6 +865,7 @@ impl Mage {
                     },
                     ..default_cast(rank.gcd(), 0)
                 },
+                max_range: POINT_BLANK_RADIUS,
                 ..damage_config(
                     rank,
                     rank.id,
@@ -881,6 +900,7 @@ impl Mage {
                     ..DotConfig::default()
                 },
                 bonus_coefficient: rank.damage_effect().coeff(),
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, rank.id, masks::PYROBLAST, SpellFlag::APL)
             },
         );

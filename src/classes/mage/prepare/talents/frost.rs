@@ -13,6 +13,7 @@ use crate::prepare::stats::SchoolIndex;
 
 use super::super::masks;
 use super::super::spell_data::spell_data;
+use super::super::spells::POINT_BLANK_RADIUS;
 use super::super::Mage;
 use super::millis;
 
@@ -33,7 +34,8 @@ impl Mage {
         // Ice Lance: ice_lance.go
         // Improved Blizzard: blizzard.go
 
-        // Tier 4: Arctic Reach and Ice Block model nothing in Go either.
+        // Tier 4: Ice Block models nothing in Go either.
+        self.register_arctic_reach(sim, unit);
         // Shatter: with Fingers of Frost below
 
         // Tier 5
@@ -194,6 +196,48 @@ impl Mage {
                 ..SpellModConfig::default()
             },
         );
+    }
+
+    /// Arctic Reach, new in Forever: 16757 adds 10/20% to Frostbolt and Blizzard range and to Frost
+    /// Nova and Cone of Cold radius (its two class masks). The sim has no percent range mod, so the
+    /// share is taken of each spell's own range here. Go walks a map of the three, whose order no
+    /// result reads.
+    fn register_arctic_reach(&self, sim: &mut Sim, unit: UnitId) {
+        let rank = self.talents.i32("arctic_reach");
+        if rank == 0 {
+            return;
+        }
+        let data = &spell_data().arctic_reach;
+        let range_share = data
+            .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_RANGE)
+            .fraction_at(rank);
+        let radius_share = data
+            .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_RADIUS)
+            .fraction_at(rank);
+        for (class_mask, yards) in [
+            (
+                masks::FROSTBOLT,
+                range_share * f64::from(spell_data().frostbolt.highest().max_range),
+            ),
+            (
+                masks::BLIZZARD,
+                range_share * f64::from(spell_data().blizzard.highest().max_range),
+            ),
+            (
+                masks::FROST_NOVA | masks::CONE_OF_COLD,
+                radius_share * POINT_BLANK_RADIUS,
+            ),
+        ] {
+            sim.add_static_mod(
+                unit,
+                SpellModConfig {
+                    class_mask,
+                    float_value: yards,
+                    kind: SpellModType::RangeFlat,
+                    ..SpellModConfig::default()
+                },
+            );
+        }
     }
 
     /// Improved Cone of Cold (11190): Cone of Cold damage +12/23/35%.

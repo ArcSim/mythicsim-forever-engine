@@ -221,13 +221,17 @@ fn conjured_effect(
     if !gains.is_empty() {
         unrepresented.push(format!("conjured {item} restores mana and energy"));
     }
-    // Thistle Tea (9512) restores a flat 100; the cast activates once all but 10 of it fits, a
-    // Go literal (consumes.go makeConjuredActivationSpellInternal).
+    // Thistle Tea (9512) restores a flat 100; the cast activates once all but `ThistleTeaSpill` of
+    // it fits (consumes.go makeConjuredActivationSpellInternal, fork patch 102).
     json!({
         "kind": "conjured_energy", "item_id": item, "rng_label": consumable.name,
-        "gains": energy_gains, "selected": selected, "spill": 10.0,
+        "gains": energy_gains, "selected": selected, "spill": THISTLE_TEA_SPILL,
     })
 }
+
+/// Go `core.ThistleTeaSpill`: the energy Thistle Tea may waste when it is used without being asked
+/// for.
+const THISTLE_TEA_SPILL: f64 = 15.0;
 
 /// Go `Encounter.AOECapMultiplier` with every target active.
 fn aoe_cap_multiplier(env: &Environment) -> f64 {

@@ -148,9 +148,10 @@ fn export_weapon(weapon: &Weapon) -> Value {
     })
 }
 
-/// The spells a form-breaking consumable registers: potions, conjured items and explosives.
+/// The spells a form-breaking consumable registers: conjured items and explosives. A potion no
+/// longer drops the form (fork patch 111).
 fn form_breaking_spells(sim: &Sim, unit: UnitId) -> Vec<usize> {
-    let flags = SpellFlag::POTION | SpellFlag::CONJURED | SpellFlag::EXPLOSIVE;
+    let flags = SpellFlag::CONJURED | SpellFlag::EXPLOSIVE;
     sim.unit(unit)
         .spellbook
         .iter()
@@ -451,6 +452,8 @@ impl Druid {
                 "kind": "rake", "spell": spell_position(sim, unit, rake),
                 "flat_damage": rank.damage_effect().average(CHARACTER_LEVEL),
                 "tick_base": rank.periodic_effect().average(CHARACTER_LEVEL),
+                // rake.go: 5.26% of attack power on the hit and on every tick, a Go literal.
+                "attack_power_share": 0.0526,
                 "tick_can_crit": rank.periodic_can_crit(),
                 "tick_magic": rank.defense_type_core() == DefenseType::Magic,
                 "short_name": "Rake",

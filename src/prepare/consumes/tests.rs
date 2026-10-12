@@ -388,7 +388,7 @@ fn conjured_items_describe_themselves_and_which_one_is_selected() {
     let effect = consumable_item_effect(&mut env, tea, 7676, &mut unrepresented).unwrap();
     assert_eq!(effect["kind"], "conjured_energy");
     assert_eq!(effect["selected"], true);
-    assert_eq!(effect["spill"], 10.0);
+    assert_eq!(effect["spill"], 15.0);
     assert!(unrepresented.is_empty());
 }
 

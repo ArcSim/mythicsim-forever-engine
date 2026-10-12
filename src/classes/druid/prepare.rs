@@ -197,6 +197,7 @@ static CLASS_SPELLS: &[ClassSpellName] = &[
 ];
 
 /// Go `Druid`, with the `FeralDruid`, `GuardianDruid` and `BalanceDruid` embedding it.
+#[derive(Clone)]
 pub(crate) struct Druid {
     pub(super) unit: UnitId,
     pub(super) spec: Spec,
@@ -344,7 +345,7 @@ pub(crate) fn new_druid(
         spec,
         talents,
         tal,
-        st: Rc::new(forms::State::new(starting_form)),
+        st: Rc::new(forms::State::new(sim, starting_form)),
         form_masks: Vec::new(),
         cannot_shred_target: false,
         furor_proc_chance: 0.0,
@@ -481,7 +482,7 @@ impl Druid {
 
     /// Go `Druid.Initialize`.
     fn initialize_druid(&mut self, sim: &mut Sim) {
-        self.st.form.set(self.st.starting_form);
+        self.st.set_form(sim, self.st.starting_form);
         // RegisterBaselineSpells.
         self.register_innervate_cd(sim);
         self.register_thorns_spell(sim);
@@ -489,13 +490,13 @@ impl Druid {
 }
 
 impl PrepAgent for Druid {
-    fn add_party_buffs(&self, party_buffs: &mut Message) {
+    fn add_party_buffs(&self, sim: &Sim, party_buffs: &mut Message) {
         match self.spec {
             // BalanceDruid does not override AddPartyBuffs: Druid's does.
             Spec::Balance => {
-                if self.st.in_form(BEAR | CAT) && self.tal.leader_of_the_pack {
+                if self.st.in_form(sim, BEAR | CAT) && self.tal.leader_of_the_pack {
                     party_buffs.set_bool("leader_of_the_pack", true);
-                } else if self.st.in_form(MOONKIN) && self.tal.moonkin_form {
+                } else if self.st.in_form(sim, MOONKIN) && self.tal.moonkin_form {
                     party_buffs.set_bool("moonkin_aura", true);
                 }
             }
@@ -525,7 +526,7 @@ impl PrepAgent for Druid {
     }
 
     fn reset(&mut self, sim: &mut Sim, unit: UnitId) {
-        self.st.form.set(self.st.starting_form);
+        self.st.set_form(sim, self.st.starting_form);
         match self.spec {
             Spec::Balance => {}
             Spec::FeralCat => {

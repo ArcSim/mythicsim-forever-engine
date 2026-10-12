@@ -178,7 +178,7 @@ impl Shaman {
             "kind": "chain_lightning", "overload_chance": self.overload_chance(),
             "overload_tag": CAST_TAG_LIGHTNING_OVERLOAD,
             "rng_label": "Chain Lightning Elemental Overload", "bounce_reduction": 0.7,
-            "bounce_bonus": self.chain_lightning_bounce_bonus.get(),
+            "bounce_bonus": sim.state(self.chain_lightning_bounce_bonus),
         }));
         // shocks.go registerFlameShockSpell: the dot snapshots its tick and rolls the family
         // table's outcome.

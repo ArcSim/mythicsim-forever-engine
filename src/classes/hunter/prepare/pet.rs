@@ -119,6 +119,7 @@ fn pet_attack_speed(name: &str) -> f64 {
 }
 
 /// What Go's `HunterPet` adds to its `core.Pet`.
+#[derive(Clone)]
 pub(crate) struct HunterPetState {
     pub config: FamilyConfig,
     pub bestial_wrath_aura: Option<AuraId>,

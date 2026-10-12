@@ -150,6 +150,7 @@ static CLASS_SPELLS: &[ClassSpellName] = &[
 ];
 
 /// Go `Mage`: the talents and the class option the registrations read.
+#[derive(Clone)]
 pub(crate) struct Mage {
     talents: Message,
     /// Go `Options.DefaultMageArmor`, as the enum's name.

@@ -46,6 +46,7 @@ pub(crate) struct PetConfig {
 }
 
 /// What Go's `Pet` adds to its `Character`.
+#[derive(Clone)]
 pub(crate) struct Pet {
     pub name: String,
     pub base_stats: Stats,

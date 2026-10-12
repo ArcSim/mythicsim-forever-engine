@@ -138,6 +138,7 @@ pub(crate) struct SpellModConfig {
 }
 
 /// Go `SpellMod`.
+#[derive(Clone)]
 pub(crate) struct SpellMod {
     pub class_mask: i64,
     pub class_flags: ClassFlags,

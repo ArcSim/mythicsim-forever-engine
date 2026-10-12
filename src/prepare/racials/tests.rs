@@ -6,6 +6,7 @@ use crate::contracts::request::{Message, Request};
 use crate::prepare::agent::{ClassSpellName, PrepAgent};
 use crate::prepare::sim::{school_array_index, RageBar, SpellId};
 
+#[derive(Clone)]
 struct FakeAgent {
     talents: Message,
 }

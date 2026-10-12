@@ -4,7 +4,6 @@
 //! Each attachment is a closure that turns its effect on, off or up to a level, as Go's
 //! `attachment.set`; the state Go keeps in captured variables is kept in `Cell`s.
 
-use std::cell::Cell;
 use std::rc::Rc;
 
 use crate::data::spells::{ClassFlags, Effect, Spell};
@@ -560,31 +559,35 @@ fn bid(
     live
 }
 
-fn additive(kind: String, value: f64, apply: SetFn) -> Attachment {
-    let current = Rc::new(Cell::new(0.0));
+fn additive(sim: &mut Sim, kind: String, value: f64, apply: SetFn) -> Attachment {
+    let current = sim.new_state_slot(0.0);
     let mut attachment = Attachment::new(kind, value);
     attachment.set = Some(Rc::new(move |sim: &mut Sim, live, level| {
         // Go fuses v*level - current into one multiply-subtract (parse_effects_table.go 692).
-        let delta = value.mul_add(level, -current.get());
+        let delta = value.mul_add(level, -sim.state(current));
         if delta == 0.0 {
             return;
         }
-        current.set(value * level);
+        sim.set_state(current, value * level);
         apply(sim, live, delta);
     }));
     attachment
 }
 
-fn multiplier(kind: String, mult: f64, apply: SetFn) -> Attachment {
-    let active = Rc::new(Cell::new(false));
+fn multiplier(sim: &mut Sim, kind: String, mult: f64, apply: SetFn) -> Attachment {
+    let active = sim.new_state_slot(0.0);
     let mut attachment = Attachment::new(kind, mult);
     attachment.multiplicative = true;
     attachment.set = Some(Rc::new(move |sim: &mut Sim, live, level| {
-        if (level > 0.0) == active.get() {
+        if (level > 0.0) == sim.state_flag(active) {
             return;
         }
-        active.set(level > 0.0);
-        let factor = if active.get() { mult } else { 1.0 / mult };
+        sim.set_state_flag(active, level > 0.0);
+        let factor = if sim.state_flag(active) {
+            mult
+        } else {
+            1.0 / mult
+        };
         apply(sim, live, factor);
     }));
     attachment
@@ -769,6 +772,7 @@ impl Parser {
         }
         if a == A_MOD_DAMAGE_PERCENT_DONE {
             return self.school_multiplier(
+                sim,
                 "damage-dealt",
                 "DamageDealtMultiplier",
                 e.misc,
@@ -779,6 +783,7 @@ impl Parser {
         }
         if a == A_MOD_DAMAGE_PERCENT_TAKEN {
             return self.school_multiplier(
+                sim,
                 "damage-taken",
                 "DamageTakenMultiplier",
                 e.misc,
@@ -806,16 +811,18 @@ impl Parser {
             );
         }
         if a == A_MOD_DAMAGE_TAKEN {
-            let physical = || {
+            let physical = |sim: &mut Sim| {
                 self.pseudo_add(
+                    sim,
                     "physical-damage-taken-flat",
                     "BonusPhysicalDamageTaken",
                     PseudoField::BonusPhysicalDamageTaken,
                     v,
                 )
             };
-            let spell = || {
+            let spell = |sim: &mut Sim| {
                 self.pseudo_add(
+                    sim,
                     "spell-damage-taken-flat",
                     "BonusSpellDamageTaken",
                     PseudoField::BonusSpellDamageTaken,
@@ -823,7 +830,7 @@ impl Parser {
                 )
             };
             if e.misc & MISC_ALL_SCHOOLS == MISC_ALL_SCHOOLS {
-                let parts = vec![physical(), spell()];
+                let parts = vec![physical(sim), spell(sim)];
                 let mut attachment = Attachment::new("damage-taken-flat".into(), v);
                 let run = parts.clone();
                 attachment.parts = parts;
@@ -835,15 +842,16 @@ impl Parser {
                 return Some(attachment);
             }
             if e.misc & i32::from(school::PHYSICAL) != 0 {
-                return Some(physical());
+                return Some(physical(sim));
             }
             if e.misc & MISC_MAGIC_SCHOOL == MISC_MAGIC_SCHOOL {
-                return Some(spell());
+                return Some(spell(sim));
             }
             return None;
         }
         if a == A_MOD_THREAT {
             return self.pseudo_multiplier(
+                sim,
                 "threat",
                 "ThreatMultiplier",
                 vec![PseudoField::ThreatMultiplier],
@@ -858,6 +866,7 @@ impl Parser {
         }
         if a == A_RANGED_ATTACK_POWER_ATTACKER_BONUS {
             return Some(self.pseudo_add(
+                sim,
                 "ranged-attack-power-attacker-bonus",
                 "BonusRangedAttackPower",
                 PseudoField::BonusRangedAttackPower,
@@ -899,6 +908,7 @@ impl Parser {
         }
         if a == A_MOD_CASTING_SPEED_NOT_STACK {
             return self.speed(
+                sim,
                 "cast-speed",
                 "CastSpeedMultiplier",
                 SpeedKind::Cast,
@@ -907,6 +917,7 @@ impl Parser {
         }
         if a == A_MOD_MELEE_HASTE_3 {
             return self.speed(
+                sim,
                 "melee-speed",
                 "MeleeSpeedMultiplier",
                 SpeedKind::Melee,
@@ -915,6 +926,7 @@ impl Parser {
         }
         if a == A_MOD_ATTACKSPEED {
             return self.speed(
+                sim,
                 "attack-speed",
                 "AttackSpeedMultiplier",
                 SpeedKind::Attack,
@@ -926,6 +938,7 @@ impl Parser {
         }
         if a == A_MOD_HEALING_DONE_PERCENT {
             return self.pseudo_multiplier(
+                sim,
                 "healing-dealt",
                 "HealingDealtMultiplier",
                 vec![PseudoField::HealingDealtMultiplier],
@@ -934,6 +947,7 @@ impl Parser {
         }
         if a == A_MOD_HEALING_PCT {
             return self.pseudo_multiplier(
+                sim,
                 "healing-taken",
                 "HealingTakenMultiplier",
                 vec![PseudoField::HealingTakenMultiplier],
@@ -942,6 +956,7 @@ impl Parser {
         }
         if a == A_MOD_HEALING {
             return Some(self.pseudo_add(
+                sim,
                 "healing-taken-flat",
                 "BonusHealingTaken",
                 PseudoField::BonusHealingTaken,
@@ -950,6 +965,7 @@ impl Parser {
         }
         if a == A_REDUCE_PUSHBACK {
             return Some(self.pseudo_add(
+                sim,
                 "pushback",
                 "PushbackChance",
                 PseudoField::PushbackChance,
@@ -975,7 +991,7 @@ impl Parser {
             if e.misc & MISC_ARMOR == 0 {
                 return None;
             }
-            return self.equip_scaling(Stat::Armor, percent_multiplier(v));
+            return self.equip_scaling(sim, Stat::Armor, percent_multiplier(v));
         }
         if a == A_MOD_BLOCK_PERCENT {
             return self.stats_buff(sim, vec![Stat::BlockPercent], v);
@@ -1004,6 +1020,7 @@ impl Parser {
         if a == A_MECHANIC_DURATION_MOD {
             if e.misc == MECHANIC_FEAR {
                 return self.pseudo_multiplier(
+                    sim,
                     "fear-duration",
                     "FearDurationMultiplier",
                     vec![PseudoField::FearDurationMultiplier],
@@ -1012,6 +1029,7 @@ impl Parser {
             }
             if e.misc == MECHANIC_STUN {
                 return self.pseudo_multiplier(
+                    sim,
                     "stun-duration",
                     "StunDurationMultiplier",
                     vec![PseudoField::StunDurationMultiplier],
@@ -1325,11 +1343,12 @@ impl Parser {
     }
 
     /// Go `statsBuff`.
-    fn stats_buff(&self, _sim: &mut Sim, stats: Vec<Stat>, v: f64) -> Option<Attachment> {
+    fn stats_buff(&self, sim: &mut Sim, stats: Vec<Stat>, v: f64) -> Option<Attachment> {
         if stats.is_empty() {
             return None;
         }
         let mut attachment = additive(
+            sim,
             format!("stat {}", stat_names(&stats)),
             v,
             self.add_stats(stats.clone()),
@@ -1337,6 +1356,7 @@ impl Parser {
         attachment.stats = stats.clone();
         for stat in stats {
             let mut part = additive(
+                sim,
                 format!("stat {}", stat.name()),
                 v,
                 self.add_stats(vec![stat]),
@@ -1360,15 +1380,15 @@ impl Parser {
             if self.conditional {
                 return None;
             }
-            let applied = Rc::new(Cell::new(false));
+            let applied = sim.new_state_slot(0.0);
             let mut attachment = Attachment::new(kind, mult);
             attachment.multiplicative = true;
             attachment.stats = stats.clone();
             attachment.set = Some(Rc::new(move |sim: &mut Sim, _, level| {
-                if level <= 0.0 || applied.get() {
+                if level <= 0.0 || sim.state_flag(applied) {
                     return;
                 }
-                applied.set(true);
+                sim.set_state_flag(applied, true);
                 for stat in &stats {
                     sim.unit_mut(unit).sdm.multiply_stat(*stat, mult);
                 }
@@ -1389,13 +1409,13 @@ impl Parser {
                     .unit_mut(unit)
                     .sdm
                     .new_dynamic_multiply_stat(*stat, mult);
-                let active = Rc::new(Cell::new(false));
+                let active = sim.new_state_slot(0.0);
                 part.set = Some(Rc::new(move |sim: &mut Sim, _, level| {
-                    if (level > 0.0) == active.get() {
+                    if (level > 0.0) == sim.state_flag(active) {
                         return;
                     }
-                    active.set(level > 0.0);
-                    if active.get() {
+                    sim.set_state_flag(active, level > 0.0);
+                    if sim.state_flag(active) {
                         sim.enable_build_phase_stat_dep(unit, dep);
                     } else {
                         sim.disable_build_phase_stat_dep(unit, dep);
@@ -1405,12 +1425,12 @@ impl Parser {
             attachment.parts.push(part);
         }
         let parts = attachment.parts.clone();
-        let active = Rc::new(Cell::new(false));
+        let active = sim.new_state_slot(0.0);
         attachment.set = Some(Rc::new(move |sim: &mut Sim, live, level| {
-            if (level > 0.0) == active.get() {
+            if (level > 0.0) == sim.state_flag(active) {
                 return;
             }
-            active.set(level > 0.0);
+            sim.set_state_flag(active, level > 0.0);
             assert!(
                 !live || sim.unit(unit).on_temporary_stats_changes.is_empty(),
                 "temporary stat listeners are not prepared"
@@ -1423,12 +1443,13 @@ impl Parser {
     }
 
     /// Go `equipScaling`.
-    fn equip_scaling(&self, stat: Stat, mult: f64) -> Option<Attachment> {
+    fn equip_scaling(&self, sim: &mut Sim, stat: Stat, mult: f64) -> Option<Attachment> {
         let character = self.character?;
         if self.is_pet || self.stacking || (self.is_static && self.conditional) || mult <= 0.0 {
             return None;
         }
         Some(multiplier(
+            sim,
             format!("equip-scaling {}", stat.name()),
             mult,
             Rc::new(move |sim: &mut Sim, live, factor| {
@@ -1444,6 +1465,7 @@ impl Parser {
     /// Go `pseudoMultiplier`.
     fn pseudo_multiplier(
         &self,
+        sim: &mut Sim,
         kind: &str,
         key: &str,
         fields: Vec<PseudoField>,
@@ -1454,6 +1476,7 @@ impl Parser {
         }
         let unit = self.unit;
         let mut attachment = multiplier(
+            sim,
             kind.to_string(),
             mult,
             Rc::new(move |sim: &mut Sim, _, factor| {
@@ -1467,9 +1490,17 @@ impl Parser {
     }
 
     /// Go `pseudoAdd`.
-    fn pseudo_add(&self, kind: &str, key: &str, field: PseudoField, v: f64) -> Attachment {
+    fn pseudo_add(
+        &self,
+        sim: &mut Sim,
+        kind: &str,
+        key: &str,
+        field: PseudoField,
+        v: f64,
+    ) -> Attachment {
         let unit = self.unit;
         let mut attachment = additive(
+            sim,
             kind.to_string(),
             v,
             Rc::new(move |sim: &mut Sim, _, delta| {
@@ -1481,12 +1512,20 @@ impl Parser {
     }
 
     /// Go `parser.speed`.
-    fn speed(&self, kind: &str, key: &str, speed: SpeedKind, mult: f64) -> Option<Attachment> {
+    fn speed(
+        &self,
+        sim: &mut Sim,
+        kind: &str,
+        key: &str,
+        speed: SpeedKind,
+        mult: f64,
+    ) -> Option<Attachment> {
         if self.is_static || self.stacking {
             return None;
         }
         let unit = self.unit;
         let mut attachment = multiplier(
+            sim,
             kind.to_string(),
             mult,
             Rc::new(move |sim: &mut Sim, _, factor| match speed {
@@ -1501,8 +1540,10 @@ impl Parser {
     }
 
     /// Go `schoolMultiplier`.
+    #[allow(clippy::too_many_arguments)]
     fn school_multiplier(
         &self,
+        sim: &mut Sim,
         kind: &str,
         key: &str,
         mask: i32,
@@ -1511,13 +1552,14 @@ impl Parser {
         per_school: fn(usize) -> PseudoField,
     ) -> Option<Attachment> {
         if mask == MISC_ALL_SCHOOLS {
-            return self.pseudo_multiplier(kind, key, vec![all], mult);
+            return self.pseudo_multiplier(sim, kind, key, vec![all], mult);
         }
         let fields: Vec<PseudoField> = school_indexes(mask).into_iter().map(per_school).collect();
         if fields.is_empty() {
             return None;
         }
         self.pseudo_multiplier(
+            sim,
             &format!("{kind}-by-school"),
             &format!("School{key}"),
             fields,

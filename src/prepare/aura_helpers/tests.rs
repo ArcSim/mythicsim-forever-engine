@@ -777,11 +777,11 @@ fn a_damage_absorption_aura_sizes_its_shield_and_stacks_on_activation() {
     assert_eq!(sim.unit(unit).dynamic_damage_taken_modifiers, 1);
     absorption.activate(&mut sim);
     assert!(sim.aura(absorption.aura).active);
-    assert_eq!(absorption.shield_strength(), 250.7);
+    assert_eq!(absorption.shield_strength(&sim), 250.7);
     assert_eq!(sim.aura(absorption.aura).max_stacks, 250);
     assert_eq!(sim.aura(absorption.aura).stacks, 250);
     sim.deactivate(absorption.aura);
-    assert_eq!(absorption.shield_strength(), 0.0);
+    assert_eq!(absorption.shield_strength(&sim), 0.0);
 
     let weak = sim.new_damage_absorption_aura(
         unit,

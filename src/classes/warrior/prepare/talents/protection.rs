@@ -1,13 +1,12 @@
 //! Go sim/warrior/talents_protection.go.
 
-use std::cell::Cell;
 use std::rc::Rc;
 
 use crate::prepare::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger};
 use crate::prepare::character::constants::DEFENSE_RATING_PER_DEFENSE_LEVEL;
 use crate::prepare::character::cooldown_type;
 use crate::prepare::dbcenums;
-use crate::prepare::sim::{AuraCallback, AuraConfig, Sim, UnitId};
+use crate::prepare::sim::{AuraCallback, AuraConfig, Sim, StateSlot, UnitId};
 use crate::prepare::spell::{
     school, CastConfig, DefenseType, ProcMask, SpellConfig, SpellFlag as F,
 };
@@ -115,14 +114,14 @@ impl Warrior {
         let rank = spell_data().last_stand.highest();
         let buff = spell_data().last_stand_triggered.highest();
         let action = spell_action(rank.id);
-        let bonus = Rc::new(Cell::new(0.0));
+        let bonus = sim.new_state_slot(0.0);
         let aura = sim.register_aura(
             unit,
             AuraConfig {
                 label: "Last Stand".to_string(),
                 action_id: Some(action.clone()),
                 duration: buff.duration(),
-                on_gain: Some(last_stand_on_gain(buff, bonus.clone())),
+                on_gain: Some(last_stand_on_gain(buff, bonus)),
                 on_expire: Some(last_stand_on_expire(bonus)),
                 ..AuraConfig::default()
             },
@@ -383,19 +382,19 @@ fn register_rage_on_avoid(
 }
 
 /// The aura's gain: maximum health rises by the buff's share, which heals that much too.
-fn last_stand_on_gain(buff: &'static Row, bonus: Rc<Cell<f64>>) -> AuraCallback {
+fn last_stand_on_gain(buff: &'static Row, bonus: StateSlot) -> AuraCallback {
     let share = buff.effect(dbcenums::A_MOD_MAX_HEALTH, 0).percent();
     Rc::new(move |sim: &mut Sim, aura| {
         let unit = sim.aura(aura).unit;
-        bonus.set(sim.stat(unit, Stat::Health) * share);
-        sim.update_max_health(unit, bonus.get());
+        sim.set_state(bonus, sim.stat(unit, Stat::Health) * share);
+        sim.update_max_health(unit, sim.state(bonus));
     })
 }
 
 /// The aura's expiry takes the bonus back.
-fn last_stand_on_expire(bonus: Rc<Cell<f64>>) -> AuraCallback {
+fn last_stand_on_expire(bonus: StateSlot) -> AuraCallback {
     Rc::new(move |sim: &mut Sim, aura| {
         let unit = sim.aura(aura).unit;
-        sim.update_max_health(unit, -bonus.get());
+        sim.update_max_health(unit, -sim.state(bonus));
     })
 }

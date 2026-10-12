@@ -10,6 +10,7 @@ use super::env::Environment;
 use super::sim::{AuraId, RageBar, Sim, SpellId, UnitId};
 use super::Refusal;
 
+#[derive(Clone)]
 struct FakeAgent {
     talents: Message,
 }

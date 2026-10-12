@@ -1,7 +1,6 @@
 //! Go sim/warrior/items.go: the Warrior's item sets. A bonus function receives the permanent
 //! `"<set> <n>P"` status aura the bonus attaches to.
 
-use std::cell::Cell;
 use std::rc::Rc;
 
 use crate::prepare::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger, PseudoStatField};
@@ -66,14 +65,15 @@ fn battlegear_of_might_8(env: &mut Environment, aura: AuraId) {
 /// Spell 23563 states 30 attack power on Battle Shout, which battle_shout.go adds through the
 /// flag the HasBsT2 option sets. The set aura toggles it.
 fn battlegear_of_wrath_3(env: &mut Environment, aura: AuraId) {
-    let has_bs_t2 = warrior(env).has_bs_t2.clone();
-    let from_options = has_bs_t2.get();
-    let on_gain = has_bs_t2.clone();
-    env.sim
-        .apply_on_gain(aura, Rc::new(move |_: &mut Sim, _| on_gain.set(true)));
+    let has_bs_t2 = warrior(env).has_bs_t2;
+    let from_options = env.sim.state_flag(has_bs_t2);
+    env.sim.apply_on_gain(
+        aura,
+        Rc::new(move |sim: &mut Sim, _| sim.set_state_flag(has_bs_t2, true)),
+    );
     env.sim.apply_on_expire(
         aura,
-        Rc::new(move |_: &mut Sim, _| has_bs_t2.set(from_options)),
+        Rc::new(move |sim: &mut Sim, _| sim.set_state_flag(has_bs_t2, from_options)),
     );
 }
 
@@ -171,7 +171,7 @@ fn conquerors_battlegear_3(env: &mut Environment, aura: AuraId) {
 }
 
 fn conquerors_battlegear_5(env: &mut Environment, aura: AuraId) {
-    let bonus = warrior(env).thunder_clap_effect_bonus.clone();
+    let bonus = warrior(env).thunder_clap_effect_bonus;
     let sim = &mut env.sim;
     sim.attach_spell_mod(
         aura,
@@ -181,18 +181,16 @@ fn conquerors_battlegear_5(env: &mut Environment, aura: AuraId) {
         },
     );
     // AttachAdditivePseudoStatBuff(&warrior.thunderClapEffectBonus, 0.5)
-    let on_gain: Rc<Cell<f64>> = bonus.clone();
     sim.apply_on_gain(
         aura,
-        Rc::new(move |_: &mut Sim, _| on_gain.set(on_gain.get() + 0.5)),
+        Rc::new(move |sim: &mut Sim, _| sim.set_state(bonus, sim.state(bonus) + 0.5)),
     );
-    let on_expire = bonus.clone();
     sim.apply_on_expire(
         aura,
-        Rc::new(move |_: &mut Sim, _| on_expire.set(on_expire.get() - 0.5)),
+        Rc::new(move |sim: &mut Sim, _| sim.set_state(bonus, sim.state(bonus) - 0.5)),
     );
     if sim.aura(aura).active {
-        bonus.set(bonus.get() + 0.5);
+        sim.set_state(bonus, sim.state(bonus) + 0.5);
     }
 }
 

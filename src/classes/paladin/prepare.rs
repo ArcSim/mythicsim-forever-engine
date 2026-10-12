@@ -219,6 +219,7 @@ static CLASS_SPELLS: &[ClassSpellName] = &[
 
 /// Go `Paladin`: what its registrations leave on the agent and what its spells read as they
 /// register.
+#[derive(Clone)]
 pub(crate) struct Paladin {
     talents: Message,
     /// Go `Paladin.Judgement`.
@@ -244,7 +245,7 @@ pub(crate) struct Paladin {
 }
 
 /// Go's `judgementTimer` and the other timers the ranks of an ability share.
-#[derive(Default)]
+#[derive(Clone, Default)]
 struct Timers {
     judgement: Option<TimerId>,
     holy_strike: Option<TimerId>,

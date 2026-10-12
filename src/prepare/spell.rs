@@ -371,6 +371,7 @@ impl DotConfig {
 }
 
 /// Go `Dot`.
+#[derive(Clone)]
 pub(crate) struct Dot {
     pub spell: SpellId,
     pub aura: AuraId,
@@ -464,6 +465,7 @@ pub(crate) type LabeledAuraArrays = std::collections::BTreeMap<String, Vec<Optio
 pub(crate) type SpellRegisteredHandler = Rc<dyn Fn(&mut Sim, SpellId)>;
 
 /// A registered spell: Go `Spell`.
+#[derive(Clone)]
 pub(crate) struct Spell {
     pub action_id: ActionId,
     pub rank: i32,

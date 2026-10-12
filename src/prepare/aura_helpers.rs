@@ -10,7 +10,6 @@
 //!
 //! Not ported here: `AttachSpellMod` lives in spell_mod.rs, and `MakePermanent` in sim.rs.
 
-use std::cell::Cell;
 use std::rc::Rc;
 
 use crate::contracts::prepared_v2::ActionId;
@@ -1010,13 +1009,12 @@ pub(crate) struct AbsorptionAuraConfig {
 pub(crate) struct DamageAbsorptionAura {
     pub aura: AuraId,
     fresh_shield_strength_calculator: Option<ShieldStrengthCalculator>,
-    shield_strength: Rc<Cell<f64>>,
 }
 
 impl DamageAbsorptionAura {
     /// Go `DamageAbsorptionAura.ShieldStrength`.
-    pub(crate) fn shield_strength(&self) -> f64 {
-        self.shield_strength.get()
+    pub(crate) fn shield_strength(&self, sim: &Sim) -> f64 {
+        sim.aura(self.aura).shield_strength
     }
 
     /// Go `DamageAbsorptionAura.Activate`: activates the aura, then sizes the shield and the
@@ -1028,8 +1026,9 @@ impl DamageAbsorptionAura {
             .as_ref()
             .expect("a shield strength calculator");
         let unit = sim.aura(self.aura).unit;
-        self.shield_strength.set(calculator(sim, unit));
-        let stacks = std::cmp::max(1, self.shield_strength.get() as i32);
+        let strength = calculator(sim, unit);
+        sim.aura_mut(self.aura).shield_strength = strength;
+        let stacks = std::cmp::max(1, strength as i32);
         sim.aura_mut(self.aura).max_stacks = stacks;
         sim.set_stacks(self.aura, stacks);
     }
@@ -1050,12 +1049,10 @@ impl Sim {
         let absorption = DamageAbsorptionAura {
             aura,
             fresh_shield_strength_calculator: config.shield_strength_calculator,
-            shield_strength: Rc::new(Cell::new(0.0)),
         };
-        let shield_strength = Rc::clone(&absorption.shield_strength);
         self.apply_on_expire(
             aura,
-            Rc::new(move |_: &mut Sim, _| shield_strength.set(0.0)),
+            Rc::new(|sim: &mut Sim, aura| sim.aura_mut(aura).shield_strength = 0.0),
         );
         self.add_dynamic_damage_taken_modifier(unit);
         self.unit_mut(unit).absorption_auras.push(aura);

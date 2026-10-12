@@ -3,7 +3,6 @@
 //!
 //! Most bonuses are totem radius or healing, neither modelled (master applies none either).
 
-use std::cell::Cell;
 use std::rc::Rc;
 
 use crate::prepare::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger};
@@ -185,27 +184,24 @@ fn stormcallers_garb_3(env: &mut Environment, aura: AuraId) {
 
 /// Increases the chain target damage multiplier of your Chain Lightning spell by 5%.
 fn gathering_storm_3(env: &mut Environment, aura: AuraId) {
-    let bonus: Rc<Cell<f64>> = env
+    let bonus = env
         .agent
         .as_any_mut()
         .and_then(|agent| agent.downcast_mut::<Shaman>())
         .expect("a Shaman set bonus applies to a Shaman")
-        .chain_lightning_bounce_bonus
-        .clone();
+        .chain_lightning_bounce_bonus;
     let sim = &mut env.sim;
     // AttachAdditivePseudoStatBuff(&shaman.ChainLightningBounceBonus, 0.05)
-    let on_gain = bonus.clone();
     sim.apply_on_gain(
         aura,
-        Rc::new(move |_: &mut Sim, _| on_gain.set(on_gain.get() + 0.05)),
+        Rc::new(move |sim: &mut Sim, _| sim.set_state(bonus, sim.state(bonus) + 0.05)),
     );
-    let on_expire = bonus.clone();
     sim.apply_on_expire(
         aura,
-        Rc::new(move |_: &mut Sim, _| on_expire.set(on_expire.get() - 0.05)),
+        Rc::new(move |sim: &mut Sim, _| sim.set_state(bonus, sim.state(bonus) - 0.05)),
     );
     if sim.aura(aura).active {
-        bonus.set(bonus.get() + 0.05);
+        sim.set_state(bonus, sim.state(bonus) + 0.05);
     }
 }
 

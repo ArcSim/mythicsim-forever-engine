@@ -12,15 +12,12 @@ mod spells;
 mod talents;
 mod totems;
 
-use std::cell::Cell;
-use std::rc::Rc;
-
 use crate::contracts::request::{Message, Value};
 use crate::prepare::agent::{fill_talents, ClassSpellName, PrepAgent};
 use crate::prepare::attack::{AutoAttackOptions, Weapon};
 use crate::prepare::character::constants::DODGE_RATING_PER_DODGE_PERCENT;
 use crate::prepare::env::Environment;
-use crate::prepare::sim::{AuraId, Sim, SpellId, UnitId};
+use crate::prepare::sim::{AuraId, Sim, SpellId, StateSlot, UnitId};
 use crate::prepare::spell::ProcMask;
 use crate::prepare::stats::Stat;
 use crate::prepare::Refusal;
@@ -168,6 +165,7 @@ pub(crate) struct SelfBuffs {
 
 /// Go `Shaman`: the talents and buffs the registrations read, and what Go keeps on the struct
 /// that a later registration or the export reads.
+#[derive(Clone)]
 pub(crate) struct Shaman {
     talents: Message,
     spec: Spec,
@@ -179,7 +177,7 @@ pub(crate) struct Shaman {
     /// Go `WindfuryAPBonus`.
     windfury_ap_bonus: f64,
     /// Go `ChainLightningBounceBonus`, which Gift of the Gathering Storm's 3 piece raises.
-    chain_lightning_bounce_bonus: Rc<Cell<f64>>,
+    chain_lightning_bounce_bonus: StateSlot,
     /// Go `FlameShock`.
     flame_shock: Option<SpellId>,
     /// Go `MagmaTotem`.
@@ -294,7 +292,7 @@ pub(crate) fn new_shaman(
         enhancement_options: spec == Spec::Enhancement && options.is_some(),
         sync_type,
         windfury_ap_bonus,
-        chain_lightning_bounce_bonus: Rc::new(Cell::new(0.0)),
+        chain_lightning_bounce_bonus: sim.new_state_slot(0.0),
         flame_shock: None,
         magma_totem: None,
         flametongue_totem_aura: None,
@@ -379,7 +377,7 @@ impl Shaman {
 
 impl PrepAgent for Shaman {
     /// The talented Mana Tide Totem (16190) is the party buff's totem, dropped by this shaman.
-    fn add_party_buffs(&self, party_buffs: &mut Message) {
+    fn add_party_buffs(&self, _sim: &Sim, party_buffs: &mut Message) {
         if self.has_talent("mana_tide_totem") {
             party_buffs.set_i32("mana_tide_totems", party_buffs.i32("mana_tide_totems") + 1);
         }

@@ -82,8 +82,8 @@ impl Shaman {
         self.apply_call_of_thunder(sim, unit);
 
         // Tier 5
-        // Elemental Reach (range), Lightning Overload (shaman.go) and Earthbound change no
-        // prepared state.
+        self.apply_elemental_reach(sim, unit);
+        // Lightning Overload (shaman.go) and Earthbound change no prepared state.
         // Tier 6
         self.apply_elemental_fury(sim, unit);
 
@@ -308,6 +308,29 @@ impl Shaman {
                     .effect(dbcenums::A_ADD_FLAT_MODIFIER, dbcenums::SPELLMOD_COOLDOWN)
                     .value_at(points),
             ),
+        );
+    }
+
+    /// Elemental Reach is new in Forever: 28999 adds 3/6 yards to Lightning Bolt, Chain Lightning
+    /// and Lava Burst range and 8/15 to Flame Shock's (its two class masks).
+    fn apply_elemental_reach(&self, sim: &mut Sim, unit: UnitId) {
+        let points = self.talent("elemental_reach");
+        if points == 0 {
+            return;
+        }
+        static_mod(
+            sim,
+            unit,
+            SpellModType::RangeFlat,
+            masks::LIGHTNING_BOLT | masks::CHAIN_LIGHTNING | masks::LAVA_BURST,
+            spell_data().elemental_reach.effect_at(1).value_at(points),
+        );
+        static_mod(
+            sim,
+            unit,
+            SpellModType::RangeFlat,
+            masks::FLAME_SHOCK,
+            spell_data().elemental_reach.effect_at(2).value_at(points),
         );
     }
 

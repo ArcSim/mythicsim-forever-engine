@@ -12090,6 +12090,48 @@
         "file": "feral-bear-druid-windfury-totem-remaining-time.go-log.txt",
         "sha256": "6e8345ba8ddfe8e0b4a6a43654f671f74a77662676d2f8caebeda2588d46fd50"
       }
+    },
+    {
+      "id": "frost-mage-3-targets-point-blank-area-lines",
+      "description": "The Frost Mage's area lines against three targets from 8 yards, inside the 10 yard radius that Cone of Cold and Arcane Explosion reach: Flamestrike, Cone of Cold and Arcane Explosion at three or more targets.",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/frost-mage-3-targets-point-blank-area-lines.request.json"
+      },
+      "prepared": "frost-mage-3-targets-point-blank-area-lines.prepared.json",
+      "prepared_sha256": "4010ae7155c15415b57285efae9d2aeb81e6a4bc342d562e1cc775ef7aeae018",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "frost-mage-3-targets-point-blank-area-lines.go-result.json",
+        "sha256": "e48a13fb8f5aa338f8a0676205435cbfe6be5a3c182475b5a59afdb0a3d244a6"
+      },
+      "go_log": {
+        "file": "frost-mage-3-targets-point-blank-area-lines.go-log.txt",
+        "sha256": "32411bf0f9e7d0bc5861f0d8201c3abec9f52ed036f836a7514efd10258db7d6"
+      }
+    },
+    {
+      "id": "fire-mage-2-targets-point-blank-blast-wave",
+      "description": "The Fire Mage with Blast Wave against two targets from 8 yards, inside the 10 yard radius it reaches, casting Blast Wave first: a binary rolled hit on each target, and Ignite burning on each target a crit struck.",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/fire-mage-2-targets-point-blank-blast-wave.request.json"
+      },
+      "prepared": "fire-mage-2-targets-point-blank-blast-wave.prepared.json",
+      "prepared_sha256": "826e9ea6d3f12d6a7bdad40eb43dabf6dbc74ea7d85b20fbf823f4ccddb2dd8f",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "fire-mage-2-targets-point-blank-blast-wave.go-result.json",
+        "sha256": "07e0f02a597513f3add120a8b53b096a0c3ce3ee0d0d22f47c114057233ccb9d"
+      },
+      "go_log": {
+        "file": "fire-mage-2-targets-point-blank-blast-wave.go-log.txt",
+        "sha256": "fc68e1c26ae561a3bf5168054a335e272265711b2f05d4cb496c5b27b7afce22"
+      }
     }
   ]
 }

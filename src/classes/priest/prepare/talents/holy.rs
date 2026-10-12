@@ -33,7 +33,7 @@ impl Priest {
         // Blessed Recovery and Inspiration model nothing in Go either.
 
         // Tier 4
-        // Holy Reach models nothing in Go either.
+        self.apply_holy_reach(sim, unit);
         self.apply_improved_healing(sim, unit);
         self.apply_searing_light(sim, unit);
         // Binding Heal models nothing in Go either.
@@ -124,6 +124,25 @@ impl Priest {
         spell_data().holy_nova.each(|_, rank| {
             Self::register_holy_nova_spell(sim, unit, rank);
         });
+    }
+
+    /// Holy Reach is new in Forever: 27789 adds 10/20% to Smite and Holy Fire range (its first
+    /// class mask). The second adds as much to Holy Nova and Prayer of Healing radius; the sim
+    /// gives Holy Nova no radius, so that half reaches nothing.
+    fn apply_holy_reach(&self, sim: &mut Sim, unit: UnitId) {
+        let points = self.talents.i32("holy_reach");
+        if points == 0 {
+            return;
+        }
+        Self::extend_range(
+            sim,
+            unit,
+            masks::SMITE | masks::HOLY_FIRE,
+            spell_data()
+                .holy_reach
+                .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_RANGE)
+                .fraction_at(points),
+        );
     }
 
     /// Improved Healing discounts Lesser Heal, Heal, Greater Heal, Penance and Prayer of

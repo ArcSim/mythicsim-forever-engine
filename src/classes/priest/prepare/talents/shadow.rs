@@ -30,7 +30,7 @@ impl Priest {
         // Tier 2
         self.apply_shadow_affinity(sim, unit);
         self.apply_improved_shadow_word_pain(sim, unit);
-        // Shadow Reach models nothing in Go either.
+        self.apply_shadow_reach(sim, unit);
 
         // Tier 3
         self.apply_improved_mind_blast(sim, unit);
@@ -53,6 +53,41 @@ impl Priest {
 
         // Tier 7
         self.apply_shadowform(sim, unit);
+    }
+
+    /// Shadow Reach: 17322 adds 10/20% to the range of the spells its class mask reaches, of the
+    /// priest's the five targeted Shadow spells.
+    fn apply_shadow_reach(&self, sim: &mut Sim, unit: UnitId) {
+        let points = self.talents.i32("shadow_reach");
+        if points == 0 {
+            return;
+        }
+        Self::extend_range(
+            sim,
+            unit,
+            masks::DEVOURING_PLAGUE
+                | masks::MIND_BLAST
+                | masks::MIND_FLAY
+                | masks::SHADOW_WORD_DEATH
+                | masks::SHADOW_WORD_PAIN,
+            spell_data()
+                .shadow_reach
+                .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_RANGE)
+                .fraction_at(points),
+        );
+    }
+
+    /// A percent range modifier: the sim's range mod is flat yards, so the share is taken of each
+    /// spell's own range as it registers. A spell with no range (0) keeps none.
+    pub(super) fn extend_range(sim: &mut Sim, unit: UnitId, mask: i64, share: f64) {
+        sim.on_spell_registered(
+            unit,
+            Rc::new(move |sim: &mut Sim, spell| {
+                if sim.spell(spell).matches(mask) {
+                    sim.spell_mut(spell).max_range *= 1.0 + share;
+                }
+            }),
+        );
     }
 
     /// A school-specific hit bonus goes through the pseudo-stat.

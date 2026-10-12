@@ -7,7 +7,9 @@ use crate::prepare::spelldata::Ladder;
 
 /// Go `generatedSpellData`, for the ladders `sim/priest` uses.
 pub(super) struct SpellData {
+    pub holy_reach: Ladder,
     pub mind_blast: Ladder,
+    pub shadow_reach: Ladder,
     pub shadow_word_pain: Ladder,
     pub shadow_word_death: Ladder,
     pub smite: Ladder,
@@ -55,7 +57,9 @@ pub(super) struct SpellData {
 pub(super) fn spell_data() -> &'static SpellData {
     static DATA: OnceLock<SpellData> = OnceLock::new();
     DATA.get_or_init(|| SpellData {
+        holy_reach: Ladder::talent(27789, 2),
         mind_blast: Ladder::ranked(&[8092, 8102, 8103, 8104, 8105, 8106, 10945, 10946, 10947]),
+        shadow_reach: Ladder::talent(17322, 2),
         shadow_word_pain: Ladder::ranked(&[589, 594, 970, 992, 2767, 10892, 10893, 10894]),
         shadow_word_death: Ladder::ranked(&[1309595, 1309633, 1309635, 1309636]),
         smite: Ladder::ranked(&[585, 591, 598, 984, 1004, 6060, 10933, 10934]),

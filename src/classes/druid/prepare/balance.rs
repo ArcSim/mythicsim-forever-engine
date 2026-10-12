@@ -11,7 +11,7 @@ use crate::prepare::dbcenums::{
     A_ADD_FLAT_MODIFIER, A_ADD_PCT_MODIFIER, A_MOD_CASTING_SPEED_NOT_STACK, A_MOD_CRIT_PCT,
     A_MOD_DAMAGE_PERCENT_DONE, A_MOD_HIT_CHANCE, A_MOD_SPELL_HIT_CHANCE, A_PERIODIC_DUMMY,
     SPELLMOD_CASTING_TIME, SPELLMOD_COST, SPELLMOD_CRITICAL_CHANCE, SPELLMOD_CRIT_DAMAGE_BONUS,
-    SPELLMOD_DAMAGE, SPELLMOD_DOT, SPELLMOD_GLOBAL_COOLDOWN,
+    SPELLMOD_DAMAGE, SPELLMOD_DOT, SPELLMOD_GLOBAL_COOLDOWN, SPELLMOD_RANGE,
 };
 use crate::prepare::sim::{AuraConfig, EventCallbacks, Sim, MILLISECOND};
 use crate::prepare::spell::{
@@ -454,12 +454,35 @@ impl Druid {
         );
     }
 
-    /// The client states a bonus range, which the sim does not model.
+    /// Nature's Reach: 16819 adds 2/4% hit, and 10/20% to the range of every spell its class mask
+    /// reaches (Wrath, Starfire, Moonfire, Insect Swarm, Hurricane, Faerie Fire, Entangling Roots,
+    /// Thorns). The sim's range mod is flat yards, so the share is taken of each spell's own range as
+    /// it registers.
     fn apply_natures_reach(&mut self, sim: &mut Sim) {
         if self.tal.natures_reach == 0 {
             return;
         }
         let ladder = Ladder::talent(16819, 2);
+        let share = ladder
+            .effect(A_ADD_PCT_MODIFIER, SPELLMOD_RANGE)
+            .fraction_at(self.tal.natures_reach);
+        let reached = masks::WRATH
+            | masks::STARFIRE
+            | masks::MOONFIRE_INITIAL
+            | masks::MOONFIRE_DOT
+            | masks::INSECT_SWARM
+            | masks::HURRICANE
+            | masks::FAERIE_FIRE
+            | masks::ENTANGLING_ROOTS
+            | masks::THORNS;
+        sim.on_spell_registered(
+            self.unit,
+            Rc::new(move |sim: &mut Sim, spell| {
+                if sim.spell(spell).matches(reached) {
+                    sim.spell_mut(spell).max_range *= 1.0 + share;
+                }
+            }),
+        );
         let hit = ladder
             .effect(A_MOD_HIT_CHANCE, 0)
             .value_at(self.tal.natures_reach);

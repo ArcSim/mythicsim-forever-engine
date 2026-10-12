@@ -98,6 +98,7 @@ impl Warlock {
                     bonus_coefficient: tick.coeff(),
                     ..DotConfig::default()
                 },
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, masks::CORRUPTION, SpellFlag::APL)
             },
         );
@@ -168,6 +169,7 @@ impl Warlock {
                     bonus_coefficient: tick.coeff(),
                     ..DotConfig::default()
                 },
+                max_range: f64::from(rank.max_range),
                 ..damage_config(
                     rank,
                     masks::DRAIN_LIFE,
@@ -216,6 +218,7 @@ impl Warlock {
                 cost: flat_cost(rank),
                 cast: default_cast(rank.gcd(), rank.cast_time()),
                 bonus_coefficient: rank.damage_effect().coeff(),
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, masks::IMMOLATE, SpellFlag::APL)
             },
         );
@@ -257,6 +260,7 @@ impl Warlock {
                 cost: flat_cost(rank),
                 cast: default_cast(rank.gcd(), rank.cast_time()),
                 bonus_coefficient: rank.damage_effect().coeff(),
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, masks::INCINERATE, SpellFlag::APL)
             },
         );
@@ -320,6 +324,7 @@ impl Warlock {
                     tick_length,
                     ..DotConfig::default()
                 },
+                max_range: f64::from(rank.max_range),
                 ..damage_config(
                     rank,
                     masks::RAIN_OF_FIRE,
@@ -356,6 +361,7 @@ impl Warlock {
                     cost: flat_cost(rank),
                     cast: default_cast(rank.gcd(), rank.cast_time()),
                     bonus_coefficient: rank.damage_effect().coeff(),
+                    max_range: f64::from(rank.max_range),
                     ..damage_config(rank, masks::SHADOW_BOLT, SpellFlag::APL)
                 },
             );
@@ -387,6 +393,7 @@ impl Warlock {
                     bonus_coefficient: tick.coeff(),
                     ..DotConfig::default()
                 },
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, masks::SIPHON_LIFE, SpellFlag::APL | SpellFlag::BINARY)
             },
         );
@@ -409,6 +416,7 @@ impl Warlock {
                     ..default_cast(rank.gcd(), rank.cast_time())
                 },
                 bonus_coefficient: rank.damage_effect().coeff(),
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, masks::SOUL_FIRE, SpellFlag::APL)
             },
         );
@@ -440,6 +448,7 @@ impl Warlock {
                     bonus_coefficient: tick.coeff(),
                     ..DotConfig::default()
                 },
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, masks::WRACK, SpellFlag::CHANNELED | SpellFlag::APL)
             },
         );
@@ -468,6 +477,7 @@ impl Warlock {
                 },
                 has_extra_cast_condition: true,
                 bonus_coefficient: rank.damage_effect().coeff(),
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, masks::CONFLAGRATE, SpellFlag::APL)
             },
         );
@@ -488,6 +498,7 @@ impl Warlock {
                     ..default_cast(rank.gcd(), 0)
                 },
                 bonus_coefficient: rank.damage_effect().coeff(),
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, masks::SHADOW_BURN, SpellFlag::APL | SpellFlag::BINARY)
             },
         );

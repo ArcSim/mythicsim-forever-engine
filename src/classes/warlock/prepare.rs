@@ -10,6 +10,7 @@ mod pets;
 mod spell_data;
 mod spells;
 mod talents;
+mod weapon_stones;
 
 use crate::contracts::request::Message;
 use crate::prepare::agent::{fill_talents, ClassSpellName, PrepAgent};
@@ -273,6 +274,8 @@ impl PrepAgent for Warlock {
     /// Go `Warlock.Initialize`: curses and banes, the spells, the armors and the demons'
     /// abilities.
     fn initialize(&mut self, sim: &mut Sim, unit: UnitId) {
+        self.register_weapon_stone(sim, unit);
+
         self.register_curse_of_elements(sim, unit);
         self.register_curse_of_doom(sim, unit);
         self.register_curse_of_agony(sim, unit);

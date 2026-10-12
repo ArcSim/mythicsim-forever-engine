@@ -67,6 +67,7 @@ impl Warlock {
                 cast: default_cast(rank.gcd(), 0),
                 threat_multiplier: 1.0,
                 related_aura_arrays,
+                max_range: f64::from(rank.max_range),
                 ..SpellConfig::default()
             },
         );
@@ -101,6 +102,7 @@ impl Warlock {
                     bonus_coefficient: tick.coeff(),
                     ..DotConfig::default()
                 },
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, masks::CURSE_OF_DOOM, SpellFlag::APL)
             },
         );
@@ -129,6 +131,7 @@ impl Warlock {
                     bonus_coefficient: tick.coeff(),
                     ..DotConfig::default()
                 },
+                max_range: f64::from(rank.max_range),
                 ..damage_config(rank, masks::CURSE_OF_AGONY, SpellFlag::APL)
             },
         );
@@ -156,6 +159,7 @@ impl Warlock {
                 cast: default_cast(rank.gcd(), 0),
                 threat_multiplier: 1.0,
                 related_aura_arrays,
+                max_range: f64::from(rank.max_range),
                 ..SpellConfig::default()
             },
         );

@@ -2,8 +2,8 @@
 //! the Warlock code reads.
 //!
 //! Generated with an effect held at its base points, the talent tree stating no rank value for it:
-//! Decimation (effect 2 of 440870), Demonic Embrace (effect 1 of 18697), Demonic Pact, Destructive
-//! Reach (effect 1 of 17917) and Pyroclasm (effect 1 of 18073).
+//! Decimation (effect 2 of 440870), Demonic Embrace (effect 1 of 18697), Demonic Pact and
+//! Pyroclasm (effect 1 of 18073).
 
 use std::sync::OnceLock;
 
@@ -21,6 +21,8 @@ pub(crate) struct SpellData {
     pub cataclysm: Ladder,
     pub conflagrate: Ladder,
     pub corruption: Ladder,
+    pub create_firestone_triggered: Ladder,
+    pub create_spellstone_triggered: Ladder,
     pub curse_of_recklessness: Ladder,
     pub curse_of_the_elements: Ladder,
     pub death_coil: Ladder,
@@ -34,6 +36,7 @@ pub(crate) struct SpellData {
     pub demonic_energies: Ladder,
     pub demonic_knowledge: Ladder,
     pub demonic_sacrifice_triggered: Ladder,
+    pub destructive_reach: Ladder,
     pub drain_life: Ladder,
     pub fel_vitality: Ladder,
     pub fire_and_brimstone: Ladder,
@@ -88,6 +91,8 @@ pub(crate) fn spell_data() -> &'static SpellData {
         cataclysm: Ladder::talent(17778, 3),
         conflagrate: Ladder::ranked(&[1293817, 1293818, 17962, 18930, 18931, 18932]),
         corruption: Ladder::ranked(&[172, 6222, 6223, 7648, 11671, 11672, 25311]),
+        create_firestone_triggered: Ladder::ranked(&[23480, 23481, 23482, 23483]),
+        create_spellstone_triggered: Ladder::ranked(&[1237162, 1237164, 1237165]),
         curse_of_recklessness: Ladder::ranked(&[704, 7658, 7659, 11717]),
         curse_of_the_elements: Ladder::ranked(&[440892, 1311676, 1311677, 1311680]),
         death_coil: Ladder::ranked(&[6789, 17925, 17926]),
@@ -101,6 +106,7 @@ pub(crate) fn spell_data() -> &'static SpellData {
         demonic_energies: Ladder::talent(1225214, 2),
         demonic_knowledge: Ladder::talent(412732, 3),
         demonic_sacrifice_triggered: Ladder::ranked(&[18789, 18790, 18791, 18792]),
+        destructive_reach: Ladder::talent(17917, 2),
         drain_life: Ladder::ranked(&[689, 699, 709, 7651, 11699, 11700]),
         fel_vitality: Ladder::talent(18731, 3),
         fire_and_brimstone: Ladder::talent(412751, 3),

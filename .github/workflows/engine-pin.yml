@@ -1,0 +1,179 @@
+# Holds Rust to the Go engine MythicSim runs in production.
+#
+# Engine checks (ci.yml) compare Rust with the frozen Go goldens at the reference pin in
+# upstream/sources.json. This workflow adds the two questions those checks cannot answer:
+#
+# 1. goldens: do the frozen goldens still reproduce from the Go fork at the reference pin?
+#    It rebuilds the Go exporter at the pin and re-derives every prepared input, Go result
+#    and Go log (`tools/prepared_v2.py capture`), so a golden edited by hand, an exporter
+#    change without a refresh, or a pin that does not build fails here.
+# 2. production: does Rust reproduce the Go engine production runs? The site only routes or
+#    shadows sims to a Rust bundle whose reference pin equals its FOREVER_SHA
+#    (mythicsim-forever/Dockerfile), so a reference pin behind production switches Rust
+#    off. The job moves the pin to PRODUCTION_PIN in the runner's copy only, re-exports
+#    every fixture there (`tools/prepared_v2.py repin`), and runs Rust's golden and
+#    preparation comparisons against the new goldens. It fails until the reference pin is
+#    production's; its report lists each golden production moved and each Rust mismatch,
+#    which is the porting work before the pin can move.
+#
+# Both jobs run Go on arm64: the goldens are arm64 Go, whose compiler fuses multiply-adds
+# (tools/fma_scan.py), and an amd64 Go differs from them in the last bit of a few values.
+#
+# When production moves its pin, change PRODUCTION_PIN and PRODUCTION_CLIENT_BUILD below
+# (or run the workflow by hand with the new values).
+
+name: Engine pin
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '23 5 * * *'
+  workflow_dispatch:
+    inputs:
+      production_pin:
+        description: Go fork revision production runs (FOREVER_SHA); empty for the default below
+        required: false
+      production_client_build:
+        description: Client build of that revision; empty for the default below
+        required: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: engine-pin-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # mythicsim-forever/Dockerfile FOREVER_SHA, live since 12 October 2026.
+  PRODUCTION_PIN: ${{ inputs.production_pin || 'cca7ffd1e726fbe68dbbe7e016759146cacb95ae' }}
+  PRODUCTION_CLIENT_BUILD: ${{ inputs.production_client_build || '1.60.1.70338' }}
+  GO_SOURCE: https://github.com/sage3648/mythicsim-forever-engine-go.git
+
+jobs:
+  goldens:
+    name: Goldens reproduce at the reference pin
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.6'
+          cache: false
+      - run: sudo apt-get update && sudo apt-get install -y protobuf-compiler
+      - name: Re-derive every prepared input and Go golden
+        run: python3 tools/prepared_v2.py capture --source "$GO_SOURCE" --output "$RUNNER_TEMP/capture"
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capture
+          path: ${{ runner.temp }}/capture/comparison.json
+          if-no-files-found: ignore
+
+  production:
+    name: Rust reproduces the production Go engine
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compare the reference pin with production
+        id: pin
+        run: |
+          reference=$(python3 -c 'import json; s = json.load(open("upstream/sources.json"))["sources"]; print(next(x for x in s if x["id"] == "reference")["pinned_revision"])')
+          echo "reference=$reference" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Engine pin"
+            echo
+            echo "| | Revision |"
+            echo "| --- | --- |"
+            echo "| Rust reference pin | \`$reference\` |"
+            echo "| Production (FOREVER_SHA) | \`$PRODUCTION_PIN\` |"
+            echo
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$reference" = "$PRODUCTION_PIN" ]; then
+            echo "same=true" >> "$GITHUB_OUTPUT"
+            echo "The reference pin is production's: Engine checks already compare Rust with it." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "same=false" >> "$GITHUB_OUTPUT"
+            echo "The reference pin differs from production, so the site routes and shadows nothing to this engine." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - if: steps.pin.outputs.same == 'false'
+        uses: dtolnay/rust-toolchain@stable
+      - if: steps.pin.outputs.same == 'false'
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25.6'
+          cache: false
+      - if: steps.pin.outputs.same == 'false'
+        run: sudo apt-get update && sudo apt-get install -y protobuf-compiler
+      - name: Move the pin to production in this runner only
+        if: steps.pin.outputs.same == 'false'
+        run: |
+          python3 - <<'EOF'
+          import json, os
+          path = "upstream/sources.json"
+          sources = json.load(open(path))
+          reference = next(x for x in sources["sources"] if x["id"] == "reference")
+          reference["pinned_revision"] = os.environ["PRODUCTION_PIN"]
+          reference["client_build"] = os.environ["PRODUCTION_CLIENT_BUILD"]
+          open(path, "w").write(json.dumps(sources, indent=2) + "\n")
+          EOF
+      - name: Re-export every fixture at production
+        if: steps.pin.outputs.same == 'false'
+        run: python3 tools/prepared_v2.py repin --source "$GO_SOURCE" --output "$RUNNER_TEMP/repin"
+      - name: Rust against the production goldens
+        if: steps.pin.outputs.same == 'false'
+        id: rust
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          cargo test --locked --test classes mage::prepared_v2::supported_cases_match_pinned_go_goldens -- --exact --nocapture 2>&1 | tee "$RUNNER_TEMP/goldens.log"
+      - name: Rust preparation against the production exporter
+        if: steps.pin.outputs.same == 'false'
+        id: prepare
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          cargo test --locked --test prepare rust_preparation_matches_go_or_refuses -- --exact --nocapture 2>&1 | tee "$RUNNER_TEMP/prepare.log"
+      - name: Report
+        if: always() && steps.pin.outputs.same == 'false'
+        run: |
+          python3 - <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+          import json, os
+          temp = os.environ["RUNNER_TEMP"]
+          try:
+              report = json.load(open(os.path.join(temp, "repin", "repin.json")))
+          except OSError:
+              print("The re-export at production failed; see its step.")
+              raise SystemExit
+          changed = report["changed"]
+          print(f"Moving the fixtures from `{report['from']}` to `{report['to']}` changes "
+                f"{len(changed)} Go goldens.\n")
+          if changed:
+              print("| Case | DPS before | DPS after | Log |")
+              print("| --- | --- | --- | --- |")
+              for change in changed[:200]:
+                  dps = change.get("result", {}).get("dps", ["", ""])
+                  print(f"| {change['id']} | {dps[0]} | {dps[1]} | {'changed' if change.get('log') else ''} |")
+          EOF
+          echo >> "$GITHUB_STEP_SUMMARY"
+          echo "Rust golden comparison: ${{ steps.rust.outcome }}; Rust preparation comparison: ${{ steps.prepare.outcome }}." >> "$GITHUB_STEP_SUMMARY"
+      - if: always() && steps.pin.outputs.same == 'false'
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-pin
+          path: |
+            ${{ runner.temp }}/repin/repin.json
+            ${{ runner.temp }}/goldens.log
+            ${{ runner.temp }}/prepare.log
+          if-no-files-found: ignore
+      - name: Fail while Rust is behind production
+        if: steps.pin.outputs.same == 'false'
+        run: |
+          echo "Rust's reference pin ${{ steps.pin.outputs.reference }} is not production's $PRODUCTION_PIN."
+          echo "Rust goldens at production: ${{ steps.rust.outcome }}; preparation: ${{ steps.prepare.outcome }}."
+          echo "Move the pin as UPSTREAM.md describes; this job's report lists the work."
+          exit 1

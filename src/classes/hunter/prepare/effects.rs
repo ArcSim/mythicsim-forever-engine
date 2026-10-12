@@ -459,7 +459,7 @@ impl Hunter {
         // traps.go: a magic hit roll without a hit count, dealt, then the dot when it landed.
         if let Some(spell) = self.immolation_trap {
             let rank = data.immolation_trap.highest();
-            let effect = data.immolation_trap_effect.rank(rank.rank_number());
+            let effect = data.immolation_trap_triggered.rank(rank.rank_number());
             effects.push(json!({
                 "kind": "immolation_trap", "spell_id": spell_id_of(sim, spell),
                 "tick_base": effect.periodic_effect().average(CHARACTER_LEVEL),

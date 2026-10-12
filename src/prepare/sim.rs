@@ -405,6 +405,8 @@ pub(crate) struct Sim {
     /// Go `AttackTable.DamageDoneByCasterExtraMultiplier`: per (attacker, defender), which
     /// handler slots are set. See aura_helpers.rs `attach_ddbc`.
     pub damage_done_by_caster: std::collections::BTreeMap<(UnitId, UnitId), Vec<bool>>,
+    /// Go `Raid.nextPetIndex` before the first pet: five indexes for each active party.
+    pub first_pet_index: i32,
 }
 
 impl Sim {
@@ -423,6 +425,7 @@ impl Sim {
             timers: Vec::new(),
             env_units: Vec::new(),
             damage_done_by_caster: std::collections::BTreeMap::new(),
+            first_pet_index: 5,
         }
     }
 

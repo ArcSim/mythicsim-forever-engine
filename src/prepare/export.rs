@@ -758,21 +758,12 @@ fn tail_effects(
     Ok(effects)
 }
 
-/// The refusals of `prepare` that concern a tank assignment: Go's notes on the tank list, on a
-/// tanked target without a melee swing or with a secondary target, and on copies of the target
-/// that do not swing alike.
+/// The refusals of `prepare` that concern a tank assignment: Go's notes on a tanked target
+/// without a melee swing or with a secondary target, and on copies of the target that do not
+/// swing alike. The exporter also notes any tank list but the player alone; Go reads the list
+/// only through each target's tank indexes, which the environment resolved to the player, no
+/// tank, or a refusal for any other unit, so preparation follows the simulation instead.
 fn tank_notes(env: &Environment, tanking: bool, unrepresented: &mut Vec<String>) {
-    // A tank assignment is supported when it is exactly the one player tanking the target.
-    let raid = env.request.message("raid");
-    let tanks = raid.map_or_else(Vec::new, |raid| raid.messages("tanks"));
-    if tanks.len() > 1
-        || (tanks.len() == 1
-            && (tanks[0].enum_name("type") != "Player" || tanks[0].i32("index") != 0))
-    {
-        unrepresented.push(
-            "tank assignments other than the player tanking the target are unsupported".into(),
-        );
-    }
     let first = env.encounter.targets[0];
     let unit = env.sim.unit(first);
     if tanking && !unit.auto_attacks.auto_swing_melee {

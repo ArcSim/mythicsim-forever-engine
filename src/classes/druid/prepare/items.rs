@@ -8,7 +8,7 @@ use crate::prepare::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger, Pseudo
 use crate::prepare::character::constants::SPELL_CRIT_RATING_PER_CRIT_PERCENT;
 use crate::prepare::env::Environment;
 use crate::prepare::item_sets::ItemSet;
-use crate::prepare::sim::{AuraConfig, AuraId, Sim, UnitId};
+use crate::prepare::sim::{AuraConfig, AuraId, Sim, UnitId, SECOND};
 use crate::prepare::spell::ProcMask;
 use crate::prepare::spell_mod::{SpellModConfig, SpellModType};
 use crate::prepare::stats::{Stat, Stats};
@@ -17,7 +17,7 @@ use super::{masks, Druid};
 
 /// The idols the druid package registers whose effect needs nothing of a druid (Go
 /// `core.NewItemEffect` over `agent.GetCharacter()`): Idol of the Moon (23197), Idol of Ferocity
-/// (22397) and Idol of Brutality (23198). A character of another class wears them as well, and
+/// (22397), Idol of Brutality (23198) and Howling Idol (272427). A character of another class wears them as well, and
 /// their spell mods find spells by class mask alone. Answers whether the item is one of them.
 pub(crate) fn apply_agentless_idol_effect(sim: &mut Sim, unit: UnitId, item: i32) -> bool {
     match item {
@@ -63,6 +63,21 @@ pub(crate) fn apply_agentless_idol_effect(sim: &mut Sim, unit: UnitId, item: i32
                     class_mask: masks::MAUL | masks::SWIPE | masks::PRIMAL_BITE,
                     kind: SpellModType::PowerCostFlat,
                     int_value: -2,
+                    ..SpellModConfig::default()
+                },
+            );
+            true
+        }
+        272427 => {
+            // Howling Idol: "Reduces the cooldown of your Shifting Power ability by 1 sec."
+            // (1291059: A_ADD_FLAT_MODIFIER, SPELLMOD_COOLDOWN, -1000 ms on Shifting Power's class
+            // mask). Stacks with Improved Shifting Power.
+            sim.add_static_mod(
+                unit,
+                SpellModConfig {
+                    class_mask: masks::SHIFTING_POWER,
+                    kind: SpellModType::CooldownFlat,
+                    time_value: -SECOND,
                     ..SpellModConfig::default()
                 },
             );

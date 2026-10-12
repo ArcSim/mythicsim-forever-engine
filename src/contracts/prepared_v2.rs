@@ -1505,11 +1505,14 @@ pub enum Effect {
         expected_combo_points: f64,
         short_name: String,
     },
-    /// Rake: a flat hit and a bleed of a flat tick.
+    /// Rake: a flat hit and a bleed of a flat tick, each plus a share of attack power. The
+    /// bleed reads the share from the attack power each tick has, as Rip's does.
     Rake {
         spell: usize,
         flat_damage: f64,
         tick_base: f64,
+        /// The share of attack power on the hit and on every tick, a Go literal.
+        attack_power_share: f64,
         tick_can_crit: bool,
         tick_magic: bool,
         short_name: String,

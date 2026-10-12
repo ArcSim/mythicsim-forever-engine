@@ -1,5 +1,6 @@
 //! Volley (1510, 14294, 14295), from Go sim/hunter/volley.go: the channel holds the ranged
-//! swing for the rank's duration and applies its area dot on the hunter, which snapshots the
+//! swing for the rank's duration, stops the melee swing until it ends (a channel is a non-melee
+//! cast, and the swing restarts a full swing after it) and applies its area dot on the hunter, which snapshots the
 //! Go literal tick of the rank. Every tick is its own ranged damage spell, as the client row
 //! has a ranged defense type and no Cannot Crit, so it rolls the ranged hit and crit tables
 //! on each target, in unit index order, as Multi-Shot does.
@@ -23,9 +24,10 @@ pub(crate) fn bind<A: Agent>(
 }
 
 impl Volley {
-    /// The cast's `ApplyEffects`: `DelayRangedUntil`, then `AOEDot().Apply`.
+    /// The cast's `ApplyEffects`: `DelayRangedUntil`, `StopMeleeUntil`, then `AOEDot().Apply`.
     pub(crate) fn apply<A: Agent>(&self, fight: &mut Fight<A>, spell: SpellId) {
         fight.delay_ranged_until(fight.now + self.ranged_delay);
+        fight.stop_melee_until(fight.now + self.ranged_delay);
         let dot = fight.spells[spell].dot.expect("Volley has a channel");
         fight.apply_dot(dot);
     }

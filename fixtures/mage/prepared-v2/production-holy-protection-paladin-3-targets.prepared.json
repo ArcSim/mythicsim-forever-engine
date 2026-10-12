@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "2d93e423e0303e93dbb16e190d435503248b68f9",
-    "client_build": "1.60.1.70235",
+    "engine_revision": "041dec8eff72164e804bde636697e34fdf83b14f",
+    "client_build": "1.60.1.70338",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "94d5d27c2d460673457c3b574b93eacb1dd377b83bc046a285e3868af9c09f7f",
@@ -650,7 +650,7 @@
       "FireResistance": 35,
       "FrostDamage": 0,
       "FrostResistance": 35,
-      "HealingPower": 25,
+      "HealingPower": 63,
       "Health": 5981,
       "HolyDamage": 40,
       "Intellect": 211,
@@ -2448,7 +2448,7 @@
           {
             "category": "RetributionAura",
             "single_aura": true,
-            "priority": 7,
+            "priority": 5,
             "position": 0
           },
           {
@@ -2477,7 +2477,7 @@
           {
             "category": "RetributionAura",
             "single_aura": true,
-            "priority": 12,
+            "priority": 8,
             "position": 1
           },
           {
@@ -2506,7 +2506,7 @@
           {
             "category": "RetributionAura",
             "single_aura": true,
-            "priority": 18,
+            "priority": 12,
             "position": 2
           },
           {
@@ -2535,7 +2535,7 @@
           {
             "category": "RetributionAura",
             "single_aura": true,
-            "priority": 24,
+            "priority": 16,
             "position": 3
           },
           {
@@ -2564,7 +2564,7 @@
           {
             "category": "RetributionAura",
             "single_aura": true,
-            "priority": 30,
+            "priority": 20,
             "position": 4
           },
           {
@@ -15604,7 +15604,7 @@
         "blessing_of_light": false,
         "bonus_healing_taken": 0,
         "healing_dealt_multiplier": 1,
-        "healing_power": 25,
+        "healing_power": 63,
         "healing_taken_multiplier": 1,
         "periodic_healing_dealt_multiplier": 1,
         "table_healing_dealt_multiplier": 1
@@ -15759,7 +15759,7 @@
         "blessing_of_light": false,
         "bonus_healing_taken": 0,
         "healing_dealt_multiplier": 1,
-        "healing_power": 25,
+        "healing_power": 63,
         "healing_taken_multiplier": 1,
         "periodic_healing_dealt_multiplier": 1,
         "table_healing_dealt_multiplier": 1
@@ -16167,7 +16167,7 @@
       "combos": [
         {
           "AttackPower": 1197,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16176,7 +16176,7 @@
         },
         {
           "AttackPower": 1439,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16185,7 +16185,7 @@
         },
         {
           "AttackPower": 1439,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16194,7 +16194,7 @@
         },
         {
           "AttackPower": 1681,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16203,7 +16203,7 @@
         },
         {
           "AttackPower": 1443,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16212,7 +16212,7 @@
         },
         {
           "AttackPower": 1685,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16221,7 +16221,7 @@
         },
         {
           "AttackPower": 1685,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16230,7 +16230,7 @@
         },
         {
           "AttackPower": 1927,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16239,7 +16239,7 @@
         },
         {
           "AttackPower": 1336,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16248,7 +16248,7 @@
         },
         {
           "AttackPower": 1578,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16257,7 +16257,7 @@
         },
         {
           "AttackPower": 1578,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16266,7 +16266,7 @@
         },
         {
           "AttackPower": 1820,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16275,7 +16275,7 @@
         },
         {
           "AttackPower": 1582,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16284,7 +16284,7 @@
         },
         {
           "AttackPower": 1824,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16293,7 +16293,7 @@
         },
         {
           "AttackPower": 1824,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16302,7 +16302,7 @@
         },
         {
           "AttackPower": 2066,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16311,7 +16311,7 @@
         },
         {
           "AttackPower": 1197,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16320,7 +16320,7 @@
         },
         {
           "AttackPower": 1439,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16329,7 +16329,7 @@
         },
         {
           "AttackPower": 1439,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16338,7 +16338,7 @@
         },
         {
           "AttackPower": 1681,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16347,7 +16347,7 @@
         },
         {
           "AttackPower": 1443,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16356,7 +16356,7 @@
         },
         {
           "AttackPower": 1685,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16365,7 +16365,7 @@
         },
         {
           "AttackPower": 1685,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16374,7 +16374,7 @@
         },
         {
           "AttackPower": 1927,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16383,7 +16383,7 @@
         },
         {
           "AttackPower": 1336,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16392,7 +16392,7 @@
         },
         {
           "AttackPower": 1578,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16401,7 +16401,7 @@
         },
         {
           "AttackPower": 1578,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16410,7 +16410,7 @@
         },
         {
           "AttackPower": 1820,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16419,7 +16419,7 @@
         },
         {
           "AttackPower": 1582,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16428,7 +16428,7 @@
         },
         {
           "AttackPower": 1824,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16437,7 +16437,7 @@
         },
         {
           "AttackPower": 1824,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16446,7 +16446,7 @@
         },
         {
           "AttackPower": 2066,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16455,7 +16455,7 @@
         },
         {
           "AttackPower": 1197,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16464,7 +16464,7 @@
         },
         {
           "AttackPower": 1439,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16473,7 +16473,7 @@
         },
         {
           "AttackPower": 1439,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16482,7 +16482,7 @@
         },
         {
           "AttackPower": 1681,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16491,7 +16491,7 @@
         },
         {
           "AttackPower": 1443,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16500,7 +16500,7 @@
         },
         {
           "AttackPower": 1685,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16509,7 +16509,7 @@
         },
         {
           "AttackPower": 1685,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16518,7 +16518,7 @@
         },
         {
           "AttackPower": 1927,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16527,7 +16527,7 @@
         },
         {
           "AttackPower": 1336,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16536,7 +16536,7 @@
         },
         {
           "AttackPower": 1578,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16545,7 +16545,7 @@
         },
         {
           "AttackPower": 1578,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16554,7 +16554,7 @@
         },
         {
           "AttackPower": 1820,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16563,7 +16563,7 @@
         },
         {
           "AttackPower": 1582,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16572,7 +16572,7 @@
         },
         {
           "AttackPower": 1824,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16581,7 +16581,7 @@
         },
         {
           "AttackPower": 1824,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16590,7 +16590,7 @@
         },
         {
           "AttackPower": 2066,
-          "HealingPower": 25,
+          "HealingPower": 63,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16599,7 +16599,7 @@
         },
         {
           "AttackPower": 1197,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16608,7 +16608,7 @@
         },
         {
           "AttackPower": 1439,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16617,7 +16617,7 @@
         },
         {
           "AttackPower": 1439,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16626,7 +16626,7 @@
         },
         {
           "AttackPower": 1681,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16635,7 +16635,7 @@
         },
         {
           "AttackPower": 1443,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16644,7 +16644,7 @@
         },
         {
           "AttackPower": 1685,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16653,7 +16653,7 @@
         },
         {
           "AttackPower": 1685,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16662,7 +16662,7 @@
         },
         {
           "AttackPower": 1927,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16671,7 +16671,7 @@
         },
         {
           "AttackPower": 1336,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16680,7 +16680,7 @@
         },
         {
           "AttackPower": 1578,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16689,7 +16689,7 @@
         },
         {
           "AttackPower": 1578,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16698,7 +16698,7 @@
         },
         {
           "AttackPower": 1820,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16707,7 +16707,7 @@
         },
         {
           "AttackPower": 1582,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16716,7 +16716,7 @@
         },
         {
           "AttackPower": 1824,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16725,7 +16725,7 @@
         },
         {
           "AttackPower": 1824,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,
@@ -16734,7 +16734,7 @@
         },
         {
           "AttackPower": 2066,
-          "HealingPower": 90,
+          "HealingPower": 128,
           "MP5": 40,
           "PhysicalCritPercent": 16.144199999999998,
           "RangedAttackPower": 40,

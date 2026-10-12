@@ -396,7 +396,7 @@ impl Priest {
             SpellConfig {
                 action_id: spell_action(heal.id),
                 spell_school: school::HOLY,
-                defense_type: DefenseType::Magic,
+                defense_type: heal.defense_type_core(), // a crit needs it for its multiplier
                 proc_mask: ProcMask::SPELL_HEALING,
                 flags: SpellFlag::HELPFUL
                     | SpellFlag::NO_ON_CAST_COMPLETE

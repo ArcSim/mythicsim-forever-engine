@@ -56,7 +56,9 @@ fn hits_of(logs: &str, id: i32, whats: &[&str]) -> Vec<(String, usize)> {
 /// after another (Go `CalcAndDealAoeDamageWithVariance`).
 #[test]
 fn rolled_area_hits_strike_every_target_in_order() {
-    let logs = first_fight_log("frost-mage-3-targets-area-lines");
+    // From 8 yards: Cone of Cold and Arcane Explosion reach the targets within 10 yards of the
+    // mage only, so the same line from 20 yards never casts them.
+    let logs = first_fight_log("frost-mage-3-targets-point-blank-area-lines");
     for id in [10216, 10161, 10202] {
         let strikes: Vec<_> = ["Hit", "Crit", "Miss"]
             .iter()
@@ -107,7 +109,8 @@ fn blizzard_ticks_hit_every_target_each_period() {
 /// Blast Wave's binary hit reaches both targets.
 #[test]
 fn a_binary_area_hit_reaches_every_target() {
-    let logs = first_fight_log("fire-mage-2-targets-blast-wave");
+    // From 8 yards, inside the 10 yard radius Blast Wave reaches.
+    let logs = first_fight_log("fire-mage-2-targets-point-blank-blast-wave");
     let mut targets: Vec<usize> = ["Hit", "Crit", "Miss"]
         .iter()
         .flat_map(|what| hits(&logs, 13021, what))

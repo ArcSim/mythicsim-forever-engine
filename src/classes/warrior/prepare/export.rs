@@ -13,7 +13,7 @@ use crate::prepare::spell::{DefenseType, ProcMask};
 use crate::prepare::spelldata::Spell as Row;
 use crate::prepare::stats::Stat;
 
-use super::helpers::{action_id_string, spell_action};
+use super::helpers::{action_id_string, last_stand_share, spell_action};
 use super::shouts::SHOUT_EXPIRATION_THRESHOLD;
 use super::spell_data::spell_data;
 use super::stances::STANCE_EFFECT_CATEGORY;
@@ -626,7 +626,7 @@ impl Warrior {
             let buff = data.last_stand_triggered.highest();
             effects.push(json!({"kind": "last_stand", "spell_id": data.last_stand.highest().id,
                 "aura": sim.aura(aura).label,
-                "health_share": buff.effect(dbcenums::A_MOD_MAX_HEALTH, 0).percent(),
+                "health_share": last_stand_share(buff),
                 "metrics_action_id": serde_json::to_value(sim.aura(aura).action_id.clone().unwrap_or_default())
                     .expect("an action id serializes")}));
         }

@@ -322,20 +322,20 @@ fn sunder_armor_is_a_stacking_single_aura_debuff() {
 }
 
 #[test]
-fn a_retribution_aura_shield_scales_with_the_spell_power_its_party_states() {
+fn a_retribution_aura_shield_scales_with_the_spell_power_of_its_holder() {
     let (mut sim, unit) = sim_with_unit();
     let rank = PaladinAuraRank {
         spell_id: 10301,
         rank: 0,
         value: 26.0,
     };
-    let aura = super::paladin::retribution_aura_buff(&mut sim, unit, false, &rank, 140.0);
+    let aura = super::paladin::retribution_aura_buff(&mut sim, unit, false, &rank);
     let effect = sim.aura(aura).exclusive_effects[0];
-    // Go fuses `rank.Value + coefficient * spellPower`: 19/140 of 140 is exactly 19.
-    assert_eq!(sim.effects[effect.0].priority, 45.0);
+    // The rank's own damage is the priority, and the coefficient is the holder's to apply.
+    assert_eq!(sim.effects[effect.0].priority, 26.0);
     assert_eq!(sim.aura(aura).label, "Retribution Aura (External)");
     // Asking again finds the aura rather than registering a second shield.
-    let again = super::paladin::retribution_aura_buff(&mut sim, unit, false, &rank, 140.0);
+    let again = super::paladin::retribution_aura_buff(&mut sim, unit, false, &rank);
     assert_eq!(again, aura);
 }
 
@@ -358,8 +358,11 @@ fn every_buff_and_debuff_field_is_read_by_a_table_or_a_driver() {
     ] {
         let mut number = 1;
         while let Some((name, _)) = crate::contracts::request::field_by_number(message, number) {
+            // Retired: Retribution Aura reads its holder's spell power, so the row stays only to
+            // keep the party fields after it numbered.
+            let retired = name == "retribution_aura_spell_power";
             assert!(
-                sources.contains(&format!("\"{name}\"")),
+                retired || sources.contains(&format!("\"{name}\"")),
                 "{message}.{name} is read by no buff table or driver"
             );
             number += 1;

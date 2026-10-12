@@ -636,15 +636,17 @@ mod tests {
         assert_eq!((s.spell_level, s.max_level), (4, 8));
         assert_eq!(s.power_cost(0), 25.0);
         let damage = s.effect_n(2);
-        assert_eq!((damage.base_points, damage.ppl), (19.0, 0.5));
+        assert_eq!(damage.base_points, 19.0);
+        assert!((0.1999..=0.2001).contains(&damage.ppl), "{}", damage.ppl);
         assert!(
             (0.4069..=0.4071).contains(&damage.sp_coef),
             "{}",
             damage.sp_coef
         );
-        // 19 plus half a point for each of the four levels between the rank's own 4 and its cap
-        // of 8.
-        assert_eq!(damage.average(60), 21.0);
+        // 19 plus a fifth of a point for each of the four levels between the rank's own 4 and its
+        // cap of 8, which the client rounds down to nothing: client 1.60.1.70291 cut the rank's 0.5
+        // a level to 0.2 (#758).
+        assert_eq!(damage.average(60), 19.0);
         assert_eq!(s.damage_effect().index, damage.index);
         assert!(s.heal_effect().is_nil());
         assert_eq!(s.defense_type_core(), DefenseType::Magic);

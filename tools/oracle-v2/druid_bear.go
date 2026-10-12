@@ -98,9 +98,11 @@ func druidBearEffects(d *druid.Druid, character *core.Character) []map[string]an
 		// Faerie Fire's free cast; the health fraction kept on a shift; and the cast, which spends
 		// all Rage and rolls Furor's 10.
 		initial := initialPseudoStats(&character.Unit)
+		// registerFormBreakingConsumes: conjured items and explosives. A potion no longer drops the
+		// form (mythicsim patch 111, cca7ffd1e7).
 		breaking := []int{}
 		for i, spell := range character.Spellbook {
-			if spell.Flags.Matches(core.SpellFlagPotion | core.SpellFlagConjured | core.SpellFlagExplosive) {
+			if spell.Flags.Matches(core.SpellFlagConjured | core.SpellFlagExplosive) {
 				breaking = append(breaking, i)
 			}
 		}

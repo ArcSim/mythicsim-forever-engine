@@ -41,16 +41,6 @@ pub(crate) fn hammer_of_wrath(fight: &mut Fight<PaladinAgent>, spell: SpellId, t
     fight.deal_damage_after_travel(spell, result);
 }
 
-/// Hammer of Wrath's `ModifyCast`: only a cast pauses the swing.
-pub(crate) fn hammer_of_wrath_modify_cast(fight: &mut Fight<PaladinAgent>, spell: SpellId) {
-    let cast_time = fight.spells[spell].cur_cast.cast_time;
-    let cast_time = fight.apply_cast_speed_for_spell(cast_time, spell);
-    if cast_time > 0 {
-        let until = fight.now + cast_time;
-        fight.stop_melee_until(until);
-    }
-}
-
 /// Exorcism: the rolled damage, a magic hit and crit; it casts only at an Undead or Demon.
 pub(crate) fn exorcism(fight: &mut Fight<PaladinAgent>, spell: SpellId, target: Side) {
     let base = fight.roll_damage_effect(spell);
@@ -76,12 +66,17 @@ pub(crate) fn holy_wrath(fight: &mut Fight<PaladinAgent>, spell: SpellId, hits: 
     fight.deal_damage_after_travel_batch(spell, &results);
 }
 
-/// Holy Wrath's `ModifyCast`: the cast pauses the swing.
-pub(crate) fn holy_wrath_modify_cast(fight: &mut Fight<PaladinAgent>, spell: SpellId) {
+/// Go `Paladin.holdMeleeForCast`, the `ModifyCast` of Hammer of Wrath, Holy Wrath, Flash of
+/// Light, Holy Light and Light's Vigil: the Forever hard-cast rule, where the next swing comes a
+/// full weapon speed after the cast completes. A cast made instant (Instrument of Law, a proc)
+/// leaves the swing timer alone.
+pub(crate) fn hold_melee_for_cast(fight: &mut Fight<PaladinAgent>, spell: SpellId) {
     let cast_time = fight.spells[spell].cur_cast.cast_time;
     let cast_time = fight.apply_cast_speed_for_spell(cast_time, spell);
-    let until = fight.now + cast_time;
-    fight.stop_melee_until(until);
+    if cast_time > 0 {
+        let cast_end = fight.now + cast_time;
+        fight.hold_melee_for_cast(cast_end);
+    }
 }
 
 /// Consecration's cast: one magic hit check, then the ground effect regardless.

@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "2d93e423e0303e93dbb16e190d435503248b68f9",
-    "client_build": "1.60.1.70235",
+    "engine_revision": "041dec8eff72164e804bde636697e34fdf83b14f",
+    "client_build": "1.60.1.70338",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "091636623def6392b4122a168cafb5eb62e01203cb7f05520732f024d1521dd8",
@@ -734,7 +734,7 @@
       "FireResistance": 60,
       "FrostDamage": 40,
       "FrostResistance": 27,
-      "HealingPower": 67,
+      "HealingPower": 197,
       "Health": 3467,
       "HolyDamage": 0,
       "Intellect": 377,
@@ -1527,7 +1527,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 20,
+        "max_range": 24,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -1599,7 +1599,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 20,
+        "max_range": 24,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -1671,7 +1671,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 20,
+        "max_range": 24,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -1743,7 +1743,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 20,
+        "max_range": 24,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -1815,7 +1815,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 20,
+        "max_range": 24,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -1887,7 +1887,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 20,
+        "max_range": 24,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -2190,7 +2190,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-6",
@@ -2253,7 +2253,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-6",
@@ -2316,7 +2316,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-6",
@@ -2379,7 +2379,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-6",
@@ -2442,7 +2442,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-6",
@@ -2505,7 +2505,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-6",
@@ -2568,7 +2568,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-6",
@@ -2631,7 +2631,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-6",
@@ -2694,7 +2694,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-6",
@@ -2757,7 +2757,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -2827,7 +2827,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -2897,7 +2897,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -2967,7 +2967,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -3037,7 +3037,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -3107,7 +3107,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -3177,7 +3177,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -3247,7 +3247,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -3317,7 +3317,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-7",
@@ -3380,7 +3380,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-7",
@@ -3443,7 +3443,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-7",
@@ -3506,7 +3506,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-7",
@@ -3591,7 +3591,7 @@
         "pushback_resist": 0,
         "dot": null,
         "damage_effect": {
-          "average": 17,
+          "average": 15,
           "variance": 0.2666666805744171
         }
       },
@@ -3651,7 +3651,7 @@
         "pushback_resist": 0,
         "dot": null,
         "damage_effect": {
-          "average": 31,
+          "average": 28,
           "variance": 0.2142857164144516
         }
       },
@@ -3711,7 +3711,7 @@
         "pushback_resist": 0,
         "dot": null,
         "damage_effect": {
-          "average": 50,
+          "average": 47,
           "variance": 0.13793103396892548
         }
       },
@@ -3771,7 +3771,7 @@
         "pushback_resist": 0,
         "dot": null,
         "damage_effect": {
-          "average": 64,
+          "average": 63,
           "variance": 0.1428571492433548
         }
       },
@@ -5021,7 +5021,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",
@@ -5094,7 +5094,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",
@@ -5167,7 +5167,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",
@@ -5240,7 +5240,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",
@@ -5313,7 +5313,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",
@@ -5386,7 +5386,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",

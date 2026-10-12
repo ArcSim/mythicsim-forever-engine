@@ -15,7 +15,10 @@ use crate::{
 };
 
 use super::items::ManaProc;
-use super::pet::{self as hunter_pet, PetAbility, PetAi, PetAuras};
+use super::pet::{
+    self as hunter_pet, PetAbility, PetAi, PetAuras, DUST_CLOUD_YIELDS_TO_SUNDER_AND_EXPOSE,
+    SUNDER_ARMOR_CATEGORY,
+};
 use super::spells::{
     aspect_of_the_hawk::AspectOfTheHawk,
     explosive_trap::{self, ExplosiveTrap},
@@ -812,6 +815,14 @@ impl Agent for HunterAgent {
                     PetAbility::Swipe => false,
                     PetAbility::DustCloud => {
                         let (aura, _) = fight.agent.dust_cloud.expect("Dust Cloud is bound");
+                        // Go `DustCloudYieldsToSunderAndExpose` (mythicsim patch 110): the pet
+                        // holds Dust Cloud while Sunder Armor or Expose Armor is on the target.
+                        if DUST_CLOUD_YIELDS_TO_SUNDER_AND_EXPOSE
+                            && fight
+                                .exclusive_category_any_active(Side::Target, SUNDER_ARMOR_CATEGORY)
+                        {
+                            return false;
+                        }
                         enabled && !fight.aura(aura).active
                     }
                     _ => enabled,

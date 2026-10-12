@@ -402,20 +402,20 @@
                 "targets": [
                   {},
                   {
-                    "critDamage": 1028040.3264672906,
+                    "critDamage": 1052885.8357425155,
                     "critRange": {
                       "count": 987,
                       "max": 1557.922258256278,
                       "min": 237.3596588176702,
-                      "total": 1028040.3264672906
+                      "total": 1052885.8357425155
                     },
                     "crits": 987,
-                    "damage": 1028040.3264672906,
+                    "damage": 1052885.8357425155,
                     "misses": 13,
-                    "resistedCritDamage": 385172.98266791296,
-                    "resistedCrits": 469,
-                    "resistedDamage": 385172.98266791296,
-                    "threat": 822432.2611738312,
+                    "resistedCritDamage": 344603.85567960376,
+                    "resistedCrits": 416,
+                    "resistedDamage": 344603.85567960376,
+                    "threat": 842308.668594011,
                     "unitIndex": 1
                   }
                 ]
@@ -1462,17 +1462,17 @@
             "dtps": {
               "aggregatorData": {
                 "n": 1000,
-                "sumSq": 81386.02639475881
+                "sumSq": 84874.51441436181
               },
-              "avg": 8.61616202849372,
+              "avg": 8.82477243474812,
               "hist": {
-                "0": 93,
-                "10": 907
+                "0": 80,
+                "10": 920
               },
               "max": 14.277978649989977,
               "maxSeed": "689",
               "minSeed": "941",
-              "stdev": 2.6735329235866523
+              "stdev": 2.6453555317332222
             },
             "hps": {
               "aggregatorData": {
@@ -1516,9 +1516,9 @@
                 "type": "ResourceTypeRage"
               },
               "{\"otherId\": \"OtherActionDamageTaken\"} #2": {
-                "actualGain": -1859028.3264673634,
+                "actualGain": -1883873.8357425882,
                 "events": 3447,
-                "gain": -1859028.3264673634,
+                "gain": -1883873.8357425882,
                 "type": "ResourceTypeHealth"
               },
               "{\"otherId\": \"OtherActionRefund\"}": {

@@ -3,8 +3,8 @@
   "source": "community",
   "range": {
     "from": "f4b776b4f41d5c7799b8141697a2c9e67c89d426",
-    "to": "5c115f1725ede7419e4f8582a7d94cdb0247c829",
-    "commits": 200
+    "to": "f7598154eb8a138831290b34d4d321a532295224",
+    "commits": 273
   },
   "reviewed": "2026-10-07",
   "dispositions": [
@@ -2738,6 +2738,1059 @@
       ],
       "disposition": "irrelevant",
       "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "0a706e396d1d65be02346107769158cca347a08d",
+      "date": "2026-10-07 01:08:38 +0000",
+      "subject": "data: Forever client build 1.60.1.70245 (#720)",
+      "pr": 720,
+      "areas": [
+        "assets/db_inputs",
+        "docs/data-changes"
+      ],
+      "disposition": "applicable",
+      "reason": "Client build 1.60.1.70245.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "07ec7b4d4180757ded20c2b9e127cd0690032fec",
+      "date": "2026-10-07 01:28:45 +0000",
+      "subject": "warrior: TestArms runs the Battle Stance rotation the site picks for it (#721)",
+      "pr": 721,
+      "areas": [
+        "sim/warrior"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "88fc94dc85798101f12bbd919752dc661e5ea81e",
+      "date": "2026-10-07 01:29:10 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "498c34316ecaaf14e9050b0edabe5c8bfc0a59c6",
+      "date": "2026-10-07 02:25:41 +0000",
+      "subject": "balance: TestBalance runs the Launch rotation the site picks (#722)",
+      "pr": 722,
+      "areas": [
+        "sim/druid",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "bad18ffeec453529efdaa2edb4b3fb27bc6287ad",
+      "date": "2026-10-07 02:26:03 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "09c1c1b475e453a8dfe5557c95aa0c541fd336cd",
+      "date": "2026-10-07 03:30:11 +0000",
+      "subject": "enhancement: TestEnhancement swings Arcanite Reaper instead of fighting naked (#723)",
+      "pr": 723,
+      "areas": [
+        "sim/shaman"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "557f89258e833b0811db5e2d1ccde939c40f8e07",
+      "date": "2026-10-07 03:30:35 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "2ac3d580a5408c53b30ee7b18f20ef54c95f703e",
+      "date": "2026-10-07 04:27:27 +0000",
+      "subject": "mage: fire rotation casts Blast Wave and Flamestrike on 3+ targets (#724)",
+      "pr": 724,
+      "areas": [
+        "sim/mage",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "2381a2bcb56fad6247a57017364be21945ace02e",
+      "date": "2026-10-07 04:27:53 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "4053111292c114e7f8939b8199b6e219f7549dad",
+      "date": "2026-10-07 04:37:08 +0000",
+      "subject": "mage: arcane and frost AoE on 3+ targets; point-blank AoE only within 10 yd (#725)",
+      "pr": 725,
+      "areas": [
+        "sim/mage",
+        "ui/specs"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Arcane Explosion, Cone of Cold, Blast Wave and Frost Nova reach only the targets within 10 yards of the mage; the same change adds the 3+ target rotation lines.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: the exported spells carry the 10 yard range, and the point-blank area fixtures stand the mage inside it"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/frost-mage-3-targets-point-blank-area-lines.go-result.json",
+        "fixtures/mage/prepared-v2/fire-mage-2-targets-point-blank-blast-wave.go-result.json"
+      ]
+    },
+    {
+      "commit": "df9255601ab788131a39c53502a1e1af88679879",
+      "date": "2026-10-07 04:37:30 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "bad8892e69d408d4667a8b35fc9d2726037de58b",
+      "date": "2026-10-07 05:26:00 +0000",
+      "subject": "Ice Lance spell power coefficient .143 -> .1, fitted from beta logs (#726)",
+      "pr": 726,
+      "areas": [
+        "sim/mage",
+        "ui/sim"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Ice Lance's spell power coefficient is .1, fitted from beta logs, not .143.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: the exported Ice Lance carries the new coefficient"
+      },
+      "regression": [
+        "tests/classes/mage/prepare/frost.golden.json"
+      ],
+      "mechanics": [
+        "ice_lance"
+      ]
+    },
+    {
+      "commit": "c19f0a85629ce41d15ab9dbadd5c0ad986666cb6",
+      "date": "2026-10-07 05:26:23 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "1a0ca297f2a1f039b95eb723649d5bdbd10bbaf6",
+      "date": "2026-10-07 06:16:34 +0000",
+      "subject": "[DB] Update to 1.60.1.70245 with hotfixes as of 2026-10-07 (#727)",
+      "pr": 727,
+      "areas": [
+        "assets/database",
+        "assets/db_inputs",
+        "sim/core"
+      ],
+      "disposition": "applicable",
+      "reason": "Client data 1.60.1.70245 with the hotfixes of 2026-10-07.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "bd79a706a579953129e3d82a4f8909547506722a",
+      "date": "2026-10-07 06:31:04 +0000",
+      "subject": "mage: spells use their client range; point-blank AoE needs 10 yd; range talents modelled (#728)",
+      "pr": 728,
+      "areas": [
+        "sim/mage"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Mage spells use their client range, and Arcane Geometry, Flame Throwing and Arctic Reach extend it.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: preparation writes each spell's max range and the three range talents"
+      },
+      "regression": [
+        "tests/classes/mage/prepare/every-talent-at-max.golden.json"
+      ]
+    },
+    {
+      "commit": "add739a057cda748dc1dd214c72d55d4b906bf9a",
+      "date": "2026-10-07 06:31:29 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "3c93d664fa875b0910bea59e33ad549a22ff2650",
+      "date": "2026-10-07 06:39:00 +0000",
+      "subject": "priest: Shadow Reach and Holy Reach extend range (#729)",
+      "pr": 729,
+      "areas": [
+        "sim/priest"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Shadow Reach and Holy Reach add 10/20% to the range of the spells they reach.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: preparation takes the share of each spell's own range as it registers"
+      },
+      "regression": [
+        "tests/classes/priest/prepare/every-talent-at-max.golden.json"
+      ]
+    },
+    {
+      "commit": "759c1084b8667c39bc2c3e22cfa4a6a49a2cb960",
+      "date": "2026-10-07 06:39:23 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "e8b4bc74b7ae36eb07cbdb84a0de7412da02295f",
+      "date": "2026-10-07 06:44:57 +0000",
+      "subject": "data: Wowhead Forever data changed (2026-10-07) (#730)",
+      "pr": 730,
+      "areas": [
+        "assets/db_inputs",
+        "docs/data-changes"
+      ],
+      "disposition": "applicable",
+      "reason": "Wowhead Forever data of 2026-10-07.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "fd12115275b28bd0d2f75cc97ade0533ca96cddd",
+      "date": "2026-10-07 07:23:48 +0000",
+      "subject": "warlock: spells use their client range; Destructive Reach extends it (#731)",
+      "pr": 731,
+      "areas": [
+        "sim/warlock"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Warlock spells use their client range, and Destructive Reach adds 10/20% to it.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: preparation writes each spell's max range and Destructive Reach's share"
+      },
+      "regression": [
+        "tests/classes/warlock/prepare/affliction-imp.golden.json"
+      ]
+    },
+    {
+      "commit": "ae5278bd282446838b70e1d460a6d9c5fdd82b97",
+      "date": "2026-10-07 07:24:13 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "1d3abe574e663e9a05408fd07384b444c6591c7d",
+      "date": "2026-10-07 07:31:42 +0000",
+      "subject": "shaman: bolts use their client range; Elemental Reach extends it (#732)",
+      "pr": 732,
+      "areas": [
+        "sim/shaman"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Lightning Bolt, Chain Lightning and Lava Burst use their client range, and Elemental Reach adds yards to them and to Flame Shock.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: preparation writes the bolts' max range and Elemental Reach's range mods"
+      },
+      "regression": [
+        "tests/classes/shaman/prepare/elemental.golden.json"
+      ]
+    },
+    {
+      "commit": "e88622918af0c5083c912bd29ea583ffdd88bec9",
+      "date": "2026-10-07 07:32:07 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "0a2b5172924b107d95ead9bbd8d5e586eab07b05",
+      "date": "2026-10-07 08:26:46 +0000",
+      "subject": "druid: Nature's Reach extends Balance spell range (#733)",
+      "pr": 733,
+      "areas": [
+        "sim/druid"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Nature's Reach adds 10/20% to the range of the Balance spells it reaches.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: preparation takes the share of each spell's own range as it registers"
+      },
+      "regression": [
+        "tests/classes/druid/prepare/balance.golden.json"
+      ]
+    },
+    {
+      "commit": "0fbdcb2a73aee7ae8fca398ddc73d682d75f61a2",
+      "date": "2026-10-07 08:27:12 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "61c1af0b7a34c21d56489d54d8417917fcfc05b2",
+      "date": "2026-10-07 09:33:58 +0000",
+      "subject": "hunter: Survival melee rotation; TestSurvival runs it (#734)",
+      "pr": 734,
+      "areas": [
+        "sim/hunter",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "676febe3a354aee913121c11c3f45a8202ecbd24",
+      "date": "2026-10-07 09:34:22 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "afe6a8f09be692824bbe82450e889beef95d0cf6",
+      "date": "2026-10-07 10:38:08 +0000",
+      "subject": "warlock: Hellfire and Rain of Fire on 3+ targets; Hellfire channels at low health (#735)",
+      "pr": 735,
+      "areas": [
+        "sim/warlock",
+        "ui/specs"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Hellfire no longer stops at low health; the same change adds the 3+ target rotation lines.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "runtime comparison of the pin: Hellfire's goldens at 041dec8ef"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/affliction-warlock-hellfire.go-result.json"
+      ]
+    },
+    {
+      "commit": "e57ae208d7ca6ae33f0bc2e622ddeebe9fc530b4",
+      "date": "2026-10-07 10:38:32 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "57baf441b1b93c308aba19df2084d334f92e8368",
+      "date": "2026-10-07 11:34:30 +0000",
+      "subject": "buffs: Retribution Aura scales with the holder's spell power, not the paladin's (#736)",
+      "pr": 736,
+      "areas": [
+        "assets/locales",
+        "schemas",
+        "sim/core",
+        "sim/druid",
+        "sim/paladin",
+        "sim/warrior",
+        "tools/database",
+        "ui/app",
+        "ui/features",
+        "ui/sim"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Retribution Aura scales with the Holy spell power of the unit it is on, not the paladin's; the party's retribution_aura_spell_power is retired.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: both copies of the shield carry the coefficient, and nothing reads the party input"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/production-retribution-paladin.go-result.json"
+      ]
+    },
+    {
+      "commit": "6d6ea809a51cc845a8d50e9bfe608d8e63d59b43",
+      "date": "2026-10-07 11:34:56 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "de26d921d456e55ed3c94da892554e09862065fb",
+      "date": "2026-10-07 20:24:52 +0000",
+      "subject": "shaman: enhancement rotation casts Fire Nova (#737)",
+      "pr": 737,
+      "areas": [
+        "sim/shaman",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "b25181b781a09fd19422fbd30a2e1b861069fbaa",
+      "date": "2026-10-07 20:25:20 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "821a3a44c1929cd0ed53ae84f7235f75c2f8224e",
+      "date": "2026-10-07 21:25:29 +0000",
+      "subject": "druid: Balance rotations channel Hurricane on 3+ targets (#738)",
+      "pr": 738,
+      "areas": [
+        "sim/druid",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "36958a0ffceb8281c6d18c5cd03517222808a924",
+      "date": "2026-10-07 21:25:59 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "e39eaf30e3ea706520a09982673f511f34a015df",
+      "date": "2026-10-07 21:31:22 +0000",
+      "subject": "hunter: rotations channel Volley on 3+ targets (4+ for Beast Mastery) (#739)",
+      "pr": 739,
+      "areas": [
+        "sim/hunter",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "3986c2053b31efe39fb7f99c5dc63fb1098754fe",
+      "date": "2026-10-07 21:31:52 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "14fba6dcb549d89272a429bb59a06b90883ee0d8",
+      "date": "2026-10-07 22:27:03 +0000",
+      "subject": "Warrior battle/dance rotations cast Sweeping Strikes on cooldown with 2+ targets (#740)",
+      "pr": 740,
+      "areas": [
+        "sim/warrior",
+        "ui/sim",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "92157669480395263e5dd2743e70cd770e28a1db",
+      "date": "2026-10-07 22:27:30 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "de278de30695e397dc217dcf52697657e415d451",
+      "date": "2026-10-07 22:29:55 +0000",
+      "subject": "Bear rotation swipes on 3+ targets (#741)",
+      "pr": 741,
+      "areas": [
+        "sim/druid",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "9d99ca38b1551c09cb4edb44260c89754aebf6d9",
+      "date": "2026-10-07 22:30:26 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "c00987d54dab34510b08965fd59be24ee837eebe",
+      "date": "2026-10-07 23:31:18 +0000",
+      "subject": "Survival melee rotation drops Explosive Trap on 2+ targets (#742)",
+      "pr": 742,
+      "areas": [
+        "sim/hunter",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "b8e0b11f8a3563e6a8da583fc16bdb3d67ae89d6",
+      "date": "2026-10-07 23:31:45 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "7452df325bd73ed845c865950b06fbe8f10c7f13",
+      "date": "2026-10-08 00:29:00 +0000",
+      "subject": "hunter: Volley holds the melee swing; Survival melee channels it on 2+ targets (#743)",
+      "pr": 743,
+      "areas": [
+        "sim/hunter",
+        "ui/specs"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Volley holds the melee swing, which restarts when the channel ends.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "runtime comparison of the pin: the Survival goldens at 041dec8ef"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/production-survival-hunter-2-targets.go-result.json"
+      ]
+    },
+    {
+      "commit": "dd1be1a06f20384863c882bca72372aa9528c480",
+      "date": "2026-10-08 00:29:26 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "ac70803cab111458773aad61fbc2bc7ea105e6a7",
+      "date": "2026-10-08 00:38:24 +0000",
+      "subject": "Retribution rotation consecrates on 2+ targets (#744)",
+      "pr": 744,
+      "areas": [
+        "sim/paladin",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "30e1153effc05537570c362188a3e098810220b4",
+      "date": "2026-10-08 00:38:49 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "f0f7f4821edbbf955b99e502ad79136124bd1d9b",
+      "date": "2026-10-08 01:07:05 +0000",
+      "subject": "data: Wowhead Forever data changed (2026-10-08) (#745)",
+      "pr": 745,
+      "areas": [
+        "assets/db_inputs",
+        "docs/data-changes"
+      ],
+      "disposition": "applicable",
+      "reason": "Wowhead Forever data of 2026-10-08.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "30b37901486e223c4a6d2ffc53d58306115e9a10",
+      "date": "2026-10-08 01:29:11 +0000",
+      "subject": "Protection paladin judges on cooldown (#746)",
+      "pr": 746,
+      "areas": [
+        "sim/paladin",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "1cf028dfc7162f8dca77e6d28e8d7e178c7c846c",
+      "date": "2026-10-08 01:29:35 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "8b5561dcf9b3afa72cb4ba3b9254dea6abca8881",
+      "date": "2026-10-08 02:27:27 +0000",
+      "subject": "Frost rotation casts Cone of Cold on 3+ targets in melee, Blizzard from 4 (#747)",
+      "pr": 747,
+      "areas": [
+        "sim/mage",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "e2b7f6968cc53a0874697e0cc8a7465e4bfab3c0",
+      "date": "2026-10-08 02:27:53 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "f9f1b7541d849cef76bd4d5bc761619c00848868",
+      "date": "2026-10-08 03:27:31 +0000",
+      "subject": "Protection warrior rotation queues Cleave on 2+ targets (#748)",
+      "pr": 748,
+      "areas": [
+        "sim/warrior",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "392bcf8d5153b79d676dea5f5fd534cb001e79db",
+      "date": "2026-10-08 03:27:56 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "c9803e0ee89bd8fd902db287d61fa52365553249",
+      "date": "2026-10-08 04:28:55 +0000",
+      "subject": "Arcane rotation casts Cone of Cold on 3+ targets in melee (#749)",
+      "pr": 749,
+      "areas": [
+        "sim/mage",
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "4b0ec8f5509d169b183810a6f66f5bd966e92a95",
+      "date": "2026-10-08 04:29:19 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "241847d0a1bfaf22ef16ad109d49a3de5cbc8841",
+      "date": "2026-10-08 05:27:26 +0000",
+      "subject": "Enhancement Flame Shock rotation casts Fire Nova (#750)",
+      "pr": 750,
+      "areas": [
+        "ui/specs"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Rotation presets, arena tooling or UI for other specs."
+    },
+    {
+      "commit": "5a8fb8a1d7b793363d84e9f65a0e6f0df5ba486d",
+      "date": "2026-10-08 05:27:49 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "fecdaf15f6376ac08d358f3d99aebf3286b51d7f",
+      "date": "2026-10-08 05:35:26 +0000",
+      "subject": "priest: Holy Nova's heal crit no longer panics the sim (#751)",
+      "pr": 751,
+      "areas": [
+        "sim/priest"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Holy Nova's heal carries its defense type, so a crit no longer panics the sim.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: the exported heal carries the row's defense type"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/smite-priest-holy-nova.go-result.json"
+      ]
+    },
+    {
+      "commit": "234e91e4457cc0d72e329e4002518e095704299e",
+      "date": "2026-10-08 05:35:51 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "9766efd03987f93c7b94afdad563f18f592ace30",
+      "date": "2026-10-08 06:15:56 +0000",
+      "subject": "[DB] Update to 1.60.1.70245 with hotfixes as of 2026-10-08 (#752)",
+      "pr": 752,
+      "areas": [
+        "assets/database",
+        "assets/db_inputs",
+        "sim/core",
+        "sim/druid",
+        "sim/paladin",
+        "sim/warrior"
+      ],
+      "disposition": "applicable",
+      "reason": "Client data 1.60.1.70245 with the hotfixes of 2026-10-08.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "a4460148ded561e18c5d0edfea3c6f31d2e6d53a",
+      "date": "2026-10-08 06:47:20 +0000",
+      "subject": "data: Wowhead Forever data changed (2026-10-08) (#753)",
+      "pr": 753,
+      "areas": [
+        "assets/db_inputs",
+        "docs/data-changes"
+      ],
+      "disposition": "applicable",
+      "reason": "Wowhead Forever data of 2026-10-08.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "3049da4e781de190da833ec6242598d06c2ca04b",
+      "date": "2026-10-08 07:33:23 +0000",
+      "subject": "paladin: Hammer of the Righteous hits 4 targets, cast on 2+ targets (#754)",
+      "pr": 754,
+      "areas": [
+        "sim/paladin",
+        "ui/sim",
+        "ui/specs"
+      ],
+      "disposition": "applicable",
+      "reason": "Covered mechanic. Hammer of the Righteous hits its target and up to three more, and the rotation casts it on 2+ targets.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "runtime comparison of the pin: the multi-target Protection Paladin goldens at 041dec8ef"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/production-protection-paladin-3-targets.go-result.json"
+      ]
+    },
+    {
+      "commit": "56c11f4e2bc69caa5d7995aaf0ffb0e68466c730",
+      "date": "2026-10-08 07:33:47 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "f99663ba6870fa02c27d29df04da1b63b03a1565",
+      "date": "2026-10-09 01:09:27 +0000",
+      "subject": "data: Wowhead Forever data changed (2026-10-09) (#756)",
+      "pr": 756,
+      "areas": [
+        "assets/db_inputs",
+        "docs/data-changes"
+      ],
+      "disposition": "applicable",
+      "reason": "Wowhead Forever data of 2026-10-09.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "2ce826577c5c42b93397d90461a30fd241fe8f7e",
+      "date": "2026-10-09 01:10:17 +0000",
+      "subject": "data: Forever client build 1.60.1.70291 (#757)",
+      "pr": 757,
+      "areas": [
+        "assets/db_inputs",
+        "docs/data-changes"
+      ],
+      "disposition": "applicable",
+      "reason": "Client build 1.60.1.70291: a caster rebalance, Thorns 22 to 18, Retribution Aura 30 to 20.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "0dbbe2d4e7cd3f7c0c06d55d748420b2c41944fe",
+      "date": "2026-10-09 04:39:50 +0000",
+      "subject": "chore(arena): rebuild the leaderboard",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "8b2d28ea123230f452ea59cea43be43d3197806d",
+      "date": "2026-10-10 01:07:07 +0000",
+      "subject": "data: Wowhead Forever data changed (2026-10-10) (#759)",
+      "pr": 759,
+      "areas": [
+        "assets/db_inputs",
+        "docs/data-changes"
+      ],
+      "disposition": "applicable",
+      "reason": "Wowhead Forever data of 2026-10-10.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "071e0cb4397b31f2abbb33774bbf89d961ba602c",
+      "date": "2026-10-10 01:08:16 +0000",
+      "subject": "data: Forever client build 1.60.1.70334 (#760)",
+      "pr": 760,
+      "areas": [
+        "assets/db_inputs",
+        "docs/data-changes"
+      ],
+      "disposition": "applicable",
+      "reason": "Client build 1.60.1.70334.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "9a1f2e88ee2c2697b7de2382c9527c32ed8b0ba0",
+      "date": "2026-10-10 06:43:20 +0000",
+      "subject": "data: Forever client build 1.60.1.70338 (#761)",
+      "pr": 761,
+      "areas": [
+        "assets/db_inputs",
+        "docs/data-changes"
+      ],
+      "disposition": "applicable",
+      "reason": "Client build 1.60.1.70338.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "ff318c876385eef53fa85d35248816e4009c2d50",
+      "date": "2026-10-10 07:56:42 +0000",
+      "subject": "Update DB: read client 70291+'s new armor aura, follow two renames (#758) (#762)",
+      "pr": 762,
+      "areas": [
+        "assets/database",
+        "assets/db_inputs",
+        "proto",
+        "sim/common",
+        "sim/core",
+        "sim/druid",
+        "sim/hunter",
+        "sim/mage",
+        "sim/paladin",
+        "sim/priest",
+        "sim/rogue",
+        "sim/shaman",
+        "sim/warlock",
+        "sim/warrior",
+        "tools/database",
+        "ui/sim",
+        "ui/specs"
+      ],
+      "disposition": "applicable",
+      "reason": "Client data 70291 to 70338: flat armor auras move from aura 22 to 674, Immolation Trap Effect and Predatory Instincts (now Natural Instinct) are renamed, and low-rank gains per level are cut.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: the data is re-imported with the armor aura read as before, and preparation follows the two renames"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json",
+        "tests/classes/druid/prepare/cat.golden.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
+    },
+    {
+      "commit": "ec29a2a9b754ceb85973573af8c76307f990f13b",
+      "date": "2026-10-10 07:57:07 +0000",
+      "subject": "chore(changelog): record merged pull requests",
+      "areas": [
+        "ui/app"
+      ],
+      "disposition": "irrelevant",
+      "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "f7598154eb8a138831290b34d4d321a532295224",
+      "date": "2026-10-10 08:56:50 +0000",
+      "subject": "[DB] Update to 1.60.1.70338 with hotfixes as of 2026-10-10 (#763)",
+      "pr": 763,
+      "areas": [
+        "assets/db_inputs"
+      ],
+      "disposition": "applicable",
+      "reason": "Client data 1.60.1.70338 with the hotfixes of 2026-10-10.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 041dec8ef: game data re-imported and fixtures re-exported at client build 1.60.1.70338"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ],
+      "mechanics": [
+        "client_data"
+      ]
     }
   ]
 }

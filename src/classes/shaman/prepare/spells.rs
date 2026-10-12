@@ -172,6 +172,7 @@ impl Shaman {
             },
         });
         if !is_elemental_overload {
+            spell_config.max_range = f64::from(config.max_range);
             spell_config.cast.cd = Cooldown {
                 timer: shared_cd_timer,
                 duration: longest_cooldown(config),
@@ -203,6 +204,9 @@ impl Shaman {
                     },
                 });
                 spell_config.missile_speed = 20.0;
+                if !is_elemental_overload {
+                    spell_config.max_range = f64::from(config.max_range);
+                }
                 sim.register_spell(unit, spell_config);
             }
         });
@@ -224,6 +228,7 @@ impl Shaman {
                 proc_mask: ProcMask::SPELL_DAMAGE,
                 flags: SpellFlag::APL | flags::SHAMAN_SPELL | flags::FOCUSABLE,
                 class_spell_mask: masks::LAVA_BURST,
+                max_range: f64::from(rank.max_range),
                 missile_speed: f64::from(rank.speed),
                 cost: flat_cost(rank.cost() as i32),
                 cast: CastConfig {

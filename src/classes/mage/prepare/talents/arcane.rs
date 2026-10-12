@@ -27,7 +27,8 @@ impl Mage {
         self.register_arcane_concentration(sim, unit);
         self.register_arcane_resilience(sim, unit);
 
-        // Tier 3: Arcane Geometry models nothing in Go either.
+        // Tier 3
+        self.register_arcane_geometry(sim, unit);
         self.register_arcane_impact(sim, unit);
         // Arcane Blast: arcane_blast.go and arcane_charge.go
 
@@ -42,6 +43,27 @@ impl Mage {
         self.register_arcane_instability(sim, unit);
 
         // Tier 7: Arcane Power is in arcane_power.go.
+    }
+
+    /// Arcane Geometry, new in Forever: 11247 adds 3/6 yards to the range of Arcane Blast and
+    /// Arcane Missiles.
+    fn register_arcane_geometry(&self, sim: &mut Sim, unit: UnitId) {
+        let rank = self.talents.i32("arcane_geometry");
+        if rank == 0 {
+            return;
+        }
+        sim.add_static_mod(
+            unit,
+            SpellModConfig {
+                class_mask: masks::ARCANE_BLAST | masks::ARCANE_MISSILES_CAST,
+                float_value: spell_data()
+                    .arcane_geometry
+                    .effect(dbcenums::A_ADD_FLAT_MODIFIER, dbcenums::SPELLMOD_RANGE)
+                    .value_at(rank),
+                kind: SpellModType::RangeFlat,
+                ..SpellModConfig::default()
+            },
+        );
     }
 
     fn register_arcane_focus(&self, sim: &mut Sim, unit: UnitId) {

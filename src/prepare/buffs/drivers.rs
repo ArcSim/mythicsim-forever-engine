@@ -329,18 +329,18 @@ pub(crate) fn drive_grace_of_air_totem(
 }
 
 /// Go `driveRetributionAura`: the party's Retribution Aura is the top rank, and its damage
-/// carries the providing paladin's Holy spell power, which the party states alongside it.
+/// carries the holder's own Holy spell power. The party's `retribution_aura_spell_power` is
+/// retired and nothing reads it.
 pub(crate) fn drive_retribution_aura(
     env: &mut Environment,
     unit: UnitId,
-    party: &Message,
+    _party: &Message,
 ) -> Result<(), Refusal> {
     let aura = paladin::retribution_aura_buff(
         &mut env.sim,
         unit,
         false,
         &paladin::retribution_aura_max_rank(),
-        party.f64("retribution_aura_spell_power"),
     );
     env.sim.make_permanent(aura);
     Ok(())

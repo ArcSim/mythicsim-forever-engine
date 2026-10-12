@@ -598,9 +598,15 @@ func warriorTankEffects(war *warrior.Warrior, character *core.Character, target 
 	// health by its share, gaining that much health, and takes it back on expiry, leaving at
 	// least 1.
 	if aura := character.GetAura("Last Stand"); aura != nil {
+		// talents_protection.go reads the share from A_MOD_MAX_HEALTH, or from
+		// A_MOD_INCREASE_HEALTH where client 70291 moved it (fork patch 112).
 		buff := warriorLastStandTriggered.Highest()
+		share := buff.FindEffect(dbcenums.E_APPLY_AURA, dbcenums.A_MOD_MAX_HEALTH, 0)
+		if share == spelldata.NilEffect {
+			share = buff.Effect(dbcenums.A_MOD_INCREASE_HEALTH, 0)
+		}
 		effects = append(effects, map[string]any{"kind": "last_stand", "spell_id": warriorLastStand.Highest().ID,
-			"aura": aura.Label, "health_share": buff.Effect(dbcenums.A_MOD_MAX_HEALTH, 0).Percent(),
+			"aura": aura.Label, "health_share": share.Percent(),
 			"metrics_action_id": actionID(aura.ActionID)})
 	}
 	// shield_wall.go: a survival cooldown a tank autocasts below 40% health, a Go literal, in

@@ -4221,6 +4221,18 @@
      "json_name": "spellPowerElixirId",
      "number": 26,
      "kind": "int32"
+    },
+    {
+     "name": "mh_temp_enchant_id",
+     "json_name": "mhTempEnchantId",
+     "number": 27,
+     "kind": "int32"
+    },
+    {
+     "name": "oh_temp_enchant_id",
+     "json_name": "ohTempEnchantId",
+     "number": 28,
+     "kind": "int32"
     }
    ]
   },
@@ -5050,8 +5062,8 @@
      "kind": "bool"
     },
     {
-     "name": "predatory_instincts",
-     "json_name": "predatoryInstincts",
+     "name": "natural_instinct",
+     "json_name": "naturalInstinct",
      "number": 33,
      "kind": "int32"
     },
@@ -12585,6 +12597,13 @@
      "number": 8,
      "kind": "enum",
      "type": "proto.WarlockOptions.Summon"
+    },
+    {
+     "name": "weapon_stone",
+     "json_name": "weaponStone",
+     "number": 9,
+     "kind": "enum",
+     "type": "proto.WarlockOptions.WeaponStone"
     }
    ]
   },
@@ -15613,6 +15632,20 @@
    {
     "name": "Felguard",
     "number": 5
+   }
+  ],
+  "proto.WarlockOptions.WeaponStone": [
+   {
+    "name": "NoWeaponStone",
+    "number": 0
+   },
+   {
+    "name": "Firestone",
+    "number": 1
+   },
+   {
+    "name": "Spellstone",
+    "number": 2
    }
   ],
   "proto.WarriorStance": [

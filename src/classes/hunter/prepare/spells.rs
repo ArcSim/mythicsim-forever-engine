@@ -527,7 +527,7 @@ impl Hunter {
                 spell_school: rank.spell_school(),
                 defense_type: rank.defense_type_core(),
                 class_spell_mask: masks::MONGOOSE_BITE,
-                proc_mask: ProcMask::MELEE_SPECIAL,
+                proc_mask: ProcMask::MELEE_MH_SPECIAL,
                 flags: SpellFlag::MELEE_METRICS | SpellFlag::APL,
                 max_range: f64::from(rank.max_range),
                 cost: flat_cost(rank),
@@ -706,7 +706,9 @@ impl Hunter {
     /// Go `registerImmolationTrapSpell`.
     fn register_immolation_trap_spell(&mut self, sim: &mut Sim) {
         let rank = spell_data().immolation_trap.highest();
-        let effect = spell_data().immolation_trap_effect.rank(rank.rank_number());
+        let effect = spell_data()
+            .immolation_trap_triggered
+            .rank(rank.rank_number());
         let tick = effect.periodic_effect();
         let cd = self.trap_cooldown(sim, rank);
         self.immolation_trap = Some(sim.register_spell(

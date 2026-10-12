@@ -285,7 +285,7 @@ impl Druid {
 
         // Tier 5
         self.apply_improved_shifting_power(sim);
-        self.apply_predatory_instincts(sim);
+        self.apply_natural_instinct(sim);
 
         // Tier 6
         self.apply_natural_reaction(sim);
@@ -318,9 +318,9 @@ impl Druid {
         sim.add_stat(unit, Stat::Armor, armor);
     }
 
-    /// Predatory Instincts: extra critical strike damage on every ability the druid uses.
-    fn apply_predatory_instincts(&mut self, sim: &mut Sim) {
-        if self.tal.predatory_instincts == 0 {
+    /// Natural Instinct: extra critical strike damage on every ability the druid uses.
+    fn apply_natural_instinct(&mut self, sim: &mut Sim) {
+        if self.tal.natural_instinct == 0 {
             return;
         }
         sim.add_static_mod(
@@ -331,7 +331,7 @@ impl Druid {
                 kind: SpellModType::CritMultiplierFlat,
                 float_value: Ladder::talent(1223242, 2)
                     .effect(A_ADD_PCT_MODIFIER, SPELLMOD_CRIT_DAMAGE_BONUS)
-                    .fraction_at(self.tal.predatory_instincts),
+                    .fraction_at(self.tal.natural_instinct),
                 ..SpellModConfig::default()
             },
         );

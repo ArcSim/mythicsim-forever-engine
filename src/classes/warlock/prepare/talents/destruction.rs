@@ -20,7 +20,7 @@ use super::millis;
 impl Warlock {
     pub(in super::super) fn register_destruction_talents(&mut self, sim: &mut Sim, unit: UnitId) {
         // Tier 1
-        // Destructive Reach models only the range half, which Go leaves out.
+        self.apply_destructive_reach(sim, unit);
         self.apply_improved_shadow_bolt(sim, unit);
         self.apply_bane(sim, unit);
 
@@ -48,6 +48,48 @@ impl Warlock {
 
         // Tier 7
         // Incinerate: incinerate.go
+    }
+
+    /// Destructive Reach: 17917 adds 10/20% to the range of every warlock spell its class mask
+    /// reaches, Affliction ones too but not Curse of Recklessness. The threat half Classic carried
+    /// is gone, and its radius half reaches no spell the sim registers. The sim's range mod is
+    /// flat yards, so the share is taken of each spell's own range as it registers. A spell with no
+    /// range (0) keeps none.
+    fn apply_destructive_reach(&self, sim: &mut Sim, unit: UnitId) {
+        let points = self.talents.i32("destructive_reach");
+        if points == 0 {
+            return;
+        }
+        let share = spell_data()
+            .destructive_reach
+            .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_RANGE)
+            .fraction_at(points);
+        let reached = masks::SHADOW_BOLT
+            | masks::IMMOLATE
+            | masks::INCINERATE
+            | masks::SOUL_FIRE
+            | masks::SHADOW_BURN
+            | masks::CONFLAGRATE
+            | masks::SEARING_PAIN
+            | masks::RAIN_OF_FIRE
+            | masks::CORRUPTION
+            | masks::CURSE_OF_AGONY
+            | masks::CURSE_OF_DOOM
+            | masks::CURSE_OF_ELEMENTS
+            | masks::CURSE_OF_WEAKNESS
+            | masks::SIPHON_LIFE
+            | masks::DRAIN_LIFE
+            | masks::DRAIN_SOUL
+            | masks::DEATH_COIL
+            | masks::WRACK;
+        sim.on_spell_registered(
+            unit,
+            Rc::new(move |sim: &mut Sim, spell| {
+                if sim.spell(spell).matches(reached) {
+                    sim.spell_mut(spell).max_range *= 1.0 + share;
+                }
+            }),
+        );
     }
 
     /// A Shadow Bolt crit leaves a debuff that only the warlock's own shadow damage benefits

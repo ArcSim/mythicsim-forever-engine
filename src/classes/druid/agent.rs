@@ -21,7 +21,7 @@ use super::{
         hurricane, innervate, insect_swarm, moonfire,
         per_dot::PerDot,
         prowl::{self, Prowl},
-        rake::Rake,
+        rake::{self, Rake},
         rip::{self, Rip},
         shifting_power::{self, ShiftingPower},
         starfire, wrath,
@@ -119,8 +119,8 @@ pub(crate) struct DruidAgent {
     rip: Option<Rc<Rip>>,
     pub(crate) rip_snapshot: PerDot<rip::Snapshot>,
     rake: Option<Rc<Rake>>,
-    /// Rake's stored tick.
-    pub(crate) rake_snapshot: PerDot<f64>,
+    /// Rake's stored tick and attack power.
+    pub(crate) rake_snapshot: PerDot<rake::Snapshot>,
     ferocious_bite: Option<FerociousBite>,
     shifting_power: Option<ShiftingPower>,
     faerie_fire: Option<FaerieFire>,
@@ -623,6 +623,7 @@ impl DruidAgent {
                 Effect::Rake {
                     flat_damage,
                     tick_base,
+                    attack_power_share,
                     tick_can_crit,
                     short_name,
                     ..
@@ -630,6 +631,7 @@ impl DruidAgent {
                     fight.agent.rake = Some(Rc::new(Rake {
                         flat_damage: *flat_damage,
                         tick_base: *tick_base,
+                        attack_power_share: *attack_power_share,
                         tick_can_crit: *tick_can_crit,
                         short_name: short_name.clone(),
                     }));
@@ -1118,6 +1120,14 @@ impl Agent for DruidAgent {
                 (Some(cat), _) => cat.clear_form(fight),
                 _ => fight.agent.form = forms::HUMANOID,
             }
+        }
+        // Go `Druid.RegisterSpell`: a hard cast restarts the swing timer as it completes
+        // (mythicsim patch 105), as for a caster-form druid swinging a staff. A druid that does
+        // not auto attack, or a cast made instant, is untouched.
+        let cast_time = fight.spells[spell].cur_cast.cast_time;
+        let cast_time = fight.apply_cast_speed_for_spell(cast_time, spell);
+        if cast_time > 0 {
+            fight.hold_melee_for_cast(fight.now + cast_time);
         }
     }
 

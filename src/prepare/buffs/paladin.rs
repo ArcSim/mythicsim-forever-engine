@@ -124,37 +124,27 @@ pub(crate) fn shadow_resistance_aura(
     ranked_buff(sim, unit, &SHADOW_RESISTANCE_AURA, is_player, rank)
 }
 
-/// Go `RetributionAuraSpellPowerCoefficient`: Retribution Aura scales with the casting paladin's
-/// Holy spell power in Forever even though its client row carries no coefficient. It is the 1.5 s
-/// cast-time floor over 3.5, the AoE divisor because the shield hits every attacker, and the 0.95
-/// penalty for the aura effect: `1.5 / 3.5 / 3 * 0.95`, which Go evaluates exactly as 19/140.
+/// Go `RetributionAuraSpellPowerCoefficient`: Retribution Aura scales with Holy spell power in
+/// Forever even though its client row carries no coefficient. It is the 1.5 s cast-time floor over
+/// 3.5, the AoE divisor because the shield hits every attacker, and the 0.95 penalty for the aura
+/// effect: `1.5 / 3.5 / 3 * 0.95`, which Go evaluates exactly as 19/140.
 const RETRIBUTION_AURA_SPELL_POWER_COEFFICIENT: f64 = 19.0 / 140.0;
 
-/// Go `RetributionAuraBuff`: the aura on the unit the shield protects. The self-cast variant reads
-/// the paladin's own Holy spell power through the proc spell; the external (party-buff) variant
-/// cannot see the providing paladin, so `external_spell_power` stands in for it and the
-/// recipient's own stats stay out of the damage.
+/// Go `RetributionAuraBuff`: the aura on the unit the shield protects. Both copies read the Holy
+/// spell power of the unit the aura is on, not the paladin's (beta logs 2729 to 2736): the
+/// party's copy no longer states the providing paladin's.
 pub(crate) fn retribution_aura_buff(
     sim: &mut Sim,
     unit: UnitId,
     is_player: bool,
     rank: &PaladinAuraRank,
-    external_spell_power: f64,
 ) -> AuraId {
     let meta = aura_meta(&RETRIBUTION_AURA, rank);
     let label = meta.label_for(is_player);
     if let Some(aura) = sim.get_aura(unit, &label) {
         return aura;
     }
-    let (damage, coefficient) = if is_player {
-        (rank.value, RETRIBUTION_AURA_SPELL_POWER_COEFFICIENT)
-    } else {
-        // paladin.go:82 is a fused multiply-add on arm64.
-        (
-            RETRIBUTION_AURA_SPELL_POWER_COEFFICIENT.mul_add(external_spell_power, rank.value),
-            0.0,
-        )
-    };
+    let (damage, coefficient) = (rank.value, RETRIBUTION_AURA_SPELL_POWER_COEFFICIENT);
     let aura = super::support::new_damage_shield(
         sim,
         unit,

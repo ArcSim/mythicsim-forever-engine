@@ -124,6 +124,7 @@ pub(crate) const ITEMS: &[Registration] = &[
     Registration::Proc(ProcKind::Damage, SpellDataProc { trigger_spell_id: 13959, buff_spell_id: 16782, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 272591, item_name: "Premier High Warlord's Shield Wall" }]),
     Registration::Proc(ProcKind::Damage, SpellDataProc { trigger_spell_id: 13959, buff_spell_id: 16782, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 272838, item_name: "Premier Grand Marshal's Aegis" }]),
     Registration::Proc(ProcKind::Damage, SpellDataProc { trigger_spell_id: 1291568, buff_spell_id: 1291570, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 273003, item_name: "Searing Dagger" }]),
+    Registration::Proc(ProcKind::Proc, SpellDataProc { trigger_spell_id: 1293342, buff_spell_id: 1293345, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 273046, item_name: "Guardian's Dualblade" }]),
     Registration::Proc(ProcKind::Damage, SpellDataProc { trigger_spell_id: 1292674, buff_spell_id: 1292675, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 273840, item_name: "Cursed Murloc Eye" }]),
     Registration::Proc(ProcKind::Damage, SpellDataProc { trigger_spell_id: 1293331, buff_spell_id: 1293333, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 274159, item_name: "Thorncursed Grips" }]),
     Registration::Proc(ProcKind::Proc, SpellDataProc { trigger_spell_id: 1293701, buff_spell_id: 1293700, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 274290, item_name: "Painwalker Buckler" }]),

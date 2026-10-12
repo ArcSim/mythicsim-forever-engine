@@ -69,7 +69,20 @@
         "df7a2cfd2",
         "64c7d03af",
         "d86553baa",
-        "1585da069"
+        "1585da069",
+        "0a706e396",
+        "1a0ca297f",
+        "e8b4bc74b",
+        "f0f7f4821",
+        "9766efd03",
+        "a4460148d",
+        "f99663ba6",
+        "2ce826577",
+        "8b2d28ea1",
+        "071e0cb43",
+        "9a1f2e88e",
+        "ff318c876",
+        "f7598154e"
       ],
       "fork_patches": [],
       "note": "Rust consumes client values only through the prepared contract."
@@ -305,7 +318,9 @@
       "tests": [
         "tests/classes/mage/prepared_v2.rs"
       ],
-      "upstream_changes": [],
+      "upstream_changes": [
+        "bad8892e6"
+      ],
       "fork_patches": []
     },
     {

@@ -5,6 +5,7 @@ use std::rc::Rc;
 
 use crate::contracts::prepared_v2::ActionId;
 use crate::prepare::character::constants::MAX_MELEE_RANGE;
+use crate::prepare::dbcenums;
 use crate::prepare::sim::{AuraCallback, AuraId, Cooldown, Duration, Sim, UnitId, UnitType};
 use crate::prepare::spell::{Cast, CastConfig, CostOptions, LabeledAuraArrays};
 use crate::prepare::spelldata::Spell as Row;
@@ -154,4 +155,17 @@ pub(super) fn action_id_string(action: &ActionId) -> String {
     }
     out.push('}');
     out
+}
+
+/// The share of maximum health the buff adds. Client 1.60.1.70291 moved the buff's 30% from
+/// `A_MOD_MAX_HEALTH` to `A_MOD_INCREASE_HEALTH` with the same 30, and the tooltip still reads 30%
+/// of maximum health. Go reads whichever the client states when the talent registers (fork patch
+/// 112), so a later move fails there and not in the middle of a fight.
+pub(super) fn last_stand_share(buff: &Row) -> f64 {
+    let stated = buff.find_effect(dbcenums::E_APPLY_AURA, dbcenums::A_MOD_MAX_HEALTH, 0);
+    if stated.is_nil() {
+        buff.effect(dbcenums::A_MOD_INCREASE_HEALTH, 0).percent()
+    } else {
+        stated.percent()
+    }
 }

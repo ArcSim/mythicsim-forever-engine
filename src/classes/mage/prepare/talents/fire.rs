@@ -22,8 +22,9 @@ impl Mage {
         self.register_incineration(sim, unit);
         self.register_improved_fireball(sim, unit);
 
-        // Tier 2: Flame Throwing and Impact model nothing in Go either.
+        // Tier 2: Impact models nothing in Go either.
         self.register_ignite(sim, unit);
+        self.register_flame_throwing(sim, unit);
 
         // Tier 3
         self.register_burning_soul(sim, unit);
@@ -61,6 +62,32 @@ impl Mage {
                         .value_at(rank),
                 ),
                 kind: SpellModType::CooldownFlat,
+                ..SpellModConfig::default()
+            },
+        );
+    }
+
+    /// Flame Throwing, new in Forever: 11100 adds 3/6 yards to the range of every targeted Fire
+    /// spell of the mage's, Blast Wave not among them.
+    fn register_flame_throwing(&self, sim: &mut Sim, unit: UnitId) {
+        let rank = self.talents.i32("flame_throwing");
+        if rank == 0 {
+            return;
+        }
+        sim.add_static_mod(
+            unit,
+            SpellModConfig {
+                class_mask: masks::FIRE_BLAST
+                    | masks::FIREBALL
+                    | masks::FLAMESTRIKE
+                    | masks::FROSTFIRE_BOLT
+                    | masks::PYROBLAST
+                    | masks::SCORCH,
+                float_value: spell_data()
+                    .flame_throwing
+                    .effect(dbcenums::A_ADD_FLAT_MODIFIER, dbcenums::SPELLMOD_RANGE)
+                    .value_at(rank),
+                kind: SpellModType::RangeFlat,
                 ..SpellModConfig::default()
             },
         );

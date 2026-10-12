@@ -22,7 +22,7 @@ MIT-licensed wowsims lineage, including
 Upstream copyright and permission notices are preserved in [LICENSE](LICENSE).
 
 Fixtures use synthetic characters at revision
-`2d93e423e0303e93dbb16e190d435503248b68f9`. Historical reports and snapshots retain
+`041dec8eff72164e804bde636697e34fdf83b14f`. Historical reports and snapshots retain
 the original experiment's date, compiler settings and source digest. Extracting
 them does not constitute a new timing measurement.
 

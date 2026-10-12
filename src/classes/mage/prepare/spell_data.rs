@@ -13,6 +13,7 @@ pub(super) struct SpellData {
     pub arcane_concentration_triggered: Ladder,
     pub arcane_explosion: Ladder,
     pub arcane_focus: Ladder,
+    pub arcane_geometry: Ladder,
     pub arcane_impact: Ladder,
     pub arcane_instability: Ladder,
     pub arcane_meditation: Ladder,
@@ -22,6 +23,7 @@ pub(super) struct SpellData {
     pub arcane_power: Ladder,
     pub arcane_resilience: Ladder,
     pub arcane_subtlety: Ladder,
+    pub arctic_reach: Ladder,
     pub blast_wave: Ladder,
     pub blizzard: Ladder,
     pub blizzard_triggered: Ladder,
@@ -43,6 +45,7 @@ pub(super) struct SpellData {
     pub fire_power: Ladder,
     pub fire_vulnerability: Ladder,
     pub fireball: Ladder,
+    pub flame_throwing: Ladder,
     pub flamestrike_triggered: Ladder,
     pub frost_channeling: Ladder,
     pub frost_nova: Ladder,
@@ -92,6 +95,7 @@ pub(super) fn spell_data() -> &'static SpellData {
             arcane_concentration_triggered: Ladder::ranked(&[12536]),
             arcane_explosion: Ladder::ranked(&[1449, 8437, 8438, 8439, 10201, 10202]),
             arcane_focus: Ladder::talent(11222, 5),
+            arcane_geometry: Ladder::talent(11247, 2),
             arcane_impact: Ladder::talent(11242, 3),
             arcane_instability: Ladder::talent(15058, 3),
             arcane_meditation: Ladder::talent(18462, 3),
@@ -103,6 +107,7 @@ pub(super) fn spell_data() -> &'static SpellData {
             arcane_power: Ladder::ranked(&[12042]),
             arcane_resilience: Ladder::talent(28574, 2),
             arcane_subtlety: Ladder::talent(11210, 2),
+            arctic_reach: Ladder::talent(16757, 2),
             blast_wave: Ladder::ranked(&[11113, 13018, 13019, 13020, 13021]),
             blizzard: Ladder::ranked(&[10, 6141, 8427, 10185, 10186, 10187]),
             blizzard_triggered: Ladder::ranked(&[
@@ -128,6 +133,7 @@ pub(super) fn spell_data() -> &'static SpellData {
             fireball: Ladder::ranked(&[
                 133, 143, 145, 3140, 8400, 8401, 8402, 10148, 10149, 10150, 10151, 25306,
             ]),
+            flame_throwing: Ladder::talent(11100, 2),
             flamestrike_ranks: Ladder::ranked(&[flamestrike.rank(6).id]),
             flamestrike_triggered: Ladder::ranked(&[
                 1279983, 1279985, 1279987, 1279988, 1279989, 1279990,

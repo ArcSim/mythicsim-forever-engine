@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "2d93e423e0303e93dbb16e190d435503248b68f9",
-    "client_build": "1.60.1.70235",
+    "engine_revision": "041dec8eff72164e804bde636697e34fdf83b14f",
+    "client_build": "1.60.1.70338",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "0b5aef3c4f7e2724d971b577ab7de9e8747ef2277fdb39795b17bde925ea41d5",
@@ -380,7 +380,7 @@
       "FireResistance": 27,
       "FrostDamage": 0,
       "FrostResistance": 27,
-      "HealingPower": 11,
+      "HealingPower": 109,
       "Health": 3963,
       "HolyDamage": 0,
       "Intellect": 217,
@@ -404,7 +404,7 @@
       "ShadowResistance": 27,
       "SpellCritPercent": 21.4239,
       "SpellCritRating": 42,
-      "SpellDamage": 11,
+      "SpellDamage": 109,
       "SpellHasteRating": 0,
       "SpellHitPercent": 6,
       "SpellHitRating": 20,
@@ -1098,7 +1098,7 @@
           {
             "category": "Thorns",
             "single_aura": true,
-            "priority": 22,
+            "priority": 18,
             "position": 0
           }
         ]
@@ -1153,10 +1153,10 @@
       "heart_of_the_wild": 5,
       "improved_shifting_power": 2,
       "leader_of_the_pack": 1,
+      "natural_instinct": 2,
       "naturalist": 3,
       "natures_majesty": 2,
       "natures_reach": 2,
-      "predatory_instincts": 2,
       "predatory_strikes": 3,
       "rend_and_tear": 5,
       "savage_fury": 2,
@@ -1813,7 +1813,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -2132,7 +2132,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -2479,7 +2479,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 36,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -3563,7 +3563,6 @@
         16
       ],
       "form_breaking_spells": [
-        5,
         6,
         7,
         8
@@ -3632,6 +3631,7 @@
       "tick_per_combo_point": 25.5
     },
     {
+      "attack_power_share": 0.0526,
       "flat_damage": 61,
       "kind": "rake",
       "short_name": "Rake",
@@ -3915,7 +3915,7 @@
           "PhysicalCritPercent": 30.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 15.423900000000001,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 895,
@@ -3923,7 +3923,7 @@
           "PhysicalCritPercent": 40.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 25.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 1141,
@@ -3931,7 +3931,7 @@
           "PhysicalCritPercent": 30.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 15.423900000000001,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 1141,
@@ -3939,7 +3939,7 @@
           "PhysicalCritPercent": 40.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 25.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 1034,
@@ -3947,7 +3947,7 @@
           "PhysicalCritPercent": 30.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 15.423900000000001,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 1034,
@@ -3955,7 +3955,7 @@
           "PhysicalCritPercent": 40.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 25.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 1280,
@@ -3963,7 +3963,7 @@
           "PhysicalCritPercent": 30.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 15.423900000000001,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 1280,
@@ -3971,7 +3971,7 @@
           "PhysicalCritPercent": 40.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 25.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 1772,
@@ -3979,7 +3979,7 @@
           "PhysicalCritPercent": 36.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 21.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 1772,
@@ -3987,7 +3987,7 @@
           "PhysicalCritPercent": 46.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 31.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 2018,
@@ -3995,7 +3995,7 @@
           "PhysicalCritPercent": 36.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 21.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 2018,
@@ -4003,7 +4003,7 @@
           "PhysicalCritPercent": 46.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 31.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 1911,
@@ -4011,7 +4011,7 @@
           "PhysicalCritPercent": 36.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 21.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 1911,
@@ -4019,7 +4019,7 @@
           "PhysicalCritPercent": 46.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 31.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 2157,
@@ -4027,7 +4027,7 @@
           "PhysicalCritPercent": 36.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 21.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         },
         {
           "AttackPower": 2157,
@@ -4035,7 +4035,7 @@
           "PhysicalCritPercent": 46.05,
           "RangedAttackPower": 148,
           "SpellCritPercent": 31.4239,
-          "SpellDamage": 11
+          "SpellDamage": 109
         }
       ],
       "kind": "stat_auras"

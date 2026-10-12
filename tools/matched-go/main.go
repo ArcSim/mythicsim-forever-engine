@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-const revision = "2d93e423e0303e93dbb16e190d435503248b68f9"
+const revision = "041dec8eff72164e804bde636697e34fdf83b14f"
 const second uint64 = 1000000000
 
 type Caster struct {

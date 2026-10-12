@@ -296,10 +296,27 @@ fn scorpid_poison_stacks_to_five() {
     assert!(logs.contains("Casting {SpellID: 3009}"), "{logs}");
 }
 
-/// Go newDustCloud: the pet casts it only while its target aura is down.
+/// The Tallstrider fixture with nothing holding the target's major armor reduction category:
+/// no permanent Expose Armor and no Sunder Armor ramp.
+fn tallstrider_without_armor_reductions() -> Value {
+    let mut value = fixture("beast-mastery-hunter-tallstrider");
+    for aura in value["target"]["auras"].as_array_mut().unwrap() {
+        if aura["tag"] == "MajorArmorReduction" {
+            aura["active"] = json!(false);
+        }
+    }
+    value["effects"]
+        .as_array_mut()
+        .unwrap()
+        .retain(|effect| effect["kind"] != "sunder_armor_ramp");
+    value
+}
+
+/// Go newDustCloud: the pet casts it only while its target aura is down (and, since patch 110,
+/// no Sunder Armor or Expose Armor holds the major armor reduction category).
 #[test]
 fn dust_cloud_is_cast_again_only_once_it_falls_off() {
-    let logs = first_fight_log(fixture("beast-mastery-hunter-tallstrider"));
+    let logs = first_fight_log(tallstrider_without_armor_reductions());
     let events: Vec<&str> = logs
         .lines()
         .filter(|line| {
@@ -614,4 +631,61 @@ fn a_move_with_a_speed_aura_is_supported() {
         .expect("the exporter wrote the movement effect");
     effect["speed_auras"] = json!(["Aspect of the Cheetah"]);
     assert!(super::refusal_codes(value).is_empty());
+}
+
+/// A Volley channel is a non-melee cast: it holds the melee swing too, and the swings restart a
+/// full swing after it ends (Go volley.go, community #743). The hunter's hands do not swing for
+/// the six seconds of the channel, and the first swing after it is not until a swing later.
+#[test]
+fn volley_holds_the_melee_swing_until_the_channel_ends() {
+    let mut value = fixture("production-survival-hunter-2-targets");
+    value["sim"]["iterations"] = json!(1);
+    let logs = simulate_prepared(&parse(value)).unwrap().result["logs"]
+        .as_str()
+        .unwrap()
+        .to_string();
+    let hunter = unit_lines(&logs, "survival-hunter (#1)");
+    let volley = hunter
+        .iter()
+        .copied()
+        .find(|line| line.contains("Casting {SpellID: 14295}"))
+        .map(at)
+        .expect("the hunter channels Volley");
+    let channel_end = volley + 6.0;
+    let swings: Vec<f64> = hunter
+        .iter()
+        .copied()
+        .filter(|line| {
+            line.contains("Completed cast {OtherID: 3, Tag: 1}")
+                || line.contains("Completed cast {OtherID: 3, Tag: 2}")
+        })
+        .map(at)
+        .collect();
+    assert!(
+        swings
+            .iter()
+            .all(|&swing| swing <= volley + 0.001 || swing >= channel_end),
+        "a swing lands in the channel: {swings:?}"
+    );
+    let first_after = swings
+        .iter()
+        .copied()
+        .find(|&swing| swing >= channel_end)
+        .expect("the hunter swings again");
+    assert!(first_after - channel_end >= 0.95, "{first_after}");
+}
+
+/// Dust Cloud yields to Sunder Armor and Expose Armor (mythicsim patch 110): a Tallstrider
+/// against a target with a permanent Expose Armor never casts it, and casts it once nothing
+/// holds the major armor reduction category.
+#[test]
+fn dust_cloud_yields_to_the_major_armor_reductions() {
+    let casts = |value: Value| {
+        first_fight_log(value)
+            .lines()
+            .filter(|line| line.contains("Casting {SpellID: 1265904}"))
+            .count()
+    };
+    assert_eq!(casts(fixture("beast-mastery-hunter-tallstrider")), 0);
+    assert!(casts(tallstrider_without_armor_reductions()) > 0);
 }

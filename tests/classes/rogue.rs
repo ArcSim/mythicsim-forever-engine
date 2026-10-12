@@ -213,3 +213,31 @@ fn area_consumables_reach_every_target() {
         }
     }
 }
+
+/// Thistle Tea is drunk on its own once all but `core.ThistleTeaSpill` (15, mythicsim patch
+/// 102) of its flat 100 fits in the bar. With 10 allowed to spill a Combat Rogue waits for a
+/// bar under 10 energy, which a 1 second global cooldown at 10 energy a second rarely leaves.
+/// Pinned to the first fight of the production request: the first drink starts above 10.
+#[test]
+fn thistle_tea_may_spill_fifteen_energy() {
+    let value = combat_json();
+    let spill = value["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|effect| effect["kind"] == "conjured_energy")
+        .map(|effect| effect["spill"].as_f64().unwrap());
+    assert_eq!(spill, Some(15.0));
+    let logs = first_fight_log(value);
+    let gained = logs
+        .lines()
+        .find(|line| line.contains("Gained 100.000 energy from {ItemID: 7676}"))
+        .expect("the first fight drinks Thistle Tea");
+    let before: f64 = gained
+        .split("} (")
+        .nth(1)
+        .and_then(|rest| rest.split(" -->").next())
+        .and_then(|energy| energy.parse().ok())
+        .expect("the log states the energy before the drink");
+    assert!(before > 10.0 && before <= 15.0, "{gained}");
+}

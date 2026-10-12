@@ -13,6 +13,15 @@ use crate::{
     core::time::NS_PER_SECOND,
 };
 
+/// Go `DustCloudYieldsToSunderAndExpose` (mythicsim patch 110): players report that in Forever
+/// Sunder Armor, Expose Armor and Dust Cloud do not stack, only the strongest applies, so the
+/// Tallstrider holds Dust Cloud while Sunder Armor or Expose Armor is on the target and keeps
+/// its focus for Bite. No combat log confirms it yet.
+pub(crate) const DUST_CLOUD_YIELDS_TO_SUNDER_AND_EXPOSE: bool = true;
+
+/// Go `buffs.SunderArmorCategory`, the single aura category of Sunder Armor and Expose Armor.
+pub(crate) const SUNDER_ARMOR_CATEGORY: &str = "MajorArmorReduction";
+
 /// Go `PetConfig.CustomRotation` of the pet's family.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum Rotation {

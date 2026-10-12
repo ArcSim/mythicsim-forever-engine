@@ -275,3 +275,48 @@ fn the_stormstrike_debuff_boosts_only_its_target() {
     }
     assert!(boosted_first, "{logs}");
 }
+
+/// A completed hard cast restarts the melee swing timer in Forever (Go `HoldMeleeForCast`, beta
+/// logs 2701 and 2712): no swing lands inside the cast and the first swing after it comes a full
+/// weapon speed later (melee haste shortens it), even when one came due during the cast. Before
+/// the rule that swing landed as the cast completed.
+#[test]
+fn a_completed_chain_lightning_restarts_the_swing() {
+    let value = fixture("enhancement-shaman-chain-magma-4-targets");
+    let speed = value["melee"]["main_hand"]["swing_speed"].as_f64().unwrap();
+    let logs = first_fight_log(value);
+    let stamp = |line: &str| -> f64 { line[1..line.find(']').unwrap()].parse().unwrap() };
+    let shaman: Vec<&str> = logs
+        .lines()
+        .filter(|line| line.contains("[enhancement-shaman (#1)]"))
+        .collect();
+    let swings: Vec<f64> = shaman
+        .iter()
+        .filter(|line| line.contains("Completed cast {OtherID: 3, Tag: 1}"))
+        .map(|line| stamp(line))
+        .collect();
+    let mut casts = Vec::new();
+    let mut started = None;
+    for line in &shaman {
+        if line.contains("Casting {SpellID: 10605}") && !line.contains("Cast Time = 0s") {
+            started = Some(stamp(line));
+        } else if line.contains("Completed cast {SpellID: 10605}") {
+            casts.extend(started.take().map(|start| (start, stamp(line))));
+        }
+    }
+    assert!(casts.len() >= 3 && !swings.is_empty(), "{logs}");
+    for (start, end) in casts {
+        for &swing in &swings {
+            assert!(
+                !(swing > start + 0.011 && swing < end - 0.011),
+                "a swing lands at {swing} inside the cast from {start} to {end}"
+            );
+        }
+        if let Some(&next) = swings.iter().find(|&&swing| swing > end + 0.001) {
+            assert!(
+                next - end >= speed / 2.0,
+                "a swing at {next} follows the cast that ended at {end}"
+            );
+        }
+    }
+}

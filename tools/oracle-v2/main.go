@@ -1307,11 +1307,11 @@ func commonEffects(character *core.Character, target *core.Unit, request *proto.
 			if len(gains) != 0 {
 				*unrepresented = append(*unrepresented, fmt.Sprintf("conjured %d restores mana and energy", item))
 			}
-			// Thistle Tea (9512) restores a flat 100; the cast activates once all but 10 of it fits,
-			// a Go literal (consumes.go makeConjuredActivationSpellInternal).
+			// Thistle Tea (9512) restores a flat 100; the cast activates once all but core.ThistleTeaSpill
+			// of it fits (consumes.go makeConjuredActivationSpellInternal, mythicsim patch 102).
 			effects = append(effects, map[string]any{
 				"kind": "conjured_energy", "item_id": item, "rng_label": consumable.Name, "gains": energyGains,
-				"selected": consumes.GetConjuredId() == item, "spill": 10.0,
+				"selected": consumes.GetConjuredId() == item, "spill": float64(core.ThistleTeaSpill),
 			})
 		case spell.ActionID.SameAction(core.GoblinSapperActionID): // consumes.go newGoblinSapperSpell
 			effects = append(effects, goblinSapperEffect(character, request, unrepresented))

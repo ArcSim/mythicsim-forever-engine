@@ -103,15 +103,17 @@ fn blood_frenzy_on_other_outcomes_is_rejected() {
 
 #[test]
 fn innervate_clears_the_form_and_cat_spells_then_fail_with_a_log() {
-    let log = first_fight_log(feral());
+    // The first fight of the production fixture no longer casts Innervate, since its potion
+    // leaves Cat Form alone (patch 111); this one casts it in form.
+    let log = first_fight_log(fixture("feral-druid-mighty-rage-potion"));
     let innervate = log
         .find("Casting {SpellID: 29166}")
         .expect("the first fight casts Innervate");
     let before = &log[..innervate];
     assert!(before.ends_with(
-        "Movement speed changed from 8.92 (27.50%) to 7.14 (2.00%)\n[103.10] [feral-druid (#1)] "
+        "Movement speed changed from 8.92 (27.50%) to 7.14 (2.00%)\n[87.22] [feral-druid (#1)] "
     ));
-    assert!(log[innervate..].contains("[103.10] Failed cast to spell {SpellID: 9830}, wrong form"));
+    assert!(log[innervate..].contains("[87.22] Failed cast to spell {SpellID: 9830}, wrong form"));
 }
 
 #[test]
@@ -119,7 +121,7 @@ fn threat_follows_the_form() {
     let log = first_fight_log(feral());
     // Faerie Fire's flat threat in Cat Form, and an auto attack's at Cat Form's 0.71.
     assert!(log.contains("{SpellID: 9907} Hit for 0.000 damage (SpellSchool: 8). (Threat: 85.200)"));
-    assert!(log.contains("Hit for 147.840 damage (SpellSchool: 1). (Threat: 104.967)"));
+    assert!(log.contains("Hit for 143.563 damage (SpellSchool: 1). (Threat: 101.930)"));
 }
 
 fn bear() -> Value {
@@ -675,4 +677,61 @@ fn each_copy_swings_with_the_roar_it_holds() {
             "Target {target}: it does not swing"
         );
     }
+}
+
+fn fixture(name: &str) -> Value {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join(format!("fixtures/mage/prepared-v2/{name}.prepared.json"));
+    serde_json::from_slice(&fs::read(path).unwrap()).unwrap()
+}
+
+fn logged(mut value: Value) -> String {
+    value["sim"]["debug_first_iteration"] = json!(true);
+    first_fight_log(value)
+}
+
+/// A potion no longer drops Bear Form (mythicsim patch 111): the bear drinks its Greater
+/// Stoneshield Potion at 4 seconds and again at 124.52 and keeps the form through both. Giving
+/// the potion back to the form-breaking spells, as the old exporter did, drops the form.
+#[test]
+fn a_potion_leaves_the_bear_in_form() {
+    let value = fixture("feral-bear-druid-potion-shift");
+    let drops_form = |logs: &str| {
+        logs.lines().any(|line| {
+            line.contains("Aura faded: {SpellID: 9634}")
+                && line
+                    .trim_start_matches('[')
+                    .split(']')
+                    .next()
+                    .and_then(|time| time.parse::<f64>().ok())
+                    .is_some_and(|time| time < 120.0)
+        })
+    };
+    assert!(!drops_form(&logged(value.clone())));
+    let mut old = value;
+    let spells = old["player"]["spells"].as_array().unwrap();
+    let index = spells
+        .iter()
+        .position(|spell| spell["action_id"]["item_id"] == 13455)
+        .expect("the potion is a player spell");
+    effect(&mut old, "bear_form")["form_breaking_spells"] = json!([index]);
+    assert!(drops_form(&logged(old)));
+}
+
+/// Rake adds 5.26% of attack power to its hit and every tick (mythicsim patch 99), so its
+/// projected tick falls without the share.
+#[test]
+fn rake_scales_with_attack_power() {
+    let snapshot = |share: f64| -> f64 {
+        let mut value = fixture("feral-druid-rake");
+        effect(&mut value, "rake")["attack_power_share"] = json!(share);
+        logged(value)
+            .lines()
+            .find_map(|line| line.split("Rake Snapshot Power: ").nth(1))
+            .and_then(|power| power.trim().parse().ok())
+            .expect("the first fight applies Rake")
+    };
+    let with = snapshot(0.0526);
+    let without = snapshot(0.0);
+    assert!(with > without + 10.0, "{with} against {without}");
 }

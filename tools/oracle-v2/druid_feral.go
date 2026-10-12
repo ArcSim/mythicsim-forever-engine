@@ -117,9 +117,11 @@ func druidFeralEffects(d *druid.Druid, character *core.Character) []map[string]a
 		if talents.Furor > 0 {
 			furor = feralFuror.EffectAt(2).ValueAt(talents.Furor)
 		}
+		// registerFormBreakingConsumes: conjured items and explosives. A potion no longer drops the
+		// form (mythicsim patch 111, cca7ffd1e7).
 		breaking := []int{}
 		for i, spell := range character.Spellbook {
-			if spell.Flags.Matches(core.SpellFlagPotion | core.SpellFlagConjured | core.SpellFlagExplosive) {
+			if spell.Flags.Matches(core.SpellFlagConjured | core.SpellFlagExplosive) {
 				breaking = append(breaking, i)
 			}
 		}
@@ -183,15 +185,16 @@ func druidFeralEffects(d *druid.Druid, character *core.Character) []map[string]a
 			"expected_combo_points": 5.0, "short_name": d.Rip.ShortName,
 		})
 	}
-	if d.Rake != nil { // rake.go: a flat hit and a flat bleed tick, neither scaling with attack power
+	if d.Rake != nil { // rake.go: a flat hit and a flat bleed tick, and 5.26% of attack power on both (a Go literal)
 		rank := feralRake.Highest()
 		effects = append(effects, map[string]any{
 			"kind": "rake", "spell": spellPosition(character, d.Rake.Spell),
-			"flat_damage":   rank.DamageEffect().Average(core.CharacterLevel),
-			"tick_base":     rank.PeriodicEffect().Average(core.CharacterLevel),
-			"tick_can_crit": rank.PeriodicCanCrit(),
-			"tick_magic":    rank.DefenseTypeCore() == core.DefenseTypeMagic,
-			"short_name":    d.Rake.ShortName,
+			"flat_damage":        rank.DamageEffect().Average(core.CharacterLevel),
+			"tick_base":          rank.PeriodicEffect().Average(core.CharacterLevel),
+			"attack_power_share": 0.0526,
+			"tick_can_crit":      rank.PeriodicCanCrit(),
+			"tick_magic":         rank.DefenseTypeCore() == core.DefenseTypeMagic,
+			"short_name":         d.Rake.ShortName,
 		})
 	}
 	if d.FerociousBite != nil { // ferocious_bite.go: client values, and 3% attack power a point, a Go literal

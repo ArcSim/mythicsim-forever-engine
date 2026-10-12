@@ -1,15 +1,13 @@
 //! Hellfire (11684), from Go sim/warlock/hellfire.go. The channel is an area dot on the
 //! warlock. Each tick rolls a fixed amount, to hit and to crit, on every target before
-//! dealing any, stops the channel when the warlock cannot survive the burn, deals the batch,
-//! then burns the warlock for the same amount.
-//!
-//! Go keeps the batch in the spell's one result slice. Stopping the channel runs the tick
-//! due now again before the channel ends, and that tick refills the slice, so the first tick
-//! deals the second's results.
+//! dealing any, deals the batch, then burns the warlock for the same amount. The channel does
+//! not stop at low health: the simulation has no healer and Life Tap already spends past
+//! zero, and stopping clipped every channel after about 18 seconds into one-tick recasts at full
+//! mana cost (#735, `afe6a8f09b`).
 
 use crate::{
     classes::warlock::agent::WarlockAgent,
-    core::fight::{AoeResults, DotId, Fight, Outcome, SpellId},
+    core::fight::{DotId, Fight, Outcome, SpellId},
 };
 
 /// Hellfire's tick amount and whether its area hits crit.
@@ -42,15 +40,8 @@ pub(crate) fn tick(fight: &mut Fight<WarlockAgent>, dot: DotId) {
         "the gate refuses a Hellfire whose burn cannot crit"
     );
     let spell = fight.dots[dot].spell;
-    let calculated: AoeResults =
+    let results =
         fight.calc_periodic_aoe_damage(dot, hellfire.tick_base, Outcome::TickMagicHitAndCrit);
-    fight.agent.hellfire_results = calculated;
-    if hellfire.tick_base > fight.player.health {
-        let aura = fight.dots[dot].aura;
-        fight.deactivate_aura(aura);
-    }
-    // The slice as it stands: a tick run by the stopped channel has refilled it.
-    let results = fight.agent.hellfire_results;
     fight.deal_batched_periodic_damage(spell, &results);
     fight.remove_health(hellfire.tick_base);
 }

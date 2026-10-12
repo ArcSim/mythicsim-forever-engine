@@ -516,6 +516,23 @@ impl<A: Agent> Fight<A> {
         }
     }
 
+    /// Go `GetExclusiveEffectCategory(name).AnyActive()` on a unit: whether an effect holds the
+    /// category, read from the category the runtime enforces or else the one it tracks. A
+    /// category none of the unit's auras belong to has nothing active.
+    pub(crate) fn exclusive_category_any_active(&self, side: Side, name: &str) -> bool {
+        if let Some(category) = self.enforced_category(side, name) {
+            return self.exclusive[category].active.is_some();
+        }
+        self.exclusive_tracking.iter().any(|category| {
+            category.name == name
+                && category
+                    .members
+                    .first()
+                    .is_some_and(|member| member.aura.side == side)
+                && category.active.is_some()
+        })
+    }
+
     /// The enforced category of a unit by name.
     pub(crate) fn enforced_category(&self, side: Side, name: &str) -> Option<usize> {
         self.exclusive.iter().position(|category| {

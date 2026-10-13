@@ -3296,6 +3296,7 @@
     },
     {
       "kind": "strider_kick",
+      "speed_aura": "Strider Kick",
       "spell_id": 1317257
     },
     {
@@ -3457,7 +3458,7 @@
       ],
       "kind": "spell_data_damage_proc",
       "landed_only": true,
-      "outcome": "melee_special_hit_and_crit",
+      "outcome": "melee_special_crit_only",
       "proc_chance": 1,
       "require_damage": true,
       "roll": [
@@ -3583,7 +3584,6 @@
         17,
         18,
         24,
-        25,
         27
       ]
     },

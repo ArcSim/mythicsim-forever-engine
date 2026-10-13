@@ -5466,10 +5466,11 @@
   "effects": [
     {
       "aura": "RageBar",
-      "crit_multiplier": 2,
       "kind": "rage_bar",
+      "main_hand_crit_rage": 8.996,
       "main_hand_rage": 8.996,
       "max_rage": 100,
+      "off_hand_crit_rage": 4.325,
       "off_hand_rage": 4.325,
       "starting_rage": 0,
       "threat_per_rage": 5
@@ -6065,8 +6066,6 @@
       "trigger_require_damage": true,
       "trigger_spells": [
         3,
-        4,
-        5,
         7,
         14,
         20,
@@ -6078,15 +6077,12 @@
         28,
         30,
         31,
-        32,
         33,
         34,
         36,
-        38,
         39,
         40,
         49,
-        50,
         51,
         52
       ]

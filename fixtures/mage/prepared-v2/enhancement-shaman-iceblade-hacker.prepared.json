@@ -5804,11 +5804,8 @@
       "trigger_proc_chance": 0.2,
       "trigger_spells": [
         4,
-        5,
         57,
-        58,
         60,
-        61,
         62,
         63
       ],
@@ -6065,7 +6062,7 @@
       ],
       "kind": "spell_data_damage_proc",
       "landed_only": true,
-      "outcome": "melee_special_hit_and_crit",
+      "outcome": "melee_special_crit_only",
       "proc_chance": 1,
       "require_damage": true,
       "roll": [
@@ -6186,11 +6183,8 @@
       "trigger_require_damage": true,
       "trigger_spells": [
         4,
-        5,
         57,
-        58,
         60,
-        61,
         62,
         63
       ]

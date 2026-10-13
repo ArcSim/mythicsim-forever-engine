@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `041dec8eff72164e804bde636697e34fdf83b14f`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `d2409ccd043e9d3dd24232088f9abf49a7d19f64`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `f7598154eb8a138831290b34d4d321a532295224` (2026-10-10) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -174,6 +174,38 @@ behavior changes Rust prepares and 3 runtime changes the golden fixtures compare
 area fixtures stand the mage at 20 yards, outside the point-blank radius, so Go never casts Cone of
 Cold or Blast Wave there; the same requests from 8 yards are accepted as
 `frost-mage-3-targets-point-blank-area-lines` and `fire-mage-2-targets-point-blank-blast-wave`.
+
+The pin moved from `041dec8ef` to `d2409ccd0` on 2026-10-13, the fork's patches 112 to 129 and
+its patch 130, the Last Stand fix Rust already followed as patch 112 at the old pin (the fork
+renumbered). The community base `f7598154e` and client build 70338 did not move, and the Go database
+is byte for byte the same, so the game data is re-imported unchanged and the ledger has no new
+commit. 223 of the 585 Go goldens changed, 221 of them in DPS: 141 of the 143 Warrior goldens, 37 of
+the 39 Rogue, 33 of the 36 Bear, 10 Hunter and 2 Shaman. The behavior changes:
+
+- Rage: a critical auto attack pays 100% extra rage, not 75%, for warriors, bears and the cat's bear
+  form alike (patch 113), and the extra leaves out the two-hander's factor, so a one-hander doubles
+  and a two-hander gets about 1.77 times its swing (patch 128).
+- Windfury Totem procs off the main hand only, as its tooltip says, and still off a shield strike
+  (patch 114). Deep Wounds from an off-hand crit is sized off the off-hand weapon (patch 116). Seal of
+  Righteousness takes its spell power share from the weapon in the hand, so a swap between a
+  two-hander and a one-hander changes it (patch 129).
+- Items: Iceblade Hacker's and Warblade of Caer Darrow's Frost cannot miss, be dodged or parried and
+  still crits (patch 112). Frost Oil is a weapon imbue, a 10% Frostbolt on each landed hit of the oiled
+  hand (patch 126). Ironfoe gets two switches whose defaults keep the client's 6% on either hand
+  (patch 115).
+- Hunter: the Wolf casts Furious Howl (patch 119), Strider Kick speeds the hunter up 30% for 3
+  seconds (patch 120), and a switch, off, makes a pet pool focus for its cooldowns (patch 118).
+- Requests: `Encounter.no_hit_suppression` drops the boss's 1% melee and ranged hit suppression
+  (patch 125) and `Party.battle_squawks` adds one Battle Squawk stack a party engineer, 5% melee
+  attack speed each (patch 127). A speed change mid-move keeps the move's destination (patch 121).
+
+Preparation follows all of these that the prepared state shows. The rage bar writes a crit multiplier
+of 2, the attack tables take no hit suppression when the encounter asks, the Battle Squawk aura
+applies Go's `math.Pow` rounding to its stacks, Strider Kick registers its aura and active movement
+speed effect, the Wolf its Furious Howl auras on itself and its owner, and an oil in an imbue or
+temporary enchantment slot its Frostbolt and weapon proc aura. A Wolf golden joins the Hunter
+preparation cases. Before this move Rust prepared the two new request fields as if they were unset,
+and now writes what the exporter writes for them on the production builds of every class.
 
 ## Ledger
 

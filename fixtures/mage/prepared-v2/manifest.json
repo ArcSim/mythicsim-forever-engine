@@ -4,7 +4,7 @@
   "engine_revision": "d2409ccd043e9d3dd24232088f9abf49a7d19f64",
   "client_build": "1.60.1.70338",
   "exporter": "tools/oracle-v2/main.go",
-  "exporter_sha256": "bf6a0b1c3bca3fbfdca781fb9181fa60aa3855ef6d9dfe84ea7410fd46b87368",
+  "exporter_sha256": "9913ccb5c477a00baf048fe016ce685a69dff4a2513e3d69389485566d2443d4",
   "generator": "python3 tools/prepared_v2.py capture --output output/prepared-v2-capture",
   "note": "Accepted prepared inputs exported from the pinned Go engine. Capture re-exports into scratch and must match these files exactly.",
   "cases": [
@@ -12131,6 +12131,195 @@
       "go_log": {
         "file": "fire-mage-2-targets-point-blank-blast-wave.go-log.txt",
         "sha256": "fc68e1c26ae561a3bf5168054a335e272265711b2f05d4cb496c5b27b7afce22"
+      }
+    },
+    {
+      "id": "beast-mastery-hunter-wolf",
+      "description": "A Beast Mastery Hunter with a Wolf, which casts Furious Howl for 60 focus: its melee attack power aura on the pet, and on the hunter within 15 yards of the target (fork patch 119).",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/beast-mastery-hunter-wolf.request.json"
+      },
+      "prepared": "beast-mastery-hunter-wolf.prepared.json",
+      "prepared_sha256": "2f3d62e390c5651259b365036c056d7a096f3e10c72792936a7c93d599c50f61",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "beast-mastery-hunter-wolf.go-result.json",
+        "sha256": "90bb30e7011e69b006e4d3822d35985c03a65148e0a3ad85dcb80cfffa7d5b01"
+      },
+      "go_log": {
+        "file": "beast-mastery-hunter-wolf.go-log.txt",
+        "sha256": "6c0c0856495bce0254d5fb57510e9e6aeb411e8b34f83e9f58c155a2c86e5c27"
+      }
+    },
+    {
+      "id": "marksmanship-hunter-wolf-out-of-howl-range",
+      "description": "A Marksmanship Hunter at 25 yards with a Wolf: Furious Howl reaches the pet alone, outside its 15 yard radius (fork patch 119).",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/marksmanship-hunter-wolf-out-of-howl-range.request.json"
+      },
+      "prepared": "marksmanship-hunter-wolf-out-of-howl-range.prepared.json",
+      "prepared_sha256": "c23c8e0f54159a1b792541f08de8cd2c7c9efeb03ae6b4fa2c82d72a2bebfd49",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "marksmanship-hunter-wolf-out-of-howl-range.go-result.json",
+        "sha256": "9769417becc655595d873cc1503b6aa12bfedba543a7cc9682292c67effbaf3c"
+      },
+      "go_log": {
+        "file": "marksmanship-hunter-wolf-out-of-howl-range.go-log.txt",
+        "sha256": "8e7c4fa04e8814fe3f9f22bcd668af42444e461f1003dc8fee73bec84cce7897"
+      }
+    },
+    {
+      "id": "combat-rogue-frost-oil",
+      "description": "A Combat Rogue with Frost Oil on both weapons, which cast a Frostbolt on 10% of the landed hits of their hand (fork patch 126).",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/combat-rogue-frost-oil.request.json"
+      },
+      "prepared": "combat-rogue-frost-oil.prepared.json",
+      "prepared_sha256": "222f56109a238f8885f394a6ae6f8cd772deaa8fa149de320478badafdb161fd",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "combat-rogue-frost-oil.go-result.json",
+        "sha256": "a95ffe63eab27fdf8ed3804b701a79dbaeb0edeed58a4cb01c97cb5e6a0522d7"
+      },
+      "go_log": {
+        "file": "combat-rogue-frost-oil.go-log.txt",
+        "sha256": "2cc98d81098ec09adbf694ae334147cc656170618d667ad4a347f5aa649030c2"
+      }
+    },
+    {
+      "id": "combat-rogue-frost-oil-beside-poisons",
+      "description": "A Combat Rogue with Frost Oil as a temporary enchantment beside its poisons on both weapons (fork patch 126).",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/combat-rogue-frost-oil-beside-poisons.request.json"
+      },
+      "prepared": "combat-rogue-frost-oil-beside-poisons.prepared.json",
+      "prepared_sha256": "30f55176248cf844110deb8e068141bfb139b50eff353db759d182055a91f121",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "combat-rogue-frost-oil-beside-poisons.go-result.json",
+        "sha256": "33085799ba060160bf8d9995b8906bd28403b42e0fc44397176deb943d6ba2a0"
+      },
+      "go_log": {
+        "file": "combat-rogue-frost-oil-beside-poisons.go-log.txt",
+        "sha256": "2bc8fa34acab2cc7c72fc5000ce4c01ea5ea4fcdd56ae8513dc3049a15cb5220"
+      }
+    },
+    {
+      "id": "combat-rogue-battle-squawks",
+      "description": "A Combat Rogue in a party with three Battle Squawk stacks: 5% melee attack speed apiece for four minutes, from the pull (fork patch 127).",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/combat-rogue-battle-squawks.request.json"
+      },
+      "prepared": "combat-rogue-battle-squawks.prepared.json",
+      "prepared_sha256": "f2ff05a8d517b4250d1002a5e4441e70512870a8c24f71c996a1385779d0d937",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "combat-rogue-battle-squawks.go-result.json",
+        "sha256": "449ef74c0e01cb9913cfb49b19a1813e0bd6a24982b3dec2c931b94cad5670f1"
+      },
+      "go_log": {
+        "file": "combat-rogue-battle-squawks.go-log.txt",
+        "sha256": "a678d9712c6439282b7726cd9efef9dca61678ca72ebd064bac9107cf700027d"
+      }
+    },
+    {
+      "id": "warrior-battle-squawks",
+      "description": "A Fury Warrior in a party with the most Battle Squawk stacks, five (fork patch 127).",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/warrior-battle-squawks.request.json"
+      },
+      "prepared": "warrior-battle-squawks.prepared.json",
+      "prepared_sha256": "0b8fbbe6a109d472d17bb882d0639797e003f96f6135e0a91f3dbccde5ff2afe",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "warrior-battle-squawks.go-result.json",
+        "sha256": "eded3612ca2c26e702ddd1a0e76e08cfb8b00c328dd99e94af8b4da975764c5b"
+      },
+      "go_log": {
+        "file": "warrior-battle-squawks.go-log.txt",
+        "sha256": "558c5a86d4064b3364907d9239bc57853a86adb90ef17b744d3479b305bfb886"
+      }
+    },
+    {
+      "id": "warrior-no-hit-suppression",
+      "description": "A Fury Warrior against a boss whose 1% hit suppression is switched off, so the physical hit cap is 8% (fork patch 125).",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/warrior-no-hit-suppression.request.json"
+      },
+      "prepared": "warrior-no-hit-suppression.prepared.json",
+      "prepared_sha256": "f7ea7bf2551ced281bb8277548e06420d0576fb77660e95b89613a3ca6795089",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "warrior-no-hit-suppression.go-result.json",
+        "sha256": "8df52086582882c5b9cd9f4c8ed7a09b49527ebb049455d296dbf5e10cbe9cfc"
+      },
+      "go_log": {
+        "file": "warrior-no-hit-suppression.go-log.txt",
+        "sha256": "1ae0b144826771bb984219208cbf9c90ad8f27433460158a444a21b02e23aea9"
+      }
+    },
+    {
+      "id": "survival-hunter-no-hit-suppression",
+      "description": "A melee Hunter and its Cat against a boss whose 1% hit suppression is switched off (fork patch 125).",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/survival-hunter-no-hit-suppression.request.json"
+      },
+      "prepared": "survival-hunter-no-hit-suppression.prepared.json",
+      "prepared_sha256": "75d6bac9012ed26217b40606881d0f50198075dde3a00d2015840abb4235a708",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "survival-hunter-no-hit-suppression.go-result.json",
+        "sha256": "68ca0c6b553ce2f1af0f415f753b91c083c390d34f76fed0e3e74d931f193044"
+      },
+      "go_log": {
+        "file": "survival-hunter-no-hit-suppression.go-log.txt",
+        "sha256": "5eb41feabd7d32f1a07545430436ccee21d9f81f50d70b2cc097e2c8ca128bbc"
+      }
+    },
+    {
+      "id": "survival-hunter-strider-kick-while-moving",
+      "description": "A Survival Hunter kicks 1 second into its prepull run out to 20 yards: Strider Kick speeds it up 30% for 3 seconds in the middle of the move, which keeps its destination (fork patches 120 and 121).",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/survival-hunter-strider-kick-while-moving.request.json"
+      },
+      "prepared": "survival-hunter-strider-kick-while-moving.prepared.json",
+      "prepared_sha256": "8af0f542ba5ced80980969195c38defc22555da16ff896cad61902edb8d6175d",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "survival-hunter-strider-kick-while-moving.go-result.json",
+        "sha256": "3d0c42044f28145024b15a2a5780e84c0a5bc3fc21276144cc716e5ef452bf01"
+      },
+      "go_log": {
+        "file": "survival-hunter-strider-kick-while-moving.go-log.txt",
+        "sha256": "4dd4ec2e0cb771f804833a362109c282a53e4d0ef87f2bfa73596286864ce52d"
       }
     }
   ]

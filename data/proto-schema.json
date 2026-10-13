@@ -5296,6 +5296,12 @@
      "json_name": "zoneId",
      "number": 12,
      "kind": "int32"
+    },
+    {
+     "name": "no_hit_suppression",
+     "json_name": "noHitSuppression",
+     "number": 13,
+     "kind": "bool"
     }
    ]
   },
@@ -7190,6 +7196,12 @@
      "number": 2,
      "kind": "message",
      "type": "proto.PartyBuffs"
+    },
+    {
+     "name": "battle_squawks",
+     "json_name": "battleSquawks",
+     "number": 3,
+     "kind": "int32"
     }
    ]
   },

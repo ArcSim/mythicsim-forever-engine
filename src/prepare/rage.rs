@@ -86,8 +86,10 @@ impl Sim {
 const TWO_HAND_NORMALIZED_SWING_SPEED: f64 = 3.3;
 
 /// tools/oracle-v2/warrior.go `rageBarEffect`: the rage each landed white hit gives, with Go's
-/// operation order: the hit factor, halved for the off hand, raised for a two-handed weapon,
-/// times the swing speed, the bar's base multiplier and the hand's multiplier.
+/// operation order: the hit factor, halved for the off hand, times the swing speed, the bar's base
+/// multiplier and the hand's multiplier, then raised for a two-handed weapon. A critical hit adds
+/// the swing's rage before that two-hander factor times `CritRageMultiplier` less one
+/// (`CritRageBonusSkipsTwoHand`), which the crit rage values carry.
 pub(crate) fn rage_bar_effect(
     sim: &Sim,
     unit: UnitId,
@@ -102,17 +104,20 @@ pub(crate) fn rage_bar_effect(
             hit_factor /= 2.0;
             hand_multiplier = bar.off_hand_rage_multiplier;
         }
+        let base_rage = hit_factor * weapon.swing_speed * base_rage_multiplier * hand_multiplier;
+        let mut generated = base_rage;
         if weapon.normalized_swing_speed == TWO_HAND_NORMALIZED_SWING_SPEED {
-            hit_factor *= TWO_HAND_RAGE_MULTIPLIER;
+            generated *= TWO_HAND_RAGE_MULTIPLIER;
         }
-        hit_factor * weapon.swing_speed * base_rage_multiplier * hand_multiplier
+        (generated, base_rage * (CRIT_RAGE_MULTIPLIER - 1.0))
     };
+    let (main_hand, main_hand_crit) = hit_rage(&auto_attacks.mh, false);
+    let (off_hand, off_hand_crit) = hit_rage(&auto_attacks.oh, true);
     serde_json::json!({
         "kind": "rage_bar", "aura": "RageBar", "max_rage": bar.max_rage,
         "starting_rage": bar.starting_rage,
-        "main_hand_rage": hit_rage(&auto_attacks.mh, false),
-        "off_hand_rage": hit_rage(&auto_attacks.oh, true),
-        "crit_multiplier": CRIT_RAGE_MULTIPLIER,
+        "main_hand_rage": main_hand, "off_hand_rage": off_hand,
+        "main_hand_crit_rage": main_hand_crit, "off_hand_crit_rage": off_hand_crit,
         "threat_per_rage": THREAT_PER_RAGE_GAINED,
     })
 }

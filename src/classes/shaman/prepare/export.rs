@@ -476,7 +476,7 @@ impl Shaman {
                         "tracking_aura": "Windfury Party Weapon Buff Tracking Aura",
                         "dummy_aura": "Windfury Dummy Aura (self)",
                         "trigger_aura": sim.aura(trigger).label,
-                        "trigger_spells": proc_trigger_spells(env, &grant),
+                        "trigger_spells": crate::prepare::buffs::windfury_trigger_spells(env, &grant),
                         "trigger_proc_chance": grant.proc_chance,
                         "proc_aura": sim.aura(proc_aura).label,
                         "spend_spells": proc_trigger_spells(env, &spend),

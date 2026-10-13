@@ -27,7 +27,7 @@ pub(crate) use effects::{
     judgement_of_wisdom_effects, sunder_armor_effect,
 };
 pub(crate) use generated::{apply_generated_buffs, apply_generated_debuffs, GIFT_OF_ARTHAS};
-pub(crate) use windfury_effect::windfury_totem_effect;
+pub(crate) use windfury_effect::{windfury_totem_effect, windfury_trigger_spells};
 
 /// Which constructor a generated buff uses.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

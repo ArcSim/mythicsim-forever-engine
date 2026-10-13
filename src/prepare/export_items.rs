@@ -1499,14 +1499,17 @@ struct ProcDamageItem {
     defense: DefenseType,
     require_damage: bool,
     mask: ProcMask,
+    /// The runtime's name for the table the hit rolls, where the damage type alone does not say.
+    outcome: &'static str,
 }
 
 /// melee_procs.go `procDamageItems`: a listener on landed hits at a legacy proc manager's rate
 /// that casts a hit of a Go literal range at once on the unit hit. Heart of Wyrmthalak is a
 /// magic hit on melee and ranged hits. Iceblade Hacker and Warblade of Caer Darrow are Frost hits
 /// of the melee defense type on the landed melee hits that dealt damage, at a fixed chance of 1 on
-/// the hand holding the weapon: `damageOutcome` gives them the melee special hit table with a
-/// crit, where a magic hit rolls the magic one.
+/// the hand holding the weapon. Their client rows carry the always-hit attribute (the fork's
+/// patch 112), so they roll the crit and never miss, dodge or parry
+/// (`OutcomeMeleeCritOnly`); a magic hit rolls the magic table.
 const PROC_DAMAGE_ITEMS: [ProcDamageItem; 4] = [
     ProcDamageItem {
         label: "Heart of Wyrmthalak",
@@ -1516,6 +1519,7 @@ const PROC_DAMAGE_ITEMS: [ProcDamageItem; 4] = [
         defense: DefenseType::Magic,
         require_damage: false,
         mask: ProcMask::MELEE_OR_RANGED,
+        outcome: "",
     },
     ProcDamageItem {
         label: "Iceblade Hacker",
@@ -1525,6 +1529,7 @@ const PROC_DAMAGE_ITEMS: [ProcDamageItem; 4] = [
         defense: DefenseType::Melee,
         require_damage: true,
         mask: ProcMask::MELEE,
+        outcome: "melee_special_crit_only",
     },
     ProcDamageItem {
         label: "Warblade of Caer Darrow",
@@ -1534,6 +1539,7 @@ const PROC_DAMAGE_ITEMS: [ProcDamageItem; 4] = [
         defense: DefenseType::Melee,
         require_damage: true,
         mask: ProcMask::MELEE,
+        outcome: "melee_special_crit_only",
     },
     ProcDamageItem {
         label: "Darkmoon Card: Maelstrom",
@@ -1543,6 +1549,7 @@ const PROC_DAMAGE_ITEMS: [ProcDamageItem; 4] = [
         defense: DefenseType::Magic,
         require_damage: false,
         mask: ProcMask::MELEE,
+        outcome: "",
     },
 ];
 
@@ -1588,8 +1595,8 @@ fn proc_damage_item_effects(env: &Environment, unrepresented: &mut Vec<String>) 
                 spell.proc_mask.matches(mask) && !spell.flags.matches(SpellFlag::PROC)
             }),
         });
-        if item.defense == DefenseType::Melee {
-            effect["outcome"] = json!("melee_special_hit_and_crit");
+        if !item.outcome.is_empty() {
+            effect["outcome"] = json!(item.outcome);
         }
         effects.push(effect);
     }
@@ -1751,6 +1758,54 @@ fn weapon_damage_proc_effects(env: &Environment, unrepresented: &mut Vec<String>
         let mut effect = json!({
             "kind": "spell_data_damage_proc", "trigger_aura": a.label, "trigger_spells": triggers,
             "landed_only": true, "require_damage": false, "proc_chance": 1.0, "chances": chances,
+        });
+        for (key, value) in shape {
+            effect[key] = value;
+        }
+        effects.push(effect);
+    }
+    effects
+}
+
+/// weapon_procs.go `frostOilEffects`: common/forever/frost_oil.go (the fork's patch 126), Frost
+/// Oil, a temporary enchantment on a melee weapon whose client row casts a Frostbolt on a landed
+/// hit of that weapon at a flat chance, at once on the unit hit. One listener for each oiled
+/// hand, over the spell `shared.SpellDataProcDamageSpell` builds from the row.
+fn frost_oil_effects(env: &Environment, unrepresented: &mut Vec<String>) -> Vec<Value> {
+    const BOLT: i32 = 350025;
+    let mut effects = Vec::new();
+    for (label, mask) in [
+        ("Frost Oil (main hand)", ProcMask::MELEE_MH),
+        ("Frost Oil (off hand)", ProcMask::MELEE_OH),
+    ] {
+        let Some(aura) = aura_named(env, label) else {
+            continue;
+        };
+        let damage = must_find(BOLT);
+        let position = spell_position(env, &ActionId::spell(damage.id));
+        let a = env.sim.aura(aura);
+        let Some(position) = position.filter(|_| a.dpm.is_none() && a.icd.is_none()) else {
+            unrepresented.push(format!("{label} is not a flat chance on hit for a spell"));
+            continue;
+        };
+        let shape = match proc_damage_shape(env, damage, position) {
+            Ok(shape) => shape,
+            Err(refusal) => {
+                unrepresented.push(format!("{label}'s proc {refusal}"));
+                continue;
+            }
+        };
+        let listener = ProcTrigger {
+            proc_mask: mask,
+            is_weapon_proc: true,
+            outcome: HitOutcome::LANDED,
+            ..ProcTrigger::default()
+        };
+        let mut effect = json!({
+            "kind": "spell_data_damage_proc", "trigger_aura": a.label,
+            "trigger_spells": proc_trigger_spells(env, &listener),
+            "landed_only": true, "require_damage": false,
+            "proc_chance": f64::from(damage.proc_chance) / 100.0,
         });
         for (key, value) in shape {
             effect[key] = value;
@@ -1945,6 +2000,7 @@ pub(crate) fn melee_proc_effects(env: &Environment, unrepresented: &mut Vec<Stri
     effects.extend(weapon_enchant_damage_proc_effects(env, unrepresented));
     effects.extend(proc_damage_item_effects(env, unrepresented));
     effects.extend(weapon_damage_proc_effects(env, unrepresented));
+    effects.extend(frost_oil_effects(env, unrepresented));
     effects.extend(lobotomizer_effects(env, unrepresented));
     effects.extend(ebon_hilt_effects(env, unrepresented));
     effects.extend(set_stat_proc_effects(env, unrepresented));

@@ -1063,6 +1063,27 @@ pub(crate) fn export(
         });
     }
     tank_notes(env, tanking, &mut unrepresented);
+    // core/battle_squawk.go (the fork's patch 127): the party's engineers' chickens raise the
+    // melee speed at the reset, which the exported melee state holds, for the aura's four
+    // minutes. Its expiry and its pass to a pet that follows the owner's melee speed are not run.
+    if let Some(squawk) = env.sim.get_aura(player, "Battle Squawk") {
+        if env.sim.aura(squawk).expires < env.encounter.duration + env.encounter.duration_variation
+        {
+            unrepresented.push("a fight that outlasts Battle Squawk is unsupported".to_string());
+        }
+        let pet_follows = env.sim.unit(player).pets.iter().any(|pet| {
+            env.sim
+                .unit(*pet)
+                .pet
+                .as_ref()
+                .is_some_and(|data| data.dynamic_melee_speed_enabled)
+        });
+        if pet_follows {
+            unrepresented.push(
+                "Battle Squawk's melee speed passes to a pet, which is unsupported".to_string(),
+            );
+        }
+    }
     if tanking {
         // The auras whose damage taken multiplier an effect multiplies, which the runtime
         // tracks live.

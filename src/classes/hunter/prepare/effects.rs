@@ -348,6 +348,42 @@ impl Hunter {
                 }
             }
         }
+        // newFuriousHowl (the fork's patch 119): no damage mask. The aura it gives the pet and the
+        // hunter carries the row's melee attack power, which the pet takes as a dynamic stat; the
+        // hunter's is a stat aura the effect leaves to `stat_auras`. The hunter takes it while
+        // within the effect's radius of the target.
+        {
+            let row = data.furious_howl_triggered.highest();
+            let cast = sim
+                .unit(pet)
+                .spellbook
+                .iter()
+                .any(|spell| sim.spell(*spell).action_id == ActionId::spell(row.id));
+            if cast {
+                let parsed = dry_run(row, ParseOptions::default());
+                let pet_aura = sim.get_aura(pet, &row.name);
+                let owner_aura = sim.get_aura(unit, &row.name);
+                if let (Some(pet_aura), Some(owner_aura), true) = (
+                    pet_aura,
+                    owner_aura,
+                    parsed.skipped.is_empty()
+                        && parsed.applied.len() == 1
+                        && parsed.applied[0].kind == "stat AttackPower",
+                ) {
+                    let mut radius = 15.0;
+                    let effect = row.effect(dbcenums::A_MOD_ATTACK_POWER, 0);
+                    if effect.radius_max > 0.0 {
+                        radius = f64::from(effect.radius_max);
+                    }
+                    effects.push(json!({
+                        "kind": "hunter_pet_furious_howl", "spell_id": row.id,
+                        "pet_aura": sim.aura(pet_aura).label,
+                        "owner_aura": sim.aura(owner_aura).label, "radius": radius,
+                        "attack_power": parsed.applied[0].value,
+                    }));
+                }
+            }
+        }
         // The ability slots, as positions in the pet's spellbook, or -1 for an empty slot.
         let slot = |spell: Option<SpellId>| {
             spell.map_or(-1, |spell| spell_position(sim, pet, spell) as i64)
@@ -448,7 +484,13 @@ impl Hunter {
             effects.push(effect);
         }
         if let Some(spell) = self.strider_kick {
-            effects.push(json!({"kind": "strider_kick", "spell_id": spell_id_of(sim, spell)}));
+            // strider_kick.go: the kick activates an aura of the client row's speed effect after
+            // its hit.
+            let mut effect = json!({"kind": "strider_kick", "spell_id": spell_id_of(sim, spell)});
+            if let Some(speed) = sim.get_aura(unit, "Strider Kick") {
+                effect["speed_aura"] = json!(sim.aura(speed).label);
+            }
+            effects.push(effect);
         }
         if let Some(spell) = self.wing_clip {
             effects.push(json!({
@@ -648,6 +690,24 @@ impl Hunter {
                     || parsed.applied[0].kind != "stat Armor"
                 {
                     notes.push("Dust Cloud's effects are unsupported".to_string());
+                }
+            }
+            // newFuriousHowl's effects.
+            let row = data.furious_howl_triggered.highest();
+            let cast = sim
+                .unit(pet)
+                .spellbook
+                .iter()
+                .any(|spell| sim.spell(*spell).action_id == ActionId::spell(row.id));
+            if cast {
+                let parsed = dry_run(row, ParseOptions::default());
+                if sim.get_aura(pet, &row.name).is_none()
+                    || sim.get_aura(unit, &row.name).is_none()
+                    || !parsed.skipped.is_empty()
+                    || parsed.applied.len() != 1
+                    || parsed.applied[0].kind != "stat AttackPower"
+                {
+                    notes.push("Furious Howl's effects are unsupported".to_string());
                 }
             }
         }

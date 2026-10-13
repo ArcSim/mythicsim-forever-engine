@@ -7,6 +7,7 @@ use super::super::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger};
 use super::super::env::Environment;
 use super::super::resolve_proc::{chance, proc_trigger};
 use super::super::sim::SECOND;
+use super::super::spell::ProcMask;
 use super::super::spelldata::must_find;
 
 /// Go `outcomeNames`: the names of the outcome bits a listener hears. A single bit's name is the
@@ -68,6 +69,30 @@ fn proc_trigger_spells(env: &Environment, trigger: &ProcTrigger) -> Vec<usize> {
         .collect()
 }
 
+/// tools/oracle-v2/melee_procs.go `windfuryTriggerSpells`: the spells a Windfury Totem trigger
+/// hears once `buffs.NarrowWindfuryProc` has narrowed it to the main hand, as the totem's driver
+/// does (`WindfuryTotemMainHandOnly`). The narrowing keeps main hand attacks and off hand
+/// specials, and its extra condition refuses an off hand special when the character wields an
+/// off hand weapon: a shield strike is a main hand attack to the server.
+pub(crate) fn windfury_trigger_spells(env: &Environment, trigger: &ProcTrigger) -> Vec<usize> {
+    let mut trigger = trigger.clone();
+    trigger.proc_mask =
+        ProcMask(trigger.proc_mask.0 & (ProcMask::MELEE_MH.0 | ProcMask::MELEE_OH_SPECIAL.0));
+    let has_oh_weapon = env.sim.oh_weapon(env.player).is_some();
+    env.sim
+        .unit(env.player)
+        .spellbook
+        .iter()
+        .enumerate()
+        .filter(|(_, spell)| {
+            let spell = env.sim.spell(**spell);
+            trigger.matches_spell(spell)
+                && !(spell.proc_mask.matches(ProcMask::MELEE_OH_SPECIAL) && has_oh_weapon)
+        })
+        .map(|(position, _)| position)
+        .collect()
+}
+
 /// buffs/drivers.go `driveWindfuryTotem`: the totem aura, refreshed every 5 seconds, holds a
 /// trigger that can grant charges of attack power and cast an extra main hand attack; the
 /// charges are spent by landed autos. Triggers resolve from client rows as Go resolves them.
@@ -102,7 +127,7 @@ pub(crate) fn windfury_totem_effect(
     }
     let grant = proc_trigger(sim, Some(player), must_find(10612), &[]);
     let spend = proc_trigger(sim, Some(player), must_find(10610), &[chance(1.0)]);
-    let grant_spells = proc_trigger_spells(env, &grant);
+    let grant_spells = windfury_trigger_spells(env, &grant);
     // Without melee autos Go registers no extra attack, and nothing the character casts can
     // trigger the totem then, as for a caster.
     let (Some(proc_aura), Some(trigger_aura)) = (proc_aura, trigger_aura) else {

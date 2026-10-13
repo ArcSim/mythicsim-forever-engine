@@ -111,6 +111,8 @@ pub(crate) struct HunterAgent {
     raptor_strike: Option<RaptorStrike>,
     mongoose_bite: Option<MongooseBite>,
     wing_clip_damage: f64,
+    /// The aura Strider Kick activates after its hit.
+    strider_kick_speed: Option<AuraRef>,
     /// Resourcefulness's trigger and its regeneration.
     resourcefulness: Option<(SurvivalProc, f64)>,
     /// Expose Prey's trigger and whether the target carries Hunter's Mark.
@@ -525,6 +527,12 @@ impl HunterAgent {
                     let bound = MongooseBite::bind(&fight, aura, *base_damage, lacerating)?;
                     fight.agent.mongoose_bite = Some(bound);
                 }
+                Effect::StriderKick { speed_aura, .. } => {
+                    fight.agent.strider_kick_speed = speed_aura
+                        .as_deref()
+                        .map(|label| fight.player_aura(label))
+                        .transpose()?;
+                }
                 Effect::WingClip { base_damage, .. } => fight.agent.wing_clip_damage = *base_damage,
                 Effect::ImmolationTrap {
                     spell_id,
@@ -764,7 +772,10 @@ impl Agent for HunterAgent {
                 }
             }
             HunterSpell::LaceratingStrikes => Self::mongoose(fight).apply_bleed(fight),
-            HunterSpell::StriderKick => melee::strider_kick(fight, spell, target),
+            HunterSpell::StriderKick => {
+                let speed = fight.agent.strider_kick_speed;
+                melee::strider_kick(fight, spell, target, speed);
+            }
             HunterSpell::WingClip => {
                 let base = fight.agent.wing_clip_damage;
                 melee::wing_clip(fight, spell, target, base);

@@ -3730,9 +3730,12 @@ pub enum Effect {
         #[serde(default)]
         lacerating_tick_outcome: Option<String>,
     },
-    /// Strider Kick: a normalized main hand swing.
+    /// Strider Kick: a normalized main hand swing, then the aura that speeds the hunter up for
+    /// its duration (an active movement speed effect, which `player_movement` lists).
     StriderKick {
         spell_id: i32,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        speed_aura: Option<String>,
     },
     /// Wing Clip: its damage effect on the weapon special table.
     WingClip {

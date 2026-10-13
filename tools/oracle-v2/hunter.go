@@ -565,7 +565,12 @@ func hunterMeleeEffects(h *hunter.Hunter, character *core.Character) []map[strin
 		effects = append(effects, effect)
 	}
 	if h.StriderKick != nil {
-		effects = append(effects, map[string]any{"kind": "strider_kick", "spell_id": h.StriderKick.ActionID.SpellID})
+		// strider_kick.go: the kick activates an aura of the client row's speed effect after its hit.
+		effect := map[string]any{"kind": "strider_kick", "spell_id": h.StriderKick.ActionID.SpellID}
+		if speed := character.GetAura("Strider Kick"); speed != nil {
+			effect["speed_aura"] = speed.Label
+		}
+		effects = append(effects, effect)
 	}
 	if h.WingClip != nil {
 		effects = append(effects, map[string]any{

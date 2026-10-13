@@ -32,6 +32,7 @@ pub(crate) mod external_cooldowns;
 pub(crate) mod forever_item_sets;
 pub(crate) mod forever_items;
 pub(crate) mod forever_items_generated;
+pub(crate) mod frost_oil;
 pub(crate) mod incapacitate;
 pub(crate) mod item_aura;
 pub(crate) mod item_effects;

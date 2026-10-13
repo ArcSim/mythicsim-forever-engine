@@ -42,6 +42,7 @@ pub(crate) enum PetAbility {
     Thunderstomp,
     Swipe,
     Web,
+    FuriousHowl,
 }
 
 /// Go `PetConfig` of the hunter package: a family's name, abilities and scalars. Its custom
@@ -82,7 +83,7 @@ fn family(pet_type: &str) -> Option<FamilyConfig> {
             1.00,
             1.07,
         ),
-        "Wolf" => config("Wolf", Unknown, Bite, Unknown, 1.00, 1.05, 1.00),
+        "Wolf" => config("Wolf", Unknown, Bite, FuriousHowl, 1.00, 1.05, 1.00),
         "Bat" => config("Bat", Bite, Screech, Unknown, 1.00, 1.00, 1.07),
         "Bear" => config("Bear", Bite, Claw, Swipe, 1.08, 1.05, 0.91),
         "Owl" => config("Owl", Unknown, Claw, Mine, 1.00, 1.00, 1.07),
@@ -315,6 +316,7 @@ fn new_pet_ability(sim: &mut Sim, pet: UnitId, ability: PetAbility) -> Option<Sp
         PetAbility::DustCloud => Some(new_dust_cloud(sim, pet)),
         PetAbility::Thunderstomp => Some(new_thunderstomp(sim, pet)),
         PetAbility::Swipe => Some(new_swipe(sim, pet)),
+        PetAbility::FuriousHowl => Some(new_furious_howl(sim, pet)),
         PetAbility::Unknown => None,
     }
 }
@@ -550,6 +552,53 @@ fn new_swipe(sim: &mut Sim, pet: UnitId) -> SpellId {
                 rank.spell_school(),
                 rank.defense_type_core(),
             )
+        },
+    )
+}
+
+/// Furious Howl is the Wolf's (the fork's patch 119): an attack power aura on the party around the
+/// pet, which the pet and, within the radius, its owner take. The pet howls when the buff is not up
+/// on it. Preparation keeps the two auras and the spell; the radius and the condition only matter
+/// in a fight.
+fn new_furious_howl(sim: &mut Sim, pet: UnitId) -> SpellId {
+    let rank = spell_data().furious_howl_triggered.highest();
+    let owner = sim.unit(pet).owner.expect("a pet has an owner");
+    for unit in [pet, owner] {
+        let aura = sim.get_or_register_aura(
+            unit,
+            AuraConfig {
+                label: rank.name.clone(),
+                action_id: Some(ActionId::spell(rank.id)),
+                duration: rank.duration(),
+                ..AuraConfig::default()
+            },
+        );
+        parse_effects(
+            sim,
+            None,
+            aura,
+            rank,
+            ParseOptions {
+                level: CHARACTER_LEVEL,
+                ..ParseOptions::default()
+            },
+        );
+    }
+    let timer = sim.new_timer(pet);
+    sim.register_spell(
+        pet,
+        SpellConfig {
+            action_id: ActionId::spell(rank.id),
+            spell_school: rank.spell_school(),
+            proc_mask: ProcMask::EMPTY,
+            flags: SpellFlag::APL,
+            cost: focus(rank.cost() as i32),
+            cast: pet_cast(Some(Cooldown {
+                timer: Some(timer),
+                duration: rank.cooldown(),
+            })),
+            has_extra_cast_condition: true,
+            ..SpellConfig::default()
         },
     )
 }

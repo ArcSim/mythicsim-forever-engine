@@ -823,7 +823,7 @@ func meleeProcEffects(simulation *core.Simulation, character *core.Character, un
 		}
 		grant := spelldata.ProcTrigger(character, spelldata.MustFind(10612), nil)
 		spend := spelldata.ProcTrigger(character, spelldata.MustFind(10610), nil, spelldata.Chance(1))
-		grantSpells := procTriggerSpells(character, grant)
+		grantSpells := windfuryTriggerSpells(character, grant)
 		// Without melee autos Go registers no extra attack, and nothing the character casts can
 		// trigger the totem then, as for a caster.
 		if procAura == nil || trigger == nil || (extra < 0 && len(grantSpells) > 0) {
@@ -848,4 +848,24 @@ func meleeProcEffects(simulation *core.Simulation, character *core.Character, un
 		}
 	}
 	return effects
+}
+
+// The spells a Windfury Totem trigger hears once buffs.NarrowWindfuryProc has narrowed it, as the
+// totem's driver does. The narrowing keeps the trigger to main hand attacks and off hand specials,
+// and its extra condition refuses an off hand special when the character wields an off hand weapon
+// (a shield strike is a main hand attack to the server). The condition reads only the spell and the
+// character, so it is read here once for every spell the narrowed mask hears.
+func windfuryTriggerSpells(character *core.Character, trigger core.ProcTrigger) []int {
+	if trigger.ExtraCondition != nil {
+		fail(fmt.Errorf("Windfury Totem's trigger has an extra condition before it is narrowed"))
+	}
+	buffs.NarrowWindfuryProc(character, &trigger, buffs.WindfuryTotemMainHandOnly)
+	positions := []int{}
+	for _, position := range procTriggerSpells(character, trigger) {
+		if trigger.ExtraCondition != nil && !trigger.ExtraCondition(nil, character.Spellbook[position], nil) {
+			continue
+		}
+		positions = append(positions, position)
+	}
+	return positions
 }

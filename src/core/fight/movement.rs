@@ -90,7 +90,8 @@ impl<A: Agent> Fight<A> {
     }
 
     /// Go `MultiplyMovementSpeed` of the player: the multiplier changes, and a move in progress
-    /// at a speed is run again to the distance it had covered by its end, as Go does.
+    /// at a speed is run again to the destination it had, at the new speed (fork patch 121; it
+    /// used to run again to the move's length, as if that were the destination).
     pub(crate) fn multiply_movement_speed(&mut self, amount: f64) {
         let old_multiplier = self.move_multiplier;
         let old_speed = self.movement_speed(Side::Player);
@@ -107,8 +108,7 @@ impl<A: Agent> Fight<A> {
         }
         if let Some(movement) = self.player.movement {
             if movement.speed != 0.0 {
-                let duration = movement.end - movement.start;
-                let destination = movement.speed * duration as f64 / NS_PER_SECOND as f64;
+                let destination = movement.src_position + movement.move_distance;
                 self.move_to(Side::Player, destination);
             }
         }

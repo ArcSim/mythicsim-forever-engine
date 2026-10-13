@@ -71,20 +71,7 @@ fn new_passive_movement_speed_aura(
         },
     );
     sim.make_permanent(aura);
-    sim.new_exclusive_effect(
-        aura,
-        "PassiveMovementSpeed",
-        true,
-        multiplier,
-        Some(Rc::new(move |sim: &mut Sim, effect| {
-            let unit = sim.aura(sim.effects[effect.0].aura).unit;
-            sim.multiply_movement_speed(unit, 1.0 + multiplier);
-        })),
-        Some(Rc::new(move |sim: &mut Sim, effect| {
-            let unit = sim.aura(sim.effects[effect.0].aura).unit;
-            sim.multiply_movement_speed(unit, 1.0 / (1.0 + multiplier));
-        })),
-    );
+    sim.new_passive_movement_speed_effect(aura, multiplier);
     aura
 }
 

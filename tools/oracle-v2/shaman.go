@@ -309,7 +309,7 @@ func shamanTotemEffects(sham *shaman.Shaman, character *core.Character) []map[st
 			"kind": "windfury_totem_self", "spell_id": shamanWindfuryTotem.Highest().ID, "totem_aura": totem.Label,
 			"duration_ns": nanos(shamanWindfuryTotem.Highest().Duration()), "period_ns": nanos(5 * time.Second),
 			"tracking_aura": "Windfury Party Weapon Buff Tracking Aura", "dummy_aura": "Windfury Dummy Aura (self)",
-			"trigger_aura": trigger.Label, "trigger_spells": procTriggerSpells(character, grant),
+			"trigger_aura": trigger.Label, "trigger_spells": windfuryTriggerSpells(character, grant),
 			"trigger_proc_chance": grant.ProcChance, "proc_aura": procAura.Label,
 			"spend_spells": procTriggerSpells(character, spend), "extra_spell": extra,
 			"white_spells":    procTriggerSpells(character, core.ProcTrigger{ProcMask: core.ProcMaskMeleeWhiteHit, CanProcFromProcs: true}),

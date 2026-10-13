@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `041dec8eff72164e804bde636697e34fdf83b14f`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `d2409ccd043e9d3dd24232088f9abf49a7d19f64`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `f7598154eb8a138831290b34d4d321a532295224` (2026-10-10) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -161,13 +161,76 @@ follows:
 - A Tallstrider holds Dust Cloud while Sunder Armor or Expose Armor is on the target (patch 110).
 
 Rust matches all of them: all 585 accepted fixtures with a Go golden, including the two accepted at
-the pin.
+the pin. The recorded sweeps ran again on the production Mac, capped to two engine processes at
+background priority: all 14,341 variants of 124 records, the 9,076 of the 107 records the earlier
+moves reran and 5,265 of 17 records they left out. 14,278 match Go, Rust refuses 63 and none differ.
+The 63 are 51 the rotation unit and tank records already refused, of the 57 they list, and 12 Mage
+census presets, which the census reads from the pinned reference and which now read `unitDistance`
+and run prepull actions; the 18 Windshaper Skyborne prepull variants Rust refused now match
+([record](validation/2026-10-12-reference-pin-041dec8ef-sweeps.json)).
 
 The ledger lists the 73 commits: 31 bookkeeping, 17 rotation presets, 13 client data updates, 9
 behavior changes Rust prepares and 3 runtime changes the golden fixtures compare. The Mage
 area fixtures stand the mage at 20 yards, outside the point-blank radius, so Go never casts Cone of
 Cold or Blast Wave there; the same requests from 8 yards are accepted as
 `frost-mage-3-targets-point-blank-area-lines` and `fire-mage-2-targets-point-blank-blast-wave`.
+
+The pin moved from `041dec8ef` to `d2409ccd0` on 2026-10-13, the fork's patches 112 to 129 and
+its patch 130, the Last Stand fix Rust already followed as patch 112 at the old pin (the fork
+renumbered). The community base `f7598154e` and client build 70338 did not move, and the Go database
+is byte for byte the same, so the game data is re-imported unchanged and the ledger has no new
+commit. 223 of the 585 Go goldens changed, 221 of them in DPS: 141 of the 143 Warrior goldens, 37 of
+the 39 Rogue, 33 of the 36 Bear, 10 Hunter and 2 Shaman. The behavior changes:
+
+- Rage: a critical auto attack pays 100% extra rage, not 75%, for warriors, bears and the cat's bear
+  form alike (patch 113), and the extra leaves out the two-hander's factor, so a one-hander doubles
+  and a two-hander gets about 1.77 times its swing (patch 128).
+- Windfury Totem procs off the main hand only, as its tooltip says, and still off a shield strike
+  (patch 114). Deep Wounds from an off-hand crit is sized off the off-hand weapon (patch 116). Seal of
+  Righteousness takes its spell power share from the weapon in the hand, so a swap between a
+  two-hander and a one-hander changes it (patch 129).
+- Items: Iceblade Hacker's and Warblade of Caer Darrow's Frost cannot miss, be dodged or parried and
+  still crits (patch 112). Frost Oil is a weapon imbue, a 10% Frostbolt on each landed hit of the oiled
+  hand (patch 126). Ironfoe gets two switches whose defaults keep the client's 6% on either hand
+  (patch 115).
+- Hunter: the Wolf casts Furious Howl (patch 119), Strider Kick speeds the hunter up 30% for 3
+  seconds (patch 120), and a switch, off, makes a pet pool focus for its cooldowns (patch 118).
+- Requests: `Encounter.no_hit_suppression` drops the boss's 1% melee and ranged hit suppression
+  (patch 125) and `Party.battle_squawks` adds one Battle Squawk stack a party engineer, 5% melee
+  attack speed each (patch 127). A speed change mid-move keeps the move's destination (patch 121).
+
+Preparation follows all of these that the prepared state shows. The rage bar writes each hand's
+swing rage and the rage a crit adds to it (the swing's rage before the two-hander's factor times the
+crit multiplier of 2 less one), the attack tables take no hit suppression when the encounter asks, the
+Battle Squawk aura applies Go's `math.Pow` rounding to its stacks, Strider Kick registers its aura and
+active movement speed effect and names it in its effect, the Wolf has its Furious Howl auras on itself
+and its owner, a `hunter_pet_furious_howl` effect and a stat aura, and an oil in an imbue or
+temporary enchantment slot has its Frostbolt and one weapon proc for each oiled hand. The exporter's
+trigger lists follow the narrowed Windfury Totem (a shield strike is a main hand attack to the server,
+so an off hand special is heard only where no off hand weapon is wielded), and Iceblade Hacker's and
+Warblade's Frost names the crit only table. A fight that outlasts Battle Squawk's four minutes, or a
+pet that follows the owner's melee speed, is unrepresented. Before this move Rust prepared the two new
+request fields as if they were unset, and now writes what the exporter writes for them on the
+production builds of every class. A Wolf golden joins the Hunter preparation cases.
+
+The fight runtime follows the rest: a crit pays the swing's rage plus the crit rage of its hand, so a
+two-hander's bonus leaves out the 1.3 (patches 113 and 128), Windfury Totem rolls on main hand hits
+only (patch 114), an off hand crit's Deep Wounds reads the off hand weapon (patch 116), Iceblade
+Hacker's and Warblade's Frost rolls the crit and never misses (patch 112), Strider Kick activates its
+speed aura and a speed change during a move re-plans it to the same destination (patches 120 and 121),
+the Wolf casts Furious Howl while its aura is down and the hunter takes the attack power while within
+15 yards of the target (patch 119), Frost Oil casts its Frostbolt at 10% on each landed hit of the
+oiled hand (patch 126), the Battle Squawk stacks are held from the reset (patch 127), and the
+boss's hit suppression drops out of the miss chance when the encounter asks (patch 125). The switches
+whose defaults keep the old behavior (patches 115 and 118) need no change. Nine requests join the
+fixtures with Go goldens: `beast-mastery-hunter-wolf`, `marksmanship-hunter-wolf-out-of-howl-range`,
+`survival-hunter-strider-kick-while-moving`, `combat-rogue-frost-oil`,
+`combat-rogue-frost-oil-beside-poisons`, `combat-rogue-battle-squawks`, `warrior-battle-squawks`,
+`warrior-no-hit-suppression` and `survival-hunter-no-hit-suppression`.
+
+Rust matches all of them: all 595 accepted fixtures with a Go golden, the nine new ones included, and
+preparation writes exactly what the exporter writes for every one. The recorded sweeps have not been
+run again at this pin.
 
 ## Ledger
 

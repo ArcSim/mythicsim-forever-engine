@@ -172,6 +172,11 @@ pub(crate) struct WarriorAgent {
     empty_mask: Vec<bool>,
     /// Whether each spell's proc mask holds a main hand bit.
     main_hand_mask: Vec<bool>,
+    /// Whether each spell's proc mask holds an off hand bit.
+    off_hand_mask: Vec<bool>,
+    /// Go `struck` in `registerDeepWounds`: the crit that casts the bleed came from the off hand
+    /// weapon of a dual wielder, for the one cast the trigger makes.
+    deep_wounds_off_hand: bool,
     /// Whether each spell's proc mask holds a bit of a hand that wields a sword.
     sword_mask: Vec<bool>,
     /// Go `WarriorInputs.DefaultStance`, which every reset restores.
@@ -423,6 +428,17 @@ impl WarriorAgent {
                     .proc_mask
                     .iter()
                     .any(|mask| mask == "ProcMaskMeleeMHAuto" || mask == "ProcMaskMeleeMHSpecial")
+            })
+            .collect();
+        fight.agent.off_hand_mask = prepared
+            .player
+            .spells
+            .iter()
+            .map(|spell| {
+                spell
+                    .proc_mask
+                    .iter()
+                    .any(|mask| mask == "ProcMaskMeleeOHAuto" || mask == "ProcMaskMeleeOHSpecial")
             })
             .collect();
         fight.agent.empty_mask = prepared
@@ -1110,7 +1126,8 @@ impl Agent for WarriorAgent {
             }
             WarriorSpell::DeepWounds => {
                 let params = fight.agent.deep_wounds.expect("Deep Wounds is bound");
-                deep_wounds::apply(fight, spell, target, params);
+                let off_hand = std::mem::take(&mut fight.agent.deep_wounds_off_hand);
+                deep_wounds::apply(fight, spell, target, params, off_hand);
             }
             WarriorSpell::Strike(index) => {
                 let params = fight.agent.queue.strikes[index];
@@ -1623,7 +1640,10 @@ impl Agent for WarriorAgent {
             WarriorAura::DeepWoundsTrigger => {
                 let params = fight.agent.deep_wounds.expect("Deep Wounds is bound");
                 let empty = fight.agent.empty_mask[spell];
+                fight.agent.deep_wounds_off_hand =
+                    fight.agent.off_hand_mask[spell] && fight.autos.dual_wielding;
                 deep_wounds::on_hit(fight, params, spell, empty, result);
+                fight.agent.deep_wounds_off_hand = false;
             }
             WarriorAura::UnbridledWrath => {
                 let params = fight.agent.unbridled_wrath.expect("bound");

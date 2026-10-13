@@ -19,8 +19,8 @@ use super::character::cooldown_type;
 use super::periodic_action::PeriodicActionOptions;
 use super::procs::DynamicProcManager;
 use super::sim::{
-    school_array_index, AuraConfig, AuraId, Cooldown, Duration, EventCallbacks, Sim, UnitId,
-    UnitType, NEVER_EXPIRES,
+    school_array_index, AuraConfig, AuraId, Cooldown, Duration, EffectId, EventCallbacks, Sim,
+    UnitId, UnitType, NEVER_EXPIRES,
 };
 use super::spell::{ProcMask, Spell, SpellFlag};
 use super::spell_mod::{class_flags_is_zero, class_flags_matches};
@@ -1181,6 +1181,49 @@ impl Sim {
     /// Go `unit.MultiplyMovementSpeed`. No movement is in progress while preparing.
     pub(crate) fn multiply_movement_speed(&mut self, unit: UnitId, amount: f64) {
         self.unit_mut(unit).pseudo_stats.movement_speed_multiplier *= amount;
+    }
+
+    /// Go `Aura.NewPassiveMovementSpeedEffect`: a bonus that stacks with the active ones, only the
+    /// best passive one applying.
+    pub(crate) fn new_passive_movement_speed_effect(
+        &mut self,
+        aura: AuraId,
+        multiplier: f64,
+    ) -> EffectId {
+        self.new_exclusive_movement_speed_effect(aura, "PassiveMovementSpeed", multiplier)
+    }
+
+    /// Go `Aura.NewActiveMovementSpeedEffect`: a bonus that stacks with the passive ones, only the
+    /// best active one applying.
+    pub(crate) fn new_active_movement_speed_effect(
+        &mut self,
+        aura: AuraId,
+        multiplier: f64,
+    ) -> EffectId {
+        self.new_exclusive_movement_speed_effect(aura, "ActiveMovementSpeed", multiplier)
+    }
+
+    /// Go `newExclusiveMovementSpeedEffect`.
+    fn new_exclusive_movement_speed_effect(
+        &mut self,
+        aura: AuraId,
+        category: &str,
+        multiplier: f64,
+    ) -> EffectId {
+        self.new_exclusive_effect(
+            aura,
+            category,
+            true,
+            multiplier,
+            Some(Rc::new(move |sim: &mut Sim, effect| {
+                let unit = sim.aura(sim.effects[effect.0].aura).unit;
+                sim.multiply_movement_speed(unit, 1.0 + multiplier);
+            })),
+            Some(Rc::new(move |sim: &mut Sim, effect| {
+                let unit = sim.aura(sim.effects[effect.0].aura).unit;
+                sim.multiply_movement_speed(unit, 1.0 / (1.0 + multiplier));
+            })),
+        )
     }
 
     /// Go `unit.HasManaBar`.

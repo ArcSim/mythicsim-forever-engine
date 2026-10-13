@@ -1728,6 +1728,8 @@ impl PhysicalOutcome {
         match name {
             "melee_special_hit_and_crit" => Some(Self::MeleeSpecialHitAndCrit { count: true }),
             "melee_special_hit" => Some(Self::MeleeSpecialHit { count: true }),
+            // A proc whose client row carries the always-hit attribute: the crit roll and no miss.
+            "melee_special_crit_only" => Some(Self::MeleeSpecialCritOnly { count: true }),
             _ => None,
         }
     }

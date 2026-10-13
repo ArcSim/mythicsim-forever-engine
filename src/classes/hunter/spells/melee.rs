@@ -175,12 +175,20 @@ impl MongooseBite {
     }
 }
 
-/// Strider Kick's `ApplyEffects`: a normalized main hand swing.
-pub(crate) fn strider_kick<A: Agent>(fight: &mut Fight<A>, spell: SpellId, target: Side) {
+/// Strider Kick's `ApplyEffects`: a normalized main hand swing, then the speed aura.
+pub(crate) fn strider_kick<A: Agent>(
+    fight: &mut Fight<A>,
+    spell: SpellId,
+    target: Side,
+    speed: Option<AuraRef>,
+) {
     let attack_power = fight.melee_attack_power();
     let damage = fight.mh_normalized_weapon_damage(attack_power);
     let result = fight.calc_physical_damage(spell, target, damage, WEAPON_SPECIAL);
     fight.deal_damage(spell, result, false);
+    if let Some(speed) = speed {
+        fight.activate_aura(speed);
+    }
 }
 
 /// Wing Clip's `ApplyEffects`: its damage effect on the weapon special table.

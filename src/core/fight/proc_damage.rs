@@ -30,6 +30,12 @@ impl HitTable {
             Some("melee_special_hit") => Ok(Self::Physical(PhysicalOutcome::MeleeSpecialHit {
                 count: true,
             })),
+            // A row with the always-hit attribute: the crit roll and no miss.
+            Some("melee_special_crit_only") => {
+                Ok(Self::Physical(PhysicalOutcome::MeleeSpecialCritOnly {
+                    count: true,
+                }))
+            }
             Some("ranged_hit_and_crit") => Ok(Self::Physical(PhysicalOutcome::RangedHitAndCrit {
                 count: true,
             })),

@@ -241,3 +241,28 @@ fn thistle_tea_may_spill_fifteen_energy() {
         .expect("the log states the energy before the drink");
     assert!(before > 10.0 && before <= 15.0, "{gained}");
 }
+
+/// Fork patch 127: three Battle Squawk stacks raise the melee speed 5% each from the reset, which
+/// the exported melee state holds, and they fall off with the aura's four minutes, after the
+/// fight. The aura holds its stacks from the reset, as the first-fight log shows.
+#[test]
+fn battle_squawks_hold_their_stacks_from_the_reset() {
+    let value = fixture("combat-rogue-battle-squawks");
+    let multiplier = value["melee"]["melee_speed_multiplier"].as_f64().unwrap();
+    assert!(
+        (multiplier - 1.05_f64.powi(3)).abs() < 1e-12,
+        "{multiplier}"
+    );
+    let aura = value["player"]["auras"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|aura| aura["label"] == "Battle Squawk")
+        .unwrap();
+    assert_eq!(aura["stacks"], 3);
+    assert_eq!(aura["duration_ns"], 240_000_000_000_u64);
+    let logs = first_fight_log(value);
+    assert!(logs.contains("[0.00] [combat-rogue (#1)] Aura gained: {SpellID: 23060}"));
+    assert!(logs.contains("[0.00] [combat-rogue (#1)] {SpellID: 23060} stacks: 0 --> 3"));
+    assert!(logs.contains("{SpellID: 23060} stacks: 3 --> 0"));
+}

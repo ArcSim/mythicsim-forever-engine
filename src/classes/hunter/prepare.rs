@@ -457,6 +457,8 @@ impl PrepAgent for Hunter {
         vec![
             "Aspect of the Hawk".to_string(),
             "Aspect of the Beast".to_string(),
+            // Furious Howl: the Wolf's attack power aura on its owner (the fork's patch 119).
+            "Furious Howl".to_string(),
         ]
     }
 

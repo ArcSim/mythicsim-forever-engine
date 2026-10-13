@@ -1608,6 +1608,14 @@ func prepare(request *proto.RaidSimRequest, digest, scenario string) Prepared {
 	note(target.SecondaryTarget != nil, "a target with a secondary target is unsupported")
 	note(character.ItemSwap.IsEnabled(), "item swapping is unsupported")
 	note(simulation.Encounter.EndFightAtHealth != 0, "health-based fights are unsupported")
+	// core/battle_squawk.go (fork patch 127): the party's engineers' chickens raise the melee speed
+	// at the reset, which the exported melee state holds, for the aura's four minutes. Its expiry
+	// and its pass to a pet that follows the owner's melee speed are not run.
+	if squawk := character.GetAura("Battle Squawk"); squawk != nil {
+		note(squawk.ExpiresAt() < simulation.Encounter.Duration+simulation.Encounter.DurationVariation,
+			"a fight that outlasts Battle Squawk is unsupported")
+		note(len(character.DynamicMeleeSpeedPets) != 0, "Battle Squawk's melee speed passes to a pet, which is unsupported")
+	}
 	describedCallbacks := 0
 	if export, ok := classExports[character.Class]; ok && export.executeCallbacks != nil {
 		describedCallbacks = export.executeCallbacks(agent)

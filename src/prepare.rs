@@ -8,6 +8,7 @@
 pub(crate) mod agent;
 pub(crate) mod attack;
 pub(crate) mod aura_helpers;
+pub(crate) mod battle_squawk;
 pub(crate) mod buffs;
 pub(crate) mod character;
 pub(crate) mod classic_enchants;
@@ -31,6 +32,7 @@ pub(crate) mod external_cooldowns;
 pub(crate) mod forever_item_sets;
 pub(crate) mod forever_items;
 pub(crate) mod forever_items_generated;
+pub(crate) mod frost_oil;
 pub(crate) mod incapacitate;
 pub(crate) mod item_aura;
 pub(crate) mod item_effects;

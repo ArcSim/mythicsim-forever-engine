@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "041dec8eff72164e804bde636697e34fdf83b14f",
+    "engine_revision": "d2409ccd043e9d3dd24232088f9abf49a7d19f64",
     "client_build": "1.60.1.70338",
     "exporter": "tools/oracle-v2"
   },
@@ -5466,10 +5466,11 @@
   "effects": [
     {
       "aura": "RageBar",
-      "crit_multiplier": 1.75,
       "kind": "rage_bar",
+      "main_hand_crit_rage": 8.996,
       "main_hand_rage": 8.996,
       "max_rage": 100,
+      "off_hand_crit_rage": 4.325,
       "off_hand_rage": 4.325,
       "starting_rage": 0,
       "threat_per_rage": 5
@@ -6065,8 +6066,6 @@
       "trigger_require_damage": true,
       "trigger_spells": [
         3,
-        4,
-        5,
         7,
         14,
         20,
@@ -6078,15 +6077,12 @@
         28,
         30,
         31,
-        32,
         33,
         34,
         36,
-        38,
         39,
         40,
         49,
-        50,
         51,
         52
       ]

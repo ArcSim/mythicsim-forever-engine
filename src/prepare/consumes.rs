@@ -468,6 +468,16 @@ enum Hand {
 /// Go `registerStaticImbue`.
 fn register_static_imbue(env: &mut Environment, imbue_id: i32, hand: Hand) {
     let unit = env.player;
+    // `StaticImbueProcs`: an imbue whose effect is a combat proc.
+    if super::frost_oil::is_static_imbue_proc(imbue_id) {
+        super::frost_oil::register_frost_oil(
+            env,
+            match hand {
+                Hand::Main => ProcMask::MELEE_MH,
+                Hand::Off => ProcMask::MELEE_OH,
+            },
+        );
+    }
     match imbue_id {
         // Mana Oil.
         25123 => {

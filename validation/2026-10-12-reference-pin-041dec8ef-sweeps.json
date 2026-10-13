@@ -1,0 +1,1906 @@
+{
+  "kind": "integration_regression",
+  "date": "2026-10-12",
+  "source_revision": "sweeps-041dec8ef",
+  "reference": {
+    "engine_revision": "041dec8eff72164e804bde636697e34fdf83b14f",
+    "client_build": "1.60.1.70338"
+  },
+  "scope": "Every randomized compatibility sweep, its variants regenerated from each record's generator, with the 2026-10-06 multi-target references, censuses and sweeps and the production gear swaps, compared again after moving the reference pin from 2d93e423e to 041dec8ef (the fork's merge of community #720 to #763 and its patches 100 to 112, client 70338). The rerun also takes in the 17 records the earlier pin reruns left out: the Warrior prepull sweep, the two rotation unit records, the 2026-10-05 multi-target references, the four tanking records against several targets and the nine 2026-10-08 sweeps. All 14,341 variants of the 124 records were compared: 14,278 match Go, Rust refuses 63 and none differ. Of the 9,076 variants of the 107 records the 2d93e423e rerun covered, 9,064 match and Rust refuses 12, the 12 Mage census presets the pin rewrote; of the 5,265 variants of the other 17, 5,214 match and Rust refuses 51, as their records did or fewer.",
+  "generator": "each record's generator, at its seed; the variants a record keeps are compared as they are; the production gear swaps by their record's generate.py at 50 iterations; a generator that reads every accepted fixture (tools/rotation_forms.py casts, tools/copy_targets.py) is kept to the requests its record lists",
+  "rerun": "python3 tools/prepared_v2.py compare --output <scratch> <variants>/*.json for each record",
+  "criteria": {
+    "comparison": "full RaidSimResult except elapsedNs, lists keyed by ID",
+    "integer_counts": "exact",
+    "floats": "relative 1e-9",
+    "deviations": "as variances at the scale of mean^2",
+    "first_fight_debug_log": "line identical"
+  },
+  "matched": 14278,
+  "rejected": 63,
+  "mismatched": 0,
+  "errors": 0,
+  "not_compared": 0,
+  "request_digests": "every variant compared but 16 is the request its record lists: 11,338 by the prepared request_sha256, the 48 of the 2026-10-03 Fire and Arcane sweeps by the request file's SHA-256, and the 2,939 production gear swaps, whose record lists no digest, by count and scenario name. The 16 are the preset variants of the 2026-10-06 Mage census, which the generator reads from the pinned reference's presets: at 041dec8ef the Arcane, Fire and Frost presets read unitDistance and run prepull actions, which Rust refuses, so 12 of the 16 are refused and the 4 fire_lowrank variants match. The gear swap generator reads the pinned item database, which the pin moved to client 70338, and still gives the same 2,939 swaps by name. tools/rotation_forms.py casts and tools/copy_targets.py now also write 46 and 116 requests from fixtures accepted after their records; those were not compared.",
+  "retries": "four variants whose export or Go run timed out at 300 seconds under the machine's load were compared again on their own and match: two of the item sweep and two of the tank fixture sweep. Five chunks of the tank fixture sweep ran while the worktree's build directory was being rebuilt, found no Rust binary or timed out waiting for it, and were compared again once it was built",
+  "regeneration": "387 variants of four records (the in-front Enhancement base of the multi-target Shaman sweep, the tank fixture sweep, the tank sweep and the near Marksmanship Hunter base of the melee weapon proc sweep) were first drawn without the record's --max-distance 5, which keeps every field the records list but the distance; they matched Go as well. They were drawn again at the record's distance, compared, and those are the variants counted, each with its record's request digest",
+  "reference_changes": {
+    "compared": "the Go goldens of the accepted fixtures with goldens, the full RaidSimResult and the first-fight log, at 2d93e423e and at 041dec8ef",
+    "moved": "256 of the 584 Go goldens changed, 217 of them in DPS; see UPSTREAM.md",
+    "not_compared": "Go at the old pin was not run on the sweep variants; the comparison that counts is the new Go against Rust"
+  },
+  "changes_from_records": [
+    {
+      "record": "validation/2026-10-06-mage-multi-target-census.json",
+      "at_2d93e423e": {
+        "matched": 879,
+        "rejected": 0
+      },
+      "now": {
+        "matched": 867,
+        "rejected": 12
+      },
+      "rejected_because": {
+        "rotation item 3: value unitDistance is unsupported": 4,
+        "rotation item 4: value unitDistance is unsupported": 8,
+        "prepull actions outside the rotation are unsupported": 12,
+        "rotation item 7: value unitDistance is unsupported": 4
+      }
+    },
+    {
+      "record": "validation/2026-10-06-rotation-casts-at-other-targets.json",
+      "recorded": {
+        "matched": 18,
+        "rejected": 27
+      },
+      "now": {
+        "matched": 24,
+        "rejected": 21
+      },
+      "rejected_because": {
+        "castSpell on a target past the first is not supported for ClassRogue yet": 3,
+        "castSpell on a target past the first is not supported for ClassDruid yet": 3,
+        "castSpell on a target past the first is not supported for ClassHunter yet": 5,
+        "Demonic Brand lands on the first target only": 1,
+        "rotation item 8: castSpell of spell 25345 on target 2: a channel keeps its dot on the first target": 2,
+        "rotation item 8: castSpell of spell 25345 on target 3: a channel keeps its dot on the first target": 1,
+        "castSpell on a target past the first is not supported for ClassPaladin yet": 5,
+        "rotation item 4: castSpell of spell 1316995 on target 2: a channel keeps its dot on the first target": 1
+      }
+    },
+    {
+      "record": "validation/2026-10-06-warlock-multi-target-census.json",
+      "at_2d93e423e": {
+        "matched": 480,
+        "rejected": 0
+      },
+      "now": {
+        "matched": 1076,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-warlock-multi-target-sweep.json",
+      "at_2d93e423e": {
+        "matched": 40,
+        "rejected": 0
+      },
+      "now": {
+        "matched": 400,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-warrior-prepull-sweep.json",
+      "recorded": {
+        "matched": 198,
+        "rejected": 18
+      },
+      "now": {
+        "matched": 216,
+        "rejected": 0
+      }
+    }
+  ],
+  "records": [
+    {
+      "record": "validation/2026-10-03-arcane-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 18,
+        "rejected": 6,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-03-fire-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-affliction-warlock-broad-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-affliction-warlock-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-arms-warrior-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-arms-warrior-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-assassination-rogue-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-assassination-rogue-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-assassination-venom-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-balance-druid-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 23,
+        "rejected": 1,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-beast-mastery-hunter-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-beast-mastery-hunter-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-combat-expose-armor-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-combat-improved-expose-armor-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-combat-kidney-shot-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-combat-kidney-shot-tank-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-combat-riposte-tank-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-combat-rogue-melee-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-combat-rogue-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-combat-rogue-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-combat-swords-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-combat-swords-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-combat-wound-poison-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-demonology-warlock-recklessness-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-demonology-warlock-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-destruction-warlock-broad-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-destruction-warlock-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-elemental-shaman-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-elemental-shaman-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-enhancement-shaman-dual-wield-imbues-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 22,
+        "rejected": 2,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-enhancement-shaman-frostbrand-sync-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 22,
+        "rejected": 2,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-enhancement-shaman-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-enhancement-shaman-self-totems-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-enhancement-shaman-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-feral-bear-druid-caster-interval-race-sweep.json",
+      "variants": 16,
+      "matched": 16,
+      "recorded": {
+        "matched": 16,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 16,
+        "matched": 16,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-feral-bear-druid-defensives-race-sweep.json",
+      "variants": 16,
+      "matched": 16,
+      "recorded": {
+        "matched": 16,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 16,
+        "matched": 16,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-feral-bear-druid-melee-sweep.json",
+      "variants": 17,
+      "matched": 17,
+      "recorded": {
+        "matched": 17,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 17,
+        "matched": 17,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-feral-bear-druid-potion-shift-race-sweep.json",
+      "variants": 16,
+      "matched": 16,
+      "recorded": {
+        "matched": 16,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 16,
+        "matched": 16,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-feral-bear-druid-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-feral-bear-druid-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-feral-bear-druid-threshold-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-feral-druid-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-feral-druid-rake-race-sweep.json",
+      "variants": 16,
+      "matched": 16,
+      "recorded": {
+        "matched": 16,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 16,
+        "matched": 16,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-feral-druid-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-frostfire-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-fury-protection-warrior-last-stand-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-fury-protection-warrior-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-fury-protection-warrior-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-fury-protection-warrior-threshold-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-holy-protection-paladin-seal-of-fury-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-holy-protection-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-hunter-pet-family-sweep.json",
+      "variants": 34,
+      "matched": 34,
+      "recorded": {
+        "matched": 34,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 34,
+        "matched": 34,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-hunter-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-mage-race-sweep.json",
+      "variants": 72,
+      "matched": 72,
+      "recorded": {
+        "matched": 69,
+        "rejected": 3,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 72,
+        "matched": 72,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-marksmanship-hunter-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-production-fire-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-production-gear-swaps.json",
+      "variants": 2939,
+      "matched": 2939,
+      "recorded": {
+        "outcomes": {
+          "matched": 2937,
+          "go_error": 2
+        }
+      },
+      "at_2d93e423e": {
+        "variants": 2939,
+        "matched": 2939,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-protection-bulwark-heal-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-protection-eye-for-an-eye-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-protection-paladin-seal-of-fury-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-protection-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-protection-paladin-threshold-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-protection-warrior-last-stand-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-protection-warrior-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-protection-warrior-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-protection-warrior-threshold-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-ret-protection-paladin-seal-of-fury-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-ret-protection-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-retribution-crusader-held-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-retribution-crusader-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 18,
+        "rejected": 6,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-retribution-exorcism-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 19,
+        "rejected": 5,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-retribution-paladin-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 23,
+        "rejected": 1,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-retribution-paladin-seal-of-fury-twist-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 22,
+        "rejected": 2,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-retribution-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 20,
+        "rejected": 4,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-shadow-priest-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 22,
+        "rejected": 2,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-shadow-priest-shadowfiend-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-shadow-priest-starshards-sweep.json",
+      "variants": 16,
+      "matched": 16,
+      "recorded": {
+        "matched": 16,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 16,
+        "matched": 16,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-shadow-priest-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 19,
+        "rejected": 5,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-shockadin-holy-light-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-shockadin-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-shockadin-self-heal-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-shockadin-vigil-paladin-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-smite-priest-holy-nova-race-sweep.json",
+      "variants": 16,
+      "matched": 16,
+      "recorded": {
+        "matched": 16,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 16,
+        "matched": 16,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-smite-priest-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-smite-priest-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-subtlety-ghostly-strike-tank-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-subtlety-quietus-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-subtlety-rogue-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-subtlety-rogue-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-survival-hunter-cat-whelp-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-survival-hunter-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-survival-hunter-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-warlock-race-sweep.json",
+      "variants": 12,
+      "matched": 12,
+      "recorded": {
+        "matched": 12,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 12,
+        "matched": 12,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-warrior-race-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-04-warrior-sweep.json",
+      "variants": 24,
+      "matched": 24,
+      "recorded": {
+        "matched": 24,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 24,
+        "matched": 24,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-05-multi-target-references.json",
+      "variants": 32,
+      "matched": 32,
+      "recorded": {
+        "matched": 32,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-05-multi-target-sweep.json",
+      "variants": 192,
+      "matched": 192,
+      "recorded": {
+        "matched": 190,
+        "rejected": 2,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 192,
+        "matched": 192,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-mage-multi-target-census.json",
+      "variants": 879,
+      "matched": 867,
+      "rejected": 12,
+      "recorded": {
+        "matched": 879,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 879,
+        "matched": 879,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-mage-multi-target-sweep.json",
+      "variants": 300,
+      "matched": 300,
+      "recorded": {
+        "matched": 300,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 300,
+        "matched": 300,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-mage-warlock-multi-target-references.json",
+      "variants": 102,
+      "matched": 102,
+      "recorded": {
+        "matched": 102,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 102,
+        "matched": 102,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-multi-target-druid-sweep.json",
+      "variants": 216,
+      "matched": 216,
+      "recorded": {
+        "matched": 216,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 216,
+        "matched": 216,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-multi-target-paladin-druid-references.json",
+      "variants": 72,
+      "matched": 72,
+      "recorded": {
+        "matched": 56,
+        "rejected": 16,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 72,
+        "matched": 72,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-multi-target-paladin-sweep.json",
+      "variants": 120,
+      "matched": 120,
+      "recorded": {
+        "matched": 120,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 120,
+        "matched": 120,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-multi-target-shaman-sweep.json",
+      "variants": 128,
+      "matched": 128,
+      "recorded": {
+        "matched": 128,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 128,
+        "matched": 128,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-multi-target-warrior-shaman-references.json",
+      "variants": 53,
+      "matched": 53,
+      "recorded": {
+        "matched": 45,
+        "rejected": 8,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 53,
+        "matched": 53,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-multi-target-warrior-sweep.json",
+      "variants": 352,
+      "matched": 352,
+      "recorded": {
+        "matched": 352,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 352,
+        "matched": 352,
+        "rejected": 0
+      }
+    },
+    {
+      "record": "validation/2026-10-06-rotation-casts-at-other-targets.json",
+      "variants": 45,
+      "matched": 24,
+      "rejected": 21,
+      "recorded": {
+        "matched": 18,
+        "rejected": 27,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-06-rotation-target-fields.json",
+      "variants": 179,
+      "matched": 169,
+      "rejected": 10,
+      "recorded": {
+        "matched": 169,
+        "rejected": 10,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-06-warlock-multi-target-census.json",
+      "variants": 1076,
+      "matched": 1076,
+      "recorded": {
+        "matched": 1076,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 480,
+        "matched": 480,
+        "rejected": 0,
+        "generated": 1076
+      }
+    },
+    {
+      "record": "validation/2026-10-06-warlock-multi-target-sweep.json",
+      "variants": 400,
+      "matched": 400,
+      "recorded": {
+        "matched": 400,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "at_2d93e423e": {
+        "variants": 40,
+        "matched": 40,
+        "rejected": 0,
+        "generated": 400
+      }
+    },
+    {
+      "record": "validation/2026-10-06-warrior-prepull-sweep.json",
+      "variants": 216,
+      "matched": 216,
+      "recorded": {
+        "matched": 198,
+        "rejected": 18,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-07-tanking-several-targets-fixture-sweep.json",
+      "variants": 402,
+      "matched": 402,
+      "recorded": {
+        "matched": 402,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-07-tanking-several-targets-fixtures.json",
+      "variants": 292,
+      "matched": 272,
+      "rejected": 20,
+      "recorded": {
+        "matched": 272,
+        "rejected": 20,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-07-tanking-several-targets-references.json",
+      "variants": 32,
+      "matched": 32,
+      "recorded": {
+        "matched": 32,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-07-tanking-several-targets-sweep.json",
+      "variants": 384,
+      "matched": 384,
+      "recorded": {
+        "matched": 384,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-08-challenging-shout-roar-sweep.json",
+      "variants": 208,
+      "matched": 208,
+      "recorded": {
+        "matched": 208,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-08-external-cooldowns-taunts-sweep.json",
+      "variants": 356,
+      "matched": 356,
+      "recorded": {
+        "matched": 356,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-08-external-power-infusion-sweep.json",
+      "variants": 240,
+      "matched": 240,
+      "recorded": {
+        "matched": 240,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-08-items-remaining-sweep.json",
+      "variants": 739,
+      "matched": 739,
+      "recorded": {
+        "matched": 739,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-08-live-rotation-gaps-sweep.json",
+      "variants": 342,
+      "matched": 342,
+      "recorded": {
+        "matched": 342,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-08-live-spell-gaps-sweep.json",
+      "variants": 258,
+      "matched": 258,
+      "recorded": {
+        "matched": 258,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-08-melee-weapon-damage-procs-sweep.json",
+      "variants": 208,
+      "matched": 208,
+      "recorded": {
+        "matched": 208,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-08-rotation-remaining-sweep.json",
+      "variants": 632,
+      "matched": 632,
+      "recorded": {
+        "matched": 632,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    },
+    {
+      "record": "validation/2026-10-08-weapon-proc-spells-sweep.json",
+      "variants": 700,
+      "matched": 700,
+      "recorded": {
+        "matched": 700,
+        "rejected": 0,
+        "mismatched": 0
+      },
+      "first_rerun": true
+    }
+  ]
+}

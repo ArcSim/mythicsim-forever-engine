@@ -2,7 +2,9 @@
 //! `registerDeepWounds`: a landed physical crit, other than a proc's or an empty proc mask's,
 //! casts the bleed at once. The cast lands without a hit counter, then the bleed starts over
 //! from now but keeps its tick timer (patch 89), and carries what the running one still owed
-//! plus a share of the main hand's average weapon damage, spread over the ticks it has left.
+//! plus a share of the average damage of the weapon that struck, spread over the ticks it has left:
+//! the off hand's for a dual wielder's off hand crit, the main hand's otherwise (a shield strike is
+//! a main hand attack to the server).
 //! Its ticks ignore the warrior's damage modifiers, which the client flags on the tick spell.
 
 use crate::core::fight::{Agent, DotId, Fight, Side, SpellId, SpellResult, OUTCOME_CRIT};
@@ -45,6 +47,7 @@ pub(crate) fn apply<A: Agent>(
     spell: SpellId,
     target: Side,
     params: DeepWounds,
+    off_hand: bool,
 ) {
     // Go CalcAndDealOutcome with OutcomeAlwaysHitNoHitCounter: no damage and no counter.
     let state = &fight.spells[spell];
@@ -66,7 +69,11 @@ pub(crate) fn apply<A: Agent>(
         0.0
     };
     fight.apply_dot_keeping_tick_timer(dot);
-    let weapon = &fight.autos.mh.weapon;
+    let weapon = if off_hand {
+        &fight.autos.oh.weapon
+    } else {
+        &fight.autos.mh.weapon
+    };
     let average = (weapon.base_damage_min + weapon.base_damage_max) / 2.0;
     let ticks = fight.dots[dot].remaining_ticks;
     // The pinned Go engine runs on arm64, where the compiler fuses `owed + average*share`

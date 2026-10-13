@@ -1996,7 +1996,8 @@ impl<A: Agent> Fight<A> {
                 starting_rage,
                 main_hand_rage,
                 off_hand_rage,
-                crit_multiplier,
+                main_hand_crit_rage,
+                off_hand_crit_rage,
                 threat_per_rage,
                 ..
             } => Some(rage::RageBar {
@@ -2005,7 +2006,8 @@ impl<A: Agent> Fight<A> {
                 current: 0.0,
                 main_hand_rage: *main_hand_rage,
                 off_hand_rage: *off_hand_rage,
-                crit_multiplier: *crit_multiplier,
+                main_hand_crit_rage: *main_hand_crit_rage,
+                off_hand_crit_rage: *off_hand_crit_rage,
                 threat_per_rage: *threat_per_rage,
                 damage_taken_metrics: 0,
                 refund_metrics: 0,

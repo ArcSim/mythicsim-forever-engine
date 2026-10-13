@@ -321,3 +321,47 @@ func thunderfuryEffects(simulation *core.Simulation, character *core.Character, 
 		"resistance_aura": resistance.Label, "nature_resistance": -25.0,
 	}}
 }
+
+// common/forever/frost_oil.go (fork patch 126): Frost Oil, a temporary enchantment on a melee
+// weapon whose client row casts a Frostbolt on a landed hit of that weapon at a flat chance, at
+// once on the unit hit. One listener for each oiled hand, registered through
+// core.StaticImbueProcs, over the spell shared.SpellDataProcDamageSpell builds from the row.
+func frostOilEffects(character *core.Character, unrepresented *[]string) []map[string]any {
+	const bolt = 350025
+	effects := []map[string]any{}
+	for _, hand := range []struct {
+		label string
+		mask  core.ProcMask
+	}{{"Frost Oil (main hand)", core.ProcMaskMeleeMH}, {"Frost Oil (off hand)", core.ProcMaskMeleeOH}} {
+		aura := character.GetAura(hand.label)
+		if aura == nil {
+			continue
+		}
+		damage := spelldata.MustFind(bolt)
+		spell := -1
+		for i, registered := range character.Spellbook {
+			if registered.ActionID == (core.ActionID{SpellID: damage.ID}) {
+				spell = i
+			}
+		}
+		if aura.Dpm != nil || aura.Icd != nil || spell < 0 {
+			*unrepresented = append(*unrepresented, fmt.Sprintf("%s is not a flat chance on hit for a spell", hand.label))
+			continue
+		}
+		shape, reason := procDamageShape(character, damage, spell)
+		if reason != "" {
+			*unrepresented = append(*unrepresented, fmt.Sprintf("%s's proc %s", hand.label, reason))
+			continue
+		}
+		listener := core.ProcTrigger{ProcMask: hand.mask, IsWeaponProc: true, Outcome: core.OutcomeLanded}
+		effect := map[string]any{
+			"kind": "spell_data_damage_proc", "trigger_aura": aura.Label, "trigger_spells": procTriggerSpells(character, listener),
+			"landed_only": true, "require_damage": false, "proc_chance": float64(damage.ProcChance) / 100,
+		}
+		for key, value := range shape {
+			effect[key] = value
+		}
+		effects = append(effects, effect)
+	}
+	return effects
+}

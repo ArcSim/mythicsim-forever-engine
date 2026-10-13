@@ -702,6 +702,7 @@ func meleeProcEffects(simulation *core.Simulation, character *core.Character, un
 	effects = append(effects, weaponEnchantDamageProcEffects(simulation, character, unrepresented)...)
 	effects = append(effects, procDamageItemEffects(simulation, character, unrepresented)...)
 	effects = append(effects, weaponDamageProcEffects(simulation, character, unrepresented)...)
+	effects = append(effects, frostOilEffects(character, unrepresented)...)
 	effects = append(effects, lobotomizerEffects(simulation, character, unrepresented)...)
 	effects = append(effects, ebonHiltEffects(simulation, character, unrepresented)...)
 	effects = append(effects, setStatProcEffects(simulation, character, unrepresented)...)

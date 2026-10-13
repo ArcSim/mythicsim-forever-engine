@@ -14,10 +14,13 @@ pub(crate) struct RageBar {
     pub(crate) max: f64,
     pub(crate) starting: f64,
     pub(crate) current: f64,
-    /// The rage a landed main hand or off hand white hit gives before a crit's multiplier.
+    /// The rage a landed main hand or off hand white hit gives.
     pub(crate) main_hand_rage: f64,
     pub(crate) off_hand_rage: f64,
-    pub(crate) crit_multiplier: f64,
+    /// What a critical hit adds to that rage. It leaves out a two-hander's factor, so a
+    /// critical swing of a two-hander gives less than twice its rage.
+    pub(crate) main_hand_crit_rage: f64,
+    pub(crate) off_hand_crit_rage: f64,
     pub(crate) threat_per_rage: f64,
     pub(crate) damage_taken_metrics: usize,
     pub(crate) refund_metrics: usize,
@@ -143,13 +146,13 @@ impl<A: Agent> Fight<A> {
             return;
         }
         let bar = self.rage_bar();
-        let mut generated = match self.spells[spell].white_hand {
-            Some(Hand::Main) => bar.main_hand_rage,
-            Some(Hand::Off) => bar.off_hand_rage,
+        let (mut generated, crit_bonus) = match self.spells[spell].white_hand {
+            Some(Hand::Main) => (bar.main_hand_rage, bar.main_hand_crit_rage),
+            Some(Hand::Off) => (bar.off_hand_rage, bar.off_hand_crit_rage),
             Some(Hand::Enemy | Hand::Ranged) | None => return,
         };
         if result.crit() {
-            generated *= bar.crit_multiplier;
+            generated += crit_bonus;
         }
         let metrics = match self.spells[spell].cost.map(|cost| cost.kind) {
             Some(_) => self.spells[spell].mana_metrics.expect("cost metrics"),

@@ -165,28 +165,37 @@ func warriorStanceName(stance proto.WarriorStance) string {
 }
 
 // core/rage.go EnableRageBar's OnSpellHitDealt: the rage each landed white hit gives, with Go's
-// operation order: the hit factor, halved for the off hand, raised for a two-handed weapon,
-// times the swing speed, the bar's base multiplier and the hand's multiplier.
+// operation order: the hit factor, halved for the off hand, times the swing speed, the bar's base
+// multiplier and the hand's multiplier, then raised for a two-handed weapon. A critical hit adds
+// the swing's rage before that two-hander factor times CritRageMultiplier less one
+// (CritRageBonusSkipsTwoHand), which the crit rage values carry.
 func rageBarEffect(character *core.Character, baseRageMultiplier float64) map[string]any {
 	bar := privateField(character, "rageBar")
-	hitRage := func(weapon *core.Weapon, offHand bool) float64 {
+	if !core.CritRageBonusSkipsTwoHand {
+		fail(fmt.Errorf("a critical auto attack's extra rage includes the two-hander's factor"))
+	}
+	hitRage := func(weapon *core.Weapon, offHand bool) (float64, float64) {
 		hitFactor := core.BaseRageHitFactor
 		handMultiplier := 1.0
 		if offHand {
 			hitFactor /= 2
 			handMultiplier = bar.FieldByName("offHandRageMultiplier").Float()
 		}
+		baseRage := hitFactor * weapon.SwingSpeed * baseRageMultiplier * handMultiplier
+		generated := baseRage
 		if weapon.NormalizedSwingSpeed == core.TwoHandNormalizedSwingSpeed {
-			hitFactor *= core.TwoHandRageMultiplier
+			generated *= core.TwoHandRageMultiplier
 		}
-		return hitFactor * weapon.SwingSpeed * baseRageMultiplier * handMultiplier
+		return generated, baseRage * (core.CritRageMultiplier - 1)
 	}
+	mainHand, mainHandCrit := hitRage(character.AutoAttacks.MH(), false)
+	offHand, offHandCrit := hitRage(character.AutoAttacks.OH(), true)
 	return map[string]any{
 		"kind": "rage_bar", "aura": "RageBar", "max_rage": character.MaximumRage(),
-		"starting_rage":   bar.FieldByName("startingRage").Float(),
-		"main_hand_rage":  hitRage(character.AutoAttacks.MH(), false),
-		"off_hand_rage":   hitRage(character.AutoAttacks.OH(), true),
-		"crit_multiplier": core.CritRageMultiplier, "threat_per_rage": float64(core.ThreatPerRageGained),
+		"starting_rage":  bar.FieldByName("startingRage").Float(),
+		"main_hand_rage": mainHand, "off_hand_rage": offHand,
+		"main_hand_crit_rage": mainHandCrit, "off_hand_crit_rage": offHandCrit,
+		"threat_per_rage": float64(core.ThreatPerRageGained),
 	}
 }
 

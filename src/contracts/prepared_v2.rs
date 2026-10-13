@@ -3109,7 +3109,10 @@ pub enum Effect {
         starting_rage: f64,
         main_hand_rage: f64,
         off_hand_rage: f64,
-        crit_multiplier: f64,
+        /// The rage a critical hit adds to its swing's rage: the swing's rage before a
+        /// two-hander's factor times `CritRageMultiplier` less one.
+        main_hand_crit_rage: f64,
+        off_hand_crit_rage: f64,
         threat_per_rage: f64,
     },
     /// Go `AttachMultiplicativePseudoStatBuff` on the player's damage taken multiplier, for

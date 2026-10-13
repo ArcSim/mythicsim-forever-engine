@@ -439,7 +439,7 @@
                 "targets": [
                   {
                     "casts": 187398,
-                    "threat": 1625158.1652999974
+                    "threat": 1625043.9852999982
                   },
                   {
                     "unitIndex": 1
@@ -1192,9 +1192,9 @@
                 "type": "ResourceTypeRage"
               },
               "{\"otherId\": \"OtherActionAttack\", \"tag\": 1}": {
-                "actualGain": 251.19600000000005,
+                "actualGain": 274.03200000000004,
                 "events": 22,
-                "gain": 251.19600000000005,
+                "gain": 274.032,
                 "type": "ResourceTypeRage"
               },
               "{\"otherId\": \"OtherActionAttack\", \"tag\": 25584}": {
@@ -1216,7 +1216,7 @@
                 "type": "ResourceTypeHealth"
               },
               "{\"spellId\": 12296}": {
-                "actualGain": 98454.29999999999,
+                "actualGain": 98439.48,
                 "events": 118380,
                 "gain": 118380,
                 "type": "ResourceTypeRage"
@@ -1228,13 +1228,13 @@
                 "type": "ResourceTypeRage"
               },
               "{\"spellId\": 12964}": {
-                "actualGain": 18,
+                "actualGain": 18.00000000000003,
                 "events": 18,
                 "gain": 18,
                 "type": "ResourceTypeRage"
               },
               "{\"spellId\": 2687}": {
-                "actualGain": 179987.71999999997,
+                "actualGain": 179979.70400000003,
                 "events": 66000,
                 "gain": 180000,
                 "type": "ResourceTypeRage"
@@ -1243,19 +1243,19 @@
             "threat": {
               "aggregatorData": {
                 "n": 3000,
-                "sumSq": 221667.41077276575
+                "sumSq": 221642.0902606473
               },
-              "avg": 8.497945346300442,
+              "avg": 8.497626202709258,
               "hist": {
                 "0": 43,
                 "10": 2956,
                 "20": 1
               },
-              "max": 16.64309346366846,
+              "max": 16.551218378738596,
               "maxSeed": "2519",
               "min": 4.013795793464118,
               "minSeed": "551",
-              "stdev": 1.2938554075111763
+              "stdev": 1.292689317886608
             },
             "tmi": {
               "aggregatorData": {

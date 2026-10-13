@@ -27,6 +27,9 @@ pub(crate) struct Encounter {
     pub area_types: Vec<String>,
     pub targets: Vec<UnitId>,
     pub end_fight_at_health: f64,
+    /// Drops the boss's 1% hit suppression on melee and ranged attacks (the fork's patch 125,
+    /// the request's `Encounter.no_hit_suppression`).
+    pub no_hit_suppression: bool,
 }
 
 /// A prepared simulation: the arena, its one player and the class agent.
@@ -90,6 +93,7 @@ fn new_encounter(sim: &mut Sim, options: &Message) -> Result<Encounter, Refusal>
         area_types: Vec::new(),
         targets: Vec::new(),
         end_fight_at_health: 0.0,
+        no_hit_suppression: options.bool("no_hit_suppression"),
     };
     for area in options.enum_names("area_types") {
         if area != "AreaTypeUnknown" && !encounter.area_types.contains(&area) {
@@ -347,6 +351,8 @@ impl Environment {
             },
         );
         self.apply_all_effects(&raid_buffs, &party_buffs, &individual)?;
+        self.sim
+            .register_battle_squawk(unit, party.i32("battle_squawks"));
         for pet in self.sim.unit(unit).pets.clone() {
             self.sim.unit_mut(pet).health_bar = true;
         }
@@ -503,11 +509,15 @@ impl Environment {
                     .iter()
                     .map(|defender| {
                         let defender = self.sim.unit(*defender);
-                        new_attack_table(
+                        let mut table = new_attack_table(
                             self.sim.unit(*attacker).level,
                             defender.unit_type,
                             defender.level,
-                        )
+                        );
+                        if self.encounter.no_hit_suppression {
+                            table.hit_suppression = 0.0;
+                        }
+                        table
                     })
                     .collect()
             })

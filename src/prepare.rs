@@ -8,6 +8,7 @@
 pub(crate) mod agent;
 pub(crate) mod attack;
 pub(crate) mod aura_helpers;
+pub(crate) mod battle_squawk;
 pub(crate) mod buffs;
 pub(crate) mod character;
 pub(crate) mod classic_enchants;

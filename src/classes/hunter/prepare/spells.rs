@@ -621,6 +621,19 @@ impl Hunter {
         }
         let unit = self.unit;
         let rank = spell_data().strider_kick.highest();
+        // The client row's third effect, `StriderKickSpeedsUp` (the fork's patch 120): 30% movement
+        // speed for the spell's 3 sec, an active movement speed effect.
+        let speed = rank.effect(dbcenums::A_MOD_INCREASE_SPEED, 0).percent();
+        let aura = sim.register_aura(
+            unit,
+            AuraConfig {
+                label: "Strider Kick".to_string(),
+                action_id: Some(spell_action(rank.id)),
+                duration: rank.duration(),
+                ..AuraConfig::default()
+            },
+        );
+        sim.new_active_movement_speed_effect(aura, speed);
         let timer = sim.new_timer(unit);
         self.strider_kick = Some(sim.register_spell(
             unit,

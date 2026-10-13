@@ -10,8 +10,9 @@ use super::spell::SpellConfig;
 
 /// Go `ThreatPerRageGained`.
 pub(crate) const THREAT_PER_RAGE_GAINED: f64 = 5.0;
-/// Go `CritRageMultiplier`.
-pub(crate) const CRIT_RAGE_MULTIPLIER: f64 = 1.75;
+/// Go `CritRageMultiplier`: the beta development notes of 1 and 8 October 2026 raise a critical
+/// auto attack's extra rage from 75% to 100%, for warriors, bears and the cat's bear form alike.
+pub(crate) const CRIT_RAGE_MULTIPLIER: f64 = 2.0;
 /// Go `BaseRageHitFactor`.
 pub(crate) const BASE_RAGE_HIT_FACTOR: f64 = 3.46;
 /// Go `TwoHandRageHitFactor`.

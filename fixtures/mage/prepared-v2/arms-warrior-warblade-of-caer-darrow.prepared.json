@@ -5012,10 +5012,11 @@
   "effects": [
     {
       "aura": "RageBar",
-      "crit_multiplier": 2,
       "kind": "rage_bar",
+      "main_hand_crit_rage": 11.418,
       "main_hand_rage": 14.85,
       "max_rage": 100,
+      "off_hand_crit_rage": 0,
       "off_hand_rage": 0,
       "starting_rage": 0,
       "threat_per_rage": 5
@@ -5499,7 +5500,7 @@
       ],
       "kind": "spell_data_damage_proc",
       "landed_only": true,
-      "outcome": "melee_special_hit_and_crit",
+      "outcome": "melee_special_crit_only",
       "proc_chance": 1,
       "require_damage": true,
       "roll": [
@@ -5731,7 +5732,6 @@
         38,
         39,
         48,
-        49,
         50,
         51
       ]

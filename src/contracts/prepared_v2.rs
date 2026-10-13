@@ -3109,7 +3109,10 @@ pub enum Effect {
         starting_rage: f64,
         main_hand_rage: f64,
         off_hand_rage: f64,
-        crit_multiplier: f64,
+        /// The rage a critical hit adds to its swing's rage: the swing's rage before a
+        /// two-hander's factor times `CritRageMultiplier` less one.
+        main_hand_crit_rage: f64,
+        off_hand_crit_rage: f64,
         threat_per_rage: f64,
     },
     /// Go `AttachMultiplicativePseudoStatBuff` on the player's damage taken multiplier, for
@@ -3727,9 +3730,12 @@ pub enum Effect {
         #[serde(default)]
         lacerating_tick_outcome: Option<String>,
     },
-    /// Strider Kick: a normalized main hand swing.
+    /// Strider Kick: a normalized main hand swing, then the aura that speeds the hunter up for
+    /// its duration (an active movement speed effect, which `player_movement` lists).
     StriderKick {
         spell_id: i32,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        speed_aura: Option<String>,
     },
     /// Wing Clip: its damage effect on the weapon special table.
     WingClip {
@@ -3844,6 +3850,16 @@ pub enum Effect {
         spell_id: i32,
         aura: String,
         armor: f64,
+    },
+    /// The Wolf's Furious Howl: the pet's aura adds this melee attack power to the pet while it
+    /// holds, and the owner takes the owner's aura (a stat aura of `stat_auras`) when the cast
+    /// finds the owner within the radius of the target. The pet casts it while its aura is down.
+    HunterPetFuriousHowl {
+        spell_id: i32,
+        pet_aura: String,
+        owner_aura: String,
+        radius: f64,
+        attack_power: f64,
     },
     /// Intimidation: the pet's aura, the physical crit it adds, a Go literal, and the landed hit
     /// that ends it.
@@ -4306,6 +4322,7 @@ impl Effect {
             Effect::HunterPetSwipe { .. } => "hunter_pet_swipe",
             Effect::HunterPetScorpidPoison { .. } => "hunter_pet_scorpid_poison",
             Effect::HunterPetDustCloud { .. } => "hunter_pet_dust_cloud",
+            Effect::HunterPetFuriousHowl { .. } => "hunter_pet_furious_howl",
             Effect::Intimidation { .. } => "intimidation",
             Effect::BestialWrath { .. } => "bestial_wrath",
             Effect::Frenzy { .. } => "frenzy",

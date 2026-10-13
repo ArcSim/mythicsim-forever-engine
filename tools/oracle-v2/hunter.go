@@ -24,7 +24,8 @@ func init() {
 		// talents_beast_mastery.go registerIntimidation registers its cast without a class mask.
 		unmaskedSpells: map[core.ActionID]string{{SpellID: 19577}: "intimidation"},
 		statAuras: func(core.Agent, *core.Character) []string {
-			return []string{"Aspect of the Hawk", "Aspect of the Beast"}
+			// Furious Howl: the Wolf's attack power aura on its owner (fork patch 119).
+			return []string{"Aspect of the Hawk", "Aspect of the Beast", "Furious Howl"}
 		},
 	}
 	// items.go Renataki's Charm of Beasts: its use resets the cooldowns of the shots it names.
@@ -483,6 +484,33 @@ func hunterPetEffects(h *hunter.Hunter, character *core.Character) []map[string]
 			})
 		}
 	}
+	// newFuriousHowl (fork patch 119): no damage mask. The aura it gives the pet and the hunter
+	// carries the row's melee attack power, which the pet takes as a dynamic stat; the hunter's
+	// is a stat aura the effect leaves to stat_auras. The hunter takes it while within the
+	// effect's radius of the target.
+	{
+		row := spelldata.MustFind(24597)
+		for _, spell := range pet.Spellbook {
+			if spell.ActionID != (core.ActionID{SpellID: row.ID}) {
+				continue
+			}
+			parsed := spelldata.DryRun(row)
+			petAura := pet.GetAura(row.Name)
+			ownerAura := character.GetAura(row.Name)
+			if petAura == nil || ownerAura == nil || len(parsed.Skipped) != 0 || len(parsed.Applied) != 1 || parsed.Applied[0].Kind != "stat AttackPower" {
+				*classNotes = append(*classNotes, "Furious Howl's effects are unsupported")
+				continue
+			}
+			radius := 15.0
+			if e := row.Effect(dbcenums.A_MOD_ATTACK_POWER, 0); e != nil && e.RadiusMax > 0 {
+				radius = float64(e.RadiusMax)
+			}
+			effects = append(effects, map[string]any{
+				"kind": "hunter_pet_furious_howl", "spell_id": row.ID, "pet_aura": petAura.Label,
+				"owner_aura": ownerAura.Label, "radius": radius, "attack_power": parsed.Applied[0].Value,
+			})
+		}
+	}
 	// The ability slots, as positions in the pet's spellbook, or -1 for an empty slot.
 	slot := func(name string) int {
 		field := reflect.ValueOf(pet).Elem().FieldByName(name)
@@ -565,7 +593,12 @@ func hunterMeleeEffects(h *hunter.Hunter, character *core.Character) []map[strin
 		effects = append(effects, effect)
 	}
 	if h.StriderKick != nil {
-		effects = append(effects, map[string]any{"kind": "strider_kick", "spell_id": h.StriderKick.ActionID.SpellID})
+		// strider_kick.go: the kick activates an aura of the client row's speed effect after its hit.
+		effect := map[string]any{"kind": "strider_kick", "spell_id": h.StriderKick.ActionID.SpellID}
+		if speed := character.GetAura("Strider Kick"); speed != nil {
+			effect["speed_aura"] = speed.Label
+		}
+		effects = append(effects, effect)
 	}
 	if h.WingClip != nil {
 		effects = append(effects, map[string]any{

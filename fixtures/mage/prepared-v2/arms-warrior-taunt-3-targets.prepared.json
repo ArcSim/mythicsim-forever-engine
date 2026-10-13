@@ -4960,10 +4960,11 @@
   "effects": [
     {
       "aura": "RageBar",
-      "crit_multiplier": 2,
       "kind": "rage_bar",
+      "main_hand_crit_rage": 12.11,
       "main_hand_rage": 15.75,
       "max_rage": 100,
+      "off_hand_crit_rage": 0,
       "off_hand_rage": 0,
       "starting_rage": 0,
       "threat_per_rage": 5
@@ -5547,7 +5548,6 @@
         37,
         38,
         47,
-        48,
         49,
         50
       ]

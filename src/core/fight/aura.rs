@@ -267,6 +267,8 @@ pub(crate) struct Aura<K> {
     pub(crate) behavior: AuraBehavior<K>,
     lists: [bool; LISTS],
     permanent: bool,
+    /// The stacks an aura active after Go's reset holds, which its OnReset set as it activated.
+    reset_stacks: i32,
     /// The later member of its exclusive category that displaces it during the reset.
     displaced_by: Option<String>,
     /// Blocked at the reset by an earlier member of its exclusive category.
@@ -355,6 +357,7 @@ impl<K> Tracker<K> {
             // An aura active right after Go's reset was activated by its OnReset, as was one
             // a later member of its exclusive category displaced.
             permanent: exported.active || exported.displaced_by.is_some(),
+            reset_stacks: if exported.active { exported.stacks } else { 0 },
             displaced_by: exported.displaced_by.clone(),
             blocked_at_reset: exported.blocked_at_reset,
             icd,
@@ -391,6 +394,7 @@ impl<K> Tracker<K> {
                 behavior: behavior(&aura.behavior),
                 lists: aura.lists,
                 permanent: aura.permanent,
+                reset_stacks: aura.reset_stacks,
                 displaced_by: aura.displaced_by.clone(),
                 blocked_at_reset: aura.blocked_at_reset,
                 icd: aura.icd,
@@ -945,6 +949,10 @@ impl<A: Agent> Fight<A> {
                 self.resetting_auras = true;
                 self.activate_aura(AuraRef { side, index });
                 self.resetting_auras = false;
+                let stacks = self.trackers[side.index()].auras[index].reset_stacks;
+                if stacks > 0 {
+                    self.set_stacks(AuraRef { side, index }, stacks);
+                }
             } else if state.blocked_at_reset {
                 // Go Aura.Activate counts the proc before the exclusive effect blocks it.
                 state.procs += 1;

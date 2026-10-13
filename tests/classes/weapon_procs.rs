@@ -521,3 +521,76 @@ fn two_dots_that_share_an_aura_are_refused() {
         "effect_unimplemented: the dots of spell 1309315 and spell 1291663 share the aura {aura}"
     )));
 }
+
+/// Fork patch 126: Frost Oil is a temporary enchantment whose client row casts a Frostbolt on a
+/// landed hit of the oiled weapon, at the flat 10% the row states, at once on the unit hit. Each
+/// oiled hand has its own listener, which hears the spells of that hand.
+#[test]
+fn frost_oil_casts_a_frostbolt_on_the_hits_of_its_hand() {
+    for name in [
+        "combat-rogue-frost-oil",
+        "combat-rogue-frost-oil-beside-poisons",
+    ] {
+        let value = fixture(name);
+        let main = effect(&value, "Frost Oil (main hand)");
+        let off = effect(&value, "Frost Oil (off hand)");
+        for oil in [main, off] {
+            assert_eq!(oil["kind"], "spell_data_damage_proc", "{name}");
+            assert_eq!(oil["proc_chance"], 0.1, "{name}");
+            assert_eq!(oil["landed_only"], true, "{name}");
+            assert!(oil.get("chances").is_none(), "{name}");
+        }
+        assert_eq!(main["spell"], off["spell"], "{name}");
+        let masks = |oil: &Value| -> Vec<String> {
+            oil["trigger_spells"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .flat_map(|position| {
+                    value["player"]["spells"][position.as_u64().unwrap() as usize]["proc_mask"]
+                        .as_array()
+                        .unwrap()
+                        .iter()
+                        .map(|mask| mask.as_str().unwrap().to_string())
+                })
+                .collect()
+        };
+        assert!(
+            masks(main)
+                .iter()
+                .all(|mask| mask.starts_with("ProcMaskMeleeMH")),
+            "{name}"
+        );
+        assert!(
+            masks(off)
+                .iter()
+                .all(|mask| mask.starts_with("ProcMaskMeleeOH")),
+            "{name}"
+        );
+        assert!(!masks(main).is_empty() && !masks(off).is_empty(), "{name}");
+        // The bolt follows a hit at the same instant.
+        let logs = first_fight_log(value);
+        let bolts = logs
+            .lines()
+            .filter(|line| line.contains("Casting {SpellID: 350025}"))
+            .count();
+        assert!(bolts > 0, "{name}");
+    }
+}
+
+/// Each oiled hand's listener needs its effect.
+#[test]
+fn a_frost_oil_listener_needs_its_effect() {
+    for aura in ["Frost Oil (main hand)", "Frost Oil (off hand)"] {
+        let mut value = fixture("combat-rogue-frost-oil");
+        let index = effect_index(&value, aura);
+        value["effects"].as_array_mut().unwrap().remove(index);
+        assert!(
+            refusals(value).contains(&format!(
+                "aura_listener_unclaimed: player aura \"{aura}\" listens to combat events \
+                 without an effect"
+            )),
+            "{aura}"
+        );
+    }
+}

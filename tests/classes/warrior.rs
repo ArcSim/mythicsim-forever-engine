@@ -1151,3 +1151,157 @@ fn intimidating_shouts_cooldown_follows_the_vindicators_set_bonus() {
         );
     }
 }
+
+/// The rage bar of a prepared warrior.
+fn rage_bar(value: &Value) -> &Value {
+    value["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|effect| effect["kind"] == "rage_bar")
+        .unwrap()
+}
+
+/// Fork patches 123 and 124: a critical auto attack pays the swing's rage and, on top, the rage
+/// of the swing before a two-hander's factor times the crit rage multiplier, now 2, less one.
+/// A two-hander's critical swing is not worth twice its swing, a one-hander's is.
+#[test]
+fn a_critical_auto_attack_pays_the_swing_and_the_one_handers_rage() {
+    // The Arms Warrior's two-hander: 15.75 rage a swing (3.46 x 1.3006 x 3.5), whose crit adds
+    // the 3.46 x 3.5 = 12.11 of a one-hander at the same speed.
+    let arms = warrior_fixture("production-arms-warrior");
+    let bar = rage_bar(&arms);
+    assert_eq!(bar["main_hand_rage"], 15.75);
+    assert_eq!(bar["main_hand_crit_rage"], 12.11);
+    assert!(bar.get("crit_multiplier").is_none());
+    // The Fury Warrior's one-handers: the crit adds the swing's rage again, and the off hand's
+    // is half of the hit factor.
+    let fury = warrior_fixture("production-warrior");
+    let bar = rage_bar(&fury);
+    assert_eq!(bar["main_hand_crit_rage"], bar["main_hand_rage"]);
+    assert_eq!(bar["off_hand_crit_rage"], bar["off_hand_rage"]);
+
+    // In a fight a main hand auto gives the swing's rage, and a critical one the sum.
+    let logs = first_fight_log(arms);
+    let lines: Vec<&str> = logs.lines().collect();
+    let (mut hits, mut crits) = (0, 0);
+    for (index, line) in lines.iter().enumerate() {
+        let crit = line.contains("{OtherID: 3, Tag: 1} Crit for");
+        if !crit && !line.contains("{OtherID: 3, Tag: 1} Hit for") {
+            continue;
+        }
+        let Some(gain) = lines[index + 1..]
+            .iter()
+            .take(2)
+            .find(|line| line.contains("rage from {OtherID: 3, Tag: 1}"))
+        else {
+            continue;
+        };
+        let expected = if crit {
+            "Gained 27.860 rage"
+        } else {
+            "Gained 15.750 rage"
+        };
+        assert!(gain.contains(expected), "{line}\n{gain}");
+        if crit {
+            crits += 1;
+        } else {
+            hits += 1;
+        }
+    }
+    assert!(hits > 0 && crits > 0, "{hits} hits and {crits} crits");
+}
+
+/// Fork patch 116: a dual wielder's off hand crit sizes Deep Wounds off the off hand weapon, as
+/// the main hand's sizes it off the main hand. The first crit of the Fury Warrior's fight is an
+/// off hand auto, which starts the bleed at 1.29 seconds, and the bleed's first tick at 4.29
+/// carries what the off hand's crit and a main hand crit after it gave it (44.5 in Go, where
+/// sizing both off the main hand made it 47.0).
+#[test]
+fn an_off_hand_crit_sizes_deep_wounds_off_the_off_hand_weapon() {
+    let logs = first_fight_log(warrior_fixture("production-warrior"));
+    let crit = logs
+        .lines()
+        .find(|line| line.contains("Crit for") && line.contains("{OtherID: 3"))
+        .expect("a crit");
+    assert!(
+        crit.starts_with("[1.29]") && crit.contains("Tag: 2}"),
+        "{crit}"
+    );
+    let tick = logs
+        .lines()
+        .find(|line| line.contains("{SpellID: 412609} [DEBUG]"))
+        .expect("a tick");
+    assert!(
+        tick.starts_with("[4.29]") && tick.contains("BaseDamage:44.5,"),
+        "{tick}"
+    );
+}
+
+/// Fork patches 114 and 118: Windfury Totem's proc comes off the main hand only, as its tooltip
+/// says, so the off hand's autos and specials, which the party aura's mask names, do not roll
+/// it. Without an off hand weapon an off hand special is a shield strike, which the server
+/// swings as a main hand attack, so it still rolls.
+#[test]
+fn windfury_totem_hears_the_main_hand_only() {
+    let heard = |value: &Value| -> Vec<(Value, Vec<String>)> {
+        let effect = value["effects"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|effect| effect["kind"] == "windfury_totem")
+            .unwrap();
+        effect["trigger_spells"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|position| {
+                let spell = &value["player"]["spells"][position.as_u64().unwrap() as usize];
+                let masks = spell["proc_mask"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .map(|mask| mask.as_str().unwrap().to_string())
+                    .collect();
+                (spell["action_id"].clone(), masks)
+            })
+            .collect()
+    };
+    // Dual wielding: nothing that swings only the off hand, and not Whirlwind's off hand strike
+    // or the shield strike's off hand mask, which the off hand weapon contradicts.
+    let fury = heard(&warrior_fixture("production-warrior"));
+    assert!(!fury.is_empty());
+    for (id, masks) in &fury {
+        assert!(
+            masks.iter().any(|mask| mask.starts_with("ProcMaskMeleeMH")),
+            "{id}: {masks:?}"
+        );
+    }
+    // Shield Bash (1672) and the off hand Whirlwind strike (1680, tag 1 is the main hand's).
+    assert!(!fury.iter().any(|(id, _)| id["spell_id"] == 1672));
+    assert!(!fury
+        .iter()
+        .any(|(id, _)| id["spell_id"] == 1680 && id["tag"] == 2));
+    assert!(!fury.iter().any(|(id, _)| id["tag"] == 2));
+    // With no off hand weapon the shield strike rolls it.
+    let arms = heard(&warrior_fixture("production-arms-warrior"));
+    assert!(arms
+        .iter()
+        .any(|(id, masks)| id["spell_id"] == 1672
+            && masks == &["ProcMaskMeleeOHSpecial".to_string()]));
+}
+
+/// Fork patch 125: a boss's 1% hit suppression can be switched off. The exporter reads it from
+/// the attack table, and the runtime takes it off every physical hit chance, so a Warrior who
+/// is 8% hit capped misses nothing against the boss.
+#[test]
+fn switching_off_the_hit_suppression_lowers_the_misses() {
+    let off = warrior_fixture("warrior-no-hit-suppression");
+    let on = warrior_fixture("production-warrior");
+    assert_eq!(off["melee"]["hit_suppression"], 0.0);
+    assert_eq!(on["melee"]["hit_suppression"], 0.01);
+    // The same input with the suppression back on rolls different hit tables.
+    let mut suppressed = off.clone();
+    suppressed["melee"]["hit_suppression"] = json!(0.01);
+    assert_ne!(first_fight_log(off), first_fight_log(suppressed));
+}

@@ -553,7 +553,11 @@ fn a_move_takes_the_distance_at_seven_yards_a_second() {
     let (start, end) = windows[0];
     assert!(start < 0.0, "{windows:?}");
     assert!((end - start - 15.0 / 7.0).abs() < 0.011, "{windows:?}");
-    let in_fight: Vec<_> = windows.iter().filter(|(start, _)| *start >= 0.0).collect();
+    // The last move may be cut short by the end of the fight.
+    let in_fight: Vec<_> = windows[..windows.len() - 1]
+        .iter()
+        .filter(|(start, _)| *start >= 0.0)
+        .collect();
     assert!(!in_fight.is_empty(), "{windows:?}");
     assert!(
         in_fight
@@ -688,4 +692,145 @@ fn dust_cloud_yields_to_the_major_armor_reductions() {
     };
     assert_eq!(casts(fixture("beast-mastery-hunter-tallstrider")), 0);
     assert!(casts(tallstrider_without_armor_reductions()) > 0);
+}
+
+/// The lines of a first-fight log at one timestamp.
+fn lines_at<'a>(logs: &'a str, time: &str) -> Vec<&'a str> {
+    let prefix = format!("[{time}] ");
+    logs.lines()
+        .filter(|line| line.starts_with(&prefix))
+        .collect()
+}
+
+fn has_line(logs: &str, time: &str, needle: &str) -> bool {
+    lines_at(logs, time)
+        .iter()
+        .any(|line| line.contains(needle))
+}
+
+/// Strider Kick (fork patch 120) activates an aura of 30% movement speed for 3 seconds after its
+/// hit, which the speed category gives and takes back with a log line each.
+#[test]
+fn strider_kick_speeds_the_hunter_up_for_three_seconds() {
+    let logs = first_fight_log(fixture("production-survival-hunter"));
+    let kick = logs
+        .lines()
+        .find(|line| line.contains("Casting {SpellID: 1317257}"))
+        .expect("a kick");
+    let time = at(kick);
+    let stamp = format!("{time:.2}");
+    assert!(has_line(
+        &logs,
+        &stamp,
+        "[DEBUG] Movement speed changed from 7.00 (0.00%) to 9.10 (30.00%)"
+    ));
+    assert!(has_line(&logs, &stamp, "Aura gained: {SpellID: 1317257}"));
+    let faded = format!("{:.2}", time + 3.0);
+    assert!(has_line(&logs, &faded, "Aura faded: {SpellID: 1317257}"));
+    assert!(has_line(
+        &logs,
+        &faded,
+        "[DEBUG] Movement speed changed from 9.10 (30.00%) to 7.00 (0.00%)"
+    ));
+}
+
+/// A kick without its speed aura changes nothing about the hunter's speed, and the effect is
+/// what activates it.
+#[test]
+fn strider_kick_without_its_speed_aura_leaves_the_speed_alone() {
+    let mut value = fixture("production-survival-hunter");
+    let effect = value["effects"]
+        .as_array_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|effect| effect["kind"] == "strider_kick")
+        .unwrap();
+    assert_eq!(effect["speed_aura"], "Strider Kick");
+    effect.as_object_mut().unwrap().remove("speed_aura");
+    let logs = first_fight_log(value);
+    assert!(!logs.contains("Movement speed changed"), "{logs}");
+}
+
+/// Fork patch 121: a speed change in the middle of a move runs the rest of it to the same
+/// destination. The hunter runs out to 20 yards from 5, and a kick a second in speeds it up 30%
+/// for the last 8 yards: 5 + 7 = 12 yards at -3.00, the rest at 9.1 yards a second. Re-planning
+/// to the length of the move, 7 yards, ended the run at -2.67 on its way to the wrong place.
+#[test]
+fn a_speed_change_mid_move_keeps_the_destination() {
+    let logs = first_fight_log(fixture("survival-hunter-strider-kick-while-moving"));
+    assert!(has_line(&logs, "-4.00", "[DEBUG] Moving to 20.0 yards"));
+    assert!(has_line(&logs, "-3.00", "{OtherID: 20} stacks: 5 --> 12"));
+    assert!(has_line(
+        &logs,
+        "-3.00",
+        "[DEBUG] Movement speed changed from 7.00 (0.00%) to 9.10 (30.00%)"
+    ));
+    // 8 yards at 9.1 a second take 0.879 seconds.
+    assert!(has_line(&logs, "-2.12", "{OtherID: 20} stacks: 12 --> 20"));
+    assert!(has_line(&logs, "-2.12", "Aura faded: {OtherID: 20}"));
+}
+
+/// Fork patch 119: the Wolf casts Furious Howl for 60 focus whenever its aura is down, giving
+/// the pet and, within 15 yards of the target, the hunter 60 seconds of melee attack power.
+#[test]
+fn the_wolf_howls_for_itself_and_an_owner_within_range() {
+    let logs = first_fight_log(fixture("beast-mastery-hunter-wolf"));
+    let wolf = "hunter (#1) - Wolf";
+    let cast = unit_lines(&logs, wolf)
+        .into_iter()
+        .find(|line| line.contains("Casting {SpellID: 24597}"))
+        .expect("a howl");
+    assert!(cast.contains("Cost = 60.000"), "{cast}");
+    let stamp = format!("{:.2}", at(cast));
+    // The pet's aura, then the hunter's.
+    let gained: Vec<&str> = lines_at(&logs, &stamp)
+        .into_iter()
+        .filter(|line| line.contains("Aura gained: {SpellID: 24597}"))
+        .collect();
+    assert_eq!(gained.len(), 2, "{gained:?}");
+    assert!(
+        gained[0].contains(wolf) && !gained[1].contains(wolf),
+        "{gained:?}"
+    );
+    // It recasts once the aura has faded, not before.
+    let casts: Vec<f64> = unit_lines(&logs, wolf)
+        .into_iter()
+        .filter(|line| line.contains("Casting {SpellID: 24597}"))
+        .map(at)
+        .collect();
+    assert!(
+        casts.windows(2).all(|pair| pair[1] - pair[0] >= 60.0),
+        "{casts:?}"
+    );
+}
+
+/// The hunter stands at 25 yards, outside the effect's 15 yard radius, so only the pet is given
+/// the aura.
+#[test]
+fn the_wolf_howls_for_itself_alone_when_its_owner_is_too_far() {
+    let logs = first_fight_log(fixture("marksmanship-hunter-wolf-out-of-howl-range"));
+    let wolf = "hunter (#1) - Wolf";
+    let cast = logs
+        .lines()
+        .find(|line| line.contains(wolf) && line.contains("Casting {SpellID: 24597}"))
+        .expect("a howl");
+    let stamp = format!("{:.2}", at(cast));
+    let gained: Vec<&str> = lines_at(&logs, &stamp)
+        .into_iter()
+        .filter(|line| line.contains("Aura gained: {SpellID: 24597}"))
+        .collect();
+    assert_eq!(gained.len(), 1, "{gained:?}");
+    assert!(gained[0].contains(wolf), "{gained:?}");
+}
+
+/// The howl runs only with its effect, which claims the pet's aura.
+#[test]
+fn furious_howl_needs_its_effect() {
+    let mut value = fixture("beast-mastery-hunter-wolf");
+    assert!(check_prepared(&parse(value.clone())).is_ok());
+    value["effects"]
+        .as_array_mut()
+        .unwrap()
+        .retain(|effect| effect["kind"] != "hunter_pet_furious_howl");
+    assert!(reasons(value).contains(&"the pet's ability at 1 has no behavior".to_string()));
 }

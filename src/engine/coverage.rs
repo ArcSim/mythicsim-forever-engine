@@ -610,7 +610,7 @@ fn proc_damage_mismatch(
             } else {
                 "DefenseTypeRanged"
             },
-            name.ends_with("_and_crit"),
+            name.ends_with("_and_crit") || name.ends_with("_crit_only"),
         ),
         None => ("DefenseTypeMagic", can_crit),
     };

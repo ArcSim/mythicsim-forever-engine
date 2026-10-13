@@ -3851,6 +3851,16 @@ pub enum Effect {
         aura: String,
         armor: f64,
     },
+    /// The Wolf's Furious Howl: the pet's aura adds this melee attack power to the pet while it
+    /// holds, and the owner takes the owner's aura (a stat aura of `stat_auras`) when the cast
+    /// finds the owner within the radius of the target. The pet casts it while its aura is down.
+    HunterPetFuriousHowl {
+        spell_id: i32,
+        pet_aura: String,
+        owner_aura: String,
+        radius: f64,
+        attack_power: f64,
+    },
     /// Intimidation: the pet's aura, the physical crit it adds, a Go literal, and the landed hit
     /// that ends it.
     Intimidation {
@@ -4312,6 +4322,7 @@ impl Effect {
             Effect::HunterPetSwipe { .. } => "hunter_pet_swipe",
             Effect::HunterPetScorpidPoison { .. } => "hunter_pet_scorpid_poison",
             Effect::HunterPetDustCloud { .. } => "hunter_pet_dust_cloud",
+            Effect::HunterPetFuriousHowl { .. } => "hunter_pet_furious_howl",
             Effect::Intimidation { .. } => "intimidation",
             Effect::BestialWrath { .. } => "bestial_wrath",
             Effect::Frenzy { .. } => "frenzy",

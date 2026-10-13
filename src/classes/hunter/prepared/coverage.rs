@@ -40,6 +40,7 @@ const EFFECTS: &[&str] = &[
     "hunter_pet",
     "hunter_pet_bleed",
     "hunter_pet_dust_cloud",
+    "hunter_pet_furious_howl",
     "hunter_pet_scorpid_poison",
     "hunter_pet_strike",
     "hunter_pet_swipe",
@@ -118,6 +119,7 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
             vec![("pet", aura)]
         }
         Effect::HunterPetDustCloud { aura, .. } => vec![("target", aura)],
+        Effect::HunterPetFuriousHowl { pet_aura, .. } => vec![("pet", pet_aura)],
         _ => Vec::new(),
     }
 }

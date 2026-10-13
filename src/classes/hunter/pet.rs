@@ -172,6 +172,8 @@ pub(crate) enum PetAbility {
     ScorpidPoison { tick_base: f64, outcome: Outcome },
     /// Go `newDustCloud`, whose aura and armor the agent holds.
     DustCloud,
+    /// Go `newFuriousHowl`, whose auras the agent holds.
+    FuriousHowl { radius: f64 },
 }
 
 impl PetAbility {
@@ -182,7 +184,8 @@ impl PetAbility {
             | Effect::HunterPetBleed { spell_id, .. }
             | Effect::HunterPetSwipe { spell_id, .. }
             | Effect::HunterPetScorpidPoison { spell_id, .. }
-            | Effect::HunterPetDustCloud { spell_id, .. } => Some(*spell_id),
+            | Effect::HunterPetDustCloud { spell_id, .. }
+            | Effect::HunterPetFuriousHowl { spell_id, .. } => Some(*spell_id),
             _ => None,
         }
     }
@@ -238,6 +241,9 @@ impl PetAbility {
                 outcome: Outcome::tick_hit_rolled(*tick_can_crit, *tick_magic).ok()?,
             }),
             Effect::HunterPetDustCloud { .. } => Some(PetAbility::DustCloud),
+            Effect::HunterPetFuriousHowl { radius, .. } => {
+                Some(PetAbility::FuriousHowl { radius: *radius })
+            }
             _ => None,
         }
     }
@@ -319,6 +325,15 @@ impl PetAbility {
                     fight.activate_aura(aura);
                 }
             }
+            PetAbility::FuriousHowl { radius } => {
+                // The pet howls for itself, and for its owner while the owner stands within the
+                // radius of the target (the owner's distance as Go last read it).
+                let howl = fight.agent.furious_howl.expect("Furious Howl is bound");
+                fight.activate_aura(howl.pet_aura);
+                if fight.unit_config(Side::Player).distance <= radius {
+                    fight.activate_aura(howl.owner_aura);
+                }
+            }
         }
     }
 }
@@ -332,6 +347,29 @@ pub(crate) fn bleed_tick<A: Agent>(fight: &mut Fight<A>, dot: DotId, outcome: Ou
         fight.attacker_multiplier(spell, true) * fight.dots[dot].periodic_damage_multiplier;
     let result = fight.calc_tick_damage(spell, side, base, attacker, outcome);
     fight.deal_damage(spell, result, true);
+}
+
+/// The Wolf's Furious Howl: the auras it gives and the melee attack power the pet's takes.
+#[derive(Clone, Copy, Debug)]
+pub(crate) struct FuriousHowl {
+    pub(crate) pet: Side,
+    pub(crate) pet_aura: AuraRef,
+    pub(crate) owner_aura: AuraRef,
+    pub(crate) attack_power: f64,
+}
+
+impl FuriousHowl {
+    /// The pet aura's gain and expiry: Go `AddStatsDynamic` of the row's melee attack power on
+    /// the pet. The owner's aura is a stat aura of the owner.
+    pub(crate) fn pet_changed<A: Agent>(self, fight: &mut Fight<A>, gained: bool) {
+        let amount = if gained {
+            self.attack_power
+        } else {
+            -self.attack_power
+        };
+        let taken = fight.add_pet_stat_dynamic(self.pet, "AttackPower", amount);
+        assert!(taken, "Furious Howl's pet recomputes its stats");
+    }
 }
 
 /// The pet auras the hunter's talents give it.

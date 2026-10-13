@@ -16,8 +16,8 @@ use crate::{
 
 use super::items::ManaProc;
 use super::pet::{
-    self as hunter_pet, PetAbility, PetAi, PetAuras, DUST_CLOUD_YIELDS_TO_SUNDER_AND_EXPOSE,
-    SUNDER_ARMOR_CATEGORY,
+    self as hunter_pet, FuriousHowl, PetAbility, PetAi, PetAuras,
+    DUST_CLOUD_YIELDS_TO_SUNDER_AND_EXPOSE, SUNDER_ARMOR_CATEGORY,
 };
 use super::spells::{
     aspect_of_the_hawk::AspectOfTheHawk,
@@ -74,6 +74,8 @@ pub(crate) enum HunterAura {
     FrenzyTrigger,
     FrenzyEffect,
     DustCloud,
+    /// The Wolf's Furious Howl on the pet.
+    FuriousHowl,
     AspectOfTheBeast,
     QuickStrikes,
     RaptorStrikeQueued,
@@ -113,6 +115,8 @@ pub(crate) struct HunterAgent {
     wing_clip_damage: f64,
     /// The aura Strider Kick activates after its hit.
     strider_kick_speed: Option<AuraRef>,
+    /// The Wolf's Furious Howl.
+    pub(crate) furious_howl: Option<FuriousHowl>,
     /// Resourcefulness's trigger and its regeneration.
     resourcefulness: Option<(SurvivalProc, f64)>,
     /// Expose Prey's trigger and whether the target carries Hunter's Mark.
@@ -192,6 +196,9 @@ fn pet_auras(prepared: &PreparedV2) -> Vec<(String, HunterAura)> {
             } => {
                 auras.push((trigger_aura.clone(), HunterAura::FrenzyTrigger));
                 auras.push((aura.clone(), HunterAura::FrenzyEffect));
+            }
+            Effect::HunterPetFuriousHowl { pet_aura, .. } => {
+                auras.push((pet_aura.clone(), HunterAura::FuriousHowl))
             }
             _ => {}
         }
@@ -273,7 +280,11 @@ impl HunterAgent {
             let pet_ability = match spell.class_spell.as_deref() {
                 Some(class) => class == "pet_damage",
                 None => abilities.iter().any(|(spell_id, ability)| {
-                    *spell_id == id.spell_id && matches!(ability, PetAbility::DustCloud)
+                    *spell_id == id.spell_id
+                        && matches!(
+                            ability,
+                            PetAbility::DustCloud | PetAbility::FuriousHowl { .. }
+                        )
                 }),
             };
             if pet_ability && id.tag == 0 && id.item_id == 0 {
@@ -335,6 +346,23 @@ impl HunterAgent {
             Effect::HunterPet { pet, .. } => fight.pet_side(pet),
             _ => None,
         });
+        for effect in &prepared.effects {
+            if let Effect::HunterPetFuriousHowl {
+                pet_aura,
+                owner_aura,
+                attack_power,
+                ..
+            } = effect
+            {
+                let pet = pet.ok_or("the hunter's pet is not simulated")?;
+                fight.agent.furious_howl = Some(FuriousHowl {
+                    pet,
+                    pet_aura: PetAuras::pet_aura(&fight, pet, pet_aura)?,
+                    owner_aura: fight.player_aura(owner_aura)?,
+                    attack_power: *attack_power,
+                });
+            }
+        }
         let mut pet_auras = PetAuras {
             pet,
             ..PetAuras::default()
@@ -836,6 +864,10 @@ impl Agent for HunterAgent {
                         }
                         enabled && !fight.aura(aura).active
                     }
+                    PetAbility::FuriousHowl { .. } => {
+                        let howl = fight.agent.furious_howl.expect("Furious Howl is bound");
+                        enabled && !fight.aura(howl.pet_aura).active
+                    }
                     _ => enabled,
                 }
             }
@@ -953,6 +985,11 @@ impl Agent for HunterAgent {
                 let (_, armor) = fight.agent.dust_cloud.expect("Dust Cloud is bound");
                 fight.add_target_armor(aura.side, armor);
             }
+            HunterAura::FuriousHowl => fight
+                .agent
+                .furious_howl
+                .expect("Furious Howl is bound")
+                .pet_changed(fight, true),
             HunterAura::AspectOfTheBeast => Self::beast(fight).on_gain(fight),
             HunterAura::QuickStrikes => Self::beast(fight).quick_shots_changed(fight, true),
             HunterAura::RaptorStrikeQueued => RaptorStrike::queue_changed(fight, true),
@@ -998,6 +1035,11 @@ impl Agent for HunterAgent {
                 let (_, armor) = fight.agent.dust_cloud.expect("Dust Cloud is bound");
                 fight.add_target_armor(aura.side, -armor);
             }
+            HunterAura::FuriousHowl => fight
+                .agent
+                .furious_howl
+                .expect("Furious Howl is bound")
+                .pet_changed(fight, false),
             HunterAura::AspectOfTheBeast => Self::beast(fight).on_expire(fight),
             HunterAura::QuickStrikes => Self::beast(fight).quick_shots_changed(fight, false),
             HunterAura::RaptorStrikeQueued => RaptorStrike::queue_changed(fight, false),

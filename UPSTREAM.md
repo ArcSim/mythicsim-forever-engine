@@ -161,7 +161,13 @@ follows:
 - A Tallstrider holds Dust Cloud while Sunder Armor or Expose Armor is on the target (patch 110).
 
 Rust matches all of them: all 585 accepted fixtures with a Go golden, including the two accepted at
-the pin.
+the pin. The recorded sweeps ran again on the production Mac, capped to two engine processes at
+background priority: all 14,341 variants of 124 records, the 9,076 of the 107 records the earlier
+moves reran and 5,265 of 17 records they left out. 14,278 match Go, Rust refuses 63 and none differ.
+The 63 are 51 the rotation unit and tank records already refused, of the 57 they list, and 12 Mage
+census presets, which the census reads from the pinned reference and which now read `unitDistance`
+and run prepull actions; the 18 Windshaper Skyborne prepull variants Rust refused now match
+([record](validation/2026-10-12-reference-pin-041dec8ef-sweeps.json)).
 
 The ledger lists the 73 commits: 31 bookkeeping, 17 rotation presets, 13 client data updates, 9
 behavior changes Rust prepares and 3 runtime changes the golden fixtures compare. The Mage

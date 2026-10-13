@@ -529,7 +529,7 @@ fn undirected_procs(prepared: &PreparedV2) -> Vec<String> {
                     .is_some_and(|spell| spell.defense_type == "DefenseTypeMelee");
                 let table =
                     crate::core::fight::melee::PhysicalOutcome::of_melee_proc(outcome).is_some();
-                let crit = outcome == "melee_special_hit_and_crit";
+                let crit = outcome != "melee_special_hit";
                 (roll.is_none() || !table || !melee_spell || crit != *can_crit).then(|| {
                     format!(
                         "{trigger_aura}'s hit rolls the {outcome} table, which the runtime \

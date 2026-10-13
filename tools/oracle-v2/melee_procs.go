@@ -578,8 +578,9 @@ func weaponEnchantDamageProcEffects(simulation *core.Simulation, character *core
 // common/classic/items_trinkets.go Heart of Wyrmthalak is a magic hit on melee and ranged hits.
 // common/classic/items_store_gaps.go Iceblade Hacker and Warblade of Caer Darrow are Frost hits of
 // the melee defense type on the landed melee hits that dealt damage, at a fixed chance of 1 on the
-// hand holding the weapon: damageOutcome gives them the melee special hit table with a crit, where
-// a magic hit rolls the magic one.
+// hand holding the weapon. Their client rows carry the always-hit attribute (fork patch 113), so
+// they roll the crit and never miss, dodge or parry (OutcomeMeleeCritOnly); a magic hit rolls the
+// magic table.
 var procDamageItems = []struct {
 	label                string
 	spellID              int32
@@ -587,10 +588,11 @@ var procDamageItems = []struct {
 	defense              core.DefenseType
 	requireDamage        bool
 	procMask             core.ProcMask
-}{{"Heart of Wyrmthalak", 27655, 112, 168, core.DefenseTypeMagic, false, core.ProcMaskMeleeOrRanged},
-	{"Iceblade Hacker", 1298414, 40.70000076293945, 40.70000076293945, core.DefenseTypeMelee, true, core.ProcMaskMelee},
-	{"Warblade of Caer Darrow", 1298499, 27.719999313354492, 27.719999313354492, core.DefenseTypeMelee, true, core.ProcMaskMelee},
-	{"Darkmoon Card: Maelstrom", 23687, 200, 300, core.DefenseTypeMagic, false, core.ProcMaskMelee}}
+	outcome              string
+}{{"Heart of Wyrmthalak", 27655, 112, 168, core.DefenseTypeMagic, false, core.ProcMaskMeleeOrRanged, ""},
+	{"Iceblade Hacker", 1298414, 40.70000076293945, 40.70000076293945, core.DefenseTypeMelee, true, core.ProcMaskMelee, "melee_special_crit_only"},
+	{"Warblade of Caer Darrow", 1298499, 27.719999313354492, 27.719999313354492, core.DefenseTypeMelee, true, core.ProcMaskMelee, "melee_special_crit_only"},
+	{"Darkmoon Card: Maelstrom", 23687, 200, 300, core.DefenseTypeMagic, false, core.ProcMaskMelee, ""}}
 
 func procDamageItemEffects(simulation *core.Simulation, character *core.Character, unrepresented *[]string) []map[string]any {
 	effects := []map[string]any{}
@@ -623,8 +625,8 @@ func procDamageItemEffects(simulation *core.Simulation, character *core.Characte
 				return spell.ProcMask.Matches(item.procMask) && !spell.Flags.Matches(core.SpellFlagProc)
 			}),
 		}
-		if item.defense == core.DefenseTypeMelee {
-			effect["outcome"] = "melee_special_hit_and_crit"
+		if item.outcome != "" {
+			effect["outcome"] = item.outcome
 		}
 		effects = append(effects, effect)
 	}

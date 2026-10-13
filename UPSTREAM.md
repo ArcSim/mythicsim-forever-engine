@@ -199,13 +199,38 @@ the 39 Rogue, 33 of the 36 Bear, 10 Hunter and 2 Shaman. The behavior changes:
   (patch 125) and `Party.battle_squawks` adds one Battle Squawk stack a party engineer, 5% melee
   attack speed each (patch 127). A speed change mid-move keeps the move's destination (patch 121).
 
-Preparation follows all of these that the prepared state shows. The rage bar writes a crit multiplier
-of 2, the attack tables take no hit suppression when the encounter asks, the Battle Squawk aura
-applies Go's `math.Pow` rounding to its stacks, Strider Kick registers its aura and active movement
-speed effect, the Wolf its Furious Howl auras on itself and its owner, and an oil in an imbue or
-temporary enchantment slot its Frostbolt and weapon proc aura. A Wolf golden joins the Hunter
-preparation cases. Before this move Rust prepared the two new request fields as if they were unset,
-and now writes what the exporter writes for them on the production builds of every class.
+Preparation follows all of these that the prepared state shows. The rage bar writes each hand's
+swing rage and the rage a crit adds to it (the swing's rage before the two-hander's factor times the
+crit multiplier of 2 less one), the attack tables take no hit suppression when the encounter asks, the
+Battle Squawk aura applies Go's `math.Pow` rounding to its stacks, Strider Kick registers its aura and
+active movement speed effect and names it in its effect, the Wolf has its Furious Howl auras on itself
+and its owner, a `hunter_pet_furious_howl` effect and a stat aura, and an oil in an imbue or
+temporary enchantment slot has its Frostbolt and one weapon proc for each oiled hand. The exporter's
+trigger lists follow the narrowed Windfury Totem (a shield strike is a main hand attack to the server,
+so an off hand special is heard only where no off hand weapon is wielded), and Iceblade Hacker's and
+Warblade's Frost names the crit only table. A fight that outlasts Battle Squawk's four minutes, or a
+pet that follows the owner's melee speed, is unrepresented. Before this move Rust prepared the two new
+request fields as if they were unset, and now writes what the exporter writes for them on the
+production builds of every class. A Wolf golden joins the Hunter preparation cases.
+
+The fight runtime follows the rest: a crit pays the swing's rage plus the crit rage of its hand, so a
+two-hander's bonus leaves out the 1.3 (patches 113 and 128), Windfury Totem rolls on main hand hits
+only (patch 114), an off hand crit's Deep Wounds reads the off hand weapon (patch 116), Iceblade
+Hacker's and Warblade's Frost rolls the crit and never misses (patch 112), Strider Kick activates its
+speed aura and a speed change during a move re-plans it to the same destination (patches 120 and 121),
+the Wolf casts Furious Howl while its aura is down and the hunter takes the attack power while within
+15 yards of the target (patch 119), Frost Oil casts its Frostbolt at 10% on each landed hit of the
+oiled hand (patch 126), the Battle Squawk stacks are held from the reset (patch 127), and the
+boss's hit suppression drops out of the miss chance when the encounter asks (patch 125). The switches
+whose defaults keep the old behavior (patches 115 and 118) need no change. Nine requests join the
+fixtures with Go goldens: `beast-mastery-hunter-wolf`, `marksmanship-hunter-wolf-out-of-howl-range`,
+`survival-hunter-strider-kick-while-moving`, `combat-rogue-frost-oil`,
+`combat-rogue-frost-oil-beside-poisons`, `combat-rogue-battle-squawks`, `warrior-battle-squawks`,
+`warrior-no-hit-suppression` and `survival-hunter-no-hit-suppression`.
+
+Rust matches all of them: all 595 accepted fixtures with a Go golden, the nine new ones included, and
+preparation writes exactly what the exporter writes for every one. The recorded sweeps have not been
+run again at this pin.
 
 ## Ledger
 

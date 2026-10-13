@@ -863,7 +863,8 @@ fn a_melee_weapon_damage_proc_hears_the_hits_of_its_own_hand() {
             .iter()
             .find(|effect| effect["trigger_aura"] == aura)
             .unwrap();
-        assert_eq!(effect["outcome"], "melee_special_hit_and_crit", "{name}");
+        // The client rows carry the always-hit attribute: the crit roll, and no miss.
+        assert_eq!(effect["outcome"], "melee_special_crit_only", "{name}");
         let spells = value["player"]["spells"].as_array().unwrap();
         let masks_of = |position: &Value| -> Vec<&str> {
             spells[position.as_u64().unwrap() as usize]["proc_mask"]
@@ -971,6 +972,15 @@ fn a_melee_weapon_damage_proc_names_a_table_the_runtime_rolls() {
     assert_eq!(refused(value.clone()), [hit("melee_special_hit")]);
     value["effects"][index]["can_crit"] = json!(false);
     assert!(refused(value).is_empty());
+    let mut value = original.clone();
+    value["effects"][index]["can_crit"] = json!(false);
+    assert_eq!(refused(value), [hit("melee_special_crit_only")]);
+
+    // The table the spell would roll without the always-hit attribute is a table the runtime
+    // rolls too.
+    let mut value = original.clone();
+    value["effects"][index]["outcome"] = json!("melee_special_hit_and_crit");
+    assert!(refused(value).is_empty());
 
     // Without its literal range the hit rolls the client effect, which here deals nothing.
     let mut value = original.clone();
@@ -989,17 +999,23 @@ fn a_melee_weapon_damage_proc_names_a_table_the_runtime_rolls() {
     let index = position(&value);
     let spell = value["effects"][index]["spell"].as_u64().unwrap() as usize;
     value["player"]["spells"][spell]["defense_type"] = json!("DefenseTypeMagic");
-    assert_eq!(refused(value), [hit("melee_special_hit_and_crit")]);
+    assert_eq!(refused(value), [hit("melee_special_crit_only")]);
 }
 
-/// The hit takes the melee table where a magic hit never dodges: it dodges, crits for twice its
-/// base damage, and a Frost hit still takes the partial resist roll.
+/// The hit takes the melee table's crit roll and nothing else: its client row always hits, so
+/// it never misses or dodges as a melee special would, it crits for twice its base damage, and a
+/// Frost hit still takes the partial resist roll.
 #[test]
-fn a_melee_weapon_damage_proc_rolls_the_melee_table_in_a_fight() {
+fn a_melee_weapon_damage_proc_rolls_the_crit_only_table_in_a_fight() {
     let logs = first_fight_log(warrior_fixture("warrior-iceblade-hacker"));
     let lines = lines_with(&logs, 1, "1298414");
+    for refused in ["} Dodge (", "} Miss (", "} Parry ("] {
+        assert!(
+            !lines.iter().any(|line| line.contains(refused)),
+            "{refused}"
+        );
+    }
     for expected in [
-        "} Dodge (",
         "} Crit for 81.400 damage",
         "} Hit for 40.700 damage",
         "} Crit (25% Resist) for 61.050 damage",

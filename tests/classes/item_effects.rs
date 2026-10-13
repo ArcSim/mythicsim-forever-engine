@@ -185,10 +185,16 @@ fn bonereavers_edge_needs_its_effect() {
 #[test]
 fn thunderfury_strikes_then_bounces() {
     let logs = first_fight_log(fixture("warrior-thunderfury"));
-    let strike = logs
-        .lines()
-        .position(|line| line.contains("Casting {SpellID: 21992, Tag: 1}"))
-        .expect("the strike");
+    // The first strike that lands: one that misses puts nothing on the target.
+    let all: Vec<&str> = logs.lines().collect();
+    let strike = (0..all.len())
+        .find(|&index| {
+            all[index].contains("Casting {SpellID: 21992, Tag: 1}")
+                && all[index..index + 12]
+                    .iter()
+                    .any(|line| line.contains("{SpellID: 21992, Tag: 1} Hit for"))
+        })
+        .expect("a strike that lands");
     let lines: Vec<&str> = logs.lines().skip(strike).take(12).collect();
     let bounce = lines
         .iter()

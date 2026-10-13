@@ -545,7 +545,7 @@ fn a_hunter_that_moves_in_its_rotation_is_supported() {
 
 /// Go movement.go: the player runs at seven yards a second, so the prepull run from 5 yards
 /// out to 20 takes 15 / 7 seconds, and the rotation's moves in the fight take the distance
-/// they cover at that speed.
+/// they cover at that speed, 30% faster for the 3 seconds after a Strider Kick.
 #[test]
 fn a_move_takes_the_distance_at_seven_yards_a_second() {
     let logs = first_fight_log(fixture("survival-hunter-weaving-moves"));
@@ -558,7 +558,7 @@ fn a_move_takes_the_distance_at_seven_yards_a_second() {
     assert!(
         in_fight
             .iter()
-            .all(|(start, end)| end - start > 0.9 && end - start < 2.2),
+            .all(|(start, end)| end - start > 0.75 && end - start < 2.2),
         "{windows:?}"
     );
     assert!(logs.contains("[DEBUG] Moving to 5.0 yards"), "{logs}");

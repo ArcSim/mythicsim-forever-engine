@@ -148,9 +148,13 @@ fn a_chain_hits_every_target_it_reaches() {
 
     let logs = first_fight_log(value);
     let hits = hits_by_target(&logs, "16921", "damage (SpellSchool");
+    let missed = hits_by_target(&logs, "16921", "Miss");
     assert_eq!(hits.len(), 3, "{hits:?}");
-    let counts: Vec<usize> = hits.values().copied().collect();
-    assert!(counts.iter().all(|count| *count == counts[0]), "{hits:?}");
+    // Each jump rolls a hit, which may miss.
+    let rolls: Vec<usize> = (1..=3)
+        .map(|target| hits[&target] + missed.get(&target).copied().unwrap_or(0))
+        .collect();
+    assert!(rolls.iter().all(|count| *count == rolls[0]), "{rolls:?}");
 }
 
 /// An area hit is calculated on every target with a roll of its own: Flame Wrath's Fire hit

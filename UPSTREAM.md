@@ -265,8 +265,9 @@ pet's permanent aura whose exclusive effects are each alone in their category, s
 Totem's MP5 on a Warlock's other demons, reports their uptime with the aura's (`exclusive_effects`);
 a dynamic pet's dismissal line tracks a permanent aura's stats; and any other pet logs its stats with
 its permanent auras still up when it is dismissed at the reset or during a fight
-(`active_dismiss_log`), since Go's `expireAll` leaves them up. The fight runtime follows Lacerating
-Strikes' roll-over and reports and logs the pets' auras.
+(`active_dismiss_log`), since Go's `expireAll` leaves them up, while a Shadowfiend still out at the
+fight's end logs them expired (`fight_end_stats`). The fight runtime follows Lacerating Strikes'
+roll-over and reports and logs the pets' auras.
 
 Rust matches all of them: all 594 accepted fixtures with a Go golden, and preparation writes exactly
 what the exporter writes for every one of the 595.

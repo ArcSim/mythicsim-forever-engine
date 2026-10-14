@@ -270,7 +270,13 @@ fight's end logs them expired (`fight_end_stats`). The fight runtime follows Lac
 roll-over and reports and logs the pets' auras.
 
 Rust matches all of them: all 594 accepted fixtures with a Go golden, and preparation writes exactly
-what the exporter writes for every one of the 595.
+what the exporter writes for every one of the 595. The recorded sweeps ran again on the production Mac,
+four engine processes at background priority: all 14,341 variants of the 124 records the d2409ccd0
+rerun compared, byte for byte the same requests. 14,278 match Go, Rust refuses 63 and none differ, the
+counts of the d2409ccd0 rerun record by record, the same 63 refused for the same reasons. Two Shadowfiend
+variants that end with the pet out differed at first, the fight's end logging Mana Spring Totem's MP5,
+until the Shadowfiend's `fight_end_stats`
+([record](validation/2026-10-14-reference-pin-b477c1574-sweeps.json)).
 
 ## Ledger
 

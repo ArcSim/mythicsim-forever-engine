@@ -57,14 +57,34 @@ fn inert_shadowfiend_is_dismissed_logged_and_reported() {
     for action in player["actions"].as_array().unwrap() {
         assert_eq!(action["targets"].as_array().unwrap().len(), 3);
     }
+    // The party's Mana Spring Totem reaches the summoned pet (Go patch 131): its aura is up from
+    // the reset to the fight's end, and its exclusive effect holds its category as long.
+    let mana_spring = pet["auras"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|aura| aura["id"]["spellId"] == 10494)
+        .unwrap();
+    let effect = &mana_spring["effects"][0];
+    assert_eq!(effect["category"], "ManaSpringTotemMP5Add");
+    let (aura_uptime, effect_uptime) = (
+        mana_spring["uptimeSecondsAvg"].as_f64().unwrap(),
+        effect["uptimeSecondsAvg"].as_f64().unwrap(),
+    );
+    assert!(
+        aura_uptime > 0.0 && (aura_uptime - effect_uptime).abs() < 1e-9,
+        "{mana_spring}"
+    );
     let logs = report.result["logs"].as_str().unwrap();
     let pet_lines: Vec<&str> = logs
         .lines()
         .filter(|line| line.contains("- Shadowfiend]"))
         .collect();
-    assert_eq!(pet_lines.len(), 3, "{pet_lines:?}");
-    assert!(pet_lines[0].ends_with("Pet dismissed"));
-    assert!(pet_lines[2].ends_with("No pet summoned"));
+    assert_eq!(pet_lines.len(), 5, "{pet_lines:?}");
+    assert!(pet_lines[0].ends_with("Aura gained: {SpellID: 10494, Tag: -1}"));
+    assert!(pet_lines[1].ends_with("Pet dismissed"));
+    assert!(pet_lines[3].ends_with("Aura faded: {SpellID: 10494, Tag: -1}"));
+    assert!(pet_lines[4].ends_with("No pet summoned"));
 }
 
 #[test]

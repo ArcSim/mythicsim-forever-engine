@@ -337,3 +337,45 @@ fn target_counts_outside_the_contract_are_refused() {
         )));
     }
 }
+
+/// Go pet.go: the Shadowfiend's dismissal logs its stats. At its timeout its permanent auras are
+/// still up, so the party's Mana Spring Totem (patch 131) shows in the line; at the fight's end
+/// Go's doneIteration has expired them first, so it does not.
+#[test]
+fn the_shadowfiend_out_at_the_fights_end_logs_its_stats_without_its_party_auras() {
+    let mut value = accepted("shadow-priest-shadowfiend");
+    value["sim"]["iterations"] = json!(1);
+    value["sim"]["debug_first_iteration"] = json!(true);
+    // The second summon, five minutes after the first, is still out when the fight ends.
+    value["encounter"]["duration_ns"] = json!(305_000_000_000_i64);
+    value["encounter"]["duration_variation_ns"] = json!(0);
+    let report = simulate_prepared(&parse(value)).unwrap();
+    let logs = report.result["logs"].as_str().unwrap();
+    let lines: Vec<&str> = logs
+        .lines()
+        .filter(|line| line.contains("- Shadowfiend]"))
+        .collect();
+    let dismissals: Vec<&str> = lines
+        .windows(2)
+        .filter(|pair| pair[0].ends_with("Pet dismissed"))
+        .map(|pair| pair[1])
+        .collect();
+    // At the reset, at the first summon's timeout and at the fight's end.
+    assert_eq!(dismissals.len(), 3, "{lines:?}");
+    assert!(
+        dismissals[0].contains("\"MP5\": 30.000"),
+        "{}",
+        dismissals[0]
+    );
+    assert!(
+        dismissals[1].contains("\"MP5\": 30.000"),
+        "{}",
+        dismissals[1]
+    );
+    assert!(!dismissals[2].contains("MP5"), "{}", dismissals[2]);
+    let fade = lines
+        .iter()
+        .rposition(|line| line.ends_with("Aura faded: {SpellID: 10494, Tag: -1}"))
+        .unwrap();
+    assert!(lines[fade + 1].ends_with("Pet dismissed"), "{lines:?}");
+}

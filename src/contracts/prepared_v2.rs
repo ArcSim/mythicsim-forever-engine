@@ -2234,6 +2234,10 @@ pub enum Effect {
         attack_power_without_deps: f64,
         attack_power_dependency_terms: Vec<f64>,
         stats: Vec<NamedStat>,
+        /// The same stats once the fight's end has expired the pet's permanent auras, where a
+        /// party aura on the pet changes them (Go patch 131); its attack power is unchanged.
+        #[serde(default, skip_serializing_if = "Vec::is_empty")]
+        fight_end_stats: Vec<NamedStat>,
         mana_restore_aura: String,
         mana_restore_fraction: f64,
         mana_restore_action_id: i32,

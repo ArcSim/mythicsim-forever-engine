@@ -289,7 +289,7 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `searing_light` | sim/priest/talents_holy.go | The resolved trigger on Holy Fire ticks, Holy Purpose's Holy Nova cost modifier and the casts that end it |
 | `pushback_trigger` | sim/core/character.go | A tanking player's "Pushback trigger" aura and the player's pushback chance, which each spell's resist reduces; a damaging hit during a hardcast with the pushback flag pushes the cast back a spell batch window later, by at most half a second and never past the time the cast has run |
 | `parry_haste` | sim/core/attack.go applyParryHaste | Which unit's Parry Haste acts once the target swings at the player, a parry pulling that unit's next main hand swing in; for a target nobody tanks, its swing speed and melee haste, since its reset still rolls a swing timer that a parry pulls in and logs |
-| `inert_pet` | sim/core/pet.go | A registered pet nothing summons: label, unit index, metrics actions and auras, the permanent auras each reset activates, its dismissed stats line and why it is inert |
+| `inert_pet` | sim/core/pet.go | A registered pet nothing summons: label, unit index, metrics actions and auras, the permanent auras each reset activates, its dismissed stats line and why it is inert. `exclusive_effects` names the categories of a permanent aura's exclusive effects, each alone in its category on the pet, so it holds them from the reset to the fight's end and Go reports their uptime with the aura's: a party aura that reaches the pet (fork patch 131), such as Mana Spring Totem. Any other exclusive effect on an inert pet is unrepresented |
 | `sinister_strike`, `backstab` | sim/rogue/sinister_strike.go, backstab.go | The highest rank's base on normalized main hand damage; Backstab's main hand dagger and Puncturing Wounds' combo point chance |
 | `eviscerate` | sim/rogue/eviscerate.go | The rolled base, the bonus a combo point and 3% of attack power a point, a Go literal |
 | `slice_and_dice` | sim/rogue/slice_and_dice.go | The duration at each combo point count and the melee speed multiplier |
@@ -366,7 +366,7 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `frenzy` | sim/hunter/talents_beast_mastery.go | The pet's crit trigger and attack speed aura, the talent's chance from client data, the speed multiplier and the spell batch delay |
 | `aspect_of_the_beast` | sim/hunter/aspects.go | The aura, whose attack power is a stat aura, and with Deadly Aspects the Quick Strikes aura, its melee haste multiplier and the chance each landed melee white hit rolls |
 | `raptor_strike` | sim/hunter/raptor_strike.go | The queue spell and aura that make the next main hand swing cast Raptor Strike, the rank's flat damage from client data and the melee range |
-| `mongoose_bite` | sim/hunter/mongoose_bite.go, lacerating_strikes.go | The Defensive State aura it needs, the rank's flat damage from client data, and Lacerating Strikes' share and tick outcome |
+| `mongoose_bite` | sim/hunter/mongoose_bite.go, lacerating_strikes.go | The Defensive State aura it needs, the rank's flat damage from client data, and Lacerating Strikes' share and tick outcome. A landed bite on a running bleed rolls what the bleed still owes and the bite's share over the ticks the refreshed bleed has left, keeping its tick timer (fork patch 132) |
 | `strider_kick`, `wing_clip` | sim/hunter/strider_kick.go, wing_clip.go | The spells; Wing Clip's flat damage from client data. Strider Kick names `speed_aura`, the aura of the client row's 30% movement speed for 3 seconds that it activates after its hit, a member of the active movement speed category that `player_movement` lists |
 | `hunter_pet_furious_howl` | sim/hunter/pet_abilities.go | The Wolf's extra ability: the pet's aura and the owner's (a stat aura of `stat_auras`), the client row's melee attack power the pet takes as a dynamic stat while its aura holds, and the 15 yard radius of the target within which the owner takes the aura too. The pet casts it for 60 focus while its aura is down |
 | `immolation_trap` | sim/hunter/traps.go | The tick base from client data and whether the effect row lets a tick crit; a magic hit roll without a hit count, then the dot when it landed |
@@ -491,9 +491,13 @@ terms, and `stats_without_deps` and `stat_dependencies` what Go recomputes the p
 from; the exporter checks both against Go bit for bit. For a dynamic pet the reset enables,
 `inherited_stats` is what its dismissal takes away, `aura_stats` what each permanent aura's
 expiry adds to its stats before dependencies, read exactly by the exporter, and
-`dismiss_stats` its dismissal line's stats in Go's order. Rust replays those additions in
-Go's order, so the line keeps the float residue the fight leaves, such as a spell damage of
--0.000 after the owner's procs. A hunter pet may have a focus bar
+`dismiss_stats` its dismissal line's stats in Go's order, a stat a permanent aura changes
+included. Rust replays those additions in Go's order, so the line keeps the float residue the
+fight leaves, such as a spell damage of -0.000 after the owner's procs. Any other pet logs
+`dismiss_log` at the fight's end, once its permanent auras have expired, and
+`active_dismiss_log`, where it differs, at the reset or during a fight, when Go's dismissal
+leaves them up: a party aura on the pet (fork patch 131), such as Mana Spring Totem's MP5 on a
+Shadowfiend. A hunter pet may have a focus bar
 instead of mana, which ticks as a simulation task, and may start at its owner's distance and
 move into melee range at its movement speed. A guardian an item summons during the fight,
 as Dragon's Call's Emerald Dragon Whelp, is `summoned`: each reset dismisses it, a proc

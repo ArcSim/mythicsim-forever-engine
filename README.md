@@ -77,6 +77,9 @@ copy of the boss swinging at the tank on its own timer; tanks of other classes s
 - At `041dec8ef` the recorded sweeps ran again with 17 more records, 14,341 variants in 124
   records: 14,278 match Go, Rust refuses 63 and none differ
   ([record](validation/2026-10-12-reference-pin-041dec8ef-sweeps.json)).
+- At `d2409ccd0` the recorded sweeps ran again, the same 14,341 variants in 124 records:
+  14,278 match Go, Rust refuses 63 and none differ
+  ([record](validation/2026-10-13-reference-pin-d2409ccd0-sweeps.json)).
 - Against 2 to 5 targets, 267 reference builds of every class, 1,955 Mage and Warlock
   census variants, 272 tank fixture requests and 2,492 random variants match Go, the area
   hits, cleaves, multidots and every copy of the boss swinging at a tank included.

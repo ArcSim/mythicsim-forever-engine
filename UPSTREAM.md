@@ -229,8 +229,14 @@ fixtures with Go goldens: `beast-mastery-hunter-wolf`, `marksmanship-hunter-wolf
 `warrior-no-hit-suppression` and `survival-hunter-no-hit-suppression`.
 
 Rust matches all of them: all 595 accepted fixtures with a Go golden, the nine new ones included, and
-preparation writes exactly what the exporter writes for every one. The recorded sweeps have not been
-run again at this pin.
+preparation writes exactly what the exporter writes for every one. The recorded sweeps ran again on the
+production Mac, capped to two engine processes at background priority: all 14,341 variants of the 124
+records the 041dec8ef rerun compared, byte for byte the same requests. 14,278 match Go, Rust refuses 63
+and none differ, the counts of the 041dec8ef rerun record by record, the same 63 refused for the same
+reasons. The rotation remaining sweep draws its aura reads from the base fixtures' prepared auras, and
+the Survival Hunter fixtures now prepare Strider Kick, so its generator draws 10 of their variants
+differently; the 10 the record lists were compared, and the 10 it now draws match Go as well
+([record](validation/2026-10-13-reference-pin-d2409ccd0-sweeps.json)).
 
 ## Ledger
 

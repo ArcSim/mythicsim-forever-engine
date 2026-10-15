@@ -12,7 +12,7 @@
 //! seal reads, the runtime takes from that difference.
 
 use crate::contracts::prepared_v2::{
-    Effect, PreparedV2, SwapAuraState, SwapCallback, SwapChange, Weapon,
+    Effect, PreparedV2, SwapAuraState, SwapCallback, SwapChange, Weapon, WeaponSkillTable,
 };
 use crate::core::time::{go_string, NS_PER_MILLISECOND};
 
@@ -62,6 +62,8 @@ pub(crate) struct ItemSwapState {
     ops: Vec<SwapOp>,
     /// The main hand weapon of each set.
     weapons: [Weapon; 2],
+    /// Go `Unit.weaponSkill` as each set's tables read it: main hand, off hand, ranged.
+    skills: [[Option<WeaponSkillTable>; 3]; 2],
     /// Go `swapItem` sets the main hand weapon, except for a feral druid, whose form rebuilds
     /// its paw in a callback.
     sets_main_hand: bool,
@@ -259,6 +261,13 @@ impl<A: Agent> Fight<A> {
             logs: [to_main_log.clone(), to_swapped_log.clone()],
             ops,
             weapons: [prepared.melee.main_hand.clone(), worn.melee.main_hand.clone()],
+            skills: [&prepared.melee, &worn.melee].map(|melee| {
+                [
+                    melee.main_hand_skill.clone(),
+                    melee.off_hand_skill.clone(),
+                    melee.ranged_skill.clone(),
+                ]
+            }),
             sets_main_hand: !feral,
             worn: Box::new(worn),
             variants: Variants::default(),
@@ -395,6 +404,13 @@ impl<A: Agent> Fight<A> {
         }
         A::on_item_swap(self, worn);
         self.swap_core_effects(worn);
+        // Go `updateWeaponSkills`, after the callbacks and before the swap's validity is checked.
+        let [main_hand, off_hand, ranged] = self.item_swap.as_ref().expect("the item swap is bound")
+            .skills[index]
+            .clone();
+        let melee = &mut self.config.melee;
+        (melee.main_hand_skill, melee.off_hand_skill, melee.ranged_skill) =
+            (main_hand, off_hand, ranged);
         if !valid {
             return;
         }

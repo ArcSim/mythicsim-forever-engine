@@ -791,6 +791,9 @@ fn item_swap_limits(
     let aura_of = |label: &str| player.auras.iter().position(|aura| aura.label == label);
     let mut targets: Vec<&str> = vec![main_aura, swapped_aura];
     let mut item_spells = Vec::new();
+    // The crit modifiers the swap switches, in callback order: the runtime adds and takes away
+    // their crit as Go's callbacks do.
+    let mut crit_mods: Vec<(&[usize], f64, bool, bool)> = Vec::new();
     for callback in callbacks {
         let (label, toggles) = match callback {
             SwapCallback::Aura {
@@ -815,6 +818,11 @@ fn item_swap_limits(
                 }
                 if modifier.spells.iter().any(|&spell| spell >= player.spells.len()) {
                     reasons.push("an item swap's spell modifier names an unknown spell".into());
+                }
+                if let SwapCallback::SpellMod { main, swapped, .. } = callback {
+                    if modifier.kind == "bonus_crit_percent" {
+                        crit_mods.push((&modifier.spells, modifier.value, *main, *swapped));
+                    }
                 }
                 continue;
             }
@@ -875,7 +883,8 @@ fn item_swap_limits(
         }
     }
     for change in swapped {
-        if let Some(reason) = swap_change_limit(prepared, change, &targets, &item_spells, aura_effects)
+        if let Some(reason) =
+            swap_change_limit(prepared, change, &targets, &item_spells, &crit_mods, aura_effects)
         {
             reasons.push(reason);
         }
@@ -930,6 +939,7 @@ fn swap_change_limit(
     change: &SwapChange,
     switched: &[&str],
     item_spells: &[usize],
+    crit_mods: &[(&[usize], f64, bool, bool)],
     aura_effects: &[crate::contracts::prepared_v2::SwapAuraEffect],
 ) -> Option<String> {
     let parts: Vec<&str> = change.path.split('/').skip(1).collect();
@@ -960,7 +970,29 @@ fn swap_change_limit(
                 refuse()
             }
         }
+        // A weapon specialization's crit, as its modifiers leave it with the swap set worn.
+        ["player", "spells", index, "bonus_crit_percent"] => {
+            let index: usize = index.parse().ok()?;
+            let mut crit = prepared.player.spells.get(index)?.bonus_crit_percent;
+            for (spells, value, main, swapped) in crit_mods {
+                if !spells.contains(&index) || main == swapped {
+                    continue;
+                }
+                if *swapped {
+                    crit += value;
+                } else {
+                    crit -= value;
+                }
+            }
+            if change.value.as_f64().is_some_and(|value| value.to_bits() == crit.to_bits()) {
+                None
+            } else {
+                refuse()
+            }
+        }
         ["melee", "main_hand", ..] => None,
+        // Go updateWeaponSkills: the tables of the hands whose skill the equipment sets.
+        ["melee", "main_hand_skill" | "off_hand_skill" | "ranged_skill", ..] => None,
         ["melee", "armor_ignore_factor"] if !aura_effects.is_empty() => None,
         ["effects", index, field, rest @ ..] => {
             let effect = prepared.effects.get(index.parse::<usize>().ok()?)?;

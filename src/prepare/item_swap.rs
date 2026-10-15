@@ -402,11 +402,9 @@ impl super::env::Environment {
             return;
         }
         let prepull = self.sim.current_time < 0;
-        let mut weapon_slot_swapped = false;
         for slot in swap.slots.clone() {
-            if [slot::MAIN_HAND, slot::OFF_HAND, slot::RANGED].contains(&slot) {
-                weapon_slot_swapped = true;
-            } else if !is_reset && !prepull {
+            let weapon = [slot::MAIN_HAND, slot::OFF_HAND, slot::RANGED].contains(&slot);
+            if !weapon && !is_reset && !prepull {
                 continue;
             }
             self.swap_item(slot, prepull, is_reset);
@@ -419,7 +417,8 @@ impl super::env::Environment {
                 self.rebuild_proc_managers();
             }
         }
-        let _ = weapon_slot_swapped;
+        // Go patch 135: the hands' weapon skill follows the equipment now worn.
+        self.sim.update_weapon_skills(unit);
         if !valid {
             return;
         }

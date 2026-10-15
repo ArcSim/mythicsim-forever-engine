@@ -12321,6 +12321,90 @@
         "file": "survival-hunter-strider-kick-while-moving.go-log.txt",
         "sha256": "4dd4ec2e0cb771f804833a362109c282a53e4d0ef87f2bfa73596286864ce52d"
       }
+    },
+    {
+      "id": "combat-rogue-dagger-weapon-skill",
+      "description": "The production Combat Rogue with Aged Core Leather Gloves (+5 daggers) and Distracting Dagger (+6 daggers) in place of Devilsaur Gauntlets and Bonescraper, Felstriker in the main hand: both hands attack at 311 skill, a 4 point gap to the boss's defense (Go patch 135, Redfall's report)",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/combat-rogue-dagger-weapon-skill.request.json"
+      },
+      "prepared": "combat-rogue-dagger-weapon-skill.prepared.json",
+      "prepared_sha256": "f26dbba4c18a61d2c892fa24602f4ea2beac071eca43eb4ecfffdfdd5a16b638",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "combat-rogue-dagger-weapon-skill.go-result.json",
+        "sha256": "fc2e34c34998bcc92f81fbf22c80447aeb225ccd1ef646da4c64adcb70bedd05"
+      },
+      "go_log": {
+        "file": "combat-rogue-dagger-weapon-skill.go-log.txt",
+        "sha256": "915765b7a6fb63332b656bebf21c78a00cb68f100319ea0665fbcfc4a663a3d0"
+      }
+    },
+    {
+      "id": "arms-warrior-two-handed-axe-skill",
+      "description": "The production Arms Warrior with Huge Thorium Battleaxe (+2 two-handed axes) in place of Blackblade of Shahram: a 13 point gap, past 10, so the miss chance grows 0.2% a point and the boss ignores 0.6% of hit (Go patch 135)",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/arms-warrior-two-handed-axe-skill.request.json"
+      },
+      "prepared": "arms-warrior-two-handed-axe-skill.prepared.json",
+      "prepared_sha256": "8b619f6e2345bce8fc7b24ba9e2e60f8f78ab55cc7d9d624a78db066a1b8b5b5",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "arms-warrior-two-handed-axe-skill.go-result.json",
+        "sha256": "93501496e06ca0420c57cbd997705f16946b2dfcd0887f05e80b847737fe831f"
+      },
+      "go_log": {
+        "file": "arms-warrior-two-handed-axe-skill.go-log.txt",
+        "sha256": "fc7f6d4bca478d0816ee7f7613fbdedff791f041af697bce4aebc430a995d21a"
+      }
+    },
+    {
+      "id": "combat-rogue-thero-shan-weapon-skill",
+      "description": "The production Combat Rogue with Hands of Thero-shan (+4 daggers) in place of Devilsaur Gauntlets: both daggers attack at 304 skill, an 11 point gap past 10, so the miss chance grows 0.2% a point and the boss ignores 0.2% of hit (Go patch 135)",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/combat-rogue-thero-shan-weapon-skill.request.json"
+      },
+      "prepared": "combat-rogue-thero-shan-weapon-skill.prepared.json",
+      "prepared_sha256": "4e60facdffb33b1f8a612dbce059ef5e373e78f2bbc23b5c732d66096e833662",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "combat-rogue-thero-shan-weapon-skill.go-result.json",
+        "sha256": "414cc9a5d795f8989be92dc76b5bdbc688495016751320d91658d38027c932a0"
+      },
+      "go_log": {
+        "file": "combat-rogue-thero-shan-weapon-skill.go-log.txt",
+        "sha256": "06dcc59b28e38db88af8f0fee4f7641fc88a8481ef95e8519151a8b5677243fd"
+      }
+    },
+    {
+      "id": "combat-rogue-thero-shan-weapon-skill-no-hit-suppression",
+      "description": "combat-rogue-thero-shan-weapon-skill with Encounter.no_hit_suppression: the weapon skill's hit suppression stays off (Go patches 125 and 135)",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/combat-rogue-thero-shan-weapon-skill-no-hit-suppression.request.json"
+      },
+      "prepared": "combat-rogue-thero-shan-weapon-skill-no-hit-suppression.prepared.json",
+      "prepared_sha256": "5a062fd4d4fe1acf0163252afbaed43145c74cd5c98456fb689289b794bfb8ae",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "combat-rogue-thero-shan-weapon-skill-no-hit-suppression.go-result.json",
+        "sha256": "0bbbf106ac7cf5d4de8fb6da3534eee81a93413f8fe1a27b8f28ce927054a4b8"
+      },
+      "go_log": {
+        "file": "combat-rogue-thero-shan-weapon-skill-no-hit-suppression.go-log.txt",
+        "sha256": "56a88546a18b19a643958a2c6c35d6a27cae81d7aef651ce1c2d7056cc677863"
+      }
     }
   ]
 }

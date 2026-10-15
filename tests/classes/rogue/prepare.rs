@@ -186,3 +186,57 @@ fn a_rogue_without_its_options_is_refused() {
     value["raid"]["parties"][0]["players"][0]["rogue"] = serde_json::json!({});
     assert_eq!(refusal_code(&value), "class_option");
 }
+
+/// The subtlety request with `items` in its slots (proto `ItemSlot` order) and nothing in the
+/// off hand unless `items` fills it, prepared.
+fn prepared_with(items: &[(usize, i64)]) -> Value {
+    let mut value = request_value("subtlety");
+    let equipment = &mut value["raid"]["parties"][0]["players"][0]["equipment"]["items"];
+    equipment[15] = serde_json::json!({});
+    for (slot, id) in items {
+        equipment[*slot] = serde_json::json!({ "id": id });
+    }
+    forever_engine::prepare_json(&serde_json::to_vec(&value).unwrap(), "weapon-skill")
+        .unwrap_or_else(|err| panic!("{items:?} is not prepared: {err}"))
+}
+
+/// The skill each hand's table was resolved with, zero where the table is the base one.
+fn hand_skills(prepared: &Value) -> [f64; 3] {
+    ["main_hand_skill", "off_hand_skill", "ranged_skill"]
+        .map(|hand| prepared["melee"][hand]["skill"].as_f64().unwrap_or(0.0))
+}
+
+const HANDS: usize = 6;
+const MAIN_HAND: usize = 14;
+const OFF_HAND: usize = 15;
+
+/// Go `TestCharacterWeaponSkillPerHand`: each hand attacks with the skill of its own weapon
+/// type, summed over the equipment (Go patch 135).
+#[test]
+fn each_hand_takes_the_skill_of_its_weapon_type() {
+    // Redfall's test: Alcor's Sunrazor and Distracting Dagger with Aged Core Leather Gloves.
+    let daggers = prepared_with(&[(MAIN_HAND, 14555), (OFF_HAND, 18392), (HANDS, 18823)]);
+    assert_eq!(hand_skills(&daggers), [11.0, 11.0, 0.0]);
+    // Against the level 63 boss, a 4 point gap: 5.4% miss and dodge, no hit suppression, and a
+    // glance keeps 91% to 99%. Glancing chance stays on the base table.
+    let main_hand = &daggers["melee"]["main_hand_skill"];
+    for (field, value) in [
+        ("miss_chance", 0.054),
+        ("hit_suppression", 0.0),
+        ("defender_dodge", 0.054),
+        ("glance_multiplier", 0.95),
+        ("glance_spread", 0.04),
+    ] {
+        let got = main_hand[field].as_f64().unwrap();
+        assert!((got - value).abs() < 1e-9, "{field}: {got}, want {value}");
+    }
+    assert_eq!(daggers["melee"]["base_glance_chance"], 0.4);
+    assert_eq!(daggers["melee"]["base_miss_chance"], 0.08);
+    // Edgemaster's Handguards raise swords and daggers alike; Distracting Dagger only daggers.
+    let sword = prepared_with(&[(MAIN_HAND, 18832), (OFF_HAND, 18392), (HANDS, 14551)]);
+    assert_eq!(hand_skills(&sword), [7.0, 13.0, 0.0]);
+    // Dagger skill does nothing for an axe, and the axe's table is the base one.
+    let axe = prepared_with(&[(MAIN_HAND, 17068), (HANDS, 18823)]);
+    assert_eq!(hand_skills(&axe), [0.0, 0.0, 0.0]);
+    assert!(axe["melee"].get("main_hand_skill").is_none());
+}

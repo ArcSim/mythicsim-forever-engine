@@ -69,6 +69,7 @@ pub(crate) mod spelldata;
 pub(crate) mod stat_auras;
 pub(crate) mod stats;
 pub(crate) mod target;
+pub(crate) mod weapon_skill;
 
 use crate::contracts::prepared_v2::PreparedV2;
 use crate::contracts::request::Request;

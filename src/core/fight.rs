@@ -705,6 +705,31 @@ pub(crate) struct SpellMetrics {
     pub(crate) crit_tick_range: DamageRange,
 }
 
+/// The weapon an attack is made with, whose skill moves its table (Go weapon_skill.go).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub(crate) enum SkillHand {
+    MainHand,
+    OffHand,
+    Ranged,
+}
+
+impl SkillHand {
+    /// Go `AttackTable.weaponSkillBonus`: `ProcMaskMeleeMH`, then `ProcMaskMeleeOH`, then
+    /// `ProcMaskRanged`.
+    fn of(proc_mask: &[String]) -> Option<SkillHand> {
+        let any = |names: [&str; 2]| proc_mask.iter().any(|mask| names.contains(&mask.as_str()));
+        if any(["ProcMaskMeleeMHAuto", "ProcMaskMeleeMHSpecial"]) {
+            Some(SkillHand::MainHand)
+        } else if any(["ProcMaskMeleeOHAuto", "ProcMaskMeleeOHSpecial"]) {
+            Some(SkillHand::OffHand)
+        } else if any(["ProcMaskRangedAuto", "ProcMaskRangedSpecial"]) {
+            Some(SkillHand::Ranged)
+        } else {
+            None
+        }
+    }
+}
+
 pub(crate) struct Spell<S> {
     pub(crate) id: ActionId,
     /// The unit that casts the spell: the player or its pet.
@@ -727,6 +752,9 @@ pub(crate) struct Spell<S> {
     pub(crate) ranged_proc: bool,
     /// Go `ProcMaskMeleeOH`: `Spell.IsOH`.
     pub(crate) off_hand_proc: bool,
+    /// Go `AttackTable.weaponSkillBonus`: the hand whose weapon skill the attack takes, by its
+    /// proc mask (melee main hand first, then off hand, then ranged).
+    pub(crate) skill_hand: Option<SkillHand>,
     /// Go `ProcMaskMeleeWhiteHit`.
     pub(crate) white_hit: bool,
     /// Go `ProcMaskMeleeSpecial`.
@@ -2551,6 +2579,7 @@ impl<A: Agent> Fight<A> {
                     .proc_mask
                     .iter()
                     .any(|mask| mask == "ProcMaskRangedAuto" || mask == "ProcMaskRangedSpecial"),
+                skill_hand: SkillHand::of(&exported.proc_mask),
                 melee_or_ranged_proc: exported.proc_mask.iter().any(|mask| {
                     matches!(
                         mask.as_str(),

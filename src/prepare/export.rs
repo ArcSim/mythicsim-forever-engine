@@ -13,6 +13,7 @@ use super::env::Environment;
 use super::sim::{AuraId, Cooldown, Sim, TimerId, UnitId};
 use super::spell::SpellFlag;
 use super::stats::{PseudoStats, Stat, Stats, SCHOOL_LEN};
+use super::weapon_skill::{self as skill, TableUnits};
 use super::Refusal;
 
 const SCHOOL_NAMES: [&str; SCHOOL_LEN] = [
@@ -489,6 +490,33 @@ pub(crate) fn export_melee_of(
     });
     if replaced {
         out["replace_main_hand_swing"] = json!(true);
+    }
+    // Go weapon_skill.go: the table an attack with a hand reads where its weapon's skill moves it.
+    let units = TableUnits {
+        attacker_level: sim.unit(player).level,
+        defender_type: t.unit_type,
+        defender_level: t.level,
+    };
+    for (key, hand) in [
+        ("main_hand_skill", skill::MAIN_HAND),
+        ("off_hand_skill", skill::OFF_HAND),
+        ("ranged_skill", skill::RANGED),
+    ] {
+        let bonus = sim.unit(player).weapon_skill[hand];
+        if !skill::moves_table(units, bonus) {
+            continue;
+        }
+        let (glance_multiplier, glance_spread) = skill::glance(table, units, bonus);
+        out[key] = json!({
+            "skill": bonus,
+            "miss_chance": skill::miss_chance(table, units, bonus),
+            "hit_suppression": skill::hit_suppression(table, units, bonus),
+            "defender_dodge": defender.base_dodge_chance
+                + skill::dodge_chance(table, units, bonus)
+                + t.stats[Stat::DodgePercent] / 100.0,
+            "glance_multiplier": glance_multiplier,
+            "glance_spread": glance_spread,
+        });
     }
     if aa.auto_swing_ranged {
         out["ranged_state"] = json!({

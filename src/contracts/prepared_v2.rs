@@ -954,6 +954,36 @@ pub struct Melee {
     /// The ranged auto attack's static inputs, present only with ranged auto attacks.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub ranged_state: Option<RangedState>,
+    /// Go weapon_skill.go: the table a main hand attack reads where the weapon's skill above
+    /// base moves it, against an enemy at or above the attacker's level. Absent otherwise, and
+    /// the attack reads the table above.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub main_hand_skill: Option<WeaponSkillTable>,
+    /// [`Self::main_hand_skill`] for off hand attacks.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub off_hand_skill: Option<WeaponSkillTable>,
+    /// [`Self::main_hand_skill`] for ranged attacks.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub ranged_skill: Option<WeaponSkillTable>,
+}
+
+/// Go weapon_skill.go: what an attack with one hand reads in place of [`Melee`]'s fields of the
+/// same names, resolved from the gap between the target's defense and the hand's weapon skill.
+/// Glancing chance, parry and crit suppression stay on base skill.
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct WeaponSkillTable {
+    /// The hand's skill above base, from its weapon type's line.
+    pub skill: f64,
+    /// Go `AttackTable.MissChance`, in place of `base_miss_chance`.
+    pub miss_chance: f64,
+    /// Go `AttackTable.HitSuppressionFor`.
+    pub hit_suppression: f64,
+    /// The defender's dodge with Go `AttackTable.DodgeChance` in place of the table's base.
+    pub defender_dodge: f64,
+    /// Go `AttackTable.Glance`.
+    pub glance_multiplier: f64,
+    pub glance_spread: f64,
 }
 
 /// Go attack.go's ranged auto attack inputs: the ranged speed pseudo stat and the defender's

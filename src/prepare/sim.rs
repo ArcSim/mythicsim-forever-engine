@@ -320,6 +320,14 @@ pub(crate) struct Unit {
     pub current_health: f64,
     /// The pet half of a pet unit (pet.rs).
     pub pet: Option<Box<super::pet::Pet>>,
+    /// Go `Unit.weaponSkill`: the skill above base attacks with the main hand, off hand and
+    /// ranged weapon take (weapon_skill.rs).
+    pub weapon_skill: [f64; super::weapon_skill::HANDS],
+    /// Go `Unit.weaponSkillBonus`: skill from auras such as set bonuses, by skill line.
+    pub weapon_skill_bonus: [f64; super::weapon_skill::NUM_WEAPON_SKILLS],
+    /// Go `Unit.onWeaponSkillChange`, which a character sets as its effects apply: a skill
+    /// bonus recomputes the hands.
+    pub on_weapon_skill_change: bool,
 }
 
 impl Unit {
@@ -379,6 +387,9 @@ impl Unit {
             absorption_auras: Vec::new(),
             current_health: 0.0,
             pet: None,
+            weapon_skill: [0.0; super::weapon_skill::HANDS],
+            weapon_skill_bonus: [0.0; super::weapon_skill::NUM_WEAPON_SKILLS],
+            on_weapon_skill_change: false,
         }
     }
 }

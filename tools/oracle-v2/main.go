@@ -788,6 +788,40 @@ type Melee struct {
 
 	// Present only with ranged auto attacks, so builds without them export as before.
 	RangedState *RangedState `json:"ranged_state,omitempty"`
+
+	// weapon_skill.go: the table an attack with each hand reads where its weapon's skill above
+	// base moves it. Present only for such a hand, so builds without weapon skill export as before.
+	MainHandSkill *WeaponSkillTable `json:"main_hand_skill,omitempty"`
+	OffHandSkill  *WeaponSkillTable `json:"off_hand_skill,omitempty"`
+	RangedSkill   *WeaponSkillTable `json:"ranged_skill,omitempty"`
+}
+
+// What an attack with one hand reads in place of Melee's fields of the same names: the table's
+// MissChance, HitSuppressionFor, DodgeChance (with the defender's base and rating, as
+// GetTotalDodgeChanceAsDefender adds them) and Glance for an attack with that hand.
+type WeaponSkillTable struct {
+	Skill            float64 `json:"skill"`
+	MissChance       float64 `json:"miss_chance"`
+	HitSuppression   float64 `json:"hit_suppression"`
+	DefenderDodge    float64 `json:"defender_dodge"`
+	GlanceMultiplier float64 `json:"glance_multiplier"`
+	GlanceSpread     float64 `json:"glance_spread"`
+}
+
+// weapon_skill.go: the table of an attack with one hand (0 main hand, 1 off hand, 2 ranged, as
+// Unit.weaponSkill keeps them), or nil where the skill leaves it alone: no skill above base, or a
+// target that is not an enemy at or above the attacker's level (weaponSkillGap). The skill is
+// static in scope: only an item swap or a set bonus changes it, and the set bonuses are permanent.
+func exportWeaponSkill(character *core.Character, target *core.Unit, table *core.AttackTable, hand int, mask core.ProcMask) *WeaponSkillTable {
+	skill := privateField(&character.Unit, "weaponSkill").Index(hand).Float()
+	if skill == 0 || target.Type != core.EnemyUnit || target.Level < character.Level {
+		return nil
+	}
+	probe := &core.Spell{Unit: &character.Unit, ProcMask: mask}
+	multiplier, spread := table.Glance(probe)
+	return &WeaponSkillTable{Skill: skill, MissChance: table.MissChance(probe), HitSuppression: table.HitSuppressionFor(probe),
+		DefenderDodge:    target.PseudoStats.BaseDodgeChance + table.DodgeChance(probe) + target.GetDodgeFromRating(),
+		GlanceMultiplier: multiplier, GlanceSpread: spread}
 }
 
 // The ranged auto attack's static inputs: attack.go's ranged WeaponAttack reads
@@ -835,6 +869,9 @@ func exportMelee(character *core.Character, target *core.Unit, table *core.Attac
 			DefenderBonusRangedAttackPower: defender.BonusRangedAttackPower}
 	}
 	return Melee{RangedState: ranged, ReplaceMainHandSwing: replaced,
+		MainHandSkill:  exportWeaponSkill(character, target, table, 0, core.ProcMaskMeleeMHAuto),
+		OffHandSkill:   exportWeaponSkill(character, target, table, 1, core.ProcMaskMeleeOHAuto),
+		RangedSkill:    exportWeaponSkill(character, target, table, 2, core.ProcMaskRangedAuto),
 		AutoSwingMelee: aa.AutoSwingMelee, AutoSwingRanged: aa.AutoSwingRanged, DualWielding: aa.IsDualWielding,
 		MainHand: exportWeapon(aa.MH()), OffHand: exportWeapon(aa.OH()), Ranged: exportWeapon(aa.Ranged()),
 		BaseMissChance: table.BaseMissChance, BaseGlanceChance: table.BaseGlanceChance,

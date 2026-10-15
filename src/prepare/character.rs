@@ -365,6 +365,7 @@ impl Sim {
                 "weapon type overrides are unsupported".to_string(),
             ));
         }
+        self.update_weapon_skills(id);
         Ok(id)
     }
 

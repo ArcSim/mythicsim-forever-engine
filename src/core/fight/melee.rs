@@ -6,7 +6,7 @@
 //! due at or before it fires first. The step loop mirrors that through
 //! [`Fight::due_weapon_attack`].
 
-use crate::contracts::prepared_v2::Weapon;
+use crate::contracts::prepared_v2::{Weapon, WeaponSkillTable};
 use crate::core::queue::Handle;
 
 use super::{
@@ -14,7 +14,7 @@ use super::{
         OUTCOME_BLOCK, OUTCOME_CRIT, OUTCOME_DODGE, OUTCOME_GLANCE, OUTCOME_HIT, OUTCOME_MISS,
         OUTCOME_PARRY, OUTCOME_PARTIAL,
     },
-    Action, Agent, Fight, Side, SpellId, SpellResult, PRIORITY_AUTO,
+    Action, Agent, Fight, Side, SkillHand, SpellId, SpellResult, PRIORITY_AUTO,
 };
 use crate::core::time::NEVER_EXPIRES;
 
@@ -1326,7 +1326,10 @@ impl<A: Agent> Fight<A> {
         if self.spells[spell].ranged_proc {
             hit += config.ranged_hit_percent;
         }
-        (hit / 100.0 - config.melee.hit_suppression).max(0.0)
+        let suppression = self
+            .skill_table(spell)
+            .map_or(config.melee.hit_suppression, |table| table.hit_suppression);
+        (hit / 100.0 - suppression).max(0.0)
     }
 
     /// Go `PhysicalCritChance`: ranged attacks add ranged crit.
@@ -1374,6 +1377,17 @@ impl<A: Agent> Fight<A> {
         &self.unit_config(self.caster(spell)).melee
     }
 
+    /// Go weapon_skill.go: the table an attack reads in place of [`Self::melee_table`]'s miss,
+    /// hit suppression, dodge and glance fields, where its hand's weapon skill moves them.
+    fn skill_table(&self, spell: SpellId) -> Option<&WeaponSkillTable> {
+        let melee = self.melee_table(spell);
+        match self.spells[spell].skill_hand? {
+            SkillHand::MainHand => melee.main_hand_skill.as_ref(),
+            SkillHand::OffHand => melee.off_hand_skill.as_ref(),
+            SkillHand::Ranged => melee.ranged_skill.as_ref(),
+        }
+    }
+
     /// Go `applyAttackTableMiss` and `applyAttackTableMissNoDWPenalty`.
     fn table_miss(
         &mut self,
@@ -1383,7 +1397,12 @@ impl<A: Agent> Fight<A> {
         chance: &mut f64,
         dw_penalty: bool,
     ) -> bool {
-        let mut miss = self.melee_table(spell).base_miss_chance - self.physical_hit_chance(spell);
+        let base = self
+            .skill_table(spell)
+            .map_or(self.melee_table(spell).base_miss_chance, |table| {
+                table.miss_chance
+            });
+        let mut miss = base - self.physical_hit_chance(spell);
         if dw_penalty
             && self.autos_of(self.caster(spell)).dual_wielding
             && !self.unit(self.caster(spell)).disable_dw_miss_penalty
@@ -1412,9 +1431,10 @@ impl<A: Agent> Fight<A> {
             return false;
         }
         let melee = self.melee_table(spell);
-        *chance +=
-            (melee.defender_dodge - self.dodge_parry_suppression(spell) - melee.dodge_reduction)
-                .max(0.0);
+        let dodge = self
+            .skill_table(spell)
+            .map_or(melee.defender_dodge, |table| table.defender_dodge);
+        *chance += (dodge - self.dodge_parry_suppression(spell) - melee.dodge_reduction).max(0.0);
         if roll < *chance {
             result.outcome = OUTCOME_DODGE;
             self.spells[spell].metrics[result.target.index()].dodges += 1;
@@ -1457,8 +1477,13 @@ impl<A: Agent> Fight<A> {
             self.spells[spell].metrics[result.target.index()].glances += 1;
             let spread = 2.0 * self.random("Glance Damage") - 1.0;
             let melee = self.melee_table(spell);
+            let (multiplier, glance_spread) = self
+                .skill_table(spell)
+                .map_or((melee.glance_multiplier, melee.glance_spread), |table| {
+                    (table.glance_multiplier, table.glance_spread)
+                });
             // The arm64 build fuses the spread into the multiplier.
-            result.damage *= melee.glance_spread.mul_add(spread, melee.glance_multiplier);
+            result.damage *= glance_spread.mul_add(spread, multiplier);
             return true;
         }
         false

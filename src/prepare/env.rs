@@ -371,6 +371,9 @@ impl Environment {
         individual: &Message,
     ) -> Result<(), Refusal> {
         let unit = self.player;
+        // Go sets the hook here, not in NewCharacter, so the set bonuses' skill reaches the
+        // character.
+        self.sim.unit_mut(unit).on_weapon_skill_change = true;
         if !self.sim.character(unit).disable_racials {
             super::racials::apply_race_effects(self)?;
         }

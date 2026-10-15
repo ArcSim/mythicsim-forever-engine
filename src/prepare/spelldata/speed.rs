@@ -11,7 +11,7 @@ pub(crate) mod pseudo_stat {
 }
 
 /// Go `stats.PseudoStatsLen`: `len(proto.PseudoStat_name)`.
-pub(crate) const PSEUDO_STATS_LEN: usize = 28;
+pub(crate) const PSEUDO_STATS_LEN: usize = 42;
 
 /// Go `SpeedAuraPseudoStats`: the haste pseudo stats each attack or cast speed aura adds its
 /// percent to: a raise of the caster's speeds, or a slow of an enemy's where the percent is

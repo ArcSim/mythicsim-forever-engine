@@ -466,7 +466,13 @@ only when its class implements it, as Enhancement's weapon sync does; `melee.rep
 then makes Rust react before each main hand swing as Go does, and the class may move the off
 hand swing before returning the swing. With ranged auto attacks the `melee` section adds
 `ranged_state`: the ranged speed pseudo stat and the defender's ranged attack power bonus,
-Hunter's Mark; a build without ranged autos omits it.
+Hunter's Mark; a build without ranged autos omits it. A hand whose weapon skill above base moves the
+table (Go weapon_skill.go, the fork's patch 135: items' skill pseudo stats and the Defias Leather 5 piece,
+against an enemy at or above the player's level) adds `main_hand_skill`, `off_hand_skill` or `ranged_skill`:
+the skill and the miss chance, hit suppression, defender dodge and glance multiplier and spread an attack with
+that hand reads in place of the section's own, as Go's `AttackTable.MissChance`, `HitSuppressionFor`,
+`DodgeChance` and `Glance` resolve them. An attack takes the hand of its proc mask (main hand, then off hand,
+then ranged); a build without weapon skill omits them and reads the base table, bit for bit.
 
 A stat combination writes the player's maximum health when one changes it, which the
 player's health, rage from damage taken and health readings follow. Every stat aura

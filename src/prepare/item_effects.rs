@@ -11,7 +11,13 @@ pub(crate) fn apply_item_effects(env: &mut Environment) -> Result<(), Refusal> {
     let class = env.sim.character(unit).class.clone();
     let mut seen_items = Vec::new();
     let mut seen_enchants = Vec::new();
-    for item in env.sim.character(unit).equipment.clone().iter() {
+    // The worn items, then with an item swap the swap set's (`unEquippedItems`), each item and
+    // enchant effect once.
+    let mut items: Vec<super::items::Item> = env.sim.character(unit).equipment.to_vec();
+    if let Some(swap) = env.sim.item_swap(unit) {
+        items.extend(swap.un_equipped.iter().cloned());
+    }
+    for item in items.iter() {
         let usable = item.class_allowlist.is_empty() || item.class_allowlist.contains(&class);
         if tables.item_effect_ids.contains(&item.id) && !seen_items.contains(&item.id) && usable {
             seen_items.push(item.id);

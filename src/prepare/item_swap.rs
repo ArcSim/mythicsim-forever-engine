@@ -947,6 +947,11 @@ pub(crate) fn add_item_swap_equip_stats(env: &mut Environment, aura: AuraId) {
 }
 
 /// Go `itemSwapEffect`, or none without an item swap.
+/// The classes whose weapon-dependent effects follow a swap: the Paladin's seals, the Warrior's
+/// specializations, the Shaman's imbues and totems and the Druid's paws.
+pub(crate) const ITEM_SWAP_CLASSES: [&str; 4] =
+    ["ClassPaladin", "ClassWarrior", "ClassShaman", "ClassDruid"];
+
 pub(crate) fn item_swap_effect(
     env: &Environment,
     digest: &str,
@@ -960,6 +965,13 @@ pub(crate) fn item_swap_effect(
     let refuse = |reason: &str| Err(Refusal::new("item_swap", reason.to_string()));
     if swap.slots != [slot::MAIN_HAND] {
         return refuse("an item swap of a slot other than the main hand alone is unsupported");
+    }
+    let class = env.sim.character(unit).class.as_str();
+    if !ITEM_SWAP_CLASSES.contains(&class) {
+        return Err(Refusal::new(
+            "item_swap",
+            format!("an item swap of a {class} is not prepared yet"),
+        ));
     }
     for aura in &env.sim.unit(unit).auras {
         let unaudited = env.sim.aura(*aura).dpm.as_ref().is_some_and(|dpm| {

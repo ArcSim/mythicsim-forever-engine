@@ -764,6 +764,14 @@ fn item_swap_limits(
     if slots.as_slice() != ["ItemSlotMainHand"] {
         reasons.push(format!("an item swap of slots {slots:?} is unsupported"));
     }
+    if !["ClassPaladin", "ClassWarrior", "ClassShaman", "ClassDruid"]
+        .contains(&prepared.player.class.as_str())
+    {
+        reasons.push(format!(
+            "an item swap of a {} is unsupported",
+            prepared.player.class
+        ));
+    }
     let stat_labels: Vec<&String> = prepared
         .effects
         .iter()

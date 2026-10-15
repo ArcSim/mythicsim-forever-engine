@@ -2393,9 +2393,6 @@ func main() {
 		writeJSON(*outfile, prepared)
 	case "sim":
 		run(request, *outfile)
-	case "swapdiff":
-		main := prepareSet(request, digest, *scenario, false)
-		writeJSON(*outfile, swappedSnapshot(request, digest, *scenario, main))
 	default:
 		fail(fmt.Errorf("unsupported command %s", os.Args[1]))
 	}

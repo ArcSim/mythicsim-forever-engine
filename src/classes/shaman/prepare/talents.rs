@@ -695,12 +695,15 @@ impl Shaman {
 
         // NewLegacyPPMManager: an item swap rebuilds it.
         let ppm = 2.0 * f64::from(points);
-        let ppmm = Rc::new(sim.new_ppm_manager(unit, ppm, ProcMask::MELEE).rebuilt_by_swap(
-            sim,
-            unit,
-            crate::prepare::item_swap::ManagerChance::Ppm(ppm),
-            crate::prepare::item_swap::ManagerMask::Static(ProcMask::MELEE),
-        ));
+        let ppmm = Rc::new(
+            sim.new_ppm_manager(unit, ppm, ProcMask::MELEE)
+                .rebuilt_by_swap(
+                    sim,
+                    unit,
+                    crate::prepare::item_swap::ManagerChance::Ppm(ppm),
+                    crate::prepare::item_swap::ManagerMask::Static(ProcMask::MELEE),
+                ),
+        );
 
         let cast_mod = sim.add_dynamic_mod(
             unit,

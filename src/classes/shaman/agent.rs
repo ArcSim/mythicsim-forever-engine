@@ -933,7 +933,8 @@ impl Agent for ShamanAgent {
         for (hand, damage) in fight.agent.flametongue.iter_mut().zip(&set.flametongue) {
             hand.2 = *damage;
         }
-        if let (Some(totem), Some(damage)) = (fight.agent.flametongue_totem.as_mut(), set.totem_damage)
+        if let (Some(totem), Some(damage)) =
+            (fight.agent.flametongue_totem.as_mut(), set.totem_damage)
         {
             totem.attack_damage = damage;
         }

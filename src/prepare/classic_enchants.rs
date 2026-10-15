@@ -61,7 +61,8 @@ fn crusader(env: &mut Environment) {
         );
         // RegisterWeaponEnchantBuff: the buff falls off once no weapon carries the enchant.
         // AddStatProcBuff's callback only keeps the APL's bookkeeping.
-        env.sim.register_weapon_enchant_buff(unit, buff.aura, CRUSADER);
+        env.sim
+            .register_weapon_enchant_buff(unit, buff.aura, CRUSADER);
     }
 
     let dpm = dynamic_legacy_proc_for_enchant(&env.sim, unit, CRUSADER, 1.0, 0.0);

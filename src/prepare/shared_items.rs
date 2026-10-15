@@ -21,8 +21,8 @@ use crate::data::spells::Spell;
 use super::aura_helpers::{ProcTrigger, StackingStatAura, StatBuffAura};
 use super::dbcenums;
 use super::env::Environment;
-use super::items::{self, effect_stats};
 use super::item_swap::{ManagerChance, ManagerMask};
+use super::items::{self, effect_stats};
 use super::procs::DynamicProcManager;
 use super::resolve_aura::{aura_config, dot_config, label, AuraOpt};
 use super::resolve_proc::{item_proc_chance, proc_trigger, stated_chance, weapon_proc, ProcOpt};
@@ -212,9 +212,11 @@ impl EffectSource {
         let aura = env.sim.make_proc_trigger_aura(unit, config);
         let slots = self.eligible_slots(&env.sim, unit);
         if self.is_enchant {
-            env.sim.register_enchant_proc_with_slots(unit, self.id, aura, slots);
+            env.sim
+                .register_enchant_proc_with_slots(unit, self.id, aura, slots);
         } else {
-            env.sim.register_item_proc_with_slots(unit, self.id, aura, slots);
+            env.sim
+                .register_item_proc_with_slots(unit, self.id, aura, slots);
         }
         aura
     }
@@ -385,12 +387,14 @@ pub(crate) fn dpm_for_mask(
             ));
         }
         // NewLegacyPPMManager.
-        return Some(Rc::new(sim.new_ppm_manager(unit, ppm, mask).rebuilt_by_swap(
-            sim,
-            unit,
-            ManagerChance::Ppm(ppm),
-            ManagerMask::Static(mask),
-        )));
+        return Some(Rc::new(
+            sim.new_ppm_manager(unit, ppm, mask).rebuilt_by_swap(
+                sim,
+                unit,
+                ManagerChance::Ppm(ppm),
+                ManagerMask::Static(mask),
+            ),
+        ));
     }
     // With no mask of its own the rate has to be read off whatever the effect sits on.
     if source.is_enchant {

@@ -46,9 +46,7 @@ impl DynamicProcManager {
         chance: super::item_swap::ManagerChance,
         mask: super::item_swap::ManagerMask,
     ) -> Self {
-        self.rebuild = sim
-            .item_swap(unit)
-            .map(|_| Rebuild::Rebuilt(chance, mask));
+        self.rebuild = sim.item_swap(unit).map(|_| Rebuild::Rebuilt(chance, mask));
         self
     }
 

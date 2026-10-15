@@ -184,7 +184,10 @@ impl Sim {
         let mut has_item_swap = [false; NUM_ITEM_SLOTS];
         for (index, spec) in item_swap.messages("items").into_iter().enumerate() {
             if index >= NUM_ITEM_SLOTS {
-                return Err(Refusal::new("item_swap", "more swap items than slots".to_string()));
+                return Err(Refusal::new(
+                    "item_swap",
+                    "more swap items than slots".to_string(),
+                ));
             }
             has_item_swap[index] = spec.i32("id") != 0;
             swap_items[index] = swap_item(spec, area_types)?;
@@ -198,7 +201,9 @@ impl Sim {
         if two_hand_swap && has_oh {
             has_item_swap[slot::OFF_HAND] = true;
         }
-        let slots: Vec<usize> = (0..NUM_ITEM_SLOTS).filter(|slot| has_item_swap[*slot]).collect();
+        let slots: Vec<usize> = (0..NUM_ITEM_SLOTS)
+            .filter(|slot| has_item_swap[*slot])
+            .collect();
         if slots.is_empty() {
             return Ok(());
         }
@@ -235,8 +240,8 @@ impl Sim {
             .player
             .oneof("spec")
             .map(|(name, _)| name);
-        let is_feral_druid = class == "ClassDruid"
-            && matches!(spec, Some("feral_cat_druid" | "feral_bear_druid"));
+        let is_feral_druid =
+            class == "ClassDruid" && matches!(spec, Some("feral_cat_druid" | "feral_bear_druid"));
         self.character_mut(unit).item_swap = Some(ItemSwap {
             enabled: false,
             slots,
@@ -337,7 +342,12 @@ impl Sim {
     }
 
     /// Go `ItemSwap.EligibleSlotsForEffect` filter: the enchant is in the slot in either set.
-    pub(crate) fn item_swap_holds_enchant(&self, unit: UnitId, slot: usize, effect_id: i32) -> bool {
+    pub(crate) fn item_swap_holds_enchant(
+        &self,
+        unit: UnitId,
+        slot: usize,
+        effect_id: i32,
+    ) -> bool {
         let carries = |item: &items::Item| {
             item.enchant.effect_id == effect_id || item.temp_enchant == effect_id
         };
@@ -431,7 +441,10 @@ impl super::env::Environment {
         if swap.swapped {
             stats = stats.invert();
         }
-        let (from, to) = (swap.auras[usize::from(swap.swapped)], swap.auras[usize::from(to_swapped)]);
+        let (from, to) = (
+            swap.auras[usize::from(swap.swapped)],
+            swap.auras[usize::from(to_swapped)],
+        );
         self.sim.add_dynamic_equip_stats(unit, &stats);
         // The swings stop and the global cooldown extends; preparation runs no fight.
         self.sim.deactivate(from);
@@ -605,8 +618,12 @@ impl super::env::Environment {
         use super::procs::Rebuild;
         let unit = self.player;
         for aura in self.sim.unit(unit).auras.clone() {
-            let Some(Rebuild::Rebuilt(chance, mask)) =
-                self.sim.aura(aura).dpm.as_ref().and_then(|dpm| dpm.rebuild.clone())
+            let Some(Rebuild::Rebuilt(chance, mask)) = self
+                .sim
+                .aura(aura)
+                .dpm
+                .as_ref()
+                .and_then(|dpm| dpm.rebuild.clone())
             else {
                 continue;
             };
@@ -627,7 +644,9 @@ impl super::env::Environment {
                 ManagerChance::Ppm(ppm) => (ppm, 0.0),
                 ManagerChance::Fixed(fixed) => (0.0, fixed),
             };
-            let mut dpm = self.sim.new_dynamic_weapon_proc_manager(unit, ppm, fixed, mask_now);
+            let mut dpm = self
+                .sim
+                .new_dynamic_weapon_proc_manager(unit, ppm, fixed, mask_now);
             dpm.rebuild = Some(Rebuild::Rebuilt(chance, mask));
             self.sim.aura_mut(aura).dpm = Some(std::rc::Rc::new(dpm));
         }
@@ -672,7 +691,9 @@ fn json_diff(path: &str, a: &Value, b: &Value, out: &mut Vec<Value>) {
                 let child = format!("{path}/{}", key.replace('~', "~0").replace('/', "~1"));
                 match (x.get(key), y.get(key)) {
                     (Some(x), Some(y)) => json_diff(&child, x, y, out),
-                    (_, y) => out.push(json!({"path": child, "value": y.cloned().unwrap_or(Value::Null)})),
+                    (_, y) => {
+                        out.push(json!({"path": child, "value": y.cloned().unwrap_or(Value::Null)}))
+                    }
                 }
             }
         }
@@ -682,7 +703,10 @@ fn json_diff(path: &str, a: &Value, b: &Value, out: &mut Vec<Value>) {
             }
         }
         (Value::Number(x), Value::Number(y)) => {
-            let (x, y) = (x.as_f64().unwrap_or(f64::NAN), y.as_f64().unwrap_or(f64::NAN));
+            let (x, y) = (
+                x.as_f64().unwrap_or(f64::NAN),
+                y.as_f64().unwrap_or(f64::NAN),
+            );
             if x.to_bits() != y.to_bits() {
                 out.push(json!({"path": path, "value": b}));
             }
@@ -706,13 +730,16 @@ fn spell_mod_of(sim: &Sim, unit: UnitId, id: ModId) -> Result<Value, Refusal> {
     let spellbook = &sim.unit(unit).spellbook;
     let mut spells = Vec::new();
     for spell in &modifier.affected_spells {
-        let position = spellbook.iter().position(|own| own == spell).ok_or_else(|| {
-            Refusal::new(
-                "item_swap",
-                "an item swap switches a spell modifier on a pet's spell, which is unsupported"
-                    .to_string(),
-            )
-        })?;
+        let position = spellbook
+            .iter()
+            .position(|own| own == spell)
+            .ok_or_else(|| {
+                Refusal::new(
+                    "item_swap",
+                    "an item swap switches a spell modifier on a pet's spell, which is unsupported"
+                        .to_string(),
+                )
+            })?;
         spells.push(position);
     }
     let kind = match modifier.kind {
@@ -725,8 +752,10 @@ fn spell_mod_of(sim: &Sim, unit: UnitId, id: ModId) -> Result<Value, Refusal> {
             ))
         }
     };
-    Ok(json!({"kind": kind, "value": modifier.float_value(), "spells": spells,
-              "active": modifier.is_active}))
+    Ok(
+        json!({"kind": kind, "value": modifier.float_value(), "spells": spells,
+              "active": modifier.is_active}),
+    )
 }
 
 /// Go `itemSwapCallbacks`: what each callback of a swapped slot does under each set.
@@ -757,7 +786,10 @@ fn export_callbacks(env: &Environment) -> Result<Vec<Value>, Refusal> {
                 SwapCallback::ItemUse { item_id, slots } => {
                     let action = ActionId::item(*item_id);
                     let spell = sim.get_spell(unit, &action).ok_or_else(|| {
-                        Refusal::new("item_swap", format!("item {item_id}'s use is not registered"))
+                        Refusal::new(
+                            "item_swap",
+                            format!("item {item_id}'s use is not registered"),
+                        )
                     })?;
                     let position = sim
                         .unit(unit)
@@ -799,8 +831,9 @@ fn export_callbacks(env: &Environment) -> Result<Vec<Value>, Refusal> {
                     enchant_id,
                     slots,
                 } => {
-                    let (m, s) =
-                        both(&|e| aura_state(carries_enchant(e, *enchant_id, slots), "keep", "off"));
+                    let (m, s) = both(&|e| {
+                        aura_state(carries_enchant(e, *enchant_id, slots), "keep", "off")
+                    });
                     out.push(json!({"slot": slot, "kind": "aura", "aura": label(aura), "main": m, "swapped": s}));
                 }
                 SwapCallback::HandMod { id, hand_type } => {
@@ -845,9 +878,11 @@ fn export_callbacks(env: &Environment) -> Result<Vec<Value>, Refusal> {
                     out.push(json!({"slot": slot, "kind": "aura", "aura": label(aura), "main": m, "swapped": s}));
                 }
                 SwapCallback::Flametongue { aura, .. } => {
-                    out.push(json!({"slot": slot, "kind": "aura_on_change", "aura": label(aura),
+                    out.push(
+                        json!({"slot": slot, "kind": "aura_on_change", "aura": label(aura),
                         "main": main[slot::MAIN_HAND].temp_enchant == 5,
-                        "swapped": swapped[slot::MAIN_HAND].temp_enchant == 5}));
+                        "swapped": swapped[slot::MAIN_HAND].temp_enchant == 5}),
+                    );
                 }
                 SwapCallback::MainHandImbue {
                     pull_id,
@@ -973,9 +1008,12 @@ pub(crate) fn item_swap_effect(
         ));
     }
     for aura in &env.sim.unit(unit).auras {
-        let unaudited = env.sim.aura(*aura).dpm.as_ref().is_some_and(|dpm| {
-            matches!(dpm.rebuild, Some(super::procs::Rebuild::Unaudited))
-        });
+        let unaudited = env
+            .sim
+            .aura(*aura)
+            .dpm
+            .as_ref()
+            .is_some_and(|dpm| matches!(dpm.rebuild, Some(super::procs::Rebuild::Unaudited)));
         if unaudited {
             return Err(Refusal::new(
                 "item_swap",
@@ -1036,7 +1074,10 @@ pub(crate) fn item_swap_effect(
             continue;
         }
         let mut probe = env.fresh();
-        let probe_aura = probe.sim.get_aura(probe.player, label).expect("the aura exists");
+        let probe_aura = probe
+            .sim
+            .get_aura(probe.player, label)
+            .expect("the aura exists");
         on_reset(&mut probe.sim, probe_aura);
         if probe.sim.aura(probe_aura).active {
             reset_activates.push(label.to_string());
@@ -1130,7 +1171,12 @@ impl Sim {
     }
 
     /// Go `ItemSwap.RegisterWeaponEnchantBuff`.
-    pub(crate) fn register_weapon_enchant_buff(&mut self, unit: UnitId, aura: AuraId, enchant_id: i32) {
+    pub(crate) fn register_weapon_enchant_buff(
+        &mut self,
+        unit: UnitId,
+        aura: AuraId,
+        enchant_id: i32,
+    ) {
         self.register_enchant_buff_with_slots(unit, aura, enchant_id, WEAPON_SLOTS.to_vec());
     }
 

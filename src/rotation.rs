@@ -2354,7 +2354,9 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
         }
         Value::GcdIsReady => Compiled::GcdIsReady,
         // Go `newValueActiveItemSwapSet`: no value without an item swap.
-        Value::ActiveItemSwapSet(swapped) if lookup.item_swap => Compiled::ActiveItemSwapSet(*swapped),
+        Value::ActiveItemSwapSet(swapped) if lookup.item_swap => {
+            Compiled::ActiveItemSwapSet(*swapped)
+        }
         Value::ActiveItemSwapSet(_) => return None,
         // Go `APLValueVariableRef`: the value the variable resolved to. A variable whose value
         // gives none has an unknown type, which the parser does not reach.

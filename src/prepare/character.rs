@@ -538,7 +538,10 @@ impl Sim {
             self.register_item_swap_callback(
                 unit,
                 &slots,
-                super::item_swap::SwapCallback::ItemUse { item_id, slots: slots.clone() },
+                super::item_swap::SwapCallback::ItemUse {
+                    item_id,
+                    slots: slots.clone(),
+                },
             );
         }
         let spell = self.spell_mut(mcd.spell);

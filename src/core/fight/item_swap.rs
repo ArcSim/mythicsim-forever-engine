@@ -202,13 +202,19 @@ impl<A: Agent> Fight<A> {
         for callback in callbacks {
             ops.push(match callback {
                 SwapCallback::Aura {
-                    aura, main, swapped, ..
+                    aura,
+                    main,
+                    swapped,
+                    ..
                 } => SwapOp::Aura {
                     aura: self.player_aura(aura)?,
                     states: [*main, *swapped],
                 },
                 SwapCallback::AuraOnChange {
-                    aura, main, swapped, ..
+                    aura,
+                    main,
+                    swapped,
+                    ..
                 } => SwapOp::AuraOnChange {
                     aura: self.player_aura(aura)?,
                     carries: [*main, *swapped],
@@ -256,11 +262,17 @@ impl<A: Agent> Fight<A> {
         self.item_swap = Some(ItemSwapState {
             swapped: false,
             initialized: true,
-            auras: [self.player_aura(main_aura)?, self.player_aura(swapped_aura)?],
+            auras: [
+                self.player_aura(main_aura)?,
+                self.player_aura(swapped_aura)?,
+            ],
             stat_bit,
             logs: [to_main_log.clone(), to_swapped_log.clone()],
             ops,
-            weapons: [prepared.melee.main_hand.clone(), worn.melee.main_hand.clone()],
+            weapons: [
+                prepared.melee.main_hand.clone(),
+                worn.melee.main_hand.clone(),
+            ],
             skills: [&prepared.melee, &worn.melee].map(|melee| {
                 [
                     melee.main_hand_skill.clone(),
@@ -405,12 +417,18 @@ impl<A: Agent> Fight<A> {
         A::on_item_swap(self, worn);
         self.swap_core_effects(worn);
         // Go `updateWeaponSkills`, after the callbacks and before the swap's validity is checked.
-        let [main_hand, off_hand, ranged] = self.item_swap.as_ref().expect("the item swap is bound")
+        let [main_hand, off_hand, ranged] = self
+            .item_swap
+            .as_ref()
+            .expect("the item swap is bound")
             .skills[index]
             .clone();
         let melee = &mut self.config.melee;
-        (melee.main_hand_skill, melee.off_hand_skill, melee.ranged_skill) =
-            (main_hand, off_hand, ranged);
+        (
+            melee.main_hand_skill,
+            melee.off_hand_skill,
+            melee.ranged_skill,
+        ) = (main_hand, off_hand, ranged);
         if !valid {
             return;
         }
@@ -441,7 +459,10 @@ impl<A: Agent> Fight<A> {
         );
         self.deactivate_aura(from);
         self.activate_aura(to);
-        self.item_swap.as_mut().expect("the item swap is bound").swapped = to_swapped;
+        self.item_swap
+            .as_mut()
+            .expect("the item swap is bound")
+            .swapped = to_swapped;
     }
 
     /// One callback for the set now worn.

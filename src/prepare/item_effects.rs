@@ -57,14 +57,13 @@ fn audit_item_swap_effects(env: &mut Environment, items: &[i32], enchants: &[i32
     for &slot in &swap.slots {
         for set in [&swap.original_equip, &swap.swap_equip] {
             let item = &set[slot];
-            let follows = |pred: &dyn Fn(&SwapCallback) -> bool| {
-                swap.callbacks.iter().flatten().any(pred)
-            };
+            let follows =
+                |pred: &dyn Fn(&SwapCallback) -> bool| swap.callbacks.iter().flatten().any(pred);
             if item.id != 0 && items.contains(&item.id) {
                 let id = item.id;
-                let registered = follows(&|callback| {
-                    matches!(callback, SwapCallback::ProcAura { item_id, .. } | SwapCallback::ItemUse { item_id, .. } if *item_id == id)
-                });
+                let registered = follows(
+                    &|callback| matches!(callback, SwapCallback::ProcAura { item_id, .. } | SwapCallback::ItemUse { item_id, .. } if *item_id == id),
+                );
                 if !registered {
                     unported.push(format!("the effect of item {id}"));
                 }

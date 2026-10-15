@@ -318,6 +318,18 @@ skill, so the 66 variants of the 2026-10-04 Warrior presets and gear record ran 
 the 15 wearing Edgemaster's Handguards with both hands' tables moved
 ([record](validation/2026-10-15-reference-pin-0025d7398-sweeps.json)).
 
+Item swapping is ported for production's Manual Crowd Pummeler opener (MythicSim's default for
+Shockadin, Enhancement, Feral Cat and Bear, Elehance on 2 or more targets, and Retribution or Arms with
+the opener ticked): a swap of the main hand alone between the request's equipment and the item swap
+set, by a Paladin, Warrior, Shaman or Druid, through the rotation's `itemSwap` action and
+`activeItemSwapSet` value. The exporter describes it as the `item_swap` effect, and preparation and the
+fight runtime follow `SwapItems` with every callback the slot registers: weapon specializations, item
+and enchant procs, Crusader's buffs, the Pummeler's use, the shaman imbues and main hand stones of
+patch 133, Windfury Totem's weapon buff, Weaponmaster, the seals and the feral paws, the weapon skill of
+patch 135, the equipment stats through `AddDynamicEquipStats`, the stopped swings and the global
+cooldown of at least 1.5 seconds. What it does not follow is refused (`item_swap_unsupported`), such as a
+swap that puts Rockbiter on or off with Spirit Weapons, which moves the threat multiplier.
+
 ## Ledger
 
 The [upstream/](upstream/) directory records what has been reviewed and how:

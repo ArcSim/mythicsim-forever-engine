@@ -40,7 +40,10 @@ pub(super) fn apply_weapon_specialization(
     }
     sim.register_item_swap_callback(
         unit,
-        &[crate::prepare::items::slot::MAIN_HAND, crate::prepare::items::slot::OFF_HAND],
+        &[
+            crate::prepare::items::slot::MAIN_HAND,
+            crate::prepare::items::slot::OFF_HAND,
+        ],
         crate::prepare::item_swap::SwapCallback::HandMod {
             id: weapon_mod,
             hand_type: hand_type.to_string(),

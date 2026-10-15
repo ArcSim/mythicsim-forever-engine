@@ -225,7 +225,9 @@ impl Shaman {
                 false
             } else if swap
                 && swapped_hand == "FlametongueWeapon"
-                && sim.unequipped_item(unit, slot).is_some_and(|item| item.id != 0)
+                && sim
+                    .unequipped_item(unit, slot)
+                    .is_some_and(|item| item.id != 0)
             {
                 true
             } else {
@@ -247,7 +249,11 @@ impl Shaman {
                     ..ProcTrigger::default()
                 },
             );
-            sim.register_item_swap_callback(unit, &[slot], SwapCallback::Flametongue { aura, slot });
+            sim.register_item_swap_callback(
+                unit,
+                &[slot],
+                SwapCallback::Flametongue { aura, slot },
+            );
             // "When applied to main hand, disables any benefit you personally receive from
             // Flametongue Totem" (patch 70). An off-hand Flametongue Weapon leaves the totem on.
             if slot == crate::prepare::items::slot::MAIN_HAND {

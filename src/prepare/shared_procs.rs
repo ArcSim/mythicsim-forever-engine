@@ -266,9 +266,11 @@ pub(crate) fn apply_proc_stat_bonus_effect(env: &mut Environment, config: &ProcS
         // registerProc and registerWeaponEnchantBuff: the item swap toggles both with the item.
         let slots = source.eligible_slots(&env.sim, unit);
         if source.is_enchant {
-            env.sim.register_enchant_proc_with_slots(unit, source.id, trigger_aura, slots);
+            env.sim
+                .register_enchant_proc_with_slots(unit, source.id, trigger_aura, slots);
         } else {
-            env.sim.register_item_proc_with_slots(unit, source.id, trigger_aura, slots);
+            env.sim
+                .register_item_proc_with_slots(unit, source.id, trigger_aura, slots);
         }
         source.register_weapon_enchant_buff(env, proc_aura.aura);
     }

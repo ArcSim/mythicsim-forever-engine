@@ -1765,54 +1765,46 @@ pub(crate) fn chances_by_spell(
 /// The damage proc a spell data damage proc or a weapon's extra attack proc runs, with its
 /// trigger spells and its proc manager's chances by spell, or none for another effect.
 pub(crate) fn damage_proc_of(effect: &Effect, spells: usize) -> Option<DamageProc> {
-    let (
-        trigger_spells,
-        struck,
-        casts,
-        landed_only,
-        require_damage,
-        proc_chance,
-        spell,
-        chances,
-    ) = match effect {
-        Effect::SpellDataDamageProc {
-            trigger_spells,
-            struck,
-            casts,
-            landed_only,
-            require_damage,
-            proc_chance,
-            spell,
-            chances,
-            ..
-        } => (
-            trigger_spells.clone(),
-            *struck,
-            *casts,
-            *landed_only,
-            *require_damage,
-            *proc_chance,
-            *spell,
-            chances,
-        ),
-        // A weapon proc that casts the spell granting the extra attacks: it hears the
-        // landed hits its proc manager has a chance for.
-        Effect::ExtraAttackProc {
-            chances: chances @ Some(entries),
-            spell: Some(spell),
-            ..
-        } => (
-            entries.iter().map(|entry| entry.spell).collect(),
-            false,
-            false,
-            true,
-            false,
-            1.0,
-            *spell,
-            chances,
-        ),
-        _ => return None,
-    };
+    let (trigger_spells, struck, casts, landed_only, require_damage, proc_chance, spell, chances) =
+        match effect {
+            Effect::SpellDataDamageProc {
+                trigger_spells,
+                struck,
+                casts,
+                landed_only,
+                require_damage,
+                proc_chance,
+                spell,
+                chances,
+                ..
+            } => (
+                trigger_spells.clone(),
+                *struck,
+                *casts,
+                *landed_only,
+                *require_damage,
+                *proc_chance,
+                *spell,
+                chances,
+            ),
+            // A weapon proc that casts the spell granting the extra attacks: it hears the
+            // landed hits its proc manager has a chance for.
+            Effect::ExtraAttackProc {
+                chances: chances @ Some(entries),
+                spell: Some(spell),
+                ..
+            } => (
+                entries.iter().map(|entry| entry.spell).collect(),
+                false,
+                false,
+                true,
+                false,
+                1.0,
+                *spell,
+                chances,
+            ),
+            _ => return None,
+        };
     let mut mask = vec![false; spells];
     for &trigger in &trigger_spells {
         if let Some(slot) = mask.get_mut(trigger) {
@@ -1848,10 +1840,12 @@ fn item_swap_aura_logs(effects: &[Effect], label: &str) -> Option<(String, Strin
         Effect::ItemSwap { stat_aura_logs, .. } => stat_aura_logs
             .iter()
             .find(|logs| logs.aura == label)
-            .and_then(|logs| match (logs.gain_logs.as_slice(), logs.expire_logs.as_slice()) {
-                ([gain], [expire]) => Some((gain.clone(), expire.clone())),
-                _ => None,
-            }),
+            .and_then(
+                |logs| match (logs.gain_logs.as_slice(), logs.expire_logs.as_slice()) {
+                    ([gain], [expire]) => Some((gain.clone(), expire.clone())),
+                    _ => None,
+                },
+            ),
         _ => None,
     })
 }

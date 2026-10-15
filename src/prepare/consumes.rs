@@ -17,13 +17,13 @@ use super::buffs;
 use super::character::{cooldown_type, MajorCooldown};
 use super::common_effects::GOBLIN_SAPPER_ITEM;
 use super::env::Environment;
+use super::items::slot;
 use super::major_cooldown::COOLDOWN_PRIORITY_LOW;
 use super::sim::{
     AuraConfig, AuraId, BuildPhase, Cooldown, Duration, EffectId, Sim, SpellId, TimerId, UnitId,
     UnitType, NEVER_EXPIRES, SECOND,
 };
 use super::spell::{school, Cast, CastConfig, DefenseType, ProcMask, SpellConfig, SpellFlag};
-use super::items::slot;
 use super::stats::{Stat, Stats};
 use super::Refusal;
 

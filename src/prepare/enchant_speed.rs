@@ -57,11 +57,25 @@ impl Sim {
                 continue;
             };
             if swapped.id != item_id {
-                self.register_speed_aura(unit, slot, "Item", swapped.id, &swapped.pseudo_stats, false);
+                self.register_speed_aura(
+                    unit,
+                    slot,
+                    "Item",
+                    swapped.id,
+                    &swapped.pseudo_stats,
+                    false,
+                );
             }
             if swapped.enchant.effect_id != enchant_id {
                 let pseudo = swapped.enchant.pseudo_stats.clone();
-                self.register_speed_aura(unit, slot, "Enchant", swapped.enchant.effect_id, &pseudo, false);
+                self.register_speed_aura(
+                    unit,
+                    slot,
+                    "Enchant",
+                    swapped.enchant.effect_id,
+                    &pseudo,
+                    false,
+                );
             }
         }
     }

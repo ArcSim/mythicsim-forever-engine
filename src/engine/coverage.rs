@@ -696,7 +696,10 @@ fn swap_activated_auras(effect: &Effect) -> Vec<&str> {
         .iter()
         .filter_map(|callback| match callback {
             SwapCallback::Aura {
-                aura, main, swapped, ..
+                aura,
+                main,
+                swapped,
+                ..
             } => [main, swapped]
                 .iter()
                 .any(|state| matches!(state, SwapAuraState::On | SwapAuraState::Activate))
@@ -797,10 +800,16 @@ fn item_swap_limits(
     for callback in callbacks {
         let (label, toggles) = match callback {
             SwapCallback::Aura {
-                aura, main, swapped, ..
+                aura,
+                main,
+                swapped,
+                ..
             } => (aura, main != swapped),
             SwapCallback::AuraOnChange {
-                aura, main, swapped, ..
+                aura,
+                main,
+                swapped,
+                ..
             } => (aura, main != swapped),
             SwapCallback::ItemUse { spell, aura, .. } => {
                 item_spells.push(*spell);
@@ -810,13 +819,20 @@ fn item_swap_limits(
                 continue;
             }
             SwapCallback::SpellMod { modifier, .. } => {
-                if !matches!(modifier.kind.as_str(), "damage_done_pct" | "bonus_crit_percent") {
+                if !matches!(
+                    modifier.kind.as_str(),
+                    "damage_done_pct" | "bonus_crit_percent"
+                ) {
                     reasons.push(format!(
                         "an item swap switches a spell modifier of kind {}",
                         modifier.kind
                     ));
                 }
-                if modifier.spells.iter().any(|&spell| spell >= player.spells.len()) {
+                if modifier
+                    .spells
+                    .iter()
+                    .any(|&spell| spell >= player.spells.len())
+                {
                     reasons.push("an item swap's spell modifier names an unknown spell".into());
                 }
                 if let SwapCallback::SpellMod { main, swapped, .. } = callback {
@@ -829,7 +845,9 @@ fn item_swap_limits(
         };
         targets.push(label);
         let Some(index) = aura_of(label) else {
-            reasons.push(format!("an item swap switches aura {label:?}, which is not registered"));
+            reasons.push(format!(
+                "an item swap switches aura {label:?}, which is not registered"
+            ));
             continue;
         };
         let aura = &player.auras[index];
@@ -862,10 +880,12 @@ fn item_swap_limits(
         }
         if toggles
             && RACIAL_WEAPON_SPECIALIZATIONS.contains(&label.as_str())
-            && player
-                .spells
-                .iter()
-                .any(|spell| spell.proc_mask.iter().any(|mask| mask == "ProcMaskRangedAuto"))
+            && player.spells.iter().any(|spell| {
+                spell
+                    .proc_mask
+                    .iter()
+                    .any(|mask| mask == "ProcMaskRangedAuto")
+            })
         {
             reasons.push(format!(
                 "an item swap switches {label}, whose crit on the ranged auto attack is not followed"
@@ -874,7 +894,11 @@ fn item_swap_limits(
     }
     for effect in aura_effects {
         let active = aura_of(&effect.aura).is_some_and(|index| player.auras[index].active);
-        let reset = if active { effect.armor_ignore_factor } else { 0.0 };
+        let reset = if active {
+            effect.armor_ignore_factor
+        } else {
+            0.0
+        };
         if prepared.melee.armor_ignore_factor != reset {
             reasons.push(format!(
                 "{} changes an armor ignore factor that other effects also change",
@@ -883,9 +907,14 @@ fn item_swap_limits(
         }
     }
     for change in swapped {
-        if let Some(reason) =
-            swap_change_limit(prepared, change, &targets, &item_spells, &crit_mods, aura_effects)
-        {
+        if let Some(reason) = swap_change_limit(
+            prepared,
+            change,
+            &targets,
+            &item_spells,
+            &crit_mods,
+            aura_effects,
+        ) {
             reasons.push(reason);
         }
     }
@@ -926,10 +955,9 @@ fn flametongue_totem_held(prepared: &PreparedV2, switched: &[&str]) -> bool {
         aura.active
             && aura.duration_ns == crate::core::time::NEVER_EXPIRES
             && !switched.contains(&aura.label.as_str())
-            && aura
-                .exclusive_memberships
-                .iter()
-                .any(|membership| membership.category == "FlametongueTotem" && membership.priority > totem_bid)
+            && aura.exclusive_memberships.iter().any(|membership| {
+                membership.category == "FlametongueTotem" && membership.priority > totem_bid
+            })
     })
 }
 
@@ -943,12 +971,21 @@ fn swap_change_limit(
     aura_effects: &[crate::contracts::prepared_v2::SwapAuraEffect],
 ) -> Option<String> {
     let parts: Vec<&str> = change.path.split('/').skip(1).collect();
-    let refuse = || Some(format!("an item swap changes {}, which the runtime does not follow", change.path));
+    let refuse = || {
+        Some(format!(
+            "an item swap changes {}, which the runtime does not follow",
+            change.path
+        ))
+    };
     match parts.as_slice() {
         // The stats follow the stat auras, the swap's own among them.
         ["player", "stats", _] | ["player", "mana", _] => None,
         ["player", "auras", index, field] if matches!(*field, "active" | "blocked_at_reset") => {
-            let label = &prepared.player.auras.get(index.parse::<usize>().ok()?)?.label;
+            let label = &prepared
+                .player
+                .auras
+                .get(index.parse::<usize>().ok()?)?
+                .label;
             if switched.contains(&label.as_str()) {
                 None
             } else {
@@ -984,7 +1021,11 @@ fn swap_change_limit(
                     crit -= value;
                 }
             }
-            if change.value.as_f64().is_some_and(|value| value.to_bits() == crit.to_bits()) {
+            if change
+                .value
+                .as_f64()
+                .is_some_and(|value| value.to_bits() == crit.to_bits())
+            {
                 None
             } else {
                 refuse()
@@ -1001,14 +1042,16 @@ fn swap_change_limit(
                 .find(|(kind, _)| *kind == effect.kind())
                 .map(|(_, fields)| *fields)
                 .unwrap_or_default();
-            let followed = fields.iter().any(|followed| match followed.split_once('/') {
-                None => followed == field,
-                Some((array, inner)) => {
-                    array == *field
-                        && matches!(rest, [element, last]
+            let followed = fields
+                .iter()
+                .any(|followed| match followed.split_once('/') {
+                    None => followed == field,
+                    Some((array, inner)) => {
+                        array == *field
+                            && matches!(rest, [element, last]
                             if element.parse::<usize>().is_ok() && *last == inner)
-                }
-            });
+                    }
+                });
             if followed {
                 None
             } else {

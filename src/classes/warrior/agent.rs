@@ -791,7 +791,8 @@ impl WarriorAgent {
                         })
                     });
                     if let Some(worn) = worn {
-                        fight.agent.sword_masks = Some([fight.agent.sword_mask.clone(), mask_of(&worn)]);
+                        fight.agent.sword_masks =
+                            Some([fight.agent.sword_mask.clone(), mask_of(&worn)]);
                     }
                     fight.agent.weaponmaster = Some(WeaponmasterSword {
                         trigger: fight.player_aura(trigger_aura)?,

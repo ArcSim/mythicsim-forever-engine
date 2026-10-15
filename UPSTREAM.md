@@ -329,6 +329,14 @@ patch 133, Windfury Totem's weapon buff, Weaponmaster, the seals and the feral p
 patch 135, the equipment stats through `AddDynamicEquipStats`, the stopped swings and the global
 cooldown of at least 1.5 seconds. What it does not follow is refused (`item_swap_unsupported`), such as a
 swap that puts Rockbiter on or off with Spirit Weapons, which moves the threat multiplier.
+Fifteen requests join the fixtures: the eight MythicSim defaults and six targeted swaps (weapon skill on
+the swap weapon, dual wield, a shield, a swap while casting, one on a running global cooldown, and an Orc
+with the party Windfury Totem) with Go goldens and first-fight logs, and a Spirit Weapons swap accepted as
+refused. Rust matches all 612 accepted fixtures with a Go golden, and preparation writes exactly what the
+exporter writes for every one of the 614. Every variant of the 0025d7398 rerun was compared again with this
+engine against the Go results that rerun kept: 14,278 match, 63 are refused for the same reasons, none
+differ, and the 66 weapon skill and 10 regenerated variants match as well
+([record](validation/2026-10-15-item-swap-sweeps.json)).
 
 ## Ledger
 

@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `b477c15744bf4640e6a183f5be95a36511cd788d`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `0025d73986eebd90df1849c202b8c9a88d1f01c9`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `f7598154eb8a138831290b34d4d321a532295224` (2026-10-10) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -277,6 +277,46 @@ counts of the d2409ccd0 rerun record by record, the same 63 refused for the same
 variants that end with the pet out differed at first, the fight's end logging Mana Spring Totem's MP5,
 until the Shadowfiend's `fight_end_stats`
 ([record](validation/2026-10-14-reference-pin-b477c1574-sweeps.json)).
+
+The pin moved from `b477c1574` to `0025d7398` on 2026-10-15, one commit: the fork's patch 135 (branch
+`mythicsim/oct14-integration`), weapon skill. The community base `f7598154e` and client build 70338 did not
+move, so the ledger has no new commit. Forever keeps Classic's weapon skill on items, now as item stats 90 to
+103, and on set bonuses, which the Go engine dropped: the boss table was fixed at 300 skill. Patch 135 ports
+wowsims/classic's table (`sim/core/weapon_skill.go`):
+
+- Skill above the 5 a level every character has is kept per skill line as PseudoStats 28 to 41, summed over
+  the equipment and skill auras for each hand by the type of its weapon (two-handed and one-handed lines
+  apart, fist weapons as unarmed); druids and pets keep none. An attack takes its hand's skill by proc mask,
+  main hand, off hand or ranged, and any other attack attacks at base.
+- Against an enemy at or above the attacker's level, the gap between its defense and the skill sets the miss
+  chance (5% and 0.1% a point, 0.2% past a 10 point gap, 0.04% a point off past the defense), the dodge
+  chance (0.1% a point), the hit suppression (0.2% a point past 10, none under `no_hit_suppression`) and the
+  share a glance keeps (between max(min(1.3 - 0.05 gap, 0.91), 0.01) and max(min(1.2 - 0.03 gap, 0.99),
+  0.2)). Glancing chance, parry and crit suppression stay on base skill, and without skill every lookup is
+  the table's own field.
+- Items: 16 items carry their skill in the Go database (Death's Sting, Huge Thorium Battleaxe, Devilsaur Claws
+  and the client's others; Aged Core Leather Gloves, Distracting Dagger, Edgemaster's Handguards and the
+  Classic planner's others), and Defias Leather's 5 piece takes its +1 daggers.
+
+One of the 595 Go goldens changed: `arms-warrior-sweeping-strikes`, which dual wields two swords with
+Edgemaster's Handguards, from 510.9 to 560.3 DPS. Preparation imports the items' skill, keeps each hand's, and
+writes, for each hand whose skill moves the table, the table an attack with that hand reads
+(`melee.main_hand_skill`, `off_hand_skill` and `ranged_skill`: the skill, miss chance, hit suppression,
+defender dodge and glance), as the exporter resolves them through Go's own lookups; a build without weapon
+skill exports as before. The Defias Leather 5 piece is ported, though preparation still refuses the set's
+humanoid bonus. The fight runtime reads an attack's hand table where there is one. Four requests join the
+fixtures with Go goldens: `combat-rogue-dagger-weapon-skill` (Redfall's Aged Core Leather Gloves and
+Distracting Dagger, 586.8 to 625.0 DPS against the production Combat Rogue), `arms-warrior-two-handed-axe-skill`
+(a 13 point gap, past 10), and `combat-rogue-thero-shan-weapon-skill` with and without hit suppression.
+
+Rust matches all of them: all 598 accepted fixtures with a Go golden, and preparation writes exactly what the
+exporter writes for every one of the 599. The recorded sweeps ran again on the production Mac, four engine
+processes at background priority: all 14,341 variants of the 124 records the b477c1574 rerun compared, byte for
+byte the same requests. 14,278 match Go, Rust refuses 63 and none differ, the counts of the b477c1574 rerun
+record by record, the same 63 refused for the same reasons. None of those variants wears an item with weapon
+skill, so the 66 variants of the 2026-10-04 Warrior presets and gear record ran as well: all 66 match Go,
+the 15 wearing Edgemaster's Handguards with both hands' tables moved
+([record](validation/2026-10-15-reference-pin-0025d7398-sweeps.json)).
 
 ## Ledger
 

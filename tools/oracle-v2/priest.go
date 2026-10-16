@@ -20,7 +20,7 @@ import (
 func init() {
 	classExports[proto.Class_ClassPriest] = classExport{
 		spells: priestClassSpells, damageRows: priestDamageRows, effects: priestEffects, inertPet: priestInertPet,
-		damageTakenModifiers: priestDamageTakenModifiers,
+		damageTakenModifiers: priestDamageTakenModifiers, statAuras: priestStatAuras,
 	}
 	classSummonedPets = append(classSummonedPets, priestSummonedShadowfiend)
 }
@@ -190,6 +190,7 @@ var (
 	priestPowerInLight           = spelldata.Talent(1309969, 5)
 	priestSearingLight           = spelldata.Talent(14909, 2)
 	priestSearingLightTriggered  = spelldata.Ranked(1284536)
+	priestImprovedMindFlay       = spelldata.Talent(1225139, 2)
 )
 
 // mind_blast.go and shadow_word_death.go register every rank, each rolling its own row.
@@ -303,6 +304,19 @@ func priestEffects(agent core.Agent, character *core.Character) []map[string]any
 	}
 	if talents.MindFlay { // talents_shadow.go registerMindFlaySpell: a binary hit roll, then a channel
 		effects = append(effects, map[string]any{"kind": "mind_flay", "ranks": priestDotRanks(priest.MindFlayRankMap)})
+		// Improved Mind Flay (client 70425): each tick deals its share more than the one before.
+		if talents.ImprovedMindFlay > 0 {
+			effects = append(effects, map[string]any{
+				"kind": "improved_mind_flay", "ramp_per_tick": priestImprovedMindFlay.FractionAt(talents.ImprovedMindFlay),
+			})
+		}
+	}
+	// talents_shadow.go applyDarkInspiration: a Spirit stat aura from Mind Blast and a full Mind Flay channel.
+	if talents.DarkInspiration > 0 {
+		effects = append(effects, map[string]any{
+			"kind": "dark_inspiration", "aura": "Dark Inspiration",
+			"mind_blast_trigger": "Dark Inspiration Mind Blast", "mind_flay_trigger": "Dark Inspiration Mind Flay",
+		})
 	}
 	// talents_shadow.go applyShadowform. A helpful Holy cast no longer ends it (community #719); its
 	// form refuses Holy Nova and Chastise through their cast requirements (#686).
@@ -421,4 +435,12 @@ func priestInertPet(agent core.Agent, pet *core.Pet) string {
 		return ""
 	}
 	return "no registered spell summons the Shadowfiend"
+}
+
+// talents_shadow.go applyDarkInspiration: its Spirit multiplier is a stat aura.
+func priestStatAuras(agent core.Agent, _ *core.Character) []string {
+	if agent.(priest.PriestAgent).GetPriest().Talents.DarkInspiration > 0 {
+		return []string{"Dark Inspiration"}
+	}
+	return nil
 }

@@ -338,6 +338,23 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
     if talents.bool("mind_flay") {
         // talents_shadow.go registerMindFlaySpell: a binary hit roll, then a channel
         effects.push(json!({"kind": "mind_flay", "ranks": dot_ranks(&data.mind_flay)}));
+        // Improved Mind Flay (client 70425): each tick deals its share more than the one before.
+        let ramp = talents.i32("improved_mind_flay");
+        if ramp > 0 {
+            effects.push(json!({
+                "kind": "improved_mind_flay",
+                "ramp_per_tick": data.improved_mind_flay.fraction_at(ramp),
+            }));
+        }
+    }
+    if talents.i32("dark_inspiration") > 0 {
+        // talents_shadow.go applyDarkInspiration: a Spirit stat aura from Mind Blast and a full
+        // Mind Flay channel.
+        effects.push(json!({
+            "kind": "dark_inspiration", "aura": "Dark Inspiration",
+            "mind_blast_trigger": "Dark Inspiration Mind Blast",
+            "mind_flay_trigger": "Dark Inspiration Mind Flay",
+        }));
     }
     if let Some(aura) = priest.shadowform_aura {
         // talents_shadow.go applyShadowform. A helpful Holy cast no longer ends it; its form

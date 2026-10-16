@@ -236,6 +236,15 @@ impl PrepAgent for Priest {
         shadowfiend::reset(sim, pet);
     }
 
+    /// talents_shadow.go applyDarkInspiration: its Spirit multiplier is a stat aura.
+    fn stat_auras(&self, _sim: &Sim, _unit: UnitId) -> Vec<String> {
+        if self.talents.i32("dark_inspiration") > 0 {
+            vec!["Dark Inspiration".to_string()]
+        } else {
+            Vec::new()
+        }
+    }
+
     fn talents(&self) -> &Message {
         &self.talents
     }

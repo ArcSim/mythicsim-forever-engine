@@ -100,11 +100,14 @@ impl Priest {
         }
         sim.add_static_mod(
             unit,
-            // Client 14523 still names Holy; the 16 October 2026 beta notes widen it to all
-            // spells, so the first effect is read by position and the school dropped.
+            // Client 70425 widened the threat cut from Holy (school mask 2) to Holy and Shadow (34).
             SpellModConfig {
                 class_mask: masks::ALL,
-                float_value: spell_data().silent_resolve.effect_at(1).fraction_at(points),
+                school: school::HOLY | school::SHADOW,
+                float_value: spell_data()
+                    .silent_resolve
+                    .effect(dbcenums::A_MOD_THREAT, 34)
+                    .fraction_at(points),
                 kind: SpellModType::ThreatMultiplierPct,
                 ..SpellModConfig::default()
             },

@@ -2372,6 +2372,18 @@ pub enum Effect {
     MindFlay {
         ranks: Vec<FireballRank>,
     },
+    /// Improved Mind Flay (client 70425): each Mind Flay tick deals `ramp_per_tick` more than the
+    /// one before, a step added per tick.
+    ImprovedMindFlay {
+        ramp_per_tick: f64,
+    },
+    /// Dark Inspiration (client 70425): Mind Blast's cast and a full Mind Flay channel's last tick
+    /// activate `aura`, a stat aura.
+    DarkInspiration {
+        aura: String,
+        mind_blast_trigger: String,
+        mind_flay_trigger: String,
+    },
     /// Holy Nova: each rank's rolled hit, then its triggered heal on the priest, with the
     /// healing modifiers Go reads.
     HolyNova {
@@ -4260,6 +4272,8 @@ impl Effect {
             Effect::ShadowWordPain { .. } => "shadow_word_pain",
             Effect::DevouringPlague { .. } => "devouring_plague",
             Effect::MindFlay { .. } => "mind_flay",
+            Effect::ImprovedMindFlay { .. } => "improved_mind_flay",
+            Effect::DarkInspiration { .. } => "dark_inspiration",
             Effect::Starshards { .. } => "starshards",
             Effect::HolyNova { .. } => "holy_nova",
             Effect::Shadowfiend { .. } => "shadowfiend",

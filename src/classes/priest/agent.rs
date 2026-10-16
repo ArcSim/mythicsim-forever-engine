@@ -38,6 +38,8 @@ pub(crate) enum PriestSpell {
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum PriestAura {
     Shadowform,
+    DarkInspirationMindBlast,
+    DarkInspirationMindFlay,
     InnerFocus,
     ShadowWeavingTrigger,
     SearingLight,
@@ -49,6 +51,10 @@ pub(crate) enum PriestAura {
 #[derive(Default)]
 pub(crate) struct PriestAgent {
     early_demise_crit: f64,
+    /// Improved Mind Flay's step a tick (client 70425).
+    mind_flay_ramp: f64,
+    /// Dark Inspiration's Spirit aura (client 70425).
+    dark_inspiration: Option<AuraRef>,
     /// Devouring Plague ranks by spell, with their health metrics.
     devouring_plague: Vec<(SpellId, usize)>,
     shadowform: Option<Rc<shadowform::Shadowform>>,
@@ -97,6 +103,20 @@ fn player_auras(prepared: &PreparedV2) -> Vec<(String, PriestAura)> {
         match effect {
             Effect::Shadowform { aura, .. } => auras.push((aura.clone(), PriestAura::Shadowform)),
             Effect::InnerFocus { aura, .. } => auras.push((aura.clone(), PriestAura::InnerFocus)),
+            Effect::DarkInspiration {
+                mind_blast_trigger,
+                mind_flay_trigger,
+                ..
+            } => {
+                auras.push((
+                    mind_blast_trigger.clone(),
+                    PriestAura::DarkInspirationMindBlast,
+                ));
+                auras.push((
+                    mind_flay_trigger.clone(),
+                    PriestAura::DarkInspirationMindFlay,
+                ));
+            }
             Effect::ShadowWeaving { trigger_aura, .. } => {
                 auras.push((trigger_aura.clone(), PriestAura::ShadowWeavingTrigger));
             }
@@ -362,6 +382,12 @@ impl PriestAgent {
                     )?;
                     fight.agent.shadowform = Some(Rc::new(bound));
                 }
+                Effect::ImprovedMindFlay { ramp_per_tick } => {
+                    fight.agent.mind_flay_ramp = *ramp_per_tick;
+                }
+                Effect::DarkInspiration { aura, .. } => {
+                    fight.agent.dark_inspiration = Some(fight.player_aura(aura)?);
+                }
                 Effect::InnerFocus {
                     spell_id,
                     aura,
@@ -560,6 +586,14 @@ impl Agent for PriestAgent {
 
     fn on_dot_tick(fight: &mut Fight<Self>, dot: DotId, behavior: PriestSpell) {
         match behavior {
+            PriestSpell::MindFlay if fight.agent.mind_flay_ramp != 0.0 => {
+                // Improved Mind Flay: each tick deals the step more than the one before.
+                let mut result = fight.snapshot_dot_tick_calc(dot);
+                let ticks = f64::from(fight.dots[dot].tick_count() - 1);
+                result.damage *= fight.agent.mind_flay_ramp.mul_add(ticks, 1.0);
+                let spell = fight.dots[dot].spell;
+                fight.deal_damage(spell, result, true);
+            }
             PriestSpell::ShadowWordPain
             | PriestSpell::MindFlay
             | PriestSpell::Starshards
@@ -590,7 +624,9 @@ impl Agent for PriestAgent {
             PriestAura::SearingLight => Self::searing_light(fight).on_gain(fight),
             PriestAura::ShadowWeavingTrigger
             | PriestAura::SearingLightTrigger
-            | PriestAura::ShadowfiendManaRestore => {}
+            | PriestAura::ShadowfiendManaRestore
+            | PriestAura::DarkInspirationMindBlast
+            | PriestAura::DarkInspirationMindFlay => {}
         }
     }
 
@@ -601,7 +637,9 @@ impl Agent for PriestAgent {
             PriestAura::SearingLight => Self::searing_light(fight).on_expire(fight),
             PriestAura::ShadowWeavingTrigger
             | PriestAura::SearingLightTrigger
-            | PriestAura::ShadowfiendManaRestore => {}
+            | PriestAura::ShadowfiendManaRestore
+            | PriestAura::DarkInspirationMindBlast
+            | PriestAura::DarkInspirationMindFlay => {}
         }
     }
 
@@ -617,6 +655,12 @@ impl Agent for PriestAgent {
 
     fn on_cast_complete(fight: &mut Fight<Self>, _aura: AuraRef, kind: PriestAura, spell: SpellId) {
         match kind {
+            PriestAura::DarkInspirationMindBlast
+                if fight.spells[spell].class_spell.as_deref() == Some("mind_blast") =>
+            {
+                let aura = fight.agent.dark_inspiration.expect("bound");
+                fight.activate_aura(aura);
+            }
             PriestAura::InnerFocus => Self::inner_focus(fight).on_cast_complete(fight, spell),
             PriestAura::SearingLight => Self::searing_light(fight).on_cast_complete(fight, spell),
             _ => {}
@@ -649,8 +693,24 @@ impl Agent for PriestAgent {
         spell: SpellId,
         result: &SpellResult,
     ) {
-        if kind == PriestAura::SearingLightTrigger {
-            Self::searing_light(fight).on_periodic_damage_dealt(fight, spell, result);
+        match kind {
+            PriestAura::SearingLightTrigger => {
+                Self::searing_light(fight).on_periodic_damage_dealt(fight, spell, result);
+            }
+            // A full channel: the last tick sees no ticks left.
+            PriestAura::DarkInspirationMindFlay
+                if fight.spells[spell].class_spell.as_deref() == Some("mind_flay") =>
+            {
+                let full = fight.spells[spell].dot.is_some_and(|dot| {
+                    let dot = fight.dot_on(dot, result.target);
+                    fight.dots[dot].remaining_ticks == 0
+                });
+                if full {
+                    let aura = fight.agent.dark_inspiration.expect("bound");
+                    fight.activate_aura(aura);
+                }
+            }
+            _ => {}
         }
     }
 

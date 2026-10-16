@@ -33,6 +33,8 @@ pub(crate) enum ModKind {
     CastTimeFlat,
     /// Go `SpellMod_GlobalCooldown_Flat`: adds to the default GCD, in nanoseconds.
     GlobalCooldownFlat,
+    /// Go `SpellMod_Cooldown_Flat`: adds to the cooldown's duration, in nanoseconds.
+    CooldownFlat,
     /// Go `SpellMod_PowerCost_Flat`: adds its integer value, held in the float value, to the
     /// cost's `FlatModifier`.
     PowerCostFlat,
@@ -187,6 +189,15 @@ impl<A: Agent> Fight<A> {
                         state.default_cast.gcd += modifier.time_value;
                     } else {
                         state.default_cast.gcd -= modifier.time_value;
+                    }
+                }
+                ModKind::CooldownFlat => {
+                    if let Some((_, duration)) = state.cd.as_mut() {
+                        if sign > 0.0 {
+                            *duration += modifier.time_value;
+                        } else {
+                            *duration -= modifier.time_value;
+                        }
                     }
                 }
                 ModKind::DotTickLengthFlat => {

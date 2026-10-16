@@ -1534,6 +1534,12 @@ pub(crate) fn rotation_spell_index(prepared: &PreparedV2, id: &ActionId) -> Opti
                 .iter()
                 .position(|spell| spell.action_id.as_ref() == Some(id))
         })
+        // Go `RankAliases`: an older rank a rotation names presses the known one.
+        .or_else(|| {
+            spells
+                .iter()
+                .position(|spell| spell.has_flag("SpellFlagAPL") && spell.has_rank_alias(id))
+        })
 }
 
 /// Go `Spell.Dot`: the spell holding the dot a spell names, its own or its related dot

@@ -67,6 +67,8 @@ var (
 	shamanFrostbrandProc   = spelldata.Ranked(8034, 8037, 10458, 16352, 16353)
 	shamanFrostShock       = spelldata.Ranked(8056, 8058, 10472, 10473)
 	shamanMagmaTotem       = spelldata.Ranked(8190, 10585, 10586, 10587)
+	shamanTrialByFire      = spelldata.Talent(16086, 2)
+	shamanElementalMastery = spelldata.Ranked(16166)
 	shamanMagmaPulse       = spelldata.Ranked(8187, 8188, 10579, 10580, 10581, 10582, 10583, 10584).ByID(10581)
 	shamanLightningShield  = spelldata.Ranked(324, 325, 905, 945, 8134, 10431, 10432)
 	shamanShieldOrb        = spelldata.Ranked(26363, 26364, 26365, 26366, 26367, 26369, 26370, 26545).ByID(26363)
@@ -234,6 +236,17 @@ func shamanEffects(agent core.Agent, character *core.Character) []map[string]any
 			"melee_speed_multiplier": 1 + row.Effect(dbcenums.A_MOD_MELEE_RANGED_HASTE_2, 0).Percent(),
 		})
 	}
+	// talents_elemental.go applyElementalMastery: a major cooldown whose aura speeds Lightning Bolt
+	// and Lava Burst and cancels Chain Lightning's cooldown (client 70425).
+	if talents.ElementalMastery {
+		row := shamanElementalMastery.Highest()
+		chain := shaman.ChainLightningRankMap.Highest()
+		effects = append(effects, map[string]any{
+			"kind": "elemental_mastery", "spell_id": row.ID, "aura": "Elemental Mastery",
+			"cast_time_delta_ns": nanos(time.Millisecond * time.Duration(row.Effect(dbcenums.A_ADD_FLAT_MODIFIER, int32(dbcenums.SPELLMOD_CASTING_TIME)).BasePoints)),
+			"chain_lightning_cooldown_ns": nanos(max(chain.Cooldown(), chain.CategoryCooldown())),
+		})
+	}
 	if talents.ElementalFocus { // talents_elemental.go applyElementalFocus
 		clearcasting := shamanClearcasting.Highest()
 		effects = append(effects, map[string]any{
@@ -254,7 +267,9 @@ func shamanTotemEffects(sham *shaman.Shaman, character *core.Character) []map[st
 	effects = append(effects, map[string]any{
 		"kind": "magma_totem", "spell_id": shamanMagmaTotem.Highest().ID,
 		"pulse_damage": shamanMagmaPulse.DamageEffect().Average(core.CharacterLevel),
-		"duration_ns":  nanos(shamanMagmaTotem.Highest().Duration()),
+		// Trial by Fire (client 70425) lengthens it.
+		"duration_ns": nanos(shamanMagmaTotem.Highest().Duration() + time.Millisecond*time.Duration(
+			shamanTrialByFire.Effect(dbcenums.A_ADD_FLAT_MODIFIER, int32(dbcenums.SPELLMOD_DURATION)).ValueAt(sham.Talents.TrialByFire))),
 	})
 	// registerLightningShieldSpell: the cast puts up every charge. Its trigger hears only the
 	// shield self proc, which needs a proc rate the exporter rejects, so the orb never fires.

@@ -777,9 +777,22 @@ pub struct Spell {
     /// Go `MetricSplits`: the spell reports one tagged metric entry per split.
     #[serde(default, skip_serializing_if = "is_zero_usize")]
     pub metric_splits: usize,
+    /// Go `RankAliases`: older rank IDs a rotation may still name, which `GetAPLSpell` falls
+    /// back to (Lava Burst rank 4, client 70425).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub rank_aliases: Vec<ActionId>,
 }
 
 impl Spell {
+    /// Go `slices.ContainsFunc(RankAliases, id.SameAction)`.
+    pub fn has_rank_alias(&self, id: &ActionId) -> bool {
+        self.rank_aliases.iter().any(|alias| {
+            alias.spell_id == id.spell_id
+                && alias.item_id == id.item_id
+                && alias.other_id == id.other_id
+        })
+    }
+
     pub fn has_flag(&self, flag: &str) -> bool {
         self.flags.iter().any(|f| f == flag)
     }
@@ -3289,6 +3302,14 @@ pub enum Effect {
         aura: String,
         melee_speed_multiplier: f64,
     },
+    /// Elemental Mastery (client 70425): a major cooldown whose aura makes Lightning Bolt and
+    /// Lava Burst cast faster and cancels Chain Lightning's cooldown.
+    ElementalMastery {
+        spell_id: i32,
+        aura: String,
+        cast_time_delta_ns: i64,
+        chain_lightning_cooldown_ns: i64,
+    },
     /// Elemental Focus: a completed elemental cast may grant Clearcasting.
     ElementalFocus {
         trigger_aura: String,
@@ -4430,6 +4451,7 @@ impl Effect {
             Effect::ImprovedStormstrike { .. } => "improved_stormstrike",
             Effect::MaelstromWeapon { .. } => "maelstrom_weapon",
             Effect::RageOfTheFarseer { .. } => "rage_of_the_farseer",
+            Effect::ElementalMastery { .. } => "elemental_mastery",
             Effect::RockbiterWeapon { .. } => "rockbiter_weapon",
             Effect::FrostShock { .. } => "frost_shock",
             Effect::WeaponSync { .. } => "weapon_sync",

@@ -422,6 +422,8 @@ type Spell struct {
 	RelatedDotSpell *int `json:"related_dot_spell,omitempty"`
 	// spell.go splitSpellMetrics: how many tagged metric entries the spell reports under.
 	MetricSplits int `json:"metric_splits,omitempty"`
+	// spell.go RankAliases: older rank IDs a rotation may still name, which GetAPLSpell reads.
+	RankAliases []ActionID `json:"rank_aliases,omitempty"`
 }
 
 type Aura struct {
@@ -1003,7 +1005,16 @@ func exportSpell(spell *core.Spell, target *core.Unit, class classExport, timers
 		CritMultiplierAdditive: spell.CritMultiplierAdditive, BonusBaseDamage: spell.BonusBaseDamage, BonusCoefficient: spell.BonusCoefficient,
 		ThreatMultiplier: spell.ThreatMultiplier, FlatThreatBonus: spell.FlatThreatBonus, PushbackResist: spell.PushbackResist, Dot: dot,
 		MetricSplits: map[bool]int{true: spell.GetMetricSplitCount(), false: 0}[spell.GetMetricSplitCount() > 1],
+		RankAliases:  rankAliases(spell),
 	}
+}
+
+func rankAliases(spell *core.Spell) []ActionID {
+	aliases := []ActionID{}
+	for _, id := range spell.RankAliases {
+		aliases = append(aliases, *actionID(id))
+	}
+	return aliases
 }
 
 // shapeshift.go castRequirementFailure, as the player auras whose form the requirement refuses.

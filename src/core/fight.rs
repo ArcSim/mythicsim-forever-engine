@@ -767,6 +767,8 @@ pub(crate) struct Spell<S> {
     /// Go `CastRequirement`, as the player auras whose form it refuses.
     pub(crate) requirement_auras: Vec<AuraRef>,
     pub(crate) class_spell: Option<String>,
+    /// Go `RankAliases`: older rank IDs a rotation may still name.
+    pub(crate) rank_aliases: Vec<ActionId>,
     pub(crate) class_spell_mask: bool,
     pub(crate) missile_speed: f64,
     pub(crate) cast_kind: crate::contracts::prepared_v2::CastKind,
@@ -2721,6 +2723,7 @@ impl<A: Agent> Fight<A> {
                     )
                 }),
                 class_spell: exported.class_spell.clone(),
+                rank_aliases: exported.rank_aliases.clone(),
                 class_spell_mask: exported.class_spell.is_some(),
                 missile_speed: exported.missile_speed,
                 cast_kind: exported.cast_kind,

@@ -17,7 +17,9 @@ use crate::prepare::spell::{
 use crate::prepare::spelldata::{Ladder, Spell as Row};
 
 use super::spell_data::spell_data;
+use super::talents::millis;
 use super::{flags, masks, Shaman, CAST_TAG_LIGHTNING_OVERLOAD};
+use crate::prepare::dbcenums;
 
 pub(super) fn spell_action(id: i32) -> ActionId {
     ActionId {
@@ -212,14 +214,15 @@ impl Shaman {
         });
     }
 
-    /// Go `registerLavaBurstSpell`: Lava Burst is new in Forever.
+    /// Go `registerLavaBurstSpell`: Lava Burst is new in Forever. Client 70425 added rank 4;
+    /// rotations saved with an older rank keep casting it through the rank aliases.
     pub(super) fn register_lava_burst_spell(&self, sim: &mut Sim, unit: UnitId) {
         if !self.has_talent("lava_burst") {
             return;
         }
         let rank = spell_data().lava_burst.highest();
         let timer = sim.new_timer(unit);
-        sim.register_spell(
+        let spell = sim.register_spell(
             unit,
             SpellConfig {
                 action_id: spell_action(rank.id),
@@ -244,6 +247,13 @@ impl Shaman {
                 ..SpellConfig::default()
             },
         );
+        let mut aliases = Vec::new();
+        spell_data().lava_burst.each(|_, row| {
+            if row.id != rank.id {
+                aliases.push(spell_action(row.id));
+            }
+        });
+        sim.spell_mut(spell).rank_aliases = aliases;
     }
 
     /// Go `newShockSpellConfig`: shared logic for all shocks.
@@ -413,7 +423,8 @@ impl Shaman {
         let data = spell_data();
         let rank = data.magma_totem.highest();
         let pulse = data.magma_totem_triggered.by_id(10581);
-        let duration = rank.duration();
+        // Trial by Fire (client 70425) lengthens it by 10 sec a point.
+        let duration = rank.duration() + magma_totem_bonus(self.talent("trial_by_fire"));
         let tick_length = crate::prepare::sim::seconds(2.0);
 
         let magma_totem = sim.register_spell(
@@ -474,18 +485,21 @@ impl Shaman {
                 },
                 damage_multiplier: 1.0,
                 threat_multiplier: 1.0,
-                // The 16 October 2026 beta notes cut it to 0.143 (the row still says 0.214); the
-                // "significantly reduced" base damage and cost have no numbers yet.
-                bonus_coefficient: 0.143,
+                // The 16 October 2026 beta notes cut it to 0.143; client 70425's row carries it.
+                bonus_coefficient: data
+                    .fire_nova_triggered
+                    .by_id(408428)
+                    .damage_effect()
+                    .coeff(),
                 ..SpellConfig::default()
             },
         );
     }
 
     /// Go `chainLightningCost`: "Chain Lightning mana cost reduced by approximately 35%" on every rank
-    /// (16 October 2026 beta notes). The client data still carries the old costs.
+    /// (16 October 2026 beta notes); client 70425's rows carry the cut costs.
     fn chain_lightning_cost(config: &Row) -> i32 {
-        (config.cost() * 0.65).round() as i32
+        config.cost().round() as i32
     }
 
     /// Go `registerStormstrikeSpell`: the two hits, the debuff on every enemy, then the cast.
@@ -570,4 +584,14 @@ impl Shaman {
             },
         );
     }
+}
+
+/// Trial by Fire's Magma Totem duration (client 70425): 10 sec a point.
+pub(super) fn magma_totem_bonus(points: i32) -> crate::prepare::sim::Duration {
+    millis(
+        spell_data()
+            .trial_by_fire
+            .effect(dbcenums::A_ADD_FLAT_MODIFIER, dbcenums::SPELLMOD_DURATION)
+            .value_at(points),
+    )
 }

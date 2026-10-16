@@ -301,7 +301,7 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `ambush` | sim/rogue/ambush.go | The base, the main hand dagger and Cutthroat's aura |
 | `rupture` | sim/rogue/rupture.go | The tick, its step a combo point and the attack power share a point, Go literals, the tick outcome, and the multiplier Hemorrhage's debuff gives every tick while it is up, read from the damage taken from caster effect of its client row |
 | `mutilate` | sim/rogue/talents_assassination.go | The flat damage, weapon share, combo points and poisoned bonus, and whether both hands hold daggers |
-| `cold_blood` | sim/rogue/talents_assassination.go | The crit bonus and the spells it names, and the spells whose hit spends it, which leave Mutilate's hand strikes out |
+| `cold_blood` | sim/rogue/talents_assassination.go | The crit bonus and the spells it names, and the spells whose hit spends it, which leave Mutilate's hand strikes out: a Mutilate spends it once both hands struck if either crit, read off the `mutilate` effect's hands |
 | `premeditation`, `preparation` | sim/rogue/talents_subtlety.go | Premeditation's combo points; the spellbook positions of every other Rogue spell with a cooldown, which Preparation finishes |
 | `rogue_proc` | sim/rogue/talents_assassination.go, talents_subtlety.go | Seal Fate, Initiative, Cutthroat and Thousand Cuts: the spells each trigger hears, its outcome, chance and handler |
 | `thousand_cuts` | sim/rogue/talents_subtlety.go | The flat cost cut a stack and the spells that take and spend it |

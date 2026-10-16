@@ -396,6 +396,29 @@ impl<A: Agent> Fight<A> {
     /// When the rotation's `autoTimeToNext` reads the next auto attack of a kind: Go
     /// `NextAttackAt`, `MainhandSwingAt`, `OffhandSwingAt`, `NextRangedAttackAt` and
     /// `NextAnyAttackAt`.
+    /// Go `APLValueAutoTimeSinceLast`: the time since the hands it reads last swung, each a
+    /// wrapping difference as Go's durations are.
+    pub(crate) fn time_since_last_auto(&self, kind: crate::rotation::AutoAttackType) -> i64 {
+        use crate::rotation::AutoAttackType;
+        let autos = &self.autos;
+        let since = |attack: &WeaponAttack| self.now.wrapping_sub(attack.previous_swing);
+        match kind {
+            AutoAttackType::MainHand => since(&autos.mh),
+            AutoAttackType::OffHand => since(&autos.oh),
+            AutoAttackType::Ranged => since(&autos.ranged),
+            AutoAttackType::Melee | AutoAttackType::Any => {
+                let mut value = since(&autos.mh);
+                if autos.oh.enabled {
+                    value = value.min(since(&autos.oh));
+                }
+                if kind == AutoAttackType::Any && autos.ranged.enabled {
+                    value = value.min(since(&autos.ranged));
+                }
+                value
+            }
+        }
+    }
+
     pub(crate) fn next_auto_attack_at(&self, kind: crate::rotation::AutoAttackType) -> i64 {
         use crate::rotation::AutoAttackType;
         let autos = &self.autos;

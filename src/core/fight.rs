@@ -836,6 +836,10 @@ pub(crate) struct Spell<S> {
     pub(crate) split_actions: Vec<usize>,
     /// The current split, which Go keeps across iterations.
     pub(crate) split: usize,
+    /// Go `Spell.casts`: the casts whose effects applied this iteration, prepull casts included.
+    pub(crate) casts: u32,
+    /// Go `Unit.SpellsInFlight` of the spell: its travel callbacks still pending.
+    pub(crate) in_flight: u32,
 }
 
 /// Go `Hardcast`.
@@ -2805,6 +2809,8 @@ impl<A: Agent> Fight<A> {
                 split_metrics: Vec::new(),
                 split_actions: Vec::new(),
                 split: 0,
+                casts: 0,
+                in_flight: 0,
                 id,
             });
         }
@@ -4977,6 +4983,9 @@ impl<A: Agent> Fight<A> {
             // Only the slots of the fight's targets and the player ever hold metrics.
             let units = self.defender_count();
             for spell in &mut self.spells {
+                // Go `Spell.reset` and the reset's clear of `SpellsInFlight`.
+                spell.casts = 0;
+                spell.in_flight = 0;
                 spell.metrics[..units].fill(SpellMetrics::default());
                 for split in &mut spell.split_metrics {
                     split[..units].fill(SpellMetrics::default());
@@ -5162,6 +5171,7 @@ impl<A: Agent> Fight<A> {
                 }
             }
             Action::Travel { spell, result, dot } => {
+                self.spells[spell].in_flight -= 1;
                 self.deal_damage(spell, result, false);
                 if let (Some(dot), true) = (dot, result.landed()) {
                     self.apply_dot(dot);
@@ -5170,6 +5180,9 @@ impl<A: Agent> Fight<A> {
             Action::DotTick(dot) => self.periodic_tick(dot, handle),
             Action::TravelBatch(batch) => {
                 let results = std::mem::take(&mut self.travel_batches[batch]);
+                if let Some(&(spell, _)) = results.first() {
+                    self.spells[spell].in_flight -= 1;
+                }
                 for &(spell, result) in &results {
                     self.deal_damage(spell, result, false);
                 }
@@ -5178,6 +5191,7 @@ impl<A: Agent> Fight<A> {
                 self.free_travel_batches.push(batch);
             }
             Action::ClassTravel { spell, result } => {
+                self.spells[spell].in_flight -= 1;
                 if let SpellBehavior::Class(behavior) = self.spells[spell].behavior {
                     A::on_travel(self, spell, result, behavior);
                 }

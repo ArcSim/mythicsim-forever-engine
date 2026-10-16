@@ -762,6 +762,7 @@ impl<A: Agent> Fight<A> {
     /// Go `Spell.applyEffects`.
     pub(crate) fn apply_effects(&mut self, spell: SpellId, target: Side) {
         self.spells[spell].metrics[target.index()].casts += 1;
+        self.spells[spell].casts += 1;
         // Go runs OnApplyEffects first, unless the spell skips cast completion callbacks.
         if !self.spells[spell].flags.no_on_cast_complete {
             self.on_apply_effects(spell, target);

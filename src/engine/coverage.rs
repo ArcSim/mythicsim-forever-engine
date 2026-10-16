@@ -54,6 +54,22 @@ fn has_item_swap(prepared: &PreparedV2) -> bool {
     crate::core::fight::item_swap::item_swap_effect(prepared).is_some()
 }
 
+/// The player's resource bars as the runtime builds them from the prepared input.
+fn rotation_bars(prepared: &PreparedV2) -> crate::rotation::Bars {
+    crate::rotation::Bars {
+        mana: prepared.player.mana.max > 0.0,
+        max_rage: prepared.effects.iter().find_map(|effect| match effect {
+            Effect::RageBar { max_rage, .. } => Some(max_rage.max(100.0)),
+            _ => None,
+        }),
+        max_combo_points: prepared
+            .player
+            .energy
+            .as_ref()
+            .map(|energy| energy.max_combo_points),
+    }
+}
+
 /// A [`Limits`] check that finds nothing to refuse.
 pub(crate) fn no_limits(_: &PreparedV2, _: &[&Spell]) -> Vec<String> {
     Vec::new()
@@ -2358,6 +2374,7 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
         item_swap: has_item_swap(prepared),
+        bars: rotation_bars(prepared),
     };
     let live = |index: usize| {
         compile_condition(rotation.priority_list[index].condition.as_ref(), &lookup)
@@ -2444,6 +2461,7 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
         item_swap: has_item_swap(prepared),
+        bars: rotation_bars(prepared),
     };
     rotation
         .priority_list
@@ -2482,6 +2500,7 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
         item_swap: has_item_swap(prepared),
+        bars: rotation_bars(prepared),
     };
     compile_condition(prepull.condition.as_ref(), &lookup)
         == crate::rotation::CompiledCondition::Pruned
@@ -2633,6 +2652,7 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
         item_swap: has_item_swap(prepared),
+        bars: rotation_bars(prepared),
     };
     rotation
         .priority_list

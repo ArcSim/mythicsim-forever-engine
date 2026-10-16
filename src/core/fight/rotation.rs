@@ -216,6 +216,15 @@ impl<A: Agent> Fight<A> {
         (!self.dots[dot].side.is_target() || matches!(unit, Unit::Target(_))).then_some(holder)
     }
 
+    /// The player's resource bars, which values of a bar the player lacks give none for.
+    fn rotation_bars(&self) -> crate::rotation::Bars {
+        crate::rotation::Bars {
+            mana: self.has_mana_bar(),
+            max_rage: self.rage.as_ref().map(|bar| bar.max),
+            max_combo_points: self.energy.as_ref().map(|bar| bar.max_combo_points),
+        }
+    }
+
     /// Go `GetAPLSpell`: the first APL-flagged spell with the action ID, otherwise the first
     /// registered one. The potion action names the first combat potion.
     pub(crate) fn apl_spell(&self, id: &ActionId) -> Option<SpellId> {
@@ -282,6 +291,7 @@ impl<A: Agent> Fight<A> {
             dot_base_duration: &dot_base_duration,
             pet_aura_known: &pet_aura_known,
             item_swap: self.item_swap.is_some(),
+            bars: self.rotation_bars(),
         };
         let mut prepull: Vec<(i64, PrepullAct)> = rotation
             .prepull
@@ -344,6 +354,7 @@ impl<A: Agent> Fight<A> {
             dot_base_duration: &dot_base_duration,
             pet_aura_known: &pet_aura_known,
             item_swap: self.item_swap.is_some(),
+            bars: self.rotation_bars(),
         };
         // A reference whose condition is a constant false is pruned, and takes no part in
         // binding the groups.
@@ -607,6 +618,15 @@ impl<A: Agent> Fight<A> {
             Compiled::IsExecutePhase(threshold) => self.execute_phase <= *threshold,
             // Go `APLValueSpellCanCast`: `CanCastOrQueue`, with its cost check's side effects.
             Compiled::SpellCanCast(spell) => self.can_cast_or_queue(*spell),
+            // Go `APLValueSpellIsChanneling`: the player's channeled dot is the spell's.
+            Compiled::SpellIsChanneling(spell) => self
+                .player
+                .channeled_dot
+                .is_some_and(|dot| self.dots[dot].spell == *spell),
+            // Go `Unit.SpellInFlight`.
+            Compiled::SpellInFlight(spell) => self.spells[*spell].in_flight > 0,
+            // Go `Unit.Moving` of the player.
+            Compiled::PlayerIsMoving => self.player.moving,
             Compiled::And(values) => values.iter().all(|value| self.get_bool(value)),
             Compiled::Or(values) => values.iter().any(|value| self.get_bool(value)),
             Compiled::Not(value) => !self.get_bool(value),
@@ -648,6 +668,28 @@ impl<A: Agent> Fight<A> {
                 }
             }
             Compiled::CurrentComboPoints => self.energy_bar().combo_points,
+            // Go `APLValueSpellChanneledTicks`: `Dot.TickCount` of the player's channel, whatever
+            // its spell.
+            Compiled::SpellChanneledTicks(_) => self
+                .player
+                .channeled_dot
+                .map_or(0, |dot| self.dots[dot].tick_count()),
+            // Go `Spell.GetNumCharges`: no spell of the fork has charges.
+            Compiled::SpellNumCharges(_) => 0,
+            Compiled::MaxComboPoints(max) => *max,
+            // Go `APLValueMax.GetInt` and `APLValueMin.GetInt`.
+            Compiled::Max(values) => {
+                let first = self.get_int(&values[0]);
+                values[1..]
+                    .iter()
+                    .fold(first, |result, value| result.max(self.get_int(value)))
+            }
+            Compiled::Min(values) => {
+                let first = self.get_int(&values[0]);
+                values[1..]
+                    .iter()
+                    .fold(first, |result, value| result.min(self.get_int(value)))
+            }
             // Go `ActiveTargetCount`: every target is active throughout.
             Compiled::NumberTargets => self.targets.len() as i32,
             // Go `APLValueMath.GetInt`: int32 arithmetic, which wraps.
@@ -691,7 +733,40 @@ impl<A: Agent> Fight<A> {
             Compiled::MaxMana => self.player.powers.max_mana,
             // Go `APLValueSpellCurrentCost`: no cost reads zero.
             Compiled::SpellCurrentCost(spell) => self.current_cost(*spell),
+            // Go `Spell.CurCPM`: no casts per minute before the pull.
+            Compiled::SpellCpm(spell) => {
+                if self.now <= 0 {
+                    0.0
+                } else {
+                    let minutes = self.now as f64 / (60 * crate::core::time::NS_PER_SECOND) as f64;
+                    f64::from(self.spells[*spell].casts) / minutes
+                }
+            }
             Compiled::NumberTargets => self.targets.len() as f64,
+            // Go `Duration.Seconds` of the time so far over the fight's.
+            Compiled::CurrentTimePercent => {
+                crate::core::time::seconds(self.now) / crate::core::time::seconds(self.duration)
+            }
+            Compiled::CurrentHealth => self.player.health,
+            Compiled::MaxHealth => self.player_max_health(),
+            Compiled::MaxRage(max) => *max,
+            // Go `manaTickWhileCasting`.
+            Compiled::CurrentManaRegen => self.player.mana_tick_casting,
+            // Go `DistanceFromTarget`.
+            Compiled::UnitDistance => self.config.distance,
+            // Go's `max` and `min` builtins, which a NaN wins.
+            Compiled::Max(values) => {
+                let first = self.get_float(&values[0]);
+                values[1..]
+                    .iter()
+                    .fold(first, |result, value| go_max(result, self.get_float(value)))
+            }
+            Compiled::Min(values) => {
+                let first = self.get_float(&values[0]);
+                values[1..]
+                    .iter()
+                    .fold(first, |result, value| go_min(result, self.get_float(value)))
+            }
             // Go `APLValueMath.GetFloat`.
             Compiled::Math { op, lhs, rhs } => match op {
                 MathOp::Add => self.get_float(lhs) + self.get_float(rhs),
@@ -766,6 +841,55 @@ impl<A: Agent> Fight<A> {
                 let cast_time = self.spells[*spell].default_cast.cast_time;
                 self.apply_cast_speed_for_spell(cast_time, *spell)
             }),
+            // Go `Spell.TravelTime`.
+            Compiled::SpellTravelTime(spell) => self.travel_time(*spell),
+            // Go `Spell.NextChargeIn`: no spell of the fork recharges.
+            Compiled::SpellTimeToCharge(_) => 0,
+            // Go `APLValueSpellGCDHastedDuration`: the GCD with cast speed, to the millisecond,
+            // no shorter than its minimum, unless the spell ignores haste.
+            Compiled::SpellGcdHastedDuration(spell) => {
+                let state = &self.spells[*spell];
+                let cast = state.default_cast;
+                if state.ignore_haste {
+                    cast.gcd
+                } else {
+                    let minimum = if cast.gcd_min != 0 {
+                        cast.gcd_min
+                    } else {
+                        crate::core::time::NS_PER_SECOND
+                    };
+                    let hasted = self.apply_cast_speed_of(self.caster(*spell), cast.gcd);
+                    minimum.max(crate::core::time::round(
+                        hasted,
+                        crate::core::time::NS_PER_MILLISECOND,
+                    ))
+                }
+            }
+            // Go `Spell.CD.Duration`: zero for a spell without a cooldown.
+            Compiled::SpellFullCooldown(spell) => self.spells[*spell].cd.map_or(0, |(_, cd)| cd),
+            Compiled::Max(values) => {
+                let first = self.get_duration(&values[0]);
+                values[1..]
+                    .iter()
+                    .fold(first, |result, value| result.max(self.get_duration(value)))
+            }
+            Compiled::Min(values) => {
+                let first = self.get_duration(&values[0]);
+                values[1..]
+                    .iter()
+                    .fold(first, |result, value| result.min(self.get_duration(value)))
+            }
+            // Go `energyBar.TimeToTargetEnergy`: whole ticks until the energy reaches the target.
+            Compiled::EnergyTimeToTarget(target) => {
+                let target = self.get_float(target);
+                self.time_to_target_energy(target)
+            }
+            // Go `GCD.TimeToReady`.
+            Compiled::GcdTimeToReady => self.gcd_time_to_ready(),
+            // Go `APLValueAutoTimeSinceLast`, which wraps past a hand that never swung.
+            Compiled::AutoTimeSinceLast(kind) => self.time_since_last_auto(*kind),
+            Compiled::InputDelay => self.config.reaction,
+            Compiled::ChannelClipDelay => self.config.channel_clip_delay,
             // Go `APLValueAutoTimeToNext`.
             Compiled::AutoTimeToNext(kind) => (self.next_auto_attack_at(*kind) - self.now).max(0),
             // Go `APLValueAutoSwingTime`: the hand's current swing duration.
@@ -1663,4 +1787,26 @@ fn compare<T: PartialOrd>(op: CompareOp, lhs: T, rhs: T) -> bool {
 
 fn compare_float(op: CompareOp, lhs: f64, rhs: f64) -> bool {
     compare(op, lhs, rhs)
+}
+
+/// Go's `max` builtin on floats: a NaN wins, and positive zero beats negative zero.
+fn go_max(a: f64, b: f64) -> f64 {
+    if a.is_nan() || b.is_nan() {
+        f64::NAN
+    } else if a > b || (a == b && b.is_sign_negative()) {
+        a
+    } else {
+        b
+    }
+}
+
+/// Go's `min` builtin on floats: a NaN wins, and negative zero beats positive zero.
+fn go_min(a: f64, b: f64) -> f64 {
+    if a.is_nan() || b.is_nan() {
+        f64::NAN
+    } else if a < b || (a == b && a.is_sign_negative()) {
+        a
+    } else {
+        b
+    }
 }

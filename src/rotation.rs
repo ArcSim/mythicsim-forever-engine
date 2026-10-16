@@ -168,6 +168,17 @@ impl MathOp {
     }
 }
 
+/// Go `highestOrderTypeList`: the highest type of the values, placeholders left out until a
+/// reference fills them.
+fn highest_type(values: &[Value]) -> ValueType {
+    values
+        .iter()
+        .filter(|value| !matches!(value, Value::Placeholder(_)))
+        .map(Value::value_type)
+        .max()
+        .unwrap_or(ValueType::Int)
+}
+
 /// Operand types after `newValueMath`, which coerces addition and subtraction operands to
 /// the higher of their two types.
 fn math_operand_types(op: MathOp, lhs: ValueType, rhs: ValueType) -> (ValueType, ValueType) {
@@ -278,6 +289,58 @@ pub enum Value {
     AutoSwingTime(SwingType),
     /// Go `APLValueSpellCurrentCost`.
     SpellCurrentCost(ActionId),
+    /// Go `APLValueSpellTravelTime`: `Spell.TravelTime`.
+    SpellTravelTime(ActionId),
+    /// Go `APLValueSpellCPM`: the casts this iteration per minute of the fight so far.
+    SpellCpm(ActionId),
+    /// Go `APLValueSpellIsChanneling`: the player's channel is the spell's.
+    SpellIsChanneling(ActionId),
+    /// Go `APLValueSpellChanneledTicks`: the ticks of whatever the player channels.
+    SpellChanneledTicks(ActionId),
+    /// Go `APLValueSpellNumCharges`. No spell of the fork has charges.
+    SpellNumCharges(ActionId),
+    /// Go `APLValueSpellTimeToCharge`. No spell of the fork recharges.
+    SpellTimeToCharge(ActionId),
+    /// Go `APLValueSpellGCDHastedDuration`.
+    SpellGcdHastedDuration(ActionId),
+    /// Go `APLValueSpellFullCooldown`: `Spell.CD.Duration`, with its flat modifiers.
+    SpellFullCooldown(ActionId),
+    /// Go `APLValueSpellInFlight`: a travel of the spell is still pending.
+    SpellInFlight(ActionId),
+    /// Go `APLValueMax`: the largest of the values, all coerced to the highest of their types.
+    Max(Vec<Value>),
+    /// Go `APLValueMin`: the smallest of them.
+    Min(Vec<Value>),
+    /// Go `APLValueCurrentTimePercent`: the time so far over the fight's duration.
+    CurrentTimePercent,
+    /// Go `APLValueCurrentHealth` of the player.
+    CurrentHealth,
+    /// Go `APLValueMaxHealth`.
+    MaxHealth,
+    /// Go `APLValueMaxRage`: no value without a rage bar.
+    MaxRage,
+    /// Go `APLValueMaxComboPoints`: no value without an energy bar.
+    MaxComboPoints,
+    /// Go `APLValueCurrentManaRegen`: the mana tick while casting; no value without mana.
+    CurrentManaRegen,
+    /// Go `APLValueEnergyTimeToTarget`: when the energy ticks reach the value, read as a float.
+    EnergyTimeToTarget(Box<Value>),
+    /// Go `APLValueUnitIsMoving` of the unit; only the player moves.
+    UnitIsMoving(UnitRef),
+    /// Go `APLValueUnitDistance`: the player's distance from the target, whatever unit it names.
+    UnitDistance,
+    /// Go `APLValueGCDTimeToReady`.
+    GcdTimeToReady,
+    /// Go `APLValueAutoTimeSinceLast`: the time since the auto attack last swung.
+    AutoTimeSinceLast(AutoAttackType),
+    /// Go `APLValueInputDelay`: the player's reaction time.
+    InputDelay,
+    /// Go `APLValueChannelClipDelay`.
+    ChannelClipDelay,
+    /// A value the pinned Go engine builds nothing for, so it drops out of its parent as a
+    /// value without one does: Go's switch has no case for it, or its constructor is in a file
+    /// the build leaves out.
+    Unbuilt(&'static str),
 }
 
 /// Go `APLValueAutoSwingTime_SwingType`: which swing a value reads. Unknown reads as none.
@@ -313,6 +376,10 @@ impl Value {
             }
             Value::Not(value) => value.visit(f),
             Value::AuraShouldRefresh { max_overlap, .. } => max_overlap.visit(f),
+            Value::Max(values) | Value::Min(values) => {
+                values.iter().for_each(|value| value.visit(f))
+            }
+            Value::EnergyTimeToTarget(value) => value.visit(f),
             Value::Variable { resolved, .. } => resolved.visit(f),
             _ => {}
         }
@@ -349,6 +416,19 @@ impl Value {
                     .collect(),
             ),
             Value::Not(value) => Value::Not(map(value)),
+            Value::Max(values) => Value::Max(
+                values
+                    .iter()
+                    .map(|value| value.with_targets(count))
+                    .collect(),
+            ),
+            Value::Min(values) => Value::Min(
+                values
+                    .iter()
+                    .map(|value| value.with_targets(count))
+                    .collect(),
+            ),
+            Value::EnergyTimeToTarget(value) => Value::EnergyTimeToTarget(map(value)),
             Value::Variable { name, resolved } => Value::Variable {
                 name: name.clone(),
                 resolved: map(resolved),
@@ -377,6 +457,8 @@ impl Value {
             | Value::IsExecutePhase(_)
             | Value::SpellCanCast(_)
             | Value::ActiveItemSwapSet(_)
+            | Value::SpellIsChanneling(_)
+            | Value::SpellInFlight(_)
             | Value::GcdIsReady => ValueType::Bool,
             Value::TargetAura {
                 read:
@@ -394,9 +476,11 @@ impl Value {
                 read: AuraRead::RemainingTime,
                 ..
             } => ValueType::Duration,
-            Value::AuraNumStacks(_) | Value::NumberTargets | Value::CurrentComboPoints => {
-                ValueType::Int
-            }
+            Value::AuraNumStacks(_)
+            | Value::NumberTargets
+            | Value::SpellChanneledTicks(_)
+            | Value::SpellNumCharges(_)
+            | Value::CurrentComboPoints => ValueType::Int,
             Value::AuraRemainingTime(_)
             | Value::DotRemainingTime(_)
             | Value::SpellCastTime(_)
@@ -408,6 +492,10 @@ impl Value {
             | Value::RemainingTime
             | Value::TotemRemainingTime { .. }
             | Value::CurrentTime
+            | Value::SpellTravelTime(_)
+            | Value::SpellTimeToCharge(_)
+            | Value::SpellGcdHastedDuration(_)
+            | Value::SpellFullCooldown(_)
             | Value::TimeToNextEnergyTick => ValueType::Duration,
             Value::CurrentManaPercent
             | Value::CurrentHealthPercent
@@ -417,12 +505,29 @@ impl Value {
             | Value::CurrentRage
             | Value::MaxEnergy
             | Value::SpellCurrentCost(_)
+            | Value::SpellCpm(_)
             | Value::MaxMana => ValueType::Float,
             Value::Math { op, lhs, rhs } => {
                 let (lhs, rhs) = math_operand_types(*op, lhs.value_type(), rhs.value_type());
                 op.result_type(lhs, rhs)
             }
             Value::Variable { resolved, .. } => resolved.value_type(),
+            Value::Max(values) | Value::Min(values) => highest_type(values),
+            Value::UnitIsMoving(_) => ValueType::Bool,
+            Value::MaxComboPoints => ValueType::Int,
+            Value::CurrentTimePercent
+            | Value::CurrentHealth
+            | Value::MaxHealth
+            | Value::MaxRage
+            | Value::CurrentManaRegen
+            | Value::UnitDistance => ValueType::Float,
+            Value::EnergyTimeToTarget(_)
+            | Value::GcdTimeToReady
+            | Value::AutoTimeSinceLast(_)
+            | Value::InputDelay
+            | Value::ChannelClipDelay => ValueType::Duration,
+            // Go never reads a value it did not build.
+            Value::Unbuilt(_) => ValueType::Int,
             // Unknown until a group's reference fills it; the checks that read the type of an
             // operand run again once it has.
             Value::Placeholder(_) => ValueType::Int,
@@ -1327,6 +1432,132 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                 rhs: Box::new(rhs),
             })
         }
+        "max" | "min" => {
+            only(&["vals"])?;
+            let mut values = Vec::new();
+            let mut reasons = Vec::new();
+            for value in config
+                .get("vals")
+                .and_then(Json::as_array)
+                .into_iter()
+                .flatten()
+            {
+                match parse_value(value) {
+                    Ok(value) => values.push(value),
+                    Err(mut value_reasons) => reasons.append(&mut value_reasons),
+                }
+            }
+            if !reasons.is_empty() {
+                return Err(reasons);
+            }
+            // Go has no boolean or string getter for them and panics where it reads one.
+            if matches!(highest_type(&values), ValueType::Bool | ValueType::String) {
+                return Err(vec![format!(
+                    "{name} of booleans or strings is unsupported"
+                )]);
+            }
+            Ok(if name == "max" {
+                Value::Max(values)
+            } else {
+                Value::Min(values)
+            })
+        }
+        "currentTimePercent" => {
+            only(&[])?;
+            Ok(Value::CurrentTimePercent)
+        }
+        "maxHealth" => {
+            only(&[])?;
+            Ok(Value::MaxHealth)
+        }
+        "maxRage" => {
+            only(&[])?;
+            Ok(Value::MaxRage)
+        }
+        "maxComboPoints" => {
+            only(&[])?;
+            Ok(Value::MaxComboPoints)
+        }
+        "currentManaRegen" => {
+            only(&[])?;
+            Ok(Value::CurrentManaRegen)
+        }
+        "gcdTimeToReady" => {
+            only(&[])?;
+            Ok(Value::GcdTimeToReady)
+        }
+        "inputDelay" => {
+            only(&[])?;
+            Ok(Value::InputDelay)
+        }
+        "channelClipDelay" => {
+            only(&[])?;
+            Ok(Value::ChannelClipDelay)
+        }
+        // Go reads the rotation's own unit whatever unit the value names.
+        "unitDistance" => {
+            only(&["sourceUnit"])?;
+            Ok(Value::UnitDistance)
+        }
+        "unitIsMoving" | "currentHealth" => {
+            only(&["sourceUnit"])?;
+            // Go `GetSourceUnit`: no unit reference means the player itself.
+            let unit =
+                parse_value_unit_ref(config.get("sourceUnit"), UnitRef::Player).map_err(|()| {
+                    vec![unsupported_unit(
+                        name,
+                        "sourceUnit",
+                        config.get("sourceUnit"),
+                    )]
+                })?;
+            match (name, unit) {
+                ("unitIsMoving", unit) => Ok(Value::UnitIsMoving(unit)),
+                (_, UnitRef::Player) => Ok(Value::CurrentHealth),
+                // A unit Go finds nothing for gives no value.
+                (_, UnitRef::Nobody) => Ok(Value::Unbuilt("currentHealth")),
+                _ => Err(vec!["currentHealth of a target is unsupported".to_string()]),
+            }
+        }
+        "energyTimeToTarget" => {
+            only(&["targetEnergy"])?;
+            match config.get("targetEnergy") {
+                Some(value) => Ok(Value::EnergyTimeToTarget(Box::new(parse_value(value)?))),
+                // Go builds no target energy, so no value.
+                None => Ok(Value::Unbuilt("energyTimeToTarget")),
+            }
+        }
+        "autoTimeSinceLast" => {
+            only(&["autoType"])?;
+            Ok(Value::AutoTimeSinceLast(parse_auto_attack_type(
+                name, config,
+            )?))
+        }
+        // Go's switch has no case for these, or the Balance druid's constructor sits in a file
+        // the build leaves out.
+        "currentGenericResource" => {
+            only(&[])?;
+            Ok(Value::Unbuilt("currentGenericResource"))
+        }
+        "currentSolarEnergy" => {
+            only(&[])?;
+            Ok(Value::Unbuilt("currentSolarEnergy"))
+        }
+        "currentLunarEnergy" => {
+            only(&[])?;
+            Ok(Value::Unbuilt("currentLunarEnergy"))
+        }
+        "druidCurrentEclipsePhase" => {
+            only(&["eclipsePhase"])?;
+            Ok(Value::Unbuilt("druidCurrentEclipsePhase"))
+        }
+        "protectionPaladinDamageTakenLastGlobal" => {
+            only(&[])?;
+            Ok(Value::Unbuilt("protectionPaladinDamageTakenLastGlobal"))
+        }
+        "dotCritPercentIncrease" => {
+            only(&["spellId", "targetUnit", "useBaseValue"])?;
+            Ok(Value::Unbuilt("dotCritPercentIncrease"))
+        }
         "and" | "or" => {
             only(&["vals"])?;
             let mut values = Vec::new();
@@ -1442,21 +1673,7 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
         }
         "autoTimeToNext" => {
             only(&["autoType"])?;
-            // protojson writes the enum by name and omits the zero value, UnknownAuto, which
-            // Go's switch reads as any auto attack.
-            let kind = match config.get("autoType").map(|kind| kind.as_str()) {
-                None | Some(Some("UnknownAuto" | "AnyAuto")) => AutoAttackType::Any,
-                Some(Some("MeleeAuto")) => AutoAttackType::Melee,
-                Some(Some("MainHandAuto")) => AutoAttackType::MainHand,
-                Some(Some("OffHandAuto")) => AutoAttackType::OffHand,
-                Some(Some("RangedAuto")) => AutoAttackType::Ranged,
-                Some(other) => {
-                    return Err(vec![format!(
-                        "autoTimeToNext autoType {other:?} is unsupported"
-                    )])
-                }
-            };
-            Ok(Value::AutoTimeToNext(kind))
+            Ok(Value::AutoTimeToNext(parse_auto_attack_type(name, config)?))
         }
         "autoSwingTime" => {
             only(&["autoType"])?;
@@ -1514,7 +1731,20 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
             };
             Ok(Value::DotBaseDuration(id))
         }
-        "spellIsKnown" | "spellIsReady" | "spellCastTime" | "spellTimeToReady" | "spellCanCast" => {
+        "spellIsKnown"
+        | "spellIsReady"
+        | "spellCastTime"
+        | "spellTimeToReady"
+        | "spellCanCast"
+        | "spellTravelTime"
+        | "spellCpm"
+        | "spellIsChanneling"
+        | "spellChanneledTicks"
+        | "spellNumCharges"
+        | "spellTimeToCharge"
+        | "spellGcdHastedDuration"
+        | "spellFullCooldown"
+        | "spellInFlight" => {
             only(&["spellId"])?;
             let id = config
                 .get("spellId")
@@ -1525,7 +1755,16 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                 "spellIsReady" => Value::SpellIsReady(id),
                 "spellTimeToReady" => Value::SpellTimeToReady(id),
                 "spellCanCast" => Value::SpellCanCast(id),
-                _ => Value::SpellCastTime(id),
+                "spellCastTime" => Value::SpellCastTime(id),
+                "spellTravelTime" => Value::SpellTravelTime(id),
+                "spellCpm" => Value::SpellCpm(id),
+                "spellIsChanneling" => Value::SpellIsChanneling(id),
+                "spellChanneledTicks" => Value::SpellChanneledTicks(id),
+                "spellNumCharges" => Value::SpellNumCharges(id),
+                "spellTimeToCharge" => Value::SpellTimeToCharge(id),
+                "spellGcdHastedDuration" => Value::SpellGcdHastedDuration(id),
+                "spellFullCooldown" => Value::SpellFullCooldown(id),
+                _ => Value::SpellInFlight(id),
             })
         }
         "not" => {
@@ -1727,6 +1966,19 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
             })
         }
         other => Err(vec![format!("value {other} is unsupported")]),
+    }
+}
+
+/// An `APLValueAutoAttackType` field. protojson writes the enum by name and omits the zero
+/// value, UnknownAuto, which Go's switches read as any auto attack.
+fn parse_auto_attack_type(name: &str, config: &Json) -> Result<AutoAttackType, Vec<String>> {
+    match config.get("autoType").map(|kind| kind.as_str()) {
+        None | Some(Some("UnknownAuto" | "AnyAuto")) => Ok(AutoAttackType::Any),
+        Some(Some("MeleeAuto")) => Ok(AutoAttackType::Melee),
+        Some(Some("MainHandAuto")) => Ok(AutoAttackType::MainHand),
+        Some(Some("OffHandAuto")) => Ok(AutoAttackType::OffHand),
+        Some(Some("RangedAuto")) => Ok(AutoAttackType::Ranged),
+        Some(other) => Err(vec![format!("{name} autoType {other:?} is unsupported")]),
     }
 }
 
@@ -2002,6 +2254,36 @@ pub enum Compiled<R> {
     AutoTimeToNext(AutoAttackType),
     AutoSwingTime(SwingType),
     SpellCurrentCost(usize),
+    SpellTravelTime(usize),
+    SpellCpm(usize),
+    SpellIsChanneling(usize),
+    SpellChanneledTicks(usize),
+    SpellNumCharges(usize),
+    SpellTimeToCharge(usize),
+    SpellGcdHastedDuration(usize),
+    SpellFullCooldown(usize),
+    SpellInFlight(usize),
+    /// Go `APLValueMax` of values coerced to one type.
+    Max(Vec<Compiled<R>>),
+    /// Go `APLValueMin` of values coerced to one type.
+    Min(Vec<Compiled<R>>),
+    CurrentTimePercent,
+    CurrentHealth,
+    MaxHealth,
+    /// Go `APLValueMaxRage` with the maximum it read when built.
+    MaxRage(f64),
+    /// Go `APLValueMaxComboPoints` with the maximum it read when built.
+    MaxComboPoints(i32),
+    CurrentManaRegen,
+    /// Go `APLValueEnergyTimeToTarget` with the target coerced to a float.
+    EnergyTimeToTarget(Box<Compiled<R>>),
+    /// Go `APLValueUnitIsMoving` of the player.
+    PlayerIsMoving,
+    UnitDistance,
+    GcdTimeToReady,
+    AutoTimeSinceLast(AutoAttackType),
+    InputDelay,
+    ChannelClipDelay,
     /// Go `APLValueCoerced`.
     Coerced {
         to: ValueType,
@@ -2026,10 +2308,14 @@ impl<R> Compiled<R> {
             | Compiled::SpellCanCast(_)
             | Compiled::GroupUsed(_)
             | Compiled::ActiveItemSwapSet(_)
+            | Compiled::SpellIsChanneling(_)
+            | Compiled::SpellInFlight(_)
             | Compiled::GcdIsReady => ValueType::Bool,
             Compiled::AuraNumStacks(_)
             | Compiled::AuraNumStacksAfterReaction(_)
             | Compiled::NumberTargets
+            | Compiled::SpellChanneledTicks(_)
+            | Compiled::SpellNumCharges(_)
             | Compiled::CurrentComboPoints => ValueType::Int,
             Compiled::AuraRemainingTime(_)
             | Compiled::AutoTimeToNext(_)
@@ -2042,6 +2328,10 @@ impl<R> Compiled<R> {
             | Compiled::RemainingTime
             | Compiled::TotemRemainingTime { .. }
             | Compiled::CurrentTime
+            | Compiled::SpellTravelTime(_)
+            | Compiled::SpellTimeToCharge(_)
+            | Compiled::SpellGcdHastedDuration(_)
+            | Compiled::SpellFullCooldown(_)
             | Compiled::TimeToNextEnergyTick => ValueType::Duration,
             Compiled::CurrentManaPercent
             | Compiled::CurrentHealthPercent
@@ -2051,9 +2341,25 @@ impl<R> Compiled<R> {
             | Compiled::CurrentRage
             | Compiled::MaxEnergy
             | Compiled::SpellCurrentCost(_)
+            | Compiled::SpellCpm(_)
             | Compiled::MaxMana => ValueType::Float,
             Compiled::FrontOfTarget | Compiled::AuraShouldRefresh { .. } => ValueType::Bool,
             Compiled::Math { op, lhs, rhs } => op.result_type(lhs.value_type(), rhs.value_type()),
+            // Go reads the first value's type, which coercion made every value's.
+            Compiled::Max(values) | Compiled::Min(values) => values[0].value_type(),
+            Compiled::PlayerIsMoving => ValueType::Bool,
+            Compiled::MaxComboPoints(_) => ValueType::Int,
+            Compiled::CurrentTimePercent
+            | Compiled::CurrentHealth
+            | Compiled::MaxHealth
+            | Compiled::MaxRage(_)
+            | Compiled::CurrentManaRegen
+            | Compiled::UnitDistance => ValueType::Float,
+            Compiled::EnergyTimeToTarget(_)
+            | Compiled::GcdTimeToReady
+            | Compiled::AutoTimeSinceLast(_)
+            | Compiled::InputDelay
+            | Compiled::ChannelClipDelay => ValueType::Duration,
             Compiled::Coerced { to, .. } => *to,
         }
     }
@@ -2205,6 +2511,18 @@ pub struct Lookup<'a, R> {
     pub pet_aura_known: &'a dyn Fn(usize, &ActionId) -> bool,
     /// Go `ItemSwap.IsEnabled`: whether the character swaps items.
     pub item_swap: bool,
+    /// The player's resource bars as the rotation is built, which values of a bar the player
+    /// lacks give none for.
+    pub bars: Bars,
+}
+
+/// The player's resource bars: Go `HasManaBar`, the rage bar's `MaximumRage` and the energy
+/// bar's `MaxComboPoints`.
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
+pub struct Bars {
+    pub mana: bool,
+    pub max_rage: Option<f64>,
+    pub max_combo_points: Option<i32>,
 }
 
 /// What Go `newAPLAction` makes of an action's condition.
@@ -2348,7 +2666,58 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
         Value::AutoSwingTime(kind) => Compiled::AutoSwingTime(*kind),
         // Go GetAPLSpell: an unknown spell gives no value.
         Value::SpellCurrentCost(id) => Compiled::SpellCurrentCost((lookup.spell)(id)?),
+        Value::SpellTravelTime(id) => Compiled::SpellTravelTime((lookup.spell)(id)?),
+        Value::SpellCpm(id) => Compiled::SpellCpm((lookup.spell)(id)?),
+        Value::SpellIsChanneling(id) => Compiled::SpellIsChanneling((lookup.spell)(id)?),
+        Value::SpellChanneledTicks(id) => Compiled::SpellChanneledTicks((lookup.spell)(id)?),
+        Value::SpellNumCharges(id) => Compiled::SpellNumCharges((lookup.spell)(id)?),
+        Value::SpellTimeToCharge(id) => Compiled::SpellTimeToCharge((lookup.spell)(id)?),
+        Value::SpellGcdHastedDuration(id) => Compiled::SpellGcdHastedDuration((lookup.spell)(id)?),
+        Value::SpellFullCooldown(id) => Compiled::SpellFullCooldown((lookup.spell)(id)?),
+        Value::SpellInFlight(id) => Compiled::SpellInFlight((lookup.spell)(id)?),
         Value::DotTimeToNextTick(dot) => Compiled::DotTimeToNextTick(dot_at(dot, lookup)?),
+        // Go `newValueMax` and `newValueMin`: values without a value drop out, the rest are
+        // coerced to their highest type, and one value stands for the operator.
+        Value::Max(values) | Value::Min(values) => {
+            let compiled: Vec<_> = values
+                .iter()
+                .filter_map(|value| compile_value(value, lookup))
+                .collect();
+            let to = compiled.iter().map(Compiled::value_type).max()?;
+            let mut compiled: Vec<_> = compiled.into_iter().map(|value| value.coerce(to)).collect();
+            if compiled.len() == 1 {
+                return compiled.pop();
+            }
+            if matches!(value, Value::Max(_)) {
+                Compiled::Max(compiled)
+            } else {
+                Compiled::Min(compiled)
+            }
+        }
+        Value::CurrentTimePercent => Compiled::CurrentTimePercent,
+        Value::CurrentHealth => Compiled::CurrentHealth,
+        Value::MaxHealth => Compiled::MaxHealth,
+        Value::MaxRage => Compiled::MaxRage(lookup.bars.max_rage?),
+        Value::MaxComboPoints => Compiled::MaxComboPoints(lookup.bars.max_combo_points?),
+        Value::CurrentManaRegen if lookup.bars.mana => Compiled::CurrentManaRegen,
+        Value::CurrentManaRegen => return None,
+        // Go `newValueEnergyTimeToTarget`: no value without an energy bar or a target.
+        Value::EnergyTimeToTarget(target) => {
+            lookup.bars.max_combo_points?;
+            let target = compile_value(target, lookup)?.coerce(ValueType::Float);
+            Compiled::EnergyTimeToTarget(Box::new(target))
+        }
+        // Only the player moves; a unit Go finds nothing for gives no value.
+        Value::UnitIsMoving(unit) => match unit.resolve(lookup.targets)? {
+            Unit::Player => Compiled::PlayerIsMoving,
+            Unit::Target(_) => bool_const(false),
+        },
+        Value::UnitDistance => Compiled::UnitDistance,
+        Value::GcdTimeToReady => Compiled::GcdTimeToReady,
+        Value::AutoTimeSinceLast(kind) => Compiled::AutoTimeSinceLast(*kind),
+        Value::InputDelay => Compiled::InputDelay,
+        Value::ChannelClipDelay => Compiled::ChannelClipDelay,
+        Value::Unbuilt(_) => return None,
         Value::DotBaseDuration(id) => {
             Compiled::DotBaseDuration((lookup.dot_base_duration)(id.as_ref()?)?)
         }
@@ -2542,6 +2911,7 @@ mod tests {
             dot_base_duration: &|_| None,
             pet_aura_known: &|_, _| false,
             item_swap: false,
+            bars: Bars::default(),
         }
     }
 
@@ -2569,6 +2939,7 @@ mod tests {
         let lookup = Lookup {
             pet_aura_known: &known,
             item_swap: false,
+            bars: Bars::default(),
             ..only_auras(&none, &|_, _| None)
         };
         assert_eq!(
@@ -3193,6 +3564,7 @@ mod tests {
             dot_base_duration: &|_| None,
             pet_aura_known: &|_, _| false,
             item_swap: false,
+            bars: Bars::default(),
         })
     }
 
@@ -3685,6 +4057,7 @@ mod tests {
             dot_base_duration: &|id| (id.spell_id == 7).then_some(18_000_000_000),
             pet_aura_known: &|_, _| false,
             item_swap: false,
+            bars: Bars::default(),
         };
         let compare = |spell: i32| {
             let value = parse_value(&serde_json::json!({"cmp": {"op": "OpGt",

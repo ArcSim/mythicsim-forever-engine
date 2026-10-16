@@ -1029,9 +1029,11 @@ impl<A: Agent> Fight<A> {
         }
     }
 
-    /// Go `WaitTravelTime` followed by `DealDamage` on arrival.
+    /// Go `WaitTravelTime` followed by `DealDamage` on arrival. Each travel counts its spell in
+    /// flight until it lands, as Go `RegisterTravelTimeCallback` does.
     pub(crate) fn deal_damage_after_travel(&mut self, spell: SpellId, result: SpellResult) {
         let at = self.now + self.travel_time(spell);
+        self.spells[spell].in_flight += 1;
         self.schedule(
             at,
             PRIORITY_GCD,
@@ -1050,7 +1052,12 @@ impl<A: Agent> Fight<A> {
         spell: SpellId,
         results: &[SpellResult],
     ) {
+        debug_assert!(
+            !results.is_empty(),
+            "a travel batch carries its spell's results"
+        );
         let at = self.now + self.travel_time(spell);
+        self.spells[spell].in_flight += 1;
         let batch = match self.free_travel_batches.pop() {
             Some(batch) => batch,
             None => {
@@ -1065,6 +1072,7 @@ impl<A: Agent> Fight<A> {
     /// Go `WaitTravelTime` with a class callback, run by [`Agent::on_travel`] on arrival.
     pub(crate) fn class_after_travel(&mut self, spell: SpellId, result: SpellResult) {
         let at = self.now + self.travel_time(spell);
+        self.spells[spell].in_flight += 1;
         self.schedule(at, PRIORITY_GCD, Action::ClassTravel { spell, result });
     }
 
@@ -1076,6 +1084,7 @@ impl<A: Agent> Fight<A> {
         dot: super::DotId,
     ) {
         let at = self.now + self.travel_time(spell);
+        self.spells[spell].in_flight += 1;
         self.schedule(
             at,
             PRIORITY_GCD,

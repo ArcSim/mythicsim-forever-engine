@@ -4,6 +4,7 @@
 [0.00] [Target 1] Aura gained: {SpellID: 9907, Tag: -1}
 [0.00] [Target 1] Aura gained: {SpellID: 11198, Tag: -1}
 [0.00] [survival-hunter (#1)] Aura gained: {SpellID: 29414}
+[0.00] [survival-hunter (#1)] Aura gained: {SpellID: 20597}
 [0.00] [survival-hunter (#1)] Aura gained: {SpellID: 24932, Tag: -1}
 [0.00] [survival-hunter (#1)] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [survival-hunter (#1)] Aura gained: {SpellID: 20905, Tag: -1}
@@ -21,8 +22,8 @@
 [0.00] [survival-hunter (#1) - Cat] Aura gained: {SpellID: 21926}
 [0.00] [survival-hunter (#1) - Cat] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [survival-hunter (#1) - Cat] Aura gained: {SpellID: 20905, Tag: -1}
-[0.00] [survival-hunter (#1) - Cat] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 304.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2802.800,"MP5": 25.000,"ArcaneResistance": 40.000,"FireResistance": 40.000,"FrostResistance": 40.000,"NatureResistance": 40.000,"ShadowResistance": 40.000,"PhysicalCritPercent": 30.658,"SpellCritPercent": 2.000,}
-[0.00] [survival-hunter (#1) - Cat] Pet inherited stats: {"PhysicalCritPercent": 28.658,}
+[0.00] [survival-hunter (#1) - Cat] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 304.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2802.800,"MP5": 25.000,"ArcaneResistance": 40.000,"FireResistance": 40.000,"FrostResistance": 40.000,"NatureResistance": 40.000,"ShadowResistance": 40.000,"PhysicalCritPercent": 32.658,"SpellCritPercent": 2.000,}
+[0.00] [survival-hunter (#1) - Cat] Pet inherited stats: {"PhysicalCritPercent": 30.658,}
 [0.00] [survival-hunter (#1) - Cat] Pet summoned
 [-10.00] [survival-hunter (#1)] Casting {SpellID: 1299447} (Cost = 110.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [-10.00] [survival-hunter (#1)] Completed cast {SpellID: 1299447}
@@ -327,8 +328,8 @@
 [12.11] [survival-hunter (#1) - Cat] Gained 2.500 focus from {OtherID: 6} (10.000 --> 12.500) of 100 total.
 [12.15] [survival-hunter (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [12.15] [survival-hunter (#1)] Completed cast {OtherID: 3, Tag: 1}
-[12.15] [survival-hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1524.0, RAP: 1514.0, SP: 0.0, BaseDamage:557.0, AfterAttackerMods:568.1, AfterResistances:482.5, AfterTargetMods:482.5, AfterOutcome:482.5, AfterPostOutcome:482.5
-[12.15] [survival-hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 482.501 damage (SpellSchool: 1). (Threat: 482.501)
+[12.15] [survival-hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1524.0, RAP: 1514.0, SP: 0.0, BaseDamage:557.0, AfterAttackerMods:568.1, AfterResistances:482.5, AfterTargetMods:482.5, AfterOutcome:965.0, AfterPostOutcome:965.0
+[12.15] [survival-hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 965.001 damage (SpellSchool: 1). (Threat: 965.001)
 [12.15] [survival-hunter (#1)] No available actions!
 [12.15] [survival-hunter (#1)] Pausing rotation for 1.142857144s due to resources / CDs.
 [12.19] [survival-hunter (#1) - Cat] Pausing rotation for 611ms due to resources / CDs.
@@ -956,8 +957,8 @@
 [39.86] [survival-hunter (#1) - Cat] Gained 2.500 focus from {OtherID: 6} (12.500 --> 15.000) of 100 total.
 [40.00] [survival-hunter (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
 [40.00] [survival-hunter (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3664.200 --> 3695.000) of 4200 total.
-[40.01] [survival-hunter (#1)] [Target 1] {SpellID: 14305} [DEBUG] MAP: 1524.0, RAP: 1514.0, SP: 0.0, BaseDamage:138.0, AfterAttackerMods:140.8, AfterResistances:105.6, AfterTargetMods:105.6, AfterOutcome:105.6, AfterPostOutcome:105.6
-[40.01] [survival-hunter (#1)] [Target 1] {SpellID: 14305} tick Hit (25% Resist) for 105.570 damage (SpellSchool: 4). (Threat: 105.570)
+[40.01] [survival-hunter (#1)] [Target 1] {SpellID: 14305} [DEBUG] MAP: 1524.0, RAP: 1514.0, SP: 0.0, BaseDamage:138.0, AfterAttackerMods:140.8, AfterResistances:105.6, AfterTargetMods:105.6, AfterOutcome:158.4, AfterPostOutcome:158.4
+[40.01] [survival-hunter (#1)] [Target 1] {SpellID: 14305} tick Crit (25% Resist) for 158.355 damage (SpellSchool: 4). (Threat: 158.355)
 [40.03] [survival-hunter (#1)] Casting {SpellID: 14266, Tag: 3} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [40.03] [survival-hunter (#1)] Completed cast {SpellID: 14266, Tag: 3}
 [40.03] [survival-hunter (#1)] Aura gained: {SpellID: 14266, Tag: 3}
@@ -1106,8 +1107,8 @@
 [45.61] [survival-hunter (#1) - Cat] Gained 2.500 focus from {OtherID: 6} (20.000 --> 22.500) of 100 total.
 [45.69] [survival-hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [45.69] [survival-hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[45.69] [survival-hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:43.7, AfterAttackerMods:70.4, AfterResistances:59.8, AfterTargetMods:59.8, AfterOutcome:59.8, AfterPostOutcome:59.8
-[45.69] [survival-hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Hit for 59.798 damage (SpellSchool: 1). (Threat: 59.798)
+[45.69] [survival-hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:43.7, AfterAttackerMods:70.4, AfterResistances:59.8, AfterTargetMods:59.8, AfterOutcome:119.6, AfterPostOutcome:119.6
+[45.69] [survival-hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Crit for 119.596 damage (SpellSchool: 1). (Threat: 119.596)
 [45.79] [survival-hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [45.86] [survival-hunter (#1) - Cat] Gained 2.500 focus from {OtherID: 6} (22.500 --> 25.000) of 100 total.
 [45.88] [survival-hunter (#1)] Aura faded: {SpellID: 10610, Tag: -1}
@@ -1892,8 +1893,8 @@
 [76.91] [survival-hunter (#1)] [Target 1] {SpellID: 14268} Hit for 43.314 damage (SpellSchool: 1). (Threat: 43.314)
 [76.99] [survival-hunter (#1) - Cat] Pausing rotation for 900ms due to resources / CDs.
 [77.07] [Target 1] Aura faded: {SpellID: 14305}
-[77.07] [survival-hunter (#1)] [Target 1] {SpellID: 14305} [DEBUG] MAP: 1524.0, RAP: 1514.0, SP: 0.0, BaseDamage:138.0, AfterAttackerMods:140.8, AfterResistances:140.8, AfterTargetMods:140.8, AfterOutcome:140.8, AfterPostOutcome:140.8
-[77.07] [survival-hunter (#1)] [Target 1] {SpellID: 14305} tick Hit for 140.760 damage (SpellSchool: 4). (Threat: 140.760)
+[77.07] [survival-hunter (#1)] [Target 1] {SpellID: 14305} [DEBUG] MAP: 1524.0, RAP: 1514.0, SP: 0.0, BaseDamage:138.0, AfterAttackerMods:140.8, AfterResistances:140.8, AfterTargetMods:140.8, AfterOutcome:211.1, AfterPostOutcome:211.1
+[77.07] [survival-hunter (#1)] [Target 1] {SpellID: 14305} tick Crit for 211.140 damage (SpellSchool: 4). (Threat: 211.140)
 [77.11] [survival-hunter (#1) - Cat] Gained 2.500 focus from {OtherID: 6} (10.000 --> 12.500) of 100 total.
 [77.36] [survival-hunter (#1) - Cat] Gained 2.500 focus from {OtherID: 6} (12.500 --> 15.000) of 100 total.
 [77.61] [survival-hunter (#1) - Cat] Gained 2.500 focus from {OtherID: 6} (15.000 --> 17.500) of 100 total.
@@ -2348,8 +2349,8 @@
 [97.79] [survival-hunter (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [97.79] [survival-hunter (#1)] Completed cast {OtherID: 3, Tag: 1}
 [97.79] [survival-hunter (#1)] {OtherID: 3, Tag: 1} delayed by 272.491829ms, was ready at 1m37.515538447s
-[97.79] [survival-hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1524.0, RAP: 1514.0, SP: 0.0, BaseDamage:530.5, AfterAttackerMods:541.1, AfterResistances:459.6, AfterTargetMods:459.6, AfterOutcome:459.6, AfterPostOutcome:459.6
-[97.79] [survival-hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 459.586 damage (SpellSchool: 1). (Threat: 459.586)
+[97.79] [survival-hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1524.0, RAP: 1514.0, SP: 0.0, BaseDamage:530.5, AfterAttackerMods:541.1, AfterResistances:459.6, AfterTargetMods:459.6, AfterOutcome:919.2, AfterPostOutcome:919.2
+[97.79] [survival-hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 919.173 damage (SpellSchool: 1). (Threat: 919.173)
 [97.79] [survival-hunter (#1)] Aura gained: {SpellID: 1299448}
 [97.79] [survival-hunter (#1)] Queueing up {SpellID: 14268} to cast at 1m37.900153833s.
 [97.79] [survival-hunter (#1)] Pausing rotation for 112.123556ms due to resources / CDs.
@@ -2940,6 +2941,7 @@
 [123.49] [survival-hunter (#1) - Cat] Pet dismissed
 [123.49] [survival-hunter (#1) - Cat] {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"Armor": 200.000,"Health": 2508.800,"PhysicalCritPercent": 2.000,"SpellCritPercent": 2.000,}
 [123.49] [survival-hunter (#1)] Aura faded: {SpellID: 29414}
+[123.49] [survival-hunter (#1)] Aura faded: {SpellID: 20597}
 [123.49] [survival-hunter (#1)] Aura faded: {SpellID: 25289, Tag: -1}
 [123.49] [survival-hunter (#1)] Aura faded: {SpellID: 24932, Tag: -1}
 [123.49] [survival-hunter (#1)] Aura faded: {SpellID: 10494, Tag: -1}

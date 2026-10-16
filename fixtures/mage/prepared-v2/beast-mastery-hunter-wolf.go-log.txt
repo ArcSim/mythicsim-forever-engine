@@ -19,7 +19,7 @@
 [0.00] [hunter (#1)] Aura gained: {SpellID: 25918, Tag: -1}
 [0.00] [hunter (#1) - Wolf] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [hunter (#1) - Wolf] Aura gained: {SpellID: 20905, Tag: -1}
-[0.00] [hunter (#1) - Wolf] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2790.400,"MP5": 25.000,"PhysicalCritPercent": 28.032,"SpellCritPercent": 10.000,}
+[0.00] [hunter (#1) - Wolf] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2790.400,"MP5": 25.000,"PhysicalCritPercent": 30.032,"SpellCritPercent": 10.000,}
 [0.00] [hunter (#1) - Wolf] Pet inherited stats: {"PhysicalCritPercent": 20.032,}
 [0.00] [hunter (#1) - Wolf] Pet summoned
 [-10.00] [hunter (#1)] Casting {SpellID: 25296} (Cost = 120.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
@@ -641,10 +641,11 @@
 [22.66] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [22.75] [hunter (#1) - Wolf] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [22.75] [hunter (#1) - Wolf] Completed cast {OtherID: 3, Tag: 1}
-[22.75] [hunter (#1) - Wolf] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 335.0, RAP: 75.0, SP: 0.0, BaseDamage:52.4, AfterAttackerMods:76.9, AfterResistances:65.3, AfterTargetMods:65.3, AfterOutcome:65.3, AfterPostOutcome:65.3
-[22.75] [hunter (#1) - Wolf] [Target 1] {OtherID: 3, Tag: 1} Hit for 65.293 damage (SpellSchool: 1). (Threat: 65.293)
+[22.75] [hunter (#1) - Wolf] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 335.0, RAP: 75.0, SP: 0.0, BaseDamage:52.4, AfterAttackerMods:76.9, AfterResistances:65.3, AfterTargetMods:65.3, AfterOutcome:130.6, AfterPostOutcome:130.6
+[22.75] [hunter (#1) - Wolf] [Target 1] {OtherID: 3, Tag: 1} Crit for 130.586 damage (SpellSchool: 1). (Threat: 130.586)
 [22.76] [hunter (#1)] No available actions!
 [22.76] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[22.76] [hunter (#1) - Wolf] Aura refreshed: {SpellID: 19615}
 [22.85] [hunter (#1) - Wolf] Casting {SpellID: 17261} (Cost = 35.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
 [22.85] [hunter (#1) - Wolf] Completed cast {SpellID: 17261}
 [22.85] [hunter (#1) - Wolf] Spent 35.000 focus from {SpellID: 17261} (100.000 --> 65.000) of 100 total.
@@ -1177,8 +1178,9 @@
 [43.16] [hunter (#1) - Wolf] Casting {SpellID: 17261} (Cost = 35.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
 [43.16] [hunter (#1) - Wolf] Completed cast {SpellID: 17261}
 [43.16] [hunter (#1) - Wolf] Spent 35.000 focus from {SpellID: 17261} (100.000 --> 65.000) of 100 total.
-[43.16] [hunter (#1) - Wolf] [Target 1] {SpellID: 17261} [DEBUG] MAP: 335.0, RAP: 75.0, SP: 0.0, BaseDamage:81.9, AfterAttackerMods:120.1, AfterResistances:102.0, AfterTargetMods:102.0, AfterOutcome:102.0, AfterPostOutcome:102.0
-[43.16] [hunter (#1) - Wolf] [Target 1] {SpellID: 17261} Hit for 102.003 damage (SpellSchool: 1). (Threat: 102.003)
+[43.16] [hunter (#1) - Wolf] [Target 1] {SpellID: 17261} [DEBUG] MAP: 335.0, RAP: 75.0, SP: 0.0, BaseDamage:81.9, AfterAttackerMods:120.1, AfterResistances:102.0, AfterTargetMods:102.0, AfterOutcome:204.0, AfterPostOutcome:204.0
+[43.16] [hunter (#1) - Wolf] [Target 1] {SpellID: 17261} Crit for 204.006 damage (SpellSchool: 1). (Threat: 204.006)
+[43.17] [hunter (#1) - Wolf] Aura refreshed: {SpellID: 19615}
 [43.17] [hunter (#1)] No available actions!
 [43.17] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [43.27] [hunter (#1)] No available actions!
@@ -1314,8 +1316,9 @@
 [49.45] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1665.0, RAP: 1736.0, SP: 185.0, BaseDamage:571.6, AfterAttackerMods:583.0, AfterResistances:495.2, AfterTargetMods:495.2, AfterOutcome:495.2, AfterPostOutcome:495.2
 [49.52] [hunter (#1) - Wolf] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [49.52] [hunter (#1) - Wolf] Completed cast {OtherID: 3, Tag: 1}
-[49.52] [hunter (#1) - Wolf] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 335.0, RAP: 75.0, SP: 0.0, BaseDamage:61.0, AfterAttackerMods:89.5, AfterResistances:76.0, AfterTargetMods:76.0, AfterOutcome:76.0, AfterPostOutcome:76.0
-[49.52] [hunter (#1) - Wolf] [Target 1] {OtherID: 3, Tag: 1} Hit for 76.012 damage (SpellSchool: 1). (Threat: 76.012)
+[49.52] [hunter (#1) - Wolf] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 335.0, RAP: 75.0, SP: 0.0, BaseDamage:61.0, AfterAttackerMods:89.5, AfterResistances:76.0, AfterTargetMods:76.0, AfterOutcome:152.0, AfterPostOutcome:152.0
+[49.52] [hunter (#1) - Wolf] [Target 1] {OtherID: 3, Tag: 1} Crit for 152.023 damage (SpellSchool: 1). (Threat: 152.023)
+[49.53] [hunter (#1) - Wolf] Aura refreshed: {SpellID: 19615}
 [49.55] [hunter (#1)] No available actions!
 [49.55] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.62] [hunter (#1) - Wolf] Pausing rotation for 500ms due to resources / CDs.

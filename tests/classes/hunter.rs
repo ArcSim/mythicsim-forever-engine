@@ -885,9 +885,9 @@ fn furious_howl_needs_its_effect() {
 }
 
 /// Go pet.go makeStatInheritance (fork patch 136): the pet's physical crit is its master's Auto
-/// Shot crit, physical and ranged-only crit together, and the disable callback takes back the
-/// Auto Shot's crit modifiers it added: here the human's sword specialization, which Auto Shot
-/// does not roll.
+/// Shot crit, physical and ranged-only crit together. The disable callback takes back the Auto
+/// Shot's crit modifiers it added, of which the human's Ruthless leaves none (patch 137): its crit
+/// counts for Auto Shot too, so the pet exports no disable stats.
 #[test]
 fn the_pet_inherits_its_masters_auto_shot_crit() {
     let value = fixture("production-beast-mastery-hunter");
@@ -899,5 +899,5 @@ fn the_pet_inherits_its_masters_auto_shot_crit() {
             {"owner": "RangedCritPercent", "pet": "PhysicalCritPercent", "coefficient": 1},
         ])
     );
-    assert_eq!(pet["disable_stats"], json!({"PhysicalCritPercent": 2}));
+    assert_eq!(pet["disable_stats"], Value::Null);
 }

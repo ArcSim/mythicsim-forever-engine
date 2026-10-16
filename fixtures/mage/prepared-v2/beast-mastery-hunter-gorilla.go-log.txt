@@ -19,7 +19,7 @@
 [0.00] [hunter (#1)] Aura gained: {SpellID: 25918, Tag: -1}
 [0.00] [hunter (#1) - Gorilla] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [hunter (#1) - Gorilla] Aura gained: {SpellID: 20905, Tag: -1}
-[0.00] [hunter (#1) - Gorilla] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2902.016,"MP5": 25.000,"PhysicalCritPercent": 28.032,"SpellCritPercent": 10.000,}
+[0.00] [hunter (#1) - Gorilla] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2902.016,"MP5": 25.000,"PhysicalCritPercent": 30.032,"SpellCritPercent": 10.000,}
 [0.00] [hunter (#1) - Gorilla] Pet inherited stats: {"PhysicalCritPercent": 20.032,}
 [0.00] [hunter (#1) - Gorilla] Pet summoned
 [-10.00] [hunter (#1)] Casting {SpellID: 25296} (Cost = 120.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
@@ -3047,8 +3047,9 @@
 [116.44] [hunter (#1) - Gorilla] Pausing rotation for 500ms due to resources / CDs.
 [116.51] [hunter (#1) - Gorilla] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [116.51] [hunter (#1) - Gorilla] Completed cast {OtherID: 3, Tag: 1}
-[116.51] [hunter (#1) - Gorilla] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:53.2, AfterAttackerMods:79.6, AfterResistances:67.6, AfterTargetMods:67.6, AfterOutcome:67.6, AfterPostOutcome:67.6
-[116.51] [hunter (#1) - Gorilla] [Target 1] {OtherID: 3, Tag: 1} Hit for 67.597 damage (SpellSchool: 1). (Threat: 67.597)
+[116.51] [hunter (#1) - Gorilla] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:53.2, AfterAttackerMods:79.6, AfterResistances:67.6, AfterTargetMods:67.6, AfterOutcome:135.2, AfterPostOutcome:135.2
+[116.51] [hunter (#1) - Gorilla] [Target 1] {OtherID: 3, Tag: 1} Crit for 135.194 damage (SpellSchool: 1). (Threat: 135.194)
+[116.52] [hunter (#1) - Gorilla] Aura refreshed: {SpellID: 19615}
 [116.59] [hunter (#1) - Gorilla] Gained 3.000 focus from {OtherID: 6} (89.000 --> 92.000) of 100 total.
 [116.61] [hunter (#1) - Gorilla] Pausing rotation for 500ms due to resources / CDs.
 [116.84] [hunter (#1) - Gorilla] Gained 3.000 focus from {OtherID: 6} (92.000 --> 95.000) of 100 total.
@@ -3113,10 +3114,11 @@
 [119.18] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.28] [hunter (#1) - Gorilla] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [119.28] [hunter (#1) - Gorilla] Completed cast {OtherID: 3, Tag: 1}
-[119.28] [hunter (#1) - Gorilla] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.6, AfterAttackerMods:72.7, AfterResistances:61.8, AfterTargetMods:61.8, AfterOutcome:61.8, AfterPostOutcome:61.8
-[119.28] [hunter (#1) - Gorilla] [Target 1] {OtherID: 3, Tag: 1} Hit for 61.784 damage (SpellSchool: 1). (Threat: 61.784)
+[119.28] [hunter (#1) - Gorilla] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.6, AfterAttackerMods:72.7, AfterResistances:61.8, AfterTargetMods:61.8, AfterOutcome:123.6, AfterPostOutcome:123.6
+[119.28] [hunter (#1) - Gorilla] [Target 1] {OtherID: 3, Tag: 1} Crit for 123.567 damage (SpellSchool: 1). (Threat: 123.567)
 [119.28] [hunter (#1)] No available actions!
 [119.28] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[119.29] [hunter (#1) - Gorilla] Aura refreshed: {SpellID: 19615}
 [119.38] [hunter (#1) - Gorilla] Pausing rotation for 500ms due to resources / CDs.
 [119.38] [hunter (#1)] Casting {SpellID: 25295} (Cost = 227.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [119.38] [hunter (#1)] Completed cast {SpellID: 25295}

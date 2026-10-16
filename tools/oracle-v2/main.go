@@ -206,6 +206,8 @@ type classExport struct {
 	effects          func(agent core.Agent, character *core.Character) []map[string]any
 	// How many of the target's dynamic damage taken modifiers the class effects describe.
 	damageTakenModifiers func(agent core.Agent) int
+	// The damage done by caster handlers the class's effects describe, on every attack table.
+	casterDamageHandlers func(agent core.Agent) int
 	// Why a registered pet never acts in this build, or "" when it may.
 	inertPet func(agent core.Agent, pet *core.Pet) string
 	// Optional: stable names for class spells Go registers without a class mask, by action.
@@ -1665,7 +1667,7 @@ func prepareSet(request *proto.RaidSimRequest, digest, scenario string, swapped 
 	note(privateField(simulation, "executePhaseCallbacks").Len() != describedCallbacks, "execute phase callbacks are unsupported")
 	note(simulation.Encounter.AllTargets[0].AI != nil, "target AI is unsupported")
 	table := character.AttackTables[target.UnitIndex]
-	note(table.DamageDoneByCasterMultiplier != nil || len(table.DamageDoneByCasterExtraMultiplier) != 0, "caster damage callbacks are unsupported")
+	note(table.DamageDoneByCasterMultiplier != nil || casterHandlers(table) > describedCasterHandlers(agent), "caster damage callbacks are unsupported")
 	class, exported := classExports[character.Class]
 	described := 0
 	if exported && class.damageTakenModifiers != nil {
@@ -2392,4 +2394,24 @@ func main() {
 	default:
 		fail(fmt.Errorf("unsupported command %s", os.Args[1]))
 	}
+}
+
+// The damage done by caster handlers set on an attack table.
+func casterHandlers(table *core.AttackTable) int {
+	count := 0
+	for _, handler := range table.DamageDoneByCasterExtraMultiplier {
+		if handler != nil {
+			count++
+		}
+	}
+	return count
+}
+
+// The handlers on every attack table the class's effects describe.
+func describedCasterHandlers(agent core.Agent) int {
+	class, ok := classExports[agent.GetCharacter().Class]
+	if !ok || class.casterDamageHandlers == nil {
+		return 0
+	}
+	return class.casterDamageHandlers(agent)
 }

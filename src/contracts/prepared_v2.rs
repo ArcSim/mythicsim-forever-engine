@@ -2651,11 +2651,25 @@ pub enum Effect {
         cast_time_percent: f64,
     },
     /// Arcane Blast and its stacking buff.
+    /// Arcane Blast and its stacks (client 70425): each stack's spell damage from Intellect is a
+    /// stacking stat aura; the stacks raise Arcane Blast's own cost.
     ArcaneBlast {
         spell_id: i32,
         aura: String,
-        damage_per_stack: f64,
         cost_per_stack: f64,
+    },
+    /// Arcane Wrath (client 70425): the hit adds `mana_share` of maximum mana as spell damage at
+    /// its `coefficient`.
+    ArcaneWrath {
+        spell_id: i32,
+        coefficient: f64,
+        mana_share: f64,
+    },
+    /// Fire Power (client 70425): Fire spells, Ignite aside, deal `per_effect` more per Fire
+    /// effect of the mage on the target, up to `max_effects`.
+    FirePower {
+        per_effect: f64,
+        max_effects: i32,
     },
     IceLance {
         spell_id: i32,
@@ -2663,9 +2677,6 @@ pub enum Effect {
     },
     ArcaneMissiles {
         ranks: Vec<MissileRank>,
-        /// The additive damage bonus each Arcane Blast stack the channel spent gives its
-        /// missiles.
-        arcane_blast_bonus_per_stack: f64,
     },
     ColdSnap {
         spell_id: i32,
@@ -2695,6 +2706,8 @@ pub enum Effect {
         trigger_aura: String,
         aura: String,
         arcane_blast_chance: f64,
+        /// An Arcane Missiles missile's chance (client 70425).
+        missile_chance: f64,
         bolt_chance: f64,
         rng_label: String,
         cost_percent_add: f64,
@@ -2714,7 +2727,8 @@ pub enum Effect {
         talent_rank: i32,
         proc_chance: f64,
         max_stacks: i32,
-        crit_per_stack: f64,
+        /// Each stack's Cone of Cold damage (client 70425).
+        damage_per_stack: f64,
         duration_ns: i64,
         trigger_aura: String,
         aura: String,
@@ -4202,6 +4216,8 @@ impl Effect {
         match self {
             Effect::Frostbolt {} => "frostbolt",
             Effect::ArcaneBlast { .. } => "arcane_blast",
+            Effect::ArcaneWrath { .. } => "arcane_wrath",
+            Effect::FirePower { .. } => "fire_power",
             Effect::ArcanePower { .. } => "arcane_power",
             Effect::Ignite { .. } => "ignite",
             Effect::FireBlast {} => "fire_blast",

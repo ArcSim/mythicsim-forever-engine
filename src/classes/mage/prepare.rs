@@ -147,6 +147,10 @@ static CLASS_SPELLS: &[ClassSpellName] = &[
         mask: masks::FROSTFIRE_BOLT,
         name: "frostfire_bolt",
     },
+    ClassSpellName {
+        mask: masks::ARCANE_WRATH,
+        name: "arcane_wrath",
+    },
 ];
 
 /// Go `Mage`: the talents and the class option the registrations read.
@@ -218,6 +222,16 @@ impl PrepAgent for Mage {
                 true
             }
             _ => false,
+        }
+    }
+
+    /// arcane_charge.go: Arcane Blast's stacks give spell damage from Intellect, a stacking stat
+    /// aura.
+    fn stat_auras(&self, _sim: &Sim, _unit: UnitId) -> Vec<String> {
+        if self.talents.bool("arcane_blast") {
+            vec!["Arcane Blast".to_string()]
+        } else {
+            Vec::new()
         }
     }
 

@@ -725,6 +725,20 @@ impl<A: Agent> Fight<A> {
         self.set_stat_mask(mask);
     }
 
+    /// A stacking stat aura's place in the active stat mask, by label: its offset and width.
+    pub(crate) fn stat_aura_place(
+        effects: &[crate::contracts::prepared_v2::Effect],
+        label: &str,
+    ) -> Option<(u32, u32)> {
+        effects.iter().find_map(|effect| match effect {
+            crate::contracts::prepared_v2::Effect::StatAuras { auras, stacks, .. } => {
+                let position = auras.iter().position(|aura| aura == label)?;
+                Some(stat_aura_places(stacks, auras.len())[position])
+            }
+            _ => None,
+        })
+    }
+
     /// A stat aura's bit in the active stat mask, by label: the first bit of its place.
     pub(crate) fn stat_aura_bit(
         effects: &[crate::contracts::prepared_v2::Effect],

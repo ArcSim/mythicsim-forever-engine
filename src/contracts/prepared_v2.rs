@@ -3498,6 +3498,9 @@ pub enum Effect {
         proc_chance: f64,
         extra_attack_tag: i32,
         sword_hands: Vec<String>,
+        /// The class spells that never trigger it: Shield Bash and Shield Slam since the 16
+        /// October 2026 beta notes.
+        excluded_class_spells: Vec<String>,
     },
     /// Overpower: a dodge opens its window.
     OverpowerWindow {

@@ -1582,6 +1582,9 @@ pub enum Effect {
         moonkin_cooldown_multiplier: f64,
         cost_spells: Vec<usize>,
         cost_percent_add: f64,
+        /// The spells that never trigger it in Cat or Bear Form: Faerie Fire since the 16 October
+        /// 2026 beta notes.
+        form_excluded_spells: Vec<usize>,
     },
     /// Nature's Grace: a damaging spell crit grants cast speed and a shorter GCD.
     NaturesGrace {

@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `5af130344b6fb5150a5b3a2295f26d20adee625d`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `12ffe586e5c4b2e622e6ccad0d6146ff10c394d1`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -498,6 +498,26 @@ the ledger reviews the two commits.
 329 of the 614 Go goldens changed, 276 in DPS, and the preparation goldens of every class follow. Rust
 matches all 612 accepted fixtures with a Go golden, and preparation writes exactly what the exporter
 writes for every one of the 614. The recorded sweeps were not rerun.
+
+The pin moved from `5af130344` to `12ffe586e` on 2026-10-17, four commits: the fork's patches 143 to
+146 (branch `mythicsim/oct16-evening`), from in-game measurements on client 70425. The community base
+`b7083fac1` and client build 70425 did not move, so the ledger has no new commit.
+
+- Paladin (patch 143): spell power shares as measured in game: Holy Shield 0.07, Holy Strike 0.286,
+  Seal of Fury 0.15 a hit and 0.67 on its judgement, Judgement of Righteousness 0.70. One-Handed Weapon
+  Specialization raises every school but Consecration and Retribution Aura, heals aside, through a
+  custom modifier that follows the main hand; the exporter reads the swap callback from
+  `followMainHand`.
+- Mage (patch 144): Ice Lance spends its Fingers of Frost charge at cast, while the bolts spend theirs on
+  landing.
+- Shaman (patch 145): Water Shield's shared internal cooldown is a timer of its own, and the shaman's
+  critical spells spend a globe too; preparation registers both, and no supported build casts it.
+- Core (patch 146): Spell Piercing past the target's resistance, floored at 0, adds 1 / (5 x target
+  level) of damage a point, on binary spells too, multiplying the partial resist.
+
+174 of the 614 Go goldens changed, 134 in DPS, and the paladin, shaman and classic weapon preparation
+goldens follow. Rust matches all 612 accepted fixtures with a Go golden, and preparation writes exactly
+what the exporter writes for every one of the 614. The recorded sweeps were not rerun.
 
 ## Ledger
 

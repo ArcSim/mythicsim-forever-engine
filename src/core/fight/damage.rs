@@ -276,6 +276,33 @@ impl<A: Agent> Fight<A> {
         }
     }
 
+    /// Go `spellVulnerabilityMultiplier` (MythicSim patch 146): the caster's Spell Piercing past
+    /// the target's resistance, floored at 0, adds 1 / (5 x target level) of damage a point, on
+    /// binary spells too. Schools with no resistance take none.
+    pub(crate) fn spell_vulnerability(&self, spell: SpellId, target: Side) -> f64 {
+        let state = &self.spells[spell];
+        let level = self.unit_config(state.caster).target_level;
+        if state.school_index <= 1 || level <= 0 {
+            return 1.0;
+        }
+        // Go ResistanceStat: Arcane, Fire, Frost, Nature and Shadow alone have one; Frostfire
+        // takes the lower of its two.
+        if !state.frostfire && !matches!(state.school, 4 | 8 | 16 | 32 | 64) {
+            return 1.0;
+        }
+        let resistance = &self.target_unit(target).state.resistance;
+        let raw = if state.frostfire {
+            resistance[super::SCHOOL_INDEX_FIRE].min(resistance[super::SCHOOL_INDEX_FROST])
+        } else {
+            resistance[state.school_index]
+        };
+        let beyond = self.unit(state.caster).powers.spell_piercing - raw.max(0.0);
+        if beyond <= 0.0 {
+            return 1.0;
+        }
+        1.0 + beyond / (5.0 * f64::from(level))
+    }
+
     fn resist(&self, spell: SpellId, target: Side, binary: bool) -> f64 {
         let state = &self.spells[spell];
         // Go resistCoeff: a physical spell, as a binary Thunder Clap, resists nothing.
@@ -451,8 +478,15 @@ impl<A: Agent> Fight<A> {
                 result.armor_multiplier = self.armor_modifier(self.caster(spell), target);
                 result.damage *= result.armor_multiplier;
             }
-        } else if !self.spells[spell].flags.ignore_resists && !binary {
-            let (multiplier, outcome) = self.partial_resist(spell, target);
+        } else if !self.spells[spell].flags.ignore_resists {
+            // Spell Vulnerability multiplies the partial resist, and a binary spell's whole hit.
+            let vulnerability = self.spell_vulnerability(spell, target);
+            let (multiplier, outcome) = if binary {
+                (vulnerability, 0)
+            } else {
+                let (partial, outcome) = self.partial_resist(spell, target);
+                (partial * vulnerability, outcome)
+            };
             result.armor_multiplier = multiplier;
             result.damage *= multiplier;
             result.outcome |= outcome;

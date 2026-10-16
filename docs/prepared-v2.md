@@ -106,15 +106,18 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `arcane_explosion`, `cone_of_cold`, `frost_nova`, `blast_wave` | sim/mage/arcane_explosion.go, cone_of_cold.go, frost_nova.go, blast_wave.go | Damage roll on the spell; each target's hit in turn, the one target in scope. Cone of Cold, Frost Nova and Blast Wave are binary by their flags; Blast Wave only when talented |
 | `flamestrike` | sim/mage/flamestrike.go | Each rank's tick amount from its triggered spell; the hit, then an area dot on the mage whose ticks roll to hit on current spell power and never crit |
 | `blizzard` | sim/mage/blizzard.go | The channel, its triggered tick spell and fixed tick amount, and Improved Blizzard's chill spell when talented; ticks roll to hit and never crit, and each landed tick casts the chill |
-| `arcane_missiles` | sim/mage/arcane_missiles.go | Channel rank to tick spell pairing, and the additive damage bonus, a Go literal, each Arcane Blast stack the channel spends gives its missiles |
+| `arcane_missiles` | sim/mage/arcane_missiles.go | Channel rank to tick spell pairing |
+| `arcane_blast` | sim/mage/arcane_blast.go, arcane_charge.go | The stacks' aura and Arcane Blast's cost a stack. Each stack's spell damage from Intellect (client 70425) is the aura's place in the `stat_auras` combinations; the stacks run from the first and nothing spends them |
+| `arcane_wrath` | sim/mage/arcane_wrath.go | The share of maximum mana the hit adds as spell damage, at the damage effect's coefficient (client 70425) |
+| `fire_power` | sim/mage/talents_fire.go | The damage a Fire effect of the mage on the target adds to its Fire spells, Ignite aside, and how many count (client 70425): a damage done by caster handler on every attack table |
 | `cold_snap` | sim/mage/cold_snap.go | Spell ID |
 | `evocation` | sim/mage/evocation.go | Regen multiplier from client data, aura labels; the regeneration aura adds the multiplier and forces full regeneration through `AddSpiritRegenMultiplier` and `SetForceFullSpiritRegen`, which also move the baseline an Innervate's bonus mana is credited against while one is up |
 | `mana_gems` | sim/mage/mana_gems.go | Gem mana from client data, use order |
 | `mage_armor` | sim/mage/armors.go | Aura label; regeneration already in pseudo stats |
 | `arcane_concentration` | sim/mage/talents_arcane.go | Proc chance, ICD, Clearcasting duration |
-| `missile_barrage` | sim/mage/talents_arcane.go | Arcane Blast's chance and the bolts' half of it from the trigger row, the buff's cost and tick changes from its row; the trigger rolls when a landed hit arrives |
+| `missile_barrage` | sim/mage/talents_arcane.go | Arcane Blast's chance at the talent's rank, a missile's quarter and Arcane Wrath's and the bolts' half of it from the trigger row, the buff's cost and tick changes from its row; the trigger rolls when a landed hit arrives |
 | `fingers_of_frost` | sim/mage/talents_frost.go | Proc chance, charges, Shatter crit, duration; Frostbolt and Frostfire Bolt roll it when their cast ends, the chill spells on landing (community #776) |
-| `winters_chill` | sim/mage/talents_frost.go | Proc chance, stacks, crit per stack, duration |
+| `winters_chill` | sim/mage/talents_frost.go | Proc chance, stacks, Cone of Cold's damage a stack (client 70425), duration |
 | `judgement_of_wisdom` | sim/core/buffs/paladin.go | Chance, proc mask, mana, batch delay |
 | `potion_mana` | sim/core/consumes.go | Gain range, label, alchemist stone multiplier |
 | `conjured_mana` | sim/core/consumes.go | Gain range, label, whether it is the selected item |
@@ -239,13 +242,14 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `improved_stormstrike` | sim/shaman/talents_enhancement.go | Proc chance and the casting spirit regeneration rate it adds without refreshing rates, as Go does |
 | `maelstrom_weapon` | sim/shaman/talents_enhancement.go | Per stack cast time and cost, and the proc manager's chance per spell |
 | `rage_of_the_farseer` | sim/shaman/talents_enhancement.go | The cooldown and its melee speed |
+| `elemental_mastery` | sim/shaman/talents_elemental.go | The major cooldown's aura, the cast time it takes off Lightning Bolt and Lava Burst and the cooldown it takes off Chain Lightning (client 70425) |
 | `rockbiter_weapon` | sim/shaman/weapon_imbues.go | Gain and loss log lines of the permanent aura |
 | `flametongue_weapon` | sim/shaman/weapon_imbues.go | Per hand: the trigger aura, the spells it hears, the hit spell and its fixed base |
 | `frostbrand_weapon` | sim/shaman/weapon_imbues.go | The trigger aura, the proc manager's chance per spell, the hit spell and its fixed base |
 | `windfury_weapon` | sim/shaman/weapon_imbues.go | The trigger aura and its cooldown, the proc manager's chance per spell, the main hand and off hand strike spells (439440, 439441) and the rank's attack power each adds to the weapon hit, and whether a main hand imbue holds the party Windfury Totem's category. The proc strikes twice with the hand that procced it, as special weapon hits, with no attack power aura, extra attack or swing timer change |
 | `weapon_sync` | sim/shaman/enhancement/enhancement.go | The sync type the main hand swing replacement applies and Flurry's charge cooldown, a Go literal |
 | `frost_shock` | sim/shaman/shocks.go | Damage roll on the highest rank; a binary hit |
-| `magma_totem` | sim/shaman/fire_totems.go | The pulse's fixed base and the totem's lifetime; each pulse calculates periodic area damage on every target before dealing any |
+| `magma_totem` | sim/shaman/fire_totems.go | The pulse's fixed base and the totem's lifetime, with Trial by Fire's (client 70425); each pulse calculates periodic area damage on every target before dealing any |
 | `flametongue_totem` | sim/shaman/fire_totems.go | The totem aura, its trigger and the spells it hears, the attack spell and its base, and whether a party Flametongue Totem shares the benefit |
 | `lightning_shield` | sim/shaman/shields.go | The cast, its aura and charges |
 | `grace_of_air_totem`, `mana_spring_totem` | sim/shaman/totems.go | The cast, its aura, a class stat aura and the totem's lifetime; since the 16 October 2026 beta notes no air totem slot joins it to the party's totems |
@@ -277,6 +281,8 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `mind_blast`, `shadow_word_death` | sim/priest/mind_blast.go, shadow_word_death.go | Damage rolls on every rank; Early Demise's crit inside the 20% execute phase |
 | `shadow_word_pain`, `devouring_plague`, `mind_flay` | sim/priest/shadow_word_pain.go, devouring_plague.go, talents_shadow.go | Each rank's dot base and Periodic Can Crit; the hit rolls once without a hit count; Devouring Plague heals for its ticks under a tagged action; Mind Flay is a binary channel |
 | `shadowform` | sim/priest/talents_shadow.go | Damage, cost and crit damage modifiers with the spells each names; its form refuses the spells whose `requirement_auras` name it |
+| `improved_mind_flay` | sim/priest/talents_shadow.go | The step each Mind Flay tick deals more than the one before (client 70425) |
+| `dark_inspiration` | sim/priest/talents_shadow.go | The Spirit stat aura and its triggers: Mind Blast's cast and a full Mind Flay channel's last tick (client 70425) |
 | `inner_focus` | sim/priest/talents_discipline.go | Cost cut, crit and its spells, the spells that spend it; the crit does not reach dot ticks (community #793); the cooldown restarts when it ends |
 | `shadow_weaving` | sim/priest/talents_shadow.go | The resolved proc trigger, its spells, and the debuff each target keeps, whose stacks raise this priest's Shadow damage on it (community #777) |
 | `dark_sacrifice` | sim/priest/dark_sacrifice.go | Tick base from client data plus Spirit over a divisor, and whether the cast adds no threat; used once the whole gain fits. The spell is the Undead priest's racial: it is exported for Undead only |
@@ -642,7 +648,8 @@ extra tick is not in it; the exporter and Rust preparation record it in
 on that target: the gate refuses it for a class not checked there (Druid, Hunter, Paladin and
 Rogue), for a channel with a dot on its target, for Demonology's Demonic Brand and for a cast on the
 player, with code `several_targets_unsupported`. The potion action casts the first combat potion, as Go
-`GetAPLSpell` does. The exporter records how
+`GetAPLSpell` does, and an action naming a rank a spell's `rank_aliases` list presses that spell
+(Lava Burst rank 4, client 70425). The exporter records how
 many prepull actions Go registered; a count that differs
 from the rotation's means a class or item registered its own, which is unsupported; Go at
 this revision registers none beside the rotation's and an item swap's. A spell

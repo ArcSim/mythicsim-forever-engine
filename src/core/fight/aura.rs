@@ -265,6 +265,8 @@ pub(crate) struct Aura<K> {
     /// Go `Aura.Tag`, which `HasActiveAuraWithTag` matches.
     pub(crate) tag: Option<String>,
     pub(crate) action_id: Option<ActionId>,
+    /// Go `ActionIDForProc`: the proc a trigger aura stands for.
+    pub(crate) proc_action_id: Option<ActionId>,
     /// Go `AuraMetrics.ID`, fixed at registration; a metric split retags `action_id` alone.
     pub(crate) metrics_id: Option<ActionId>,
     pub(crate) duration: i64,
@@ -351,6 +353,7 @@ impl<K> Tracker<K> {
             label: exported.label.clone(),
             tag: exported.tag.clone(),
             action_id: exported.action_id.clone(),
+            proc_action_id: exported.action_id_for_proc.clone(),
             metrics_id: exported
                 .action_id
                 .clone()
@@ -393,6 +396,7 @@ impl<K> Tracker<K> {
                 label: aura.label.clone(),
                 tag: aura.tag.clone(),
                 action_id: aura.action_id.clone(),
+                proc_action_id: aura.proc_action_id.clone(),
                 metrics_id: aura.metrics_id.clone(),
                 duration: aura.duration,
                 max_stacks: aura.max_stacks,
@@ -439,6 +443,15 @@ impl<K> Tracker<K> {
         self.auras
             .iter()
             .position(|aura| aura.action_id.as_ref() == Some(id))
+    }
+
+    /// Go `GetIcdAuraByID`: the first aura with the action, or triggered by it, that has an
+    /// ICD.
+    pub(crate) fn find_icd_by_id(&self, id: &ActionId) -> Option<usize> {
+        self.auras.iter().position(|aura| {
+            aura.icd.is_some()
+                && (aura.action_id.as_ref() == Some(id) || aura.proc_action_id.as_ref() == Some(id))
+        })
     }
 
     fn add_to(&mut self, list: List, aura: usize) {

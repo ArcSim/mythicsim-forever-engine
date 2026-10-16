@@ -337,6 +337,31 @@ pub enum Value {
     InputDelay,
     /// Go `APLValueChannelClipDelay`.
     ChannelClipDelay,
+    /// Go `APLValueAuraInternalCooldown`: the time until the ICD of the first aura of the unit
+    /// with the action, or triggered by it, that has one, is ready.
+    AuraInternalCooldown {
+        unit: UnitRef,
+        id: ActionId,
+    },
+    /// Go `APLValueAuraICDIsReady`; with `includeReactionTime` also while the aura has been
+    /// up for less than the reaction time.
+    AuraIcdIsReady {
+        unit: UnitRef,
+        id: ActionId,
+        include_reaction_time: bool,
+    },
+    /// Go `APLValueAuraDuration`: the aura's duration.
+    AuraDuration {
+        unit: UnitRef,
+        id: ActionId,
+    },
+    /// Go `APLValueDotIsActiveOnAllTargets` of the spell's dot.
+    DotIsActiveOnAllTargets(ActionId),
+    /// Go `APLValueDotLowestRemainingTime`: zero once a target lacks the dot.
+    DotLowestRemainingTime(ActionId),
+    /// Go `APLValueDotTickFrequency`: the dot's tick period, or the one it would tick at now
+    /// while it is down.
+    DotTickFrequency(DotRef),
     /// A value the pinned Go engine builds nothing for, so it drops out of its parent as a
     /// value without one does: Go's switch has no case for it, or its constructor is in a file
     /// the build leaves out.
@@ -513,7 +538,13 @@ impl Value {
             }
             Value::Variable { resolved, .. } => resolved.value_type(),
             Value::Max(values) | Value::Min(values) => highest_type(values),
-            Value::UnitIsMoving(_) => ValueType::Bool,
+            Value::UnitIsMoving(_)
+            | Value::AuraIcdIsReady { .. }
+            | Value::DotIsActiveOnAllTargets(_) => ValueType::Bool,
+            Value::AuraInternalCooldown { .. }
+            | Value::AuraDuration { .. }
+            | Value::DotLowestRemainingTime(_)
+            | Value::DotTickFrequency(_) => ValueType::Duration,
             Value::MaxComboPoints => ValueType::Int,
             Value::CurrentTimePercent
             | Value::CurrentHealth
@@ -1722,6 +1753,80 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                 _ => Value::DotTimeToNextTick(dot),
             })
         }
+        "dotTickFrequency" => {
+            only(&["spellId", "targetUnit"])?;
+            let spell = match config.get("spellId") {
+                Some(id) => Some(parse_action_id(id).map_err(|err| vec![err])?),
+                None => None,
+            };
+            let target = parse_value_unit_ref(config.get("targetUnit"), UnitRef::CurrentTarget)
+                .map_err(|()| {
+                    vec![unsupported_unit(
+                        name,
+                        "targetUnit",
+                        config.get("targetUnit"),
+                    )]
+                })?;
+            Ok(Value::DotTickFrequency(DotRef { spell, target }))
+        }
+        "dotIsActiveOnAllTargets" | "dotLowestRemainingTime" => {
+            only(&["spellId"])?;
+            // Go `GetAPLMultidotSpell`: no value without a spell.
+            let Some(id) = config.get("spellId") else {
+                return Ok(Value::Unbuilt(if name == "dotIsActiveOnAllTargets" {
+                    "dotIsActiveOnAllTargets"
+                } else {
+                    "dotLowestRemainingTime"
+                }));
+            };
+            let id = parse_action_id(id).map_err(|err| vec![err])?;
+            Ok(if name == "dotIsActiveOnAllTargets" {
+                Value::DotIsActiveOnAllTargets(id)
+            } else {
+                Value::DotLowestRemainingTime(id)
+            })
+        }
+        "auraInternalCooldown" | "auraIcdIsReady" | "auraDuration" => {
+            only(&["auraId", "sourceUnit", "includeReactionTime"])?;
+            if name != "auraIcdIsReady" && config.get("includeReactionTime").is_some() {
+                return Err(vec![format!(
+                    "{name} field includeReactionTime is unsupported"
+                )]);
+            }
+            // Go gives no value without an aura.
+            let Some(id) = config.get("auraId") else {
+                return Ok(Value::Unbuilt(match name {
+                    "auraInternalCooldown" => "auraInternalCooldown",
+                    "auraIcdIsReady" => "auraIcdIsReady",
+                    _ => "auraDuration",
+                }));
+            };
+            let id = parse_action_id(id).map_err(|err| vec![err])?;
+            // Go `GetSourceUnit`: no unit reference means the player itself.
+            let unit =
+                parse_value_unit_ref(config.get("sourceUnit"), UnitRef::Player).map_err(|()| {
+                    vec![unsupported_unit(
+                        name,
+                        "sourceUnit",
+                        config.get("sourceUnit"),
+                    )]
+                })?;
+            let include_reaction_time = match config.get("includeReactionTime") {
+                None => false,
+                Some(value) => value
+                    .as_bool()
+                    .ok_or_else(|| vec!["includeReactionTime must be a boolean".to_string()])?,
+            };
+            Ok(match name {
+                "auraInternalCooldown" => Value::AuraInternalCooldown { unit, id },
+                "auraIcdIsReady" => Value::AuraIcdIsReady {
+                    unit,
+                    id,
+                    include_reaction_time,
+                },
+                _ => Value::AuraDuration { unit, id },
+            })
+        }
         "dotBaseDuration" => {
             only(&["spellId"])?;
             // Go `GetAPLDot`: a dot value without a spell has no value.
@@ -2284,6 +2389,20 @@ pub enum Compiled<R> {
     AutoTimeSinceLast(AutoAttackType),
     InputDelay,
     ChannelClipDelay,
+    /// Go `APLValueAuraInternalCooldown` of the aura holding the ICD.
+    AuraInternalCooldown(R),
+    /// Go `APLValueAuraICDIsReady` of the aura holding the ICD.
+    AuraIcdIsReady {
+        aura: R,
+        include_reaction_time: bool,
+    },
+    /// Go `APLValueAuraDuration`.
+    AuraDuration(R),
+    /// Go `APLValueDotIsActiveOnAllTargets`: the dot on each target.
+    DotIsActiveOnAllTargets(Vec<DotAt>),
+    /// Go `APLValueDotLowestRemainingTime`: the dot on each target.
+    DotLowestRemainingTime(Vec<DotAt>),
+    DotTickFrequency(DotAt),
     /// Go `APLValueCoerced`.
     Coerced {
         to: ValueType,
@@ -2347,7 +2466,13 @@ impl<R> Compiled<R> {
             Compiled::Math { op, lhs, rhs } => op.result_type(lhs.value_type(), rhs.value_type()),
             // Go reads the first value's type, which coercion made every value's.
             Compiled::Max(values) | Compiled::Min(values) => values[0].value_type(),
-            Compiled::PlayerIsMoving => ValueType::Bool,
+            Compiled::PlayerIsMoving
+            | Compiled::AuraIcdIsReady { .. }
+            | Compiled::DotIsActiveOnAllTargets(_) => ValueType::Bool,
+            Compiled::AuraInternalCooldown(_)
+            | Compiled::AuraDuration(_)
+            | Compiled::DotLowestRemainingTime(_)
+            | Compiled::DotTickFrequency(_) => ValueType::Duration,
             Compiled::MaxComboPoints(_) => ValueType::Int,
             Compiled::CurrentTimePercent
             | Compiled::CurrentHealth
@@ -2514,6 +2639,11 @@ pub struct Lookup<'a, R> {
     /// The player's resource bars as the rotation is built, which values of a bar the player
     /// lacks give none for.
     pub bars: Bars,
+    /// Go `GetIcdAuraByID` on a unit: the first aura with the action, or triggered by it, that
+    /// has an ICD.
+    pub icd_aura: &'a dyn Fn(Unit, &ActionId) -> Option<R>,
+    /// Go `GetAPLMultidotSpell`: whether the spell has a dot `Spell.CurDot` returns.
+    pub multidot: &'a dyn Fn(&ActionId) -> bool,
 }
 
 /// The player's resource bars: Go `HasManaBar`, the rage bar's `MaximumRage` and the energy
@@ -2718,6 +2848,50 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
         Value::InputDelay => Compiled::InputDelay,
         Value::ChannelClipDelay => Compiled::ChannelClipDelay,
         Value::Unbuilt(_) => return None,
+        // Go `GetAPLICDAura`: no value for a unit Go finds nothing for or without the aura.
+        Value::AuraInternalCooldown { unit, id } => {
+            Compiled::AuraInternalCooldown((lookup.icd_aura)(unit.resolve(lookup.targets)?, id)?)
+        }
+        Value::AuraIcdIsReady {
+            unit,
+            id,
+            include_reaction_time,
+        } => Compiled::AuraIcdIsReady {
+            aura: (lookup.icd_aura)(unit.resolve(lookup.targets)?, id)?,
+            include_reaction_time: *include_reaction_time,
+        },
+        // Go `GetAPLAura`: no value without the aura.
+        Value::AuraDuration { unit, id } => {
+            let found = match unit.resolve(lookup.targets)? {
+                Unit::Target(position) => (lookup.target_aura)(position, id),
+                Unit::Player => aura(id),
+            }?;
+            Compiled::AuraDuration(found.aura)
+        }
+        // Go reads `GetAPLDot` on each target, keeping those it finds; none gives no value.
+        Value::DotIsActiveOnAllTargets(id) | Value::DotLowestRemainingTime(id) => {
+            if !(lookup.multidot)(id) {
+                return None;
+            }
+            let dots: Vec<DotAt> = (0..lookup.targets)
+                .filter_map(|position| {
+                    let spell = (lookup.dot)(id, Unit::Target(position))?;
+                    Some(DotAt {
+                        spell,
+                        target: position,
+                    })
+                })
+                .collect();
+            if dots.is_empty() {
+                return None;
+            }
+            if matches!(value, Value::DotIsActiveOnAllTargets(_)) {
+                Compiled::DotIsActiveOnAllTargets(dots)
+            } else {
+                Compiled::DotLowestRemainingTime(dots)
+            }
+        }
+        Value::DotTickFrequency(dot) => Compiled::DotTickFrequency(dot_at(dot, lookup)?),
         Value::DotBaseDuration(id) => {
             Compiled::DotBaseDuration((lookup.dot_base_duration)(id.as_ref()?)?)
         }
@@ -2912,6 +3086,8 @@ mod tests {
             pet_aura_known: &|_, _| false,
             item_swap: false,
             bars: Bars::default(),
+            icd_aura: &|_, _| None,
+            multidot: &|_| false,
         }
     }
 
@@ -2940,6 +3116,8 @@ mod tests {
             pet_aura_known: &known,
             item_swap: false,
             bars: Bars::default(),
+            icd_aura: &|_, _| None,
+            multidot: &|_| false,
             ..only_auras(&none, &|_, _| None)
         };
         assert_eq!(
@@ -3565,6 +3743,8 @@ mod tests {
             pet_aura_known: &|_, _| false,
             item_swap: false,
             bars: Bars::default(),
+            icd_aura: &|_, _| None,
+            multidot: &|_| false,
         })
     }
 
@@ -4058,6 +4238,8 @@ mod tests {
             pet_aura_known: &|_, _| false,
             item_swap: false,
             bars: Bars::default(),
+            icd_aura: &|_, _| None,
+            multidot: &|_| false,
         };
         let compare = |spell: i32| {
             let value = parse_value(&serde_json::json!({"cmp": {"op": "OpGt",

@@ -216,6 +216,35 @@ impl<A: Agent> Fight<A> {
         (!self.dots[dot].side.is_target() || matches!(unit, Unit::Target(_))).then_some(holder)
     }
 
+    /// Go `GetIcdAuraByID` on a unit, as the rotation reads it.
+    fn rotation_icd_aura(&self, unit: Unit, id: &ActionId) -> Option<AuraRef> {
+        let side = match unit {
+            Unit::Player => Side::Player,
+            Unit::Target(position) => Side::target(position),
+        };
+        let source = if side.is_target() { Side::Target } else { side };
+        self.trackers[source.index()]
+            .find_icd_by_id(id)
+            .map(|index| AuraRef { side, index })
+    }
+
+    /// Go `GetAPLMultidotSpell` and `Spell.CurDot`: the spell whose dot a multidot action or
+    /// value reads, its own on a target or its related dot spell's. An area or self-only dot
+    /// is the caster's `AOEDot`, which `CurDot` does not return.
+    fn multidot_dot(&self, id: &ActionId) -> Option<SpellId> {
+        self.apl_spell(id).and_then(|spell| {
+            match self.spells[spell]
+                .dot
+                .filter(|&dot| self.dots[dot].side.is_target())
+            {
+                Some(_) => Some(spell),
+                None => self.spells[spell]
+                    .related_dot_spell
+                    .filter(|&related| self.spells.get(related).is_some_and(|s| s.dot.is_some())),
+            }
+        })
+    }
+
     /// The player's resource bars, which values of a bar the player lacks give none for.
     fn rotation_bars(&self) -> crate::rotation::Bars {
         crate::rotation::Bars {
@@ -282,6 +311,7 @@ impl<A: Agent> Fight<A> {
                 .get(pet)
                 .is_some_and(|auras| auras.contains(id))
         };
+        let icd_aura = |unit: Unit, id: &ActionId| self.rotation_icd_aura(unit, id);
         let lookup = Lookup {
             aura: &aura,
             target_aura: &target_aura,
@@ -292,6 +322,8 @@ impl<A: Agent> Fight<A> {
             pet_aura_known: &pet_aura_known,
             item_swap: self.item_swap.is_some(),
             bars: self.rotation_bars(),
+            icd_aura: &icd_aura,
+            multidot: &|id: &ActionId| self.multidot_dot(id).is_some(),
         };
         let mut prepull: Vec<(i64, PrepullAct)> = rotation
             .prepull
@@ -345,6 +377,7 @@ impl<A: Agent> Fight<A> {
                 .get(pet)
                 .is_some_and(|auras| auras.contains(id))
         };
+        let icd_aura = |unit: Unit, id: &ActionId| self.rotation_icd_aura(unit, id);
         let lookup = Lookup {
             aura: &aura,
             target_aura: &target_aura,
@@ -355,6 +388,8 @@ impl<A: Agent> Fight<A> {
             pet_aura_known: &pet_aura_known,
             item_swap: self.item_swap.is_some(),
             bars: self.rotation_bars(),
+            icd_aura: &icd_aura,
+            multidot: &|id: &ActionId| self.multidot_dot(id).is_some(),
         };
         // A reference whose condition is a constant false is pruned, and takes no part in
         // binding the groups.
@@ -426,22 +461,9 @@ impl<A: Agent> Fight<A> {
         lookup: &Lookup<AuraRef>,
         instance: Option<usize>,
     ) -> Option<Act> {
-        // Go `GetAPLMultidotSpell` reads `Spell.CurDot`: the spell's own dot on a target or
-        // its related dot spell's. An area or self-only dot is the caster's `AOEDot`, which
-        // `CurDot` does not return, so a multidot line for such a spell is dropped.
-        let multidot_dot = |id: &ActionId| {
-            self.apl_spell(id).and_then(|spell| {
-                match self.spells[spell]
-                    .dot
-                    .filter(|&dot| self.dots[dot].side.is_target())
-                {
-                    Some(_) => Some(spell),
-                    None => self.spells[spell].related_dot_spell.filter(|&related| {
-                        self.spells.get(related).is_some_and(|s| s.dot.is_some())
-                    }),
-                }
-            })
-        };
+        // Go `GetAPLMultidotSpell`: a multidot line for a spell without a dot `CurDot`
+        // returns is dropped.
+        let multidot_dot = |id: &ActionId| self.multidot_dot(id);
         Some(match action {
             // Go newActionCastSpell: an unknown spell, or a target that is no unit, drops the
             // action.
@@ -627,6 +649,20 @@ impl<A: Agent> Fight<A> {
             Compiled::SpellInFlight(spell) => self.spells[*spell].in_flight > 0,
             // Go `Unit.Moving` of the player.
             Compiled::PlayerIsMoving => self.player.moving,
+            // Go `Timer.IsReady` of the aura's ICD, or the aura newer than the reaction time.
+            Compiled::AuraIcdIsReady {
+                aura,
+                include_reaction_time,
+            } => {
+                let state = self.aura(*aura);
+                let (timer, _) = state.icd.expect("an ICD aura");
+                self.timers[timer] <= self.now
+                    || (*include_reaction_time
+                        && state.active
+                        && self.now - state.start < self.config.reaction)
+            }
+            // Go: every enabled target's dot is active, and every target is enabled.
+            Compiled::DotIsActiveOnAllTargets(dots) => dots.iter().all(|&dot| self.dot_active(dot)),
             Compiled::And(values) => values.iter().all(|value| self.get_bool(value)),
             Compiled::Or(values) => values.iter().any(|value| self.get_bool(value)),
             Compiled::Not(value) => !self.get_bool(value),
@@ -889,6 +925,34 @@ impl<A: Agent> Fight<A> {
             // Go `APLValueAutoTimeSinceLast`, which wraps past a hand that never swung.
             Compiled::AutoTimeSinceLast(kind) => self.time_since_last_auto(*kind),
             Compiled::InputDelay => self.config.reaction,
+            // Go `Timer.TimeToReady` of the aura's ICD.
+            Compiled::AuraInternalCooldown(aura) => {
+                let (timer, _) = self.aura(*aura).icd.expect("an ICD aura");
+                (self.timers[timer] - self.now).max(0)
+            }
+            // Go `Aura.Duration`.
+            Compiled::AuraDuration(aura) => self.aura(*aura).duration,
+            // Go: zero once a target lacks the dot, otherwise the least time left.
+            Compiled::DotLowestRemainingTime(dots) => {
+                let mut lowest = NEVER_EXPIRES;
+                for &dot in dots {
+                    if !self.dot_active(dot) {
+                        return 0;
+                    }
+                    let aura = self.aura(self.dots[self.dot_of(dot)].aura);
+                    lowest = lowest.min(aura.remaining(self.now));
+                }
+                lowest
+            }
+            // Go `Dot.tickPeriod` while active, `CalcTickPeriod` otherwise.
+            Compiled::DotTickFrequency(at) => {
+                let dot = self.dot_of(*at);
+                if self.dot_active(*at) {
+                    self.dots[dot].tick_period
+                } else {
+                    self.calc_tick_period(dot)
+                }
+            }
             Compiled::ChannelClipDelay => self.config.channel_clip_delay,
             // Go `APLValueAutoTimeToNext`.
             Compiled::AutoTimeToNext(kind) => (self.next_auto_attack_at(*kind) - self.now).max(0),

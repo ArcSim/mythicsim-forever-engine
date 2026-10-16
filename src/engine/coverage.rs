@@ -1585,6 +1585,21 @@ pub(crate) fn rotation_dot(prepared: &PreparedV2, id: &ActionId, unit: Unit) -> 
     (dot.unit == "self" || matches!(unit, Unit::Target(_))).then_some(owner)
 }
 
+/// Go `GetAPLMultidotSpell`: whether the spell has a dot `Spell.CurDot` returns, its own on a
+/// target or its related dot spell's.
+fn rotation_multidot(prepared: &PreparedV2, id: &ActionId) -> bool {
+    let Some(index) = rotation_spell_index(prepared, id) else {
+        return false;
+    };
+    let spells = &prepared.player.spells;
+    match &spells[index].dot {
+        Some(dot) if dot.unit != "self" => true,
+        _ => spells[index]
+            .related_dot_spell
+            .is_some_and(|related| spells.get(related).is_some_and(|s| s.dot.is_some())),
+    }
+}
+
 /// The base duration a `dotBaseDuration` value of the spell captured when Go built the rotation.
 pub(crate) fn rotation_dot_base_duration(prepared: &PreparedV2, id: &ActionId) -> Option<i64> {
     prepared
@@ -2375,6 +2390,8 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
         pet_aura_known: &pet_aura_known,
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
+        icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
+        multidot: &|id: &ActionId| rotation_multidot(prepared, id),
     };
     let live = |index: usize| {
         compile_condition(rotation.priority_list[index].condition.as_ref(), &lookup)
@@ -2462,6 +2479,8 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
         pet_aura_known: &pet_aura_known,
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
+        icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
+        multidot: &|id: &ActionId| rotation_multidot(prepared, id),
     };
     rotation
         .priority_list
@@ -2501,6 +2520,8 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
         pet_aura_known: &pet_aura_known,
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
+        icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
+        multidot: &|id: &ActionId| rotation_multidot(prepared, id),
     };
     compile_condition(prepull.condition.as_ref(), &lookup)
         == crate::rotation::CompiledCondition::Pruned
@@ -2616,6 +2637,23 @@ fn find_aura(prepared: &PreparedV2, id: &ActionId) -> Option<FoundAura<ActionId>
     find_unit_aura(&prepared.player.auras, id)
 }
 
+/// Go `GetIcdAuraByID` on a unit's exported auras: the first with the action, or triggered by
+/// it, that has an ICD.
+fn find_icd_aura(prepared: &PreparedV2, unit: Unit, id: &ActionId) -> Option<ActionId> {
+    let auras = match unit {
+        Unit::Player => &prepared.player.auras,
+        Unit::Target(_) => &prepared.target.auras,
+    };
+    auras
+        .iter()
+        .any(|aura| {
+            aura.icd.is_some()
+                && (aura.action_id.as_ref() == Some(id)
+                    || aura.action_id_for_proc.as_ref() == Some(id))
+        })
+        .then(|| id.clone())
+}
+
 /// Go `GetAuraByID` on a unit's exported auras.
 fn find_unit_aura(
     auras: &[crate::contracts::prepared_v2::Aura],
@@ -2653,6 +2691,8 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
         pet_aura_known: &pet_aura_known,
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
+        icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
+        multidot: &|id: &ActionId| rotation_multidot(prepared, id),
     };
     rotation
         .priority_list

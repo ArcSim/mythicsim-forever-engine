@@ -205,11 +205,17 @@ func priestDamageRows(rows map[int32]*spelldata.Spell) {
 
 // Dynamic damage taken modifiers the priest effects describe: Power in Light registers one on
 // every target (talents_discipline.go applyPowerInLight).
+// Power in Light's modifier and Shadow Weaving's (community #777), one on each target.
 func priestDamageTakenModifiers(agent core.Agent) int {
-	if agent.(priest.PriestAgent).GetPriest().Talents.PowerInLight > 0 {
-		return 1
+	talents := agent.(priest.PriestAgent).GetPriest().Talents
+	count := 0
+	if talents.PowerInLight > 0 {
+		count++
 	}
-	return 0
+	if talents.ShadowWeaving > 0 {
+		count++
+	}
+	return count
 }
 
 // The spellbook positions a spell modifier with a class mask and school applies to, by core

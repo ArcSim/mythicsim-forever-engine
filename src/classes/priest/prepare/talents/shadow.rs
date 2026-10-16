@@ -299,6 +299,11 @@ impl Priest {
             )
         });
         self.shadow_weaving_aura = auras.into_iter().flatten().next();
+        for target in sim.env_units.clone() {
+            if sim.unit(target).unit_type == UnitType::Enemy {
+                sim.add_dynamic_damage_taken_modifier(target);
+            }
+        }
 
         sim.make_proc_trigger_aura(
             unit,

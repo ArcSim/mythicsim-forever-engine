@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "713b825aae50c2a1277081488a7aca742542b0d6",
+    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
     "client_build": "1.60.1.70338",
     "exporter": "tools/oracle-v2"
   },
@@ -717,7 +717,7 @@
       "ShadowResistance": 27,
       "SpellCritPercent": 15.4746,
       "SpellCritRating": 42,
-      "SpellDamage": 615.8,
+      "SpellDamage": 544.4,
       "SpellHasteRating": 0,
       "SpellHitPercent": 9.5,
       "SpellHitRating": 95,
@@ -1014,14 +1014,14 @@
       },
       {
         "label": "Leader of the Pack (External)",
-        "tag": "DruidCritAura",
+        "tag": "LeaderOfThePack",
         "action_id": {
           "spell_id": 24932,
           "tag": -1
         },
         "duration_ns": 9223372036854775807,
         "max_stacks": 0,
-        "active": false,
+        "active": true,
         "stacks": 0,
         "callbacks": [
           "on_reset",
@@ -1030,10 +1030,9 @@
         ],
         "icd": null,
         "exclusive_effects": 1,
-        "displaced_by": "Moonkin Aura (External)",
         "exclusive_memberships": [
           {
-            "category": "DruidCritAura",
+            "category": "LeaderOfThePack",
             "single_aura": true,
             "priority": 3,
             "position": 0
@@ -1042,7 +1041,7 @@
       },
       {
         "label": "Moonkin Aura (External)",
-        "tag": "DruidCritAura",
+        "tag": "MoonkinAura",
         "action_id": {
           "spell_id": 24907,
           "tag": -1
@@ -1060,10 +1059,10 @@
         "exclusive_effects": 1,
         "exclusive_memberships": [
           {
-            "category": "DruidCritAura",
+            "category": "MoonkinAura",
             "single_aura": true,
             "priority": 3,
-            "position": 1
+            "position": 0
           }
         ]
       },
@@ -1128,14 +1127,8 @@
           "on_reset"
         ],
         "icd": null,
-        "exclusive_effects": 3,
+        "exclusive_effects": 2,
         "exclusive_memberships": [
-          {
-            "category": "AirTotem",
-            "single_aura": true,
-            "priority": 2,
-            "position": 0
-          },
           {
             "category": "FlametongueTotem",
             "single_aura": false,
@@ -13566,35 +13559,35 @@
       "ranks": [
         {
           "bonus": 4,
-          "bonus_coefficient": 0.0949999988079071,
+          "bonus_coefficient": 0.042,
           "bonus_targets": 4,
           "spell_id": 26573,
           "tick": 2
         },
         {
           "bonus": 7,
-          "bonus_coefficient": 0.0949999988079071,
+          "bonus_coefficient": 0.042,
           "bonus_targets": 4,
           "spell_id": 20116,
           "tick": 3
         },
         {
           "bonus": 11,
-          "bonus_coefficient": 0.0949999988079071,
+          "bonus_coefficient": 0.042,
           "bonus_targets": 4,
           "spell_id": 20922,
           "tick": 6
         },
         {
           "bonus": 20,
-          "bonus_coefficient": 0.0949999988079071,
+          "bonus_coefficient": 0.042,
           "bonus_targets": 4,
           "spell_id": 20923,
           "tick": 8
         },
         {
           "bonus": 27,
-          "bonus_coefficient": 0.0949999988079071,
+          "bonus_coefficient": 0.042,
           "bonus_targets": 4,
           "spell_id": 20924,
           "tick": 12
@@ -13825,7 +13818,7 @@
       "aura": "Righteous Fury",
       "kind": "righteous_fury",
       "spell_id": 25780,
-      "threat_percent": 0.6
+      "threat_percent": 0.9
     },
     {
       "blessing_flash_of_light": 115,
@@ -14310,7 +14303,7 @@
           "PhysicalCritPercent": 24.808,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.4746,
-          "SpellDamage": 615.8,
+          "SpellDamage": 544.4,
           "Spirit": 176,
           "SpiritManaRegenPerSecond": 25.1
         },
@@ -14322,7 +14315,7 @@
           "PhysicalCritPercent": 24.808,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.4746,
-          "SpellDamage": 615.8,
+          "SpellDamage": 544.4,
           "Spirit": 176,
           "SpiritManaRegenPerSecond": 25.1
         },
@@ -14334,7 +14327,7 @@
           "PhysicalCritPercent": 24.808,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.4746,
-          "SpellDamage": 615.8,
+          "SpellDamage": 544.4,
           "Spirit": 176,
           "SpiritManaRegenPerSecond": 25.1
         },
@@ -14346,7 +14339,7 @@
           "PhysicalCritPercent": 24.808,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.4746,
-          "SpellDamage": 615.8,
+          "SpellDamage": 544.4,
           "Spirit": 176,
           "SpiritManaRegenPerSecond": 25.1
         },
@@ -14358,7 +14351,7 @@
           "PhysicalCritPercent": 24.808,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.4746,
-          "SpellDamage": 615.8,
+          "SpellDamage": 544.4,
           "Spirit": 176,
           "SpiritManaRegenPerSecond": 25.1
         },
@@ -14370,7 +14363,7 @@
           "PhysicalCritPercent": 24.808,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.4746,
-          "SpellDamage": 615.8,
+          "SpellDamage": 544.4,
           "Spirit": 176,
           "SpiritManaRegenPerSecond": 25.1
         },
@@ -14382,7 +14375,7 @@
           "PhysicalCritPercent": 24.808,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.4746,
-          "SpellDamage": 615.8,
+          "SpellDamage": 544.4,
           "Spirit": 176,
           "SpiritManaRegenPerSecond": 25.1
         },
@@ -14394,7 +14387,7 @@
           "PhysicalCritPercent": 24.808,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.4746,
-          "SpellDamage": 615.8,
+          "SpellDamage": 544.4,
           "Spirit": 176,
           "SpiritManaRegenPerSecond": 25.1
         },
@@ -14406,7 +14399,7 @@
           "PhysicalCritPercent": 25.1622,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.691699999999999,
-          "SpellDamage": 623.6,
+          "SpellDamage": 548.3,
           "Spirit": 189,
           "SpiritManaRegenPerSecond": 26.400000000000002
         },
@@ -14418,7 +14411,7 @@
           "PhysicalCritPercent": 25.1622,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.691699999999999,
-          "SpellDamage": 623.6,
+          "SpellDamage": 548.3,
           "Spirit": 189,
           "SpiritManaRegenPerSecond": 26.400000000000002
         },
@@ -14430,7 +14423,7 @@
           "PhysicalCritPercent": 25.1622,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.691699999999999,
-          "SpellDamage": 623.6,
+          "SpellDamage": 548.3,
           "Spirit": 189,
           "SpiritManaRegenPerSecond": 26.400000000000002
         },
@@ -14442,7 +14435,7 @@
           "PhysicalCritPercent": 25.1622,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.691699999999999,
-          "SpellDamage": 623.6,
+          "SpellDamage": 548.3,
           "Spirit": 189,
           "SpiritManaRegenPerSecond": 26.400000000000002
         },
@@ -14454,7 +14447,7 @@
           "PhysicalCritPercent": 25.1622,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.691699999999999,
-          "SpellDamage": 623.6,
+          "SpellDamage": 548.3,
           "Spirit": 189,
           "SpiritManaRegenPerSecond": 26.400000000000002
         },
@@ -14466,7 +14459,7 @@
           "PhysicalCritPercent": 25.1622,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.691699999999999,
-          "SpellDamage": 623.6,
+          "SpellDamage": 548.3,
           "Spirit": 189,
           "SpiritManaRegenPerSecond": 26.400000000000002
         },
@@ -14478,7 +14471,7 @@
           "PhysicalCritPercent": 25.1622,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.691699999999999,
-          "SpellDamage": 623.6,
+          "SpellDamage": 548.3,
           "Spirit": 189,
           "SpiritManaRegenPerSecond": 26.400000000000002
         },
@@ -14490,7 +14483,7 @@
           "PhysicalCritPercent": 25.1622,
           "RangedAttackPower": 64,
           "SpellCritPercent": 15.691699999999999,
-          "SpellDamage": 623.6,
+          "SpellDamage": 548.3,
           "Spirit": 189,
           "SpiritManaRegenPerSecond": 26.400000000000002
         }
@@ -14649,7 +14642,7 @@
         },
         {
           "path": "/player/stats/SpellDamage",
-          "value": 623.6
+          "value": 548.3
         },
         {
           "path": "/player/stats/Spirit",

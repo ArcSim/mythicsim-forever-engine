@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "713b825aae50c2a1277081488a7aca742542b0d6",
+    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
     "client_build": "1.60.1.70338",
     "exporter": "tools/oracle-v2"
   },
@@ -485,7 +485,7 @@
       "NatureResistance": 27,
       "ParryPercent": 0,
       "ParryRating": 0,
-      "PhysicalCritPercent": 12.950000000000001,
+      "PhysicalCritPercent": 9.95,
       "PhysicalDamage": 0,
       "PhysicalHitPercent": 0,
       "RangedAttackPower": 0,
@@ -707,7 +707,7 @@
       },
       {
         "label": "Moonkin Aura (External)",
-        "tag": "DruidCritAura",
+        "tag": "MoonkinAura",
         "action_id": {
           "spell_id": 24907,
           "tag": -1
@@ -725,7 +725,7 @@
         "exclusive_effects": 1,
         "exclusive_memberships": [
           {
-            "category": "DruidCritAura",
+            "category": "MoonkinAura",
             "single_aura": true,
             "priority": 3,
             "position": 0
@@ -4688,7 +4688,7 @@
           "AttackPower": 54,
           "HealingPower": 352,
           "MP5": 77,
-          "PhysicalCritPercent": 12.950000000000001,
+          "PhysicalCritPercent": 9.95,
           "RangedAttackPower": 0,
           "SpellCritPercent": 14.656500000000001,
           "SpellDamage": 597
@@ -4697,7 +4697,7 @@
           "AttackPower": 54,
           "HealingPower": 527,
           "MP5": 77,
-          "PhysicalCritPercent": 12.950000000000001,
+          "PhysicalCritPercent": 9.95,
           "RangedAttackPower": 0,
           "SpellCritPercent": 14.656500000000001,
           "SpellDamage": 772

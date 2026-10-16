@@ -19,8 +19,8 @@
 [0.00] [hunter (#1)] Aura gained: {SpellID: 25918, Tag: -1}
 [0.00] [hunter (#1) - Raptor] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [hunter (#1) - Raptor] Aura gained: {SpellID: 20905, Tag: -1}
-[0.00] [hunter (#1) - Raptor] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2650.880,"MP5": 25.000,"PhysicalCritPercent": 30.032,"SpellCritPercent": 10.000,}
-[0.00] [hunter (#1) - Raptor] Pet inherited stats: {"PhysicalCritPercent": 20.032,}
+[0.00] [hunter (#1) - Raptor] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2650.880,"MP5": 25.000,"PhysicalCritPercent": 32.032,"SpellCritPercent": 10.000,}
+[0.00] [hunter (#1) - Raptor] Pet inherited stats: {"PhysicalCritPercent": 22.032,}
 [0.00] [hunter (#1) - Raptor] Pet summoned
 [-10.00] [hunter (#1)] Casting {SpellID: 25296} (Cost = 120.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [-10.00] [hunter (#1)] Completed cast {SpellID: 25296}
@@ -1320,9 +1320,10 @@
 [42.07] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 472.536 damage (SpellSchool: 1). (Threat: 472.536)
 [42.07] [hunter (#1) - Raptor] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [42.07] [hunter (#1) - Raptor] Completed cast {OtherID: 3, Tag: 1}
-[42.07] [hunter (#1) - Raptor] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.6, AfterAttackerMods:78.5, AfterResistances:66.6, AfterTargetMods:66.6, AfterOutcome:66.6, AfterPostOutcome:66.6
-[42.07] [hunter (#1) - Raptor] [Target 1] {OtherID: 3, Tag: 1} Hit for 66.635 damage (SpellSchool: 1). (Threat: 66.635)
+[42.07] [hunter (#1) - Raptor] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.6, AfterAttackerMods:78.5, AfterResistances:66.6, AfterTargetMods:66.6, AfterOutcome:133.3, AfterPostOutcome:133.3
+[42.07] [hunter (#1) - Raptor] [Target 1] {OtherID: 3, Tag: 1} Crit for 133.270 damage (SpellSchool: 1). (Threat: 133.270)
 [42.08] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (2781.220 --> 2840.220) of 3465 total.
+[42.08] [hunter (#1) - Raptor] Aura refreshed: {SpellID: 19615}
 [42.09] [hunter (#1) - Raptor] Gained 3.000 focus from {OtherID: 6} (7.000 --> 10.000) of 100 total.
 [42.15] [hunter (#1)] Queueing up {SpellID: 1293527} to cast at 42.554706165s.
 [42.15] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -1810,8 +1811,9 @@
 [58.84] [hunter (#1) - Raptor] Gained 3.000 focus from {OtherID: 6} (8.000 --> 11.000) of 100 total.
 [59.02] [hunter (#1) - Raptor] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [59.02] [hunter (#1) - Raptor] Completed cast {OtherID: 3, Tag: 1}
-[59.02] [hunter (#1) - Raptor] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.6, AfterAttackerMods:73.6, AfterResistances:62.5, AfterTargetMods:62.5, AfterOutcome:62.5, AfterPostOutcome:62.5
-[59.02] [hunter (#1) - Raptor] [Target 1] {OtherID: 3, Tag: 1} Hit for 62.481 damage (SpellSchool: 1). (Threat: 62.481)
+[59.02] [hunter (#1) - Raptor] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.6, AfterAttackerMods:73.6, AfterResistances:62.5, AfterTargetMods:62.5, AfterOutcome:125.0, AfterPostOutcome:125.0
+[59.02] [hunter (#1) - Raptor] [Target 1] {OtherID: 3, Tag: 1} Crit for 124.961 damage (SpellSchool: 1). (Threat: 124.961)
+[59.03] [hunter (#1) - Raptor] Aura refreshed: {SpellID: 19615}
 [59.09] [hunter (#1) - Raptor] Gained 3.000 focus from {OtherID: 6} (11.000 --> 14.000) of 100 total.
 [59.12] [hunter (#1) - Raptor] Pausing rotation for 676.923077ms due to resources / CDs.
 [59.34] [hunter (#1) - Raptor] Gained 3.000 focus from {OtherID: 6} (14.000 --> 17.000) of 100 total.

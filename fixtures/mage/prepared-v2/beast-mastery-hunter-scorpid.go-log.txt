@@ -19,8 +19,8 @@
 [0.00] [hunter (#1)] Aura gained: {SpellID: 25918, Tag: -1}
 [0.00] [hunter (#1) - Scorpid] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [hunter (#1) - Scorpid] Aura gained: {SpellID: 20905, Tag: -1}
-[0.00] [hunter (#1) - Scorpid] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2790.400,"MP5": 25.000,"PhysicalCritPercent": 30.032,"SpellCritPercent": 10.000,}
-[0.00] [hunter (#1) - Scorpid] Pet inherited stats: {"PhysicalCritPercent": 20.032,}
+[0.00] [hunter (#1) - Scorpid] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2790.400,"MP5": 25.000,"PhysicalCritPercent": 32.032,"SpellCritPercent": 10.000,}
+[0.00] [hunter (#1) - Scorpid] Pet inherited stats: {"PhysicalCritPercent": 22.032,}
 [0.00] [hunter (#1) - Scorpid] Pet summoned
 [-10.00] [hunter (#1)] Casting {SpellID: 25296} (Cost = 120.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [-10.00] [hunter (#1)] Completed cast {SpellID: 25296}
@@ -264,8 +264,9 @@
 [7.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (97.000 --> 100.000) of 100 total.
 [7.83] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [7.83] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[7.83] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:44.5, AfterAttackerMods:92.1, AfterResistances:78.2, AfterTargetMods:78.2, AfterOutcome:78.2, AfterPostOutcome:78.2
-[7.83] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Hit for 78.189 damage (SpellSchool: 1). (Threat: 78.189)
+[7.83] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:44.5, AfterAttackerMods:92.1, AfterResistances:78.2, AfterTargetMods:78.2, AfterOutcome:156.4, AfterPostOutcome:156.4
+[7.83] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 156.378 damage (SpellSchool: 1). (Threat: 156.378)
+[7.84] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
 [7.93] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [8.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2468.700 --> 2521.500) of 3465 total.
 [8.43] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
@@ -1738,8 +1739,8 @@
 [56.80] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
 [56.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (20.000 --> 23.000) of 100 total.
 [56.90] [hunter (#1) - Scorpid] Pausing rotation for 205.121998ms due to resources / CDs.
-[56.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:36.7, AfterTargetMods:36.7, AfterOutcome:36.7, AfterPostOutcome:36.7
-[56.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit for 36.656 damage (SpellSchool: 8). (Threat: 36.656)
+[56.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:36.7, AfterTargetMods:36.7, AfterOutcome:73.3, AfterPostOutcome:73.3
+[56.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Crit for 73.312 damage (SpellSchool: 8). (Threat: 73.312)
 [57.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (23.000 --> 26.000) of 100 total.
 [57.10] [hunter (#1) - Scorpid] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
 [57.10] [hunter (#1) - Scorpid] Completed cast {SpellID: 3009}
@@ -2602,8 +2603,9 @@
 [85.74] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [85.75] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [85.75] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[85.75] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.8, AfterAttackerMods:71.4, AfterResistances:60.7, AfterTargetMods:60.7, AfterOutcome:60.7, AfterPostOutcome:60.7
-[85.75] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Hit for 60.670 damage (SpellSchool: 1). (Threat: 60.670)
+[85.75] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.8, AfterAttackerMods:71.4, AfterResistances:60.7, AfterTargetMods:60.7, AfterOutcome:121.3, AfterPostOutcome:121.3
+[85.75] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 121.340 damage (SpellSchool: 1). (Threat: 121.340)
+[85.76] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
 [85.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (3.000 --> 6.000) of 100 total.
 [85.84] [hunter (#1)] No available actions!
 [85.84] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -3050,8 +3052,9 @@
 [100.48] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [100.52] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [100.52] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[100.52] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:44.4, AfterAttackerMods:61.3, AfterResistances:52.0, AfterTargetMods:52.0, AfterOutcome:52.0, AfterPostOutcome:52.0
-[100.52] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Hit for 52.025 damage (SpellSchool: 1). (Threat: 52.025)
+[100.52] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:44.4, AfterAttackerMods:61.3, AfterResistances:52.0, AfterTargetMods:52.0, AfterOutcome:104.1, AfterPostOutcome:104.1
+[100.52] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 104.051 damage (SpellSchool: 1). (Threat: 104.051)
+[100.53] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
 [100.58] [hunter (#1)] No available actions!
 [100.58] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [100.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (20.000 --> 23.000) of 100 total.
@@ -3156,8 +3159,9 @@
 [104.18] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [104.21] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [104.21] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[104.21] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:43.6, AfterAttackerMods:60.0, AfterResistances:51.0, AfterTargetMods:51.0, AfterOutcome:51.0, AfterPostOutcome:51.0
-[104.21] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Hit for 50.982 damage (SpellSchool: 1). (Threat: 50.982)
+[104.21] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:43.6, AfterAttackerMods:60.0, AfterResistances:51.0, AfterTargetMods:51.0, AfterOutcome:102.0, AfterPostOutcome:102.0
+[104.21] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 101.964 damage (SpellSchool: 1). (Threat: 101.964)
+[104.22] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
 [104.31] [hunter (#1) - Scorpid] Pausing rotation for 353.846154ms due to resources / CDs.
 [104.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (15.000 --> 18.000) of 100 total.
 [104.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (18.000 --> 21.000) of 100 total.
@@ -3314,7 +3318,6 @@
 [109.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (20.000 --> 23.000) of 100 total.
 [109.38] [hunter (#1)] No available actions!
 [109.38] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.45] [hunter (#1) - Scorpid] Aura faded: {SpellID: 19615}
 [109.48] [hunter (#1)] No available actions!
 [109.48] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [109.58] [hunter (#1)] No available actions!
@@ -3325,23 +3328,23 @@
 [109.60] [hunter (#1) - Scorpid] Spent 25.000 focus from {SpellID: 3009} (26.000 --> 1.000) of 100 total.
 [109.60] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:56.3, AfterAttackerMods:77.6, AfterResistances:65.9, AfterTargetMods:65.9, AfterOutcome:131.9, AfterPostOutcome:131.9
 [109.60] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} Crit for 131.854 damage (SpellSchool: 1). (Threat: 131.854)
-[109.61] [hunter (#1) - Scorpid] Aura gained: {SpellID: 19615}
+[109.61] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
 [109.68] [hunter (#1)] No available actions!
 [109.68] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [109.68] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [109.68] [hunter (#1)] Completed cast {OtherID: 4}
 [109.68] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:528.3, AfterAttackerMods:538.9, AfterResistances:457.6, AfterTargetMods:457.6, AfterOutcome:457.6, AfterPostOutcome:457.6
+[109.75] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[109.75] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[109.75] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.4, AfterAttackerMods:70.8, AfterResistances:60.2, AfterTargetMods:60.2, AfterOutcome:120.3, AfterPostOutcome:120.3
+[109.75] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 120.305 damage (SpellSchool: 1). (Threat: 120.305)
+[109.76] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
 [109.78] [hunter (#1)] No available actions!
 [109.78] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.78] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[109.78] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[109.78] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.4, AfterAttackerMods:70.8, AfterResistances:60.2, AfterTargetMods:60.2, AfterOutcome:120.3, AfterPostOutcome:120.3
-[109.78] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 120.305 damage (SpellSchool: 1). (Threat: 120.305)
-[109.79] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
 [109.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (1.000 --> 4.000) of 100 total.
+[109.85] [hunter (#1) - Scorpid] Pausing rotation for 1.353846154s due to resources / CDs.
 [109.88] [hunter (#1)] No available actions!
 [109.88] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.88] [hunter (#1) - Scorpid] Pausing rotation for 1.322424767s due to resources / CDs.
 [109.98] [hunter (#1)] No available actions!
 [109.98] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [109.98] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 457.650 damage (SpellSchool: 1). (Threat: 457.650)
@@ -3364,17 +3367,17 @@
 [110.58] [hunter (#1)] No available actions!
 [110.58] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [110.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (10.000 --> 13.000) of 100 total.
-[110.68] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
-[110.68] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
+[110.67] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[110.67] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[110.67] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.3, AfterAttackerMods:67.9, AfterResistances:57.7, AfterTargetMods:57.7, AfterOutcome:0.0, AfterPostOutcome:0.0
+[110.67] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
+[110.68] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:0.0, AfterPostOutcome:0.0
+[110.68] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Miss (SpellSchool: 1). (Threat: 0.000)
 [110.68] [hunter (#1)] Queueing up {SpellID: 20904} to cast at 1m51.015336844s.
 [110.68] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[110.70] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[110.70] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[110.70] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:44.7, AfterAttackerMods:61.6, AfterResistances:52.4, AfterTargetMods:52.4, AfterOutcome:29.3, AfterPostOutcome:29.3
-[110.70] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 29.317 damage (SpellSchool: 1). (Threat: 29.317)
+[110.77] [hunter (#1) - Scorpid] Pausing rotation for 430.769231ms due to resources / CDs.
 [110.78] [hunter (#1)] Queueing up {SpellID: 2643} to cast at 1m51.015336844s.
 [110.78] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[110.80] [hunter (#1) - Scorpid] Pausing rotation for 399.347844ms due to resources / CDs.
 [110.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (13.000 --> 16.000) of 100 total.
 [110.88] [hunter (#1)] Queueing up {SpellID: 2643} to cast at 1m51.015336844s.
 [110.88] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -3390,75 +3393,75 @@
 [111.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (19.000 --> 22.000) of 100 total.
 [111.35] [hunter (#1)] Completed cast {SpellID: 2643}
 [111.35] [hunter (#1)] Spent 217.490 mana from {SpellID: 2643} (2490.460 --> 2272.970) of 3465 total.
-[111.35] [hunter (#1)] [Target 1] {SpellID: 2643} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:509.0, AfterAttackerMods:519.2, AfterResistances:440.9, AfterTargetMods:440.9, AfterOutcome:440.9, AfterPostOutcome:440.9
+[111.35] [hunter (#1)] [Target 1] {SpellID: 2643} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:511.9, AfterAttackerMods:522.2, AfterResistances:443.5, AfterTargetMods:443.5, AfterOutcome:443.5, AfterPostOutcome:443.5
 [111.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (22.000 --> 25.000) of 100 total.
-[111.63] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[111.63] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[111.63] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.0, AfterAttackerMods:66.1, AfterResistances:56.2, AfterTargetMods:56.2, AfterOutcome:38.9, AfterPostOutcome:38.9
-[111.63] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 38.910 damage (SpellSchool: 1). (Threat: 38.910)
+[111.60] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[111.60] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[111.60] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.8, AfterAttackerMods:71.3, AfterResistances:60.6, AfterTargetMods:60.6, AfterOutcome:38.7, AfterPostOutcome:38.7
+[111.60] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 38.712 damage (SpellSchool: 1). (Threat: 38.712)
 [111.69] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [111.69] [hunter (#1)] Completed cast {OtherID: 4}
-[111.69] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:540.4, AfterAttackerMods:551.2, AfterResistances:468.2, AfterTargetMods:468.2, AfterOutcome:468.2, AfterPostOutcome:468.2
+[111.69] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:548.2, AfterAttackerMods:559.1, AfterResistances:474.9, AfterTargetMods:474.9, AfterOutcome:474.9, AfterPostOutcome:474.9
 [111.70] [hunter (#1) - Scorpid] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
 [111.70] [hunter (#1) - Scorpid] Completed cast {SpellID: 3009}
 [111.70] [hunter (#1) - Scorpid] Spent 25.000 focus from {SpellID: 3009} (25.000 --> 0.000) of 100 total.
-[111.70] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:58.3, AfterAttackerMods:80.3, AfterResistances:68.2, AfterTargetMods:68.2, AfterOutcome:68.2, AfterPostOutcome:68.2
-[111.70] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} Hit for 68.202 damage (SpellSchool: 1). (Threat: 68.202)
-[111.75] [hunter (#1)] [Target 1] {SpellID: 2643} Hit for 440.939 damage (SpellSchool: 1). (Threat: 440.939)
+[111.70] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:57.1, AfterAttackerMods:78.6, AfterResistances:66.8, AfterTargetMods:66.8, AfterOutcome:66.8, AfterPostOutcome:66.8
+[111.70] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} Hit for 66.786 damage (SpellSchool: 1). (Threat: 66.786)
+[111.75] [hunter (#1)] [Target 1] {SpellID: 2643} Hit for 443.488 damage (SpellSchool: 1). (Threat: 443.488)
 [111.79] [hunter (#1)] No available actions!
 [111.79] [hunter (#1)] Pausing rotation for 728.76256ms due to resources / CDs.
 [111.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (0.000 --> 3.000) of 100 total.
-[111.99] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 468.163 damage (SpellSchool: 1). (Threat: 468.163)
-[112.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2272.970 --> 2325.770) of 3465 total.
+[111.99] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 474.862 damage (SpellSchool: 1). (Threat: 474.862)
+[112.00] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (2272.970 --> 2331.970) of 3465 total.
+[112.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2331.970 --> 2384.770) of 3465 total.
 [112.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (3.000 --> 6.000) of 100 total.
 [112.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (6.000 --> 9.000) of 100 total.
 [112.52] [hunter (#1)] Casting {SpellID: 1293527} (Cost = 172.900, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [112.52] [hunter (#1)] Completed cast {SpellID: 1293527}
-[112.52] [hunter (#1)] Spent 172.900 mana from {SpellID: 1293527} (2325.770 --> 2152.870) of 3465 total.
-[112.52] [hunter (#1)] [Target 1] {SpellID: 1293527} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:198.3, AfterAttackerMods:232.7, AfterResistances:197.6, AfterTargetMods:197.6, AfterOutcome:395.2, AfterPostOutcome:395.2
-[112.52] [hunter (#1)] [Target 1] {SpellID: 1293527} Crit for 395.199 damage (SpellSchool: 1). (Threat: 395.199)
+[112.52] [hunter (#1)] Spent 172.900 mana from {SpellID: 1293527} (2384.770 --> 2211.870) of 3465 total.
+[112.52] [hunter (#1)] [Target 1] {SpellID: 1293527} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:198.3, AfterAttackerMods:232.7, AfterResistances:197.6, AfterTargetMods:197.6, AfterOutcome:197.6, AfterPostOutcome:197.6
+[112.52] [hunter (#1)] [Target 1] {SpellID: 1293527} Hit for 197.600 damage (SpellSchool: 1). (Threat: 197.600)
 [112.52] [Target 1] Aura faded: {SpellID: 1293527, Tag: 1}
 [112.52] [Target 1] Aura gained: {SpellID: 1293527, Tag: 1}
-[112.52] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
-[112.52] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
-[112.55] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[112.55] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[112.55] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:43.4, AfterAttackerMods:59.9, AfterResistances:50.8, AfterTargetMods:50.8, AfterOutcome:31.9, AfterPostOutcome:31.9
-[112.55] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 31.878 damage (SpellSchool: 1). (Threat: 31.878)
+[112.52] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:0.0, AfterPostOutcome:0.0
+[112.52] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Dodge (SpellSchool: 1). (Threat: 0.000)
+[112.52] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[112.52] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[112.52] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:47.6, AfterAttackerMods:65.6, AfterResistances:55.7, AfterTargetMods:55.7, AfterOutcome:0.0, AfterPostOutcome:0.0
+[112.52] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
 [112.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (9.000 --> 12.000) of 100 total.
-[112.65] [hunter (#1) - Scorpid] Pausing rotation for 653.193998ms due to resources / CDs.
+[112.62] [hunter (#1) - Scorpid] Pausing rotation for 676.923077ms due to resources / CDs.
 [112.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (12.000 --> 15.000) of 100 total.
-[112.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:36.7, AfterTargetMods:36.7, AfterOutcome:36.7, AfterPostOutcome:36.7
-[112.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit for 36.656 damage (SpellSchool: 8). (Threat: 36.656)
+[112.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:36.7, AfterTargetMods:36.7, AfterOutcome:73.3, AfterPostOutcome:73.3
+[112.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Crit for 73.312 damage (SpellSchool: 8). (Threat: 73.312)
 [113.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (15.000 --> 18.000) of 100 total.
 [113.18] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [113.18] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [113.30] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [113.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (18.000 --> 21.000) of 100 total.
-[113.47] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[113.47] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[113.47] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:52.7, AfterAttackerMods:72.6, AfterResistances:61.7, AfterTargetMods:61.7, AfterOutcome:123.3, AfterPostOutcome:123.3
-[113.47] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 123.348 damage (SpellSchool: 1). (Threat: 123.348)
-[113.48] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
-[113.57] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
+[113.44] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[113.44] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[113.44] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.4, AfterAttackerMods:70.9, AfterResistances:60.2, AfterTargetMods:60.2, AfterOutcome:42.9, AfterPostOutcome:42.9
+[113.44] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 42.913 damage (SpellSchool: 1). (Threat: 42.913)
+[113.54] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [113.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (21.000 --> 24.000) of 100 total.
 [113.69] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [113.69] [hunter (#1)] Completed cast {OtherID: 4}
-[113.69] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:563.0, AfterAttackerMods:574.2, AfterResistances:487.7, AfterTargetMods:487.7, AfterOutcome:487.7, AfterPostOutcome:487.7
+[113.69] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:544.9, AfterAttackerMods:555.8, AfterResistances:472.0, AfterTargetMods:472.0, AfterOutcome:472.0, AfterPostOutcome:472.0
 [113.79] [hunter (#1)] No available actions!
 [113.79] [hunter (#1)] Pausing rotation for 222.073597ms due to resources / CDs.
 [113.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (24.000 --> 27.000) of 100 total.
 [113.98] [hunter (#1)] [Target 1] {SpellID: 25295} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:211.2, AfterAttackerMods:215.5, AfterResistances:215.5, AfterTargetMods:215.5, AfterOutcome:215.5, AfterPostOutcome:215.5
 [113.98] [hunter (#1)] [Target 1] {SpellID: 25295} tick Hit for 215.470 damage (SpellSchool: 8). (Threat: 215.470)
-[113.99] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 487.677 damage (SpellSchool: 1). (Threat: 487.677)
-[114.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2152.870 --> 2205.670) of 3465 total.
+[113.99] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 472.032 damage (SpellSchool: 1). (Threat: 472.032)
+[114.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2211.870 --> 2264.670) of 3465 total.
 [114.02] [hunter (#1)] No available actions!
 [114.02] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.07] [hunter (#1) - Scorpid] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
-[114.07] [hunter (#1) - Scorpid] Completed cast {SpellID: 3009}
-[114.07] [hunter (#1) - Scorpid] Spent 25.000 focus from {SpellID: 3009} (27.000 --> 2.000) of 100 total.
-[114.07] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:57.0, AfterAttackerMods:78.6, AfterResistances:66.8, AfterTargetMods:66.8, AfterOutcome:66.8, AfterPostOutcome:66.8
-[114.07] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} Hit for 66.767 damage (SpellSchool: 1). (Threat: 66.767)
+[114.04] [hunter (#1) - Scorpid] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[114.04] [hunter (#1) - Scorpid] Completed cast {SpellID: 3009}
+[114.04] [hunter (#1) - Scorpid] Spent 25.000 focus from {SpellID: 3009} (27.000 --> 2.000) of 100 total.
+[114.04] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:56.4, AfterAttackerMods:77.8, AfterResistances:66.1, AfterTargetMods:66.1, AfterOutcome:66.1, AfterPostOutcome:66.1
+[114.04] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} Hit for 66.070 damage (SpellSchool: 1). (Threat: 66.070)
 [114.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (2.000 --> 5.000) of 100 total.
 [114.12] [hunter (#1)] No available actions!
 [114.12] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -3467,13 +3470,13 @@
 [114.32] [hunter (#1)] No available actions!
 [114.32] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [114.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (5.000 --> 8.000) of 100 total.
-[114.40] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[114.40] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[114.40] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:43.6, AfterAttackerMods:60.0, AfterResistances:51.0, AfterTargetMods:51.0, AfterOutcome:33.8, AfterPostOutcome:33.8
-[114.40] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 33.773 damage (SpellSchool: 1). (Threat: 33.773)
+[114.37] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[114.37] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[114.37] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:46.1, AfterAttackerMods:63.5, AfterResistances:54.0, AfterTargetMods:54.0, AfterOutcome:0.0, AfterPostOutcome:0.0
+[114.37] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
 [114.42] [hunter (#1)] No available actions!
 [114.42] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.50] [hunter (#1) - Scorpid] Pausing rotation for 1.176923077s due to resources / CDs.
+[114.47] [hunter (#1) - Scorpid] Pausing rotation for 1.176923077s due to resources / CDs.
 [114.52] [hunter (#1)] No available actions!
 [114.52] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [114.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (8.000 --> 11.000) of 100 total.
@@ -3497,27 +3500,27 @@
 [115.12] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [115.22] [hunter (#1)] No available actions!
 [115.22] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.29] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[115.29] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[115.29] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.7, AfterAttackerMods:63.1, AfterResistances:53.5, AfterTargetMods:53.5, AfterOutcome:37.0, AfterPostOutcome:37.0
+[115.29] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 36.955 damage (SpellSchool: 1). (Threat: 36.955)
 [115.32] [hunter (#1)] No available actions!
 [115.32] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.32] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[115.32] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[115.32] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.4, AfterAttackerMods:70.8, AfterResistances:60.1, AfterTargetMods:60.1, AfterOutcome:43.4, AfterPostOutcome:43.4
-[115.32] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 43.423 damage (SpellSchool: 1). (Threat: 43.423)
 [115.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (17.000 --> 20.000) of 100 total.
+[115.39] [hunter (#1) - Scorpid] Pausing rotation for 253.846154ms due to resources / CDs.
 [115.42] [hunter (#1)] No available actions!
 [115.42] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.42] [hunter (#1) - Scorpid] Pausing rotation for 253.846154ms due to resources / CDs.
 [115.52] [hunter (#1)] No available actions!
 [115.52] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [115.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (20.000 --> 23.000) of 100 total.
 [115.62] [hunter (#1)] No available actions!
 [115.62] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.67] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
+[115.64] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [115.68] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [115.68] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [115.70] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [115.70] [hunter (#1)] Completed cast {OtherID: 4}
-[115.70] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:569.4, AfterAttackerMods:580.7, AfterResistances:493.2, AfterTargetMods:493.2, AfterOutcome:493.2, AfterPostOutcome:493.2
+[115.70] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:568.4, AfterAttackerMods:579.8, AfterResistances:492.4, AfterTargetMods:492.4, AfterOutcome:492.4, AfterPostOutcome:492.4
 [115.72] [hunter (#1)] No available actions!
 [115.72] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [115.82] [hunter (#1)] No available actions!
@@ -3525,36 +3528,37 @@
 [115.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (23.000 --> 26.000) of 100 total.
 [115.92] [hunter (#1)] No available actions!
 [115.92] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.00] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 493.215 damage (SpellSchool: 1). (Threat: 493.215)
-[116.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2205.670 --> 2258.470) of 3465 total.
+[116.00] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 492.408 damage (SpellSchool: 1). (Threat: 492.408)
+[116.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2264.670 --> 2317.470) of 3465 total.
 [116.02] [hunter (#1)] Casting {SpellID: 25295} (Cost = 227.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [116.02] [hunter (#1)] Completed cast {SpellID: 25295}
-[116.02] [hunter (#1)] Spent 227.500 mana from {SpellID: 25295} (2258.470 --> 2030.970) of 3465 total.
+[116.02] [hunter (#1)] Spent 227.500 mana from {SpellID: 25295} (2317.470 --> 2089.970) of 3465 total.
 [116.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (26.000 --> 29.000) of 100 total.
-[116.17] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
-[116.24] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[116.24] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[116.24] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:50.5, AfterAttackerMods:69.6, AfterResistances:59.1, AfterTargetMods:59.1, AfterOutcome:37.3, AfterPostOutcome:37.3
-[116.24] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 37.277 damage (SpellSchool: 1). (Threat: 37.277)
+[116.14] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
+[116.21] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[116.21] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[116.21] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:53.4, AfterAttackerMods:73.6, AfterResistances:62.5, AfterTargetMods:62.5, AfterOutcome:42.2, AfterPostOutcome:42.2
+[116.21] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 42.174 damage (SpellSchool: 1). (Threat: 42.174)
+[116.31] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [116.32] [hunter (#1)] [Target 1] {SpellID: 25295} Hit for 0.000 damage (SpellSchool: 8). (Threat: 0.000)
 [116.32] [Target 1] Aura faded: {SpellID: 25295}
 [116.32] [Target 1] Aura gained: {SpellID: 25295}
+[116.33] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (2089.970 --> 2148.970) of 3465 total.
 [116.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (29.000 --> 32.000) of 100 total.
-[116.34] [hunter (#1) - Scorpid] Casting {SpellID: 24587} (Cost = 30.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
-[116.34] [hunter (#1) - Scorpid] Completed cast {SpellID: 24587}
-[116.34] [hunter (#1) - Scorpid] Spent 30.000 focus from {SpellID: 24587} (32.000 --> 2.000) of 100 total.
-[116.34] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} Miss (SpellSchool: 8). (Threat: 0.000)
-[116.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (2.000 --> 5.000) of 100 total.
+[116.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (32.000 --> 35.000) of 100 total.
+[116.81] [hunter (#1) - Scorpid] Casting {SpellID: 24587} (Cost = 30.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[116.81] [hunter (#1) - Scorpid] Completed cast {SpellID: 24587}
+[116.81] [hunter (#1) - Scorpid] Spent 30.000 focus from {SpellID: 24587} (35.000 --> 5.000) of 100 total.
+[116.81] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} Hit for 0.000 damage (SpellSchool: 8). (Threat: 0.000)
 [116.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (5.000 --> 8.000) of 100 total.
-[116.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:36.7, AfterTargetMods:36.7, AfterOutcome:36.7, AfterPostOutcome:36.7
-[116.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit for 36.656 damage (SpellSchool: 8). (Threat: 36.656)
+[116.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:18.3, AfterTargetMods:18.3, AfterOutcome:18.3, AfterPostOutcome:18.3
+[116.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit (50% Resist) for 18.328 damage (SpellSchool: 8). (Threat: 18.328)
 [117.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (8.000 --> 11.000) of 100 total.
-[117.17] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[117.17] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[117.17] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:53.6, AfterAttackerMods:73.8, AfterResistances:62.7, AfterTargetMods:62.7, AfterOutcome:125.4, AfterPostOutcome:125.4
-[117.17] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 125.391 damage (SpellSchool: 1). (Threat: 125.391)
-[117.18] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
-[117.27] [hunter (#1) - Scorpid] Pausing rotation for 676.923077ms due to resources / CDs.
+[117.13] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[117.13] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[117.13] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.6, AfterAttackerMods:75.3, AfterResistances:63.9, AfterTargetMods:63.9, AfterOutcome:46.6, AfterPostOutcome:46.6
+[117.13] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 46.571 damage (SpellSchool: 1). (Threat: 46.571)
+[117.23] [hunter (#1) - Scorpid] Pausing rotation for 1.176923077s due to resources / CDs.
 [117.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (11.000 --> 14.000) of 100 total.
 [117.52] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [117.52] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
@@ -3565,134 +3569,127 @@
 [117.62] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [117.71] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [117.71] [hunter (#1)] Completed cast {OtherID: 4}
-[117.71] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:565.1, AfterAttackerMods:576.4, AfterResistances:489.6, AfterTargetMods:489.6, AfterOutcome:489.6, AfterPostOutcome:489.6
+[117.71] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:552.1, AfterAttackerMods:563.1, AfterResistances:478.2, AfterTargetMods:478.2, AfterOutcome:478.2, AfterPostOutcome:478.2
 [117.72] [hunter (#1)] Casting {SpellID: 20904} (Cost = 282.100, Cast Time = 1.337792642s, GCD = 1.5s, Effective Time = 1.5s)
+[117.76] [hunter (#1) - Scorpid] Aura faded: {SpellID: 19615}
 [117.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (17.000 --> 20.000) of 100 total.
-[117.94] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [117.97] [hunter (#1)] Aura faded: {SpellID: 6150}
-[118.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2030.970 --> 2083.770) of 3465 total.
-[118.00] [Target 1] Aura faded: {SpellID: 24587}
-[118.01] [Target 1] {SpellID: 24587} stacks: 5 --> 0
-[118.01] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 489.563 damage (SpellSchool: 1). (Threat: 489.563)
-[118.01] [hunter (#1)] Aura gained: {SpellID: 6150}
+[118.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2148.970 --> 2201.770) of 3465 total.
+[118.01] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 478.245 damage (SpellSchool: 1). (Threat: 478.245)
+[118.02] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (2201.770 --> 2260.770) of 3465 total.
 [118.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (20.000 --> 23.000) of 100 total.
-[118.09] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[118.09] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[118.09] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:53.1, AfterAttackerMods:73.2, AfterResistances:62.2, AfterTargetMods:62.2, AfterOutcome:124.3, AfterPostOutcome:124.3
-[118.09] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 124.307 damage (SpellSchool: 1). (Threat: 124.307)
-[118.10] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
+[118.12] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[118.12] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[118.12] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:50.6, AfterAttackerMods:69.7, AfterResistances:59.2, AfterTargetMods:59.2, AfterOutcome:59.2, AfterPostOutcome:59.2
+[118.12] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Hit for 59.184 damage (SpellSchool: 1). (Threat: 59.184)
 [118.18] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [118.18] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
-[118.19] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
+[118.22] [hunter (#1) - Scorpid] Pausing rotation for 187.395547ms due to resources / CDs.
 [118.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (23.000 --> 26.000) of 100 total.
-[118.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (26.000 --> 29.000) of 100 total.
-[118.69] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
-[118.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (29.000 --> 32.000) of 100 total.
-[119.01] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[119.01] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[119.01] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.2, AfterAttackerMods:62.3, AfterResistances:52.9, AfterTargetMods:52.9, AfterOutcome:52.9, AfterPostOutcome:52.9
-[119.01] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Hit for 52.927 damage (SpellSchool: 1). (Threat: 52.927)
+[118.41] [hunter (#1) - Scorpid] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[118.41] [hunter (#1) - Scorpid] Completed cast {SpellID: 3009}
+[118.41] [hunter (#1) - Scorpid] Spent 25.000 focus from {SpellID: 3009} (26.000 --> 1.000) of 100 total.
+[118.41] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:52.2, AfterAttackerMods:71.9, AfterResistances:61.1, AfterTargetMods:61.1, AfterOutcome:61.1, AfterPostOutcome:61.1
+[118.41] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} Hit for 61.053 damage (SpellSchool: 1). (Threat: 61.053)
+[118.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (1.000 --> 4.000) of 100 total.
+[118.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (4.000 --> 7.000) of 100 total.
+[118.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:36.7, AfterTargetMods:36.7, AfterOutcome:36.7, AfterPostOutcome:36.7
+[118.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit for 36.656 damage (SpellSchool: 8). (Threat: 36.656)
 [119.05] [hunter (#1)] Completed cast {SpellID: 20904}
-[119.05] [hunter (#1)] Spent 282.100 mana from {SpellID: 20904} (2083.770 --> 1801.670) of 3465 total.
-[119.05] [hunter (#1)] [Target 1] {SpellID: 20904} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:687.7, AfterAttackerMods:701.4, AfterResistances:595.7, AfterTargetMods:595.7, AfterOutcome:595.7, AfterPostOutcome:595.7
-[119.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (32.000 --> 35.000) of 100 total.
-[119.11] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
+[119.05] [hunter (#1)] Spent 282.100 mana from {SpellID: 20904} (2260.770 --> 1978.670) of 3465 total.
+[119.05] [hunter (#1)] [Target 1] {SpellID: 20904} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:711.3, AfterAttackerMods:725.5, AfterResistances:616.1, AfterTargetMods:616.1, AfterOutcome:616.1, AfterPostOutcome:616.1
+[119.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (7.000 --> 10.000) of 100 total.
 [119.22] [hunter (#1)] No available actions!
 [119.22] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.32] [hunter (#1)] [Target 1] {SpellID: 25295} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:211.2, AfterAttackerMods:215.5, AfterResistances:215.5, AfterTargetMods:215.5, AfterOutcome:215.5, AfterPostOutcome:215.5
 [119.32] [hunter (#1)] [Target 1] {SpellID: 25295} tick Hit for 215.470 damage (SpellSchool: 8). (Threat: 215.470)
 [119.32] [hunter (#1)] No available actions!
 [119.32] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[119.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (35.000 --> 38.000) of 100 total.
-[119.35] [hunter (#1)] [Target 1] {SpellID: 20904} Hit for 595.711 damage (SpellSchool: 1). (Threat: 595.711)
+[119.32] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[119.32] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[119.32] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.5, AfterAttackerMods:68.2, AfterResistances:57.9, AfterTargetMods:57.9, AfterOutcome:38.4, AfterPostOutcome:38.4
+[119.32] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 38.449 damage (SpellSchool: 1). (Threat: 38.449)
+[119.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (10.000 --> 13.000) of 100 total.
+[119.35] [hunter (#1)] [Target 1] {SpellID: 20904} Hit for 616.146 damage (SpellSchool: 1). (Threat: 616.146)
 [119.42] [hunter (#1)] No available actions!
 [119.42] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[119.42] [hunter (#1) - Scorpid] Pausing rotation for 587.395547ms due to resources / CDs.
 [119.52] [hunter (#1)] No available actions!
 [119.52] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[119.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (38.000 --> 41.000) of 100 total.
-[119.61] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
+[119.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (13.000 --> 16.000) of 100 total.
 [119.62] [hunter (#1)] No available actions!
 [119.62] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.71] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [119.71] [hunter (#1)] Completed cast {OtherID: 4}
-[119.71] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:549.7, AfterAttackerMods:560.7, AfterResistances:476.2, AfterTargetMods:476.2, AfterOutcome:1066.6, AfterPostOutcome:1066.6
+[119.71] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:540.5, AfterAttackerMods:551.3, AfterResistances:468.2, AfterTargetMods:468.2, AfterOutcome:1048.8, AfterPostOutcome:1048.8
 [119.72] [hunter (#1)] Casting {SpellID: 1293527} (Cost = 172.900, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [119.72] [hunter (#1)] Completed cast {SpellID: 1293527}
-[119.72] [hunter (#1)] Spent 172.900 mana from {SpellID: 1293527} (1801.670 --> 1628.770) of 3465 total.
+[119.72] [hunter (#1)] Spent 172.900 mana from {SpellID: 1293527} (1978.670 --> 1805.770) of 3465 total.
 [119.72] [hunter (#1)] [Target 1] {SpellID: 1293527} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:198.3, AfterAttackerMods:232.7, AfterResistances:197.6, AfterTargetMods:197.6, AfterOutcome:197.6, AfterPostOutcome:197.6
 [119.72] [hunter (#1)] [Target 1] {SpellID: 1293527} Hit for 197.600 damage (SpellSchool: 1). (Threat: 197.600)
 [119.72] [Target 1] Aura faded: {SpellID: 1293527, Tag: 2}
 [119.72] [Target 1] Aura gained: {SpellID: 1293527, Tag: 2}
 [119.72] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [119.72] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
-[119.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (41.000 --> 44.000) of 100 total.
-[119.94] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[119.94] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[119.94] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:50.0, AfterAttackerMods:68.9, AfterResistances:58.5, AfterTargetMods:58.5, AfterOutcome:40.2, AfterPostOutcome:40.2
-[119.94] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 40.195 damage (SpellSchool: 1). (Threat: 40.195)
-[120.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (1628.770 --> 1681.570) of 3465 total.
-[120.01] [hunter (#1)] [Target 1] {OtherID: 4} Crit for 1066.625 damage (SpellSchool: 1). (Threat: 1066.625)
+[119.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (16.000 --> 19.000) of 100 total.
+[120.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (1805.770 --> 1858.570) of 3465 total.
+[120.01] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
+[120.01] [hunter (#1)] [Target 1] {OtherID: 4} Crit for 1048.799 damage (SpellSchool: 1). (Threat: 1048.799)
 [120.02] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [120.02] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
-[120.02] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (1681.570 --> 1740.570) of 3465 total.
-[120.04] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
-[120.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (44.000 --> 47.000) of 100 total.
-[120.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (47.000 --> 50.000) of 100 total.
-[120.54] [hunter (#1) - Scorpid] Casting {SpellID: 24587} (Cost = 30.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
-[120.54] [hunter (#1) - Scorpid] Completed cast {SpellID: 24587}
-[120.54] [hunter (#1) - Scorpid] Spent 30.000 focus from {SpellID: 24587} (50.000 --> 20.000) of 100 total.
-[120.54] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} Hit for 0.000 damage (SpellSchool: 8). (Threat: 0.000)
-[120.54] [Target 1] Aura gained: {SpellID: 24587}
-[120.54] [Target 1] {SpellID: 24587} stacks: 0 --> 1
-[120.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (20.000 --> 23.000) of 100 total.
-[120.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (23.000 --> 26.000) of 100 total.
-[120.86] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[120.86] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[120.86] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.3, AfterAttackerMods:70.7, AfterResistances:60.0, AfterTargetMods:60.0, AfterOutcome:120.1, AfterPostOutcome:120.1
-[120.86] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 120.099 damage (SpellSchool: 1). (Threat: 120.099)
-[120.87] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
-[120.96] [hunter (#1) - Scorpid] Pausing rotation for 1.176923077s due to resources / CDs.
-[121.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (26.000 --> 29.000) of 100 total.
+[120.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (19.000 --> 22.000) of 100 total.
+[120.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (22.000 --> 25.000) of 100 total.
+[120.51] [hunter (#1) - Scorpid] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[120.51] [hunter (#1) - Scorpid] Completed cast {SpellID: 3009}
+[120.51] [hunter (#1) - Scorpid] Spent 25.000 focus from {SpellID: 3009} (25.000 --> 0.000) of 100 total.
+[120.51] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.1, AfterAttackerMods:74.6, AfterResistances:63.3, AfterTargetMods:63.3, AfterOutcome:63.3, AfterPostOutcome:63.3
+[120.51] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} Hit for 63.319 damage (SpellSchool: 1). (Threat: 63.319)
+[120.52] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[120.52] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[120.52] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:52.9, AfterAttackerMods:72.8, AfterResistances:61.9, AfterTargetMods:61.9, AfterOutcome:61.9, AfterPostOutcome:61.9
+[120.52] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Hit for 61.867 damage (SpellSchool: 1). (Threat: 61.867)
+[120.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (0.000 --> 3.000) of 100 total.
+[120.62] [hunter (#1) - Scorpid] Pausing rotation for 1.487395547s due to resources / CDs.
+[120.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (3.000 --> 6.000) of 100 total.
+[120.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:36.7, AfterTargetMods:36.7, AfterOutcome:73.3, AfterPostOutcome:73.3
+[120.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Crit for 73.312 damage (SpellSchool: 8). (Threat: 73.312)
+[121.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (6.000 --> 9.000) of 100 total.
 [121.22] [hunter (#1)] Casting {SpellID: 19574} (Cost = 206.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [121.22] [hunter (#1)] Completed cast {SpellID: 19574}
-[121.22] [hunter (#1)] Spent 206.000 mana from {SpellID: 19574} (1740.570 --> 1534.570) of 3465 total.
+[121.22] [hunter (#1)] Spent 206.000 mana from {SpellID: 19574} (1858.570 --> 1652.570) of 3465 total.
 [121.22] [hunter (#1) - Scorpid] Aura gained: {SpellID: 19574}
 [121.22] [hunter (#1)] Major cooldown used: {SpellID: 19574}
 [121.22] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [121.32] [hunter (#1)] No available actions!
 [121.32] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[121.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (29.000 --> 32.000) of 100 total.
+[121.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (9.000 --> 12.000) of 100 total.
 [121.42] [hunter (#1)] No available actions!
 [121.42] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [121.52] [hunter (#1)] No available actions!
 [121.52] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[121.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (32.000 --> 35.000) of 100 total.
+[121.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (12.000 --> 15.000) of 100 total.
 [121.62] [hunter (#1)] No available actions!
 [121.62] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [121.72] [hunter (#1)] No available actions!
 [121.72] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[121.72] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[121.72] [hunter (#1)] Completed cast {OtherID: 4}
-[121.72] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:537.8, AfterAttackerMods:548.5, AfterResistances:465.9, AfterTargetMods:465.9, AfterOutcome:465.9, AfterPostOutcome:465.9
-[121.78] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[121.78] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[121.78] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.0, AfterAttackerMods:101.3, AfterResistances:86.0, AfterTargetMods:86.0, AfterOutcome:49.0, AfterPostOutcome:49.0
-[121.78] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 48.955 damage (SpellSchool: 1). (Threat: 48.955)
+[121.72] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[121.72] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[121.72] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.1, AfterAttackerMods:101.5, AfterResistances:86.2, AfterTargetMods:86.2, AfterOutcome:172.4, AfterPostOutcome:172.4
+[121.72] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 172.444 damage (SpellSchool: 1). (Threat: 172.444)
+[121.73] [hunter (#1) - Scorpid] Aura gained: {SpellID: 19615}
 [121.82] [hunter (#1)] No available actions!
 [121.82] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[121.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (35.000 --> 38.000) of 100 total.
-[121.88] [hunter (#1) - Scorpid] Pausing rotation for 253.846154ms due to resources / CDs.
+[121.82] [hunter (#1) - Scorpid] Pausing rotation for 287.395547ms due to resources / CDs.
+[121.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (15.000 --> 18.000) of 100 total.
 [121.92] [hunter (#1)] No available actions!
 [121.92] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (1534.570 --> 1587.370) of 3465 total.
+[122.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (1652.570 --> 1705.370) of 3465 total.
 [122.02] [hunter (#1)] No available actions!
 [122.02] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.02] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 465.877 damage (SpellSchool: 1). (Threat: 465.877)
-[122.03] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (1587.370 --> 1646.370) of 3465 total.
-[122.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (38.000 --> 41.000) of 100 total.
+[122.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (18.000 --> 21.000) of 100 total.
+[122.11] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [122.12] [hunter (#1)] No available actions!
 [122.12] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.14] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [122.22] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [122.22] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [122.22] [hunter (#1)] No available actions!
@@ -3701,159 +3698,181 @@
 [122.32] [hunter (#1)] [Target 1] {SpellID: 25295} tick Hit for 215.470 damage (SpellSchool: 8). (Threat: 215.470)
 [122.32] [hunter (#1)] No available actions!
 [122.32] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (41.000 --> 44.000) of 100 total.
+[122.32] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[122.32] [hunter (#1)] Completed cast {OtherID: 4}
+[122.32] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:537.0, AfterAttackerMods:547.7, AfterResistances:465.2, AfterTargetMods:465.2, AfterOutcome:465.2, AfterPostOutcome:465.2
+[122.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (21.000 --> 24.000) of 100 total.
 [122.42] [hunter (#1)] No available actions!
 [122.42] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [122.52] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [122.52] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [122.52] [hunter (#1)] No available actions!
 [122.52] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.54] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:5.0, AfterAttackerMods:11.0, AfterResistances:11.0, AfterTargetMods:11.0, AfterOutcome:11.0, AfterPostOutcome:11.0
-[122.54] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit for 10.997 damage (SpellSchool: 8). (Threat: 10.997)
-[122.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (44.000 --> 47.000) of 100 total.
+[122.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (24.000 --> 27.000) of 100 total.
+[122.61] [hunter (#1) - Scorpid] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[122.61] [hunter (#1) - Scorpid] Completed cast {SpellID: 3009}
+[122.61] [hunter (#1) - Scorpid] Spent 25.000 focus from {SpellID: 3009} (27.000 --> 2.000) of 100 total.
+[122.61] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.6, AfterAttackerMods:102.6, AfterResistances:87.1, AfterTargetMods:87.1, AfterOutcome:174.2, AfterPostOutcome:174.2
+[122.61] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} Crit for 174.209 damage (SpellSchool: 1). (Threat: 174.209)
 [122.62] [hunter (#1)] No available actions!
 [122.62] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.64] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
-[122.70] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[122.70] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[122.70] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.1, AfterAttackerMods:99.4, AfterResistances:84.4, AfterTargetMods:84.4, AfterOutcome:59.8, AfterPostOutcome:59.8
-[122.70] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 59.792 damage (SpellSchool: 1). (Threat: 59.792)
+[122.62] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
+[122.62] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 465.194 damage (SpellSchool: 1). (Threat: 465.194)
+[122.62] [hunter (#1)] Aura gained: {SpellID: 6150}
+[122.63] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (1705.370 --> 1764.370) of 3465 total.
+[122.65] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[122.65] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[122.65] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.8, AfterAttackerMods:113.2, AfterResistances:96.1, AfterTargetMods:96.1, AfterOutcome:192.3, AfterPostOutcome:192.3
+[122.65] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 192.277 damage (SpellSchool: 1). (Threat: 192.277)
+[122.66] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
 [122.72] [hunter (#1)] No available actions!
 [122.72] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.80] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
+[122.75] [hunter (#1) - Scorpid] Pausing rotation for 1.462010932s due to resources / CDs.
 [122.82] [hunter (#1)] No available actions!
 [122.82] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (47.000 --> 50.000) of 100 total.
+[122.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (2.000 --> 5.000) of 100 total.
+[122.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:55.0, AfterResistances:55.0, AfterTargetMods:55.0, AfterOutcome:55.0, AfterPostOutcome:55.0
+[122.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit for 54.984 damage (SpellSchool: 8). (Threat: 54.984)
 [122.92] [hunter (#1)] No available actions!
 [122.92] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [123.02] [hunter (#1)] No available actions!
 [123.02] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (50.000 --> 53.000) of 100 total.
+[123.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (5.000 --> 8.000) of 100 total.
 [123.12] [hunter (#1)] No available actions!
 [123.12] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [123.22] [hunter (#1)] No available actions!
 [123.22] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.30] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [123.32] [hunter (#1)] No available actions!
 [123.32] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (53.000 --> 56.000) of 100 total.
+[123.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (8.000 --> 11.000) of 100 total.
 [123.42] [hunter (#1)] No available actions!
 [123.42] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [123.52] [hunter (#1)] No available actions!
 [123.52] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (56.000 --> 59.000) of 100 total.
+[123.57] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[123.57] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[123.57] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:50.4, AfterAttackerMods:104.3, AfterResistances:88.6, AfterTargetMods:88.6, AfterOutcome:88.6, AfterPostOutcome:88.6
+[123.57] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Hit for 88.580 damage (SpellSchool: 1). (Threat: 88.580)
+[123.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (11.000 --> 14.000) of 100 total.
 [123.62] [hunter (#1)] No available actions!
 [123.62] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.63] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[123.63] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[123.63] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:44.8, AfterAttackerMods:92.7, AfterResistances:78.7, AfterTargetMods:78.7, AfterOutcome:0.0, AfterPostOutcome:0.0
-[123.63] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[123.67] [hunter (#1) - Scorpid] Pausing rotation for 538.934009ms due to resources / CDs.
 [123.72] [hunter (#1)] No available actions!
 [123.72] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.73] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[123.73] [hunter (#1)] Completed cast {OtherID: 4}
-[123.73] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:575.5, AfterAttackerMods:587.0, AfterResistances:498.6, AfterTargetMods:498.6, AfterOutcome:498.6, AfterPostOutcome:498.6
-[123.73] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [123.82] [hunter (#1)] No available actions!
 [123.82] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (59.000 --> 62.000) of 100 total.
+[123.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (14.000 --> 17.000) of 100 total.
 [123.92] [hunter (#1)] No available actions!
 [123.92] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (1646.370 --> 1699.170) of 3465 total.
+[124.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (1764.370 --> 1817.170) of 3465 total.
 [124.02] [hunter (#1)] No available actions!
 [124.02] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.03] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 498.562 damage (SpellSchool: 1). (Threat: 498.562)
-[124.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (62.000 --> 65.000) of 100 total.
+[124.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (17.000 --> 20.000) of 100 total.
 [124.12] [hunter (#1)] No available actions!
 [124.12] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.21] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [124.22] [hunter (#1)] No available actions!
 [124.22] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.23] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [124.32] [hunter (#1)] No available actions!
 [124.32] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (65.000 --> 68.000) of 100 total.
+[124.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (20.000 --> 23.000) of 100 total.
 [124.42] [hunter (#1)] No available actions!
 [124.42] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.50] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[124.50] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[124.50] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:50.2, AfterAttackerMods:103.8, AfterResistances:88.2, AfterTargetMods:88.2, AfterOutcome:176.4, AfterPostOutcome:176.4
+[124.50] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 176.359 damage (SpellSchool: 1). (Threat: 176.359)
+[124.51] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
 [124.52] [hunter (#1)] No available actions!
 [124.52] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.54] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:5.0, AfterAttackerMods:11.0, AfterResistances:11.0, AfterTargetMods:11.0, AfterOutcome:11.0, AfterPostOutcome:11.0
-[124.54] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit for 10.997 damage (SpellSchool: 8). (Threat: 10.997)
-[124.55] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[124.55] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[124.55] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:50.2, AfterAttackerMods:103.7, AfterResistances:88.1, AfterTargetMods:88.1, AfterOutcome:176.2, AfterPostOutcome:176.2
-[124.55] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 176.227 damage (SpellSchool: 1). (Threat: 176.227)
-[124.56] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
-[124.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (68.000 --> 71.000) of 100 total.
+[124.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (23.000 --> 26.000) of 100 total.
+[124.60] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [124.62] [hunter (#1)] No available actions!
 [124.62] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.65] [hunter (#1) - Scorpid] Casting {SpellID: 24587} (Cost = 30.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
-[124.65] [hunter (#1) - Scorpid] Completed cast {SpellID: 24587}
-[124.65] [hunter (#1) - Scorpid] Spent 30.000 focus from {SpellID: 24587} (71.000 --> 41.000) of 100 total.
-[124.65] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} Hit for 0.000 damage (SpellSchool: 8). (Threat: 0.000)
-[124.65] [Target 1] {SpellID: 24587} stacks: 1 --> 2
 [124.72] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [124.72] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
-[124.72] [hunter (#1)] Queueing up {SpellID: 20904} to cast at 2m5.053129487s.
+[124.72] [hunter (#1)] No available actions!
 [124.72] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.82] [hunter (#1)] Queueing up {SpellID: 2643} to cast at 2m5.053129487s.
+[124.82] [hunter (#1)] No available actions!
 [124.82] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (41.000 --> 44.000) of 100 total.
-[124.92] [hunter (#1)] Queueing up {SpellID: 2643} to cast at 2m5.053129487s.
+[124.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (26.000 --> 29.000) of 100 total.
+[124.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:55.0, AfterResistances:55.0, AfterTargetMods:55.0, AfterOutcome:55.0, AfterPostOutcome:55.0
+[124.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit for 54.984 damage (SpellSchool: 8). (Threat: 54.984)
+[124.92] [hunter (#1)] No available actions!
 [124.92] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.93] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[124.93] [hunter (#1)] Completed cast {OtherID: 4}
+[124.93] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:536.5, AfterAttackerMods:547.2, AfterResistances:464.8, AfterTargetMods:464.8, AfterOutcome:464.8, AfterPostOutcome:464.8
 [125.02] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [125.02] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
-[125.02] [hunter (#1)] Queueing up {SpellID: 2643} to cast at 2m5.053129487s.
+[125.02] [hunter (#1)] Queueing up {SpellID: 20904} to cast at 2m5.053129487s.
 [125.02] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.05] [hunter (#1)] Casting {SpellID: 2643} (Cost = 217.490, Cast Time = 334.44816ms, GCD = 1.5s, Effective Time = 1.5s)
-[125.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (44.000 --> 47.000) of 100 total.
+[125.05] [hunter (#1)] Casting {SpellID: 20904} (Cost = 282.100, Cast Time = 1.337792642s, GCD = 1.5s, Effective Time = 1.5s)
+[125.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (29.000 --> 32.000) of 100 total.
+[125.10] [hunter (#1) - Scorpid] Casting {SpellID: 24587} (Cost = 30.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[125.10] [hunter (#1) - Scorpid] Completed cast {SpellID: 24587}
+[125.10] [hunter (#1) - Scorpid] Spent 30.000 focus from {SpellID: 24587} (32.000 --> 2.000) of 100 total.
+[125.10] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} Hit for 0.000 damage (SpellSchool: 8). (Threat: 0.000)
+[125.23] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 464.752 damage (SpellSchool: 1). (Threat: 464.752)
+[125.24] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (1817.170 --> 1876.170) of 3465 total.
 [125.32] [hunter (#1)] [Target 1] {SpellID: 25295} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:211.2, AfterAttackerMods:215.5, AfterResistances:215.5, AfterTargetMods:215.5, AfterOutcome:215.5, AfterPostOutcome:215.5
 [125.32] [hunter (#1)] [Target 1] {SpellID: 25295} tick Hit for 215.470 damage (SpellSchool: 8). (Threat: 215.470)
-[125.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (47.000 --> 50.000) of 100 total.
-[125.39] [hunter (#1)] Completed cast {SpellID: 2643}
-[125.39] [hunter (#1)] Spent 217.490 mana from {SpellID: 2643} (1699.170 --> 1481.680) of 3465 total.
-[125.39] [hunter (#1)] [Target 1] {SpellID: 2643} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:543.4, AfterAttackerMods:554.2, AfterResistances:470.7, AfterTargetMods:470.7, AfterOutcome:470.7, AfterPostOutcome:470.7
-[125.47] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[125.47] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[125.47] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:47.3, AfterAttackerMods:97.9, AfterResistances:83.1, AfterTargetMods:83.1, AfterOutcome:46.5, AfterPostOutcome:46.5
-[125.47] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 46.539 damage (SpellSchool: 1). (Threat: 46.539)
-[125.57] [hunter (#1) - Scorpid] Pausing rotation for 676.923077ms due to resources / CDs.
-[125.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (50.000 --> 53.000) of 100 total.
-[125.73] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[125.73] [hunter (#1)] Completed cast {OtherID: 4}
-[125.73] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:551.8, AfterAttackerMods:562.9, AfterResistances:478.0, AfterTargetMods:478.0, AfterOutcome:478.0, AfterPostOutcome:478.0
-[125.79] [hunter (#1)] [Target 1] {SpellID: 2643} Hit for 470.698 damage (SpellSchool: 1). (Threat: 470.698)
-[125.83] [hunter (#1)] No available actions!
-[125.83] [hunter (#1)] Pausing rotation for 719.732462ms due to resources / CDs.
-[125.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (53.000 --> 56.000) of 100 total.
-[126.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (1481.680 --> 1534.480) of 3465 total.
-[126.03] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 478.042 damage (SpellSchool: 1). (Threat: 478.042)
-[126.04] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (1534.480 --> 1593.480) of 3465 total.
-[126.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (56.000 --> 59.000) of 100 total.
-[126.25] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
-[126.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (59.000 --> 62.000) of 100 total.
-[126.40] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[126.40] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
-[126.40] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.4, AfterAttackerMods:106.3, AfterResistances:90.3, AfterTargetMods:90.3, AfterOutcome:180.6, AfterPostOutcome:180.6
-[126.40] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 180.638 damage (SpellSchool: 1). (Threat: 180.638)
-[126.41] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
-[126.50] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
-[126.54] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:10.0, AfterAttackerMods:22.0, AfterResistances:22.0, AfterTargetMods:22.0, AfterOutcome:22.0, AfterPostOutcome:22.0
-[126.54] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit for 21.994 damage (SpellSchool: 8). (Threat: 21.994)
-[126.55] [hunter (#1)] Casting {SpellID: 1293527} (Cost = 172.900, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[126.55] [hunter (#1)] Completed cast {SpellID: 1293527}
-[126.55] [hunter (#1)] Spent 172.900 mana from {SpellID: 1293527} (1593.480 --> 1420.580) of 3465 total.
-[126.55] [hunter (#1)] [Target 1] {SpellID: 1293527} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:198.3, AfterAttackerMods:232.7, AfterResistances:197.6, AfterTargetMods:197.6, AfterOutcome:197.6, AfterPostOutcome:197.6
-[126.55] [hunter (#1)] [Target 1] {SpellID: 1293527} Hit for 197.600 damage (SpellSchool: 1). (Threat: 197.600)
-[126.55] [Target 1] Aura faded: {SpellID: 1293527, Tag: 1}
-[126.55] [Target 1] Aura gained: {SpellID: 1293527, Tag: 1}
-[126.55] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
-[126.55] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
-[126.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (62.000 --> 65.000) of 100 total.
-[126.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (65.000 --> 68.000) of 100 total.
-[127.00] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
-[127.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (68.000 --> 71.000) of 100 total.
+[125.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (2.000 --> 5.000) of 100 total.
+[125.42] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[125.42] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[125.42] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:52.3, AfterAttackerMods:108.1, AfterResistances:91.8, AfterTargetMods:91.8, AfterOutcome:183.6, AfterPostOutcome:183.6
+[125.42] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Crit for 183.557 damage (SpellSchool: 1). (Threat: 183.557)
+[125.43] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
+[125.52] [hunter (#1) - Scorpid] Pausing rotation for 1.176923077s due to resources / CDs.
+[125.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (5.000 --> 8.000) of 100 total.
+[125.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (8.000 --> 11.000) of 100 total.
+[126.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (1876.170 --> 1928.970) of 3465 total.
+[126.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (11.000 --> 14.000) of 100 total.
+[126.34] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (14.000 --> 17.000) of 100 total.
+[126.34] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[126.34] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
+[126.34] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.5, AfterAttackerMods:102.4, AfterResistances:87.0, AfterTargetMods:87.0, AfterOutcome:60.1, AfterPostOutcome:60.1
+[126.34] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 60.109 damage (SpellSchool: 1). (Threat: 60.109)
+[126.39] [hunter (#1)] Completed cast {SpellID: 20904}
+[126.39] [hunter (#1)] Spent 282.100 mana from {SpellID: 20904} (1928.970 --> 1646.870) of 3465 total.
+[126.39] [hunter (#1)] [Target 1] {SpellID: 20904} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:702.2, AfterAttackerMods:716.2, AfterResistances:608.3, AfterTargetMods:608.3, AfterOutcome:608.3, AfterPostOutcome:608.3
+[126.44] [hunter (#1) - Scorpid] Pausing rotation for 253.846154ms due to resources / CDs.
+[126.55] [hunter (#1)] No available actions!
+[126.55] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[126.59] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (17.000 --> 20.000) of 100 total.
+[126.65] [hunter (#1)] No available actions!
+[126.65] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[126.69] [hunter (#1)] [Target 1] {SpellID: 20904} Hit for 608.271 damage (SpellSchool: 1). (Threat: 608.271)
+[126.70] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
+[126.75] [hunter (#1)] No available actions!
+[126.75] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[126.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (20.000 --> 23.000) of 100 total.
+[126.85] [hunter (#1)] No available actions!
+[126.85] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[126.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:55.0, AfterResistances:41.2, AfterTargetMods:41.2, AfterOutcome:41.2, AfterPostOutcome:41.2
+[126.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit (25% Resist) for 41.238 damage (SpellSchool: 8). (Threat: 41.238)
+[126.94] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[126.94] [hunter (#1)] Completed cast {OtherID: 4}
+[126.94] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:542.5, AfterAttackerMods:553.4, AfterResistances:470.0, AfterTargetMods:470.0, AfterOutcome:470.0, AfterPostOutcome:470.0
+[126.95] [hunter (#1)] Casting {SpellID: 1293527} (Cost = 172.900, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[126.95] [hunter (#1)] Completed cast {SpellID: 1293527}
+[126.95] [hunter (#1)] Spent 172.900 mana from {SpellID: 1293527} (1646.870 --> 1473.970) of 3465 total.
+[126.95] [hunter (#1)] [Target 1] {SpellID: 1293527} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:198.3, AfterAttackerMods:232.7, AfterResistances:197.6, AfterTargetMods:197.6, AfterOutcome:395.2, AfterPostOutcome:395.2
+[126.95] [hunter (#1)] [Target 1] {SpellID: 1293527} Crit for 395.199 damage (SpellSchool: 1). (Threat: 395.199)
+[126.95] [Target 1] Aura faded: {SpellID: 1293527, Tag: 1}
+[126.95] [Target 1] Aura gained: {SpellID: 1293527, Tag: 1}
+[126.95] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:0.0, AfterPostOutcome:0.0
+[126.95] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Dodge (SpellSchool: 1). (Threat: 0.000)
+[127.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (23.000 --> 26.000) of 100 total.
+[127.20] [hunter (#1) - Scorpid] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[127.20] [hunter (#1) - Scorpid] Completed cast {SpellID: 3009}
+[127.20] [hunter (#1) - Scorpid] Spent 25.000 focus from {SpellID: 3009} (26.000 --> 1.000) of 100 total.
+[127.20] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.0, AfterAttackerMods:99.3, AfterResistances:84.4, AfterTargetMods:84.4, AfterOutcome:168.7, AfterPostOutcome:168.7
+[127.20] [hunter (#1) - Scorpid] [Target 1] {SpellID: 3009} Crit for 168.720 damage (SpellSchool: 1). (Threat: 168.720)
+[127.21] [hunter (#1) - Scorpid] Aura refreshed: {SpellID: 19615}
 [127.22] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [127.22] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
+[127.24] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 469.986 damage (SpellSchool: 1). (Threat: 469.986)
 [127.25] [hunter (#1) - Scorpid] Aura faded: {SpellID: 19615}
 [127.25] [hunter (#1) - Scorpid] Aura faded: {SpellID: 19574}
 [127.25] [hunter (#1) - Scorpid] Aura faded: {SpellID: 10494, Tag: -1}
@@ -3886,4 +3905,4 @@
 [127.25] [Target 1] Aura faded: {SpellID: 1293527, Tag: 2}
 [127.25] [Target 1] Aura faded: {SpellID: 25295}
 [127.25] [Target 1] Aura faded: {SpellID: 24587}
-[127.25] [Target 1] {SpellID: 24587} stacks: 2 --> 0
+[127.25] [Target 1] {SpellID: 24587} stacks: 5 --> 0

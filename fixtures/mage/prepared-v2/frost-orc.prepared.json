@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "713b825aae50c2a1277081488a7aca742542b0d6",
+    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
     "client_build": "1.60.1.70338",
     "exporter": "tools/oracle-v2"
   },
@@ -651,7 +651,7 @@
       "NatureResistance": 42,
       "ParryPercent": 0,
       "ParryRating": 0,
-      "PhysicalCritPercent": 15.1298,
+      "PhysicalCritPercent": 12.1298,
       "PhysicalDamage": 0,
       "PhysicalHitPercent": 5,
       "RangedAttackPower": 0,
@@ -951,7 +951,7 @@
       },
       {
         "label": "Moonkin Aura (External)",
-        "tag": "DruidCritAura",
+        "tag": "MoonkinAura",
         "action_id": {
           "spell_id": 24907,
           "tag": -1
@@ -969,7 +969,7 @@
         "exclusive_effects": 1,
         "exclusive_memberships": [
           {
-            "category": "DruidCritAura",
+            "category": "MoonkinAura",
             "single_aura": true,
             "priority": 3,
             "position": 0
@@ -5992,7 +5992,7 @@
       "trigger_aura": "Winters Chill Talent"
     },
     {
-      "frozen_multiplier": 4,
+      "frozen_multiplier": 3,
       "kind": "ice_lance",
       "spell_id": 1240047
     },
@@ -6280,7 +6280,7 @@
           "AttackPower": 10,
           "HealingPower": 269,
           "MP5": 77,
-          "PhysicalCritPercent": 15.1298,
+          "PhysicalCritPercent": 12.1298,
           "RangedAttackPower": 0,
           "SpellCritPercent": 16.331999999999997,
           "SpellDamage": 454
@@ -6289,7 +6289,7 @@
           "AttackPower": 11,
           "HealingPower": 295.90000000000003,
           "MP5": 77,
-          "PhysicalCritPercent": 15.1298,
+          "PhysicalCritPercent": 12.1298,
           "RangedAttackPower": 0,
           "SpellCritPercent": 16.331999999999997,
           "SpellDamage": 499.40000000000003

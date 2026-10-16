@@ -19,8 +19,8 @@
 [0.00] [hunter (#1)] Aura gained: {SpellID: 25918, Tag: -1}
 [0.00] [hunter (#1) - Bear] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [hunter (#1) - Bear] Aura gained: {SpellID: 20905, Tag: -1}
-[0.00] [hunter (#1) - Bear] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 3013.632,"MP5": 25.000,"PhysicalCritPercent": 30.032,"SpellCritPercent": 10.000,}
-[0.00] [hunter (#1) - Bear] Pet inherited stats: {"PhysicalCritPercent": 20.032,}
+[0.00] [hunter (#1) - Bear] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 3013.632,"MP5": 25.000,"PhysicalCritPercent": 32.032,"SpellCritPercent": 10.000,}
+[0.00] [hunter (#1) - Bear] Pet inherited stats: {"PhysicalCritPercent": 22.032,}
 [0.00] [hunter (#1) - Bear] Pet summoned
 [-10.00] [hunter (#1)] Casting {SpellID: 25296} (Cost = 120.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [-10.00] [hunter (#1)] Completed cast {SpellID: 25296}
@@ -284,8 +284,9 @@
 [7.59] [hunter (#1) - Bear] Gained 3.000 focus from {OtherID: 6} (43.000 --> 46.000) of 100 total.
 [7.64] [hunter (#1) - Bear] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [7.64] [hunter (#1) - Bear] Completed cast {OtherID: 3, Tag: 1}
-[7.64] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.7, AfterAttackerMods:91.5, AfterResistances:77.7, AfterTargetMods:77.7, AfterOutcome:77.7, AfterPostOutcome:77.7
-[7.64] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} Hit for 77.729 damage (SpellSchool: 1). (Threat: 77.729)
+[7.64] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.7, AfterAttackerMods:91.5, AfterResistances:77.7, AfterTargetMods:77.7, AfterOutcome:155.5, AfterPostOutcome:155.5
+[7.64] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} Crit for 155.459 damage (SpellSchool: 1). (Threat: 155.459)
+[7.65] [hunter (#1) - Bear] Aura refreshed: {SpellID: 19615}
 [7.74] [hunter (#1) - Bear] Pausing rotation for 1.207692308s due to resources / CDs.
 [7.84] [hunter (#1) - Bear] Gained 3.000 focus from {OtherID: 6} (46.000 --> 49.000) of 100 total.
 [8.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2468.700 --> 2521.500) of 3465 total.
@@ -508,8 +509,9 @@
 [14.84] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (2229.300 --> 2288.300) of 3465 total.
 [15.03] [hunter (#1) - Bear] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [15.03] [hunter (#1) - Bear] Completed cast {OtherID: 3, Tag: 1}
-[15.03] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.1, AfterAttackerMods:108.2, AfterResistances:91.9, AfterTargetMods:91.9, AfterOutcome:91.9, AfterPostOutcome:91.9
-[15.03] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} Hit for 91.903 damage (SpellSchool: 1). (Threat: 91.903)
+[15.03] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.1, AfterAttackerMods:108.2, AfterResistances:91.9, AfterTargetMods:91.9, AfterOutcome:183.8, AfterPostOutcome:183.8
+[15.03] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} Crit for 183.806 damage (SpellSchool: 1). (Threat: 183.806)
+[15.04] [hunter (#1) - Bear] Aura refreshed: {SpellID: 19615}
 [15.09] [hunter (#1) - Bear] Gained 3.000 focus from {OtherID: 6} (23.000 --> 26.000) of 100 total.
 [15.13] [hunter (#1) - Bear] Pausing rotation for 284.615385ms due to resources / CDs.
 [15.34] [hunter (#1) - Bear] Gained 3.000 focus from {OtherID: 6} (26.000 --> 29.000) of 100 total.
@@ -1343,8 +1345,9 @@
 [43.59] [hunter (#1) - Bear] Gained 3.000 focus from {OtherID: 6} (15.000 --> 18.000) of 100 total.
 [43.64] [hunter (#1) - Bear] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [43.64] [hunter (#1) - Bear] Completed cast {OtherID: 3, Tag: 1}
-[43.64] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.6, AfterAttackerMods:64.9, AfterResistances:55.1, AfterTargetMods:55.1, AfterOutcome:55.1, AfterPostOutcome:55.1
-[43.64] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} Hit for 55.125 damage (SpellSchool: 1). (Threat: 55.125)
+[43.64] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.6, AfterAttackerMods:64.9, AfterResistances:55.1, AfterTargetMods:55.1, AfterOutcome:110.3, AfterPostOutcome:110.3
+[43.64] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} Crit for 110.251 damage (SpellSchool: 1). (Threat: 110.251)
+[43.65] [hunter (#1) - Bear] Aura refreshed: {SpellID: 19615}
 [43.74] [hunter (#1) - Bear] Pausing rotation for 100ms due to resources / CDs.
 [43.84] [hunter (#1) - Bear] Gained 3.000 focus from {OtherID: 6} (18.000 --> 21.000) of 100 total.
 [43.84] [hunter (#1) - Bear] Pausing rotation for 500ms due to resources / CDs.
@@ -1872,8 +1875,9 @@
 [62.09] [hunter (#1) - Bear] Gained 3.000 focus from {OtherID: 6} (12.000 --> 15.000) of 100 total.
 [62.10] [hunter (#1) - Bear] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [62.10] [hunter (#1) - Bear] Completed cast {OtherID: 3, Tag: 1}
-[62.10] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.6, AfterAttackerMods:60.9, AfterResistances:51.7, AfterTargetMods:51.7, AfterOutcome:51.7, AfterPostOutcome:51.7
-[62.10] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} Hit for 51.688 damage (SpellSchool: 1). (Threat: 51.688)
+[62.10] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.6, AfterAttackerMods:60.9, AfterResistances:51.7, AfterTargetMods:51.7, AfterOutcome:103.4, AfterPostOutcome:103.4
+[62.10] [hunter (#1) - Bear] [Target 1] {OtherID: 3, Tag: 1} Crit for 103.377 damage (SpellSchool: 1). (Threat: 103.377)
+[62.11] [hunter (#1) - Bear] Aura refreshed: {SpellID: 19615}
 [62.17] [hunter (#1)] No available actions!
 [62.17] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [62.20] [hunter (#1) - Bear] Pausing rotation for 261.538462ms due to resources / CDs.

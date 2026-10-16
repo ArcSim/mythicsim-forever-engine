@@ -1,6 +1,5 @@
 [0.00] [Target 1] Aura gained: {SpellID: 20355, Tag: -1}
 [0.00] [Target 1] Aura gained: {SpellID: 1311680, Tag: -1}
-[0.00] [fire-mage (#1)] Aura gained: {SpellID: 20597}
 [0.00] [fire-mage (#1)] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [fire-mage (#1)] Aura gained: {SpellID: 24907, Tag: -1}
 [0.00] [fire-mage (#1)] Aura gained: {SpellID: 23028, Tag: -1}
@@ -15,8 +14,10 @@
 [0.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:652.8, AfterAttackerMods:718.1, AfterResistances:359.0, AfterTargetMods:394.9, AfterOutcome:592.4, AfterPostOutcome:592.4
 [0.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Crit (50% Resist) for 592.401 damage (SpellSchool: 4). (Threat: 473.921)
 [0.00] [fire-mage (#1)] Aura gained: {SpellID: 400625}
-[0.00] [fire-mage (#1)] {SpellID: 400625} stacks: 0 --> 2
+[0.00] [fire-mage (#1)] {SpellID: 400625} stacks: 0 --> 1
 [0.00] [fire-mage (#1)] Gained 102.000 mana from {SpellID: 29074} (6158.000 --> 6260.000) of 6498 total.
+[0.00] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
+[0.00] [fire-mage (#1)] {SpellID: 400625} stacks: 1 --> 2
 [0.01] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6260.000 --> 6319.000) of 6498 total.
 [1.50] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [2.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (6319.000 --> 6385.925) of 6498 total.
@@ -71,7 +72,9 @@
 [9.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:633.8, AfterAttackerMods:780.9, AfterResistances:780.9, AfterTargetMods:859.0, AfterOutcome:1288.4, AfterPostOutcome:1288.4
 [9.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Crit for 1288.433 damage (SpellSchool: 4). (Threat: 1030.746)
 [9.00] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
-[9.00] [fire-mage (#1)] {SpellID: 400625} stacks: 1 --> 3
+[9.00] [fire-mage (#1)] {SpellID: 400625} stacks: 1 --> 2
+[9.00] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
+[9.00] [fire-mage (#1)] {SpellID: 400625} stacks: 2 --> 3
 [9.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:156.4, AfterResistances:156.4, AfterTargetMods:172.0, AfterOutcome:258.1, AfterPostOutcome:258.1
 [9.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Crit for 258.064 damage (SpellSchool: 4). (Threat: 206.451)
 [10.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (5428.700 --> 5495.625) of 6498 total.
@@ -117,6 +120,8 @@
 [19.50] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (4353.325 --> 4013.325) of 6498 total.
 [19.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:688.3, AfterAttackerMods:870.7, AfterResistances:653.0, AfterTargetMods:718.3, AfterOutcome:718.3, AfterPostOutcome:718.3
 [19.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit (25% Resist) for 718.342 damage (SpellSchool: 4). (Threat: 574.673)
+[19.50] [fire-mage (#1)] Aura gained: {SpellID: 400625}
+[19.50] [fire-mage (#1)] {SpellID: 400625} stacks: 0 --> 1
 [19.51] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (4013.325 --> 4072.325) of 6498 total.
 [20.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (4072.325 --> 4139.250) of 6498 total.
 [20.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} Hit (25% Resist) for 1039.660 damage (SpellSchool: 4). (Threat: 831.728)
@@ -160,13 +165,14 @@
 [30.00] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (3361.875 --> 3021.875) of 6498 total.
 [30.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:658.3, AfterAttackerMods:832.8, AfterResistances:832.8, AfterTargetMods:916.1, AfterOutcome:1374.1, AfterPostOutcome:1374.1
 [30.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Crit for 1374.109 damage (SpellSchool: 4). (Threat: 1099.287)
-[30.00] [fire-mage (#1)] Aura gained: {SpellID: 400625}
-[30.00] [fire-mage (#1)] {SpellID: 400625} stacks: 0 --> 2
+[30.00] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
+[30.00] [fire-mage (#1)] {SpellID: 400625} stacks: 1 --> 2
 [30.00] [fire-mage (#1)] Gained 102.000 mana from {SpellID: 29074} (3021.875 --> 3123.875) of 6498 total.
+[30.00] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
+[30.00] [fire-mage (#1)] {SpellID: 400625} stacks: 2 --> 3
 [30.01] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (3123.875 --> 3182.875) of 6498 total.
 [30.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} Crit for 2112.559 damage (SpellSchool: 4). (Threat: 1690.047)
 [30.83] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
-[30.83] [fire-mage (#1)] {SpellID: 400625} stacks: 2 --> 3
 [30.83] [fire-mage (#1)] Gained 123.000 mana from {SpellID: 29074} (3182.875 --> 3305.875) of 6498 total.
 [30.83] [Target 1] Aura faded: {SpellID: 25306}
 [30.83] [Target 1] Aura gained: {SpellID: 25306}
@@ -209,6 +215,8 @@
 [39.00] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (2495.575 --> 2155.575) of 6498 total.
 [39.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:674.7, AfterAttackerMods:853.5, AfterResistances:640.1, AfterTargetMods:704.2, AfterOutcome:704.2, AfterPostOutcome:704.2
 [39.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit (25% Resist) for 704.153 damage (SpellSchool: 4). (Threat: 563.322)
+[39.00] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
+[39.00] [fire-mage (#1)] {SpellID: 400625} stacks: 1 --> 2
 [39.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} Hit for 1306.051 damage (SpellSchool: 4). (Threat: 1044.841)
 [39.83] [Target 1] Aura faded: {SpellID: 25306}
 [39.83] [Target 1] Aura gained: {SpellID: 25306}
@@ -261,64 +269,78 @@
 [48.00] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (1807.200 --> 1467.200) of 6498 total.
 [48.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:631.6, AfterAttackerMods:757.3, AfterResistances:757.3, AfterTargetMods:833.1, AfterOutcome:833.1, AfterPostOutcome:833.1
 [48.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit for 833.061 damage (SpellSchool: 4). (Threat: 666.449)
+[48.00] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
+[48.00] [fire-mage (#1)] {SpellID: 400625} stacks: 2 --> 3
 [48.01] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (1467.200 --> 1526.200) of 6498 total.
 [48.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:18.0, AfterResistances:18.0, AfterTargetMods:19.8, AfterOutcome:29.7, AfterPostOutcome:29.7
 [48.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Crit for 29.675 damage (SpellSchool: 4). (Threat: 23.740)
-[49.50] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[49.50] [fire-mage (#1)] Casting {SpellID: 18809} (Cost = 440.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [50.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (1526.200 --> 1593.125) of 6498 total.
 [50.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:18.0, AfterResistances:18.0, AfterTargetMods:19.8, AfterOutcome:29.7, AfterPostOutcome:29.7
 [50.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Crit for 29.675 damage (SpellSchool: 4). (Threat: 23.740)
-[51.00] [fire-mage (#1)] Completed cast {SpellID: 10207}
-[51.00] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (1593.125 --> 1443.125) of 6498 total.
-[51.00] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:404.4, AfterAttackerMods:484.9, AfterResistances:484.9, AfterTargetMods:533.4, AfterOutcome:533.4, AfterPostOutcome:533.4
-[51.00] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit for 533.407 damage (SpellSchool: 4). (Threat: 426.726)
-[51.00] [fire-mage (#1)] Aura refreshed: {SpellID: 22959}
-[51.00] [fire-mage (#1)] {SpellID: 22959} stacks: 3 --> 4
+[51.00] [fire-mage (#1)] Completed cast {SpellID: 18809}
+[51.00] [fire-mage (#1)] Spent 440.000 mana from {SpellID: 18809} (1593.125 --> 1153.125) of 6498 total.
+[51.00] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:1126.4, AfterAttackerMods:1350.5, AfterResistances:1350.5, AfterTargetMods:1485.6, AfterOutcome:1485.6, AfterPostOutcome:1485.6
+[51.00] [fire-mage (#1)] Aura faded: {SpellID: 400625}
+[51.00] [fire-mage (#1)] {SpellID: 400625} stacks: 3 --> 0
 [51.00] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[51.01] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (1443.125 --> 1502.125) of 6498 total.
-[52.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (1502.125 --> 1569.050) of 6498 total.
+[51.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} Hit for 1485.585 damage (SpellSchool: 4). (Threat: 1188.468)
+[51.83] [Target 1] Aura gained: {SpellID: 18809}
+[51.84] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (1153.125 --> 1212.125) of 6498 total.
+[52.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (1212.125 --> 1279.050) of 6498 total.
 [52.33] [Target 1] Aura faded: {SpellID: 25306}
-[52.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:18.5, AfterResistances:18.5, AfterTargetMods:20.3, AfterOutcome:20.3, AfterPostOutcome:20.3
-[52.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.328 damage (SpellSchool: 4). (Threat: 16.262)
+[52.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:18.0, AfterResistances:18.0, AfterTargetMods:19.8, AfterOutcome:19.8, AfterPostOutcome:19.8
+[52.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 19.784 damage (SpellSchool: 4). (Threat: 15.827)
 [52.50] [fire-mage (#1)] Completed cast {SpellID: 10207}
-[52.50] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (1569.050 --> 1419.050) of 6498 total.
-[52.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:382.8, AfterAttackerMods:471.6, AfterResistances:471.6, AfterTargetMods:518.8, AfterOutcome:518.8, AfterPostOutcome:518.8
-[52.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit for 518.777 damage (SpellSchool: 4). (Threat: 415.022)
+[52.50] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (1279.050 --> 1129.050) of 6498 total.
+[52.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:382.8, AfterAttackerMods:459.0, AfterResistances:459.0, AfterTargetMods:504.9, AfterOutcome:504.9, AfterPostOutcome:504.9
+[52.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit for 504.881 damage (SpellSchool: 4). (Threat: 403.905)
 [52.50] [fire-mage (#1)] Aura refreshed: {SpellID: 22959}
-[52.50] [fire-mage (#1)] {SpellID: 22959} stacks: 4 --> 5
-[52.50] [fire-mage (#1)] Casting {SpellID: 25306} (Cost = 410.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
-[54.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (1419.050 --> 1485.975) of 6498 total.
-[55.50] [fire-mage (#1)] Completed cast {SpellID: 25306}
-[55.50] [fire-mage (#1)] Spent 410.000 mana from {SpellID: 25306} (1485.975 --> 1075.975) of 6498 total.
-[55.50] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:1007.5, AfterAttackerMods:1274.5, AfterResistances:1274.5, AfterTargetMods:1402.0, AfterOutcome:0.0, AfterPostOutcome:0.0
+[52.50] [fire-mage (#1)] {SpellID: 22959} stacks: 3 --> 4
+[52.50] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[54.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (1129.050 --> 1195.975) of 6498 total.
+[54.00] [fire-mage (#1)] Completed cast {SpellID: 10207}
+[54.00] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (1195.975 --> 1045.975) of 6498 total.
+[54.00] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:400.6, AfterAttackerMods:493.5, AfterResistances:493.5, AfterTargetMods:542.9, AfterOutcome:0.0, AfterPostOutcome:0.0
+[54.00] [fire-mage (#1)] [Target 1] {SpellID: 10207} Miss (SpellSchool: 4). (Threat: 0.000)
+[54.00] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[54.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:156.4, AfterResistances:156.4, AfterTargetMods:172.0, AfterOutcome:172.0, AfterPostOutcome:172.0
+[54.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Hit for 172.043 damage (SpellSchool: 4). (Threat: 137.634)
+[55.50] [fire-mage (#1)] Completed cast {SpellID: 10207}
+[55.50] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (1045.975 --> 895.975) of 6498 total.
+[55.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:405.0, AfterAttackerMods:499.0, AfterResistances:374.2, AfterTargetMods:411.7, AfterOutcome:411.7, AfterPostOutcome:411.7
+[55.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit (25% Resist) for 411.674 damage (SpellSchool: 4). (Threat: 329.339)
+[55.50] [fire-mage (#1)] Aura refreshed: {SpellID: 22959}
+[55.50] [fire-mage (#1)] {SpellID: 22959} stacks: 4 --> 5
 [55.50] [fire-mage (#1)] Casting {SpellID: 25306} (Cost = 410.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
-[56.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (1075.975 --> 1142.900) of 6498 total.
-[56.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} Miss (SpellSchool: 4). (Threat: 0.000)
-[56.83] [fire-mage (#1)] Aura faded: {SpellID: 400625}
-[58.00] [fire-mage (#1)] {SpellID: 400625} stacks: 1 --> 0
-[58.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (1142.900 --> 1209.825) of 6498 total.
+[55.51] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (895.975 --> 954.975) of 6498 total.
+[56.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (954.975 --> 1021.900) of 6498 total.
+[57.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:160.6, AfterResistances:160.6, AfterTargetMods:176.7, AfterOutcome:176.7, AfterPostOutcome:176.7
+[57.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Hit for 176.651 damage (SpellSchool: 4). (Threat: 141.321)
+[58.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (1021.900 --> 1088.825) of 6498 total.
 [58.50] [fire-mage (#1)] Completed cast {SpellID: 25306}
-[58.50] [fire-mage (#1)] Spent 410.000 mana from {SpellID: 25306} (1209.825 --> 799.825) of 6498 total.
-[58.50] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:986.4, AfterAttackerMods:1247.8, AfterResistances:1247.8, AfterTargetMods:1372.6, AfterOutcome:2058.9, AfterPostOutcome:2058.9
+[58.50] [fire-mage (#1)] Spent 410.000 mana from {SpellID: 25306} (1088.825 --> 678.825) of 6498 total.
+[58.50] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:977.2, AfterAttackerMods:1236.1, AfterResistances:927.1, AfterTargetMods:1019.8, AfterOutcome:1019.8, AfterPostOutcome:1019.8
 [58.50] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [58.50] [fire-mage (#1)] Completed cast {SpellID: 10199}
-[58.50] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (799.825 --> 459.825) of 6498 total.
-[58.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:685.7, AfterAttackerMods:867.4, AfterResistances:867.4, AfterTargetMods:954.2, AfterOutcome:954.2, AfterPostOutcome:954.2
-[58.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit for 954.170 damage (SpellSchool: 4). (Threat: 763.336)
-[59.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} Crit for 2058.895 damage (SpellSchool: 4). (Threat: 1647.116)
-[59.33] [fire-mage (#1)] Aura gained: {SpellID: 400625}
-[59.33] [fire-mage (#1)] {SpellID: 400625} stacks: 0 --> 1
-[59.33] [fire-mage (#1)] Gained 123.000 mana from {SpellID: 29074} (459.825 --> 582.825) of 6498 total.
+[58.50] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (678.825 --> 338.825) of 6498 total.
+[58.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:627.8, AfterAttackerMods:794.2, AfterResistances:595.7, AfterTargetMods:655.2, AfterOutcome:655.2, AfterPostOutcome:655.2
+[58.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit (25% Resist) for 655.236 damage (SpellSchool: 4). (Threat: 524.189)
+[58.50] [fire-mage (#1)] Aura gained: {SpellID: 400625}
+[58.50] [fire-mage (#1)] {SpellID: 400625} stacks: 0 --> 1
+[59.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} Hit (25% Resist) for 1019.801 damage (SpellSchool: 4). (Threat: 815.841)
 [59.33] [Target 1] Aura gained: {SpellID: 25306}
-[59.34] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (582.825 --> 641.825) of 6498 total.
-[60.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (641.825 --> 708.750) of 6498 total.
+[59.34] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (338.825 --> 397.825) of 6498 total.
+[60.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (397.825 --> 464.750) of 6498 total.
 [60.00] [fire-mage (#1)] Casting {SpellID: 25306} (Cost = 410.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
-[61.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:4.7, AfterTargetMods:5.2, AfterOutcome:5.2, AfterPostOutcome:5.2
-[61.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit (75% Resist) for 5.218 damage (SpellSchool: 4). (Threat: 4.175)
-[62.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (708.750 --> 775.675) of 6498 total.
+[60.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:160.6, AfterResistances:160.6, AfterTargetMods:176.7, AfterOutcome:176.7, AfterPostOutcome:176.7
+[60.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Hit for 176.651 damage (SpellSchool: 4). (Threat: 141.321)
+[61.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:20.9, AfterPostOutcome:20.9
+[61.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.872 damage (SpellSchool: 4). (Threat: 16.698)
+[62.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (464.750 --> 531.675) of 6498 total.
 [63.00] [fire-mage (#1)] Completed cast {SpellID: 25306}
-[63.00] [fire-mage (#1)] Spent 410.000 mana from {SpellID: 25306} (775.675 --> 365.675) of 6498 total.
-[63.00] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:919.0, AfterAttackerMods:1162.6, AfterResistances:871.9, AfterTargetMods:959.1, AfterOutcome:959.1, AfterPostOutcome:959.1
+[63.00] [fire-mage (#1)] Spent 410.000 mana from {SpellID: 25306} (531.675 --> 121.675) of 6498 total.
+[63.00] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:1022.2, AfterAttackerMods:1293.1, AfterResistances:1293.1, AfterTargetMods:1422.4, AfterOutcome:2133.6, AfterPostOutcome:2133.6
 [63.00] [fire-mage (#1)] No available actions!
 [63.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [63.10] [fire-mage (#1)] No available actions!
@@ -327,8 +349,8 @@
 [63.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [63.30] [fire-mage (#1)] No available actions!
 [63.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[63.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:20.9, AfterPostOutcome:20.9
-[63.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.872 damage (SpellSchool: 4). (Threat: 16.698)
+[63.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:9.5, AfterTargetMods:10.4, AfterOutcome:10.4, AfterPostOutcome:10.4
+[63.33] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit (50% Resist) for 10.436 damage (SpellSchool: 4). (Threat: 8.349)
 [63.40] [fire-mage (#1)] No available actions!
 [63.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [63.50] [fire-mage (#1)] No available actions!
@@ -339,45 +361,81 @@
 [63.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [63.80] [fire-mage (#1)] No available actions!
 [63.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[63.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} Hit (25% Resist) for 959.136 damage (SpellSchool: 4). (Threat: 767.309)
+[63.83] [Target 1] Aura faded: {SpellID: 18809}
+[63.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:160.6, AfterResistances:160.6, AfterTargetMods:176.7, AfterOutcome:265.0, AfterPostOutcome:265.0
+[63.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Crit for 264.976 damage (SpellSchool: 4). (Threat: 211.981)
+[63.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} Crit for 2133.572 damage (SpellSchool: 4). (Threat: 1706.857)
+[63.83] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
+[63.83] [fire-mage (#1)] {SpellID: 400625} stacks: 1 --> 2
+[63.83] [fire-mage (#1)] Gained 123.000 mana from {SpellID: 29074} (121.675 --> 244.675) of 6498 total.
 [63.83] [Target 1] Aura faded: {SpellID: 25306}
 [63.83] [Target 1] Aura gained: {SpellID: 25306}
-[63.84] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (365.675 --> 424.675) of 6498 total.
-[63.90] [fire-mage (#1)] Casting {SpellID: 25306} (Cost = 410.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
-[64.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (424.675 --> 491.600) of 6498 total.
-[65.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:20.9, AfterPostOutcome:20.9
-[65.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.872 damage (SpellSchool: 4). (Threat: 16.698)
-[66.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (491.600 --> 558.525) of 6498 total.
-[66.90] [fire-mage (#1)] Completed cast {SpellID: 25306}
-[66.90] [fire-mage (#1)] Spent 410.000 mana from {SpellID: 25306} (558.525 --> 148.525) of 6498 total.
-[66.90] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:980.7, AfterAttackerMods:1240.6, AfterResistances:1240.6, AfterTargetMods:1364.6, AfterOutcome:1364.6, AfterPostOutcome:1364.6
-[66.90] [fire-mage (#1)] No available actions!
-[66.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.00] [fire-mage (#1)] No available actions!
-[67.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.10] [fire-mage (#1)] No available actions!
-[67.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.20] [fire-mage (#1)] No available actions!
-[67.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.30] [fire-mage (#1)] No available actions!
-[67.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.40] [fire-mage (#1)] No available actions!
-[67.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.50] [fire-mage (#1)] No available actions!
-[67.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.60] [fire-mage (#1)] No available actions!
-[67.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.70] [fire-mage (#1)] No available actions!
-[67.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} Hit for 1364.637 damage (SpellSchool: 4). (Threat: 1091.709)
-[67.73] [Target 1] Aura faded: {SpellID: 25306}
-[67.73] [Target 1] Aura gained: {SpellID: 25306}
-[67.74] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (148.525 --> 207.525) of 6498 total.
-[67.80] [fire-mage (#1)] No available actions!
-[67.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.90] [fire-mage (#1)] No available actions!
-[67.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[68.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (207.525 --> 274.450) of 6498 total.
+[63.90] [fire-mage (#1)] No available actions!
+[63.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (244.675 --> 311.600) of 6498 total.
+[64.00] [fire-mage (#1)] No available actions!
+[64.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.10] [fire-mage (#1)] No available actions!
+[64.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.20] [fire-mage (#1)] No available actions!
+[64.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.30] [fire-mage (#1)] No available actions!
+[64.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.40] [fire-mage (#1)] No available actions!
+[64.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.50] [fire-mage (#1)] No available actions!
+[64.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.60] [fire-mage (#1)] No available actions!
+[64.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.70] [fire-mage (#1)] No available actions!
+[64.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.80] [fire-mage (#1)] No available actions!
+[64.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.90] [fire-mage (#1)] No available actions!
+[64.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.00] [fire-mage (#1)] No available actions!
+[65.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.10] [fire-mage (#1)] No available actions!
+[65.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.20] [fire-mage (#1)] No available actions!
+[65.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.30] [fire-mage (#1)] No available actions!
+[65.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.40] [fire-mage (#1)] No available actions!
+[65.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.50] [fire-mage (#1)] No available actions!
+[65.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.60] [fire-mage (#1)] No available actions!
+[65.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.70] [fire-mage (#1)] No available actions!
+[65.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.80] [fire-mage (#1)] No available actions!
+[65.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:31.3, AfterPostOutcome:31.3
+[65.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Crit for 31.309 damage (SpellSchool: 4). (Threat: 25.047)
+[65.90] [fire-mage (#1)] No available actions!
+[65.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (311.600 --> 378.525) of 6498 total.
+[66.00] [fire-mage (#1)] No available actions!
+[66.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.10] [fire-mage (#1)] Queueing up {SpellID: 10199} to cast at 1m6.500000001s.
+[66.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.20] [fire-mage (#1)] Queueing up {SpellID: 10199} to cast at 1m6.500000001s.
+[66.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.30] [fire-mage (#1)] Queueing up {SpellID: 10199} to cast at 1m6.500000001s.
+[66.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.40] [fire-mage (#1)] Queueing up {SpellID: 10199} to cast at 1m6.500000001s.
+[66.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.50] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[66.50] [fire-mage (#1)] Completed cast {SpellID: 10199}
+[66.50] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (378.525 --> 38.525) of 6498 total.
+[66.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:682.0, AfterAttackerMods:862.7, AfterResistances:862.7, AfterTargetMods:948.9, AfterOutcome:948.9, AfterPostOutcome:948.9
+[66.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit for 948.941 damage (SpellSchool: 4). (Threat: 759.153)
+[66.50] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
+[66.50] [fire-mage (#1)] {SpellID: 400625} stacks: 2 --> 3
+[67.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:20.9, AfterPostOutcome:20.9
+[67.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.872 damage (SpellSchool: 4). (Threat: 16.698)
+[68.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (38.525 --> 105.450) of 6498 total.
 [68.00] [fire-mage (#1)] No available actions!
 [68.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [68.10] [fire-mage (#1)] No available actions!
@@ -414,32 +472,57 @@
 [69.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [69.70] [fire-mage (#1)] No available actions!
 [69.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[69.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:9.5, AfterTargetMods:10.4, AfterOutcome:10.4, AfterPostOutcome:10.4
-[69.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit (50% Resist) for 10.436 damage (SpellSchool: 4). (Threat: 8.349)
 [69.80] [fire-mage (#1)] No available actions!
 [69.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[69.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:31.3, AfterPostOutcome:31.3
+[69.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Crit for 31.309 damage (SpellSchool: 4). (Threat: 25.047)
 [69.90] [fire-mage (#1)] No available actions!
 [69.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[70.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (274.450 --> 341.375) of 6498 total.
-[70.00] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[70.00] [fire-mage (#1)] Completed cast {SpellID: 10199}
-[70.00] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (341.375 --> 1.375) of 6498 total.
-[70.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:688.0, AfterAttackerMods:870.3, AfterResistances:652.7, AfterTargetMods:718.0, AfterOutcome:718.0, AfterPostOutcome:718.0
-[70.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit (25% Resist) for 717.998 damage (SpellSchool: 4). (Threat: 574.398)
-[70.01] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (1.375 --> 60.375) of 6498 total.
+[70.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (105.450 --> 172.375) of 6498 total.
+[70.00] [fire-mage (#1)] No available actions!
+[70.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.10] [fire-mage (#1)] No available actions!
+[70.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.20] [fire-mage (#1)] No available actions!
+[70.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.30] [fire-mage (#1)] No available actions!
+[70.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.40] [fire-mage (#1)] No available actions!
+[70.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.50] [fire-mage (#1)] No available actions!
+[70.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.60] [fire-mage (#1)] No available actions!
+[70.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.70] [fire-mage (#1)] No available actions!
+[70.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.80] [fire-mage (#1)] No available actions!
+[70.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.90] [fire-mage (#1)] No available actions!
+[70.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[71.00] [fire-mage (#1)] No available actions!
+[71.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[71.10] [fire-mage (#1)] No available actions!
+[71.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[71.20] [fire-mage (#1)] No available actions!
+[71.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[71.30] [fire-mage (#1)] No available actions!
+[71.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[71.40] [fire-mage (#1)] No available actions!
+[71.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.50] [fire-mage (#1)] No available actions!
 [71.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.60] [fire-mage (#1)] No available actions!
 [71.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.70] [fire-mage (#1)] No available actions!
 [71.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[71.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:20.9, AfterPostOutcome:20.9
-[71.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.872 damage (SpellSchool: 4). (Threat: 16.698)
 [71.80] [fire-mage (#1)] No available actions!
 [71.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[71.83] [Target 1] Aura faded: {SpellID: 25306}
+[71.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:9.5, AfterTargetMods:10.4, AfterOutcome:10.4, AfterPostOutcome:10.4
+[71.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit (50% Resist) for 10.436 damage (SpellSchool: 4). (Threat: 8.349)
 [71.90] [fire-mage (#1)] No available actions!
 [71.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[72.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (60.375 --> 127.300) of 6498 total.
+[72.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (172.375 --> 275.425) of 6498 total.
 [72.00] [fire-mage (#1)] No available actions!
 [72.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.10] [fire-mage (#1)] No available actions!
@@ -476,87 +559,35 @@
 [73.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.70] [fire-mage (#1)] No available actions!
 [73.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[73.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:20.9, AfterPostOutcome:20.9
-[73.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.872 damage (SpellSchool: 4). (Threat: 16.698)
 [73.80] [fire-mage (#1)] No available actions!
 [73.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.90] [fire-mage (#1)] No available actions!
 [73.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (127.300 --> 194.225) of 6498 total.
+[74.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (275.425 --> 378.475) of 6498 total.
 [74.00] [fire-mage (#1)] No available actions!
 [74.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.10] [fire-mage (#1)] No available actions!
+[74.10] [fire-mage (#1)] Queueing up {SpellID: 10199} to cast at 1m14.500000001s.
 [74.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.20] [fire-mage (#1)] No available actions!
+[74.20] [fire-mage (#1)] Queueing up {SpellID: 10199} to cast at 1m14.500000001s.
 [74.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.30] [fire-mage (#1)] No available actions!
+[74.30] [fire-mage (#1)] Queueing up {SpellID: 10199} to cast at 1m14.500000001s.
 [74.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.40] [fire-mage (#1)] No available actions!
+[74.40] [fire-mage (#1)] Queueing up {SpellID: 10199} to cast at 1m14.500000001s.
 [74.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.50] [fire-mage (#1)] No available actions!
-[74.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.60] [fire-mage (#1)] No available actions!
-[74.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.70] [fire-mage (#1)] No available actions!
-[74.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.80] [fire-mage (#1)] No available actions!
-[74.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.90] [fire-mage (#1)] No available actions!
-[74.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.00] [fire-mage (#1)] No available actions!
-[75.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.10] [fire-mage (#1)] No available actions!
-[75.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.20] [fire-mage (#1)] No available actions!
-[75.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.30] [fire-mage (#1)] No available actions!
-[75.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.40] [fire-mage (#1)] No available actions!
-[75.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.50] [fire-mage (#1)] No available actions!
-[75.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.60] [fire-mage (#1)] No available actions!
-[75.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.70] [fire-mage (#1)] No available actions!
-[75.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.73] [Target 1] Aura faded: {SpellID: 25306}
-[75.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:20.9, AfterPostOutcome:20.9
-[75.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.872 damage (SpellSchool: 4). (Threat: 16.698)
-[75.80] [fire-mage (#1)] No available actions!
-[75.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.90] [fire-mage (#1)] No available actions!
-[75.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (194.225 --> 297.275) of 6498 total.
-[76.00] [fire-mage (#1)] No available actions!
-[76.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.10] [fire-mage (#1)] No available actions!
-[76.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.20] [fire-mage (#1)] No available actions!
-[76.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.30] [fire-mage (#1)] No available actions!
-[76.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.40] [fire-mage (#1)] No available actions!
-[76.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.50] [fire-mage (#1)] No available actions!
-[76.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.60] [fire-mage (#1)] No available actions!
-[76.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.70] [fire-mage (#1)] No available actions!
-[76.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.80] [fire-mage (#1)] No available actions!
-[76.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.90] [fire-mage (#1)] No available actions!
-[76.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[77.00] [fire-mage (#1)] No available actions!
-[77.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[77.10] [fire-mage (#1)] No available actions!
-[77.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[77.20] [fire-mage (#1)] No available actions!
-[77.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[77.30] [fire-mage (#1)] No available actions!
-[77.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[77.40] [fire-mage (#1)] No available actions!
-[77.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[74.50] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[74.50] [fire-mage (#1)] Completed cast {SpellID: 10199}
+[74.50] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (378.475 --> 38.475) of 6498 total.
+[74.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:695.3, AfterAttackerMods:879.5, AfterResistances:879.5, AfterTargetMods:967.5, AfterOutcome:967.5, AfterPostOutcome:967.5
+[74.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit for 967.502 damage (SpellSchool: 4). (Threat: 774.002)
+[74.50] [fire-mage (#1)] Aura gained: {SpellID: 12536}
+[74.50] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
+[76.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (38.475 --> 105.400) of 6498 total.
+[76.00] [fire-mage (#1)] Casting {SpellID: 18809} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[77.50] [fire-mage (#1)] Completed cast {SpellID: 18809}
+[77.50] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:1050.1, AfterAttackerMods:1328.4, AfterResistances:1328.4, AfterTargetMods:1461.2, AfterOutcome:2191.8, AfterPostOutcome:2191.8
+[77.50] [fire-mage (#1)] Aura faded: {SpellID: 400625}
+[77.50] [fire-mage (#1)] {SpellID: 400625} stacks: 3 --> 0
+[77.50] [fire-mage (#1)] Aura faded: {SpellID: 12536}
 [77.50] [fire-mage (#1)] No available actions!
 [77.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [77.60] [fire-mage (#1)] No available actions!
@@ -567,101 +598,190 @@
 [77.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [77.90] [fire-mage (#1)] No available actions!
 [77.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[78.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (297.275 --> 400.325) of 6498 total.
-[78.00] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[78.00] [fire-mage (#1)] Completed cast {SpellID: 10199}
-[78.00] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (400.325 --> 60.325) of 6498 total.
-[78.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:692.2, AfterAttackerMods:875.6, AfterResistances:875.6, AfterTargetMods:963.2, AfterOutcome:1444.7, AfterPostOutcome:1444.7
-[78.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Crit for 1444.727 damage (SpellSchool: 4). (Threat: 1155.782)
-[78.00] [fire-mage (#1)] Aura gained: {SpellID: 12536}
-[78.00] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
-[78.00] [fire-mage (#1)] {SpellID: 400625} stacks: 1 --> 3
-[78.00] [fire-mage (#1)] Gained 102.000 mana from {SpellID: 29074} (60.325 --> 162.325) of 6498 total.
-[78.01] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (162.325 --> 221.325) of 6498 total.
-[79.50] [fire-mage (#1)] Casting {SpellID: 18809} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[80.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (221.325 --> 288.250) of 6498 total.
-[81.00] [fire-mage (#1)] Completed cast {SpellID: 18809}
-[81.00] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:1127.8, AfterAttackerMods:1426.6, AfterResistances:1426.6, AfterTargetMods:1569.3, AfterOutcome:1569.3, AfterPostOutcome:1569.3
-[81.00] [fire-mage (#1)] Aura faded: {SpellID: 400625}
-[81.00] [fire-mage (#1)] {SpellID: 400625} stacks: 3 --> 0
-[81.00] [fire-mage (#1)] Aura faded: {SpellID: 12536}
-[81.00] [fire-mage (#1)] No available actions!
-[81.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.10] [fire-mage (#1)] No available actions!
-[81.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.20] [fire-mage (#1)] No available actions!
-[81.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.30] [fire-mage (#1)] No available actions!
-[81.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.40] [fire-mage (#1)] No available actions!
-[81.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.50] [fire-mage (#1)] No available actions!
-[81.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.60] [fire-mage (#1)] No available actions!
-[81.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.70] [fire-mage (#1)] No available actions!
-[81.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.80] [fire-mage (#1)] No available actions!
-[81.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} Hit for 1569.266 damage (SpellSchool: 4). (Threat: 1255.413)
-[81.83] [fire-mage (#1)] Aura gained: {SpellID: 12536}
-[81.83] [Target 1] Aura gained: {SpellID: 18809}
-[81.90] [fire-mage (#1)] Casting {SpellID: 25306} (Cost = 0.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
-[82.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (288.250 --> 355.175) of 6498 total.
-[82.50] [fire-mage (#1)] Aura faded: {SpellID: 22959}
-[84.00] [fire-mage (#1)] {SpellID: 22959} stacks: 5 --> 0
-[84.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (355.175 --> 458.225) of 6498 total.
-[84.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:139.6, AfterResistances:139.6, AfterTargetMods:153.6, AfterOutcome:153.6, AfterPostOutcome:153.6
-[84.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Hit for 153.610 damage (SpellSchool: 4). (Threat: 122.888)
-[84.90] [fire-mage (#1)] Completed cast {SpellID: 25306}
-[84.90] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:1018.4, AfterAttackerMods:1120.2, AfterResistances:840.2, AfterTargetMods:924.2, AfterOutcome:1386.3, AfterPostOutcome:1386.3
-[84.90] [fire-mage (#1)] Aura faded: {SpellID: 12536}
-[84.90] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[85.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} Crit (25% Resist) for 1386.307 damage (SpellSchool: 4). (Threat: 1109.045)
-[85.73] [fire-mage (#1)] Aura gained: {SpellID: 400625}
-[85.73] [fire-mage (#1)] {SpellID: 400625} stacks: 0 --> 1
-[85.73] [fire-mage (#1)] Gained 123.000 mana from {SpellID: 29074} (458.225 --> 581.225) of 6498 total.
-[85.73] [Target 1] Aura gained: {SpellID: 25306}
-[85.74] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (581.225 --> 640.225) of 6498 total.
-[86.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (640.225 --> 743.275) of 6498 total.
-[86.40] [fire-mage (#1)] Completed cast {SpellID: 10207}
-[86.40] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (743.275 --> 593.275) of 6498 total.
-[86.40] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:388.5, AfterAttackerMods:427.4, AfterResistances:427.4, AfterTargetMods:470.1, AfterOutcome:470.1, AfterPostOutcome:470.1
-[86.40] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit for 470.089 damage (SpellSchool: 4). (Threat: 376.071)
-[86.40] [fire-mage (#1)] Aura gained: {SpellID: 22959}
-[86.40] [fire-mage (#1)] {SpellID: 22959} stacks: 0 --> 1
-[86.40] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[86.40] [fire-mage (#1)] Completed cast {SpellID: 10199}
-[86.40] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (593.275 --> 253.275) of 6498 total.
-[86.40] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:699.8, AfterAttackerMods:792.9, AfterResistances:792.9, AfterTargetMods:872.1, AfterOutcome:872.1, AfterPostOutcome:872.1
-[86.40] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit for 872.147 damage (SpellSchool: 4). (Threat: 697.718)
-[87.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:17.0, AfterResistances:17.0, AfterTargetMods:18.7, AfterOutcome:28.0, AfterPostOutcome:28.0
-[87.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Crit for 28.042 damage (SpellSchool: 4). (Threat: 22.433)
-[87.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:143.8, AfterResistances:143.8, AfterTargetMods:158.2, AfterOutcome:158.2, AfterPostOutcome:158.2
-[87.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Hit for 158.218 damage (SpellSchool: 4). (Threat: 126.574)
-[87.90] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[88.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (253.275 --> 320.200) of 6498 total.
-[89.40] [fire-mage (#1)] Completed cast {SpellID: 10207}
-[89.40] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (320.200 --> 170.200) of 6498 total.
-[89.40] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:405.9, AfterAttackerMods:459.8, AfterResistances:459.8, AfterTargetMods:505.8, AfterOutcome:505.8, AfterPostOutcome:505.8
-[89.40] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit for 505.815 damage (SpellSchool: 4). (Threat: 404.652)
-[89.40] [fire-mage (#1)] Aura refreshed: {SpellID: 22959}
-[89.40] [fire-mage (#1)] {SpellID: 22959} stacks: 1 --> 2
-[89.40] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[89.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:17.5, AfterResistances:17.5, AfterTargetMods:19.2, AfterOutcome:19.2, AfterPostOutcome:19.2
-[89.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 19.239 damage (SpellSchool: 4). (Threat: 15.391)
-[90.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (170.200 --> 237.125) of 6498 total.
-[90.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:148.0, AfterResistances:148.0, AfterTargetMods:162.8, AfterOutcome:162.8, AfterPostOutcome:162.8
-[90.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Hit for 162.826 damage (SpellSchool: 4). (Threat: 130.261)
-[90.90] [fire-mage (#1)] Completed cast {SpellID: 10207}
-[90.90] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (237.125 --> 87.125) of 6498 total.
-[90.90] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:380.7, AfterAttackerMods:443.8, AfterResistances:443.8, AfterTargetMods:488.2, AfterOutcome:488.2, AfterPostOutcome:488.2
-[90.90] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit for 488.226 damage (SpellSchool: 4). (Threat: 390.581)
-[90.90] [fire-mage (#1)] Aura refreshed: {SpellID: 22959}
-[90.90] [fire-mage (#1)] {SpellID: 22959} stacks: 2 --> 3
+[78.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (105.400 --> 172.325) of 6498 total.
+[78.00] [fire-mage (#1)] No available actions!
+[78.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[78.10] [fire-mage (#1)] No available actions!
+[78.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[78.20] [fire-mage (#1)] No available actions!
+[78.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[78.30] [fire-mage (#1)] No available actions!
+[78.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[78.33] [fire-mage (#1)] [Target 1] {SpellID: 18809} Crit for 2191.840 damage (SpellSchool: 4). (Threat: 1753.472)
+[78.33] [fire-mage (#1)] Gained 132.000 mana from {SpellID: 29074} (172.325 --> 304.325) of 6498 total.
+[78.33] [Target 1] Aura gained: {SpellID: 18809}
+[78.34] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (304.325 --> 363.325) of 6498 total.
+[78.40] [fire-mage (#1)] No available actions!
+[78.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[78.50] [fire-mage (#1)] No available actions!
+[78.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[78.60] [fire-mage (#1)] No available actions!
+[78.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[78.70] [fire-mage (#1)] No available actions!
+[78.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[78.80] [fire-mage (#1)] No available actions!
+[78.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[78.90] [fire-mage (#1)] No available actions!
+[78.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[79.00] [fire-mage (#1)] No available actions!
+[79.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[79.10] [fire-mage (#1)] No available actions!
+[79.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[79.20] [fire-mage (#1)] No available actions!
+[79.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[79.30] [fire-mage (#1)] No available actions!
+[79.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[79.40] [fire-mage (#1)] No available actions!
+[79.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[79.50] [fire-mage (#1)] No available actions!
+[79.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[79.60] [fire-mage (#1)] No available actions!
+[79.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[79.70] [fire-mage (#1)] No available actions!
+[79.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[79.80] [fire-mage (#1)] No available actions!
+[79.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[79.90] [fire-mage (#1)] No available actions!
+[79.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[80.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (363.325 --> 466.375) of 6498 total.
+[80.00] [fire-mage (#1)] Casting {SpellID: 25306} (Cost = 410.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[81.33] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:160.6, AfterResistances:160.6, AfterTargetMods:176.7, AfterOutcome:265.0, AfterPostOutcome:265.0
+[81.33] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Crit for 264.976 damage (SpellSchool: 4). (Threat: 211.981)
+[82.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (466.375 --> 569.425) of 6498 total.
+[83.00] [fire-mage (#1)] Completed cast {SpellID: 25306}
+[83.00] [fire-mage (#1)] Spent 410.000 mana from {SpellID: 25306} (569.425 --> 159.425) of 6498 total.
+[83.00] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:960.4, AfterAttackerMods:1214.9, AfterResistances:1214.9, AfterTargetMods:1336.4, AfterOutcome:1336.4, AfterPostOutcome:1336.4
+[83.00] [fire-mage (#1)] No available actions!
+[83.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.10] [fire-mage (#1)] No available actions!
+[83.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.20] [fire-mage (#1)] No available actions!
+[83.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.30] [fire-mage (#1)] No available actions!
+[83.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.40] [fire-mage (#1)] No available actions!
+[83.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.50] [fire-mage (#1)] No available actions!
+[83.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.60] [fire-mage (#1)] No available actions!
+[83.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.70] [fire-mage (#1)] No available actions!
+[83.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.80] [fire-mage (#1)] No available actions!
+[83.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} Hit for 1336.411 damage (SpellSchool: 4). (Threat: 1069.129)
+[83.83] [Target 1] Aura gained: {SpellID: 25306}
+[83.90] [fire-mage (#1)] No available actions!
+[83.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[84.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (159.425 --> 226.350) of 6498 total.
+[84.00] [fire-mage (#1)] No available actions!
+[84.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[84.10] [fire-mage (#1)] No available actions!
+[84.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[84.20] [fire-mage (#1)] No available actions!
+[84.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[84.30] [fire-mage (#1)] No available actions!
+[84.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[84.33] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:160.6, AfterResistances:160.6, AfterTargetMods:176.7, AfterOutcome:176.7, AfterPostOutcome:176.7
+[84.33] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Hit for 176.651 damage (SpellSchool: 4). (Threat: 141.321)
+[84.40] [fire-mage (#1)] No available actions!
+[84.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[84.50] [fire-mage (#1)] No available actions!
+[84.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[84.60] [fire-mage (#1)] No available actions!
+[84.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[84.70] [fire-mage (#1)] No available actions!
+[84.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[84.80] [fire-mage (#1)] No available actions!
+[84.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[84.90] [fire-mage (#1)] No available actions!
+[84.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[85.00] [fire-mage (#1)] No available actions!
+[85.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[85.10] [fire-mage (#1)] No available actions!
+[85.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[85.20] [fire-mage (#1)] No available actions!
+[85.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[85.30] [fire-mage (#1)] No available actions!
+[85.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[85.40] [fire-mage (#1)] No available actions!
+[85.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[85.50] [fire-mage (#1)] Aura faded: {SpellID: 22959}
+[85.50] [fire-mage (#1)] {SpellID: 22959} stacks: 5 --> 0
+[85.50] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[85.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:16.5, AfterResistances:16.5, AfterTargetMods:18.2, AfterOutcome:18.2, AfterPostOutcome:18.2
+[85.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 18.150 damage (SpellSchool: 4). (Threat: 14.520)
+[86.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (226.350 --> 293.275) of 6498 total.
+[87.00] [fire-mage (#1)] Completed cast {SpellID: 10207}
+[87.00] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (293.275 --> 143.275) of 6498 total.
+[87.00] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:390.7, AfterAttackerMods:429.8, AfterResistances:429.8, AfterTargetMods:472.8, AfterOutcome:0.0, AfterPostOutcome:0.0
+[87.00] [fire-mage (#1)] [Target 1] {SpellID: 10207} Miss (SpellSchool: 4). (Threat: 0.000)
+[87.00] [fire-mage (#1)] No available actions!
+[87.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[87.10] [fire-mage (#1)] No available actions!
+[87.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[87.20] [fire-mage (#1)] No available actions!
+[87.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[87.30] [fire-mage (#1)] No available actions!
+[87.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[87.33] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:139.6, AfterResistances:139.6, AfterTargetMods:153.6, AfterOutcome:153.6, AfterPostOutcome:153.6
+[87.33] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Hit for 153.610 damage (SpellSchool: 4). (Threat: 122.888)
+[87.40] [fire-mage (#1)] No available actions!
+[87.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[87.50] [fire-mage (#1)] No available actions!
+[87.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[87.60] [fire-mage (#1)] No available actions!
+[87.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[87.70] [fire-mage (#1)] No available actions!
+[87.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[87.80] [fire-mage (#1)] No available actions!
+[87.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[87.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:16.5, AfterResistances:16.5, AfterTargetMods:18.2, AfterOutcome:18.2, AfterPostOutcome:18.2
+[87.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 18.150 damage (SpellSchool: 4). (Threat: 14.520)
+[87.90] [fire-mage (#1)] No available actions!
+[87.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[88.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (143.275 --> 210.200) of 6498 total.
+[88.00] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[89.50] [fire-mage (#1)] Completed cast {SpellID: 10207}
+[89.50] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (210.200 --> 60.200) of 6498 total.
+[89.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:393.3, AfterAttackerMods:432.7, AfterResistances:432.7, AfterTargetMods:475.9, AfterOutcome:0.0, AfterPostOutcome:0.0
+[89.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} Miss (SpellSchool: 4). (Threat: 0.000)
+[89.50] [fire-mage (#1)] No available actions!
+[89.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.60] [fire-mage (#1)] No available actions!
+[89.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.70] [fire-mage (#1)] No available actions!
+[89.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.80] [fire-mage (#1)] No available actions!
+[89.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:16.5, AfterResistances:16.5, AfterTargetMods:18.2, AfterOutcome:18.2, AfterPostOutcome:18.2
+[89.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 18.150 damage (SpellSchool: 4). (Threat: 14.520)
+[89.90] [fire-mage (#1)] No available actions!
+[89.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (60.200 --> 127.125) of 6498 total.
+[90.00] [fire-mage (#1)] No available actions!
+[90.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.10] [fire-mage (#1)] No available actions!
+[90.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.20] [fire-mage (#1)] No available actions!
+[90.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.30] [fire-mage (#1)] No available actions!
+[90.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.33] [Target 1] Aura faded: {SpellID: 18809}
+[90.33] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:139.6, AfterResistances:139.6, AfterTargetMods:153.6, AfterOutcome:153.6, AfterPostOutcome:153.6
+[90.33] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Hit for 153.610 damage (SpellSchool: 4). (Threat: 122.888)
+[90.40] [fire-mage (#1)] No available actions!
+[90.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.50] [fire-mage (#1)] No available actions!
+[90.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.60] [fire-mage (#1)] No available actions!
+[90.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.70] [fire-mage (#1)] No available actions!
+[90.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.80] [fire-mage (#1)] No available actions!
+[90.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [90.90] [fire-mage (#1)] No available actions!
 [90.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[90.91] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (87.125 --> 146.125) of 6498 total.
 [91.00] [fire-mage (#1)] No available actions!
 [91.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [91.10] [fire-mage (#1)] No available actions!
@@ -678,67 +798,42 @@
 [91.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [91.70] [fire-mage (#1)] No available actions!
 [91.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[91.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:18.0, AfterResistances:18.0, AfterTargetMods:19.8, AfterOutcome:19.8, AfterPostOutcome:19.8
-[91.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 19.784 damage (SpellSchool: 4). (Threat: 15.827)
 [91.80] [fire-mage (#1)] No available actions!
 [91.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[91.83] [Target 1] Aura faded: {SpellID: 25306}
+[91.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:16.5, AfterResistances:12.4, AfterTargetMods:13.6, AfterOutcome:13.6, AfterPostOutcome:13.6
+[91.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit (25% Resist) for 13.613 damage (SpellSchool: 4). (Threat: 10.890)
 [91.90] [fire-mage (#1)] No available actions!
 [91.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (146.125 --> 213.050) of 6498 total.
+[92.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (127.125 --> 194.050) of 6498 total.
 [92.00] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [93.50] [fire-mage (#1)] Completed cast {SpellID: 10207}
-[93.50] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (213.050 --> 63.050) of 6498 total.
-[93.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:396.4, AfterAttackerMods:475.3, AfterResistances:475.3, AfterTargetMods:522.8, AfterOutcome:522.8, AfterPostOutcome:522.8
-[93.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit for 522.835 damage (SpellSchool: 4). (Threat: 418.268)
-[93.50] [fire-mage (#1)] Aura refreshed: {SpellID: 22959}
-[93.50] [fire-mage (#1)] {SpellID: 22959} stacks: 3 --> 4
+[93.50] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (194.050 --> 44.050) of 6498 total.
+[93.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:377.9, AfterAttackerMods:415.7, AfterResistances:415.7, AfterTargetMods:457.2, AfterOutcome:685.9, AfterPostOutcome:685.9
+[93.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} Crit for 685.872 damage (SpellSchool: 4). (Threat: 548.698)
+[93.50] [fire-mage (#1)] Aura gained: {SpellID: 400625}
+[93.50] [fire-mage (#1)] {SpellID: 400625} stacks: 0 --> 1
+[93.50] [fire-mage (#1)] Gained 45.000 mana from {SpellID: 29074} (44.050 --> 89.050) of 6498 total.
+[93.50] [fire-mage (#1)] Aura gained: {SpellID: 22959}
+[93.50] [fire-mage (#1)] {SpellID: 22959} stacks: 0 --> 1
 [93.50] [fire-mage (#1)] No available actions!
 [93.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [93.60] [fire-mage (#1)] No available actions!
 [93.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [93.70] [fire-mage (#1)] No available actions!
 [93.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.73] [Target 1] Aura faded: {SpellID: 25306}
-[93.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:18.5, AfterResistances:18.5, AfterTargetMods:20.3, AfterOutcome:20.3, AfterPostOutcome:20.3
-[93.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.328 damage (SpellSchool: 4). (Threat: 16.262)
 [93.80] [fire-mage (#1)] No available actions!
 [93.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.83] [Target 1] Aura faded: {SpellID: 18809}
-[93.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:156.4, AfterResistances:156.4, AfterTargetMods:172.0, AfterOutcome:172.0, AfterPostOutcome:172.0
-[93.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Hit for 172.043 damage (SpellSchool: 4). (Threat: 137.634)
 [93.90] [fire-mage (#1)] No available actions!
 [93.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (63.050 --> 129.975) of 6498 total.
-[94.00] [fire-mage (#1)] No available actions!
-[94.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.10] [fire-mage (#1)] No available actions!
-[94.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.20] [fire-mage (#1)] No available actions!
-[94.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.30] [fire-mage (#1)] No available actions!
-[94.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.40] [fire-mage (#1)] No available actions!
-[94.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.50] [fire-mage (#1)] No available actions!
-[94.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.60] [fire-mage (#1)] No available actions!
-[94.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.70] [fire-mage (#1)] No available actions!
-[94.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.80] [fire-mage (#1)] No available actions!
-[94.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.90] [fire-mage (#1)] No available actions!
-[94.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[95.00] [fire-mage (#1)] No available actions!
-[95.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[95.10] [fire-mage (#1)] No available actions!
-[95.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[95.20] [fire-mage (#1)] No available actions!
-[95.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[95.30] [fire-mage (#1)] No available actions!
-[95.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[95.40] [fire-mage (#1)] No available actions!
-[95.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[94.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (89.050 --> 155.975) of 6498 total.
+[94.00] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[95.50] [fire-mage (#1)] Completed cast {SpellID: 10207}
+[95.50] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (155.975 --> 5.975) of 6498 total.
+[95.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:396.4, AfterAttackerMods:449.1, AfterResistances:449.1, AfterTargetMods:494.1, AfterOutcome:494.1, AfterPostOutcome:494.1
+[95.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit for 494.055 damage (SpellSchool: 4). (Threat: 395.244)
+[95.50] [fire-mage (#1)] Aura refreshed: {SpellID: 22959}
+[95.50] [fire-mage (#1)] {SpellID: 22959} stacks: 1 --> 2
 [95.50] [fire-mage (#1)] No available actions!
 [95.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [95.60] [fire-mage (#1)] No available actions!
@@ -749,61 +844,146 @@
 [95.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [95.90] [fire-mage (#1)] No available actions!
 [95.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (129.975 --> 196.900) of 6498 total.
-[96.00] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[97.50] [fire-mage (#1)] Completed cast {SpellID: 10207}
-[97.50] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (196.900 --> 46.900) of 6498 total.
-[97.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:383.2, AfterAttackerMods:472.0, AfterResistances:354.0, AfterTargetMods:389.4, AfterOutcome:584.2, AfterPostOutcome:584.2
-[97.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} Crit (25% Resist) for 584.157 damage (SpellSchool: 4). (Threat: 467.326)
-[97.50] [fire-mage (#1)] Aura gained: {SpellID: 12536}
-[97.50] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
-[97.50] [fire-mage (#1)] {SpellID: 400625} stacks: 1 --> 2
-[97.50] [fire-mage (#1)] Gained 45.000 mana from {SpellID: 29074} (46.900 --> 91.900) of 6498 total.
-[97.50] [fire-mage (#1)] Aura refreshed: {SpellID: 22959}
-[97.50] [fire-mage (#1)] {SpellID: 22959} stacks: 4 --> 5
-[97.50] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[97.50] [fire-mage (#1)] Completed cast {SpellID: 10199}
-[97.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:642.9, AfterAttackerMods:813.3, AfterResistances:813.3, AfterTargetMods:894.7, AfterOutcome:0.0, AfterPostOutcome:0.0
-[97.50] [fire-mage (#1)] [Target 1] {SpellID: 10199} Miss (SpellSchool: 4). (Threat: 0.000)
-[97.51] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (91.900 --> 150.900) of 6498 total.
-[98.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (150.900 --> 217.825) of 6498 total.
-[99.00] [fire-mage (#1)] Casting {SpellID: 25306} (Cost = 0.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
-[100.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (217.825 --> 284.750) of 6498 total.
-[102.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (284.750 --> 351.675) of 6498 total.
-[102.00] [fire-mage (#1)] Completed cast {SpellID: 25306}
-[102.00] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:990.7, AfterAttackerMods:1253.3, AfterResistances:1253.3, AfterTargetMods:1378.6, AfterOutcome:1378.6, AfterPostOutcome:1378.6
-[102.00] [fire-mage (#1)] Aura faded: {SpellID: 12536}
-[102.00] [fire-mage (#1)] No available actions!
-[102.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[102.10] [fire-mage (#1)] No available actions!
-[102.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[102.20] [fire-mage (#1)] No available actions!
-[102.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[102.30] [fire-mage (#1)] No available actions!
-[102.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[102.40] [fire-mage (#1)] No available actions!
-[102.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[102.50] [fire-mage (#1)] No available actions!
-[102.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[102.60] [fire-mage (#1)] No available actions!
-[102.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[102.70] [fire-mage (#1)] No available actions!
-[102.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[102.80] [fire-mage (#1)] No available actions!
-[102.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[102.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} Hit for 1378.592 damage (SpellSchool: 4). (Threat: 1102.873)
-[102.83] [Target 1] Aura gained: {SpellID: 25306}
-[102.84] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (351.675 --> 410.675) of 6498 total.
-[102.90] [fire-mage (#1)] Casting {SpellID: 25306} (Cost = 410.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
-[104.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (410.675 --> 513.725) of 6498 total.
-[104.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:20.9, AfterPostOutcome:20.9
-[104.83] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.872 damage (SpellSchool: 4). (Threat: 16.698)
-[105.90] [fire-mage (#1)] Completed cast {SpellID: 25306}
-[105.90] [fire-mage (#1)] Spent 410.000 mana from {SpellID: 25306} (513.725 --> 103.725) of 6498 total.
-[105.90] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:951.5, AfterAttackerMods:1203.7, AfterResistances:1203.7, AfterTargetMods:1324.1, AfterOutcome:1986.1, AfterPostOutcome:1986.1
+[96.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (5.975 --> 72.900) of 6498 total.
+[96.00] [fire-mage (#1)] No available actions!
+[96.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.10] [fire-mage (#1)] No available actions!
+[96.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.20] [fire-mage (#1)] No available actions!
+[96.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.30] [fire-mage (#1)] No available actions!
+[96.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.40] [fire-mage (#1)] No available actions!
+[96.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.50] [fire-mage (#1)] No available actions!
+[96.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.60] [fire-mage (#1)] No available actions!
+[96.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.70] [fire-mage (#1)] No available actions!
+[96.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.80] [fire-mage (#1)] No available actions!
+[96.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.90] [fire-mage (#1)] No available actions!
+[96.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.00] [fire-mage (#1)] No available actions!
+[97.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.10] [fire-mage (#1)] No available actions!
+[97.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.20] [fire-mage (#1)] No available actions!
+[97.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.30] [fire-mage (#1)] No available actions!
+[97.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.40] [fire-mage (#1)] No available actions!
+[97.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.50] [fire-mage (#1)] No available actions!
+[97.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.60] [fire-mage (#1)] No available actions!
+[97.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.70] [fire-mage (#1)] No available actions!
+[97.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.80] [fire-mage (#1)] No available actions!
+[97.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.90] [fire-mage (#1)] No available actions!
+[97.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (72.900 --> 139.825) of 6498 total.
+[98.00] [fire-mage (#1)] No available actions!
+[98.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.10] [fire-mage (#1)] No available actions!
+[98.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.20] [fire-mage (#1)] No available actions!
+[98.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.30] [fire-mage (#1)] No available actions!
+[98.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.40] [fire-mage (#1)] No available actions!
+[98.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.50] [fire-mage (#1)] No available actions!
+[98.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.60] [fire-mage (#1)] No available actions!
+[98.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.70] [fire-mage (#1)] No available actions!
+[98.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.80] [fire-mage (#1)] No available actions!
+[98.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.90] [fire-mage (#1)] No available actions!
+[98.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.00] [fire-mage (#1)] No available actions!
+[99.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.10] [fire-mage (#1)] No available actions!
+[99.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.20] [fire-mage (#1)] No available actions!
+[99.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.30] [fire-mage (#1)] No available actions!
+[99.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.40] [fire-mage (#1)] No available actions!
+[99.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.50] [fire-mage (#1)] No available actions!
+[99.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.60] [fire-mage (#1)] No available actions!
+[99.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.70] [fire-mage (#1)] No available actions!
+[99.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.80] [fire-mage (#1)] No available actions!
+[99.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.90] [fire-mage (#1)] No available actions!
+[99.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[100.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (139.825 --> 206.750) of 6498 total.
+[100.00] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[101.50] [fire-mage (#1)] Completed cast {SpellID: 10207}
+[101.50] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (206.750 --> 56.750) of 6498 total.
+[101.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:392.8, AfterAttackerMods:458.0, AfterResistances:458.0, AfterTargetMods:503.8, AfterOutcome:503.8, AfterPostOutcome:503.8
+[101.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit for 503.839 damage (SpellSchool: 4). (Threat: 403.071)
+[101.50] [fire-mage (#1)] Aura refreshed: {SpellID: 22959}
+[101.50] [fire-mage (#1)] {SpellID: 22959} stacks: 2 --> 3
+[101.50] [fire-mage (#1)] No available actions!
+[101.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[101.51] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (56.750 --> 115.750) of 6498 total.
+[101.60] [fire-mage (#1)] No available actions!
+[101.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[101.70] [fire-mage (#1)] No available actions!
+[101.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[101.80] [fire-mage (#1)] No available actions!
+[101.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[101.90] [fire-mage (#1)] No available actions!
+[101.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[102.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (115.750 --> 182.675) of 6498 total.
+[102.00] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[103.50] [fire-mage (#1)] Completed cast {SpellID: 10207}
+[103.50] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (182.675 --> 32.675) of 6498 total.
+[103.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:399.4, AfterAttackerMods:478.9, AfterResistances:359.2, AfterTargetMods:395.1, AfterOutcome:395.1, AfterPostOutcome:395.1
+[103.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit (25% Resist) for 395.116 damage (SpellSchool: 4). (Threat: 316.093)
+[103.50] [fire-mage (#1)] Aura refreshed: {SpellID: 22959}
+[103.50] [fire-mage (#1)] {SpellID: 22959} stacks: 3 --> 4
+[103.50] [fire-mage (#1)] No available actions!
+[103.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[103.51] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (32.675 --> 91.675) of 6498 total.
+[103.60] [fire-mage (#1)] No available actions!
+[103.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[103.70] [fire-mage (#1)] No available actions!
+[103.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[103.80] [fire-mage (#1)] No available actions!
+[103.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[103.90] [fire-mage (#1)] No available actions!
+[103.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[104.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (91.675 --> 158.600) of 6498 total.
+[104.00] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[105.50] [fire-mage (#1)] Completed cast {SpellID: 10207}
+[105.50] [fire-mage (#1)] Spent 150.000 mana from {SpellID: 10207} (158.600 --> 8.600) of 6498 total.
+[105.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:406.2, AfterAttackerMods:500.5, AfterResistances:500.5, AfterTargetMods:550.5, AfterOutcome:550.5, AfterPostOutcome:550.5
+[105.50] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit for 550.514 damage (SpellSchool: 4). (Threat: 440.412)
+[105.50] [fire-mage (#1)] Aura refreshed: {SpellID: 22959}
+[105.50] [fire-mage (#1)] {SpellID: 22959} stacks: 4 --> 5
+[105.50] [fire-mage (#1)] No available actions!
+[105.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.51] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (8.600 --> 67.600) of 6498 total.
+[105.60] [fire-mage (#1)] No available actions!
+[105.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.70] [fire-mage (#1)] No available actions!
+[105.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.80] [fire-mage (#1)] No available actions!
+[105.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [105.90] [fire-mage (#1)] No available actions!
 [105.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[106.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (103.725 --> 170.650) of 6498 total.
+[106.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (67.600 --> 134.525) of 6498 total.
 [106.00] [fire-mage (#1)] No available actions!
 [106.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [106.10] [fire-mage (#1)] No available actions!
@@ -820,12 +1000,6 @@
 [106.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [106.70] [fire-mage (#1)] No available actions!
 [106.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[106.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} Crit for 1986.087 damage (SpellSchool: 4). (Threat: 1588.870)
-[106.73] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
-[106.73] [fire-mage (#1)] {SpellID: 400625} stacks: 2 --> 3
-[106.73] [fire-mage (#1)] Gained 123.000 mana from {SpellID: 29074} (170.650 --> 293.650) of 6498 total.
-[106.73] [Target 1] Aura faded: {SpellID: 25306}
-[106.73] [Target 1] Aura gained: {SpellID: 25306}
 [106.80] [fire-mage (#1)] No available actions!
 [106.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [106.90] [fire-mage (#1)] No available actions!
@@ -850,14 +1024,37 @@
 [107.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [107.90] [fire-mage (#1)] No available actions!
 [107.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (293.650 --> 360.575) of 6498 total.
-[108.00] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[108.00] [fire-mage (#1)] Completed cast {SpellID: 10199}
-[108.00] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (360.575 --> 20.575) of 6498 total.
-[108.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:647.5, AfterAttackerMods:819.0, AfterResistances:819.0, AfterTargetMods:900.9, AfterOutcome:0.0, AfterPostOutcome:0.0
-[108.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Miss (SpellSchool: 4). (Threat: 0.000)
-[108.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:14.2, AfterTargetMods:15.7, AfterOutcome:15.7, AfterPostOutcome:15.7
-[108.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit (25% Resist) for 15.654 damage (SpellSchool: 4). (Threat: 12.524)
+[108.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (134.525 --> 201.450) of 6498 total.
+[108.00] [fire-mage (#1)] No available actions!
+[108.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.10] [fire-mage (#1)] No available actions!
+[108.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.20] [fire-mage (#1)] No available actions!
+[108.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.30] [fire-mage (#1)] No available actions!
+[108.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.40] [fire-mage (#1)] No available actions!
+[108.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.50] [fire-mage (#1)] No available actions!
+[108.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.60] [fire-mage (#1)] No available actions!
+[108.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.70] [fire-mage (#1)] No available actions!
+[108.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.80] [fire-mage (#1)] No available actions!
+[108.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.90] [fire-mage (#1)] No available actions!
+[108.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[109.00] [fire-mage (#1)] No available actions!
+[109.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[109.10] [fire-mage (#1)] No available actions!
+[109.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[109.20] [fire-mage (#1)] No available actions!
+[109.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[109.30] [fire-mage (#1)] No available actions!
+[109.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[109.40] [fire-mage (#1)] No available actions!
+[109.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [109.50] [fire-mage (#1)] No available actions!
 [109.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [109.60] [fire-mage (#1)] No available actions!
@@ -868,7 +1065,7 @@
 [109.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [109.90] [fire-mage (#1)] No available actions!
 [109.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[110.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (20.575 --> 87.500) of 6498 total.
+[110.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (201.450 --> 268.375) of 6498 total.
 [110.00] [fire-mage (#1)] No available actions!
 [110.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [110.10] [fire-mage (#1)] No available actions!
@@ -885,8 +1082,6 @@
 [110.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [110.70] [fire-mage (#1)] No available actions!
 [110.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[110.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:20.9, AfterPostOutcome:20.9
-[110.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.872 damage (SpellSchool: 4). (Threat: 16.698)
 [110.80] [fire-mage (#1)] No available actions!
 [110.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [110.90] [fire-mage (#1)] No available actions!
@@ -911,39 +1106,14 @@
 [111.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [111.90] [fire-mage (#1)] No available actions!
 [111.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[112.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (87.500 --> 154.425) of 6498 total.
-[112.00] [fire-mage (#1)] No available actions!
-[112.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[112.10] [fire-mage (#1)] No available actions!
-[112.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[112.20] [fire-mage (#1)] No available actions!
-[112.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[112.30] [fire-mage (#1)] No available actions!
-[112.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[112.40] [fire-mage (#1)] No available actions!
-[112.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[112.50] [fire-mage (#1)] No available actions!
-[112.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[112.60] [fire-mage (#1)] No available actions!
-[112.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[112.70] [fire-mage (#1)] No available actions!
-[112.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[112.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:20.9, AfterPostOutcome:20.9
-[112.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 20.872 damage (SpellSchool: 4). (Threat: 16.698)
-[112.80] [fire-mage (#1)] No available actions!
-[112.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[112.90] [fire-mage (#1)] No available actions!
-[112.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.00] [fire-mage (#1)] No available actions!
-[113.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.10] [fire-mage (#1)] No available actions!
-[113.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.20] [fire-mage (#1)] No available actions!
-[113.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.30] [fire-mage (#1)] No available actions!
-[113.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.40] [fire-mage (#1)] No available actions!
-[113.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[112.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (268.375 --> 371.425) of 6498 total.
+[112.00] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[112.00] [fire-mage (#1)] Completed cast {SpellID: 10199}
+[112.00] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (371.425 --> 31.425) of 6498 total.
+[112.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:697.0, AfterAttackerMods:881.8, AfterResistances:661.3, AfterTargetMods:727.5, AfterOutcome:727.5, AfterPostOutcome:727.5
+[112.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit (25% Resist) for 727.451 damage (SpellSchool: 4). (Threat: 581.961)
+[112.00] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
+[112.00] [fire-mage (#1)] {SpellID: 400625} stacks: 1 --> 2
 [113.50] [fire-mage (#1)] No available actions!
 [113.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [113.60] [fire-mage (#1)] No available actions!
@@ -954,7 +1124,7 @@
 [113.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [113.90] [fire-mage (#1)] No available actions!
 [113.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (154.425 --> 257.475) of 6498 total.
+[114.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (31.425 --> 98.350) of 6498 total.
 [114.00] [fire-mage (#1)] No available actions!
 [114.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [114.10] [fire-mage (#1)] No available actions!
@@ -971,9 +1141,6 @@
 [114.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [114.70] [fire-mage (#1)] No available actions!
 [114.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.73] [Target 1] Aura faded: {SpellID: 25306}
-[114.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:19.0, AfterResistances:19.0, AfterTargetMods:20.9, AfterOutcome:31.3, AfterPostOutcome:31.3
-[114.73] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Crit for 31.309 damage (SpellSchool: 4). (Threat: 25.047)
 [114.80] [fire-mage (#1)] No available actions!
 [114.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [114.90] [fire-mage (#1)] No available actions!
@@ -998,21 +1165,68 @@
 [115.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [115.90] [fire-mage (#1)] No available actions!
 [115.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (257.475 --> 360.525) of 6498 total.
-[116.00] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[116.00] [fire-mage (#1)] Completed cast {SpellID: 10199}
-[116.00] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (360.525 --> 20.525) of 6498 total.
-[116.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:657.2, AfterAttackerMods:831.4, AfterResistances:831.4, AfterTargetMods:914.5, AfterOutcome:914.5, AfterPostOutcome:914.5
-[116.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit for 914.486 damage (SpellSchool: 4). (Threat: 731.589)
-[116.00] [fire-mage (#1)] Aura gained: {SpellID: 12536}
-[116.01] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (20.525 --> 79.525) of 6498 total.
-[117.50] [fire-mage (#1)] Casting {SpellID: 18809} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[118.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (79.525 --> 146.450) of 6498 total.
-[119.00] [fire-mage (#1)] Completed cast {SpellID: 18809}
-[119.00] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:1086.2, AfterAttackerMods:1374.1, AfterResistances:1374.1, AfterTargetMods:1511.5, AfterOutcome:1511.5, AfterPostOutcome:1511.5
-[119.00] [fire-mage (#1)] Aura faded: {SpellID: 400625}
-[119.00] [fire-mage (#1)] {SpellID: 400625} stacks: 3 --> 0
-[119.00] [fire-mage (#1)] Aura faded: {SpellID: 12536}
+[116.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (98.350 --> 165.275) of 6498 total.
+[116.00] [fire-mage (#1)] No available actions!
+[116.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.10] [fire-mage (#1)] No available actions!
+[116.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.20] [fire-mage (#1)] No available actions!
+[116.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.30] [fire-mage (#1)] No available actions!
+[116.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.40] [fire-mage (#1)] No available actions!
+[116.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.50] [fire-mage (#1)] No available actions!
+[116.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.60] [fire-mage (#1)] No available actions!
+[116.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.70] [fire-mage (#1)] No available actions!
+[116.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.80] [fire-mage (#1)] No available actions!
+[116.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.90] [fire-mage (#1)] No available actions!
+[116.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[117.00] [fire-mage (#1)] No available actions!
+[117.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[117.10] [fire-mage (#1)] No available actions!
+[117.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[117.20] [fire-mage (#1)] No available actions!
+[117.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[117.30] [fire-mage (#1)] No available actions!
+[117.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[117.40] [fire-mage (#1)] No available actions!
+[117.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[117.50] [fire-mage (#1)] No available actions!
+[117.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[117.60] [fire-mage (#1)] No available actions!
+[117.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[117.70] [fire-mage (#1)] No available actions!
+[117.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[117.80] [fire-mage (#1)] No available actions!
+[117.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[117.90] [fire-mage (#1)] No available actions!
+[117.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (165.275 --> 268.325) of 6498 total.
+[118.00] [fire-mage (#1)] No available actions!
+[118.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.10] [fire-mage (#1)] No available actions!
+[118.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.20] [fire-mage (#1)] No available actions!
+[118.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.30] [fire-mage (#1)] No available actions!
+[118.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.40] [fire-mage (#1)] No available actions!
+[118.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.50] [fire-mage (#1)] No available actions!
+[118.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.60] [fire-mage (#1)] No available actions!
+[118.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.70] [fire-mage (#1)] No available actions!
+[118.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.80] [fire-mage (#1)] No available actions!
+[118.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.90] [fire-mage (#1)] No available actions!
+[118.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.00] [fire-mage (#1)] No available actions!
 [119.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.10] [fire-mage (#1)] No available actions!
@@ -1031,41 +1245,17 @@
 [119.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.80] [fire-mage (#1)] No available actions!
 [119.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[119.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} Hit for 1511.512 damage (SpellSchool: 4). (Threat: 1209.210)
-[119.83] [Target 1] Aura gained: {SpellID: 18809}
 [119.90] [fire-mage (#1)] No available actions!
 [119.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (146.450 --> 213.375) of 6498 total.
-[120.00] [fire-mage (#1)] No available actions!
-[120.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.10] [fire-mage (#1)] No available actions!
-[120.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.20] [fire-mage (#1)] No available actions!
-[120.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.30] [fire-mage (#1)] No available actions!
-[120.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.40] [fire-mage (#1)] No available actions!
-[120.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.50] [fire-mage (#1)] No available actions!
-[120.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.60] [fire-mage (#1)] No available actions!
-[120.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.70] [fire-mage (#1)] No available actions!
-[120.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.80] [fire-mage (#1)] No available actions!
-[120.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.90] [fire-mage (#1)] No available actions!
-[120.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[121.00] [fire-mage (#1)] No available actions!
-[121.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[121.10] [fire-mage (#1)] No available actions!
-[121.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[121.20] [fire-mage (#1)] No available actions!
-[121.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[121.30] [fire-mage (#1)] No available actions!
-[121.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[121.40] [fire-mage (#1)] No available actions!
-[121.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[120.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (268.325 --> 371.375) of 6498 total.
+[120.00] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[120.00] [fire-mage (#1)] Completed cast {SpellID: 10199}
+[120.00] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (371.375 --> 31.375) of 6498 total.
+[120.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:656.0, AfterAttackerMods:829.8, AfterResistances:622.4, AfterTargetMods:684.6, AfterOutcome:684.6, AfterPostOutcome:684.6
+[120.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Hit (25% Resist) for 684.626 damage (SpellSchool: 4). (Threat: 547.700)
+[120.00] [fire-mage (#1)] Aura refreshed: {SpellID: 400625}
+[120.00] [fire-mage (#1)] {SpellID: 400625} stacks: 2 --> 3
+[120.01] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (31.375 --> 90.375) of 6498 total.
 [121.50] [fire-mage (#1)] No available actions!
 [121.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [121.60] [fire-mage (#1)] No available actions!
@@ -1076,7 +1266,7 @@
 [121.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [121.90] [fire-mage (#1)] No available actions!
 [121.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (213.375 --> 316.425) of 6498 total.
+[122.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (90.375 --> 157.300) of 6498 total.
 [122.00] [fire-mage (#1)] No available actions!
 [122.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [122.10] [fire-mage (#1)] No available actions!
@@ -1095,8 +1285,6 @@
 [122.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [122.80] [fire-mage (#1)] No available actions!
 [122.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:160.6, AfterResistances:160.6, AfterTargetMods:176.7, AfterOutcome:176.7, AfterPostOutcome:176.7
-[122.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Hit for 176.651 damage (SpellSchool: 4). (Threat: 141.321)
 [122.90] [fire-mage (#1)] No available actions!
 [122.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [123.00] [fire-mage (#1)] No available actions!
@@ -1119,16 +1307,37 @@
 [123.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [123.90] [fire-mage (#1)] No available actions!
 [123.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (316.425 --> 419.475) of 6498 total.
-[124.00] [fire-mage (#1)] Casting {SpellID: 10199} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[124.00] [fire-mage (#1)] Completed cast {SpellID: 10199}
-[124.00] [fire-mage (#1)] Spent 340.000 mana from {SpellID: 10199} (419.475 --> 79.475) of 6498 total.
-[124.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:658.8, AfterAttackerMods:833.4, AfterResistances:833.4, AfterTargetMods:916.7, AfterOutcome:1375.1, AfterPostOutcome:1375.1
-[124.00] [fire-mage (#1)] [Target 1] {SpellID: 10199} Crit for 1375.100 damage (SpellSchool: 4). (Threat: 1100.080)
-[124.00] [fire-mage (#1)] Aura gained: {SpellID: 400625}
-[124.00] [fire-mage (#1)] {SpellID: 400625} stacks: 0 --> 2
-[124.00] [fire-mage (#1)] Gained 102.000 mana from {SpellID: 29074} (79.475 --> 181.475) of 6498 total.
-[124.01] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (181.475 --> 240.475) of 6498 total.
+[124.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (157.300 --> 224.225) of 6498 total.
+[124.00] [fire-mage (#1)] No available actions!
+[124.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.10] [fire-mage (#1)] No available actions!
+[124.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.20] [fire-mage (#1)] No available actions!
+[124.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.30] [fire-mage (#1)] No available actions!
+[124.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.40] [fire-mage (#1)] No available actions!
+[124.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.50] [fire-mage (#1)] No available actions!
+[124.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.60] [fire-mage (#1)] No available actions!
+[124.60] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.70] [fire-mage (#1)] No available actions!
+[124.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.80] [fire-mage (#1)] No available actions!
+[124.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.90] [fire-mage (#1)] No available actions!
+[124.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[125.00] [fire-mage (#1)] No available actions!
+[125.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[125.10] [fire-mage (#1)] No available actions!
+[125.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[125.20] [fire-mage (#1)] No available actions!
+[125.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[125.30] [fire-mage (#1)] No available actions!
+[125.30] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[125.40] [fire-mage (#1)] No available actions!
+[125.40] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [125.50] [fire-mage (#1)] No available actions!
 [125.50] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [125.60] [fire-mage (#1)] No available actions!
@@ -1137,11 +1346,9 @@
 [125.70] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [125.80] [fire-mage (#1)] No available actions!
 [125.80] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:127.0, AfterAttackerMods:160.6, AfterResistances:160.6, AfterTargetMods:176.7, AfterOutcome:265.0, AfterPostOutcome:265.0
-[125.83] [fire-mage (#1)] [Target 1] {SpellID: 18809} tick Crit for 264.976 damage (SpellSchool: 4). (Threat: 211.981)
 [125.90] [fire-mage (#1)] No available actions!
 [125.90] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.00] [fire-mage (#1)] Gained 66.925 mana from {OtherID: 2, Tag: 1} (240.475 --> 307.400) of 6498 total.
+[126.00] [fire-mage (#1)] Gained 103.050 mana from {OtherID: 2, Tag: 2} (224.225 --> 327.275) of 6498 total.
 [126.00] [fire-mage (#1)] No available actions!
 [126.00] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [126.10] [fire-mage (#1)] No available actions!
@@ -1168,9 +1375,8 @@
 [127.10] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [127.20] [fire-mage (#1)] No available actions!
 [127.20] [fire-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[127.25] [fire-mage (#1)] Aura faded: {SpellID: 20597}
 [127.25] [fire-mage (#1)] Aura faded: {SpellID: 400625}
-[127.25] [fire-mage (#1)] {SpellID: 400625} stacks: 2 --> 0
+[127.25] [fire-mage (#1)] {SpellID: 400625} stacks: 3 --> 0
 [127.25] [fire-mage (#1)] Aura faded: {SpellID: 10494, Tag: -1}
 [127.25] [fire-mage (#1)] Aura faded: {SpellID: 24907, Tag: -1}
 [127.25] [fire-mage (#1)] Aura faded: {SpellID: 23028, Tag: -1}
@@ -1183,4 +1389,3 @@
 [127.25] [fire-mage (#1)] {SpellID: 22959} stacks: 5 --> 0
 [127.25] [Target 1] Aura faded: {SpellID: 20355, Tag: -1}
 [127.25] [Target 1] Aura faded: {SpellID: 1311680, Tag: -1}
-[127.25] [Target 1] Aura faded: {SpellID: 18809}

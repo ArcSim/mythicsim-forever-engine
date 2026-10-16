@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
-    "client_build": "1.60.1.70338",
+    "engine_revision": "771c6349a7f15ca331c32d80273b8b9139cb115e",
+    "client_build": "1.60.1.70374",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "683b5b06906a6c87780cdf0796a07d6588280d9cd46aa824cc29f65295e8f382",
@@ -4059,7 +4059,7 @@
       "self_healing_multiplier": 1,
       "spell_id": 18881,
       "tick_base": 41,
-      "tick_can_crit": false
+      "tick_can_crit": true
     },
     {
       "amplify": 1.5,

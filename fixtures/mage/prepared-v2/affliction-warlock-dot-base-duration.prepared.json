@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
-    "client_build": "1.60.1.70338",
+    "engine_revision": "771c6349a7f15ca331c32d80273b8b9139cb115e",
+    "client_build": "1.60.1.70374",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "620931617484a10e041159a5e6f5d3f2cfed042bdb0da47d01af7a2f5612eb3f",
@@ -4464,7 +4464,7 @@
       "self_healing_multiplier": 1,
       "spell_id": 18881,
       "tick_base": 41,
-      "tick_can_crit": false
+      "tick_can_crit": true
     },
     {
       "amplify": 1.5,
@@ -4735,7 +4735,7 @@
         }
       ],
       "dismissed_at_reset": false,
-      "dismissed_log": "{\"Strength\": 129.000,\"Agility\": 85.000,\"Stamina\": 234.000,\"Intellect\": 70.000,\"Spirit\": 150.000,\"AttackPower\": 258.000,\"Armor\": 170.000,\"Health\": 2160.000,\"Mana\": 1066.000,\"MP5\": 25.000,\"PhysicalCritPercent\": 4.250,}",
+      "dismissed_log": "{\"Strength\": 129.000,\"Agility\": 85.000,\"Stamina\": 234.000,\"Intellect\": 70.000,\"Spirit\": 150.000,\"AttackPower\": 258.000,\"Armor\": 170.000,\"Health\": 2160.000,\"Mana\": 1066.000,\"MP5\": 25.000,\"PhysicalCritPercent\": 4.250,\"SpellCritPercent\": 6.200,}",
       "exclusive_effects": [
         {
           "aura": {

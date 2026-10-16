@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
-    "client_build": "1.60.1.70338",
+    "engine_revision": "771c6349a7f15ca331c32d80273b8b9139cb115e",
+    "client_build": "1.60.1.70374",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "6088b097c2ebb430c474d1e1aef6bb7840d546847ec8c7b14d2b80bae34623cf",
@@ -296,6 +296,19 @@
           "on_spell_hit_taken",
           "on_periodic_damage_taken"
         ],
+        "icd": null,
+        "exclusive_effects": 0
+      },
+      {
+        "label": "Shadow Weaving-shadow-priest (#1)",
+        "action_id": {
+          "spell_id": 15258
+        },
+        "duration_ns": 15000000000,
+        "max_stacks": 5,
+        "active": false,
+        "stacks": 0,
+        "callbacks": [],
         "icd": null,
         "exclusive_effects": 0
       },
@@ -907,24 +920,6 @@
             "position": 0
           }
         ]
-      },
-      {
-        "label": "Shadow Weaving",
-        "action_id": {
-          "spell_id": 15258
-        },
-        "duration_ns": 15000000000,
-        "max_stacks": 5,
-        "active": false,
-        "stacks": 0,
-        "callbacks": [
-          "on_reset",
-          "on_gain",
-          "on_expire",
-          "on_stacks_change"
-        ],
-        "icd": null,
-        "exclusive_effects": 0
       },
       {
         "label": "Shadow Weaving Trigger",
@@ -2296,7 +2291,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -2368,7 +2363,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -2440,7 +2435,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -2512,7 +2507,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -2584,7 +2579,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -2656,7 +2651,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -2962,7 +2957,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3025,7 +3020,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3088,7 +3083,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3151,7 +3146,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3214,7 +3209,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3277,7 +3272,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3340,7 +3335,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3403,7 +3398,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3466,7 +3461,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3526,7 +3521,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -3596,7 +3591,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -3666,7 +3661,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -3736,7 +3731,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -3806,7 +3801,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -3876,7 +3871,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -3946,7 +3941,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -4016,7 +4011,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -4089,7 +4084,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -4152,7 +4147,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -4215,7 +4210,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -4278,7 +4273,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -5793,7 +5788,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -5866,7 +5861,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -5939,7 +5934,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -6012,7 +6007,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -6085,7 +6080,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -6158,7 +6153,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.8,
+        "threat_multiplier": 0.5599999999999999,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -7024,48 +7019,11 @@
       ]
     },
     {
-      "aura": "Shadow Weaving",
+      "aura": "Shadow Weaving-shadow-priest (#1)",
       "callbacks": [
         "on_spell_hit_dealt"
       ],
       "damage_per_stack": 0.02,
-      "damage_spells": [
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-        32,
-        33,
-        34,
-        35,
-        36,
-        37,
-        38,
-        39,
-        40,
-        41,
-        42,
-        43,
-        44,
-        45,
-        46,
-        69,
-        70,
-        71,
-        72,
-        73,
-        74
-      ],
       "kind": "shadow_weaving",
       "outcome": [
         "Hit",

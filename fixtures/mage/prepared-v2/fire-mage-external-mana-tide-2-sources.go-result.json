@@ -113,11 +113,11 @@
           "{\"spellId\": 18809}": {
             "aggregatorData": {
               "n": 3000,
-              "sumSq": 44229821.10257567
+              "sumSq": 110264714.31706716
             },
-            "procsAvg": 10.366666666666667,
-            "uptimeSecondsAvg": 118.97969419365569,
-            "uptimeSecondsStdev": 24.230271778144175
+            "procsAvg": 16.77166666666667,
+            "uptimeSecondsAvg": 190.34886498686905,
+            "uptimeSecondsStdev": 22.852010208435114
           },
           "{\"spellId\": 20355, \"tag\": -1}": {
             "aggregatorData": {
@@ -131,20 +131,20 @@
           "{\"spellId\": 25306}": {
             "aggregatorData": {
               "n": 3000,
-              "sumSq": 304979888.01209337
+              "sumSq": 296069008.56094795
             },
-            "procsAvg": 66.005,
-            "uptimeSecondsAvg": 318.7046513839287,
-            "uptimeSecondsStdev": 9.343867344213391
+            "procsAvg": 63.86833333333333,
+            "uptimeSecondsAvg": 313.9910517639084,
+            "uptimeSecondsStdev": 9.964383197699393
           },
           "{\"spellId\": 25345}": {
             "aggregatorData": {
               "n": 3000,
-              "sumSq": 2878362.6420744923
+              "sumSq": 2724283.7716716365
             },
-            "procsAvg": 12.144,
-            "uptimeSecondsAvg": 30.234523302396322,
-            "uptimeSecondsStdev": 6.73259346030076
+            "procsAvg": 11.828666666666667,
+            "uptimeSecondsAvg": 29.45076818491699,
+            "uptimeSecondsStdev": 6.383325455864953
           },
           "{\"spellId\": 3140}": {
             "aggregatorData": {
@@ -159,11 +159,11 @@
           "{\"spellId\": 412538}": {
             "aggregatorData": {
               "n": 3000,
-              "sumSq": 47407499.50778176
+              "sumSq": 49095141.95063838
             },
-            "procsAvg": 36.583333333333336,
-            "uptimeSecondsAvg": 124.66958138546718,
-            "uptimeSecondsStdev": 16.124370161331164
+            "procsAvg": 37.24166666666667,
+            "uptimeSecondsAvg": 126.9209073519653,
+            "uptimeSecondsStdev": 16.00408053695378
           },
           "{\"spellId\": 5143}": {
             "aggregatorData": {
@@ -218,40 +218,38 @@
         "dtps": {
           "aggregatorData": {
             "n": 3000,
-            "sumSq": 1025773343.8464681
+            "sumSq": 1113315905.4652622
           },
-          "avg": 583.942917993092,
+          "avg": 608.4050323725597,
           "hist": {
-            "470": 1,
-            "480": 2,
-            "490": 4,
-            "500": 9,
-            "510": 16,
-            "520": 37,
-            "530": 87,
-            "540": 150,
-            "550": 214,
-            "560": 299,
-            "570": 352,
-            "580": 361,
-            "590": 380,
-            "600": 366,
-            "610": 273,
-            "620": 172,
-            "630": 134,
-            "640": 71,
-            "650": 40,
-            "660": 16,
-            "670": 10,
-            "680": 3,
-            "690": 2,
-            "700": 1
+            "500": 2,
+            "510": 5,
+            "520": 8,
+            "530": 14,
+            "540": 40,
+            "550": 70,
+            "560": 106,
+            "570": 175,
+            "580": 214,
+            "590": 324,
+            "600": 435,
+            "610": 365,
+            "620": 339,
+            "630": 295,
+            "640": 244,
+            "650": 172,
+            "660": 113,
+            "670": 46,
+            "680": 19,
+            "690": 10,
+            "700": 3,
+            "710": 1
           },
-          "max": 701.5876515310774,
-          "maxSeed": "1744",
-          "min": 472.50424854963546,
-          "minSeed": "855",
-          "stdev": 30.57967420584649
+          "max": 708.9411293947036,
+          "maxSeed": "1304",
+          "min": 496.8405553893224,
+          "minSeed": "2059",
+          "stdev": 30.799649437917747
         },
         "hps": {
           "aggregatorData": {
@@ -299,40 +297,38 @@
     "dps": {
       "aggregatorData": {
         "n": 3000,
-        "sumSq": 1025773343.8464681
+        "sumSq": 1113315905.4652622
       },
-      "avg": 583.942917993092,
+      "avg": 608.4050323725597,
       "hist": {
-        "470": 1,
-        "480": 2,
-        "490": 4,
-        "500": 9,
-        "510": 16,
-        "520": 37,
-        "530": 87,
-        "540": 150,
-        "550": 214,
-        "560": 299,
-        "570": 352,
-        "580": 361,
-        "590": 380,
-        "600": 366,
-        "610": 273,
-        "620": 172,
-        "630": 134,
-        "640": 71,
-        "650": 40,
-        "660": 16,
-        "670": 10,
-        "680": 3,
-        "690": 2,
-        "700": 1
+        "500": 2,
+        "510": 5,
+        "520": 8,
+        "530": 14,
+        "540": 40,
+        "550": 70,
+        "560": 106,
+        "570": 175,
+        "580": 214,
+        "590": 324,
+        "600": 435,
+        "610": 365,
+        "620": 339,
+        "630": 295,
+        "640": 244,
+        "650": 172,
+        "660": 113,
+        "670": 46,
+        "680": 19,
+        "690": 10,
+        "700": 3,
+        "710": 1
       },
-      "max": 701.5876515310774,
-      "maxSeed": "1744",
-      "min": 472.50424854963546,
-      "minSeed": "855",
-      "stdev": 30.57967420584649
+      "max": 708.9411293947036,
+      "maxSeed": "1304",
+      "min": 496.8405553893224,
+      "minSeed": "2059",
+      "stdev": 30.799649437917747
     },
     "hps": {
       "aggregatorData": {
@@ -348,40 +344,38 @@
         "dps": {
           "aggregatorData": {
             "n": 3000,
-            "sumSq": 1025773343.8464681
+            "sumSq": 1113315905.4652622
           },
-          "avg": 583.942917993092,
+          "avg": 608.4050323725597,
           "hist": {
-            "470": 1,
-            "480": 2,
-            "490": 4,
-            "500": 9,
-            "510": 16,
-            "520": 37,
-            "530": 87,
-            "540": 150,
-            "550": 214,
-            "560": 299,
-            "570": 352,
-            "580": 361,
-            "590": 380,
-            "600": 366,
-            "610": 273,
-            "620": 172,
-            "630": 134,
-            "640": 71,
-            "650": 40,
-            "660": 16,
-            "670": 10,
-            "680": 3,
-            "690": 2,
-            "700": 1
+            "500": 2,
+            "510": 5,
+            "520": 8,
+            "530": 14,
+            "540": 40,
+            "550": 70,
+            "560": 106,
+            "570": 175,
+            "580": 214,
+            "590": 324,
+            "600": 435,
+            "610": 365,
+            "620": 339,
+            "630": 295,
+            "640": 244,
+            "650": 172,
+            "660": 113,
+            "670": 46,
+            "680": 19,
+            "690": 10,
+            "700": 3,
+            "710": 1
           },
-          "max": 701.5876515310774,
-          "maxSeed": "1744",
-          "min": 472.50424854963546,
-          "minSeed": "855",
-          "stdev": 30.57967420584649
+          "max": 708.9411293947036,
+          "maxSeed": "1304",
+          "min": 496.8405553893224,
+          "minSeed": "2059",
+          "stdev": 30.799649437917747
         },
         "hps": {
           "aggregatorData": {
@@ -398,7 +392,7 @@
               "{\"itemId\": 12662}": {
                 "targets": [
                   {
-                    "casts": 8998
+                    "casts": 9000
                   },
                   {
                     "unitIndex": 1
@@ -408,7 +402,7 @@
               "{\"itemId\": 13444}": {
                 "targets": [
                   {
-                    "casts": 8754
+                    "casts": 8902
                   },
                   {
                     "unitIndex": 1
@@ -429,7 +423,7 @@
                 "targets": [
                   {},
                   {
-                    "casts": 2999,
+                    "casts": 3000,
                     "unitIndex": 1
                   }
                 ]
@@ -464,8 +458,8 @@
               "{\"otherId\": \"OtherActionManaGain\"}": {
                 "targets": [
                   {
-                    "casts": 417372,
-                    "threat": 32345445.21168377
+                    "casts": 420796,
+                    "threat": 32621051.61240831
                   },
                   {
                     "unitIndex": 1
@@ -566,30 +560,30 @@
                 "spellSchool": 4,
                 "targets": [
                   {
-                    "castTimeMs": 155443500,
-                    "casts": 103629,
-                    "critDamage": 40490579.160452485,
+                    "castTimeMs": 140644500,
+                    "casts": 93763,
+                    "critDamage": 37202203.187657885,
                     "critRange": {
-                      "count": 30687,
-                      "max": 1611.9385908481281,
-                      "min": 327.23334339924924,
-                      "total": 40490579.160452485
+                      "count": 28251,
+                      "max": 1611.6023322165252,
+                      "min": 327.5291883265137,
+                      "total": 37202203.187657885
                     },
-                    "crits": 30687,
-                    "damage": 96438471.03044724,
+                    "crits": 28251,
+                    "damage": 87458980.60386164,
                     "hitRange": {
-                      "count": 63661,
-                      "max": 1074.6298708002123,
-                      "min": 218.09530423256217,
-                      "total": 55947891.86999466
+                      "count": 57243,
+                      "max": 1074.5888445644453,
+                      "min": 218.10601237836366,
+                      "total": 50256777.41620348
                     },
-                    "hits": 63661,
-                    "misses": 9281,
-                    "resistedCritDamage": 5258204.119254357,
-                    "resistedCrits": 5577,
-                    "resistedDamage": 12406410.156097004,
-                    "resistedHits": 11398,
-                    "threat": 96438471.03044724
+                    "hits": 57243,
+                    "misses": 8269,
+                    "resistedCritDamage": 4857616.543503741,
+                    "resistedCrits": 5168,
+                    "resistedDamage": 11350207.27821302,
+                    "resistedHits": 10379,
+                    "threat": 87458980.60386164
                   },
                   {
                     "unitIndex": 1
@@ -627,30 +621,30 @@
                 "spellSchool": 4,
                 "targets": [
                   {
-                    "castTimeMs": 94642500,
-                    "casts": 62946,
-                    "critDamage": 12952308.04915287,
+                    "castTimeMs": 94158000,
+                    "casts": 62605,
+                    "critDamage": 12841288.94793643,
                     "critRange": {
-                      "count": 17340,
-                      "max": 934.8975070415752,
-                      "min": 171.48171061628744,
-                      "total": 12952308.04915287
+                      "count": 17238,
+                      "max": 935.2879690113577,
+                      "min": 173.1788830978362,
+                      "total": 12841288.94793643
                     },
-                    "crits": 17340,
-                    "damage": 32859569.051748913,
+                    "crits": 17238,
+                    "damage": 32541102.854218606,
                     "hitRange": {
-                      "count": 40050,
-                      "max": 623.6199533444511,
-                      "min": 114.37279720792408,
-                      "total": 19907261.00259606
+                      "count": 39666,
+                      "max": 623.6099309539809,
+                      "min": 114.8529230741945,
+                      "total": 19699813.906282105
                     },
-                    "hits": 40050,
-                    "misses": 5556,
-                    "resistedCritDamage": 1689061.8546426464,
-                    "resistedCrits": 3168,
-                    "resistedDamage": 4362334.155781905,
-                    "resistedHits": 7486,
-                    "threat": 32859569.051748913
+                    "hits": 39666,
+                    "misses": 5701,
+                    "resistedCritDamage": 1737077.1772195082,
+                    "resistedCrits": 3257,
+                    "resistedDamage": 4313857.18125071,
+                    "resistedHits": 7288,
+                    "threat": 32541102.854218606
                   },
                   {
                     "unitIndex": 1
@@ -733,10 +727,10 @@
               "{\"spellId\": 12051}": {
                 "targets": [
                   {
-                    "casts": 2990
+                    "casts": 3000
                   },
                   {
-                    "castTimeMs": 23920000,
+                    "castTimeMs": 24000000,
                     "unitIndex": 1
                   }
                 ]
@@ -809,50 +803,50 @@
                 "spellSchool": 4,
                 "targets": [
                   {
-                    "castTimeMs": 51706500,
-                    "casts": 34339,
-                    "critDamage": 26119746.54624685,
+                    "castTimeMs": 83466000,
+                    "casts": 55415,
+                    "critDamage": 40922387.74862899,
                     "critRange": {
-                      "count": 8757,
+                      "count": 13598,
                       "max": 2615.396108909701,
-                      "min": 530.4253294619698,
-                      "total": 18628738.322461385
+                      "min": 461.29529883028533,
+                      "total": 28869977.382744014
                     },
-                    "critTickDamage": 7491008.223785469,
+                    "critTickDamage": 12052410.365885066,
                     "critTickRange": {
-                      "count": 30133,
+                      "count": 48431,
                       "max": 264.9763936334029,
-                      "min": 61.059777663349365,
-                      "total": 7491008.223785469
+                      "min": 59.33167074834893,
+                      "total": 12052410.365885066
                     },
-                    "critTicks": 30133,
-                    "crits": 8770,
-                    "damage": 72210050.3440821,
+                    "critTicks": 48431,
+                    "crits": 13635,
+                    "damage": 115792181.2828796,
                     "hitRange": {
-                      "count": 22343,
-                      "max": 1743.3790943888187,
-                      "min": 339.860797721996,
-                      "total": 31611377.291572962
+                      "count": 36717,
+                      "max": 1743.5296541102816,
+                      "min": 326.56524185856875,
+                      "total": 51935626.604816474
                     },
-                    "hits": 22394,
-                    "misses": 3175,
-                    "resistedCritDamage": 3403787.3973992574,
-                    "resistedCritTickDamage": 981450.6726638433,
-                    "resistedCritTicks": 5542,
-                    "resistedCrits": 1594,
-                    "resistedDamage": 9437729.476974739,
-                    "resistedHits": 4110,
-                    "resistedTickDamage": 2855404.0509339594,
-                    "resistedTicks": 15814,
-                    "threat": 72210050.3440821,
-                    "tickDamage": 21969934.730047647,
+                    "hits": 36808,
+                    "misses": 4972,
+                    "resistedCritDamage": 5412121.647629056,
+                    "resistedCritTickDamage": 1574296.7590308215,
+                    "resistedCritTicks": 8858,
+                    "resistedCrits": 2538,
+                    "resistedDamage": 15318699.746837698,
+                    "resistedHits": 6856,
+                    "resistedTickDamage": 4554185.183598747,
+                    "resistedTicks": 25161,
+                    "threat": 115792181.2828796,
+                    "tickDamage": 34986577.295319095,
                     "tickRange": {
-                      "count": 87235,
+                      "count": 138209,
                       "max": 176.65092908893527,
                       "min": 38.40237588889897,
-                      "total": 14478926.506262172
+                      "total": 22934166.9294341
                     },
-                    "ticks": 87235
+                    "ticks": 138209
                   },
                   {
                     "unitIndex": 1
@@ -881,50 +875,50 @@
                 "spellSchool": 4,
                 "targets": [
                   {
-                    "castTimeMs": 660519000,
-                    "casts": 218241,
-                    "critDamage": 103132312.94062404,
+                    "castTimeMs": 639246000,
+                    "casts": 211137,
+                    "critDamage": 99819242.83883668,
                     "critRange": {
-                      "count": 51848,
+                      "count": 50161,
                       "max": 2374.952005014765,
-                      "min": 478.81347074817677,
-                      "total": 100016523.38118702
+                      "min": 478.95185298035267,
+                      "total": 96735013.04389945
                     },
-                    "critTickDamage": 3115789.5594375017,
+                    "critTickDamage": 3084229.794937488,
                     "critTickRange": {
-                      "count": 105958,
+                      "count": 104989,
                       "max": 31.308749999999996,
                       "min": 6.80625,
-                      "total": 3115789.5594375017
+                      "total": 3084229.794937488
                     },
-                    "critTicks": 105958,
-                    "crits": 51969,
-                    "damage": 296771295.58430433,
+                    "critTicks": 104989,
+                    "crits": 50273,
+                    "damage": 287259945.66909695,
                     "hitRange": {
-                      "count": 146167,
-                      "max": 1583.3130389586895,
-                      "min": 319.2313094282077,
-                      "total": 187690217.50543144
+                      "count": 141444,
+                      "max": 1583.3236565333211,
+                      "min": 319.21030289345856,
+                      "total": 181527767.0171358
                     },
-                    "hits": 146556,
-                    "misses": 19716,
-                    "resistedCritDamage": 13393389.579664305,
-                    "resistedCritTickDamage": 403730.61918750196,
-                    "resistedCritTicks": 19250,
-                    "resistedCrits": 9474,
-                    "resistedDamage": 38603609.79029304,
-                    "resistedHits": 26704,
-                    "resistedTickDamage": 1183565.606437503,
-                    "resistedTicks": 55703,
-                    "threat": 296771295.58430433,
-                    "tickDamage": 9064554.697687492,
+                    "hits": 141814,
+                    "misses": 19050,
+                    "resistedCritDamage": 12936743.466131477,
+                    "resistedCritTickDamage": 408405.1516875016,
+                    "resistedCritTicks": 19439,
+                    "resistedCrits": 9138,
+                    "resistedDamage": 37539230.43965756,
+                    "resistedHits": 26030,
+                    "resistedTickDamage": 1173443.0338124975,
+                    "resistedTicks": 54763,
+                    "threat": 287259945.66909695,
+                    "tickDamage": 8997165.608062511,
                     "tickRange": {
-                      "count": 303571,
+                      "count": 301648,
                       "max": 20.8725,
                       "min": 4.5375000000000005,
-                      "total": 5948765.138250005
+                      "total": 5912935.813124991
                     },
-                    "ticks": 303571
+                    "ticks": 301648
                   },
                   {
                     "unitIndex": 1
@@ -935,8 +929,8 @@
                 "spellSchool": 64,
                 "targets": [
                   {
-                    "castTimeMs": 90355000,
-                    "casts": 36432
+                    "castTimeMs": 87975000,
+                    "casts": 35486
                   },
                   {
                     "unitIndex": 1
@@ -947,29 +941,29 @@
                 "spellSchool": 64,
                 "targets": [
                   {
-                    "casts": 181264,
-                    "critDamage": 19630378.302923013,
+                    "casts": 176557,
+                    "critDamage": 19057561.29871356,
                     "critRange": {
-                      "count": 38970,
+                      "count": 37849,
                       "max": 586.9710096931458,
                       "min": 133.40250220298768,
-                      "total": 19630378.302923013
+                      "total": 19057561.29871356
                     },
-                    "crits": 39099,
-                    "damage": 62407518.14483783,
+                    "crits": 37984,
+                    "damage": 60697595.99885029,
                     "hitRange": {
-                      "count": 127330,
+                      "count": 123970,
                       "max": 391.3140064620972,
                       "min": 88.93500146865846,
-                      "total": 42777139.84191488
+                      "total": 41640034.700136945
                     },
-                    "hits": 127712,
-                    "misses": 14453,
-                    "resistedCritDamage": 2536555.197638259,
-                    "resistedCrits": 7110,
-                    "resistedDamage": 8084436.204755065,
-                    "resistedHits": 23235,
-                    "threat": 43685262.7013866
+                    "hits": 124369,
+                    "misses": 14204,
+                    "resistedCritDamage": 2495854.0942161297,
+                    "resistedCrits": 6975,
+                    "resistedDamage": 7887903.191759562,
+                    "resistedHits": 22623,
+                    "threat": 42488317.199195296
                   },
                   {
                     "unitIndex": 1
@@ -980,30 +974,30 @@
                 "spellSchool": 4,
                 "targets": [
                   {
-                    "castTimeMs": 6288000,
-                    "casts": 4192,
-                    "critDamage": 556640.0250560303,
+                    "castTimeMs": 13377000,
+                    "casts": 8915,
+                    "critDamage": 1235089.0356668078,
                     "critRange": {
-                      "count": 1118,
-                      "max": 577.1230836621297,
-                      "min": 130.8239623712081,
-                      "total": 556640.0250560303
+                      "count": 2477,
+                      "max": 590.8105926056073,
+                      "min": 126.46639160486966,
+                      "total": 1235089.0356668078
                     },
-                    "crits": 1118,
-                    "damage": 1454237.4446457792,
+                    "crits": 2477,
+                    "damage": 3104479.7799548847,
                     "hitRange": {
-                      "count": 2711,
-                      "max": 388.69392885062007,
-                      "min": 86.84516176192587,
-                      "total": 897597.4195897479
+                      "count": 5624,
+                      "max": 394.05636486594705,
+                      "min": 86.96551361022942,
+                      "total": 1869390.7442880813
                     },
-                    "hits": 2711,
-                    "misses": 363,
-                    "resistedCritDamage": 66757.64695045626,
-                    "resistedCrits": 192,
-                    "resistedDamage": 193614.71632303094,
-                    "resistedHits": 525,
-                    "threat": 1454237.4446457792
+                    "hits": 5624,
+                    "misses": 814,
+                    "resistedCritDamage": 154932.70979883624,
+                    "resistedCrits": 436,
+                    "resistedDamage": 394002.324816741,
+                    "resistedHits": 1005,
+                    "threat": 3104479.7799548847
                   },
                   {
                     "unitIndex": 1
@@ -1032,17 +1026,17 @@
                 "spellSchool": 4,
                 "targets": [
                   {
-                    "casts": 109750,
-                    "damage": 68456901.69593936,
-                    "threat": 68456901.69593936,
-                    "tickDamage": 68456901.69593936,
+                    "casts": 111725,
+                    "damage": 70161277.65673672,
+                    "threat": 70161277.65673672,
+                    "tickDamage": 70161277.65673672,
                     "tickRange": {
-                      "count": 168957,
-                      "max": 1533.431756725845,
-                      "min": 26.164792474241622,
-                      "total": 68456901.69593936
+                      "count": 171161,
+                      "max": 1519.7339264451641,
+                      "min": 26.052594173737077,
+                      "total": 70161277.65673672
                     },
-                    "ticks": 168957
+                    "ticks": 171161
                   },
                   {
                     "unitIndex": 1
@@ -1273,38 +1267,36 @@
               "{\"spellId\": 11129}": {
                 "aggregatorData": {
                   "n": 3000,
-                  "sumSq": 2529158.356576064
+                  "sumSq": 2318694.7088048104
                 },
                 "procsAvg": 2,
-                "uptimeSecondsAvg": 28.11814444390529,
-                "uptimeSecondsStdev": 7.240354864026537
+                "uptimeSecondsAvg": 26.941599999481987,
+                "uptimeSecondsStdev": 6.859185500931019
               },
               "{\"spellId\": 12051}": {
                 "aggregatorData": {
                   "n": 3000,
-                  "sumSq": 191360
+                  "sumSq": 192000
                 },
-                "procsAvg": 0.9966666666666667,
-                "uptimeSecondsAvg": 7.973333333333334,
-                "uptimeSecondsStdev": 0.46110977242107987
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 8
               },
               "{\"spellId\": 12051} #2": {
                 "aggregatorData": {
                   "n": 3000,
-                  "sumSq": 191360
+                  "sumSq": 192000
                 },
-                "procsAvg": 0.9966666666666667,
-                "uptimeSecondsAvg": 7.973333333333334,
-                "uptimeSecondsStdev": 0.46110977242107987
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 8
               },
               "{\"spellId\": 12536}": {
                 "aggregatorData": {
                   "n": 3000,
-                  "sumSq": 3509312.3177343514
+                  "sumSq": 3495781.3500871067
                 },
-                "procsAvg": 12.419,
-                "uptimeSecondsAvg": 32.73932680334656,
-                "uptimeSecondsStdev": 9.89480939896221
+                "procsAvg": 12.783333333333333,
+                "uptimeSecondsAvg": 32.64075136201587,
+                "uptimeSecondsStdev": 9.992086896744581
               },
               "{\"spellId\": 1259817}": {
                 "aggregatorData": {
@@ -1317,17 +1309,17 @@
               "{\"spellId\": 17360, \"tag\": -1}": {
                 "aggregatorData": {
                   "n": 3000,
-                  "sumSq": 5486317.76327959
+                  "sumSq": 5512785.774490798
                 },
                 "effects": [
                   {
                     "category": "ManaTideTotemMP5Add",
-                    "uptimeSecondsAvg": 42.65500297224966
+                    "uptimeSecondsAvg": 42.75515258562133
                   }
                 ],
-                "procsAvg": 3.8396666666666666,
-                "uptimeSecondsAvg": 42.655002972249676,
-                "uptimeSecondsStdev": 3.053409438191103
+                "procsAvg": 3.845,
+                "uptimeSecondsAvg": 42.755152585621346,
+                "uptimeSecondsStdev": 3.097125367794404
               },
               "{\"spellId\": 21850, \"tag\": -1}": {
                 "aggregatorData": {
@@ -1372,11 +1364,11 @@
               "{\"spellId\": 22959}": {
                 "aggregatorData": {
                   "n": 3000,
-                  "sumSq": 382700415.8182819
+                  "sumSq": 382539300.7675097
                 },
-                "procsAvg": 20.406333333333333,
-                "uptimeSecondsAvg": 357.1467294535682,
-                "uptimeSecondsStdev": 3.6081731361449765
+                "procsAvg": 21.668333333333333,
+                "uptimeSecondsAvg": 357.0712970844398,
+                "uptimeSecondsStdev": 3.631673756317049
               },
               "{\"spellId\": 23028, \"tag\": -1}": {
                 "aggregatorData": {
@@ -1444,59 +1436,57 @@
               "{\"spellId\": 400625}": {
                 "aggregatorData": {
                   "n": 3000,
-                  "sumSq": 133088364.05574106
+                  "sumSq": 179945066.78665015
                 },
-                "procsAvg": 33.66433333333333,
-                "uptimeSecondsAvg": 209.20202122334518,
-                "uptimeSecondsStdev": 24.43976952934259
+                "procsAvg": 63.96333333333333,
+                "uptimeSecondsAvg": 244.37604271021226,
+                "uptimeSecondsStdev": 16.187608785113927
               },
               "{\"spellId\": 44404}": {
                 "aggregatorData": {
                   "n": 3000,
-                  "sumSq": 4042118.7571611432
+                  "sumSq": 4764457.732369664
                 },
-                "procsAvg": 13.118,
-                "uptimeSecondsAvg": 35.21467164554981,
-                "uptimeSecondsStdev": 10.358562639180445
+                "procsAvg": 12.782333333333334,
+                "uptimeSecondsAvg": 38.23100033084889,
+                "uptimeSecondsStdev": 11.249141796563267
               }
             },
             "dps": {
               "aggregatorData": {
                 "n": 3000,
-                "sumSq": 1025773343.8464681
+                "sumSq": 1113315905.4652622
               },
-              "avg": 583.942917993092,
+              "avg": 608.4050323725597,
               "hist": {
-                "470": 1,
-                "480": 2,
-                "490": 4,
-                "500": 9,
-                "510": 16,
-                "520": 37,
-                "530": 87,
-                "540": 150,
-                "550": 214,
-                "560": 299,
-                "570": 352,
-                "580": 361,
-                "590": 380,
-                "600": 366,
-                "610": 273,
-                "620": 172,
-                "630": 134,
-                "640": 71,
-                "650": 40,
-                "660": 16,
-                "670": 10,
-                "680": 3,
-                "690": 2,
-                "700": 1
+                "500": 2,
+                "510": 5,
+                "520": 8,
+                "530": 14,
+                "540": 40,
+                "550": 70,
+                "560": 106,
+                "570": 175,
+                "580": 214,
+                "590": 324,
+                "600": 435,
+                "610": 365,
+                "620": 339,
+                "630": 295,
+                "640": 244,
+                "650": 172,
+                "660": 113,
+                "670": 46,
+                "680": 19,
+                "690": 10,
+                "700": 3,
+                "710": 1
               },
-              "max": 701.5876515310774,
-              "maxSeed": "1744",
-              "min": 472.50424854963546,
-              "minSeed": "855",
-              "stdev": 30.57967420584649
+              "max": 708.9411293947036,
+              "maxSeed": "1304",
+              "min": 496.8405553893224,
+              "minSeed": "2059",
+              "stdev": 30.799649437917747
             },
             "dtps": {
               "aggregatorData": {
@@ -1519,27 +1509,27 @@
             "name": "fire-mage",
             "resources": {
               "{\"itemId\": 12662}": {
-                "actualGain": 10797600,
-                "events": 8998,
-                "gain": 10797600,
+                "actualGain": 10800000,
+                "events": 9000,
+                "gain": 10800000,
                 "type": "ResourceTypeMana"
               },
               "{\"itemId\": 13444}": {
-                "actualGain": 15757200,
-                "events": 8754,
-                "gain": 15757200,
+                "actualGain": 16023600,
+                "events": 8902,
+                "gain": 16023600,
                 "type": "ResourceTypeMana"
               },
               "{\"itemId\": 14152}": {
-                "actualGain": 2994845.540635042,
+                "actualGain": 2998998.784992572,
                 "events": 6000,
-                "gain": 2994845.540635042,
+                "gain": 2998998.784992572,
                 "type": "ResourceTypeMana"
               },
               "{\"itemId\": 5513}": {
-                "actualGain": 1799400,
-                "events": 2999,
-                "gain": 1799400,
+                "actualGain": 1800000,
+                "events": 3000,
+                "gain": 1800000,
                 "type": "ResourceTypeMana"
               },
               "{\"itemId\": 8007}": {
@@ -1555,97 +1545,95 @@
                 "type": "ResourceTypeMana"
               },
               "{\"otherId\": \"OtherActionManaRegen\", \"tag\": 1}": {
-                "actualGain": 49439948.59005904,
-                "events": 483360,
-                "gain": 49859136.041380495,
+                "actualGain": 49876781.917388245,
+                "events": 488175,
+                "gain": 50261483.8330353,
                 "type": "ResourceTypeMana"
               },
               "{\"otherId\": \"OtherActionManaRegen\", \"tag\": 2}": {
-                "actualGain": 10717882.343898926,
-                "events": 55057,
-                "gain": 11214834.933338018,
+                "actualGain": 10200725.179544322,
+                "events": 50242,
+                "gain": 10708966.683336155,
                 "type": "ResourceTypeMana"
               },
               "{\"spellId\": 10199}": {
-                "actualGain": -34863430,
-                "events": 103629,
-                "gain": -34863430,
+                "actualGain": -31558630,
+                "events": 93763,
+                "gain": -31558630,
                 "type": "ResourceTypeMana"
               },
               "{\"spellId\": 10207}": {
-                "actualGain": -8601435,
-                "events": 57488,
-                "gain": -8601435,
+                "actualGain": -8559420,
+                "events": 57207,
+                "gain": -8559420,
                 "type": "ResourceTypeMana"
               },
               "{\"spellId\": 18809}": {
-                "actualGain": -12789084,
-                "events": 29265,
-                "gain": -12789084,
+                "actualGain": -20677096,
+                "events": 47344,
+                "gain": -20677096,
                 "type": "ResourceTypeMana"
               },
               "{\"spellId\": 20355}": {
-                "actualGain": 16168596.236450795,
-                "events": 275969,
-                "gain": 16282171,
+                "actualGain": 16257491.296175782,
+                "events": 277378,
+                "gain": 16365302,
                 "type": "ResourceTypeMana"
               },
               "{\"spellId\": 25306}": {
-                "actualGain": -79501911,
-                "events": 195100,
-                "gain": -79501911,
+                "actualGain": -76973400,
+                "events": 188838,
+                "gain": -76973400,
                 "type": "ResourceTypeMana"
               },
               "{\"spellId\": 29074}": {
-                "actualGain": 11323248.64628169,
-                "events": 108652,
-                "gain": 11348376,
+                "actualGain": 11512013.14364823,
+                "events": 110516,
+                "gain": 11535888,
                 "type": "ResourceTypeMana"
               },
               "{\"spellId\": 2948}": {
-                "actualGain": -201920,
-                "events": 4039,
-                "gain": -201920,
+                "actualGain": -430250,
+                "events": 8612,
+                "gain": -430250,
                 "type": "ResourceTypeMana"
               }
             },
-            "secondsOomAvg": 0.002533333333333333,
+            "secondsOomAvg": 0.008733333333333333,
             "threat": {
               "aggregatorData": {
                 "n": 3000,
-                "sumSq": 1070499518.3486702
+                "sumSq": 1162570347.2771144
               },
-              "avg": 596.5579617923033,
+              "avg": 621.7523750905426,
               "hist": {
-                "490": 1,
-                "500": 3,
-                "510": 9,
-                "520": 13,
-                "530": 27,
-                "540": 76,
-                "550": 140,
-                "560": 193,
-                "570": 275,
-                "580": 350,
-                "590": 362,
-                "600": 368,
-                "610": 345,
-                "620": 323,
-                "630": 195,
-                "640": 138,
-                "650": 93,
-                "660": 46,
-                "670": 25,
-                "680": 11,
-                "690": 2,
-                "700": 3,
+                "520": 4,
+                "530": 6,
+                "540": 11,
+                "550": 31,
+                "560": 57,
+                "570": 95,
+                "580": 138,
+                "590": 233,
+                "600": 265,
+                "610": 415,
+                "620": 388,
+                "630": 339,
+                "640": 320,
+                "650": 274,
+                "660": 184,
+                "670": 123,
+                "680": 71,
+                "690": 26,
+                "700": 11,
+                "710": 7,
                 "720": 2
               },
-              "max": 722.6747454463132,
-              "maxSeed": "1744",
-              "min": 492.6021050908551,
-              "minSeed": "855",
-              "stdev": 30.850786134276223
+              "max": 722.9146186085294,
+              "maxSeed": "1304",
+              "min": 516.4140270702354,
+              "minSeed": "2059",
+              "stdev": 30.78040223324984
             },
             "tmi": {
               "aggregatorData": {
@@ -1659,238 +1647,163 @@
             "tto": {
               "aggregatorData": {
                 "n": 3000,
-                "sumSq": 2277159901.8937817
+                "sumSq": 1047999747.6186457
               },
-              "avg": 694.231007304518,
+              "avg": 488.3406018126694,
               "hist": {
-                "1000": 9,
-                "1010": 15,
-                "1020": 5,
-                "1030": 7,
-                "1040": 11,
-                "1050": 6,
-                "1060": 7,
-                "1070": 3,
-                "1080": 6,
-                "1090": 3,
-                "1100": 9,
-                "1110": 10,
-                "1120": 9,
-                "1130": 2,
-                "1140": 6,
-                "1150": 11,
-                "1160": 9,
-                "1170": 3,
-                "1180": 8,
-                "1190": 4,
-                "1200": 5,
-                "1210": 8,
-                "1220": 9,
-                "1230": 8,
-                "1240": 5,
-                "1250": 7,
-                "1260": 5,
-                "1270": 7,
+                "1000": 4,
+                "1010": 2,
+                "1020": 6,
+                "1030": 1,
+                "1040": 1,
+                "1050": 4,
+                "1060": 2,
+                "1070": 2,
+                "1080": 3,
+                "1090": 4,
+                "1110": 5,
+                "1120": 3,
+                "1140": 2,
+                "1150": 3,
+                "1160": 4,
+                "1190": 1,
+                "1200": 2,
+                "1210": 4,
+                "1220": 1,
+                "1230": 1,
+                "1240": 3,
+                "1250": 1,
                 "1280": 2,
-                "1290": 4,
+                "1290": 2,
                 "1300": 2,
-                "1310": 2,
-                "1320": 4,
-                "1330": 3,
-                "1340": 4,
-                "1350": 6,
-                "1370": 2,
-                "1380": 6,
-                "1390": 6,
-                "1400": 3,
-                "1410": 2,
-                "1420": 2,
-                "1430": 8,
-                "1440": 4,
-                "1460": 1,
-                "1470": 1,
-                "1480": 1,
-                "1490": 1,
-                "150": 1,
-                "1500": 3,
-                "1510": 1,
-                "1520": 3,
+                "1310": 1,
+                "1320": 3,
+                "1330": 1,
+                "1340": 1,
+                "1350": 1,
+                "1360": 1,
+                "1390": 1,
+                "1420": 1,
+                "1440": 2,
+                "1450": 2,
+                "1470": 3,
+                "1500": 1,
+                "1510": 4,
                 "1530": 1,
-                "1550": 1,
-                "1560": 1,
+                "1560": 2,
                 "1570": 1,
-                "1580": 2,
-                "1590": 1,
-                "1600": 2,
-                "1610": 1,
-                "1620": 2,
-                "1630": 7,
-                "1640": 4,
-                "1650": 2,
-                "1660": 4,
-                "1690": 5,
-                "1700": 2,
+                "1670": 1,
+                "170": 13,
+                "1700": 1,
                 "1710": 1,
-                "1720": 1,
-                "1730": 1,
-                "1740": 3,
-                "1750": 2,
-                "1760": 2,
-                "1770": 2,
-                "1790": 2,
-                "180": 13,
-                "1800": 1,
-                "1810": 2,
-                "1840": 1,
-                "1850": 2,
-                "1860": 2,
-                "1880": 2,
+                "1780": 1,
+                "180": 29,
+                "1810": 1,
+                "1880": 1,
                 "190": 38,
-                "1900": 2,
-                "1920": 1,
                 "1940": 1,
-                "1950": 2,
-                "1960": 2,
-                "1970": 1,
-                "1980": 1,
-                "1990": 1,
-                "200": 20,
-                "2000": 3,
-                "2010": 2,
-                "2020": 3,
-                "2040": 3,
-                "2050": 3,
-                "2080": 3,
-                "210": 10,
-                "2100": 1,
-                "2110": 3,
-                "2120": 1,
-                "2130": 1,
-                "2140": 2,
-                "2150": 1,
-                "2160": 1,
-                "2190": 2,
-                "220": 11,
-                "2200": 1,
-                "2220": 3,
+                "200": 25,
+                "2000": 1,
+                "2010": 1,
+                "2040": 1,
+                "2060": 1,
+                "210": 13,
+                "220": 5,
                 "2230": 1,
-                "2240": 1,
-                "2250": 1,
-                "2260": 2,
-                "2270": 1,
-                "2280": 2,
-                "230": 3,
-                "2300": 2,
-                "2350": 2,
-                "2370": 1,
-                "2390": 1,
-                "240": 7,
-                "2400": 1,
-                "2420": 1,
-                "2440": 1,
-                "2470": 1,
-                "250": 6,
-                "2540": 1,
-                "2550": 2,
-                "2560": 1,
-                "2570": 1,
-                "2580": 1,
-                "260": 25,
-                "2630": 2,
-                "270": 20,
-                "2740": 1,
+                "230": 5,
+                "2300": 1,
+                "2340": 1,
+                "240": 8,
+                "2460": 2,
+                "250": 25,
+                "2550": 1,
+                "260": 59,
+                "270": 69,
+                "2710": 1,
                 "2750": 1,
-                "2760": 1,
-                "280": 25,
-                "2890": 1,
-                "290": 74,
-                "2900": 1,
-                "2920": 1,
-                "2930": 1,
+                "280": 77,
+                "2800": 1,
+                "2870": 1,
+                "290": 213,
+                "2910": 1,
                 "2980": 1,
-                "300": 157,
-                "3060": 1,
-                "3070": 1,
-                "310": 214,
-                "3140": 1,
-                "320": 116,
-                "3200": 1,
-                "3220": 2,
+                "300": 307,
+                "3050": 1,
+                "310": 314,
+                "320": 156,
                 "3270": 1,
                 "3290": 1,
-                "330": 145,
-                "3300": 1,
-                "3320": 1,
-                "340": 83,
+                "330": 142,
+                "340": 88,
                 "350": 7,
-                "3530": 1,
-                "3600": 29,
-                "380": 1,
-                "410": 5,
-                "420": 7,
-                "430": 3,
-                "440": 10,
-                "450": 10,
+                "360": 2,
+                "3600": 8,
+                "400": 3,
+                "410": 4,
+                "420": 2,
+                "430": 8,
+                "440": 13,
+                "450": 26,
                 "460": 11,
-                "470": 15,
-                "480": 21,
-                "490": 34,
-                "500": 46,
-                "510": 40,
-                "520": 60,
-                "530": 49,
-                "540": 56,
-                "550": 46,
-                "560": 31,
-                "570": 46,
-                "580": 59,
-                "590": 41,
-                "600": 31,
-                "610": 40,
-                "620": 41,
-                "630": 41,
-                "640": 52,
-                "650": 38,
-                "660": 36,
-                "670": 32,
-                "680": 33,
-                "690": 33,
-                "700": 33,
-                "710": 25,
-                "720": 29,
-                "730": 32,
-                "740": 38,
-                "750": 28,
-                "760": 27,
-                "770": 24,
-                "780": 29,
-                "790": 28,
-                "800": 21,
-                "810": 24,
-                "820": 21,
-                "830": 23,
-                "840": 21,
-                "850": 19,
-                "860": 20,
-                "870": 16,
-                "880": 18,
-                "890": 12,
-                "900": 13,
-                "910": 19,
-                "920": 18,
+                "470": 20,
+                "480": 24,
+                "490": 42,
+                "500": 52,
+                "510": 58,
+                "520": 61,
+                "530": 58,
+                "540": 72,
+                "550": 59,
+                "560": 60,
+                "570": 36,
+                "580": 36,
+                "590": 29,
+                "600": 32,
+                "610": 26,
+                "620": 36,
+                "630": 28,
+                "640": 25,
+                "650": 40,
+                "660": 28,
+                "670": 21,
+                "680": 26,
+                "690": 29,
+                "700": 22,
+                "710": 17,
+                "720": 17,
+                "730": 17,
+                "740": 15,
+                "750": 15,
+                "760": 12,
+                "770": 15,
+                "780": 10,
+                "790": 11,
+                "800": 16,
+                "810": 13,
+                "820": 11,
+                "830": 18,
+                "840": 7,
+                "850": 6,
+                "860": 7,
+                "870": 6,
+                "880": 7,
+                "890": 13,
+                "900": 7,
+                "910": 8,
+                "920": 4,
                 "930": 6,
-                "940": 8,
-                "950": 12,
-                "960": 10,
-                "970": 12,
-                "980": 13,
-                "990": 12
+                "940": 11,
+                "950": 5,
+                "960": 11,
+                "970": 2,
+                "980": 2,
+                "990": 4
               },
-              "max": 3600.0000000000005,
-              "maxSeed": "1930",
-              "min": 147,
-              "minSeed": "2130",
-              "stdev": 526.3996667250225
+              "max": 3600,
+              "maxSeed": "669",
+              "min": 165.5,
+              "minSeed": "2119",
+              "stdev": 332.9515067205059
             },
             "unitIndex": 1
           }

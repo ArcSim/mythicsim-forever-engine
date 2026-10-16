@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
-    "client_build": "1.60.1.70338",
+    "engine_revision": "771c6349a7f15ca331c32d80273b8b9139cb115e",
+    "client_build": "1.60.1.70374",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "c6510fdcdfdf773e9380d4d3625f0379c8c272e4411cbfc3f681e90b2b18bb3c",
@@ -3093,6 +3093,7 @@
       "ruthlessness_chance": 0.6
     },
     {
+      "attack_power_share": 0.005,
       "kind": "instant_poison",
       "max_damage": 100,
       "min_damage": 76,
@@ -3105,6 +3106,7 @@
       "trigger_aura": "Instant Poison"
     },
     {
+      "attack_power_share": 0.0045,
       "kind": "deadly_poison",
       "proc_chance": 0.3,
       "proc_mask": [

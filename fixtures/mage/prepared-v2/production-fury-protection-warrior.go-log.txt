@@ -27,7 +27,6 @@
 [0.00] [Fury-prot Warrior (#1)] Spent 30.000 rage from {SpellID: 23894} (60.000 --> 30.000) of 100 total.
 [0.00] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} [DEBUG] MAP: 1636.0, RAP: 112.0, SP: 0.0, BaseDamage:784.2, AfterAttackerMods:705.8, AfterResistances:599.4, AfterTargetMods:607.4, AfterOutcome:607.4, AfterPostOutcome:607.4
 [0.00] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} Hit for 607.412 damage (SpellSchool: 1). (Threat: 908.080)
-[0.01] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [0.09] [Fury-prot Warrior (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [0.09] [Fury-prot Warrior (#1)] Completed cast {OtherID: 3, Tag: 1}
 [0.09] [Fury-prot Warrior (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1636.0, RAP: 112.0, SP: 0.0, BaseDamage:395.4, AfterAttackerMods:355.8, AfterResistances:302.2, AfterTargetMods:310.2, AfterOutcome:0.0, AfterPostOutcome:0.0
@@ -41,7 +40,6 @@
 [0.49] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} Crush for 2633.669 damage (SpellSchool: 1). (Threat: 2633.669)
 [0.49] [Fury-prot Warrior (#1)] Gained 7.067 rage from {OtherID: 9} (30.000 --> 37.067) of 100 total.
 [0.49] [Fury-prot Warrior (#1)] Spent 2633.669 health from {OtherID: 9} (6169.000 --> 3535.331) of 6169 total.
-[0.50] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
 [0.50] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [0.50] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 12880}
 [0.59] [Fury-prot Warrior (#1)] No available actions!
@@ -181,8 +179,6 @@
 [6.00] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} Crit for 1334.706 damage (SpellSchool: 1). (Threat: 1995.385)
 [6.00] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 12966}
 [6.00] [Fury-prot Warrior (#1)] {SpellID: 12966} stacks: 0 --> 3
-[6.01] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[6.01] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [7.00] [Fury-prot Warrior (#1)] Gained 1.500 rage from {SpellID: 2687} (33.148 --> 34.648) of 100 total.
 [7.03] [Fury-prot Warrior (#1)] Casting {SpellID: 25286} (Cost = 15.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [7.03] [Fury-prot Warrior (#1)] Completed cast {SpellID: 25286}
@@ -193,6 +189,9 @@
 [7.03] [Fury-prot Warrior (#1)] Pausing rotation for 471.200001ms due to resources / CDs.
 [7.03] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 25286} Parry (SpellSchool: 1). (Threat: 0.000)
 [7.03] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
+[7.09] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[7.09] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (0.000 --> 61.690) of 6169 total.
+[7.09] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [7.13] [Fury-prot Warrior (#1)] No available actions!
 [7.13] [Fury-prot Warrior (#1)] Pausing rotation for 371.200001ms due to resources / CDs.
 [7.48] [Target 1] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
@@ -200,7 +199,7 @@
 [7.48] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} [DEBUG] MAP: 805.0, RAP: 0.0, SP: 0.0, BaseDamage:4760.6, AfterAttackerMods:4760.6, AfterResistances:2130.4, AfterTargetMods:1917.4, AfterOutcome:1917.4, AfterPostOutcome:1917.4
 [7.48] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} Hit for 1917.390 damage (SpellSchool: 1). (Threat: 1917.390)
 [7.48] [Fury-prot Warrior (#1)] Gained 7.717 rage from {OtherID: 9} (31.648 --> 39.365) of 100 total.
-[7.48] [Fury-prot Warrior (#1)] Spent 1917.390 health from {OtherID: 9} (0.000 --> 0.000) of 6169 total.
+[7.48] [Fury-prot Warrior (#1)] Spent 1917.390 health from {OtherID: 9} (61.690 --> 0.000) of 6169 total.
 [7.49] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
 [7.49] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [7.50] [Fury-prot Warrior (#1)] No available actions!
@@ -337,8 +336,6 @@
 [12.00] [Fury-prot Warrior (#1)] Spent 30.000 rage from {SpellID: 23894} (64.473 --> 34.473) of 100 total.
 [12.00] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} [DEBUG] MAP: 1636.0, RAP: 112.0, SP: 0.0, BaseDamage:784.2, AfterAttackerMods:776.4, AfterResistances:659.4, AfterTargetMods:667.4, AfterOutcome:667.4, AfterPostOutcome:667.4
 [12.00] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} Hit for 667.353 damage (SpellSchool: 1). (Threat: 997.692)
-[12.01] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[12.01] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [12.79] [Fury-prot Warrior (#1)] Casting {SpellID: 25286} (Cost = 15.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [12.79] [Fury-prot Warrior (#1)] Completed cast {SpellID: 25286}
 [12.79] [Fury-prot Warrior (#1)] Spent 15.000 rage from {SpellID: 25286} (34.473 --> 19.473) of 100 total.
@@ -351,6 +348,10 @@
 [13.00] [Fury-prot Warrior (#1)] Gained 1.500 rage from {SpellID: 2687} (19.473 --> 20.973) of 100 total.
 [13.10] [Fury-prot Warrior (#1)] No available actions!
 [13.10] [Fury-prot Warrior (#1)] Pausing rotation for 400.000002ms due to resources / CDs.
+[13.49] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
+[13.49] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[13.49] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (123.380 --> 185.070) of 6169 total.
+[13.49] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [13.50] [Fury-prot Warrior (#1)] No available actions!
 [13.50] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [13.60] [Fury-prot Warrior (#1)] No available actions!
@@ -363,9 +364,6 @@
 [13.90] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [14.00] [Fury-prot Warrior (#1)] No available actions!
 [14.00] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[14.01] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
-[14.01] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (123.380 --> 185.070) of 6169 total.
-[14.01] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [14.10] [Fury-prot Warrior (#1)] No available actions!
 [14.10] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [14.20] [Fury-prot Warrior (#1)] No available actions!
@@ -376,7 +374,6 @@
 [14.23] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} Crit for 4080.794 damage (SpellSchool: 1). (Threat: 4080.794)
 [14.23] [Fury-prot Warrior (#1)] Gained 8.212 rage from {OtherID: 9} (20.973 --> 29.185) of 100 total.
 [14.23] [Fury-prot Warrior (#1)] Spent 4080.794 health from {OtherID: 9} (185.070 --> 0.000) of 6169 total.
-[14.24] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
 [14.24] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [14.30] [Fury-prot Warrior (#1)] No available actions!
 [14.30] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -519,9 +516,10 @@
 [18.55] [Fury-prot Warrior (#1)] Aura refreshed: {SpellID: 12966}
 [18.55] [Fury-prot Warrior (#1)] {SpellID: 12966} stacks: 2 --> 3
 [18.55] [Fury-prot Warrior (#1)] Aura refreshed: {SpellID: 12966}
-[18.56] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[18.56] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [18.56] [Fury-prot Warrior (#1)] Gained 1.000 rage from {SpellID: 12964} (10.477 --> 11.477) of 100 total.
+[18.64] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[18.64] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (0.000 --> 61.690) of 6169 total.
+[18.64] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [18.65] [Fury-prot Warrior (#1)] No available actions!
 [18.65] [Fury-prot Warrior (#1)] Pausing rotation for 1.4s due to resources / CDs.
 [19.03] [Target 1] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
@@ -529,7 +527,7 @@
 [19.03] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} [DEBUG] MAP: 805.0, RAP: 0.0, SP: 0.0, BaseDamage:4639.7, AfterAttackerMods:4639.7, AfterResistances:2076.3, AfterTargetMods:1868.7, AfterOutcome:1803.4, AfterPostOutcome:1803.4
 [19.03] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} Block for 1803.375 damage (SpellSchool: 1). (Threat: 1803.375)
 [19.03] [Fury-prot Warrior (#1)] Gained 7.521 rage from {OtherID: 9} (11.477 --> 18.998) of 100 total.
-[19.03] [Fury-prot Warrior (#1)] Spent 1803.375 health from {OtherID: 9} (0.000 --> 0.000) of 6169 total.
+[19.03] [Fury-prot Warrior (#1)] Spent 1803.375 health from {OtherID: 9} (61.690 --> 0.000) of 6169 total.
 [19.03] [Fury-prot Warrior (#1)] Gained 5.000 rage from {SpellID: 1310318} (18.998 --> 23.998) of 100 total.
 [19.03] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 25288}
 [19.04] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
@@ -661,8 +659,6 @@
 [24.55] [Fury-prot Warrior (#1)] Spent 30.000 rage from {SpellID: 23894} (35.154 --> 5.154) of 100 total.
 [24.55] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} [DEBUG] MAP: 1504.0, RAP: 112.0, SP: 0.0, BaseDamage:724.8, AfterAttackerMods:652.3, AfterResistances:554.0, AfterTargetMods:562.0, AfterOutcome:562.0, AfterPostOutcome:562.0
 [24.55] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} Hit for 562.009 damage (SpellSchool: 1). (Threat: 840.203)
-[24.56] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[24.56] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [24.79] [Target 1] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [24.79] [Target 1] Completed cast {OtherID: 3, Tag: 1}
 [24.79] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} [DEBUG] MAP: 805.0, RAP: 0.0, SP: 0.0, BaseDamage:4274.5, AfterAttackerMods:4274.5, AfterResistances:1912.9, AfterTargetMods:1721.6, AfterOutcome:2582.4, AfterPostOutcome:2582.4
@@ -858,8 +854,6 @@
 [32.00] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
 [32.00] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [32.00] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 12880}
-[32.00] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[32.00] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [32.00] [Fury-prot Warrior (#1)] Gained 1.000 rage from {SpellID: 12964} (10.214 --> 11.214) of 100 total.
 [32.09] [Fury-prot Warrior (#1)] No available actions!
 [32.09] [Fury-prot Warrior (#1)] Pausing rotation for 1.4s due to resources / CDs.
@@ -1045,8 +1039,6 @@
 [37.99] [Fury-prot Warrior (#1)] Spent 30.000 rage from {SpellID: 23894} (73.401 --> 43.401) of 100 total.
 [37.99] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} [DEBUG] MAP: 1724.0, RAP: 112.0, SP: 0.0, BaseDamage:823.8, AfterAttackerMods:815.6, AfterResistances:692.6, AfterTargetMods:700.6, AfterOutcome:700.6, AfterPostOutcome:700.6
 [37.99] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} Hit for 700.648 damage (SpellSchool: 1). (Threat: 1047.469)
-[38.00] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[38.00] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [38.23] [Target 1] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [38.23] [Target 1] Completed cast {OtherID: 3, Tag: 1}
 [38.23] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} [DEBUG] MAP: 805.0, RAP: 0.0, SP: 0.0, BaseDamage:4387.5, AfterAttackerMods:4387.5, AfterResistances:1963.5, AfterTargetMods:1767.1, AfterOutcome:0.0, AfterPostOutcome:0.0
@@ -1076,14 +1068,14 @@
 [39.67] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 10610, Tag: -1}
 [39.77] [Fury-prot Warrior (#1)] No available actions!
 [39.77] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
+[39.84] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[39.84] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (145.634 --> 207.324) of 6169 total.
+[39.84] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [39.87] [Fury-prot Warrior (#1)] No available actions!
 [39.87] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [39.92] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 25286, Tag: 1}
 [39.97] [Fury-prot Warrior (#1)] No available actions!
 [39.97] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[40.00] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
-[40.00] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (145.634 --> 207.324) of 6169 total.
-[40.00] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [40.00] [Fury-prot Warrior (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
 [40.07] [Fury-prot Warrior (#1)] No available actions!
 [40.07] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -1212,8 +1204,6 @@
 [43.99] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} [DEBUG] MAP: 1724.0, RAP: 112.0, SP: 0.0, BaseDamage:823.8, AfterAttackerMods:815.6, AfterResistances:692.6, AfterTargetMods:700.6, AfterOutcome:700.6, AfterPostOutcome:700.6
 [43.99] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} Hit for 700.648 damage (SpellSchool: 1). (Threat: 1047.469)
 [44.00] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 12880}
-[44.00] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[44.00] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [44.47] [Target 1] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [44.47] [Target 1] Completed cast {OtherID: 3, Tag: 1}
 [44.47] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} [DEBUG] MAP: 805.0, RAP: 0.0, SP: 0.0, BaseDamage:5199.3, AfterAttackerMods:5199.3, AfterResistances:2326.8, AfterTargetMods:2094.1, AfterOutcome:2094.1, AfterPostOutcome:2094.1
@@ -1374,9 +1364,11 @@
 [49.99] [Fury-prot Warrior (#1)] Spent 30.000 rage from {SpellID: 23894} (54.334 --> 24.334) of 100 total.
 [49.99] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} [DEBUG] MAP: 1724.0, RAP: 112.0, SP: 0.0, BaseDamage:823.8, AfterAttackerMods:741.4, AfterResistances:629.7, AfterTargetMods:637.7, AfterOutcome:637.7, AfterPostOutcome:637.7
 [49.99] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} Hit for 637.680 damage (SpellSchool: 1). (Threat: 953.332)
-[50.00] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[50.00] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [50.00] [Fury-prot Warrior (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
+[50.48] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
+[50.48] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[50.48] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (214.195 --> 275.885) of 6169 total.
+[50.48] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [51.49] [Fury-prot Warrior (#1)] Queueing up {SpellID: 25288} to cast at 51.888800001s.
 [51.49] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [51.59] [Fury-prot Warrior (#1)] Queueing up {SpellID: 25288} to cast at 51.888800001s.
@@ -1386,8 +1378,7 @@
 [51.67] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} [DEBUG] MAP: 805.0, RAP: 0.0, SP: 0.0, BaseDamage:4354.6, AfterAttackerMods:4354.6, AfterResistances:1948.7, AfterTargetMods:1753.9, AfterOutcome:2630.8, AfterPostOutcome:2630.8
 [51.67] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} Crush for 2630.811 damage (SpellSchool: 1). (Threat: 2630.811)
 [51.67] [Fury-prot Warrior (#1)] Gained 7.059 rage from {OtherID: 9} (24.334 --> 31.393) of 100 total.
-[51.67] [Fury-prot Warrior (#1)] Spent 2630.811 health from {OtherID: 9} (214.195 --> 0.000) of 6169 total.
-[51.68] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
+[51.67] [Fury-prot Warrior (#1)] Spent 2630.811 health from {OtherID: 9} (275.885 --> 0.000) of 6169 total.
 [51.68] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [51.69] [Fury-prot Warrior (#1)] Queueing up {SpellID: 25288} to cast at 51.888800001s.
 [51.69] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -1679,10 +1670,11 @@
 [61.99] [Fury-prot Warrior (#1)] Aura refreshed: {SpellID: 12966}
 [61.99] [Fury-prot Warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 2 --> 1
 [61.99] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
-[62.00] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[62.00] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [62.99] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 10610, Tag: -1}
-[63.38] [Fury-prot Warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
+[63.28] [Fury-prot Warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
+[63.28] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[63.28] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (0.000 --> 61.690) of 6169 total.
+[63.28] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [63.38] [Fury-prot Warrior (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [63.38] [Fury-prot Warrior (#1)] Completed cast {OtherID: 3, Tag: 1}
 [63.38] [Fury-prot Warrior (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1504.0, RAP: 112.0, SP: 0.0, BaseDamage:358.4, AfterAttackerMods:322.6, AfterResistances:274.0, AfterTargetMods:282.0, AfterOutcome:178.2, AfterPostOutcome:178.2
@@ -1697,7 +1689,7 @@
 [63.58] [Fury-prot Warrior (#1)] Casting {SpellID: 2687} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [63.58] [Fury-prot Warrior (#1)] Completed cast {SpellID: 2687}
 [63.58] [Fury-prot Warrior (#1)] Gained 15.000 rage from {SpellID: 2687} (24.495 --> 39.495) of 100 total.
-[63.58] [Fury-prot Warrior (#1)] Spent 337.800 health from {OtherID: 9} (0.000 --> 0.000) of 6169 total.
+[63.58] [Fury-prot Warrior (#1)] Spent 337.800 health from {OtherID: 9} (61.690 --> 0.000) of 6169 total.
 [63.58] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [63.67] [Target 1] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [63.67] [Target 1] Completed cast {OtherID: 3, Tag: 1}
@@ -1849,8 +1841,6 @@
 [67.99] [Fury-prot Warrior (#1)] Spent 30.000 rage from {SpellID: 23894} (32.250 --> 2.250) of 100 total.
 [67.99] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} [DEBUG] MAP: 1504.0, RAP: 112.0, SP: 0.0, BaseDamage:724.8, AfterAttackerMods:717.6, AfterResistances:609.4, AfterTargetMods:617.4, AfterOutcome:617.4, AfterPostOutcome:617.4
 [67.99] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} Hit for 617.410 damage (SpellSchool: 1). (Threat: 923.027)
-[68.00] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[68.00] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [68.47] [Target 1] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [68.47] [Target 1] Completed cast {OtherID: 3, Tag: 1}
 [68.47] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} [DEBUG] MAP: 805.0, RAP: 0.0, SP: 0.0, BaseDamage:4698.0, AfterAttackerMods:4698.0, AfterResistances:2102.4, AfterTargetMods:1892.2, AfterOutcome:1892.2, AfterPostOutcome:1892.2
@@ -2188,8 +2178,6 @@
 [80.80] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} Crit for 1234.819 damage (SpellSchool: 1). (Threat: 1846.054)
 [80.80] [Fury-prot Warrior (#1)] Aura refreshed: {SpellID: 12966}
 [80.80] [Fury-prot Warrior (#1)] {SpellID: 12966} stacks: 2 --> 3
-[80.81] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[80.81] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [81.14] [Fury-prot Warrior (#1)] Casting {SpellID: 25286} (Cost = 15.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [81.14] [Fury-prot Warrior (#1)] Completed cast {SpellID: 25286}
 [81.14] [Fury-prot Warrior (#1)] Spent 15.000 rage from {SpellID: 25286} (33.107 --> 18.107) of 100 total.
@@ -2199,6 +2187,9 @@
 [81.14] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
 [81.14] [Fury-prot Warrior (#1)] No available actions!
 [81.14] [Fury-prot Warrior (#1)] Pausing rotation for 1.160000001s due to resources / CDs.
+[82.09] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[82.09] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (0.000 --> 61.690) of 6169 total.
+[82.09] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [82.30] [Fury-prot Warrior (#1)] No available actions!
 [82.30] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [82.40] [Fury-prot Warrior (#1)] No available actions!
@@ -2215,9 +2206,6 @@
 [82.70] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [82.80] [Fury-prot Warrior (#1)] No available actions!
 [82.80] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[82.81] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
-[82.81] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (0.000 --> 61.690) of 6169 total.
-[82.81] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [82.90] [Fury-prot Warrior (#1)] No available actions!
 [82.90] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [83.00] [Fury-prot Warrior (#1)] No available actions!
@@ -2261,9 +2249,9 @@
 [83.96] [Fury-prot Warrior (#1)] Gained 4.000 rage from {OtherID: 8} (18.107 --> 22.107) of 100 total.
 [84.06] [Fury-prot Warrior (#1)] No available actions!
 [84.06] [Fury-prot Warrior (#1)] Pausing rotation for 1.4s due to resources / CDs.
-[84.81] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
-[84.81] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (61.690 --> 123.380) of 6169 total.
-[84.81] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
+[84.09] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[84.09] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (61.690 --> 123.380) of 6169 total.
+[84.09] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [84.98] [Fury-prot Warrior (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [84.98] [Fury-prot Warrior (#1)] Completed cast {OtherID: 3, Tag: 1}
 [84.98] [Fury-prot Warrior (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1504.0, RAP: 112.0, SP: 0.0, BaseDamage:361.5, AfterAttackerMods:357.8, AfterResistances:303.9, AfterTargetMods:311.9, AfterOutcome:623.8, AfterPostOutcome:623.8
@@ -2291,6 +2279,10 @@
 [85.96] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [86.06] [Fury-prot Warrior (#1)] No available actions!
 [86.06] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
+[86.09] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
+[86.09] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[86.09] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (123.380 --> 185.070) of 6169 total.
+[86.09] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [86.16] [Fury-prot Warrior (#1)] No available actions!
 [86.16] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [86.26] [Fury-prot Warrior (#1)] No available actions!
@@ -2300,8 +2292,7 @@
 [86.32] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} [DEBUG] MAP: 805.0, RAP: 0.0, SP: 0.0, BaseDamage:4462.6, AfterAttackerMods:4462.6, AfterResistances:1997.1, AfterTargetMods:1797.4, AfterOutcome:1797.4, AfterPostOutcome:1797.4
 [86.32] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} Hit for 1797.378 damage (SpellSchool: 1). (Threat: 1797.378)
 [86.32] [Fury-prot Warrior (#1)] Gained 7.234 rage from {OtherID: 9} (39.715 --> 46.949) of 100 total.
-[86.32] [Fury-prot Warrior (#1)] Spent 1797.378 health from {OtherID: 9} (123.380 --> 0.000) of 6169 total.
-[86.33] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
+[86.32] [Fury-prot Warrior (#1)] Spent 1797.378 health from {OtherID: 9} (185.070 --> 0.000) of 6169 total.
 [86.33] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [86.33] [Fury-prot Warrior (#1)] Aura refreshed: {SpellID: 12880}
 [86.36] [Fury-prot Warrior (#1)] Casting {SpellID: 25286, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
@@ -2321,8 +2312,6 @@
 [86.80] [Fury-prot Warrior (#1)] Spent 30.000 rage from {SpellID: 23894} (46.949 --> 16.949) of 100 total.
 [86.80] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} [DEBUG] MAP: 1504.0, RAP: 112.0, SP: 0.0, BaseDamage:724.8, AfterAttackerMods:717.6, AfterResistances:609.4, AfterTargetMods:617.4, AfterOutcome:617.4, AfterPostOutcome:617.4
 [86.80] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} Hit for 617.410 damage (SpellSchool: 1). (Threat: 923.027)
-[86.81] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[86.81] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [86.90] [Fury-prot Warrior (#1)] Casting {SpellID: 25286} (Cost = 15.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [86.90] [Fury-prot Warrior (#1)] Completed cast {SpellID: 25286}
 [86.90] [Fury-prot Warrior (#1)] Spent 15.000 rage from {SpellID: 25286} (16.949 --> 1.949) of 100 total.
@@ -2347,6 +2336,9 @@
 [87.00] [Fury-prot Warrior (#1)] Pausing rotation for 1.300000002s due to resources / CDs.
 [88.30] [Fury-prot Warrior (#1)] No available actions!
 [88.30] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
+[88.33] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[88.33] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (0.000 --> 61.690) of 6169 total.
+[88.33] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [88.40] [Fury-prot Warrior (#1)] No available actions!
 [88.40] [Fury-prot Warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [88.50] [Fury-prot Warrior (#1)] No available actions!
@@ -2360,7 +2352,7 @@
 [88.72] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} [DEBUG] MAP: 805.0, RAP: 0.0, SP: 0.0, BaseDamage:5233.3, AfterAttackerMods:5233.3, AfterResistances:2341.9, AfterTargetMods:2107.8, AfterOutcome:2045.8, AfterPostOutcome:2045.8
 [88.72] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} Block for 2045.754 damage (SpellSchool: 1). (Threat: 2045.754)
 [88.72] [Fury-prot Warrior (#1)] Gained 8.483 rage from {OtherID: 9} (11.253 --> 19.736) of 100 total.
-[88.72] [Fury-prot Warrior (#1)] Spent 2045.754 health from {OtherID: 9} (0.000 --> 0.000) of 6169 total.
+[88.72] [Fury-prot Warrior (#1)] Spent 2045.754 health from {OtherID: 9} (61.690 --> 0.000) of 6169 total.
 [88.72] [Fury-prot Warrior (#1)] Gained 5.000 rage from {SpellID: 1310318} (19.736 --> 24.736) of 100 total.
 [88.72] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 25288}
 [88.73] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
@@ -2480,8 +2472,6 @@
 [92.80] [Fury-prot Warrior (#1)] Spent 30.000 rage from {SpellID: 23894} (50.840 --> 20.840) of 100 total.
 [92.80] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} [DEBUG] MAP: 1504.0, RAP: 112.0, SP: 0.0, BaseDamage:724.8, AfterAttackerMods:717.6, AfterResistances:609.4, AfterTargetMods:617.4, AfterOutcome:617.4, AfterPostOutcome:617.4
 [92.80] [Fury-prot Warrior (#1)] [Target 1] {SpellID: 23894} Hit for 617.410 damage (SpellSchool: 1). (Threat: 923.027)
-[92.81] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[92.81] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [93.14] [Fury-prot Warrior (#1)] Casting {SpellID: 25286} (Cost = 15.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [93.14] [Fury-prot Warrior (#1)] Completed cast {SpellID: 25286}
 [93.14] [Fury-prot Warrior (#1)] Spent 15.000 rage from {SpellID: 25286} (20.840 --> 5.840) of 100 total.
@@ -2494,12 +2484,15 @@
 [93.14] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
 [93.24] [Fury-prot Warrior (#1)] No available actions!
 [93.24] [Fury-prot Warrior (#1)] Pausing rotation for 1.060000003s due to resources / CDs.
+[93.33] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[93.33] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (0.000 --> 61.690) of 6169 total.
+[93.33] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [93.62] [Target 1] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [93.62] [Target 1] Completed cast {OtherID: 3, Tag: 1}
 [93.62] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} [DEBUG] MAP: 805.0, RAP: 0.0, SP: 0.0, BaseDamage:4660.7, AfterAttackerMods:4660.7, AfterResistances:2085.7, AfterTargetMods:1877.1, AfterOutcome:2815.7, AfterPostOutcome:2815.7
 [93.62] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} Crush for 2815.696 damage (SpellSchool: 1). (Threat: 2815.696)
 [93.62] [Fury-prot Warrior (#1)] Gained 7.555 rage from {OtherID: 9} (17.840 --> 25.395) of 100 total.
-[93.62] [Fury-prot Warrior (#1)] Spent 2815.696 health from {OtherID: 9} (0.000 --> 0.000) of 6169 total.
+[93.62] [Fury-prot Warrior (#1)] Spent 2815.696 health from {OtherID: 9} (61.690 --> 0.000) of 6169 total.
 [93.63] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
 [93.63] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [93.72] [Fury-prot Warrior (#1)] No available actions!
@@ -2816,11 +2809,12 @@
 [105.04] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 12966}
 [105.04] [Fury-prot Warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
 [105.04] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 10610, Tag: -1}
-[105.05] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
-[105.05] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [105.05] [Fury-prot Warrior (#1)] Gained 1.000 rage from {SpellID: 12964} (31.501 --> 32.501) of 100 total.
 [105.14] [Fury-prot Warrior (#1)] No available actions!
 [105.14] [Fury-prot Warrior (#1)] Pausing rotation for 1.4s due to resources / CDs.
+[106.19] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} [DEBUG] HealingPower: 0.0, BaseHealing:61.7, AfterCasterMods:61.7, AfterTargetMods:61.7, AfterOutcome:61.7, AfterPostOutcome:61.7
+[106.19] [Fury-prot Warrior (#1)] Gained 61.690 health from {SpellID: 16488} (0.000 --> 61.690) of 6169 total.
+[106.19] [Fury-prot Warrior (#1)] [Fury-prot Warrior (#1)] {SpellID: 16488} tick Hit for 61.690 healing. (Threat: 92.227)
 [106.54] [Fury-prot Warrior (#1)] Casting {SpellID: 25288} (Cost = 5.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [106.54] [Fury-prot Warrior (#1)] Completed cast {SpellID: 25288}
 [106.54] [Fury-prot Warrior (#1)] Spent 5.000 rage from {SpellID: 25288} (32.501 --> 27.501) of 100 total.
@@ -2832,7 +2826,7 @@
 [106.58] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} [DEBUG] MAP: 805.0, RAP: 0.0, SP: 0.0, BaseDamage:4953.7, AfterAttackerMods:4953.7, AfterResistances:2216.8, AfterTargetMods:2094.9, AfterOutcome:2094.9, AfterPostOutcome:2094.9
 [106.58] [Target 1] [Fury-prot Warrior (#1)] {OtherID: 3, Tag: 1} Hit for 2094.909 damage (SpellSchool: 1). (Threat: 2094.909)
 [106.58] [Fury-prot Warrior (#1)] Gained 8.030 rage from {OtherID: 9} (27.501 --> 35.531) of 100 total.
-[106.58] [Fury-prot Warrior (#1)] Spent 2094.909 health from {OtherID: 9} (0.000 --> 0.000) of 6169 total.
+[106.58] [Fury-prot Warrior (#1)] Spent 2094.909 health from {OtherID: 9} (61.690 --> 0.000) of 6169 total.
 [106.59] [Fury-prot Warrior (#1)] Aura faded: {SpellID: 16488}
 [106.59] [Fury-prot Warrior (#1)] Aura gained: {SpellID: 16488}
 [106.59] [Fury-prot Warrior (#1)] Aura refreshed: {SpellID: 12880}

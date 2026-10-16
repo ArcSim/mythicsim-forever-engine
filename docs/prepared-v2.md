@@ -43,7 +43,7 @@ Dynamic behavior is named in `effects` and implemented in Rust.
 | --- | --- |
 | `schema_version`, `contract` | `2` and `forever-prepared` |
 | `reference.engine_revision` | Must equal the engine's `SOURCE_REVISION` pin |
-| `reference.client_build` | Must equal `1.60.1.70374` |
+| `reference.client_build` | Must equal `1.60.1.70425` |
 | `reference.exporter` | `tools/oracle-v2`; the fixture manifest pins its SHA-256 |
 | `request_sha256` | SHA-256 of the deterministic protobuf encoding of the request |
 | `scenario_id` | 1 to 200 bytes, chosen by the caller |

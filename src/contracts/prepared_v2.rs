@@ -3159,13 +3159,12 @@ pub enum Effect {
         spell_id: i32,
         aura: String,
         duration_ns: i64,
-        /// Whether a party air totem holds the slot the cast would contest.
-        party_air_totem: bool,
     },
     /// The shaman's own Windfury Totem: the totem's aura refreshes a tracking aura and a dummy
     /// aura every period, the dummy's exclusive effect turns the trigger on, and the trigger
     /// grants the proc aura's charges and an extra main hand attack. Spellbook positions name
-    /// the spells; `contested` says a party air totem or a main hand imbue would contest it.
+    /// the spells; `contested` says the party's Windfury Totem or a main hand imbue would contest
+    /// it.
     WindfuryTotemSelf {
         spell_id: i32,
         totem_aura: String,

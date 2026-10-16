@@ -452,6 +452,8 @@ pub struct ImprovedSealOfFury {
     pub max_levels: f64,
     pub levels: f64,
     pub metrics_action_id: ActionId,
+    /// Its mana makes no threat (client 70374).
+    pub no_threat: bool,
 }
 
 /// A Seal of the Crusader rank: its seal, judgement, the judgement's target aura, the melee
@@ -2103,6 +2105,8 @@ pub enum Effect {
         proc_chance: f64,
         mana_share: f64,
         metrics_action_id: ActionId,
+        /// Its mana makes no threat (client 70374).
+        no_threat: bool,
     },
     /// Paladin talents_protection.go Reckoning: blocks and crits taken can grant an extra
     /// attack.
@@ -2111,13 +2115,11 @@ pub enum Effect {
         crit_aura: String,
         block_chance: f64,
         crit_chance: f64,
-        /// The charges each trigger adds (16 October 2026 beta notes), up to its maximum stacks.
+        /// The charges each trigger adds behind the shared cooldown, which the next main hand
+        /// auto spends on one free main hand swing each (16 October 2026 beta notes).
         charges_aura: String,
-        /// The permanent aura whose main-hand autos spend every charge.
-        spender_aura: String,
-        /// The main-hand swing each charge casts, booked under Reckoning's id.
-        extra_spell: usize,
-        /// The spells that spend the charges: every main-hand auto.
+        icd_ns: i64,
+        /// The spells that spend the charges: every main hand auto.
         spender_spells: Vec<usize>,
     },
     /// Paladin talents_protection.go Iron Creed: a landed Holy Strike under Righteous Fury
@@ -2443,8 +2445,9 @@ pub enum Effect {
         trigger_immediately: bool,
         proc_chance: f64,
         trigger_spells: Vec<usize>,
+        /// Each stack of the target's debuff `aura` multiplies this priest's Shadow damage on
+        /// that target (community #777).
         damage_per_stack: f64,
-        damage_spells: Vec<usize>,
     },
     /// Dark Sacrifice: a self-only periodic mana gain of the client base plus Spirit over a
     /// divisor, a major cooldown used once the whole gain fits.

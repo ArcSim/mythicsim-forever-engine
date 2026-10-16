@@ -82,22 +82,20 @@ impl Paladin {
                 // The 16 October 2026 beta notes cut it from 6% to 4%; the row still says 6.
                 "mana_share": 0.04,
                 "metrics_action_id": action_id(Some(&spell_action(share.id))),
+                // No Threat since client 70374 (beta notes 8 October).
+                "no_threat": share.no_threat(),
             }));
         }
         let reckoning = talents.i32("reckoning");
         if reckoning > 0 {
             // talents_protection.go applyReckoning
             let block = data.reckoning.fraction_at(reckoning);
-            let rank = data.reckoning_triggered.highest();
-            let spellbook = &sim.unit(unit).spellbook;
-            let extra = spellbook
-                .iter()
-                .position(|&spell| {
-                    sim.spell(spell).action_id.other_id == "OtherActionAttack"
-                        && sim.spell(spell).action_id.tag == rank.id
-                })
-                .expect("Reckoning registers its extra attack");
-            let spenders: Vec<usize> = spellbook
+            // Since the 16 October 2026 beta notes each trigger banks a charge, up to 4, behind the
+            // triggers' shared cooldown, and the next main hand auto, landed or not, spends them all
+            // on one free main hand swing each that leaves the swing timer alone.
+            let spenders: Vec<usize> = sim
+                .unit(unit)
+                .spellbook
                 .iter()
                 .enumerate()
                 .filter(|(_, &spell)| {
@@ -112,8 +110,8 @@ impl Paladin {
                 "crit_aura": format!("Reckoning - Crit{label}"),
                 "block_chance": block, "crit_chance": block * 2.5,
                 "charges_aura": format!("Reckoning{label}"),
-                "spender_aura": format!("Reckoning Charges Spender{label}"),
-                "extra_spell": extra, "spender_spells": spenders,
+                "icd_ns": data.reckoning.highest().icd(),
+                "spender_spells": spenders,
             }));
         }
         if talents.i32("iron_creed") > 0 {

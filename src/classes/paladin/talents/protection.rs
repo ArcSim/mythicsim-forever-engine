@@ -266,10 +266,10 @@ impl ShieldSpecialization {
 pub(crate) struct Reckoning {
     pub(crate) block_chance: f64,
     pub(crate) crit_chance: f64,
-    /// The charges (16 October 2026 beta notes), spent by the next main-hand auto.
+    /// The charges (16 October 2026 beta notes), spent by the next main hand auto.
     pub(crate) charges: AuraRef,
-    /// The main-hand swing each charge casts.
-    pub(crate) extra: SpellId,
+    /// The triggers' shared cooldown: its timer and duration.
+    pub(crate) icd: (usize, i64),
     /// The spells that spend the charges, by spellbook position.
     pub(crate) spends: Vec<bool>,
 }
@@ -297,28 +297,48 @@ impl Reckoning {
         fight.schedule_delayed_proc(trigger, 0, *result);
     }
 
-    /// The trigger's handler: a charge more, up to the aura's maximum.
+    /// The trigger's handler: a charge more, up to the aura's maximum, behind the shared
+    /// cooldown.
     pub(crate) fn add_charge(&self, fight: &mut Fight<PaladinAgent>) {
+        let (timer, duration) = self.icd;
+        if fight.timers[timer] > fight.now {
+            return;
+        }
+        fight.timers[timer] = fight.now + duration;
         fight.activate_aura(self.charges);
         fight.add_stack(self.charges);
     }
 
-    /// The spender's OnSpellHitDealt: any main-hand auto, landed or not, spends every charge on
-    /// one extra attack each. The charges are gone before the extra attacks swing, so those
-    /// spend nothing.
-    pub(crate) fn spend(
+    /// The charges' OnSpellHitDealt: a main hand auto, landed or not, spends them after its own
+    /// swing resolves, in an action now, so the other hit listeners keep their order.
+    pub(crate) fn on_charges_hit(
         &self,
         fight: &mut Fight<PaladinAgent>,
         spell: SpellId,
         result: &SpellResult,
     ) {
-        if !fight.aura(self.charges).active || !self.spends[spell] {
+        if !self.spends[spell] {
             return;
         }
+        fight.schedule(
+            fight.now,
+            crate::core::fight::PRIORITY_GCD,
+            crate::core::fight::Action::DelayedProc {
+                aura: self.charges,
+                spell,
+                result: *result,
+                token: None,
+            },
+        );
+    }
+
+    /// The spend: every charge goes, then one free main hand swing each, which leaves the swing
+    /// timer alone (Go `InstantMHAttack`).
+    pub(crate) fn spend(&self, fight: &mut Fight<PaladinAgent>) {
         let charges = fight.aura(self.charges).stacks;
         fight.deactivate_aura(self.charges);
         for _ in 0..charges {
-            fight.cast(self.extra, result.target);
+            fight.instant_mh_attack();
         }
     }
 }

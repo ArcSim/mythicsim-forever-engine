@@ -349,6 +349,9 @@ impl Paladin {
                     "max_levels": rank.effect_n(3).average(CHARACTER_LEVEL),
                     "levels": f64::from(sim.unit(target).level - sim.unit(unit).level),
                     "metrics_action_id": action_id(Some(&spell_action(rank.id))),
+                    // 1314104 is No Threat since client 70374 (beta notes 8 October); the spell is
+                    // not in the store, so Go sets the flag.
+                    "no_threat": true,
                 });
             }
             effects.push(fury);

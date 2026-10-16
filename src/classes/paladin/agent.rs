@@ -92,7 +92,8 @@ pub(crate) enum PaladinAura {
     ShieldSpecialization,
     ReckoningBlock,
     ReckoningCrit,
-    ReckoningSpender,
+    /// Reckoning's charges, which a main hand auto spends.
+    ReckoningCharges,
     IronCreedTrigger,
     IronCreed,
     /// A Holy Shield rank's aura, by the rank's position in the effect.
@@ -384,12 +385,12 @@ impl PaladinAgent {
                 Effect::Reckoning {
                     block_aura,
                     crit_aura,
-                    spender_aura,
+                    charges_aura,
                     ..
                 } => {
                     auras.push((block_aura.clone(), PaladinAura::ReckoningBlock));
                     auras.push((crit_aura.clone(), PaladinAura::ReckoningCrit));
-                    auras.push((spender_aura.clone(), PaladinAura::ReckoningSpender));
+                    auras.push((charges_aura.clone(), PaladinAura::ReckoningCharges));
                 }
                 Effect::IronCreed {
                     trigger_aura, aura, ..
@@ -591,9 +592,11 @@ impl PaladinAgent {
                     proc_chance,
                     mana_share,
                     metrics_action_id,
+                    no_threat,
                     ..
                 } => {
                     let metrics = fight.new_mana_metrics(metrics_action_id.clone());
+                    fight.resources[metrics].no_threat = *no_threat;
                     fight.agent.shield_specialization = Some(Rc::new(ShieldSpecialization {
                         chance: *proc_chance,
                         mana_share: *mana_share,
@@ -604,28 +607,26 @@ impl PaladinAgent {
                     block_chance,
                     crit_chance,
                     charges_aura,
-                    extra_spell,
+                    icd_ns,
                     spender_spells,
                     ..
                 } => {
                     let count = fight.spells.len();
-                    if *extra_spell >= count || spender_spells.iter().any(|&spell| spell >= count) {
+                    if spender_spells.iter().any(|&spell| spell >= count) {
                         return Err("Reckoning names a spell outside the spellbook".into());
                     }
                     let mut spends = vec![false; count];
                     for &spell in spender_spells {
                         spends[spell] = true;
                     }
-                    // The extra attack is a main hand swing booked under Reckoning's id.
-                    fight.spells[*extra_spell].behavior =
-                        crate::core::fight::SpellBehavior::MeleeAuto(
-                            crate::core::fight::melee::Hand::Main,
-                        );
+                    // The triggers' shared cooldown: a timer of its own, reset with the others.
+                    fight.timers.push(crate::core::time::STARTING_CD_TIME);
+                    let timer = fight.timers.len() - 1;
                     fight.agent.reckoning = Some(Rc::new(Reckoning {
                         block_chance: *block_chance,
                         crit_chance: *crit_chance,
                         charges: fight.player_aura(charges_aura)?,
-                        extra: *extra_spell,
+                        icd: (timer, *icd_ns),
                         spends,
                     }));
                 }
@@ -1147,8 +1148,8 @@ impl Agent for PaladinAgent {
             PaladinAura::IronCreedTrigger => {
                 Self::bound(&fight.agent.iron_creed).trigger(fight, aura, spell, result)
             }
-            PaladinAura::ReckoningSpender => {
-                Self::bound(&fight.agent.reckoning).spend(fight, spell, result)
+            PaladinAura::ReckoningCharges => {
+                Self::bound(&fight.agent.reckoning).on_charges_hit(fight, spell, result)
             }
             PaladinAura::HolyLightHaste(position)
                 if fight.agent.holy_light_haste[position].on_crit =>
@@ -1259,6 +1260,7 @@ impl Agent for PaladinAgent {
             PaladinAura::ReckoningBlock | PaladinAura::ReckoningCrit => {
                 Self::bound(&fight.agent.reckoning).add_charge(fight)
             }
+            PaladinAura::ReckoningCharges => Self::bound(&fight.agent.reckoning).spend(fight),
             PaladinAura::IronCreedTrigger => {
                 let aura = Self::bound(&fight.agent.iron_creed).aura;
                 fight.activate_aura(aura);

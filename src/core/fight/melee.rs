@@ -849,6 +849,23 @@ impl<A: Agent> Fight<A> {
         self.autos.min_time = self.autos.min_time.min(self.now);
     }
 
+    /// Go `AutoAttacks.InstantMHAttack`: a main hand swing right now that leaves the swing timer
+    /// alone (Forever Reckoning).
+    pub(crate) fn instant_mh_attack(&mut self) {
+        if !self.autos.melee
+            || !self.autos.mh.enabled
+            || !in_range(&self.autos.mh.weapon, self.config.distance)
+        {
+            return;
+        }
+        let spell = self
+            .autos
+            .mh
+            .spell
+            .expect("an enabled weapon attack has a spell");
+        self.cast(spell, Side::Target);
+    }
+
     /// Go `Unit.ReactToEvent(sim, false, false)`: the rotation runs, then evaluates again now.
     pub(crate) fn react_to_event_now(&mut self) {
         self.do_next_action();

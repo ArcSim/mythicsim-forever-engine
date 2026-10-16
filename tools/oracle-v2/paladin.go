@@ -221,6 +221,8 @@ func paladinEffects(agent core.Agent, character *core.Character) []map[string]an
 				"mana": rank.EffectN(1).Average(core.CharacterLevel), "per_level": rank.EffectN(2).Percent(),
 				"max_levels": rank.EffectN(3).Average(core.CharacterLevel),
 				"levels":     float64(target.Level - p.Level), "metrics_action_id": actionID(core.ActionID{SpellID: rank.ID}),
+				// 1314104 is No Threat since client 70374; not in the store, so Go sets the flag.
+				"no_threat": true,
 			}
 		}
 		effects = append(effects, fury)
@@ -499,30 +501,25 @@ func paladinTankEffects(p *paladin.Paladin, character *core.Character) []map[str
 			"proc_chance":       spelldata.Talent(20150, 3).EffectAt(2).FractionAt(talents.ShieldSpecialization),
 			"mana_share":        0.04, // talents_protection.go shieldSpecializationManaShare
 			"metrics_action_id": actionID(core.ActionID{SpellID: share.ID}),
+			"no_threat":         share.NoThreat(), // No Threat since client 70374
 		})
 	}
 	if talents.Reckoning > 0 { // talents_protection.go applyReckoning
-		// Since the 16 October 2026 beta notes each trigger banks a charge, up to 4, and the next
-		// main-hand auto, landed or not, spends them all on one extra attack each: main-hand swings
-		// booked under Reckoning's id.
+		// Since the 16 October 2026 beta notes each trigger banks a charge, up to 4, behind the
+		// triggers' shared cooldown, and the next main hand auto, landed or not, spends them all on one
+		// free main hand swing each that leaves the swing timer alone (InstantMHAttack).
 		block := spelldata.Talent(20177, 5).FractionAt(talents.Reckoning)
-		extra, spenders := -1, []int{}
+		spenders := []int{}
 		for i, spell := range character.Spellbook {
-			if spell.ActionID == (core.ActionID{OtherID: proto.OtherAction_OtherActionAttack, Tag: 20178}) {
-				extra = i
-			}
 			if spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto) {
 				spenders = append(spenders, i)
 			}
 		}
-		if extra < 0 {
-			fail(fmt.Errorf("Reckoning registered no extra attack"))
-		}
 		effects = append(effects, map[string]any{
 			"kind": "reckoning", "block_aura": "Reckoning - Block" + p.Label, "crit_aura": "Reckoning - Crit" + p.Label,
 			"block_chance": block, "crit_chance": block * 2.5,
-			"charges_aura": "Reckoning" + p.Label, "spender_aura": "Reckoning Charges Spender" + p.Label,
-			"extra_spell": extra, "spender_spells": spenders,
+			"charges_aura": "Reckoning" + p.Label, "icd_ns": nanos(spelldata.Talent(20177, 5).Highest().ICD()),
+			"spender_spells": spenders,
 		})
 	}
 	if talents.IronCreed > 0 { // talents_protection.go applyIronCreed

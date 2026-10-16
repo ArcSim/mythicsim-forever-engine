@@ -14,7 +14,9 @@ use super::super::masks;
 use super::super::spell_data::spell_data;
 use super::super::util::spell_action;
 use super::super::Paladin;
-use super::{apply_weapon_specialization, millis};
+use super::{follow_main_hand, millis};
+use crate::prepare::sim::SpellId;
+use crate::prepare::spell::SpellFlag;
 
 impl Paladin {
     /// Go `registerProtectionTalents`.
@@ -244,7 +246,9 @@ impl Paladin {
     }
 
     /// One-Handed Weapon Specialization: increases the damage you deal with one-handed melee
-    /// weapons by 3/7/10%.
+    /// weapons by 3/7/10%. The client puts it on the Physical school alone, but in game on client
+    /// 70425 it raises the paladin's damage of every school except Consecration and Retribution
+    /// Aura (MythicSim patch 143). Heals take none of it.
     fn apply_one_handed_weapon_specialization(&mut self, sim: &mut Sim, unit: UnitId) {
         let points = self.talents.i32("one_handed_weapon_specialization");
         if points == 0 {
@@ -252,15 +256,42 @@ impl Paladin {
         }
         // Go's GetMainHandType answers one hand for everything but a two-hander.
         let one_hand = !self.main_hand_is_two_hand(sim, unit);
-        apply_weapon_specialization(
-            sim,
+        let bonus = spell_data()
+            .one_handed_weapon_specialization
+            .fraction_at(points);
+        let mut retribution_aura = Vec::new();
+        spell_data()
+            .retribution_aura
+            .each(|_, rank| retribution_aura.push(rank.id));
+        let retribution_aura = Rc::new(retribution_aura);
+        let takes_it = move |sim: &Sim, spell: SpellId| {
+            let spell = sim.spell(spell);
+            !spell.flags.matches(SpellFlag::HELPFUL)
+                && spell.class_spell_mask & (masks::CONSECRATION | masks::RETRIBUTION_AURA) == 0
+                && !retribution_aura.contains(&spell.action_id.spell_id)
+        };
+        let takes_on = Rc::new(takes_it);
+        let takes_off = takes_on.clone();
+        let weapon_mod = sim.add_dynamic_mod(
             unit,
-            spell_data()
-                .one_handed_weapon_specialization
-                .fraction_at(points),
-            one_hand,
-            "HandTypeOneHand",
+            SpellModConfig {
+                // Go SpellSchoolPhysical | SpellSchoolChaos: every school.
+                school: 0x7f,
+                kind: SpellModType::Custom,
+                apply_custom: Some(Rc::new(move |sim: &mut Sim, _, spell| {
+                    if takes_on(sim, spell) {
+                        sim.spell_mut(spell).damage_multiplier *= 1.0 + bonus;
+                    }
+                })),
+                remove_custom: Some(Rc::new(move |sim: &mut Sim, _, spell| {
+                    if takes_off(sim, spell) {
+                        sim.spell_mut(spell).damage_multiplier /= 1.0 + bonus;
+                    }
+                })),
+                ..SpellModConfig::default()
+            },
         );
+        follow_main_hand(sim, unit, weapon_mod, one_hand, "HandTypeOneHand");
     }
 
     /// Reckoning: gives you a chance to gain an extra attack after Blocking a melee attack and

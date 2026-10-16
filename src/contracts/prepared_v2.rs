@@ -3731,6 +3731,8 @@ pub enum Effect {
         proc_chance: f64,
         min_damage: f64,
         max_damage: f64,
+        /// The share of attack power each hit adds (community #781).
+        attack_power_share: f64,
     },
     DeadlyPoison {
         trigger_aura: String,
@@ -3739,6 +3741,9 @@ pub enum Effect {
         proc_mask: Vec<String>,
         proc_chance: f64,
         tick_damage: f64,
+        /// The share of attack power each stack adds to a tick, read at the tick (community
+        /// #781).
+        attack_power_share: f64,
     },
     /// Go sim/rogue/stealth.go and vanish.go: Stealth before the pull, and Vanish.
     Stealth {

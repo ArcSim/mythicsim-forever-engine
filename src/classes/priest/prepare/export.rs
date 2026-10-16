@@ -135,6 +135,8 @@ fn shadowfiend_effect(priest: &Priest, env: &Environment, notes: &mut Vec<String
     let rank = spell_data().shadowfiend.highest();
     // The inheritance: attack power from the sum of spell damage and shadow damage, bit for bit.
     let inherit = std::rc::Rc::clone(&env.sim.pet_data(pet).stat_inheritance);
+    let mut probe = env.fresh();
+    let mut inherit = |stats: &Stats| inherit(&mut probe.sim, stats);
     let mut unit_change = Stats::default();
     unit_change[Stat::SpellDamage] = 1.0;
     let coefficient = inherit(&unit_change)[Stat::AttackPower];

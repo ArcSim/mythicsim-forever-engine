@@ -3954,6 +3954,8 @@ pub enum Effect {
         aura: String,
         proc_chance: f64,
         regen: f64,
+        /// The spells whose crits it hears: melee and ranged abilities (16 October 2026 notes).
+        spells: Vec<usize>,
     },
     /// Rapid Recuperation: Serpent Sting's landed hit grants casting regeneration.
     RapidRecuperation {

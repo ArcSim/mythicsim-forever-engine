@@ -8,7 +8,7 @@ use crate::prepare::character::constants::{CHARACTER_LEVEL, MAX_MELEE_RANGE};
 use crate::prepare::parse_effects::{parse_effects, ParseOptions};
 use crate::prepare::pet::PetConfig;
 use crate::prepare::sim::{
-    school_array_index, AuraConfig, AuraId, Cooldown, Sim, SpellId, UnitId, UnitType,
+    school_array_index, AuraConfig, AuraId, Cooldown, Sim, SpellId, StateSlot, UnitId, UnitType,
     NEVER_EXPIRES, SECOND,
 };
 use crate::prepare::spell::{
@@ -130,40 +130,36 @@ pub(crate) struct HunterPetState {
 }
 
 /// Go `Hunter.makeStatInheritance`. Forever is a Classic-era realm: the pet takes none of its
-/// owner's stats but one. From 16 October 2026 its physical crit is its master's ranged crit
-/// (patch 136): the Auto Shot rolls PhysicalCritPercent plus the ranged-only RangedCritPercent,
-/// so the pet inherits that sum, on the pet heartbeat as every dynamic inheritance.
-fn stat_inheritance(owner_stats: &Stats) -> Stats {
-    let mut inherited = Stats::default();
-    inherited[Stat::PhysicalCritPercent] =
-        owner_stats[Stat::PhysicalCritPercent] + owner_stats[Stat::RangedCritPercent];
-    inherited
+/// owner's stats but two. From 16 October 2026 its crit is its master's (patch 136) and the notes
+/// say "Pets now inherit whichever crit is higher, melee or ranged" and "Pets now benefit from
+/// Expertise" (patch 138): the pet takes PhysicalCritPercent plus the higher of the Auto Shot's
+/// ranged-only crit and the main-hand swing's melee-only crit, and the owner's ExpertisePercent.
+/// The max is not linear, so `offset` holds the offset on the pet and each update moves it to
+/// what the owner's current stats and spell mods give.
+fn stat_inheritance(owner: UnitId, offset: StateSlot) -> impl Fn(&mut Sim, &Stats) -> Stats {
+    move |sim: &mut Sim, owner_stats: &Stats| {
+        let now = pet_crit_offset_now(sim, owner);
+        let change = now - sim.state(offset);
+        sim.set_state(offset, now);
+        let mut inherited = Stats::default();
+        inherited[Stat::PhysicalCritPercent] = owner_stats[Stat::PhysicalCritPercent] + change;
+        inherited[Stat::ExpertisePercent] = owner_stats[Stat::ExpertisePercent];
+        inherited
+    }
 }
 
-/// Go `HunterPet.inheritAutoShotCritMods`: the crit modifiers on the owner's Auto Shot spell
-/// reach the pet while it is out, read when it is enabled (the weapon racials took their crit
-/// back off Auto Shot this way until the 16 October 2026 beta notes replaced them with crit that
-/// needs no weapon).
-fn inherit_auto_shot_crit_mods(sim: &mut Sim, pet: UnitId, owner: UnitId) {
-    let applied = sim.new_state_slot(0.0);
-    sim.pet_data_mut(pet).on_pet_enable = Some(Rc::new(move |sim: &mut Sim, pet| {
-        let bonus = sim
-            .unit(owner)
-            .auto_attacks
-            .ranged_spell
-            .map_or(0.0, |spell| sim.spell(spell).bonus_crit_percent);
-        sim.set_state(applied, bonus);
-        if bonus != 0.0 {
-            sim.add_stat_dynamic(pet, Stat::PhysicalCritPercent, bonus);
-        }
-    }));
-    sim.pet_data_mut(pet).on_pet_disable = Some(Rc::new(move |sim: &mut Sim, pet| {
-        let bonus = sim.state(applied);
-        if bonus != 0.0 {
-            sim.add_stat_dynamic(pet, Stat::PhysicalCritPercent, -bonus);
-            sim.set_state(applied, 0.0);
-        }
-    }));
+/// Go `Hunter.petCritOffsetNow`: the higher of the Auto Shot's ranged-only crit and the main-hand
+/// swing's melee-only crit.
+fn pet_crit_offset_now(sim: &Sim, owner: UnitId) -> f64 {
+    let autos = &sim.unit(owner).auto_attacks;
+    let mut ranged = sim.stats(owner)[Stat::RangedCritPercent];
+    if let Some(spell) = autos.ranged_spell {
+        ranged += sim.spell(spell).bonus_crit_percent;
+    }
+    let melee = autos
+        .mh_spell
+        .map_or(0.0, |spell| sim.spell(spell).bonus_crit_percent);
+    ranged.max(melee)
 }
 
 /// Go `NewHunterPet`.
@@ -180,6 +176,8 @@ pub(super) fn new_hunter_pet(sim: &mut Sim, hunter: &mut Hunter) {
     };
     let attack_speed = pet_attack_speed(&hunter.options.enum_name("pet_attack_speed"));
     let owner = hunter.unit;
+    // Go `Hunter.petCritOffset`, the offset the pet currently inherits.
+    let offset = sim.new_state_slot(0.0);
 
     let mut base_stats = Stats::default();
     base_stats[Stat::Strength] = 136.0;
@@ -193,7 +191,7 @@ pub(super) fn new_hunter_pet(sim: &mut Sim, hunter: &mut Hunter) {
         name: family.name.to_string(),
         owner,
         base_stats,
-        stat_inheritance: Rc::new(stat_inheritance),
+        stat_inheritance: Rc::new(stat_inheritance(owner, offset)),
         enabled_on_start: true,
         is_guardian: false,
         is_dynamic: true,
@@ -213,10 +211,14 @@ pub(super) fn new_hunter_pet(sim: &mut Sim, hunter: &mut Hunter) {
     {
         let sdm = &mut sim.unit_mut(pet).sdm;
         sdm.add_stat_dependency(Stat::Strength, Stat::AttackPower, 2.0);
-        // No Agility crit: the pet's physical crit is its owner's ranged crit (patch 136).
+        // No Agility crit: the pet's physical crit is its owner's (patch 136).
         sdm.add_stat_dependency(Stat::Intellect, Stat::SpellCritPercent, crit_per_int);
     }
-    inherit_auto_shot_crit_mods(sim, pet, owner);
+    // Go `trackPetCritOffset`: once the pet is dismissed the core has taken back everything it
+    // inherited, offset included, so the next summon starts from nothing.
+    sim.pet_data_mut(pet).on_pet_disable = Some(Rc::new(move |sim: &mut Sim, _| {
+        sim.set_state(offset, 0.0);
+    }));
 
     // Bestial Discipline buys the pet 10% focus regen a rank (19590 effect 1).
     let focus_multiplier = spell_data()

@@ -373,7 +373,7 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `immolation_trap` | sim/hunter/traps.go | The tick base from client data and whether the effect row lets a tick crit; a magic hit roll without a hit count, then the dot when it landed |
 | `explosive_trap` | sim/hunter/traps.go | The hit range, a Go literal, the hit count, one for each active target, the AoE cap and the tick base from client data, and whether the effect row lets a tick crit: a magic hit on each target from the cast target on, each on its own roll, then the area dot on the hunter, which ticks its snapshot on every target that Immolation Trap is not burning |
 | `volley` | sim/hunter/volley.go | The rank's tick, a Go literal, and the ranged swing delay, the rank's duration, which also stops the melee swing until the channel ends: the channel's area dot on the hunter ticks its snapshot on every target |
-| `resourcefulness`, `expose_prey` | sim/hunter/talents_survival.go | Resourcefulness's crit trigger, chance and casting regeneration from client data; Expose Prey's chance and whether a lasting Hunter's Mark holds the target |
+| `resourcefulness`, `expose_prey` | sim/hunter/talents_survival.go | Resourcefulness's crit trigger, the melee and ranged abilities it hears, chance and casting regeneration from client data; Expose Prey's chance and whether a lasting Hunter's Mark holds the target |
 
 Human racials are static and already in the prepared stats. High Order Skyborne's cast
 speed and every race's creature slaying are static too. Read Ley Line is not a major

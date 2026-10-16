@@ -394,8 +394,8 @@ impl Hunter {
 }
 
 impl PrepAgent for Hunter {
-    /// pet.go inheritAutoShotCritMods (patch 136): the pet's enable and disable callbacks add
-    /// the Auto Shot's crit modifiers to its physical crit and take them back.
+    /// pet.go trackPetCritOffset (patches 136 and 138): the pet's disable callback clears the
+    /// crit offset its owner keeps for the inheritance and moves no stat.
     fn stat_callback_pet(&self, _sim: &Sim, pet: UnitId) -> bool {
         self.pet == Some(pet)
     }

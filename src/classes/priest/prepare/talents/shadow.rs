@@ -281,36 +281,24 @@ impl Priest {
             .average(CHARACTER_LEVEL)
             / 100.0;
 
-        let damage_mod = sim.add_dynamic_mod(
-            unit,
-            SpellModConfig {
-                class_mask: masks::ALL,
-                school: school::SHADOW,
-                kind: SpellModType::DamageDonePct,
-                ..SpellModConfig::default()
-            },
-        );
-
-        let aura = sim.register_aura(
-            unit,
-            AuraConfig {
-                label: "Shadow Weaving".to_string(),
-                action_id: Some(ActionId::spell(stack_aura.id)),
-                duration: stack_aura.duration(),
-                max_stacks: 5,
-                on_gain: Some(Rc::new(move |sim: &mut Sim, _| {
-                    sim.activate_spell_mod(damage_mod);
-                })),
-                on_expire: Some(Rc::new(move |sim: &mut Sim, _| {
-                    sim.deactivate_spell_mod(damage_mod);
-                })),
-                on_stacks_change: Some(Rc::new(move |sim: &mut Sim, _, _, new_stacks| {
-                    sim.update_spell_mod_float_value(damage_mod, per_stack * f64::from(new_stacks));
-                })),
-                ..AuraConfig::default()
-            },
-        );
-        self.shadow_weaving_aura = Some(aura);
+        // Shadow Weaving's stacks are a debuff on the target, raising only this priest's Shadow
+        // damage on it (A_MOD_SCHOOL_MASK_DAMAGE_FROM_CASTER), and each target keeps its own
+        // (community #777): the targets' damage taken modifiers belong to the fight.
+        let _ = per_stack;
+        let label = format!("Shadow Weaving-{}", sim.unit(unit).label);
+        let auras = crate::prepare::classic_weapons::new_enemy_aura_array(sim, |sim, target| {
+            sim.register_aura(
+                target,
+                AuraConfig {
+                    label: label.clone(),
+                    action_id: Some(ActionId::spell(stack_aura.id)),
+                    duration: stack_aura.duration(),
+                    max_stacks: 5,
+                    ..AuraConfig::default()
+                },
+            )
+        });
+        self.shadow_weaving_aura = auras.into_iter().flatten().next();
 
         sim.make_proc_trigger_aura(
             unit,

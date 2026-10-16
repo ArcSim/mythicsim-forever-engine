@@ -329,7 +329,9 @@ func priestEffects(agent core.Agent, character *core.Character) []map[string]any
 			"spender_spells": spenders,
 		})
 	}
-	if aura := p.ShadowWeavingAura; aura != nil { // talents_shadow.go applyShadowWeaving
+	if p.ShadowWeavingAuras != nil { // talents_shadow.go applyShadowWeaving
+		// The stacks are a debuff on each target, multiplying this priest's Shadow damage on it.
+		aura := p.ShadowWeavingAuras.Get(character.CurrentTarget)
 		stack := priestShadowWeavingTriggered.Highest()
 		trigger := core.ProcTrigger{
 			Name: "Shadow Weaving Trigger", Callback: core.CallbackOnSpellHitDealt, ClassSpellMask: priest.PriestShadowSpells,
@@ -341,7 +343,6 @@ func priestEffects(agent core.Agent, character *core.Character) []map[string]any
 			"trigger_immediately": trigger.TriggerImmediately, "proc_chance": trigger.ProcChance,
 			"trigger_spells":   procTriggerSpells(character, trigger),
 			"damage_per_stack": stack.Effect(dbcenums.A_MOD_SCHOOL_MASK_DAMAGE_FROM_CASTER, 32).Average(core.CharacterLevel) / 100,
-			"damage_spells":    priestModSpells(character, priest.PriestSpellsAll, core.SpellSchoolShadow),
 		})
 	}
 	// smite.go: a cast on the rank's own row.

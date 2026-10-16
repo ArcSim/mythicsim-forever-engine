@@ -1331,6 +1331,8 @@ pub(crate) struct DamageTakenModifier {
     pub(crate) school_mask: u8,
     pub(crate) aura: AuraRef,
     pub(crate) multiplier: f64,
+    /// When set, the multiplier is one plus this for each of the aura's stacks.
+    pub(crate) per_stack: Option<f64>,
 }
 
 /// Go `Unit.AddDynamicDamageTakenModifier` on the target for a modifier that multiplies the
@@ -1612,6 +1614,9 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) spells: Vec<Spell<A::Spell>>,
     pub(crate) dots: Vec<Dot>,
     pub(crate) mods: Vec<spell_mod::SpellMod>,
+    /// Crit modifiers a dot's tick does not take, as a priest's Inner Focus (community #793):
+    /// while active, a tick of a spell it names rolls crit with its chance taken back.
+    pub(crate) tick_crit_takebacks: Vec<(spell_mod::ModId, Vec<bool>, f64)>,
     pub(crate) timers: Vec<i64>,
     pub(crate) major_cooldowns: Vec<MajorCooldown>,
     pub(crate) cooldown_order: Vec<usize>,
@@ -3585,6 +3590,7 @@ impl<A: Agent> Fight<A> {
             spells,
             dots,
             mods: Vec::new(),
+            tick_crit_takebacks: Vec::new(),
             timers: vec![STARTING_CD_TIME; timer_names.len()],
             versions: Versions::default(),
             cooldown_order: (0..major_cooldowns.len()).collect(),

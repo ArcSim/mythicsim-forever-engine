@@ -265,10 +265,9 @@ fn tauren_endurance_and_dwarf_earth_fury_grant_two_percent_crit_damage() {
                 * 1.02
         );
     }
+    // Earth Fury is the multiplier alone, with no aura.
     let dwarf = warrior("RaceDwarf", &weapon(36));
-    let id = aura(&dwarf, "Earth Fury").expect("Earth Fury");
-    assert!(dwarf.sim.aura(id).active);
-    assert_eq!(dwarf.sim.aura(id).duration, NEVER_EXPIRES);
+    assert!(aura(&dwarf, "Earth Fury").is_none());
 }
 
 #[test]
@@ -284,7 +283,7 @@ fn touch_of_the_grave_uses_the_melee_variant() {
     // 16 October beta notes: a 25 second internal cooldown (was 1 sec).
     assert_eq!(aura.icd.map(|icd| icd.duration), Some(25 * SECOND));
     assert!(aura.icd.and_then(|icd| icd.timer).is_some());
-    assert_eq!(aura.duration, NEVER_EXPIRES);
+    assert_eq!(aura.duration, crate::core::time::NEVER_EXPIRES);
     assert!(aura.active);
     assert!(spell(&env, 1260198).is_some());
 }
@@ -402,9 +401,8 @@ fn crit_racials_need_no_weapon() {
             let without = warrior(race, &format!(r#"{gear},"disableRacials":true"#));
             assert!((crit(&env) - crit(&without) - percent).abs() < 1e-9);
             assert!((spell_crit(&env) - spell_crit(&without) - percent).abs() < 1e-9);
-            let id = aura(&env, label).expect("the crit racial");
-            assert!(env.sim.aura(id).active);
-            assert_eq!(env.sim.aura(id).duration, NEVER_EXPIRES);
+            // The crit is a base stat, with no aura.
+            assert!(aura(&env, label).is_none());
             // Withholding the old specialization no longer changes anything.
             let withheld = warrior(
                 race,

@@ -4,8 +4,8 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `d0bd691f087689c4b154d67f4bf284e1fa820ac5`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
-| [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `f7598154eb8a138831290b34d4d321a532295224` (2026-10-10) |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `771c6349a7f15ca331c32d80273b8b9139cb115e`, on community base `efd2a43eb5f0e96e3f2e8a1da9765904648c3ebc` |
+| [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `efd2a43eb5f0e96e3f2e8a1da9765904648c3ebc` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
 intentionally differ from inherited Classic behavior. Fixture client build:
@@ -414,6 +414,41 @@ some of the same changes on the other line.
   Totem, and only the party's Windfury Totem contests the shaman's own.
 
 602 of the 614 Go goldens changed, 525 in DPS, and the preparation goldens of every class follow. Rust
+matches all 612 accepted fixtures with a Go golden, and preparation writes exactly what the exporter
+writes for every one of the 614. The recorded sweeps were not rerun.
+
+The pin moved from `d0bd691f0` to `771c6349a` on 2026-10-16, two merges: the fork takes community #764
+to #811 and client build 1.60.1.70374, and the community base moves to `efd2a43eb`. Where the fork's
+patch 138 and the community made the same 16 October change, the community's version stands, so several
+of patch 138's shapes change again. The ledger reviews the 85 new community commits.
+
+- Data: game data and fixtures at client 70374.
+- Core: a critical auto attack adds its swing's rage at 100% (#794). Retribution Aura and Thorns scale
+  with 6% of their caster's spell power, on the player's own copy only (#800, #803). A dot can snapshot a
+  share of melee attack power that each tick reads again, as Go's `SnapshotAttackPowerShare`.
+- Racials (#806): Ruthless and Savage are base crit and Earth Fury the crit damage multiplier alone, with
+  no auras.
+- Paladin (#792, #810): Reckoning's charges sit on one aura behind the triggers' shared 1.5 second
+  cooldown, and the next main hand auto spends them on instant main hand swings that leave the swing timer
+  alone; the always-up spender aura goes. Improved Seal of Fury's and Shield Specialization's mana makes
+  no threat (#801).
+- Priest: Shadow Weaving is a debuff on each target, read by a damage taken modifier (#777); Inner Focus's
+  crit no longer reaches dot ticks (#793); Silent Resolve reaches every spell (#811).
+- Mage: Fingers of Frost rolls at Frostbolt's and Frostfire Bolt's cast end (#776); every Fire Blast cast
+  adds a Heating Up stack through its own trigger, and only a Pyroblast with a cast time spends them
+  (#808).
+- Rogue: Instant Poison adds 0.5% of attack power and Deadly Poison 0.45% a stack a tick (#781); the
+  off-hand strike always spends Cold Blood (#785).
+- Warlock: Siphon Life's ticks crit (#782), the Succubus carries 6.2% spell crit (#790), and the Imp's
+  Demonic Brand hit has normal threat (#802).
+- Druid: Rake takes 5% of attack power and its hit ignores resists (#772), Swipe 5% (#787), Bear Form's
+  threat is 50% (#798), and Shifting Power cannot be cast at full energy (#805).
+- Hunter: Improved Tracking counts a target of no set type (#774).
+- Shaman: Maelstrom Weapon procs at 10 PPM (#775), and Fire Nova never triggers Elemental Devastation
+  (#789).
+- Warrior: Blood Craze no longer triggers off Bloodthirst (#797).
+
+486 of the 614 Go goldens changed, 242 in DPS, and the preparation goldens of every class follow. Rust
 matches all 612 accepted fixtures with a Go golden, and preparation writes exactly what the exporter
 writes for every one of the 614. The recorded sweeps were not rerun.
 

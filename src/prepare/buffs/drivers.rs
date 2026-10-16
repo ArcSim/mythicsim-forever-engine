@@ -307,9 +307,9 @@ pub(crate) fn drive_grace_of_air_totem(
     Ok(())
 }
 
-/// Go `driveRetributionAura`: the party's Retribution Aura is the top rank, and its damage
-/// carries the holder's own Holy spell power. The party's `retribution_aura_spell_power` is
-/// retired and nothing reads it.
+/// Go `driveRetributionAura`: the party's Retribution Aura is the top rank at its base damage: it
+/// scales with the paladin's spell power, which the party config does not carry. The party's
+/// `retribution_aura_spell_power` is retired and nothing reads it.
 pub(crate) fn drive_retribution_aura(
     env: &mut Environment,
     unit: UnitId,

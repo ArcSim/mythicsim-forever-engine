@@ -7,9 +7,7 @@ use crate::contracts::prepared_v2::ActionId;
 use super::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger, PseudoStatField, StatMultiplier};
 use super::character::{cooldown_type, MajorCooldown};
 use super::env::Environment;
-use super::sim::{
-    AuraConfig, AuraId, BuildPhase, Cooldown, Sim, UnitId, MILLISECOND, NEVER_EXPIRES, SECOND,
-};
+use super::sim::{AuraConfig, AuraId, Cooldown, Sim, UnitId, MILLISECOND, SECOND};
 use super::spell::{
     school, Cast, CastConfig, DefenseType, ProcMask, Resource, SpellConfig, SpellFlag, GCD_DEFAULT,
 };
@@ -37,9 +35,8 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
     let race = env.sim.character(unit).race.clone();
     match race.as_str() {
         "RaceDwarf" => {
-            // 16 October beta notes: "Mace Specialization: Replaced with Earth Fury: 2% increased
-            // critical damage and healing."
-            apply_crit_damage_racial(env, "Earth Fury", 1259719);
+            // Earth Fury replaced Mace Specialization: 2% increased critical damage and healing.
+            env.sim.unit_mut(unit).pseudo_stats.crit_damage_multiplier *= 1.02;
             apply_creature_type_slaying(env, "MobTypeBeast");
 
             let action_id = ActionId::spell(20594);
@@ -87,9 +84,8 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
         }
         "RaceHuman" => {
             env.sim.unit_mut(unit).sdm.multiply_stat(Stat::Spirit, 1.05);
-            // 16 October beta notes: "Sword Specialization: Replaced with Ruthless: 2% increased
-            // critical strike chance."
-            apply_crit_racial(env, "Ruthless", 20597, 2.0);
+            // Ruthless replaced Sword Specialization: 2% critical strike chance, any weapon.
+            add_crit(env, 2.0);
         }
         "RaceNightElf" => {
             let sim = &mut env.sim;
@@ -118,9 +114,8 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
             );
         }
         "RaceOrc" => {
-            // 16 October beta notes: "Axe Specialization: Replaced with Savage: 1% increased
-            // critical strike chance."
-            apply_crit_racial(env, "Savage", 20574, 1.0);
+            // Savage replaced Axe Specialization: 1% critical strike chance, any weapon.
+            add_crit(env, 1.0);
 
             let sim = &mut env.sim;
             let blood_fury_id = ActionId::spell(20572);
@@ -398,45 +393,12 @@ fn apply_creature_type_slaying(env: &mut Environment, mob_type: &'static str) {
         }));
 }
 
-/// Go `applyCritRacial`: the 16 October 2026 beta notes replace the weapon racials (Human Sword,
-/// Orc Axe and Dwarf Mace Specialization) with passives that need no weapon. Human Ruthless and Orc
-/// Savage raise critical strike chance for every attack and spell; the old specializations left the
-/// ranged auto attack alone. The spell IDs are the old specializations' until the client build
-/// carrying the new ones is datamined.
-fn apply_crit_racial(env: &mut Environment, label: &str, spell_id: i32, crit_percent: f64) {
+/// Ruthless and Savage: `AddStats` of the crit, physical and spell alike.
+fn add_crit(env: &mut Environment, crit_percent: f64) {
     let unit = env.player;
-    let sim = &mut env.sim;
-    let aura = sim.register_aura(
-        unit,
-        AuraConfig {
-            label: label.to_string(),
-            action_id: Some(ActionId::spell(spell_id)),
-            duration: NEVER_EXPIRES,
-            build_phase: BuildPhase::BASE,
-            ..AuraConfig::default()
-        },
-    );
-    sim.attach_stat_buff(aura, Stat::PhysicalCritPercent, crit_percent);
-    sim.attach_stat_buff(aura, Stat::SpellCritPercent, crit_percent);
-    sim.make_permanent(aura);
-}
-
-/// Go `applyCritDamageRacial`: Dwarf Earth Fury's "2% increased critical damage and healing", on
-/// the whole crit multiplier as the engine applies the 3% crit damage meta gems.
-fn apply_crit_damage_racial(env: &mut Environment, label: &str, spell_id: i32) {
-    let unit = env.player;
-    let sim = &mut env.sim;
-    sim.unit_mut(unit).pseudo_stats.crit_damage_multiplier *= 1.02;
-    let aura = sim.register_aura(
-        unit,
-        AuraConfig {
-            label: label.to_string(),
-            action_id: Some(ActionId::spell(spell_id)),
-            duration: NEVER_EXPIRES,
-            ..AuraConfig::default()
-        },
-    );
-    sim.make_permanent(aura);
+    env.sim
+        .add_stat(unit, Stat::PhysicalCritPercent, crit_percent);
+    env.sim.add_stat(unit, Stat::SpellCritPercent, crit_percent);
 }
 
 /// Go `applyExpansiveMind`.

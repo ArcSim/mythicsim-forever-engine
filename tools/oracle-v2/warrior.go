@@ -167,13 +167,10 @@ func warriorStanceName(stance proto.WarriorStance) string {
 // core/rage.go EnableRageBar's OnSpellHitDealt: the rage each landed white hit gives, with Go's
 // operation order: the hit factor, halved for the off hand, times the swing speed, the bar's base
 // multiplier and the hand's multiplier, then raised for a two-handed weapon. A critical hit adds
-// the swing's rage before that two-hander factor times CritRageMultiplier less one
-// (CritRageBonusSkipsTwoHand), which the crit rage values carry.
+// the swing's rage before that two-hander factor times CritRageBonus, which the crit rage values
+// carry.
 func rageBarEffect(character *core.Character, baseRageMultiplier float64) map[string]any {
 	bar := privateField(character, "rageBar")
-	if !core.CritRageBonusSkipsTwoHand {
-		fail(fmt.Errorf("a critical auto attack's extra rage includes the two-hander's factor"))
-	}
 	hitRage := func(weapon *core.Weapon, offHand bool) (float64, float64) {
 		hitFactor := core.BaseRageHitFactor
 		handMultiplier := 1.0
@@ -186,7 +183,7 @@ func rageBarEffect(character *core.Character, baseRageMultiplier float64) map[st
 		if weapon.NormalizedSwingSpeed == core.TwoHandNormalizedSwingSpeed {
 			generated *= core.TwoHandRageMultiplier
 		}
-		return generated, baseRage * (core.CritRageMultiplier - 1)
+		return generated, baseRage * core.CritRageBonus
 	}
 	mainHand, mainHandCrit := hitRage(character.AutoAttacks.MH(), false)
 	offHand, offHandCrit := hitRage(character.AutoAttacks.OH(), true)

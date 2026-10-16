@@ -330,11 +330,7 @@ pub(crate) fn export_spell_of(
         out.insert("metric_splits".into(), json!(spell.metric_splits));
     }
     if !spell.rank_aliases.is_empty() {
-        let aliases: Vec<Value> = spell
-            .rank_aliases
-            .iter()
-            .map(spell_action_id)
-            .collect();
+        let aliases: Vec<Value> = spell.rank_aliases.iter().map(spell_action_id).collect();
         out.insert("rank_aliases".into(), Value::Array(aliases));
     }
     Value::Object(out)

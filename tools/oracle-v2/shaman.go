@@ -42,10 +42,10 @@ var shamanClassSpells = []classSpellName{
 // The client rows sim/shaman reads. spellData is private to the package, so the ladders are
 // restated with the ids of sim/shaman/spell_data_auto_gen.go at the pinned revision.
 var (
-	shamanLavaBurst        = spelldata.Ranked(408490, 1238299, 1238300)
+	shamanLavaBurst        = spelldata.Ranked(408490, 1238299, 1238300, 1326047)
 	shamanFlameShock       = spelldata.Ranked(8050, 8052, 8053, 10447, 10448, 29228)
 	shamanFireNova         = spelldata.Ranked(408341, 408342, 408343, 408344, 408345)
-	shamanFireNovaHit      = spelldata.Ranked(8349, 8502, 8503, 11306, 11307, 408423, 408424, 408426, 408427, 408428)
+	shamanFireNovaHit      = spelldata.Ranked(408423, 408424, 408426, 408427, 408428)
 	shamanSearingTotem     = spelldata.Ranked(3599, 6363, 6364, 6365, 10437, 10438)
 	shamanSearingAttack    = spelldata.Ranked(3606, 6350, 6351, 6352, 10435, 10436)
 	shamanElementalFocus   = spelldata.Ranked(16164)

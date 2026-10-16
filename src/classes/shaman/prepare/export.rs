@@ -11,6 +11,7 @@ use serde_json::{json, Value};
 use crate::prepare::aura_helpers::ProcTrigger;
 use crate::prepare::buffs::flametongue::{
     flametongue_totem_base_damage, FLAMETONGUE_TOTEM_TRIGGER_LABEL,
+    WINDFURY_WEAPON_MAIN_HAND_STRIKE,
 };
 use crate::prepare::character::constants::CHARACTER_LEVEL;
 use crate::prepare::common_effects::{action_id_string, flat_string};
@@ -454,6 +455,21 @@ impl Shaman {
         if let Some(aura) = self.flametongue_totem_aura {
             let mut trigger = proc_trigger(sim, Some(player), must_find(15036), &[]);
             trigger.proc_mask = ProcMask(trigger.proc_mask.0 & ProcMask::MELEE_MH.0);
+            // Windfury Weapon's main-hand strikes proc it as the main hand's autos do (MythicSim
+            // patch 141): the trigger hears main hand specials, kept to the autos and 439440.
+            let mut trigger_spells = proc_trigger_spells(env, &trigger);
+            if trigger.proc_mask.matches(ProcMask::MELEE_MH_AUTO) {
+                trigger.proc_mask = ProcMask(trigger.proc_mask.0 | ProcMask::MELEE_MH_SPECIAL.0);
+                let book = &sim.unit(player).spellbook;
+                trigger_spells = proc_trigger_spells(env, &trigger)
+                    .into_iter()
+                    .filter(|&position| {
+                        let spell = sim.spell(book[position]);
+                        spell.proc_mask.matches(ProcMask::MELEE_MH_AUTO)
+                            || spell.action_id == spell_id_action(WINDFURY_WEAPON_MAIN_HAND_STRIKE)
+                    })
+                    .collect();
+            }
             let attack = spell_positions(env, &spell_id_action(16389))
                 .last()
                 .copied();
@@ -465,7 +481,7 @@ impl Shaman {
                 "attack_spell": attack.map_or(-1, |position| position as i64),
                 "attack_deals_damage": weapon.swing_speed != 0.0,
                 "attack_damage": flametongue_totem_base_damage(weapon.swing_speed),
-                "trigger_spells": proc_trigger_spells(env, &trigger),
+                "trigger_spells": trigger_spells,
                 "trigger_outcome": outcome_names(trigger.outcome),
                 "disabled_by_weapon": sim.get_aura(player, "Flametongue Imbue ItemSlotMainHand").is_some(),
                 "duration_ns": nanos(rank.duration()),

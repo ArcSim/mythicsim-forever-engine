@@ -606,13 +606,9 @@ func warriorTankEffects(war *warrior.Warrior, character *core.Character, target 
 	// health by its share, gaining that much health, and takes it back on expiry, leaving at
 	// least 1.
 	if aura := character.GetAura("Last Stand"); aura != nil {
-		// talents_protection.go reads the share from A_MOD_MAX_HEALTH, or from
-		// A_MOD_INCREASE_HEALTH where client 70291 moved it (fork patch 112).
-		buff := warriorLastStandTriggered.Highest()
-		share := buff.FindEffect(dbcenums.E_APPLY_AURA, dbcenums.A_MOD_MAX_HEALTH, 0)
-		if share == spelldata.NilEffect {
-			share = buff.Effect(dbcenums.A_MOD_INCREASE_HEALTH, 0)
-		}
+		// talents_protection.go reads the share from A_MOD_INCREASE_HEALTH, where client 70291
+		// moved it.
+		share := warriorLastStandTriggered.Highest().Effect(dbcenums.A_MOD_INCREASE_HEALTH, 0)
 		effects = append(effects, map[string]any{"kind": "last_stand", "spell_id": warriorLastStand.Highest().ID,
 			"aura": aura.Label, "health_share": share.Percent(),
 			"metrics_action_id": actionID(aura.ActionID)})
@@ -664,13 +660,12 @@ func warriorTankEffects(war *warrior.Warrior, character *core.Character, target 
 		}
 	}
 	// talents_fury.go registerBloodCraze: a heal of maximum health over the hot's ticks, after a
-	// crit or a large hit taken, or a landed Bloodthirst; both triggers wait a spell batch window.
-	// The Bloodthirst trigger acts whether or not anything hits the player.
+	// crit or a large hit taken, a spell batch window later. Bloodthirst no longer triggers it.
 	if talents.BloodCraze > 0 {
 		if hot := character.GetSpell(core.ActionID{SpellID: 16488}); hot != nil {
 			effects = append(effects, map[string]any{"kind": "blood_craze", "spell_id": hot.ActionID.SpellID,
 				"heal":              healModifiers(character, &character.Unit),
-				"damage_taken_aura": "Blood Craze - Damage Taken", "bloodthirst_aura": "Blood Craze - Bloodthirst",
+				"damage_taken_aura": "Blood Craze - Damage Taken",
 				"health_fraction": warriorBloodCraze.EffectAt(1).FractionAt(talents.BloodCraze),
 				"hit_threshold":   warriorBloodCraze.EffectAt(2).FractionAt(talents.BloodCraze)})
 		}

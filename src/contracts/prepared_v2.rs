@@ -3117,6 +3117,8 @@ pub enum Effect {
         melee_crit: f64,
         /// Whether a crit from a spell flagged Proc can trigger it.
         can_proc_from_procs: bool,
+        /// The class spells whose crits never trigger it (community #789).
+        excluded_class_spells: Vec<String>,
     },
     /// Flurry: melee crits grant charges of melee speed that white hits spend.
     Flurry {
@@ -3583,13 +3585,11 @@ pub enum Effect {
         proc_chance: f64,
         delay_ns: i64,
     },
-    /// Blood Craze: a hot of maximum health after a crit or a large hit taken, or a landed
-    /// Bloodthirst.
+    /// Blood Craze: a hot of maximum health after a crit or a large hit taken.
     BloodCraze {
         spell_id: i32,
         heal: HealModifiers,
         damage_taken_aura: String,
-        bloodthirst_aura: String,
         health_fraction: f64,
         hit_threshold: f64,
     },

@@ -741,10 +741,13 @@ impl Hunter {
         let multiplier = spell_data().improved_tracking.multiplier_at(rank);
         let effect: FinalizeEffect = Rc::new(move |env: &mut Environment| {
             let hunter = env.player;
+            // Unknown counts: the site's default target is a boss of no set type, and the
+            // hunter tracks whatever it is (community #783).
             for target in env.encounter.targets.clone() {
                 let trackable = matches!(
                     env.sim.unit(target).mob_type.as_str(),
-                    "MobTypeBeast"
+                    "MobTypeUnknown"
+                        | "MobTypeBeast"
                         | "MobTypeDemon"
                         | "MobTypeDragonkin"
                         | "MobTypeElemental"

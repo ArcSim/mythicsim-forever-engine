@@ -697,7 +697,6 @@ impl Warrior {
                     "spell_id": sim.spell(hot).action_id.spell_id,
                     "heal": heal_modifiers(env, notes),
                     "damage_taken_aura": "Blood Craze - Damage Taken",
-                    "bloodthirst_aura": "Blood Craze - Bloodthirst",
                     "health_fraction": data.blood_craze.effect_at(1)
                         .fraction_at(self.talent("blood_craze")),
                     "hit_threshold": data.blood_craze.effect_at(2)

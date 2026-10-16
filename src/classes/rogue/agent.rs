@@ -1055,14 +1055,12 @@ impl Agent for RogueAgent {
                 fight.agent.kidney_shot_pause = kidney_shot.pause_target(fight);
                 kidney_shot.on_stun_change(fight, true);
             }
-            RogueAura::ColdBlood => {
-                fight
-                    .agent
-                    .cold_blood
-                    .clone()
-                    .expect("bound")
-                    .on_gain(fight)
-            }
+            RogueAura::ColdBlood => fight
+                .agent
+                .cold_blood
+                .clone()
+                .expect("bound")
+                .on_gain(fight),
             RogueAura::ThousandCuts => fight
                 .agent
                 .thousand_cuts

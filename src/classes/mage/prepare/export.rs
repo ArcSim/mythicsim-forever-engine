@@ -43,6 +43,7 @@ fn damage_rows() -> &'static HashMap<i32, &'static Row> {
         each(&mut rows, &data.arcane_missiles_triggered);
         highest(&mut rows, &data.ice_lance);
         highest(&mut rows, &data.arcane_blast);
+        highest(&mut rows, &data.arcane_wrath);
         highest(&mut rows, &data.fire_blast);
         each(&mut rows, &data.scorch);
         each(&mut rows, &data.fireball);
@@ -210,6 +211,7 @@ pub(super) fn effects(talents: &Message, sim: &Sim, unit: UnitId) -> Vec<Value> 
         effects.push(json!({
             "kind": "arcane_blast", "spell_id": data.arcane_blast.highest().id,
             "aura": "Arcane Blast",
+            "intellect_per_stack": buff.effect_n(1).percent(),
             "cost_per_stack": buff
                 .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_COST)
                 .average(CHARACTER_LEVEL)

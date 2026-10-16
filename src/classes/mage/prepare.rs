@@ -247,6 +247,34 @@ impl PrepAgent for Mage {
         export::effects(&self.talents, sim, unit)
     }
 
+    /// `effects`, with the Intellect an iteration's end leaves for Arcane Blast's last log line:
+    /// Go's doneIteration deactivates the player's auras in registration order, so those
+    /// registered before Arcane Blast's have fallen when its stacks do.
+    fn export_effects(
+        &self,
+        env: &crate::prepare::env::Environment,
+        _notes: &mut Vec<String>,
+    ) -> Vec<serde_json::Value> {
+        let mut effects = self.effects(&env.sim, env.player);
+        if let Some(effect) = effects
+            .iter_mut()
+            .find(|effect| effect["kind"] == "arcane_blast")
+        {
+            let mut fresh = env.fresh();
+            let player = fresh.player;
+            for aura in fresh.sim.unit(player).auras.clone() {
+                if fresh.sim.aura(aura).label == "Arcane Blast" {
+                    break;
+                }
+                if fresh.sim.aura(aura).active {
+                    fresh.sim.deactivate(aura);
+                }
+            }
+            effect["done_intellect"] = serde_json::json!(fresh.sim.stat(player, Stat::Intellect));
+        }
+        effects
+    }
+
     /// Go `Mage.EurekaSpells`: the fifteen spells the client's Eureka! rows name for cost and
     /// damage, and the missile tick on the damage list; no spell is in Tick.
     fn eureka_spells(&self) -> Option<crate::prepare::racials::EurekaSpells> {

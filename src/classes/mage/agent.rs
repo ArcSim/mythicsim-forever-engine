@@ -340,12 +340,19 @@ impl MageAgent {
                 } => fight.agent.ice_lance_frozen_multiplier = *frozen_multiplier,
                 Effect::ArcaneBlast {
                     aura,
+                    intellect_per_stack,
+                    done_intellect,
                     cost_per_stack,
                     ..
                 } => {
                     let place = Fight::<Self>::stat_aura_place(&prepared.effects, aura)
                         .ok_or("the Arcane Blast stacks are not a stat aura")?;
-                    let bound = arcane_blast::bind(&mut fight, aura, *cost_per_stack, place)?;
+                    let bound = arcane_blast::bind(
+                        &mut fight,
+                        aura,
+                        (*intellect_per_stack, *cost_per_stack, *done_intellect),
+                        place,
+                    )?;
                     fight.agent.arcane_charges = Some(Rc::new(bound));
                 }
                 Effect::ArcaneWrath {

@@ -201,20 +201,6 @@ impl Shaman {
                 "has_off_hand": sim.oh_weapon(player).is_some(),
             }));
         }
-        if self.has_talent("elemental_mastery") {
-            // talents_elemental.go applyElementalMastery: a major cooldown whose aura speeds
-            // Lightning Bolt and Lava Burst and cancels Chain Lightning's cooldown.
-            let row = data.elemental_mastery.highest();
-            let chain = data.chain_lightning.highest();
-            effects.push(json!({
-                "kind": "elemental_mastery", "spell_id": row.id, "aura": "Elemental Mastery",
-                "cast_time_delta_ns": nanos(super::talents::millis(
-                    row.effect(dbcenums::A_ADD_FLAT_MODIFIER, dbcenums::SPELLMOD_CASTING_TIME)
-                        .base_points,
-                )),
-                "chain_lightning_cooldown_ns": nanos(chain.cooldown().max(chain.category_cooldown())),
-            }));
-        }
         if talent("elemental_devastation") > 0 {
             // talents_elemental.go applyElementalDevastation
             effects.push(json!({
@@ -302,6 +288,20 @@ impl Shaman {
                 "kind": "rage_of_the_farseer", "spell_id": row.id, "aura": "Rage of the Farseer",
                 "melee_speed_multiplier": 1.0
                     + row.effect(dbcenums::A_MOD_MELEE_RANGED_HASTE_2, 0).percent(),
+            }));
+        }
+        if self.has_talent("elemental_mastery") {
+            // talents_elemental.go applyElementalMastery: a major cooldown whose aura speeds
+            // Lightning Bolt and Lava Burst and cancels Chain Lightning's cooldown.
+            let row = data.elemental_mastery.highest();
+            let chain = data.chain_lightning.highest();
+            effects.push(json!({
+                "kind": "elemental_mastery", "spell_id": row.id, "aura": "Elemental Mastery",
+                "cast_time_delta_ns": nanos(super::talents::millis(
+                    row.effect(dbcenums::A_ADD_FLAT_MODIFIER, dbcenums::SPELLMOD_CASTING_TIME)
+                        .base_points,
+                )),
+                "chain_lightning_cooldown_ns": nanos(chain.cooldown().max(chain.category_cooldown())),
             }));
         }
         if has("elemental_focus") {

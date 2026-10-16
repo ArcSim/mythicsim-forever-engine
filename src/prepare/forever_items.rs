@@ -23,7 +23,7 @@ use super::shared_items::{
     ItemVariant, ProcKind, SpellDataProc,
 };
 use super::shared_on_use::{self, OnUseKind, StackingStatBonusCd};
-use super::sim::{AuraConfig, AuraId, Cooldown, Sim, SpellId, UnitType, SECOND};
+use super::sim::{AuraConfig, AuraId, Cooldown, Sim, SpellId, UnitType, NEVER_EXPIRES, SECOND};
 use super::spell::{school, CastConfig, DefenseType, ProcMask, SpellConfig, SpellFlag};
 use super::spelldata::must_find;
 use super::stats::{Stat, Stats};
@@ -264,14 +264,7 @@ fn apply_hand_written_item(env: &mut Environment, item: i32) -> Result<bool, Ref
                 format!("item {item} adds mob type bonus stats, which are not prepared"),
             ))
         }
-        // items_70425.go: Blade of Hanna's Improving Form stacks to a Perfected Form strike and
-        // stats buff, which Rust does not run yet.
-        2801 => {
-            return Err(Refusal::new(
-                "item_effect",
-                "Blade of Hanna's Improving Form is not prepared".to_string(),
-            ))
-        }
+        2801 => blade_of_hanna(env),
         // items_70425.go: Lord Sakrasis' Scepter's Holy Smite states no rate, so Go registers it
         // with no effect, which keeps the generator from reading it as a proc on every cast.
         5028 => {}
@@ -351,6 +344,69 @@ fn lobotomizer(env: &mut Environment) {
             },
         )
     });
+}
+
+/// items_70425.go Blade of Hanna (2801): each landed main hand swing adds a stack of Improving
+/// Form (1325509, up to 30); at 30 the stacks go, Perfected Form (1325508) strikes the target for
+/// its 490 Physical damage on the melee special table and raises every stat by 20 for 20 sec.
+fn blade_of_hanna(env: &mut Environment) {
+    let unit = env.player;
+    let perfected = super::spelldata::must_find(1325508);
+    let improving = super::spelldata::must_find(1325509);
+    let all_stats = perfected.effect_n(2).base_points;
+    let buff = env.sim.register_aura(
+        unit,
+        AuraConfig {
+            label: "Perfected Form".to_string(),
+            action_id: Some(ActionId::spell(perfected.id)),
+            duration: perfected.duration(),
+            ..AuraConfig::default()
+        },
+    );
+    env.sim.attach_stats_buff(
+        buff,
+        Stats::from_pairs(&[
+            (Stat::Strength, all_stats),
+            (Stat::Agility, all_stats),
+            (Stat::Stamina, all_stats),
+            (Stat::Intellect, all_stats),
+            (Stat::Spirit, all_stats),
+        ]),
+    );
+    env.sim.register_spell(
+        unit,
+        SpellConfig {
+            action_id: ActionId::spell(perfected.id),
+            spell_school: school::PHYSICAL,
+            defense_type: DefenseType::Melee,
+            proc_mask: ProcMask::EMPTY,
+            flags: SpellFlag::PASSIVE_SPELL,
+            damage_multiplier: 1.0,
+            threat_multiplier: 1.0,
+            ..SpellConfig::default()
+        },
+    );
+    env.sim.register_aura(
+        unit,
+        AuraConfig {
+            label: "Improving Form".to_string(),
+            action_id: Some(ActionId::spell(improving.id)),
+            duration: NEVER_EXPIRES,
+            max_stacks: i32::from(improving.max_stack),
+            ..AuraConfig::default()
+        },
+    );
+    env.sim.make_proc_trigger_aura(
+        unit,
+        &ProcTrigger {
+            name: "Blade of Hanna".to_string(),
+            callback: CallbackMask::ON_SPELL_HIT_DEALT,
+            proc_mask: ProcMask::MELEE_MH_AUTO,
+            outcome: HitOutcome::LANDED,
+            trigger_immediately: true,
+            ..ProcTrigger::default()
+        },
+    );
 }
 
 /// items_weapons.go Flurry Axe.

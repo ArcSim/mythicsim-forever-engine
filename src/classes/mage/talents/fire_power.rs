@@ -29,11 +29,18 @@ pub(crate) fn bind<A: Agent>(fight: &Fight<A>, per_effect: f64, max_effects: i32
     ]
     .iter()
     .map(|names| {
+        // By class name alone: Ignite carries NoSpellMods, which a modifier's spell list skips.
         fight
-            .spells_with_class(names)
-            .into_iter()
-            .filter(|&spell| fight.spells[spell].school == FIRE)
-            .filter_map(|spell| fight.spells[spell].dot)
+            .spells
+            .iter()
+            .filter(|spell| {
+                spell.school == FIRE
+                    && spell
+                        .class_spell
+                        .as_deref()
+                        .is_some_and(|class| names.contains(&class))
+            })
+            .filter_map(|spell| spell.dot)
             .collect()
     })
     .collect();

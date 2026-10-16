@@ -1440,6 +1440,17 @@ pub enum Effect {
         tick_cancel_spells: Vec<usize>,
     },
     /// The Undead racial Touch of the Grave: landed hits can drain the target.
+    /// items_70425.go Blade of Hanna: a landed main hand swing among `trigger_spells` stacks
+    /// `stacks_aura`; at its most the stacks go, `strike_spell` deals `damage` to the target on the
+    /// melee special table, and `buff_aura`, a stat aura, comes up.
+    BladeOfHanna {
+        trigger_aura: String,
+        stacks_aura: String,
+        buff_aura: String,
+        damage: f64,
+        strike_spell: usize,
+        trigger_spells: Vec<usize>,
+    },
     TouchOfTheGrave {
         trigger_aura: String,
         drain_spell_id: i32,
@@ -2681,6 +2692,11 @@ pub enum Effect {
     ArcaneBlast {
         spell_id: i32,
         aura: String,
+        /// The share of Intellect each stack gives as spell damage, for the log line.
+        intellect_per_stack: f64,
+        /// The Intellect left once an iteration's end has deactivated the auras registered
+        /// before the stacks', which their last log line reads.
+        done_intellect: f64,
         cost_per_stack: f64,
     },
     /// Arcane Wrath (client 70425): the hit adds `mana_share` of maximum mana as spell damage at
@@ -4268,6 +4284,7 @@ impl Effect {
             Effect::FrostfireBolt { .. } => "frostfire_bolt",
             Effect::Scorch { .. } => "scorch",
             Effect::TouchOfTheGrave { .. } => "touch_of_the_grave",
+            Effect::BladeOfHanna { .. } => "blade_of_hanna",
             Effect::Eureka { .. } => "eureka",
             Effect::Berserking { .. } => "berserking",
             Effect::BloodFury { .. } => "blood_fury",

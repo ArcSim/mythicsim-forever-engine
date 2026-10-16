@@ -1279,6 +1279,18 @@ func commonEffects(character *core.Character, target *core.Unit, request *proto.
 			"period_ns": nanos(2 * time.Second), "ticks": int32(10),
 		})
 	}
+	// items_70425.go Blade of Hanna: each landed main hand swing stacks Improving Form; at its most
+	// the stacks go, Perfected Form strikes the target for its row's flat Physical damage on the melee
+	// special table, and its stats aura comes up.
+	if trigger := character.GetAura("Blade of Hanna"); trigger != nil {
+		perfected := spelldata.MustFind(1325508)
+		effects = append(effects, map[string]any{
+			"kind": "blade_of_hanna", "trigger_aura": trigger.Label, "stacks_aura": "Improving Form",
+			"buff_aura": "Perfected Form", "damage": perfected.EffectN(1).BasePoints,
+			"strike_spell": spellPosition(character, character.GetSpell(core.ActionID{SpellID: perfected.ID})),
+			"trigger_spells": procTriggerSpells(character, core.ProcTrigger{ProcMask: core.ProcMaskMeleeMHAuto}),
+		})
+	}
 	consumes := request.Raid.Parties[0].Players[0].Consumables
 	// Major cooldown items, then the potions, conjured items and Diamond Flasks a rotation casts
 	// itself, which Go removed from the major cooldowns.

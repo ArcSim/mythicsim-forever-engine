@@ -7,7 +7,9 @@ import (
 	"github.com/wowsims/forever/sim/core"
 	"github.com/wowsims/forever/sim/core/dbcenums"
 	"github.com/wowsims/forever/sim/core/proto"
+	"github.com/wowsims/forever/sim/core/simsignals"
 	"github.com/wowsims/forever/sim/core/spelldata"
+	"github.com/wowsims/forever/sim/core/stats"
 	"github.com/wowsims/forever/sim/mage"
 )
 
@@ -209,6 +211,8 @@ func mageEffects(agent core.Agent, character *core.Character) []map[string]any {
 		buff := arcaneBlastBuff.Highest()
 		effects = append(effects, map[string]any{
 			"kind": "arcane_blast", "spell_id": arcaneBlastLadder.Highest().ID, "aura": "Arcane Blast",
+			"intellect_per_stack": buff.EffectN(1).Percent(),
+			"done_intellect":      arcaneBlastDoneIntellect(),
 			"cost_per_stack": buff.Effect(dbcenums.A_ADD_PCT_MODIFIER, int32(dbcenums.SPELLMOD_COST)).Average(core.CharacterLevel) / 100,
 		})
 	}
@@ -351,4 +355,22 @@ func mageEffects(agent core.Agent, character *core.Character) []map[string]any {
 		effects = append(effects, map[string]any{"kind": "mage_armor", "aura": "Mage Armor"})
 	}
 	return effects
+}
+
+// The Intellect the stacks' last log line of an iteration reads: aura.go doneIteration
+// deactivates the player's auras in registration order, so the raid buffs registered before
+// Arcane Blast's have fallen when its stacks do. Read from a separate reset simulation.
+func arcaneBlastDoneIntellect() float64 {
+	simulation := core.NewSim(exportRequest, simsignals.CreateSignals())
+	simulation.Reset()
+	player := simulation.Raid.Parties[0].Players[0].GetCharacter()
+	for _, aura := range player.GetAuras() {
+		if aura.Label == "Arcane Blast" {
+			break
+		}
+		if aura.IsActive() {
+			aura.Deactivate(simulation)
+		}
+	}
+	return player.GetStat(stats.Intellect)
 }

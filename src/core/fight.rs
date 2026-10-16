@@ -12,6 +12,7 @@
 
 mod absorb;
 mod aura;
+mod blade_of_hanna;
 mod cast;
 mod cleave;
 mod damage;
@@ -482,6 +483,12 @@ pub(crate) enum SpellBehavior<S> {
     SulfurasFireball {
         min: f64,
         max: f64,
+    },
+    /// A fixed amount on a physical attack table, which rolls no damage: Blade of Hanna's
+    /// Perfected Form.
+    FixedTableDamage {
+        damage: f64,
+        outcome: melee::PhysicalOutcome,
     },
     /// A fixed hit that always lands, as Sulfuras's Immolation casts.
     FixedHit(f64),
@@ -1608,6 +1615,8 @@ pub(crate) struct Fight<A: Agent> {
     free_travel_batches: Vec<usize>,
     /// The target's dynamic damage taken modifiers.
     pub(crate) damage_taken_modifiers: Vec<DamageTakenModifier>,
+    /// Go `doneIteration` is deactivating the auras: an iteration is ending.
+    pub(crate) done_iteration: bool,
     /// Spell-conditioned modifiers, applied after `damage_taken_modifiers`; no class registers
     /// both kinds, so Go's single registration order is kept.
     pub(crate) spell_damage_taken_modifiers: Vec<SpellDamageTakenModifier>,
@@ -1669,6 +1678,7 @@ pub(crate) struct Fight<A: Agent> {
     /// Dragon's Call and the Emerald Dragon Whelp it summons.
     pub(crate) whelp: Option<whelp::Whelp>,
     pub(crate) sulfuras: Option<sulfuras::Sulfuras>,
+    pub(crate) blade_of_hanna: Option<blade_of_hanna::BladeOfHanna>,
     /// The slows of the attack speed category, by the position of their aura on the target.
     pub(crate) enemy_slows: Vec<(usize, enemy::EnemySlow)>,
     /// Thunderfury's proc, when worn.
@@ -2616,6 +2626,18 @@ impl<A: Agent> Fight<A> {
                         } if *immolation_spell == spells.len() => {
                             Some(SpellBehavior::FixedHit(*immolation_damage))
                         }
+                        Effect::BladeOfHanna {
+                            strike_spell,
+                            damage,
+                            ..
+                        } if *strike_spell == spells.len() => {
+                            melee::PhysicalOutcome::of_melee_proc("melee_special_hit_and_crit").map(
+                                |outcome| SpellBehavior::FixedTableDamage {
+                                    damage: *damage,
+                                    outcome,
+                                },
+                            )
+                        }
                         Effect::ForceReactiveDisk { spell, damage, .. } if *spell == spells.len() => {
                             Some(SpellBehavior::AreaFixedDamage(*damage))
                         }
@@ -3327,6 +3349,12 @@ impl<A: Agent> Fight<A> {
                     AuraBehavior::SulfurasProc
                 } else if side == Side::Player
                     && effects.iter().any(|effect| {
+                        matches!(effect, Effect::BladeOfHanna { trigger_aura, .. } if *trigger_aura == exported.label)
+                    })
+                {
+                    AuraBehavior::BladeOfHanna
+                } else if side == Side::Player
+                    && effects.iter().any(|effect| {
                         matches!(effect, Effect::SulfurasHandOfRagnaros { immolation_aura, .. } if *immolation_aura == exported.label)
                     })
                 {
@@ -3586,6 +3614,7 @@ impl<A: Agent> Fight<A> {
             travel_batches: Vec::new(),
             free_travel_batches: Vec::new(),
             damage_taken_modifiers: Vec::new(),
+            done_iteration: false,
             spell_damage_taken_modifiers: Vec::new(),
             damage_taken_health,
             config,
@@ -3642,6 +3671,7 @@ impl<A: Agent> Fight<A> {
             crusader: None,
             whelp: None,
             sulfuras: None,
+            blade_of_hanna: None,
             thunderfury: None,
             enemy_slows: Vec::new(),
             windfury: None,
@@ -4087,6 +4117,7 @@ impl<A: Agent> Fight<A> {
                 }
                 Effect::EmeraldDragonWhelp { .. } => fight.bind_whelp(effect)?,
                 Effect::SulfurasHandOfRagnaros { .. } => fight.bind_sulfuras(effect)?,
+                Effect::BladeOfHanna { .. } => fight.bind_blade_of_hanna(effect)?,
                 Effect::Thunderfury { .. } => fight.bind_thunderfury(effect)?,
                 _ => {}
             }

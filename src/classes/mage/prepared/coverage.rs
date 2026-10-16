@@ -24,6 +24,7 @@ const EFFECTS: &[&str] = &[
     "arcane_explosion",
     "arcane_missiles",
     "arcane_power",
+    "arcane_wrath",
     "blast_wave",
     "blizzard",
     "cold_snap",
@@ -32,6 +33,7 @@ const EFFECTS: &[&str] = &[
     "evocation",
     "fingers_of_frost",
     "fire_blast",
+    "fire_power",
     "fireball",
     "flamestrike",
     "frost_nova",
@@ -54,6 +56,7 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
     match spell.class_spell.as_deref()? {
         "frostbolt" => Some("frostbolt"),
         "arcane_blast" => Some("arcane_blast"),
+        "arcane_wrath" => Some("arcane_wrath"),
         "arcane_power" => Some("arcane_power"),
         "fire_blast" => Some("fire_blast"),
         "fireball" => Some("fireball"),

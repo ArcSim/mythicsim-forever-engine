@@ -23,6 +23,7 @@ const EFFECTS: &[&str] = &[
     "earth_shock",
     "elemental_devastation",
     "elemental_focus",
+    "elemental_mastery",
     "fire_nova",
     "flame_shock",
     "flametongue_totem",
@@ -68,6 +69,7 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "chain_lightning" | "chain_lightning_overload" => Some("chain_lightning"),
         "flame_shock_direct" | "flame_shock_dot" => Some("flame_shock"),
         "lava_burst" => Some("lava_burst"),
+        "elemental_mastery" => Some("elemental_mastery"),
         "fire_nova" => Some("fire_nova"),
         "searing_totem" => Some("searing_totem"),
         "magma_totem" => Some("magma_totem"),
@@ -98,6 +100,7 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
             trigger_aura, aura, ..
         } => vec![("player", trigger_aura), ("player", aura)],
         Effect::RageOfTheFarseer { aura, .. }
+        | Effect::ElementalMastery { aura, .. }
         | Effect::RockbiterWeapon { aura, .. }
         | Effect::FrostbrandWeapon {
             trigger_aura: aura, ..

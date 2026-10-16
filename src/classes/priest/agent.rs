@@ -653,13 +653,21 @@ impl Agent for PriestAgent {
         let _ = (fight, kind, new);
     }
 
-    fn on_cast_complete(fight: &mut Fight<Self>, _aura: AuraRef, kind: PriestAura, spell: SpellId) {
+    fn on_cast_complete(fight: &mut Fight<Self>, aura: AuraRef, kind: PriestAura, spell: SpellId) {
         match kind {
+            // Go's proc trigger runs its handler a spell batch window later.
             PriestAura::DarkInspirationMindBlast
                 if fight.spells[spell].class_spell.as_deref() == Some("mind_blast") =>
             {
-                let aura = fight.agent.dark_inspiration.expect("bound");
-                fight.activate_aura(aura);
+                let result = SpellResult {
+                    armor_multiplier: 0.0,
+                    target: Side::Target,
+                    attacker: Side::Player,
+                    outcome: 0,
+                    damage: 0.0,
+                    threat: 0.0,
+                };
+                fight.schedule_delayed_proc(aura, spell, result);
             }
             PriestAura::InnerFocus => Self::inner_focus(fight).on_cast_complete(fight, spell),
             PriestAura::SearingLight => Self::searing_light(fight).on_cast_complete(fight, spell),
@@ -688,7 +696,7 @@ impl Agent for PriestAgent {
 
     fn on_periodic_damage_dealt(
         fight: &mut Fight<Self>,
-        _aura: AuraRef,
+        aura: AuraRef,
         kind: PriestAura,
         spell: SpellId,
         result: &SpellResult,
@@ -697,18 +705,11 @@ impl Agent for PriestAgent {
             PriestAura::SearingLightTrigger => {
                 Self::searing_light(fight).on_periodic_damage_dealt(fight, spell, result);
             }
-            // A full channel: the last tick sees no ticks left.
+            // Go's proc trigger runs its handler a spell batch window later.
             PriestAura::DarkInspirationMindFlay
                 if fight.spells[spell].class_spell.as_deref() == Some("mind_flay") =>
             {
-                let full = fight.spells[spell].dot.is_some_and(|dot| {
-                    let dot = fight.dot_on(dot, result.target);
-                    fight.dots[dot].remaining_ticks == 0
-                });
-                if full {
-                    let aura = fight.agent.dark_inspiration.expect("bound");
-                    fight.activate_aura(aura);
-                }
+                fight.schedule_delayed_proc(aura, spell, *result);
             }
             _ => {}
         }
@@ -718,10 +719,25 @@ impl Agent for PriestAgent {
         fight: &mut Fight<Self>,
         _aura: AuraRef,
         kind: PriestAura,
-        _spell: SpellId,
+        spell: SpellId,
         result: SpellResult,
     ) {
         match kind {
+            PriestAura::DarkInspirationMindBlast => {
+                let aura = fight.agent.dark_inspiration.expect("bound");
+                fight.activate_aura(aura);
+            }
+            // A full channel: the last tick saw no ticks left.
+            PriestAura::DarkInspirationMindFlay => {
+                let full = fight.spells[spell].dot.is_some_and(|dot| {
+                    let dot = fight.dot_on(dot, result.target);
+                    fight.dots[dot].remaining_ticks == 0
+                });
+                if full {
+                    let aura = fight.agent.dark_inspiration.expect("bound");
+                    fight.activate_aura(aura);
+                }
+            }
             PriestAura::ShadowfiendManaRestore => {
                 let bound = fight
                     .agent

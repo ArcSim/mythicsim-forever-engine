@@ -128,6 +128,8 @@ pub(crate) enum AuraBehavior<K> {
     /// Sulfuras, Hand of Ragnaros's weapon proc trigger and its Immolation.
     SulfurasProc,
     SulfurasImmolation,
+    /// Blade of Hanna's trigger.
+    BladeOfHanna,
     /// The party Windfury Totem's totem aura, whose exclusive effect holds the trigger.
     WindfuryTotem,
     /// The party Windfury Totem's trigger.
@@ -1085,6 +1087,7 @@ impl<A: Agent> Fight<A> {
     /// Go `auraTracker.doneIteration`: deactivate every aura in registration order, then
     /// fold this iteration's uptime and procs into the aggregates.
     pub(crate) fn aura_done_iteration(&mut self, side: Side) {
+        self.done_iteration = true;
         'restart: loop {
             for index in 0..self.trackers[side.index()].auras.len() {
                 if self.trackers[side.index()].auras[index].active {
@@ -1094,6 +1097,7 @@ impl<A: Agent> Fight<A> {
             }
             break;
         }
+        self.done_iteration = false;
         for state in &mut self.trackers[side.index()].auras {
             state.start = 0;
             state.expires = 0;
@@ -1242,6 +1246,9 @@ impl<A: Agent> Fight<A> {
                     AuraBehavior::Crusader if dealt => self.crusader_callback(aura, spell, result),
                     AuraBehavior::EmeraldDragonWhelp if dealt => {
                         self.whelp_callback(aura, spell, result)
+                    }
+                    AuraBehavior::BladeOfHanna if dealt => {
+                        self.blade_of_hanna_callback(spell, result)
                     }
                     AuraBehavior::SulfurasProc if dealt => {
                         self.sulfuras_callback(aura, spell, result)

@@ -1,6 +1,6 @@
 {
  "case": "mixed-build-two",
- "request_sha256": "ec7e633415450bc72adead9575c5161b0425a571eb97081635bb3921109262de",
+ "request_sha256": "1859422f4e265ad754714c901b5a6a3dd2b8f2d04e612c39134ba372e5f22738",
  "sections": {
   "effects": [
    [
@@ -28,6 +28,14 @@
     "152ed1651e38d46583baa2ddcefd64a668b0b2ab8d5d93e47f7aa8362e81cea3"
    ],
    [
+    "improved_mind_flay",
+    "e90167ed81f70164b5f8205890d1e1f54993bd5cef98e5e12d845b26f75aae1e"
+   ],
+   [
+    "dark_inspiration",
+    "6185129fcd3ea8a85e5c0f194337354321a8979c8b227b7e510dba9e2435d241"
+   ],
+   [
     "shadow_weaving",
     "f5a538f826ca89c9ebb2e8cb9e12872c25cfa59c46adb1246e9325be5b25d640"
    ],
@@ -37,7 +45,7 @@
    ],
    [
     "holy_fire",
-    "f90e03391941ec55d0c519a564273696868472dd0806ce73462bafa69f18c626"
+    "74d9d50ba6e28427a056aca5a9ccbe2cdf0ce2cc5d2e3d6e7dd5622795896aaa"
    ],
    [
     "penance",
@@ -62,6 +70,10 @@
    [
     "inert_pet",
     "608ca58989ef4b579cc2d44521faf3eee8151ae6152e5fc354a18e735f6a5bfc"
+   ],
+   [
+    "stat_auras",
+    "585d39a463540ee1b0fbbaddc58bf8f1a27ebe9fa778a5e430a114723d2c9f07"
    ],
    [
     "inert_listener",
@@ -90,6 +102,18 @@
    [
     "Searing Light Trigger",
     "239b701008ca3bf7ff0054fbce6ec805928f0db0be311420727125efb82e6be5"
+   ],
+   [
+    "Dark Inspiration",
+    "33898faecb46d95bb86f56ff0d277f028c20cde7864660ea4a6ce6579cb7aa55"
+   ],
+   [
+    "Dark Inspiration Mind Blast",
+    "19492551319d4cfd500e238b0c621b9734976f31c103243297966ec34f7eec0f"
+   ],
+   [
+    "Dark Inspiration Mind Flay",
+    "2b322f7ad5733581bebd3c9ed5a45d55e41731d9878f6c6a469d6c205f8a834c"
    ],
    [
     "Shadow Weaving Trigger",
@@ -122,7 +146,7 @@
     "85ffe3ef5a23fd9420a893b4fe314881c1d8c6b4a5e3fb47e6a650ca10587f0a"
    ]
   ],
-  "player.mana": "b8b20b1dafeafdb40faa208897d800f1112b1fa7a2d60537d4d52b6f13df6c1b",
+  "player.mana": "12be21f6c9479c25f04a70e72fabea4a45cc5139655a54f2a93abcf097035737",
   "player.pseudo_stats": "bfabb073aef1fd9f3ac5b3c285d02dba8a94437a8e22ee52b736f74a2e65101f",
   "player.spells": [
    [
@@ -199,27 +223,27 @@
    ],
    [
     "{\"spell_id\": 15407}",
-    "c2e30be5d396cc558e6c1cf0d7d47183ea6e2bbafeb2ba301f70e19cf02c66fe"
+    "4ba1b3e253dedfb42f35d03ea0ba12508aa133d13ea4612dfa04ced3148015d9"
    ],
    [
     "{\"spell_id\": 17311}",
-    "29f64ce9c77425ebe6383f525eb651432d9cf41dce63b8064dc53c68e7864551"
+    "7bf0df61db7fd4db9a8cd88e4b19c59fc513d216919dfcbada04660129877967"
    ],
    [
     "{\"spell_id\": 17312}",
-    "ec0297ccb3486aab72110b924ee345077e76c50ca652d3d207be386dc4dd747b"
+    "fb24702a4fd6ddc90d23a5af260ad8aae2a0cab3383d5443ed1445a416dc398a"
    ],
    [
     "{\"spell_id\": 17313}",
-    "af5296784ee5eb512cf86059d5fc4038e0610682215fd2bcaafa20f1bd3db5a1"
+    "7d5aeff14c65778cddac13b061bbb5106ea76c3a3121e6bfc3c0cc0e7b208b08"
    ],
    [
     "{\"spell_id\": 17314}",
-    "1780b32357eb4811dd8d394718a4be3940aee57bec16509efa07cd1f4ea57db4"
+    "be9d839043e4b77f8af406de031b039bb5b43dd8e75e0984b054e904389ed261"
    ],
    [
     "{\"spell_id\": 18807}",
-    "8e57704e1e32daf0d826e4957140e375bccb63c55e1723c111e4c98d682aae33"
+    "58f96d7b0d27e336e3e88f767a6c07ed4750f11a778ef12111c2fcf3405dcc70"
    ],
    [
     "{\"spell_id\": 15286}",
@@ -426,8 +450,8 @@
     "08b9f95ec698c9a0ff7453dd8db39f4a9b4593cced26fb980de3087a23b2054f"
    ]
   ],
-  "player.stats": "a43b4e0038cd1d1214ceaa73e445e34a53b99368a64e91f59868ec2e0e2adea9",
-  "player.talents": "0e50ea13c85d3ab188094422c93e7e156192ea10b00b0f6b68faef5ec51eae52",
+  "player.stats": "042ac0703b090a847dd5ea8d2827863204071335b3dda1abc1c700286a6c9d2c",
+  "player.talents": "ccf25dd5046e744e7ef12eac976d258d2a5c8c57d14e29420dbf2f974f0cdd8f",
   "target.auras": [
    [
     "Penance-1-1",

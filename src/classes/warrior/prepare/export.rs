@@ -497,7 +497,8 @@ impl Warrior {
             effects.push(
                 json!({"kind": "bloodthrill", "trigger_aura": "Bloodthrill - Trigger",
                 "proc_chance": data.bloodthrill.fraction_at(talent("bloodthrill")),
-                "window_ns": data.bloodthrill_triggered.by_id(1289681).duration(),
+                // Client 70425: the proc opens the 5 sec Overpower window (1282733).
+                "window_ns": data.bloodthrill_triggered.by_id(1282733).duration(),
                 "delay_ns": SPELL_BATCH_WINDOW}),
             );
         }

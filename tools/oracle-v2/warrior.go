@@ -89,7 +89,7 @@ var (
 	warriorBerserkerStancePass        = spelldata.Ranked(7381)
 	warriorDefensiveStancePass        = spelldata.Ranked(7376)
 	warriorBloodthrill                = spelldata.Talent(1289682, 5)
-	warriorBloodthrillTriggered       = spelldata.Ranked(1282733, 1289681)
+	warriorBloodthrillTriggered       = spelldata.Ranked(1282733)
 	warriorMortalStrike               = spelldata.Ranked(12294, 21551, 21552, 21553)
 	warriorOverpower                  = spelldata.Ranked(7384, 7887, 11584, 11585)
 	warriorRend                       = spelldata.Ranked(772, 6546, 6547, 6548, 11572, 11573, 11574)
@@ -492,7 +492,7 @@ func warriorEffects(agent core.Agent, character *core.Character) []map[string]an
 		effects = append(effects, map[string]any{
 			"kind": "bloodthrill", "trigger_aura": "Bloodthrill - Trigger",
 			"proc_chance": warriorBloodthrill.FractionAt(talents.Bloodthrill),
-			"window_ns":   nanos(warriorBloodthrillTriggered.ByID(1289681).Duration()),
+			"window_ns":   nanos(warriorBloodthrillTriggered.ByID(1282733).Duration()), // the Overpower window (client 70425)
 			"delay_ns":    nanos(core.SpellBatchWindow),
 		})
 	}

@@ -132,8 +132,8 @@ pub(crate) fn registered_ids() -> (Vec<i32>, Vec<i32>) {
 // ---------------------------------------------------------------------------------------------
 
 #[cfg(test)]
-const HAND_WRITTEN_ITEMS: [i32; 11] = [
-    11815, 23570, 23206, 23207, 19324, 17076, 13204, 13286, 871, 6622, 13246,
+const HAND_WRITTEN_ITEMS: [i32; 13] = [
+    11815, 23570, 23206, 23207, 19324, 17076, 13204, 13286, 871, 6622, 13246, 2801, 5028,
 ];
 #[cfg(test)]
 const HAND_WRITTEN_ENCHANTS: [i32; 7] = [30, 32, 33, 663, 664, 803, 1898];
@@ -264,6 +264,17 @@ fn apply_hand_written_item(env: &mut Environment, item: i32) -> Result<bool, Ref
                 format!("item {item} adds mob type bonus stats, which are not prepared"),
             ))
         }
+        // items_70425.go: Blade of Hanna's Improving Form stacks to a Perfected Form strike and
+        // stats buff, which Rust does not run yet.
+        2801 => {
+            return Err(Refusal::new(
+                "item_effect",
+                "Blade of Hanna's Improving Form is not prepared".to_string(),
+            ))
+        }
+        // items_70425.go: Lord Sakrasis' Scepter's Holy Smite states no rate, so Go registers it
+        // with no effect, which keeps the generator from reading it as a proc on every cast.
+        5028 => {}
         19324 => lobotomizer(env),
         17076 => bonereavers_edge(env),
         13204 => puncture_armor(env, 13204, "Bashguuder"),

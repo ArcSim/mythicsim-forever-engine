@@ -75,8 +75,8 @@ impl Warlock {
         );
     }
 
-    /// 18697 raises stamina 3% a rank. The tooltip no longer names Classic's spirit penalty, but
-    /// the client keeps it as a second effect with no rank curve: -1% spirit at every rank.
+    /// 18697 raises stamina 3% a rank. Client 70425 dropped the -1% spirit second effect
+    /// Classic's penalty had left behind.
     fn apply_demonic_embrace(&self, sim: &mut Sim, unit: UnitId) {
         let points = self.talents.i32("demonic_embrace");
         if points == 0 {
@@ -87,13 +87,6 @@ impl Warlock {
             spell_data()
                 .demonic_embrace
                 .effect_at(1)
-                .multiplier_at(points),
-        );
-        sim.unit_mut(unit).sdm.multiply_stat(
-            Stat::Spirit,
-            spell_data()
-                .demonic_embrace
-                .effect_at(2)
                 .multiplier_at(points),
         );
     }

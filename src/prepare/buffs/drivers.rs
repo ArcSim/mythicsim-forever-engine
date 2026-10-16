@@ -12,6 +12,7 @@ use crate::contracts::prepared_v2::ActionId;
 use crate::contracts::request::Message;
 
 use super::super::character::cooldown_type;
+use super::super::dbcenums;
 use super::super::env::Environment;
 use super::super::external_cooldowns;
 use super::super::periodic_action::PeriodicActionOptions;
@@ -26,7 +27,8 @@ use super::super::Refusal;
 use super::generated::{
     ATIESH_DRUID, ATIESH_MAGE, ATIESH_PRIEST, ATIESH_WARLOCK, BATTLE_SHOUT, GRACE_OF_AIR_TOTEM,
     GREATER_BLESSING_OF_LIGHT, INNERVATES, JUDGEMENT_OF_LIGHT, JUDGEMENT_OF_WISDOM,
-    MANA_TIDE_TOTEMS, POWER_INFUSIONS, SUNDER_ARMOR, WINDFURY_TOTEM,
+    LEADER_OF_THE_PACK, MANA_TIDE_TOTEMS, MOONKIN_AURA, POWER_INFUSIONS, SUNDER_ARMOR,
+    WINDFURY_TOTEM,
 };
 use super::paladin;
 use super::support::{
@@ -465,4 +467,41 @@ pub(crate) fn drive_sunder_armor(
         },
     );
     Ok(())
+}
+
+/// Go `driveLeaderOfThePack`: the client row is A_MOD_CRIT_PCT, every kind of crit, and 17007
+/// makes it exclusive with Moonkin Aura. The 16 October 2026 beta notes keep it to melee and
+/// ranged crit and let the two stack, so it bids in a category of its own and its row's crit is
+/// read as physical crit, at the client's amount, until the client data moves.
+pub(crate) fn drive_leader_of_the_pack(
+    env: &mut Environment,
+    unit: UnitId,
+    _party: &Message,
+) -> Result<(), Refusal> {
+    narrowed_crit_buff(
+        env,
+        unit,
+        &LEADER_OF_THE_PACK,
+        dbcenums::A_MOD_WEAPON_CRIT_PERCENT,
+    );
+    Ok(())
+}
+
+/// Go `driveMoonkinAura`: since the 16 October 2026 beta notes Moonkin Aura is spell crit alone,
+/// in a category of its own.
+pub(crate) fn drive_moonkin_aura(
+    env: &mut Environment,
+    unit: UnitId,
+    _party: &Message,
+) -> Result<(), Refusal> {
+    narrowed_crit_buff(env, unit, &MOONKIN_AURA, dbcenums::A_MOD_SPELL_CRIT_CHANCE);
+    Ok(())
+}
+
+/// Go `narrowedCritBuff`: the buff with its row's A_MOD_CRIT_PCT read as one kind of crit.
+fn narrowed_crit_buff(env: &mut Environment, unit: UnitId, meta: &super::Meta, kind: i32) {
+    let mut options = meta.options(0);
+    options.read_as.push((dbcenums::A_MOD_CRIT_PCT, kind));
+    let aura = meta.buff(&mut env.sim, unit, false, 0, options);
+    env.sim.make_permanent(aura);
 }

@@ -954,6 +954,9 @@ pub(crate) struct Player {
     /// Go `Unit.Moving` and its pending movement.
     pub(crate) moving: bool,
     pub(crate) movement: Option<movement::Movement>,
+    /// Go `Unit.movementEndedAt`: when the unit last stopped moving, `-NEVER_EXPIRES` while it
+    /// has not moved this iteration.
+    pub(crate) movement_ended_at: i64,
 }
 
 impl Player {
@@ -998,6 +1001,7 @@ impl Player {
             went_oom: false,
             first_oom: 0,
             moving: false,
+            movement_ended_at: -NEVER_EXPIRES,
             movement: None,
         }
     }
@@ -4841,6 +4845,7 @@ impl<A: Agent> Fight<A> {
             self.move_multiplier = self.initial_move_multiplier;
             self.player.moving = false;
             self.player.movement = None;
+            self.player.movement_ended_at = -NEVER_EXPIRES;
             // Go UnitMetrics.reset.
             self.death.died = false;
             let player = &mut self.player;

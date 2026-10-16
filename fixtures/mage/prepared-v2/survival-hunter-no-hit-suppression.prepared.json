@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "d24acda3322211b6a569e5385515f86941413a482314ee448c1ccf8901dda583",
@@ -1860,7 +1860,7 @@
           "cost": 239,
           "gcd_ns": 1500000000,
           "gcd_min_ns": 0,
-          "cast_time_ns": 500000000,
+          "cast_time_ns": 0,
           "non_empty": false
         },
         "cast_kind": "full",

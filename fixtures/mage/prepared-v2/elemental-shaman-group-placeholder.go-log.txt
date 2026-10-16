@@ -18,6 +18,10 @@
 [0.00] [elemental-shaman (#1)] Spent 127.500 mana from {SpellID: 10438} (5902.000 --> 5774.500) of 6100 total.
 [0.00] [Target 1] Aura gained: {SpellID: 10438}
 [0.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (50% Resist) for 294.565 damage (SpellSchool: 8). (Threat: 294.565)
+[1.00] [elemental-shaman (#1)] Casting {SpellID: 16166} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[1.00] [elemental-shaman (#1)] Completed cast {SpellID: 16166}
+[1.00] [elemental-shaman (#1)] Aura gained: {SpellID: 16166}
+[1.00] [elemental-shaman (#1)] Major cooldown used: {SpellID: 16166}
 [1.00] [elemental-shaman (#1)] Casting {SpellID: 29228} (Cost = 369.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [1.00] [elemental-shaman (#1)] Completed cast {SpellID: 29228}
 [1.00] [elemental-shaman (#1)] Spent 369.000 mana from {SpellID: 29228} (5774.500 --> 5405.500) of 6100 total.
@@ -30,770 +34,805 @@
 [2.43] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [2.43] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [2.43] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:106.8, AfterPostOutcome:106.8
-[2.50] [elemental-shaman (#1)] Casting {SpellID: 1238300} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[2.50] [elemental-shaman (#1)] Casting {SpellID: 1326047} (Cost = 238.500, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [3.22] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit (25% Resist) for 106.776 damage (SpellSchool: 4). (Threat: 106.776)
 [4.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5464.400 --> 5523.300) of 6100 total.
 [4.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
 [4.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[4.50] [elemental-shaman (#1)] Completed cast {SpellID: 1238300}
-[4.50] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1238300} (5523.300 --> 5284.800) of 6100 total.
-[4.50] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:516.8, AfterAttackerMods:713.2, AfterResistances:713.2, AfterTargetMods:784.5, AfterOutcome:1616.1, AfterPostOutcome:1616.1
-[4.50] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[4.50] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
-[4.50] [elemental-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (5284.800 --> 4764.800) of 6100 total.
-[4.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:484.2, AfterAttackerMods:653.7, AfterResistances:653.7, AfterTargetMods:719.0, AfterOutcome:719.0, AfterPostOutcome:719.0
-[4.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 719.047 damage (SpellSchool: 4). (Threat: 719.047)
+[4.00] [elemental-shaman (#1)] Completed cast {SpellID: 1326047}
+[4.00] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1326047} (5523.300 --> 5284.800) of 6100 total.
+[4.00] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:516.8, AfterAttackerMods:713.2, AfterResistances:713.2, AfterTargetMods:784.5, AfterOutcome:1616.1, AfterPostOutcome:1616.1
+[4.00] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 375.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[4.00] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
+[4.00] [elemental-shaman (#1)] Spent 375.000 mana from {SpellID: 408345} (5284.800 --> 4909.800) of 6100 total.
+[4.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:309.2, AfterAttackerMods:417.4, AfterResistances:417.4, AfterTargetMods:459.2, AfterOutcome:459.2, AfterPostOutcome:459.2
+[4.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 459.172 damage (SpellSchool: 4). (Threat: 459.172)
+[4.75] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} Crit for 1616.068 damage (SpellSchool: 4). (Threat: 1616.068)
 [4.86] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [4.86] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [4.86] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[5.25] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} Crit for 1616.068 damage (SpellSchool: 4). (Threat: 1616.068)
+[5.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [5.65] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[6.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4764.800 --> 4823.700) of 6100 total.
-[6.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[6.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4909.800 --> 4968.700) of 6100 total.
 [7.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:231.7, AfterPostOutcome:231.7
 [7.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 231.665 damage (SpellSchool: 4). (Threat: 231.665)
+[7.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[7.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4968.700 --> 4770.700) of 6100 total.
+[7.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:508.4, AfterAttackerMods:533.8, AfterResistances:533.8, AfterTargetMods:587.2, AfterOutcome:587.2, AfterPostOutcome:587.2
+[7.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [7.29] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [7.29] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[7.29] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:142.4, AfterPostOutcome:142.4
-[8.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4823.700 --> 4882.600) of 6100 total.
-[8.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[8.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4882.600 --> 4684.600) of 6100 total.
-[8.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:514.1, AfterAttackerMods:539.8, AfterResistances:404.9, AfterTargetMods:445.3, AfterOutcome:445.3, AfterPostOutcome:445.3
-[8.00] [elemental-shaman (#1)] Casting {ItemID: 12662} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[8.00] [elemental-shaman (#1)] Completed cast {ItemID: 12662}
-[8.00] [elemental-shaman (#1)] Gained 1200.000 mana from {ItemID: 12662} (4684.600 --> 5884.600) of 6100 total.
-[8.00] [elemental-shaman (#1)] Major cooldown used: {ItemID: 12662}
-[8.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[8.08] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 142.368 damage (SpellSchool: 4). (Threat: 142.368)
-[8.75] [elemental-shaman (#1)] Casting {SpellID: 15208, Tag: 6} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[8.75] [elemental-shaman (#1)] Completed cast {SpellID: 15208, Tag: 6}
-[8.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:252.7, AfterAttackerMods:265.3, AfterResistances:265.3, AfterTargetMods:291.8, AfterOutcome:0.0, AfterPostOutcome:0.0
-[8.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (25% Resist) for 445.341 damage (SpellSchool: 8). (Threat: 445.341)
-[8.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (5884.600 --> 5943.600) of 6100 total.
-[9.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} Miss (SpellSchool: 8). (Threat: 0.000)
+[7.29] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[7.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 587.175 damage (SpellSchool: 8). (Threat: 587.175)
+[7.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (4770.700 --> 4829.700) of 6100 total.
+[8.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4829.700 --> 4888.600) of 6100 total.
+[8.08] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[8.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[8.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4888.600 --> 4690.600) of 6100 total.
+[8.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:505.7, AfterAttackerMods:531.0, AfterResistances:531.0, AfterTargetMods:584.1, AfterOutcome:0.0, AfterPostOutcome:0.0
+[8.50] [elemental-shaman (#1)] Casting {ItemID: 12662} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[8.50] [elemental-shaman (#1)] Completed cast {ItemID: 12662}
+[8.50] [elemental-shaman (#1)] Gained 1200.000 mana from {ItemID: 12662} (4690.600 --> 5890.600) of 6100 total.
+[8.50] [elemental-shaman (#1)] Major cooldown used: {ItemID: 12662}
+[8.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[9.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Miss (SpellSchool: 8). (Threat: 0.000)
 [9.72] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [9.72] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[9.72] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:106.8, AfterPostOutcome:106.8
-[10.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5943.600 --> 6002.500) of 6100 total.
+[9.72] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[10.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5890.600 --> 5949.500) of 6100 total.
 [10.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
 [10.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
 [10.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[10.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (6002.500 --> 5804.500) of 6100 total.
-[10.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:514.7, AfterAttackerMods:540.4, AfterResistances:540.4, AfterTargetMods:594.4, AfterOutcome:594.4, AfterPostOutcome:594.4
-[10.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[10.51] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit (25% Resist) for 106.776 damage (SpellSchool: 4). (Threat: 106.776)
-[10.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 594.431 damage (SpellSchool: 8). (Threat: 594.431)
-[10.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (5804.500 --> 5863.500) of 6100 total.
-[12.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5863.500 --> 5922.400) of 6100 total.
-[12.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[12.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (5922.400 --> 5724.400) of 6100 total.
-[12.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:509.7, AfterAttackerMods:535.1, AfterResistances:535.1, AfterTargetMods:588.6, AfterOutcome:0.0, AfterPostOutcome:0.0
-[12.00] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[12.00] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
-[12.00] [elemental-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (5724.400 --> 5204.400) of 6100 total.
-[12.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:484.2, AfterAttackerMods:653.7, AfterResistances:653.7, AfterTargetMods:719.0, AfterOutcome:719.0, AfterPostOutcome:719.0
-[12.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 719.047 damage (SpellSchool: 4). (Threat: 719.047)
+[10.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (5949.500 --> 5751.500) of 6100 total.
+[10.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:521.6, AfterAttackerMods:547.7, AfterResistances:273.8, AfterTargetMods:301.2, AfterOutcome:301.2, AfterPostOutcome:301.2
+[10.00] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 375.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[10.00] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
+[10.00] [elemental-shaman (#1)] Spent 375.000 mana from {SpellID: 408345} (5751.500 --> 5376.500) of 6100 total.
+[10.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:309.2, AfterAttackerMods:417.4, AfterResistances:208.7, AfterTargetMods:229.6, AfterOutcome:229.6, AfterPostOutcome:229.6
+[10.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit (50% Resist) for 229.586 damage (SpellSchool: 4). (Threat: 229.586)
+[10.51] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[10.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (50% Resist) for 301.210 damage (SpellSchool: 8). (Threat: 301.210)
+[11.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[12.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5376.500 --> 5435.400) of 6100 total.
 [12.15] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [12.15] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[12.15] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[12.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Miss (SpellSchool: 8). (Threat: 0.000)
-[12.94] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[12.15] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:142.4, AfterPostOutcome:142.4
+[12.94] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 142.368 damage (SpellSchool: 4). (Threat: 142.368)
 [13.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
 [13.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[13.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[14.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5204.400 --> 5263.300) of 6100 total.
+[13.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[13.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (5435.400 --> 5237.400) of 6100 total.
+[13.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:520.3, AfterAttackerMods:546.3, AfterResistances:409.7, AfterTargetMods:450.7, AfterOutcome:450.7, AfterPostOutcome:450.7
+[13.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[13.75] [elemental-shaman (#1)] Casting {SpellID: 15208, Tag: 6} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[13.75] [elemental-shaman (#1)] Completed cast {SpellID: 15208, Tag: 6}
+[13.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:259.3, AfterAttackerMods:272.3, AfterResistances:272.3, AfterTargetMods:299.5, AfterOutcome:299.5, AfterPostOutcome:299.5
+[13.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (25% Resist) for 450.720 damage (SpellSchool: 8). (Threat: 450.720)
+[14.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5237.400 --> 5296.300) of 6100 total.
+[14.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[14.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (5296.300 --> 5098.300) of 6100 total.
+[14.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:518.3, AfterAttackerMods:544.3, AfterResistances:544.3, AfterTargetMods:598.7, AfterOutcome:598.7, AfterPostOutcome:598.7
+[14.50] [elemental-shaman (#1)] Casting {SpellID: 1326047} (Cost = 238.500, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[14.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} Hit for 299.524 damage (SpellSchool: 8). (Threat: 0.000)
 [14.58] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [14.58] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[14.58] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[15.37] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[15.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[15.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (5263.300 --> 5065.300) of 6100 total.
-[15.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:508.0, AfterAttackerMods:533.4, AfterResistances:533.4, AfterTargetMods:586.7, AfterOutcome:1208.6, AfterPostOutcome:1208.6
-[15.50] [elemental-shaman (#1)] Casting {SpellID: 1238300} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[16.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5065.300 --> 5124.200) of 6100 total.
+[14.58] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:51.8, AfterPostOutcome:51.8
+[15.25] [elemental-shaman (#1)] Casting {SpellID: 15208, Tag: 6} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[15.25] [elemental-shaman (#1)] Completed cast {SpellID: 15208, Tag: 6}
+[15.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:258.7, AfterAttackerMods:271.6, AfterResistances:271.6, AfterTargetMods:298.8, AfterOutcome:298.8, AfterPostOutcome:298.8
+[15.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 598.688 damage (SpellSchool: 8). (Threat: 598.688)
+[15.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (5098.300 --> 5157.300) of 6100 total.
+[15.37] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 51.833 damage (SpellSchool: 4). (Threat: 51.833)
+[16.00] [elemental-shaman (#1)] Aura faded: {SpellID: 16166}
+[16.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5157.300 --> 5216.200) of 6100 total.
 [16.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
 [16.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[16.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Crit for 1208.639 damage (SpellSchool: 8). (Threat: 1208.639)
+[16.00] [elemental-shaman (#1)] Completed cast {SpellID: 1326047}
+[16.00] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1326047} (5216.200 --> 4977.700) of 6100 total.
+[16.00] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:553.0, AfterAttackerMods:763.1, AfterResistances:381.6, AfterTargetMods:419.7, AfterOutcome:419.7, AfterPostOutcome:419.7
+[16.00] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 375.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[16.00] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
+[16.00] [elemental-shaman (#1)] Spent 375.000 mana from {SpellID: 408345} (4977.700 --> 4602.700) of 6100 total.
+[16.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:309.2, AfterAttackerMods:417.4, AfterResistances:417.4, AfterTargetMods:459.2, AfterOutcome:459.2, AfterPostOutcome:459.2
+[16.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 459.172 damage (SpellSchool: 4). (Threat: 459.172)
+[16.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} Hit for 298.763 damage (SpellSchool: 8). (Threat: 0.000)
+[16.01] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (4602.700 --> 4661.700) of 6100 total.
+[16.75] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} Hit (50% Resist) for 419.714 damage (SpellSchool: 4). (Threat: 419.714)
+[16.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (4661.700 --> 4720.700) of 6100 total.
 [17.01] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [17.01] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [17.01] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[17.50] [elemental-shaman (#1)] Completed cast {SpellID: 1238300}
-[17.50] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1238300} (5124.200 --> 4885.700) of 6100 total.
-[17.50] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:551.4, AfterAttackerMods:760.9, AfterResistances:570.7, AfterTargetMods:627.8, AfterOutcome:627.8, AfterPostOutcome:627.8
 [17.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [17.80] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[18.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4885.700 --> 4944.600) of 6100 total.
-[18.25] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} Hit (25% Resist) for 627.777 damage (SpellSchool: 4). (Threat: 627.777)
-[18.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (4944.600 --> 5003.600) of 6100 total.
-[19.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:231.7, AfterPostOutcome:231.7
-[19.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 231.665 damage (SpellSchool: 4). (Threat: 231.665)
+[18.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4720.700 --> 4779.600) of 6100 total.
+[19.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[19.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
 [19.44] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [19.44] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [19.44] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
 [19.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[19.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (5003.600 --> 4805.600) of 6100 total.
-[19.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:503.2, AfterAttackerMods:528.4, AfterResistances:528.4, AfterTargetMods:581.2, AfterOutcome:581.2, AfterPostOutcome:581.2
-[19.50] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[19.50] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
-[19.50] [elemental-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (4805.600 --> 4285.600) of 6100 total.
-[19.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:484.2, AfterAttackerMods:653.7, AfterResistances:490.3, AfterTargetMods:539.3, AfterOutcome:539.3, AfterPostOutcome:539.3
-[19.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit (25% Resist) for 539.286 damage (SpellSchool: 4). (Threat: 539.286)
-[20.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4285.600 --> 4344.500) of 6100 total.
+[19.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4779.600 --> 4581.600) of 6100 total.
+[19.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:503.7, AfterAttackerMods:528.8, AfterResistances:528.8, AfterTargetMods:581.7, AfterOutcome:1198.4, AfterPostOutcome:1198.4
+[19.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[20.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4581.600 --> 4640.500) of 6100 total.
 [20.23] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[20.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 581.225 damage (SpellSchool: 8). (Threat: 581.225)
-[20.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (4344.500 --> 4403.500) of 6100 total.
-[21.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[20.25] [elemental-shaman (#1)] Casting {SpellID: 15208, Tag: 6} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[20.25] [elemental-shaman (#1)] Completed cast {SpellID: 15208, Tag: 6}
+[20.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:256.8, AfterAttackerMods:269.7, AfterResistances:269.7, AfterTargetMods:296.6, AfterOutcome:296.6, AfterPostOutcome:296.6
+[20.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Crit for 1198.371 damage (SpellSchool: 8). (Threat: 1198.371)
+[21.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} Hit for 296.630 damage (SpellSchool: 8). (Threat: 0.000)
+[21.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[21.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4640.500 --> 4442.500) of 6100 total.
+[21.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:515.3, AfterAttackerMods:541.1, AfterResistances:541.1, AfterTargetMods:595.2, AfterOutcome:595.2, AfterPostOutcome:595.2
+[21.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [21.87] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [21.87] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [21.87] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
 [22.00] [Target 1] Aura faded: {SpellID: 29228, Tag: 1}
 [22.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
 [22.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[22.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4403.500 --> 4462.400) of 6100 total.
+[22.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4442.500 --> 4501.400) of 6100 total.
+[22.25] [elemental-shaman (#1)] Casting {SpellID: 15208, Tag: 6} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[22.25] [elemental-shaman (#1)] Completed cast {SpellID: 15208, Tag: 6}
+[22.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:256.5, AfterAttackerMods:269.3, AfterResistances:269.3, AfterTargetMods:296.2, AfterOutcome:296.2, AfterPostOutcome:296.2
+[22.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 595.162 damage (SpellSchool: 8). (Threat: 595.162)
 [22.66] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[23.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[23.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4462.400 --> 4264.400) of 6100 total.
-[23.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:510.4, AfterAttackerMods:535.9, AfterResistances:267.9, AfterTargetMods:294.7, AfterOutcome:607.2, AfterPostOutcome:607.2
-[23.00] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
-[23.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
-[23.00] [elemental-shaman (#1)] Casting {SpellID: 29228} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[23.00] [elemental-shaman (#1)] Completed cast {SpellID: 29228}
-[23.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:262.1, AfterAttackerMods:301.4, AfterResistances:301.4, AfterTargetMods:331.5, AfterOutcome:331.5, AfterPostOutcome:331.5
-[23.00] [elemental-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[23.00] [elemental-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
-[23.00] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
-[23.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} Hit for 331.539 damage (SpellSchool: 4). (Threat: 331.539)
-[23.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
-[23.00] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
-[23.01] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (4264.400 --> 4323.400) of 6100 total.
-[23.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Crit (50% Resist) for 607.166 damage (SpellSchool: 8). (Threat: 607.166)
-[24.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4323.400 --> 4382.300) of 6100 total.
+[23.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} Hit for 296.206 damage (SpellSchool: 8). (Threat: 0.000)
+[23.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[23.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4501.400 --> 4303.400) of 6100 total.
+[23.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:512.1, AfterAttackerMods:537.7, AfterResistances:537.7, AfterTargetMods:591.5, AfterOutcome:591.5, AfterPostOutcome:591.5
+[23.50] [elemental-shaman (#1)] Casting {SpellID: 29228} (Cost = 369.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[23.50] [elemental-shaman (#1)] Completed cast {SpellID: 29228}
+[23.50] [elemental-shaman (#1)] Spent 369.000 mana from {SpellID: 29228} (4303.400 --> 3934.400) of 6100 total.
+[23.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:262.1, AfterAttackerMods:301.4, AfterResistances:301.4, AfterTargetMods:331.5, AfterOutcome:331.5, AfterPostOutcome:331.5
+[23.50] [elemental-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[23.50] [elemental-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
+[23.50] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
+[23.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} Hit for 331.539 damage (SpellSchool: 4). (Threat: 331.539)
+[23.51] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (3934.400 --> 3993.400) of 6100 total.
+[24.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (3993.400 --> 4052.300) of 6100 total.
+[24.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 591.513 damage (SpellSchool: 8). (Threat: 591.513)
 [24.30] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [24.30] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[24.30] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:0.0, AfterPostOutcome:0.0
-[24.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[25.09] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Miss (SpellSchool: 4). (Threat: 0.000)
-[26.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4382.300 --> 4441.200) of 6100 total.
-[26.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[26.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[26.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[26.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4441.200 --> 4243.200) of 6100 total.
-[26.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:513.0, AfterAttackerMods:538.7, AfterResistances:538.7, AfterTargetMods:592.6, AfterOutcome:592.6, AfterPostOutcome:592.6
-[26.50] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[26.50] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
-[26.50] [elemental-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (4243.200 --> 3723.200) of 6100 total.
-[26.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:484.2, AfterAttackerMods:653.7, AfterResistances:653.7, AfterTargetMods:719.0, AfterOutcome:719.0, AfterPostOutcome:719.0
-[26.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 719.047 damage (SpellSchool: 4). (Threat: 719.047)
+[24.30] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[25.00] [elemental-shaman (#1)] Casting {ItemID: 13444} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[25.00] [elemental-shaman (#1)] Completed cast {ItemID: 13444}
+[25.00] [elemental-shaman (#1)] Gained 1800.000 mana from {ItemID: 13444} (4052.300 --> 5852.300) of 6100 total.
+[25.00] [elemental-shaman (#1)] Major cooldown used: {ItemID: 13444}
+[25.00] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 375.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[25.00] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
+[25.00] [elemental-shaman (#1)] Spent 375.000 mana from {SpellID: 408345} (5852.300 --> 5477.300) of 6100 total.
+[25.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:309.2, AfterAttackerMods:417.4, AfterResistances:417.4, AfterTargetMods:459.2, AfterOutcome:945.9, AfterPostOutcome:945.9
+[25.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Crit for 945.895 damage (SpellSchool: 4). (Threat: 945.895)
+[25.09] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[26.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5477.300 --> 5536.200) of 6100 total.
+[26.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:231.7, AfterPostOutcome:231.7
+[26.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 231.665 damage (SpellSchool: 4). (Threat: 231.665)
+[26.50] [elemental-shaman (#1)] Casting {SpellID: 1326047} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [26.73] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [26.73] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [26.73] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[27.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 592.571 damage (SpellSchool: 8). (Threat: 592.571)
 [27.52] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[28.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (3723.200 --> 3782.100) of 6100 total.
-[28.00] [elemental-shaman (#1)] Casting {ItemID: 13444} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[28.00] [elemental-shaman (#1)] Completed cast {ItemID: 13444}
-[28.00] [elemental-shaman (#1)] Gained 1800.000 mana from {ItemID: 13444} (3782.100 --> 5582.100) of 6100 total.
-[28.00] [elemental-shaman (#1)] Major cooldown used: {ItemID: 13444}
-[28.00] [elemental-shaman (#1)] Casting {SpellID: 1238300} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[29.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[29.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[28.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5536.200 --> 5595.100) of 6100 total.
+[28.50] [elemental-shaman (#1)] Completed cast {SpellID: 1326047}
+[28.50] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1326047} (5595.100 --> 5356.600) of 6100 total.
+[28.50] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:540.5, AfterAttackerMods:746.0, AfterResistances:746.0, AfterTargetMods:820.6, AfterOutcome:820.6, AfterPostOutcome:820.6
+[28.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [29.16] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [29.16] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[29.16] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[29.95] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[30.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5582.100 --> 5641.000) of 6100 total.
-[30.00] [elemental-shaman (#1)] Completed cast {SpellID: 1238300}
-[30.00] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1238300} (5641.000 --> 5402.500) of 6100 total.
-[30.00] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:515.1, AfterAttackerMods:710.8, AfterResistances:710.8, AfterTargetMods:781.9, AfterOutcome:0.0, AfterPostOutcome:0.0
-[30.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[30.75] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} Miss (SpellSchool: 4). (Threat: 0.000)
+[29.16] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:51.8, AfterPostOutcome:51.8
+[29.25] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} Hit for 820.554 damage (SpellSchool: 4). (Threat: 820.554)
+[29.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:231.7, AfterPostOutcome:231.7
+[29.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 231.665 damage (SpellSchool: 4). (Threat: 231.665)
+[29.95] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 51.833 damage (SpellSchool: 4). (Threat: 51.833)
+[30.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5356.600 --> 5415.500) of 6100 total.
+[30.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[30.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (5415.500 --> 5217.500) of 6100 total.
+[30.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:507.9, AfterAttackerMods:533.3, AfterResistances:533.3, AfterTargetMods:586.6, AfterOutcome:1208.5, AfterPostOutcome:1208.5
+[30.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[31.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Crit for 1208.478 damage (SpellSchool: 8). (Threat: 1208.478)
 [31.59] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [31.59] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [31.59] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[32.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5402.500 --> 5461.400) of 6100 total.
-[32.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:51.1, AfterTargetMods:56.2, AfterOutcome:56.2, AfterPostOutcome:56.2
-[32.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (50% Resist) for 56.229 damage (SpellSchool: 4). (Threat: 56.229)
-[32.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[32.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (5461.400 --> 5263.400) of 6100 total.
-[32.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:511.6, AfterAttackerMods:537.2, AfterResistances:134.3, AfterTargetMods:147.7, AfterOutcome:147.7, AfterPostOutcome:147.7
-[32.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[32.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5217.500 --> 5276.400) of 6100 total.
 [32.38] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[32.75] [elemental-shaman (#1)] Casting {SpellID: 15208, Tag: 6} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[32.75] [elemental-shaman (#1)] Completed cast {SpellID: 15208, Tag: 6}
-[32.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:261.6, AfterAttackerMods:274.7, AfterResistances:206.0, AfterTargetMods:226.6, AfterOutcome:0.0, AfterPostOutcome:0.0
-[32.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (75% Resist) for 147.726 damage (SpellSchool: 8). (Threat: 147.726)
-[33.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} Miss (SpellSchool: 8). (Threat: 0.000)
-[34.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (5263.400 --> 5322.300) of 6100 total.
-[34.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[34.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (5322.300 --> 5124.300) of 6100 total.
-[34.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:512.1, AfterAttackerMods:537.7, AfterResistances:537.7, AfterTargetMods:591.4, AfterOutcome:0.0, AfterPostOutcome:0.0
-[34.00] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[34.00] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
-[34.00] [elemental-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (5124.300 --> 4604.300) of 6100 total.
-[34.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:484.2, AfterAttackerMods:653.7, AfterResistances:653.7, AfterTargetMods:719.0, AfterOutcome:719.0, AfterPostOutcome:719.0
-[34.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 719.047 damage (SpellSchool: 4). (Threat: 719.047)
+[32.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[32.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[32.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[32.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (5276.400 --> 5078.400) of 6100 total.
+[32.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:514.4, AfterAttackerMods:540.1, AfterResistances:540.1, AfterTargetMods:594.1, AfterOutcome:594.1, AfterPostOutcome:594.1
+[32.50] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 375.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[32.50] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
+[32.50] [elemental-shaman (#1)] Spent 375.000 mana from {SpellID: 408345} (5078.400 --> 4703.400) of 6100 total.
+[32.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:309.2, AfterAttackerMods:417.4, AfterResistances:417.4, AfterTargetMods:459.2, AfterOutcome:459.2, AfterPostOutcome:459.2
+[32.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 459.172 damage (SpellSchool: 4). (Threat: 459.172)
+[32.51] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (4703.400 --> 4762.400) of 6100 total.
+[33.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 594.140 damage (SpellSchool: 8). (Threat: 594.140)
+[34.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4762.400 --> 4821.300) of 6100 total.
+[34.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [34.02] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [34.02] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[34.02] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[34.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Miss (SpellSchool: 8). (Threat: 0.000)
-[34.81] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[35.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[35.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[35.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[36.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4604.300 --> 4663.200) of 6100 total.
+[34.02] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:51.8, AfterPostOutcome:51.8
+[34.81] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 51.833 damage (SpellSchool: 4). (Threat: 51.833)
+[35.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:51.1, AfterTargetMods:56.2, AfterOutcome:115.8, AfterPostOutcome:115.8
+[35.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit (50% Resist) for 115.832 damage (SpellSchool: 4). (Threat: 115.832)
+[36.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4821.300 --> 4880.200) of 6100 total.
+[36.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[36.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4880.200 --> 4682.200) of 6100 total.
+[36.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:515.6, AfterAttackerMods:541.3, AfterResistances:541.3, AfterTargetMods:595.5, AfterOutcome:595.5, AfterPostOutcome:595.5
+[36.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [36.45] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [36.45] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[36.45] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[37.24] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[37.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[37.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4663.200 --> 4465.200) of 6100 total.
-[37.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:519.3, AfterAttackerMods:545.3, AfterResistances:545.3, AfterTargetMods:599.8, AfterOutcome:0.0, AfterPostOutcome:0.0
-[37.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[38.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4465.200 --> 4524.100) of 6100 total.
-[38.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[38.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[38.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Miss (SpellSchool: 8). (Threat: 0.000)
+[36.45] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:51.8, AfterPostOutcome:51.8
+[36.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 595.482 damage (SpellSchool: 8). (Threat: 595.482)
+[37.24] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 51.833 damage (SpellSchool: 4). (Threat: 51.833)
+[38.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4682.200 --> 4741.100) of 6100 total.
+[38.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[38.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4741.100 --> 4543.100) of 6100 total.
+[38.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:522.0, AfterAttackerMods:548.1, AfterResistances:548.1, AfterTargetMods:602.9, AfterOutcome:602.9, AfterPostOutcome:602.9
+[38.00] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
+[38.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
+[38.00] [elemental-shaman (#1)] Casting {SpellID: 10605} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[38.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[38.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[38.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 602.926 damage (SpellSchool: 8). (Threat: 602.926)
+[38.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (4543.100 --> 4602.100) of 6100 total.
 [38.88] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [38.88] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[38.88] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:51.8, AfterPostOutcome:51.8
-[39.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[39.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4524.100 --> 4326.100) of 6100 total.
-[39.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:518.9, AfterAttackerMods:544.9, AfterResistances:544.9, AfterTargetMods:599.3, AfterOutcome:599.3, AfterPostOutcome:599.3
-[39.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[39.67] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 51.833 damage (SpellSchool: 4). (Threat: 51.833)
-[40.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4326.100 --> 4385.000) of 6100 total.
-[40.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 599.349 damage (SpellSchool: 8). (Threat: 599.349)
-[40.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (4385.000 --> 4444.000) of 6100 total.
-[41.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:231.7, AfterPostOutcome:231.7
-[41.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 231.665 damage (SpellSchool: 4). (Threat: 231.665)
+[38.88] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[39.50] [elemental-shaman (#1)] Completed cast {SpellID: 10605}
+[39.50] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:379.9, AfterAttackerMods:398.9, AfterResistances:398.9, AfterTargetMods:438.8, AfterOutcome:438.8, AfterPostOutcome:438.8
+[39.50] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} Hit for 438.808 damage (SpellSchool: 8). (Threat: 438.808)
+[39.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
+[39.50] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
+[39.50] [elemental-shaman (#1)] Casting {SpellID: 1326047} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[39.67] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[40.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4602.100 --> 4661.000) of 6100 total.
 [41.31] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [41.31] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[41.31] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:51.8, AfterPostOutcome:51.8
-[41.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[41.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4444.000 --> 4246.000) of 6100 total.
-[41.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:521.8, AfterAttackerMods:547.9, AfterResistances:547.9, AfterTargetMods:602.7, AfterOutcome:1241.6, AfterPostOutcome:1241.6
-[41.50] [elemental-shaman (#1)] Casting {SpellID: 1238300} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[42.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4246.000 --> 4304.900) of 6100 total.
-[42.10] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 51.833 damage (SpellSchool: 4). (Threat: 51.833)
-[42.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Crit for 1241.554 damage (SpellSchool: 8). (Threat: 1241.554)
-[43.50] [elemental-shaman (#1)] Completed cast {SpellID: 1238300}
-[43.50] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1238300} (4304.900 --> 4066.400) of 6100 total.
-[43.50] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:565.5, AfterAttackerMods:780.4, AfterResistances:780.4, AfterTargetMods:858.5, AfterOutcome:858.5, AfterPostOutcome:858.5
-[43.50] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[43.50] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
-[43.50] [elemental-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (4066.400 --> 3546.400) of 6100 total.
-[43.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:484.2, AfterAttackerMods:653.7, AfterResistances:326.8, AfterTargetMods:359.5, AfterOutcome:359.5, AfterPostOutcome:359.5
-[43.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit (50% Resist) for 359.524 damage (SpellSchool: 4). (Threat: 359.524)
-[43.51] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (3546.400 --> 3605.400) of 6100 total.
+[41.31] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:142.4, AfterPostOutcome:142.4
+[41.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:51.1, AfterTargetMods:56.2, AfterOutcome:56.2, AfterPostOutcome:56.2
+[41.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (50% Resist) for 56.229 damage (SpellSchool: 4). (Threat: 56.229)
+[41.50] [elemental-shaman (#1)] Completed cast {SpellID: 1326047}
+[41.50] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1326047} (4661.000 --> 4422.500) of 6100 total.
+[41.50] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:563.4, AfterAttackerMods:777.5, AfterResistances:777.5, AfterTargetMods:855.3, AfterOutcome:855.3, AfterPostOutcome:855.3
+[41.50] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
+[41.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
+[41.50] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[41.50] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
+[41.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:309.2, AfterAttackerMods:417.4, AfterResistances:417.4, AfterTargetMods:459.2, AfterOutcome:459.2, AfterPostOutcome:459.2
+[41.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 459.172 damage (SpellSchool: 4). (Threat: 459.172)
+[41.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
+[41.50] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
+[42.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4422.500 --> 4481.400) of 6100 total.
+[42.10] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 142.368 damage (SpellSchool: 4). (Threat: 142.368)
+[42.25] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} Hit for 855.258 damage (SpellSchool: 4). (Threat: 855.258)
+[43.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [43.74] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [43.74] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[43.74] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[44.00] [Target 1] Aura faded: {SpellID: 29228, Tag: 1}
-[44.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[44.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[44.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (3605.400 --> 3664.300) of 6100 total.
-[44.25] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} Hit for 858.463 damage (SpellSchool: 4). (Threat: 858.463)
-[44.53] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[43.74] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:106.8, AfterPostOutcome:106.8
+[44.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4481.400 --> 4540.300) of 6100 total.
+[44.50] [Target 1] Aura faded: {SpellID: 29228, Tag: 1}
+[44.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[44.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[44.53] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit (25% Resist) for 106.776 damage (SpellSchool: 4). (Threat: 106.776)
+[45.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[45.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4540.300 --> 4342.300) of 6100 total.
+[45.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:522.4, AfterAttackerMods:548.5, AfterResistances:548.5, AfterTargetMods:603.4, AfterOutcome:0.0, AfterPostOutcome:0.0
 [45.00] [elemental-shaman (#1)] Casting {SpellID: 29228} (Cost = 369.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [45.00] [elemental-shaman (#1)] Completed cast {SpellID: 29228}
-[45.00] [elemental-shaman (#1)] Spent 369.000 mana from {SpellID: 29228} (3664.300 --> 3295.300) of 6100 total.
+[45.00] [elemental-shaman (#1)] Spent 369.000 mana from {SpellID: 29228} (4342.300 --> 3973.300) of 6100 total.
 [45.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:262.1, AfterAttackerMods:301.4, AfterResistances:301.4, AfterTargetMods:331.5, AfterOutcome:331.5, AfterPostOutcome:331.5
 [45.00] [elemental-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [45.00] [elemental-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
 [45.00] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
 [45.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} Hit for 331.539 damage (SpellSchool: 4). (Threat: 331.539)
-[46.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (3295.300 --> 3354.200) of 6100 total.
+[45.01] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (3973.300 --> 4032.300) of 6100 total.
+[45.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Miss (SpellSchool: 8). (Threat: 0.000)
+[46.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4032.300 --> 4091.200) of 6100 total.
 [46.17] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [46.17] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [46.17] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:51.8, AfterPostOutcome:51.8
 [46.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [46.96] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 51.833 damage (SpellSchool: 4). (Threat: 51.833)
-[48.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (3354.200 --> 3413.100) of 6100 total.
+[48.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (4091.200 --> 4150.100) of 6100 total.
 [48.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
 [48.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
 [48.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[48.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (3413.100 --> 3215.100) of 6100 total.
-[48.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:511.7, AfterAttackerMods:537.2, AfterResistances:537.2, AfterTargetMods:591.0, AfterOutcome:591.0, AfterPostOutcome:591.0
-[48.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[48.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (4150.100 --> 3952.100) of 6100 total.
+[48.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:514.0, AfterAttackerMods:539.7, AfterResistances:539.7, AfterTargetMods:593.7, AfterOutcome:0.0, AfterPostOutcome:0.0
+[48.50] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 375.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[48.50] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
+[48.50] [elemental-shaman (#1)] Spent 375.000 mana from {SpellID: 408345} (3952.100 --> 3577.100) of 6100 total.
+[48.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:309.2, AfterAttackerMods:417.4, AfterResistances:417.4, AfterTargetMods:459.2, AfterOutcome:459.2, AfterPostOutcome:459.2
+[48.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 459.172 damage (SpellSchool: 4). (Threat: 459.172)
 [48.60] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [48.60] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [48.60] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[49.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 590.957 damage (SpellSchool: 8). (Threat: 590.957)
-[49.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (3215.100 --> 3274.100) of 6100 total.
+[49.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Miss (SpellSchool: 8). (Threat: 0.000)
 [49.39] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[50.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (3274.100 --> 3333.000) of 6100 total.
-[50.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[50.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (3333.000 --> 3135.000) of 6100 total.
-[50.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:515.3, AfterAttackerMods:541.1, AfterResistances:405.8, AfterTargetMods:446.4, AfterOutcome:446.4, AfterPostOutcome:446.4
-[50.50] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[50.50] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
-[50.50] [elemental-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (3135.000 --> 2615.000) of 6100 total.
-[50.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:484.2, AfterAttackerMods:653.7, AfterResistances:653.7, AfterTargetMods:719.0, AfterOutcome:0.0, AfterPostOutcome:0.0
-[50.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Miss (SpellSchool: 4). (Threat: 0.000)
+[50.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (3577.100 --> 3636.000) of 6100 total.
+[50.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [51.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
 [51.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
 [51.03] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [51.03] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [51.03] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[51.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (25% Resist) for 446.417 damage (SpellSchool: 8). (Threat: 446.417)
-[51.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2615.000 --> 2674.000) of 6100 total.
 [51.82] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[52.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2674.000 --> 2732.900) of 6100 total.
-[52.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[52.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (3636.000 --> 3694.900) of 6100 total.
+[52.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[52.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (3694.900 --> 3496.900) of 6100 total.
+[52.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:503.0, AfterAttackerMods:528.2, AfterResistances:528.2, AfterTargetMods:581.0, AfterOutcome:581.0, AfterPostOutcome:581.0
+[52.00] [elemental-shaman (#1)] Casting {SpellID: 1326047} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[52.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 580.993 damage (SpellSchool: 8). (Threat: 580.993)
+[52.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (3496.900 --> 3555.900) of 6100 total.
 [53.46] [Target 1] Aura faded: {SpellID: 10438}
 [53.46] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [53.46] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[53.46] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[54.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2732.900 --> 2791.800) of 6100 total.
-[54.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[54.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[54.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[54.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (2791.800 --> 2593.800) of 6100 total.
-[54.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:517.9, AfterAttackerMods:543.8, AfterResistances:543.8, AfterTargetMods:598.2, AfterOutcome:598.2, AfterPostOutcome:598.2
+[53.46] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:142.4, AfterPostOutcome:142.4
+[54.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (3555.900 --> 3614.800) of 6100 total.
+[54.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:231.7, AfterPostOutcome:231.7
+[54.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 231.665 damage (SpellSchool: 4). (Threat: 231.665)
+[54.00] [elemental-shaman (#1)] Completed cast {SpellID: 1326047}
+[54.00] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1326047} (3614.800 --> 3376.300) of 6100 total.
+[54.00] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:513.0, AfterAttackerMods:708.0, AfterResistances:708.0, AfterTargetMods:778.8, AfterOutcome:778.8, AfterPostOutcome:778.8
 [54.00] [elemental-shaman (#1)] Casting {SpellID: 10438} (Cost = 127.500, Cast Time = 0s, GCD = 1s, Effective Time = 1s)
 [54.00] [elemental-shaman (#1)] Completed cast {SpellID: 10438}
-[54.00] [elemental-shaman (#1)] Spent 127.500 mana from {SpellID: 10438} (2593.800 --> 2466.300) of 6100 total.
+[54.00] [elemental-shaman (#1)] Spent 127.500 mana from {SpellID: 10438} (3376.300 --> 3248.800) of 6100 total.
 [54.00] [Target 1] Aura gained: {SpellID: 10438}
-[54.25] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[54.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 598.217 damage (SpellSchool: 8). (Threat: 598.217)
-[55.00] [elemental-shaman (#1)] Casting {SpellID: 1238300} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[56.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2466.300 --> 2525.200) of 6100 total.
+[54.25] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 142.368 damage (SpellSchool: 4). (Threat: 142.368)
+[54.75] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} Hit for 778.763 damage (SpellSchool: 4). (Threat: 778.763)
+[54.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (3248.800 --> 3307.800) of 6100 total.
+[55.00] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 375.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[55.00] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
+[55.00] [elemental-shaman (#1)] Spent 375.000 mana from {SpellID: 408345} (3307.800 --> 2932.800) of 6100 total.
+[55.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:309.2, AfterAttackerMods:417.4, AfterResistances:417.4, AfterTargetMods:459.2, AfterOutcome:459.2, AfterPostOutcome:459.2
+[55.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 459.172 damage (SpellSchool: 4). (Threat: 459.172)
+[55.01] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2932.800 --> 2991.800) of 6100 total.
+[56.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2991.800 --> 3050.700) of 6100 total.
 [56.43] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [56.43] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[56.43] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:106.8, AfterPostOutcome:106.8
+[56.43] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:51.8, AfterPostOutcome:51.8
+[56.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [57.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
 [57.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[57.00] [elemental-shaman (#1)] Completed cast {SpellID: 1238300}
-[57.00] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1238300} (2525.200 --> 2286.700) of 6100 total.
-[57.00] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:528.9, AfterAttackerMods:729.9, AfterResistances:729.9, AfterTargetMods:802.9, AfterOutcome:802.9, AfterPostOutcome:802.9
-[57.00] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[57.00] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
-[57.00] [elemental-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (2286.700 --> 1766.700) of 6100 total.
-[57.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:484.2, AfterAttackerMods:653.7, AfterResistances:326.8, AfterTargetMods:359.5, AfterOutcome:359.5, AfterPostOutcome:359.5
-[57.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit (50% Resist) for 359.524 damage (SpellSchool: 4). (Threat: 359.524)
-[57.22] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit (25% Resist) for 106.776 damage (SpellSchool: 4). (Threat: 106.776)
-[57.75] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} Hit for 802.938 damage (SpellSchool: 4). (Threat: 802.938)
-[58.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1766.700 --> 1825.600) of 6100 total.
-[58.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[57.22] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 51.833 damage (SpellSchool: 4). (Threat: 51.833)
+[58.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (3050.700 --> 3109.600) of 6100 total.
+[58.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[58.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (3109.600 --> 2911.600) of 6100 total.
+[58.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:511.0, AfterAttackerMods:536.5, AfterResistances:402.4, AfterTargetMods:442.7, AfterOutcome:442.7, AfterPostOutcome:442.7
+[58.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [58.86] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [58.86] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[58.86] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[59.65] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[60.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1825.600 --> 1884.500) of 6100 total.
-[60.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:76.7, AfterTargetMods:84.3, AfterOutcome:84.3, AfterPostOutcome:84.3
-[60.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (25% Resist) for 84.344 damage (SpellSchool: 4). (Threat: 84.344)
-[60.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[60.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1884.500 --> 1830.500) of 6100 total.
-[60.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:373.2, AfterAttackerMods:391.9, AfterResistances:98.0, AfterTargetMods:107.8, AfterOutcome:107.8, AfterPostOutcome:107.8
-[60.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[61.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit (75% Resist) for 107.759 damage (SpellSchool: 8). (Threat: 107.759)
-[61.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1830.500 --> 1889.500) of 6100 total.
+[58.86] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:0.0, AfterPostOutcome:0.0
+[59.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (25% Resist) for 442.653 damage (SpellSchool: 8). (Threat: 442.653)
+[59.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2911.600 --> 2970.600) of 6100 total.
+[59.65] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Miss (SpellSchool: 4). (Threat: 0.000)
+[60.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2970.600 --> 3029.500) of 6100 total.
+[60.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[60.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[60.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[60.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (3029.500 --> 2831.500) of 6100 total.
+[60.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:515.1, AfterAttackerMods:540.8, AfterResistances:540.8, AfterTargetMods:594.9, AfterOutcome:594.9, AfterPostOutcome:594.9
+[60.50] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
+[60.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
+[60.50] [elemental-shaman (#1)] Casting {SpellID: 10605} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[61.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 594.891 damage (SpellSchool: 8). (Threat: 594.891)
 [61.29] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [61.29] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[61.29] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[62.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1889.500 --> 1948.400) of 6100 total.
-[62.08] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[62.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[62.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1948.400 --> 1894.400) of 6100 total.
-[62.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:376.2, AfterAttackerMods:395.0, AfterResistances:395.0, AfterTargetMods:434.5, AfterOutcome:434.5, AfterPostOutcome:434.5
-[62.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[63.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[63.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[63.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit for 434.504 damage (SpellSchool: 8). (Threat: 434.504)
-[63.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1894.400 --> 1953.400) of 6100 total.
+[61.29] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:106.8, AfterPostOutcome:106.8
+[62.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2831.500 --> 2890.400) of 6100 total.
+[62.00] [elemental-shaman (#1)] Completed cast {SpellID: 10605}
+[62.00] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:374.8, AfterAttackerMods:393.6, AfterResistances:393.6, AfterTargetMods:433.0, AfterOutcome:891.9, AfterPostOutcome:891.9
+[62.00] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} Crit for 891.880 damage (SpellSchool: 8). (Threat: 891.880)
+[62.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
+[62.00] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
+[62.00] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 375.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[62.00] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
+[62.00] [elemental-shaman (#1)] Spent 375.000 mana from {SpellID: 408345} (2890.400 --> 2515.400) of 6100 total.
+[62.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:309.2, AfterAttackerMods:417.4, AfterResistances:417.4, AfterTargetMods:459.2, AfterOutcome:459.2, AfterPostOutcome:459.2
+[62.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 459.172 damage (SpellSchool: 4). (Threat: 459.172)
+[62.01] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2515.400 --> 2574.400) of 6100 total.
+[62.01] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2574.400 --> 2633.400) of 6100 total.
+[62.08] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit (25% Resist) for 106.776 damage (SpellSchool: 4). (Threat: 106.776)
+[63.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:51.1, AfterTargetMods:56.2, AfterOutcome:56.2, AfterPostOutcome:56.2
+[63.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (50% Resist) for 56.229 damage (SpellSchool: 4). (Threat: 56.229)
+[63.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [63.72] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [63.72] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[63.72] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[64.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1953.400 --> 2012.300) of 6100 total.
-[64.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[64.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (2012.300 --> 1958.300) of 6100 total.
-[64.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:374.8, AfterAttackerMods:393.6, AfterResistances:393.6, AfterTargetMods:432.9, AfterOutcome:891.8, AfterPostOutcome:891.8
-[64.50] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[64.50] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
-[64.50] [elemental-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (1958.300 --> 1438.300) of 6100 total.
-[64.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:484.2, AfterAttackerMods:653.7, AfterResistances:653.7, AfterTargetMods:719.0, AfterOutcome:719.0, AfterPostOutcome:719.0
-[64.50] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 719.047 damage (SpellSchool: 4). (Threat: 719.047)
-[64.51] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[65.25] [elemental-shaman (#1)] Casting {SpellID: 915, Tag: 6} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[65.25] [elemental-shaman (#1)] Completed cast {SpellID: 915, Tag: 6}
-[65.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915, Tag: 6} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:185.3, AfterAttackerMods:194.6, AfterResistances:194.6, AfterTargetMods:214.1, AfterOutcome:214.1, AfterPostOutcome:214.1
-[65.25] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
-[65.25] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
-[65.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Crit for 891.831 damage (SpellSchool: 8). (Threat: 891.831)
-[65.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1438.300 --> 1497.300) of 6100 total.
+[63.72] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:106.8, AfterPostOutcome:106.8
+[64.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2633.400 --> 2692.300) of 6100 total.
+[64.51] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit (25% Resist) for 106.776 damage (SpellSchool: 4). (Threat: 106.776)
+[65.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[65.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (2692.300 --> 2494.300) of 6100 total.
+[65.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:523.3, AfterAttackerMods:549.4, AfterResistances:549.4, AfterTargetMods:604.4, AfterOutcome:604.4, AfterPostOutcome:604.4
+[65.50] [elemental-shaman (#1)] Casting {SpellID: 1326047} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [66.00] [Target 1] Aura faded: {SpellID: 29228, Tag: 1}
 [66.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
 [66.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[66.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1497.300 --> 1556.200) of 6100 total.
-[66.00] [elemental-shaman (#1)] Casting {SpellID: 29228} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[66.00] [elemental-shaman (#1)] Completed cast {SpellID: 29228}
-[66.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:262.1, AfterAttackerMods:301.4, AfterResistances:226.0, AfterTargetMods:248.7, AfterOutcome:248.7, AfterPostOutcome:248.7
-[66.00] [elemental-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[66.00] [elemental-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
-[66.00] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
-[66.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} Hit (25% Resist) for 248.654 damage (SpellSchool: 4). (Threat: 248.654)
-[66.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
-[66.00] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
-[66.00] [elemental-shaman (#1)] [Target 1] {SpellID: 915, Tag: 6} Hit for 214.071 damage (SpellSchool: 8). (Threat: 0.000)
+[66.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2494.300 --> 2553.200) of 6100 total.
 [66.15] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [66.15] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [66.15] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[66.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 604.394 damage (SpellSchool: 8). (Threat: 604.394)
 [66.94] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[67.50] [elemental-shaman (#1)] Casting {SpellID: 1238300} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[68.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1556.200 --> 1615.100) of 6100 total.
+[67.50] [elemental-shaman (#1)] Completed cast {SpellID: 1326047}
+[67.50] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1326047} (2553.200 --> 2314.700) of 6100 total.
+[67.50] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:532.2, AfterAttackerMods:612.0, AfterResistances:612.0, AfterTargetMods:673.2, AfterOutcome:673.2, AfterPostOutcome:673.2
+[67.50] [elemental-shaman (#1)] Casting {SpellID: 29228} (Cost = 369.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[67.50] [elemental-shaman (#1)] Completed cast {SpellID: 29228}
+[67.50] [elemental-shaman (#1)] Spent 369.000 mana from {SpellID: 29228} (2314.700 --> 1945.700) of 6100 total.
+[67.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:262.1, AfterAttackerMods:301.4, AfterResistances:301.4, AfterTargetMods:331.5, AfterOutcome:683.0, AfterPostOutcome:683.0
+[67.50] [elemental-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[67.50] [elemental-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
+[67.50] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
+[67.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} Crit for 682.970 damage (SpellSchool: 4). (Threat: 682.970)
+[67.50] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
+[67.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
+[67.51] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1945.700 --> 2004.700) of 6100 total.
+[68.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2004.700 --> 2063.600) of 6100 total.
+[68.25] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} Hit for 673.239 damage (SpellSchool: 4). (Threat: 673.239)
 [68.58] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [68.58] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[68.58] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:31.4, AfterTargetMods:34.6, AfterOutcome:71.2, AfterPostOutcome:71.2
-[69.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:231.7, AfterPostOutcome:231.7
-[69.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 231.665 damage (SpellSchool: 4). (Threat: 231.665)
-[69.37] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit (50% Resist) for 71.184 damage (SpellSchool: 4). (Threat: 71.184)
-[69.50] [elemental-shaman (#1)] Completed cast {SpellID: 1238300}
-[69.50] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1238300} (1615.100 --> 1376.600) of 6100 total.
-[69.50] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:565.9, AfterAttackerMods:780.9, AfterResistances:780.9, AfterTargetMods:859.0, AfterOutcome:859.0, AfterPostOutcome:859.0
-[69.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[70.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1376.600 --> 1435.500) of 6100 total.
-[70.25] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} Hit for 859.009 damage (SpellSchool: 4). (Threat: 859.009)
+[68.58] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[69.00] [elemental-shaman (#1)] Casting {SpellID: 408345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[69.00] [elemental-shaman (#1)] Completed cast {SpellID: 408345}
+[69.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:309.2, AfterAttackerMods:417.4, AfterResistances:313.1, AfterTargetMods:344.4, AfterOutcome:709.4, AfterPostOutcome:709.4
+[69.00] [elemental-shaman (#1)] [Target 1] {SpellID: 408345} Crit (25% Resist) for 709.421 damage (SpellSchool: 4). (Threat: 709.421)
+[69.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
+[69.00] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
+[69.37] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[70.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2063.600 --> 2122.500) of 6100 total.
+[70.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[70.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[70.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [71.01] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [71.01] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [71.01] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[71.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[71.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1435.500 --> 1381.500) of 6100 total.
-[71.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:375.0, AfterAttackerMods:393.8, AfterResistances:393.8, AfterTargetMods:433.1, AfterOutcome:433.1, AfterPostOutcome:433.1
-[71.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [71.80] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[72.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1381.500 --> 1440.400) of 6100 total.
-[72.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:76.7, AfterTargetMods:84.3, AfterOutcome:84.3, AfterPostOutcome:84.3
-[72.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (25% Resist) for 84.344 damage (SpellSchool: 4). (Threat: 84.344)
-[72.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit for 433.131 damage (SpellSchool: 8). (Threat: 433.131)
+[72.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2122.500 --> 2181.400) of 6100 total.
+[72.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[72.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (2181.400 --> 1983.400) of 6100 total.
+[72.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:503.7, AfterAttackerMods:528.9, AfterResistances:396.7, AfterTargetMods:436.4, AfterOutcome:436.4, AfterPostOutcome:436.4
+[72.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[73.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (25% Resist) for 436.356 damage (SpellSchool: 8). (Threat: 436.356)
+[73.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1983.400 --> 2042.400) of 6100 total.
 [73.44] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [73.44] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [73.44] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[73.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[73.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1440.400 --> 1386.400) of 6100 total.
-[73.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:374.3, AfterAttackerMods:393.0, AfterResistances:294.8, AfterTargetMods:324.3, AfterOutcome:668.0, AfterPostOutcome:668.0
-[73.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[74.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1386.400 --> 1445.300) of 6100 total.
+[73.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[73.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[74.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (2042.400 --> 2101.300) of 6100 total.
 [74.23] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[74.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Crit (25% Resist) for 667.988 damage (SpellSchool: 8). (Threat: 667.988)
-[74.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1445.300 --> 1504.300) of 6100 total.
-[75.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:231.7, AfterPostOutcome:231.7
-[75.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 231.665 damage (SpellSchool: 4). (Threat: 231.665)
-[75.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[75.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1504.300 --> 1450.300) of 6100 total.
-[75.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:380.1, AfterAttackerMods:399.1, AfterResistances:399.1, AfterTargetMods:439.0, AfterOutcome:0.0, AfterPostOutcome:0.0
-[75.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[74.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[74.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (2101.300 --> 1903.300) of 6100 total.
+[74.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:508.6, AfterAttackerMods:534.0, AfterResistances:534.0, AfterTargetMods:587.4, AfterOutcome:587.4, AfterPostOutcome:587.4
+[74.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[75.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 587.414 damage (SpellSchool: 8). (Threat: 587.414)
 [75.87] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [75.87] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [75.87] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[76.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1450.300 --> 1509.200) of 6100 total.
-[76.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Miss (SpellSchool: 8). (Threat: 0.000)
+[76.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1903.300 --> 1962.200) of 6100 total.
+[76.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:231.7, AfterPostOutcome:231.7
+[76.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 231.665 damage (SpellSchool: 4). (Threat: 231.665)
+[76.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[76.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (1962.200 --> 1764.200) of 6100 total.
+[76.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:503.1, AfterAttackerMods:528.3, AfterResistances:528.3, AfterTargetMods:581.1, AfterOutcome:581.1, AfterPostOutcome:581.1
+[76.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [76.66] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[77.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[77.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1509.200 --> 1455.200) of 6100 total.
-[77.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:373.1, AfterAttackerMods:391.7, AfterResistances:293.8, AfterTargetMods:323.2, AfterOutcome:323.2, AfterPostOutcome:323.2
-[77.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[78.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1455.200 --> 1514.100) of 6100 total.
-[78.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[78.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[78.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit (25% Resist) for 323.162 damage (SpellSchool: 8). (Threat: 323.162)
+[77.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 581.137 damage (SpellSchool: 8). (Threat: 581.137)
+[77.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1764.200 --> 1823.200) of 6100 total.
+[78.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1823.200 --> 1882.100) of 6100 total.
 [78.30] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [78.30] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [78.30] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[78.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
+[78.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1882.100 --> 1828.100) of 6100 total.
+[78.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:375.1, AfterAttackerMods:393.8, AfterResistances:393.8, AfterTargetMods:433.2, AfterOutcome:433.2, AfterPostOutcome:433.2
+[78.50] [elemental-shaman (#1)] Casting {SpellID: 1326047} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [79.09] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[79.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[79.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1514.100 --> 1460.100) of 6100 total.
-[79.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:375.9, AfterAttackerMods:394.7, AfterResistances:197.3, AfterTargetMods:217.1, AfterOutcome:217.1, AfterPostOutcome:217.1
-[79.50] [elemental-shaman (#1)] Casting {SpellID: 1238300} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[80.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1460.100 --> 1519.000) of 6100 total.
-[80.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit (50% Resist) for 217.074 damage (SpellSchool: 8). (Threat: 217.074)
+[79.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit for 433.234 damage (SpellSchool: 8). (Threat: 433.234)
+[79.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[79.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[80.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1828.100 --> 1887.000) of 6100 total.
+[80.50] [elemental-shaman (#1)] Completed cast {SpellID: 1326047}
+[80.50] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1326047} (1887.000 --> 1648.500) of 6100 total.
+[80.50] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:538.9, AfterAttackerMods:743.7, AfterResistances:743.7, AfterTargetMods:818.0, AfterOutcome:1685.2, AfterPostOutcome:1685.2
+[80.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [80.73] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [80.73] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[80.73] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[81.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:76.7, AfterTargetMods:84.3, AfterOutcome:173.7, AfterPostOutcome:173.7
-[81.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit (25% Resist) for 173.748 damage (SpellSchool: 4). (Threat: 173.748)
-[81.50] [elemental-shaman (#1)] Completed cast {SpellID: 1238300}
-[81.50] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1238300} (1519.000 --> 1280.500) of 6100 total.
-[81.50] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:546.4, AfterAttackerMods:754.1, AfterResistances:754.1, AfterTargetMods:829.5, AfterOutcome:829.5, AfterPostOutcome:829.5
-[81.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[81.52] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[82.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1280.500 --> 1339.400) of 6100 total.
-[82.25] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} Hit for 829.471 damage (SpellSchool: 4). (Threat: 829.471)
-[82.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1339.400 --> 1398.400) of 6100 total.
+[80.73] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:51.8, AfterPostOutcome:51.8
+[81.25] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} Crit for 1685.155 damage (SpellSchool: 4). (Threat: 1685.155)
+[81.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1648.500 --> 1707.500) of 6100 total.
+[81.52] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 51.833 damage (SpellSchool: 4). (Threat: 51.833)
+[82.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1707.500 --> 1766.400) of 6100 total.
+[82.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:51.1, AfterTargetMods:56.2, AfterOutcome:56.2, AfterPostOutcome:56.2
+[82.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (50% Resist) for 56.229 damage (SpellSchool: 4). (Threat: 56.229)
+[82.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[82.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (1766.400 --> 1568.400) of 6100 total.
+[82.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:517.3, AfterAttackerMods:543.2, AfterResistances:407.4, AfterTargetMods:448.1, AfterOutcome:448.1, AfterPostOutcome:448.1
+[82.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [83.16] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [83.16] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [83.16] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[83.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[83.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1398.400 --> 1344.400) of 6100 total.
-[83.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:375.1, AfterAttackerMods:393.8, AfterResistances:393.8, AfterTargetMods:433.2, AfterOutcome:433.2, AfterPostOutcome:433.2
-[83.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[83.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (25% Resist) for 448.141 damage (SpellSchool: 8). (Threat: 448.141)
+[83.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1568.400 --> 1627.400) of 6100 total.
 [83.95] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[84.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1344.400 --> 1403.300) of 6100 total.
-[84.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[84.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[84.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit for 433.234 damage (SpellSchool: 8). (Threat: 433.234)
-[85.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[85.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1403.300 --> 1349.300) of 6100 total.
-[85.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:376.2, AfterAttackerMods:395.0, AfterResistances:395.0, AfterTargetMods:434.5, AfterOutcome:895.1, AfterPostOutcome:895.1
-[85.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[84.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1627.400 --> 1686.300) of 6100 total.
+[84.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[84.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (1686.300 --> 1488.300) of 6100 total.
+[84.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:519.9, AfterAttackerMods:545.9, AfterResistances:545.9, AfterTargetMods:600.5, AfterOutcome:600.5, AfterPostOutcome:600.5
+[84.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[85.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 600.473 damage (SpellSchool: 8). (Threat: 600.473)
+[85.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1488.300 --> 1547.300) of 6100 total.
+[85.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:231.7, AfterPostOutcome:231.7
+[85.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 231.665 damage (SpellSchool: 4). (Threat: 231.665)
 [85.59] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [85.59] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[85.59] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:51.8, AfterPostOutcome:51.8
-[86.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1349.300 --> 1408.200) of 6100 total.
-[86.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Crit for 895.063 damage (SpellSchool: 8). (Threat: 895.063)
-[86.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1408.200 --> 1467.200) of 6100 total.
-[86.38] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 51.833 damage (SpellSchool: 4). (Threat: 51.833)
-[87.00] [Target 1] Aura faded: {SpellID: 29228, Tag: 1}
-[87.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[87.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[87.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[87.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1467.200 --> 1413.200) of 6100 total.
-[87.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:373.5, AfterAttackerMods:392.2, AfterResistances:392.2, AfterTargetMods:431.4, AfterOutcome:431.4, AfterPostOutcome:431.4
-[87.50] [elemental-shaman (#1)] Casting {SpellID: 29228} (Cost = 369.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[87.50] [elemental-shaman (#1)] Completed cast {SpellID: 29228}
-[87.50] [elemental-shaman (#1)] Spent 369.000 mana from {SpellID: 29228} (1413.200 --> 1044.200) of 6100 total.
-[87.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:262.1, AfterAttackerMods:301.4, AfterResistances:301.4, AfterTargetMods:331.5, AfterOutcome:331.5, AfterPostOutcome:331.5
-[87.50] [elemental-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[87.50] [elemental-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
-[87.50] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
-[87.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} Hit for 331.539 damage (SpellSchool: 4). (Threat: 331.539)
-[88.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1044.200 --> 1103.100) of 6100 total.
+[85.59] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[86.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1547.300 --> 1606.200) of 6100 total.
+[86.38] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[86.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
+[86.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1606.200 --> 1552.200) of 6100 total.
+[86.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:373.0, AfterAttackerMods:391.6, AfterResistances:391.6, AfterTargetMods:430.8, AfterOutcome:887.4, AfterPostOutcome:887.4
+[86.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[87.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Crit for 887.429 damage (SpellSchool: 8). (Threat: 887.429)
+[88.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1552.200 --> 1611.100) of 6100 total.
 [88.02] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [88.02] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [88.02] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[88.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit for 431.389 damage (SpellSchool: 8). (Threat: 431.389)
-[88.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1103.100 --> 1162.100) of 6100 total.
+[88.50] [Target 1] Aura faded: {SpellID: 29228, Tag: 1}
+[88.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[88.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[88.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[88.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (1611.100 --> 1413.100) of 6100 total.
+[88.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:512.8, AfterAttackerMods:538.4, AfterResistances:538.4, AfterTargetMods:592.3, AfterOutcome:592.3, AfterPostOutcome:592.3
+[88.50] [elemental-shaman (#1)] Casting {SpellID: 29228} (Cost = 369.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[88.50] [elemental-shaman (#1)] Completed cast {SpellID: 29228}
+[88.50] [elemental-shaman (#1)] Spent 369.000 mana from {SpellID: 29228} (1413.100 --> 1044.100) of 6100 total.
+[88.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:262.1, AfterAttackerMods:301.4, AfterResistances:301.4, AfterTargetMods:331.5, AfterOutcome:331.5, AfterPostOutcome:331.5
+[88.50] [elemental-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[88.50] [elemental-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
+[88.50] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
+[88.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} Hit for 331.539 damage (SpellSchool: 4). (Threat: 331.539)
 [88.81] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[89.00] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[90.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1162.100 --> 1221.000) of 6100 total.
+[89.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 592.288 damage (SpellSchool: 8). (Threat: 592.288)
+[89.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1044.100 --> 1103.100) of 6100 total.
+[90.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1103.100 --> 1162.000) of 6100 total.
+[90.00] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [90.45] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [90.45] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [90.45] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[90.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[90.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[91.00] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[91.00] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1221.000 --> 1167.000) of 6100 total.
-[91.00] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:373.0, AfterAttackerMods:391.6, AfterResistances:391.6, AfterTargetMods:430.8, AfterOutcome:887.4, AfterPostOutcome:887.4
-[91.00] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [91.24] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[91.75] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Crit for 887.429 damage (SpellSchool: 8). (Threat: 887.429)
-[92.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1167.000 --> 1225.900) of 6100 total.
+[91.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[91.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[92.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1162.000 --> 1220.900) of 6100 total.
+[92.00] [elemental-shaman (#1)] Completed cast {SpellID: 915}
+[92.00] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1220.900 --> 1166.900) of 6100 total.
+[92.00] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:378.9, AfterAttackerMods:397.9, AfterResistances:397.9, AfterTargetMods:437.6, AfterOutcome:437.6, AfterPostOutcome:437.6
+[92.00] [elemental-shaman (#1)] Casting {SpellID: 1326047} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[92.75] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit for 437.647 damage (SpellSchool: 8). (Threat: 437.647)
+[92.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1166.900 --> 1225.900) of 6100 total.
 [92.88] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [92.88] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [92.88] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[93.00] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[93.00] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1225.900 --> 1171.900) of 6100 total.
-[93.00] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:378.0, AfterAttackerMods:396.9, AfterResistances:396.9, AfterTargetMods:436.6, AfterOutcome:436.6, AfterPostOutcome:436.6
-[93.00] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
-[93.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
-[93.00] [elemental-shaman (#1)] Casting {SpellID: 1238300} (Cost = 0.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[93.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[93.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
 [93.67] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[93.75] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit for 436.635 damage (SpellSchool: 8). (Threat: 436.635)
-[94.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1171.900 --> 1230.800) of 6100 total.
-[95.00] [elemental-shaman (#1)] Completed cast {SpellID: 1238300}
-[95.00] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:536.6, AfterAttackerMods:740.5, AfterResistances:370.2, AfterTargetMods:407.3, AfterOutcome:407.3, AfterPostOutcome:407.3
-[95.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
-[95.00] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
-[95.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[94.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1225.900 --> 1284.800) of 6100 total.
+[94.00] [elemental-shaman (#1)] Completed cast {SpellID: 1326047}
+[94.00] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1326047} (1284.800 --> 1046.300) of 6100 total.
+[94.00] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:548.9, AfterAttackerMods:757.5, AfterResistances:757.5, AfterTargetMods:833.2, AfterOutcome:833.2, AfterPostOutcome:833.2
+[94.00] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[94.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[94.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[94.75] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} Hit for 833.197 damage (SpellSchool: 4). (Threat: 833.197)
 [95.31] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [95.31] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[95.31] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[95.75] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} Hit (50% Resist) for 407.274 damage (SpellSchool: 4). (Threat: 407.274)
-[95.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1230.800 --> 1289.800) of 6100 total.
-[96.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1289.800 --> 1348.700) of 6100 total.
-[96.10] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[96.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[96.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[97.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[97.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (1348.700 --> 1150.700) of 6100 total.
-[97.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:519.7, AfterAttackerMods:545.7, AfterResistances:545.7, AfterTargetMods:600.3, AfterOutcome:600.3, AfterPostOutcome:600.3
-[97.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[95.31] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:142.4, AfterPostOutcome:142.4
+[96.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1046.300 --> 1105.200) of 6100 total.
+[96.00] [elemental-shaman (#1)] Completed cast {SpellID: 915}
+[96.00] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1105.200 --> 1051.200) of 6100 total.
+[96.00] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:373.1, AfterAttackerMods:391.7, AfterResistances:293.8, AfterTargetMods:323.2, AfterOutcome:0.0, AfterPostOutcome:0.0
+[96.00] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[96.10] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 142.368 damage (SpellSchool: 4). (Threat: 142.368)
+[96.75] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Miss (SpellSchool: 8). (Threat: 0.000)
+[97.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[97.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
 [97.74] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [97.74] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [97.74] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[97.75] [elemental-shaman (#1)] Casting {SpellID: 15208, Tag: 6} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[97.75] [elemental-shaman (#1)] Completed cast {SpellID: 15208, Tag: 6}
-[97.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:255.3, AfterAttackerMods:268.0, AfterResistances:268.0, AfterTargetMods:294.8, AfterOutcome:294.8, AfterPostOutcome:294.8
-[97.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 600.305 damage (SpellSchool: 8). (Threat: 600.305)
-[97.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1150.700 --> 1209.700) of 6100 total.
-[98.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1209.700 --> 1268.600) of 6100 total.
-[98.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} Hit for 294.835 damage (SpellSchool: 8). (Threat: 0.000)
+[98.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1051.200 --> 1110.100) of 6100 total.
+[98.00] [elemental-shaman (#1)] Completed cast {SpellID: 915}
+[98.00] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (1110.100 --> 1056.100) of 6100 total.
+[98.00] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:373.8, AfterAttackerMods:392.4, AfterResistances:392.4, AfterTargetMods:431.7, AfterOutcome:431.7, AfterPostOutcome:431.7
+[98.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [98.53] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[99.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[99.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (1268.600 --> 1070.600) of 6100 total.
-[99.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:510.2, AfterAttackerMods:535.8, AfterResistances:535.8, AfterTargetMods:589.3, AfterOutcome:589.3, AfterPostOutcome:589.3
-[99.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[99.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:51.1, AfterTargetMods:56.2, AfterOutcome:115.8, AfterPostOutcome:115.8
-[99.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit (50% Resist) for 115.832 damage (SpellSchool: 4). (Threat: 115.832)
-[99.75] [elemental-shaman (#1)] Casting {SpellID: 15208, Tag: 6} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[99.75] [elemental-shaman (#1)] Completed cast {SpellID: 15208, Tag: 6}
-[99.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:261.7, AfterAttackerMods:274.8, AfterResistances:274.8, AfterTargetMods:302.2, AfterOutcome:302.2, AfterPostOutcome:302.2
-[99.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 589.336 damage (SpellSchool: 8). (Threat: 589.336)
-[99.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1070.600 --> 1129.600) of 6100 total.
-[100.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1129.600 --> 1188.500) of 6100 total.
+[98.75] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit for 431.688 damage (SpellSchool: 8). (Threat: 431.688)
+[98.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1056.100 --> 1115.100) of 6100 total.
+[100.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (1115.100 --> 1174.000) of 6100 total.
+[100.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[100.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (1174.000 --> 976.000) of 6100 total.
+[100.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:521.1, AfterAttackerMods:547.2, AfterResistances:410.4, AfterTargetMods:451.4, AfterOutcome:930.0, AfterPostOutcome:930.0
+[100.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [100.17] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [100.17] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[100.17] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[100.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208, Tag: 6} Hit for 302.243 damage (SpellSchool: 8). (Threat: 0.000)
-[100.96] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[101.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[101.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (1188.500 --> 990.500) of 6100 total.
-[101.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:514.1, AfterAttackerMods:539.8, AfterResistances:539.8, AfterTargetMods:593.8, AfterOutcome:593.8, AfterPostOutcome:593.8
-[101.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[101.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 593.782 damage (SpellSchool: 8). (Threat: 593.782)
-[102.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (990.500 --> 1049.400) of 6100 total.
-[102.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:76.7, AfterTargetMods:84.3, AfterOutcome:173.7, AfterPostOutcome:173.7
-[102.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit (25% Resist) for 173.748 damage (SpellSchool: 4). (Threat: 173.748)
+[100.17] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:142.4, AfterPostOutcome:142.4
+[100.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[100.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[100.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Crit (25% Resist) for 929.959 damage (SpellSchool: 8). (Threat: 929.959)
+[100.96] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 142.368 damage (SpellSchool: 4). (Threat: 142.368)
+[102.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (976.000 --> 1034.900) of 6100 total.
+[102.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[102.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (1034.900 --> 836.900) of 6100 total.
+[102.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:521.3, AfterAttackerMods:547.3, AfterResistances:273.7, AfterTargetMods:301.0, AfterOutcome:301.0, AfterPostOutcome:301.0
+[102.00] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [102.60] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [102.60] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[102.60] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:31.4, AfterTargetMods:34.6, AfterOutcome:34.6, AfterPostOutcome:34.6
-[103.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[103.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (1049.400 --> 851.400) of 6100 total.
-[103.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:518.2, AfterAttackerMods:544.1, AfterResistances:272.1, AfterTargetMods:299.3, AfterOutcome:299.3, AfterPostOutcome:299.3
-[103.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[103.39] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (50% Resist) for 34.555 damage (SpellSchool: 4). (Threat: 34.555)
-[103.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (50% Resist) for 299.265 damage (SpellSchool: 8). (Threat: 299.265)
-[104.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (851.400 --> 910.300) of 6100 total.
-[105.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[105.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (910.300 --> 712.300) of 6100 total.
-[105.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:503.1, AfterAttackerMods:528.3, AfterResistances:132.1, AfterTargetMods:145.3, AfterOutcome:145.3, AfterPostOutcome:145.3
-[105.00] [elemental-shaman (#1)] Casting {SpellID: 1238300} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[102.60] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[102.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (50% Resist) for 301.033 damage (SpellSchool: 8). (Threat: 301.033)
+[103.39] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[103.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[103.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[104.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (836.900 --> 895.800) of 6100 total.
+[104.00] [elemental-shaman (#1)] Completed cast {SpellID: 915}
+[104.00] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (895.800 --> 841.800) of 6100 total.
+[104.00] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:375.3, AfterAttackerMods:394.1, AfterResistances:295.6, AfterTargetMods:325.1, AfterOutcome:669.8, AfterPostOutcome:669.8
+[104.00] [elemental-shaman (#1)] Casting {SpellID: 1326047} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[104.75] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Crit (25% Resist) for 669.761 damage (SpellSchool: 8). (Threat: 669.761)
 [105.03] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [105.03] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
 [105.03] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[105.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[105.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[105.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (75% Resist) for 145.280 damage (SpellSchool: 8). (Threat: 145.280)
-[105.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (712.300 --> 771.300) of 6100 total.
 [105.82] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[106.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (771.300 --> 830.200) of 6100 total.
-[107.00] [elemental-shaman (#1)] Completed cast {SpellID: 1238300}
-[107.00] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1238300} (830.200 --> 591.700) of 6100 total.
-[107.00] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:522.4, AfterAttackerMods:720.8, AfterResistances:540.6, AfterTargetMods:594.7, AfterOutcome:594.7, AfterPostOutcome:594.7
-[107.00] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[106.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (841.800 --> 900.700) of 6100 total.
+[106.00] [elemental-shaman (#1)] Completed cast {SpellID: 1326047}
+[106.00] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1326047} (900.700 --> 662.200) of 6100 total.
+[106.00] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:540.3, AfterAttackerMods:745.7, AfterResistances:745.7, AfterTargetMods:820.2, AfterOutcome:820.2, AfterPostOutcome:820.2
+[106.00] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
+[106.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
+[106.00] [elemental-shaman (#1)] Casting {SpellID: 10605} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[106.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:76.7, AfterTargetMods:84.3, AfterOutcome:173.7, AfterPostOutcome:173.7
+[106.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit (25% Resist) for 173.748 damage (SpellSchool: 4). (Threat: 173.748)
+[106.75] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} Hit for 820.217 damage (SpellSchool: 4). (Threat: 820.217)
+[106.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (662.200 --> 721.200) of 6100 total.
 [107.46] [Target 1] Aura faded: {SpellID: 10438}
 [107.46] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [107.46] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[107.46] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:0.0, AfterPostOutcome:0.0
-[107.75] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} Hit (25% Resist) for 594.698 damage (SpellSchool: 4). (Threat: 594.698)
-[108.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (591.700 --> 650.600) of 6100 total.
-[108.25] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Miss (SpellSchool: 4). (Threat: 0.000)
-[108.50] [Target 1] Aura faded: {SpellID: 29228, Tag: 1}
-[108.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[108.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[109.00] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[109.00] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (650.600 --> 596.600) of 6100 total.
-[109.00] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:380.0, AfterAttackerMods:399.0, AfterResistances:399.0, AfterTargetMods:438.9, AfterOutcome:0.0, AfterPostOutcome:0.0
-[109.00] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
-[109.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
-[109.00] [elemental-shaman (#1)] Casting {SpellID: 10438} (Cost = 127.500, Cast Time = 0s, GCD = 1s, Effective Time = 1s)
-[109.00] [elemental-shaman (#1)] Completed cast {SpellID: 10438}
-[109.00] [elemental-shaman (#1)] Spent 127.500 mana from {SpellID: 10438} (596.600 --> 469.100) of 6100 total.
-[109.00] [Target 1] Aura gained: {SpellID: 10438}
-[109.75] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Miss (SpellSchool: 8). (Threat: 0.000)
-[110.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (469.100 --> 528.000) of 6100 total.
-[110.00] [elemental-shaman (#1)] Casting {SpellID: 29228} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[110.00] [elemental-shaman (#1)] Completed cast {SpellID: 29228}
-[110.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:262.1, AfterAttackerMods:301.4, AfterResistances:226.0, AfterTargetMods:248.7, AfterOutcome:512.2, AfterPostOutcome:512.2
-[110.00] [elemental-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[110.00] [elemental-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
-[110.00] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
-[110.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} Crit (25% Resist) for 512.227 damage (SpellSchool: 4). (Threat: 512.227)
-[110.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
-[110.00] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
-[110.01] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (528.000 --> 587.000) of 6100 total.
-[111.43] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[111.43] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[111.43] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:142.4, AfterPostOutcome:142.4
-[111.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[112.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (587.000 --> 645.900) of 6100 total.
-[112.22] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 142.368 damage (SpellSchool: 4). (Threat: 142.368)
-[113.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[113.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[113.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[113.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (645.900 --> 447.900) of 6100 total.
-[113.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:521.2, AfterAttackerMods:547.2, AfterResistances:547.2, AfterTargetMods:602.0, AfterOutcome:0.0, AfterPostOutcome:0.0
-[113.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[113.86] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[113.86] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[113.86] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:142.4, AfterPostOutcome:142.4
-[114.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (447.900 --> 506.800) of 6100 total.
-[114.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Miss (SpellSchool: 8). (Threat: 0.000)
-[114.65] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 142.368 damage (SpellSchool: 4). (Threat: 142.368)
-[115.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[115.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (506.800 --> 452.800) of 6100 total.
-[115.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:378.6, AfterAttackerMods:397.5, AfterResistances:397.5, AfterTargetMods:437.2, AfterOutcome:437.2, AfterPostOutcome:437.2
+[107.46] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:47.1, AfterTargetMods:51.8, AfterOutcome:106.8, AfterPostOutcome:106.8
+[107.50] [elemental-shaman (#1)] Completed cast {SpellID: 10605}
+[107.50] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:376.5, AfterAttackerMods:395.3, AfterResistances:395.3, AfterTargetMods:434.8, AfterOutcome:895.8, AfterPostOutcome:895.8
+[107.50] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} Crit for 895.750 damage (SpellSchool: 8). (Threat: 895.750)
+[107.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
+[107.50] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
+[107.50] [elemental-shaman (#1)] Casting {SpellID: 10438} (Cost = 127.500, Cast Time = 0s, GCD = 1s, Effective Time = 1s)
+[107.50] [elemental-shaman (#1)] Completed cast {SpellID: 10438}
+[107.50] [elemental-shaman (#1)] Spent 127.500 mana from {SpellID: 10438} (721.200 --> 593.700) of 6100 total.
+[107.50] [Target 1] Aura gained: {SpellID: 10438}
+[108.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (593.700 --> 652.600) of 6100 total.
+[108.25] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit (25% Resist) for 106.776 damage (SpellSchool: 4). (Threat: 106.776)
+[108.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[109.50] [Target 1] Aura faded: {SpellID: 29228, Tag: 1}
+[109.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[109.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[109.93] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[109.93] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
+[109.93] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[110.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (652.600 --> 711.500) of 6100 total.
+[110.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
+[110.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (711.500 --> 657.500) of 6100 total.
+[110.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:372.8, AfterAttackerMods:391.5, AfterResistances:391.5, AfterTargetMods:430.6, AfterOutcome:430.6, AfterPostOutcome:430.6
+[110.50] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
+[110.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
+[110.50] [elemental-shaman (#1)] Casting {SpellID: 29228} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[110.50] [elemental-shaman (#1)] Completed cast {SpellID: 29228}
+[110.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:262.1, AfterAttackerMods:301.4, AfterResistances:301.4, AfterTargetMods:331.5, AfterOutcome:331.5, AfterPostOutcome:331.5
+[110.50] [elemental-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[110.50] [elemental-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
+[110.50] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
+[110.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228} Hit for 331.539 damage (SpellSchool: 4). (Threat: 331.539)
+[110.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
+[110.50] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
+[110.51] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (657.500 --> 716.500) of 6100 total.
+[110.72] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[111.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit for 430.601 damage (SpellSchool: 8). (Threat: 430.601)
+[111.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (716.500 --> 775.500) of 6100 total.
+[112.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (775.500 --> 834.400) of 6100 total.
+[112.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[112.36] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[112.36] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
+[112.36] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[113.15] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[113.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[113.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[114.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (834.400 --> 893.300) of 6100 total.
+[114.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[114.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (893.300 --> 695.300) of 6100 total.
+[114.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:523.8, AfterAttackerMods:550.0, AfterResistances:550.0, AfterTargetMods:605.0, AfterOutcome:1246.3, AfterPostOutcome:1246.3
+[114.00] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
+[114.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
+[114.00] [elemental-shaman (#1)] Casting {SpellID: 10605} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[114.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Crit for 1246.266 damage (SpellSchool: 8). (Threat: 1246.266)
+[114.76] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (695.300 --> 754.300) of 6100 total.
+[114.79] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[114.79] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
+[114.79] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:0.0, AfterPostOutcome:0.0
+[115.50] [elemental-shaman (#1)] Completed cast {SpellID: 10605}
+[115.50] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:382.7, AfterAttackerMods:401.8, AfterResistances:401.8, AfterTargetMods:442.0, AfterOutcome:442.0, AfterPostOutcome:442.0
+[115.50] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} Hit for 442.032 damage (SpellSchool: 8). (Threat: 442.032)
+[115.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
+[115.50] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
 [115.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[116.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (452.800 --> 511.700) of 6100 total.
-[116.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[116.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[116.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Hit for 437.240 damage (SpellSchool: 8). (Threat: 437.240)
-[116.29] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[116.29] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[116.29] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[117.08] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[115.51] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (754.300 --> 813.300) of 6100 total.
+[115.58] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Miss (SpellSchool: 4). (Threat: 0.000)
+[116.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (813.300 --> 872.200) of 6100 total.
+[116.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:231.7, AfterPostOutcome:231.7
+[116.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 231.665 damage (SpellSchool: 4). (Threat: 231.665)
+[117.22] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[117.22] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
+[117.22] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:142.4, AfterPostOutcome:142.4
 [117.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[117.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (511.700 --> 313.700) of 6100 total.
-[117.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:505.0, AfterAttackerMods:530.3, AfterResistances:530.3, AfterTargetMods:583.3, AfterOutcome:583.3, AfterPostOutcome:583.3
-[117.50] [elemental-shaman (#1)] Casting {SpellID: 1238300} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[118.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (313.700 --> 372.600) of 6100 total.
-[118.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 583.285 damage (SpellSchool: 8). (Threat: 583.285)
-[118.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (372.600 --> 431.600) of 6100 total.
-[118.72] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[118.72] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[118.72] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:31.4, AfterTargetMods:34.6, AfterOutcome:34.6, AfterPostOutcome:34.6
-[119.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
-[119.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
-[119.50] [elemental-shaman (#1)] Completed cast {SpellID: 1238300}
-[119.50] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1238300} (431.600 --> 193.100) of 6100 total.
-[119.50] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:564.6, AfterAttackerMods:779.2, AfterResistances:779.2, AfterTargetMods:857.1, AfterOutcome:857.1, AfterPostOutcome:857.1
-[119.50] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[119.51] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (50% Resist) for 34.555 damage (SpellSchool: 4). (Threat: 34.555)
-[120.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (193.100 --> 252.000) of 6100 total.
-[120.25] [elemental-shaman (#1)] [Target 1] {SpellID: 1238300} Hit for 857.108 damage (SpellSchool: 4). (Threat: 857.108)
-[121.15] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[121.15] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[121.15] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[121.50] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[121.50] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (252.000 --> 198.000) of 6100 total.
-[121.50] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:372.3, AfterAttackerMods:390.9, AfterResistances:390.9, AfterTargetMods:430.0, AfterOutcome:885.7, AfterPostOutcome:885.7
-[121.50] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
-[121.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
-[121.50] [elemental-shaman (#1)] Casting {SpellID: 10605} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[121.94] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[122.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (198.000 --> 256.900) of 6100 total.
-[122.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:76.7, AfterTargetMods:84.3, AfterOutcome:84.3, AfterPostOutcome:84.3
-[122.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (25% Resist) for 84.344 damage (SpellSchool: 4). (Threat: 84.344)
-[122.25] [elemental-shaman (#1)] [Target 1] {SpellID: 915} Crit for 885.705 damage (SpellSchool: 8). (Threat: 885.705)
-[123.00] [elemental-shaman (#1)] Completed cast {SpellID: 10605}
-[123.00] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:382.4, AfterAttackerMods:401.5, AfterResistances:401.5, AfterTargetMods:441.7, AfterOutcome:909.8, AfterPostOutcome:909.8
-[123.00] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} Crit for 909.818 damage (SpellSchool: 8). (Threat: 909.818)
-[123.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
-[123.00] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
-[123.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[123.01] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (256.900 --> 315.900) of 6100 total.
-[123.58] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[123.58] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[123.58] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:31.4, AfterTargetMods:34.6, AfterOutcome:34.6, AfterPostOutcome:34.6
-[124.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (315.900 --> 374.800) of 6100 total.
-[124.37] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit (50% Resist) for 34.555 damage (SpellSchool: 4). (Threat: 34.555)
-[125.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:76.7, AfterTargetMods:84.3, AfterOutcome:84.3, AfterPostOutcome:84.3
-[125.00] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (25% Resist) for 84.344 damage (SpellSchool: 4). (Threat: 84.344)
-[125.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
-[125.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (374.800 --> 176.800) of 6100 total.
-[125.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:522.9, AfterAttackerMods:549.1, AfterResistances:274.5, AfterTargetMods:302.0, AfterOutcome:622.1, AfterPostOutcome:622.1
-[125.00] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[125.75] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Crit (50% Resist) for 622.113 damage (SpellSchool: 8). (Threat: 622.113)
-[126.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (176.800 --> 235.700) of 6100 total.
-[126.01] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[126.01] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
-[126.01] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
-[126.80] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
-[127.00] [elemental-shaman (#1)] Completed cast {SpellID: 915}
-[127.00] [elemental-shaman (#1)] Spent 54.000 mana from {SpellID: 915} (235.700 --> 181.700) of 6100 total.
-[127.00] [elemental-shaman (#1)] [Target 1] {SpellID: 915} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:376.9, AfterAttackerMods:395.8, AfterResistances:296.8, AfterTargetMods:326.5, AfterOutcome:326.5, AfterPostOutcome:326.5
-[127.00] [elemental-shaman (#1)] Casting {SpellID: 915} (Cost = 54.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[117.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (872.200 --> 674.200) of 6100 total.
+[117.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:503.7, AfterAttackerMods:528.9, AfterResistances:396.7, AfterTargetMods:436.3, AfterOutcome:436.3, AfterPostOutcome:436.3
+[117.50] [elemental-shaman (#1)] Casting {SpellID: 1326047} (Cost = 238.500, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[118.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (674.200 --> 733.100) of 6100 total.
+[118.01] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 142.368 damage (SpellSchool: 4). (Threat: 142.368)
+[118.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit (25% Resist) for 436.347 damage (SpellSchool: 8). (Threat: 436.347)
+[119.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[119.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[119.50] [elemental-shaman (#1)] Completed cast {SpellID: 1326047}
+[119.50] [elemental-shaman (#1)] Spent 238.500 mana from {SpellID: 1326047} (733.100 --> 494.600) of 6100 total.
+[119.50] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:542.5, AfterAttackerMods:748.6, AfterResistances:748.6, AfterTargetMods:823.5, AfterOutcome:1696.4, AfterPostOutcome:1696.4
+[119.50] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
+[119.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
+[119.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 0.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[119.65] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[119.65] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
+[119.65] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[120.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (494.600 --> 553.500) of 6100 total.
+[120.25] [elemental-shaman (#1)] [Target 1] {SpellID: 1326047} Crit for 1696.435 damage (SpellSchool: 4). (Threat: 1696.435)
+[120.44] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[121.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[121.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:503.7, AfterAttackerMods:528.8, AfterResistances:528.8, AfterTargetMods:581.7, AfterOutcome:581.7, AfterPostOutcome:581.7
+[121.50] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
+[121.50] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
+[121.50] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[122.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (553.500 --> 612.400) of 6100 total.
+[122.08] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[122.08] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
+[122.08] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[122.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 581.731 damage (SpellSchool: 8). (Threat: 581.731)
+[122.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:76.7, AfterTargetMods:84.3, AfterOutcome:84.3, AfterPostOutcome:84.3
+[122.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (25% Resist) for 84.344 damage (SpellSchool: 4). (Threat: 84.344)
+[122.87] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[123.50] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[123.50] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (612.400 --> 414.400) of 6100 total.
+[123.50] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:510.3, AfterAttackerMods:535.8, AfterResistances:535.8, AfterTargetMods:589.4, AfterOutcome:1214.1, AfterPostOutcome:1214.1
+[123.50] [elemental-shaman (#1)] Casting {SpellID: 10605} (Cost = 283.500, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[124.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (414.400 --> 473.300) of 6100 total.
+[124.25] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} Crit for 1214.069 damage (SpellSchool: 8). (Threat: 1214.069)
+[124.26] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (473.300 --> 532.300) of 6100 total.
+[124.51] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[124.51] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
+[124.51] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:62.8, AfterTargetMods:69.1, AfterOutcome:69.1, AfterPostOutcome:69.1
+[125.00] [elemental-shaman (#1)] Completed cast {SpellID: 10605}
+[125.00] [elemental-shaman (#1)] Spent 283.500 mana from {SpellID: 10605} (532.300 --> 248.800) of 6100 total.
+[125.00] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:383.5, AfterAttackerMods:402.6, AfterResistances:402.6, AfterTargetMods:442.9, AfterOutcome:442.9, AfterPostOutcome:442.9
+[125.00] [elemental-shaman (#1)] [Target 1] {SpellID: 10605} Hit for 442.887 damage (SpellSchool: 8). (Threat: 442.887)
+[125.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 198.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[125.01] [elemental-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (248.800 --> 307.800) of 6100 total.
+[125.30] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 69.111 damage (SpellSchool: 4). (Threat: 69.111)
+[125.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:88.9, AfterAttackerMods:102.2, AfterResistances:102.2, AfterTargetMods:112.5, AfterOutcome:112.5, AfterPostOutcome:112.5
+[125.50] [elemental-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 112.459 damage (SpellSchool: 4). (Threat: 112.459)
+[126.00] [elemental-shaman (#1)] Gained 58.900 mana from {OtherID: 2, Tag: 1} (307.800 --> 366.700) of 6100 total.
+[126.94] [elemental-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[126.94] [elemental-shaman (#1)] Completed cast {SpellID: 10436}
+[126.94] [elemental-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 449.0, BaseDamage:54.6, AfterAttackerMods:62.8, AfterResistances:31.4, AfterTargetMods:34.6, AfterOutcome:71.2, AfterPostOutcome:71.2
+[127.00] [elemental-shaman (#1)] Completed cast {SpellID: 15208}
+[127.00] [elemental-shaman (#1)] Spent 198.000 mana from {SpellID: 15208} (366.700 --> 168.700) of 6100 total.
+[127.00] [elemental-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 456.0, RAP: 40.0, SP: 439.0, BaseDamage:505.8, AfterAttackerMods:531.1, AfterResistances:531.1, AfterTargetMods:584.2, AfterOutcome:584.2, AfterPostOutcome:584.2
+[127.00] [elemental-shaman (#1)] Aura gained: {SpellID: 16246}
+[127.00] [elemental-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
+[127.00] [elemental-shaman (#1)] Casting {SpellID: 15208} (Cost = 0.000, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
+[127.25] [elemental-shaman (#1)] Aura faded: {SpellID: 16246}
+[127.25] [elemental-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
 [127.25] [elemental-shaman (#1)] Aura faded: {SpellID: 10494, Tag: -1}
 [127.25] [elemental-shaman (#1)] Aura faded: {SpellID: 24907, Tag: -1}
 [127.25] [elemental-shaman (#1)] Aura faded: {SpellID: 23028, Tag: -1}

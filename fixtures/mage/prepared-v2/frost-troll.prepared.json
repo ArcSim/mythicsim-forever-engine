@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "d26b1678bc097dc42bc9af6013325b7b557374bd10e395fcc59672a525235f17",
+  "request_sha256": "0d599b77f86c62b5ffe962e4de91af3be834d0aa509a1665e8a3c70010aa86c8",
   "scenario_id": "frost-troll",
   "sim": {
     "iterations": 3000,
@@ -1184,7 +1184,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "05020500300001-03-0555000301001301251",
+    "talents_string": "05012050030000-03-0555000301001301251",
     "talents": {
       "arcane_concentration": 5,
       "arcane_focus": 5,
@@ -5862,11 +5862,12 @@
       "trigger_aura": "Arcane Concentration"
     },
     {
-      "arcane_blast_chance": 0.4,
+      "arcane_blast_chance": 0.2,
       "aura": "Missile Barrage",
-      "bolt_chance": 0.2,
+      "bolt_chance": 0.1,
       "cost_percent_add": -1,
       "kind": "missile_barrage",
+      "missile_chance": 0.05,
       "rng_label": "Missile Barrage",
       "tick_length_delta_ns": -500000000,
       "trigger_aura": "Missile Barrage Trigger"
@@ -5884,7 +5885,7 @@
     },
     {
       "aura": "Winter's Chill",
-      "crit_per_stack": 2,
+      "damage_per_stack": 0.05,
       "duration_ns": 15000000000,
       "kind": "winters_chill",
       "max_stacks": 5,
@@ -5909,7 +5910,6 @@
       "spell_id": 12051
     },
     {
-      "arcane_blast_bonus_per_stack": 0.15,
       "kind": "arcane_missiles",
       "ranks": [
         {

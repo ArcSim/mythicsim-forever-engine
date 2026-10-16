@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "82cb3f5016640bbdfdfa23388f7f39fde81d0bfd75faa2f4f8bc81286d70d158",
+  "request_sha256": "291f6763724bfa9ef0235d8121f8b84308726933de410d203e47c68dd420648d",
   "scenario_id": "affliction-warlock-3-targets-rain-of-fire",
   "sim": {
     "iterations": 3000,
@@ -995,15 +995,16 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "0555002013520005--0550005003",
+    "talents_string": "0552032013520005--0550005003",
     "talents": {
       "agonizing_flames": 3,
       "amplify_curse": 1,
       "bane": 5,
+      "grim_reach": 2,
       "improved_bane_of_agony": 2,
       "improved_corruption": 5,
+      "improved_drains": 3,
       "improved_shadow_bolt": 5,
-      "malediction": 5,
       "malevolence": 5,
       "nightfall": 2,
       "pandemic": 3,
@@ -1805,7 +1806,7 @@
           "base_tick_count": 5,
           "base_tick_length_ns": 1000000000,
           "bonus_coefficient": 0.10000000149011612,
-          "periodic_damage_multiplier": 1,
+          "periodic_damage_multiplier": 1.2,
           "base_duration_multiplier": 1,
           "base_duration_flat_ns": 0,
           "affected_by_cast_speed": true,

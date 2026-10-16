@@ -16,14 +16,14 @@
 [0.00] [shadow-priest (#1) - Shadowfiend] {"Strength": 153.000,"Agility": 108.000,"Stamina": 297.000,"Intellect": 175.000,"Spirit": 122.000,"AttackPower": 286.000,"Armor": 5506.000,"Health": 2790.000,"MP5": 30.000,}
 [-3.00] [shadow-priest (#1)] Casting {SpellID: 15473} (Cost = 533.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [-3.00] [shadow-priest (#1)] Completed cast {SpellID: 15473}
-[-3.00] [shadow-priest (#1)] Spent 533.500 mana from {SpellID: 15473} (6751.000 --> 6217.500) of 6751 total.
+[-3.00] [shadow-priest (#1)] Spent 533.500 mana from {SpellID: 15473} (6601.000 --> 6067.500) of 6601 total.
 [-3.00] [shadow-priest (#1)] Aura gained: {SpellID: 15473}
 [-1.50] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[-1.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6217.500 --> 6284.675) of 6751 total.
+[-1.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6067.500 --> 6134.675) of 6601 total.
 [0.00] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[0.00] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6284.675 --> 6109.675) of 6751 total.
+[0.00] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6134.675 --> 5959.675) of 6601 total.
 [0.00] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:722.7, AfterAttackerMods:874.4, AfterResistances:437.2, AfterTargetMods:480.9, AfterOutcome:480.9, AfterPostOutcome:480.9
-[0.00] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit (50% Resist) for 480.939 damage (SpellSchool: 32). (Threat: 269.326)
+[0.00] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit (50% Resist) for 480.939 damage (SpellSchool: 32). (Threat: 336.657)
 [0.00] [Target 1] Aura gained: {SpellID: 15258}
 [0.00] [Target 1] {SpellID: 15258} stacks: 0 --> 1
 [0.00] [shadow-priest (#1)] Casting {ItemID: 272439} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
@@ -33,188 +33,196 @@
 [0.00] [shadow-priest (#1)] Major cooldown used: {ItemID: 272439}
 [0.00] [shadow-priest (#1)] Casting {SpellID: 10894} (Cost = 227.950, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [0.00] [shadow-priest (#1)] Completed cast {SpellID: 10894}
-[0.00] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (6109.675 --> 5881.725) of 6751 total.
+[0.00] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (5959.675 --> 5731.725) of 6601 total.
 [0.00] [Target 1] Aura gained: {SpellID: 10894}
 [0.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [0.00] [Target 1] Aura refreshed: {SpellID: 15258}
 [0.00] [Target 1] {SpellID: 15258} stacks: 1 --> 2
-[0.01] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5881.725 --> 5940.725) of 6751 total.
+[0.01] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5731.725 --> 5790.725) of 6601 total.
+[0.01] [shadow-priest (#1)] Aura gained: {SpellID: 1326168}
 [0.01] [shadow-priest (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [0.01] [shadow-priest (#1)] Completed cast {SpellID: 1260198}
 [0.01] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:176.4, AfterTargetMods:176.4, AfterOutcome:176.4, AfterPostOutcome:183.4
 [0.01] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 183.404 damage (SpellSchool: 32). (Threat: 183.404)
 [0.01] [shadow-priest (#1)] Gained 183.404 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
-[0.01] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5940.725 --> 5999.725) of 6751 total.
-[1.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (5999.725 --> 6076.775) of 6751 total.
+[0.01] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5790.725 --> 5849.725) of 6601 total.
+[1.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (5849.725 --> 5929.025) of 6601 total.
 [1.50] [shadow-priest (#1)] Casting {SpellID: 19280} (Cost = 231.475, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [1.50] [shadow-priest (#1)] Completed cast {SpellID: 19280}
-[1.50] [shadow-priest (#1)] Spent 231.475 mana from {SpellID: 19280} (6076.775 --> 5845.300) of 6751 total.
+[1.50] [shadow-priest (#1)] Spent 231.475 mana from {SpellID: 19280} (5929.025 --> 5697.550) of 6601 total.
 [1.50] [Target 1] Aura gained: {SpellID: 19280}
 [1.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [1.50] [Target 1] Aura refreshed: {SpellID: 15258}
 [1.50] [Target 1] {SpellID: 15258} stacks: 2 --> 3
-[1.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5845.300 --> 5904.300) of 6751 total.
-[3.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (5904.300 --> 5981.350) of 6751 total.
+[1.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5697.550 --> 5756.550) of 6601 total.
+[3.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (5756.550 --> 5835.850) of 6601 total.
 [3.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:226.2, AfterTargetMods:248.8, AfterOutcome:248.8, AfterPostOutcome:263.8
-[3.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 263.764 damage (SpellSchool: 32). (Threat: 147.708)
+[3.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 263.764 damage (SpellSchool: 32). (Threat: 184.635)
 [3.00] [shadow-priest (#1)] Casting {SpellID: 1309636} (Cost = 170.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [3.00] [shadow-priest (#1)] Completed cast {SpellID: 1309636}
-[3.00] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (5981.350 --> 5811.350) of 6751 total.
+[3.00] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (5835.850 --> 5665.850) of 6601 total.
 [3.00] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:683.5, AfterAttackerMods:868.4, AfterResistances:868.4, AfterTargetMods:955.3, AfterOutcome:0.0, AfterPostOutcome:0.0
 [3.00] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Miss (SpellSchool: 32). (Threat: 0.000)
 [4.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:238.8
-[4.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 238.802 damage (SpellSchool: 32). (Threat: 133.729)
+[4.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 238.802 damage (SpellSchool: 32). (Threat: 167.162)
 [4.50] [shadow-priest (#1)] Gained 238.802 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [4.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [4.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[4.50] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5811.350 --> 5708.850) of 6751 total.
+[4.50] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5665.850 --> 5563.350) of 6601 total.
 [4.50] [Target 1] Aura gained: {SpellID: 18807}
 [4.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [4.50] [Target 1] Aura refreshed: {SpellID: 15258}
 [4.50] [Target 1] {SpellID: 15258} stacks: 3 --> 4
-[4.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5708.850 --> 5767.850) of 6751 total.
-[5.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (5767.850 --> 5844.900) of 6751 total.
-[5.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:399.2
-[5.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 399.231 damage (SpellSchool: 32). (Threat: 223.570)
+[4.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5563.350 --> 5622.350) of 6601 total.
+[5.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (5622.350 --> 5701.650) of 6601 total.
+[5.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:335.4
+[5.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 335.354 damage (SpellSchool: 32). (Threat: 234.748)
 [6.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:358.3
-[6.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 358.321 damage (SpellSchool: 32). (Threat: 200.660)
-[6.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:399.2
-[6.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 399.231 damage (SpellSchool: 32). (Threat: 223.570)
+[6.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 358.321 damage (SpellSchool: 32). (Threat: 250.824)
+[6.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:335.4
+[6.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 402.425 damage (SpellSchool: 32). (Threat: 234.748)
 [6.50] [Target 1] Aura faded: {SpellID: 18807}
 [6.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [6.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [6.60] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[7.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (5844.900 --> 5921.950) of 6751 total.
+[7.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (5701.650 --> 5780.950) of 6601 total.
 [7.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:243.3
-[7.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 243.308 damage (SpellSchool: 32). (Threat: 136.252)
+[7.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 243.308 damage (SpellSchool: 32). (Threat: 170.316)
 [7.50] [shadow-priest (#1)] Gained 243.308 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [8.10] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[8.10] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5921.950 --> 5746.950) of 6751 total.
+[8.10] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5780.950 --> 5605.950) of 6601 total.
 [8.10] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:730.7, AfterAttackerMods:884.2, AfterResistances:884.2, AfterTargetMods:972.6, AfterOutcome:972.6, AfterPostOutcome:1050.4
-[8.10] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1050.383 damage (SpellSchool: 32). (Threat: 588.215)
+[8.10] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1050.383 damage (SpellSchool: 32). (Threat: 735.268)
 [8.10] [Target 1] Aura refreshed: {SpellID: 15258}
 [8.10] [Target 1] {SpellID: 15258} stacks: 4 --> 5
 [8.10] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [8.10] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[8.10] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5746.950 --> 5644.450) of 6751 total.
+[8.10] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5605.950 --> 5503.450) of 6601 total.
 [8.10] [Target 1] Aura gained: {SpellID: 18807}
 [8.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [8.10] [Target 1] Aura refreshed: {SpellID: 15258}
-[8.11] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5644.450 --> 5703.450) of 6751 total.
-[9.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (5703.450 --> 5780.500) of 6751 total.
+[8.11] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5503.450 --> 5562.450) of 6601 total.
+[8.11] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[9.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (5562.450 --> 5641.750) of 6601 total.
 [9.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:226.2, AfterTargetMods:248.8, AfterOutcome:248.8, AfterPostOutcome:273.7
-[9.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 153.282)
-[9.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[9.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[10.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[10.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[9.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 191.602)
+[9.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[9.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[10.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[10.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [10.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[10.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[10.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [10.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[11.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (5780.500 --> 5857.550) of 6751 total.
+[11.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (5641.750 --> 5721.050) of 6601 total.
 [11.10] [Target 1] Aura faded: {SpellID: 18807}
-[11.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[11.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[11.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[11.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [11.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[11.11] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [11.20] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [11.20] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[11.20] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5857.550 --> 5755.050) of 6751 total.
+[11.20] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5721.050 --> 5618.550) of 6601 total.
 [11.20] [Target 1] Aura gained: {SpellID: 18807}
 [11.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [11.20] [Target 1] Aura refreshed: {SpellID: 15258}
-[11.21] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5755.050 --> 5814.050) of 6751 total.
+[11.21] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5618.550 --> 5677.550) of 6601 total.
 [12.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[12.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
-[12.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[12.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[13.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (5814.050 --> 5891.100) of 6751 total.
-[13.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[13.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[12.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
+[12.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[12.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[13.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (5677.550 --> 5756.850) of 6601 total.
+[13.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[13.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [13.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:153.6, AfterTargetMods:169.0, AfterOutcome:169.0, AfterPostOutcome:185.9
-[13.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit (25% Resist) for 185.860 damage (SpellSchool: 32). (Threat: 104.082)
+[13.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit (25% Resist) for 185.860 damage (SpellSchool: 32). (Threat: 130.102)
 [13.50] [shadow-priest (#1)] Gained 185.860 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [14.20] [Target 1] Aura faded: {SpellID: 18807}
-[14.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:739.3, AfterPostOutcome:813.2
-[14.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 813.249 damage (SpellSchool: 32). (Threat: 455.419)
+[14.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:621.0, AfterPostOutcome:683.1
+[14.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 956.381 damage (SpellSchool: 32). (Threat: 478.190)
 [14.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[14.21] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [14.30] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [15.00] [shadow-priest (#1)] Aura faded: {ItemID: 272439}
 [15.00] [shadow-priest (#1)] Lost {"Spirit": 72.000,} from fading {ItemID: 272439}.
-[15.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5891.100 --> 5958.275) of 6751 total.
+[15.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5756.850 --> 5825.775) of 6601 total.
 [15.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[15.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[15.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [15.80] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[15.80] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5958.275 --> 5783.275) of 6751 total.
+[15.80] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5825.775 --> 5650.775) of 6601 total.
 [15.80] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:728.3, AfterAttackerMods:881.2, AfterResistances:881.2, AfterTargetMods:969.4, AfterOutcome:969.4, AfterPostOutcome:1066.3
-[15.80] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1066.294 damage (SpellSchool: 32). (Threat: 597.125)
+[15.80] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1066.294 damage (SpellSchool: 32). (Threat: 746.406)
 [15.80] [Target 1] Aura refreshed: {SpellID: 15258}
 [15.80] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [15.80] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[15.80] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5783.275 --> 5680.775) of 6751 total.
+[15.80] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5650.775 --> 5548.275) of 6601 total.
 [15.80] [Target 1] Aura gained: {SpellID: 18807}
 [15.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [15.80] [Target 1] Aura refreshed: {SpellID: 15258}
-[15.81] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5680.775 --> 5739.775) of 6751 total.
+[15.81] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[15.81] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5548.275 --> 5607.275) of 6601 total.
 [16.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[16.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[16.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [16.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[16.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[16.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[17.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5739.775 --> 5806.950) of 6751 total.
-[17.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[17.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[16.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[16.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[17.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5607.275 --> 5676.200) of 6601 total.
+[17.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[17.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [18.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[18.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[18.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [18.80] [Target 1] Aura faded: {SpellID: 18807}
-[18.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[18.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[18.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[18.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [18.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[18.81] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [18.90] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [18.90] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[18.90] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5806.950 --> 5704.450) of 6751 total.
+[18.90] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5676.200 --> 5573.700) of 6601 total.
 [18.90] [Target 1] Aura gained: {SpellID: 18807}
 [18.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [18.90] [Target 1] Aura refreshed: {SpellID: 15258}
-[18.91] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5704.450 --> 5763.450) of 6751 total.
-[19.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5763.450 --> 5830.625) of 6751 total.
+[18.91] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5573.700 --> 5632.700) of 6601 total.
+[19.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5632.700 --> 5701.625) of 6601 total.
 [19.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[19.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[19.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [19.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[19.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[19.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[20.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:739.3, AfterPostOutcome:813.2
-[20.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 813.249 damage (SpellSchool: 32). (Threat: 455.419)
-[21.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5830.625 --> 5897.800) of 6751 total.
+[19.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[19.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[20.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:621.0, AfterPostOutcome:683.1
+[20.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 819.755 damage (SpellSchool: 32). (Threat: 478.190)
+[21.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5701.625 --> 5770.550) of 6601 total.
 [21.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[21.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[21.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [21.90] [Target 1] Aura faded: {SpellID: 18807}
-[21.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[21.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[21.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[21.90] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [21.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[21.91] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [22.00] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [22.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:102.4, AfterTargetMods:112.6, AfterOutcome:112.6, AfterPostOutcome:123.9
-[22.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit (50% Resist) for 123.907 damage (SpellSchool: 32). (Threat: 69.388)
+[22.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit (50% Resist) for 123.907 damage (SpellSchool: 32). (Threat: 86.735)
 [22.50] [shadow-priest (#1)] Gained 123.907 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[23.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5897.800 --> 5964.975) of 6751 total.
+[23.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5770.550 --> 5839.475) of 6601 total.
 [23.50] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[23.50] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5964.975 --> 5789.975) of 6751 total.
+[23.50] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5839.475 --> 5664.475) of 6601 total.
 [23.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:720.1, AfterAttackerMods:871.3, AfterResistances:871.3, AfterTargetMods:958.5, AfterOutcome:958.5, AfterPostOutcome:1054.3
-[23.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1054.321 damage (SpellSchool: 32). (Threat: 590.420)
+[23.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1054.321 damage (SpellSchool: 32). (Threat: 738.025)
 [23.50] [Target 1] Aura refreshed: {SpellID: 15258}
 [23.50] [shadow-priest (#1)] Casting {SpellID: 1309636} (Cost = 170.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [23.50] [shadow-priest (#1)] Completed cast {SpellID: 1309636}
-[23.50] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (5789.975 --> 5619.975) of 6751 total.
+[23.50] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (5664.475 --> 5494.475) of 6601 total.
 [23.50] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:701.1, AfterAttackerMods:890.7, AfterResistances:890.7, AfterTargetMods:979.8, AfterOutcome:979.8, AfterPostOutcome:1077.8
-[23.50] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 1077.761 damage (SpellSchool: 32). (Threat: 603.546)
+[23.50] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 1077.761 damage (SpellSchool: 32). (Threat: 754.433)
 [23.50] [Target 1] Aura refreshed: {SpellID: 15258}
-[23.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5619.975 --> 5678.975) of 6751 total.
+[23.51] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[23.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5494.475 --> 5553.475) of 6601 total.
 [24.00] [Target 1] Aura faded: {SpellID: 10894}
 [24.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:226.2, AfterTargetMods:248.8, AfterOutcome:248.8, AfterPostOutcome:273.7
-[24.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 153.282)
-[25.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5678.975 --> 5746.150) of 6751 total.
+[24.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 191.602)
+[25.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5553.475 --> 5622.400) of 6601 total.
 [25.00] [shadow-priest (#1)] Casting {SpellID: 10894} (Cost = 227.950, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [25.00] [shadow-priest (#1)] Completed cast {SpellID: 10894}
-[25.00] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (5746.150 --> 5518.200) of 6751 total.
+[25.00] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (5622.400 --> 5394.450) of 6601 total.
 [25.00] [Target 1] Aura gained: {SpellID: 10894}
 [25.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [25.00] [Target 1] Aura refreshed: {SpellID: 15258}
@@ -225,187 +233,192 @@
 [25.01] [shadow-priest (#1)] Gained 193.985 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
 [25.50] [Target 1] Aura faded: {SpellID: 19280}
 [25.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[25.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[25.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [25.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [26.50] [shadow-priest (#1)] Casting {SpellID: 19280} (Cost = 231.475, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [26.50] [shadow-priest (#1)] Completed cast {SpellID: 19280}
-[26.50] [shadow-priest (#1)] Spent 231.475 mana from {SpellID: 19280} (5518.200 --> 5286.725) of 6751 total.
+[26.50] [shadow-priest (#1)] Spent 231.475 mana from {SpellID: 19280} (5394.450 --> 5162.975) of 6601 total.
 [26.50] [Target 1] Aura gained: {SpellID: 19280}
 [26.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [26.50] [Target 1] Aura refreshed: {SpellID: 15258}
-[27.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5286.725 --> 5353.900) of 6751 total.
+[27.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5162.975 --> 5231.900) of 6601 total.
 [28.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[28.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
-[28.00] [shadow-priest (#1)] Casting {ItemID: 12662} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[28.00] [shadow-priest (#1)] Completed cast {ItemID: 12662}
-[28.00] [shadow-priest (#1)] Gained 1200.000 mana from {ItemID: 12662} (5353.900 --> 6553.900) of 6751 total.
-[28.00] [shadow-priest (#1)] Major cooldown used: {ItemID: 12662}
+[28.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [28.00] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [28.00] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[28.00] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6553.900 --> 6451.400) of 6751 total.
+[28.00] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5231.900 --> 5129.400) of 6601 total.
 [28.00] [Target 1] Aura gained: {SpellID: 18807}
 [28.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [28.00] [Target 1] Aura refreshed: {SpellID: 15258}
-[28.01] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6451.400 --> 6510.400) of 6751 total.
-[29.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6510.400 --> 6577.575) of 6751 total.
-[29.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[29.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[29.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:450.6, AfterPostOutcome:495.6
-[29.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Crit for 495.627 damage (SpellSchool: 32). (Threat: 277.551)
-[29.50] [shadow-priest (#1)] Gained 495.627 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[30.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[30.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[28.01] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5129.400 --> 5188.400) of 6601 total.
+[29.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5188.400 --> 5257.325) of 6601 total.
+[29.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[29.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[29.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
+[29.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
+[29.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
+[30.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:621.0, AfterPostOutcome:683.1
+[30.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 819.755 damage (SpellSchool: 32). (Threat: 478.190)
 [30.00] [Target 1] Aura faded: {SpellID: 18807}
 [30.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [30.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [30.10] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[31.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6577.575 --> 6644.750) of 6751 total.
+[31.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5257.325 --> 5326.250) of 6601 total.
 [31.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[31.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[31.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [31.60] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[31.60] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6644.750 --> 6469.750) of 6751 total.
-[31.60] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:719.0, AfterAttackerMods:870.0, AfterResistances:870.0, AfterTargetMods:957.0, AfterOutcome:957.0, AfterPostOutcome:1052.6
-[31.60] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1052.645 damage (SpellSchool: 32). (Threat: 589.481)
+[31.60] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5326.250 --> 5151.250) of 6601 total.
+[31.60] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:738.8, AfterAttackerMods:894.0, AfterResistances:894.0, AfterTargetMods:983.4, AfterOutcome:983.4, AfterPostOutcome:1081.7
+[31.60] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1081.750 damage (SpellSchool: 32). (Threat: 757.225)
 [31.60] [Target 1] Aura refreshed: {SpellID: 15258}
+[31.60] [shadow-priest (#1)] Casting {ItemID: 12662} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[31.60] [shadow-priest (#1)] Completed cast {ItemID: 12662}
+[31.60] [shadow-priest (#1)] Gained 1200.000 mana from {ItemID: 12662} (5151.250 --> 6351.250) of 6601 total.
+[31.60] [shadow-priest (#1)] Major cooldown used: {ItemID: 12662}
 [31.60] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [31.60] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[31.60] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6469.750 --> 6367.250) of 6751 total.
+[31.60] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6351.250 --> 6248.750) of 6601 total.
 [31.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Miss (SpellSchool: 32). (Threat: 0.000)
-[31.61] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6367.250 --> 6426.250) of 6751 total.
+[31.61] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [32.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[32.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[32.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [32.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[33.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6426.250 --> 6493.425) of 6751 total.
+[33.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (6248.750 --> 6317.675) of 6601 total.
 [33.10] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [33.10] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[33.10] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6493.425 --> 6390.925) of 6751 total.
+[33.10] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6317.675 --> 6215.175) of 6601 total.
 [33.10] [Target 1] Aura gained: {SpellID: 18807}
 [33.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [33.10] [Target 1] Aura refreshed: {SpellID: 15258}
-[33.11] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6390.925 --> 6449.925) of 6751 total.
+[33.11] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6215.175 --> 6274.175) of 6601 total.
 [34.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:226.2, AfterTargetMods:248.8, AfterOutcome:497.7, AfterPostOutcome:547.4
-[34.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Crit (25% Resist) for 547.434 damage (SpellSchool: 32). (Threat: 306.563)
-[34.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[34.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[35.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6449.925 --> 6517.100) of 6751 total.
-[35.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:739.3, AfterPostOutcome:813.2
-[35.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 813.249 damage (SpellSchool: 32). (Threat: 455.419)
+[34.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Crit (25% Resist) for 547.434 damage (SpellSchool: 32). (Threat: 383.204)
+[34.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[34.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[35.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (6274.175 --> 6343.100) of 6601 total.
+[35.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:621.0, AfterPostOutcome:683.1
+[35.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 819.755 damage (SpellSchool: 32). (Threat: 478.190)
 [35.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[35.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[35.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [35.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [36.10] [Target 1] Aura faded: {SpellID: 18807}
-[36.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[36.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[36.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[36.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [36.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[36.11] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [36.20] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [36.20] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[36.20] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6517.100 --> 6414.600) of 6751 total.
+[36.20] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6343.100 --> 6240.600) of 6601 total.
 [36.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Miss (SpellSchool: 32). (Threat: 0.000)
-[37.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6414.600 --> 6481.775) of 6751 total.
+[37.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (6240.600 --> 6309.525) of 6601 total.
 [37.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[37.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[37.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [37.70] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [38.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[38.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[38.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [38.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[39.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6481.775 --> 6548.950) of 6751 total.
+[39.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (6309.525 --> 6378.450) of 6601 total.
 [39.20] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[39.20] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6548.950 --> 6373.950) of 6751 total.
+[39.20] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6378.450 --> 6203.450) of 6601 total.
 [39.20] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:718.4, AfterAttackerMods:869.2, AfterResistances:869.2, AfterTargetMods:956.2, AfterOutcome:956.2, AfterPostOutcome:1051.8
-[39.20] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1051.771 damage (SpellSchool: 32). (Threat: 588.992)
+[39.20] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1051.771 damage (SpellSchool: 32). (Threat: 736.239)
 [39.20] [Target 1] Aura refreshed: {SpellID: 15258}
 [39.20] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [39.20] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[39.20] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6373.950 --> 6271.450) of 6751 total.
+[39.20] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6203.450 --> 6100.950) of 6601 total.
 [39.20] [Target 1] Aura gained: {SpellID: 18807}
 [39.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [39.20] [Target 1] Aura refreshed: {SpellID: 15258}
-[39.21] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6271.450 --> 6330.450) of 6751 total.
+[39.21] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[39.21] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6100.950 --> 6159.950) of 6601 total.
 [40.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:150.8, AfterTargetMods:165.9, AfterOutcome:165.9, AfterPostOutcome:182.5
-[40.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (50% Resist) for 182.478 damage (SpellSchool: 32). (Threat: 102.188)
-[40.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[40.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[41.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6330.450 --> 6397.625) of 6751 total.
-[41.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[41.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[40.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (50% Resist) for 182.478 damage (SpellSchool: 32). (Threat: 127.735)
+[40.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[40.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[41.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (6159.950 --> 6228.875) of 6601 total.
+[41.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[41.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [41.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[41.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[41.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [41.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [42.20] [Target 1] Aura faded: {SpellID: 18807}
-[42.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[42.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[42.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[42.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [42.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[42.21] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [42.30] [shadow-priest (#1)] Casting {SpellID: 1309636} (Cost = 170.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [42.30] [shadow-priest (#1)] Completed cast {SpellID: 1309636}
-[42.30] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (6397.625 --> 6227.625) of 6751 total.
+[42.30] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (6228.875 --> 6058.875) of 6601 total.
 [42.30] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:693.1, AfterAttackerMods:880.6, AfterResistances:880.6, AfterTargetMods:968.7, AfterOutcome:968.7, AfterPostOutcome:1065.5
-[42.30] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 1065.550 damage (SpellSchool: 32). (Threat: 596.708)
+[42.30] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 1065.550 damage (SpellSchool: 32). (Threat: 745.885)
 [42.30] [Target 1] Aura refreshed: {SpellID: 15258}
-[43.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6227.625 --> 6294.800) of 6751 total.
+[43.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (6058.875 --> 6127.800) of 6601 total.
 [43.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[43.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[43.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [43.80] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [43.80] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[43.80] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6294.800 --> 6192.300) of 6751 total.
+[43.80] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6127.800 --> 6025.300) of 6601 total.
 [43.80] [Target 1] Aura gained: {SpellID: 18807}
 [43.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [43.80] [Target 1] Aura refreshed: {SpellID: 15258}
-[43.81] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6192.300 --> 6251.300) of 6751 total.
+[43.81] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6025.300 --> 6084.300) of 6601 total.
 [44.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[44.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[44.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [44.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[44.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[44.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[45.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6251.300 --> 6318.475) of 6751 total.
-[45.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[45.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[44.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[44.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[45.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (6084.300 --> 6153.225) of 6601 total.
+[45.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[45.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [45.80] [Target 1] Aura faded: {SpellID: 18807}
 [45.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [45.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [45.90] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [46.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[46.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
-[47.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6318.475 --> 6385.650) of 6751 total.
+[46.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
+[47.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (6153.225 --> 6222.150) of 6601 total.
 [47.40] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[47.40] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6385.650 --> 6210.650) of 6751 total.
+[47.40] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6222.150 --> 6047.150) of 6601 total.
 [47.40] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:722.3, AfterAttackerMods:874.0, AfterResistances:437.0, AfterTargetMods:480.7, AfterOutcome:480.7, AfterPostOutcome:528.7
-[47.40] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit (50% Resist) for 528.743 damage (SpellSchool: 32). (Threat: 296.096)
+[47.40] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit (50% Resist) for 528.743 damage (SpellSchool: 32). (Threat: 370.120)
 [47.40] [Target 1] Aura refreshed: {SpellID: 15258}
 [47.40] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [47.40] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[47.40] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6210.650 --> 6108.150) of 6751 total.
+[47.40] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6047.150 --> 5944.650) of 6601 total.
 [47.40] [Target 1] Aura gained: {SpellID: 18807}
 [47.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [47.40] [Target 1] Aura refreshed: {SpellID: 15258}
-[47.41] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6108.150 --> 6167.150) of 6751 total.
-[47.41] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6167.150 --> 6226.150) of 6751 total.
+[47.41] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5944.650 --> 6003.650) of 6601 total.
+[47.41] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[47.41] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6003.650 --> 6062.650) of 6601 total.
 [47.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:450.6, AfterPostOutcome:495.6
-[47.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Crit for 495.627 damage (SpellSchool: 32). (Threat: 277.551)
+[47.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Crit for 495.627 damage (SpellSchool: 32). (Threat: 346.939)
 [47.50] [shadow-priest (#1)] Gained 495.627 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[48.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[48.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[48.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[48.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
 [49.00] [Target 1] Aura faded: {SpellID: 10894}
 [49.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:226.2, AfterTargetMods:248.8, AfterOutcome:248.8, AfterPostOutcome:273.7
-[49.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 153.282)
-[49.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6226.150 --> 6293.325) of 6751 total.
-[49.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[49.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[49.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 191.602)
+[49.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (6062.650 --> 6131.575) of 6601 total.
+[49.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[49.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [50.40] [Target 1] Aura faded: {SpellID: 18807}
-[50.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[50.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[50.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[50.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [50.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[50.41] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [50.50] [Target 1] Aura faded: {SpellID: 19280}
 [50.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[50.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[50.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [50.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [50.50] [shadow-priest (#1)] Casting {SpellID: 10894} (Cost = 227.950, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [50.50] [shadow-priest (#1)] Completed cast {SpellID: 10894}
-[50.50] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (6293.325 --> 6065.375) of 6751 total.
+[50.50] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (6131.575 --> 5903.625) of 6601 total.
 [50.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} Miss (SpellSchool: 32). (Threat: 0.000)
-[51.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6065.375 --> 6132.550) of 6751 total.
+[51.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5903.625 --> 5972.550) of 6601 total.
 [52.00] [shadow-priest (#1)] Casting {SpellID: 10894} (Cost = 227.950, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [52.00] [shadow-priest (#1)] Completed cast {SpellID: 10894}
-[52.00] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (6132.550 --> 5904.600) of 6751 total.
+[52.00] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (5972.550 --> 5744.600) of 6601 total.
 [52.00] [Target 1] Aura gained: {SpellID: 10894}
 [52.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [52.00] [Target 1] Aura refreshed: {SpellID: 15258}
@@ -414,244 +427,253 @@
 [52.01] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:176.4, AfterTargetMods:176.4, AfterOutcome:176.4, AfterPostOutcome:194.0
 [52.01] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 193.985 damage (SpellSchool: 32). (Threat: 193.985)
 [52.01] [shadow-priest (#1)] Gained 193.985 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
-[53.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5904.600 --> 5971.775) of 6751 total.
+[53.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5744.600 --> 5813.525) of 6601 total.
 [53.50] [shadow-priest (#1)] Casting {SpellID: 19280} (Cost = 231.475, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [53.50] [shadow-priest (#1)] Completed cast {SpellID: 19280}
-[53.50] [shadow-priest (#1)] Spent 231.475 mana from {SpellID: 19280} (5971.775 --> 5740.300) of 6751 total.
+[53.50] [shadow-priest (#1)] Spent 231.475 mana from {SpellID: 19280} (5813.525 --> 5582.050) of 6601 total.
 [53.50] [Target 1] Aura gained: {SpellID: 19280}
 [53.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [53.50] [Target 1] Aura refreshed: {SpellID: 15258}
-[55.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5740.300 --> 5807.475) of 6751 total.
+[55.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5582.050 --> 5650.975) of 6601 total.
 [55.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[55.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[55.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [55.00] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [56.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[56.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[56.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [56.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [56.50] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[56.50] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5807.475 --> 5632.475) of 6751 total.
+[56.50] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5650.975 --> 5475.975) of 6601 total.
 [56.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:734.2, AfterAttackerMods:888.4, AfterResistances:888.4, AfterTargetMods:977.3, AfterOutcome:977.3, AfterPostOutcome:1075.0
-[56.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1074.979 damage (SpellSchool: 32). (Threat: 601.988)
+[56.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1074.979 damage (SpellSchool: 32). (Threat: 752.485)
 [56.50] [Target 1] Aura refreshed: {SpellID: 15258}
 [56.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [56.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[56.50] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5632.475 --> 5529.975) of 6751 total.
+[56.50] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5475.975 --> 5373.475) of 6601 total.
 [56.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Miss (SpellSchool: 32). (Threat: 0.000)
-[57.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5529.975 --> 5597.150) of 6751 total.
+[56.51] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[57.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5373.475 --> 5442.400) of 6601 total.
 [58.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[58.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[58.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [58.00] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [58.00] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[58.00] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5597.150 --> 5494.650) of 6751 total.
+[58.00] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5442.400 --> 5339.900) of 6601 total.
 [58.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Miss (SpellSchool: 32). (Threat: 0.000)
-[59.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5494.650 --> 5561.825) of 6751 total.
+[59.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5339.900 --> 5408.825) of 6601 total.
 [59.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[59.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[59.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [59.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [59.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [59.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[59.50] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5561.825 --> 5459.325) of 6751 total.
+[59.50] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5408.825 --> 5306.325) of 6601 total.
 [59.50] [Target 1] Aura gained: {SpellID: 18807}
 [59.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [59.50] [Target 1] Aura refreshed: {SpellID: 15258}
-[59.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5459.325 --> 5518.325) of 6751 total.
-[60.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[60.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[61.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5518.325 --> 5585.500) of 6751 total.
+[59.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5306.325 --> 5365.325) of 6601 total.
+[60.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[60.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[61.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5365.325 --> 5434.250) of 6601 total.
 [61.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[61.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
-[61.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[61.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[61.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
+[61.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[61.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [62.50] [Target 1] Aura faded: {SpellID: 18807}
-[62.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:739.3, AfterPostOutcome:813.2
-[62.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 813.249 damage (SpellSchool: 32). (Threat: 455.419)
+[62.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:621.0, AfterPostOutcome:683.1
+[62.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 956.381 damage (SpellSchool: 32). (Threat: 478.190)
 [62.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [62.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:450.6, AfterPostOutcome:495.6
-[62.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Crit for 495.627 damage (SpellSchool: 32). (Threat: 277.551)
+[62.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Crit for 495.627 damage (SpellSchool: 32). (Threat: 346.939)
 [62.50] [shadow-priest (#1)] Gained 495.627 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
+[62.51] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [62.60] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[63.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5585.500 --> 5652.675) of 6751 total.
+[63.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5434.250 --> 5503.175) of 6601 total.
 [64.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:226.2, AfterTargetMods:248.8, AfterOutcome:248.8, AfterPostOutcome:273.7
-[64.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 153.282)
+[64.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 191.602)
 [64.10] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[64.10] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5652.675 --> 5477.675) of 6751 total.
+[64.10] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5503.175 --> 5328.175) of 6601 total.
 [64.10] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:733.8, AfterAttackerMods:887.9, AfterResistances:887.9, AfterTargetMods:976.7, AfterOutcome:0.0, AfterPostOutcome:0.0
 [64.10] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Miss (SpellSchool: 32). (Threat: 0.000)
 [64.10] [shadow-priest (#1)] Casting {SpellID: 1309636} (Cost = 170.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [64.10] [shadow-priest (#1)] Completed cast {SpellID: 1309636}
-[64.10] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (5477.675 --> 5307.675) of 6751 total.
+[64.10] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (5328.175 --> 5158.175) of 6601 total.
 [64.10] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:684.0, AfterAttackerMods:869.0, AfterResistances:869.0, AfterTargetMods:955.9, AfterOutcome:955.9, AfterPostOutcome:1051.5
-[64.10] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 1051.500 damage (SpellSchool: 32). (Threat: 588.840)
+[64.10] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 1051.500 damage (SpellSchool: 32). (Threat: 736.050)
 [64.10] [Target 1] Aura refreshed: {SpellID: 15258}
-[65.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5307.675 --> 5374.850) of 6751 total.
+[64.11] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[65.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5158.175 --> 5227.100) of 6601 total.
 [65.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[65.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[65.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [65.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [65.60] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [65.60] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[65.60] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5374.850 --> 5272.350) of 6751 total.
+[65.60] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5227.100 --> 5124.600) of 6601 total.
 [65.60] [Target 1] Aura gained: {SpellID: 18807}
 [65.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [65.60] [Target 1] Aura refreshed: {SpellID: 15258}
-[65.61] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5272.350 --> 5331.350) of 6751 total.
-[66.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:739.3, AfterPostOutcome:813.2
-[66.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 813.249 damage (SpellSchool: 32). (Threat: 455.419)
-[67.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5331.350 --> 5398.525) of 6751 total.
+[65.61] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5124.600 --> 5183.600) of 6601 total.
+[66.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:621.0, AfterPostOutcome:683.1
+[66.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 683.129 damage (SpellSchool: 32). (Threat: 478.190)
+[67.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5183.600 --> 5252.525) of 6601 total.
 [67.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[67.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
-[67.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[67.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[67.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
+[67.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[67.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [68.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[68.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[68.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [68.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [68.60] [Target 1] Aura faded: {SpellID: 18807}
-[68.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[68.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[68.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[68.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [68.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[68.61] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [68.70] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [68.70] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[68.70] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5398.525 --> 5296.025) of 6751 total.
+[68.70] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5252.525 --> 5150.025) of 6601 total.
 [68.70] [Target 1] Aura gained: {SpellID: 18807}
 [68.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [68.70] [Target 1] Aura refreshed: {SpellID: 15258}
-[69.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5296.025 --> 5363.200) of 6751 total.
-[69.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[69.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[69.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5150.025 --> 5218.950) of 6601 total.
+[69.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[69.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
 [70.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[70.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
-[70.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[70.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[70.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
+[70.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[70.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [70.70] [Target 1] Aura faded: {SpellID: 18807}
 [70.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.80] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[71.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5363.200 --> 5430.375) of 6751 total.
+[71.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5218.950 --> 5287.875) of 6601 total.
 [71.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[71.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[71.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [71.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [72.30] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[72.30] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5430.375 --> 5255.375) of 6751 total.
+[72.30] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5287.875 --> 5112.875) of 6601 total.
 [72.30] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:740.0, AfterAttackerMods:895.4, AfterResistances:895.4, AfterTargetMods:984.9, AfterOutcome:1969.9, AfterPostOutcome:2166.9
-[72.30] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Crit for 2166.888 damage (SpellSchool: 32). (Threat: 1213.457)
+[72.30] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Crit for 2166.888 damage (SpellSchool: 32). (Threat: 1516.821)
 [72.30] [Target 1] Aura refreshed: {SpellID: 15258}
 [72.30] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [72.30] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[72.30] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5255.375 --> 5152.875) of 6751 total.
+[72.30] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5112.875 --> 5010.375) of 6601 total.
 [72.30] [Target 1] Aura gained: {SpellID: 18807}
 [72.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [72.30] [Target 1] Aura refreshed: {SpellID: 15258}
-[72.31] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5152.875 --> 5211.875) of 6751 total.
-[73.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5211.875 --> 5279.050) of 6751 total.
+[72.31] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5010.375 --> 5069.375) of 6601 total.
+[72.31] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[73.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5069.375 --> 5138.300) of 6601 total.
 [73.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[73.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
-[73.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:739.3, AfterPostOutcome:813.2
-[73.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 813.249 damage (SpellSchool: 32). (Threat: 455.419)
-[74.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[74.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[73.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
+[73.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:621.0, AfterPostOutcome:683.1
+[73.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 683.129 damage (SpellSchool: 32). (Threat: 478.190)
+[74.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[74.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [74.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[74.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[74.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [74.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[75.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5279.050 --> 5346.225) of 6751 total.
+[75.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5138.300 --> 5207.225) of 6601 total.
 [75.30] [Target 1] Aura faded: {SpellID: 18807}
-[75.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[75.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[75.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[75.30] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [75.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[75.31] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [75.40] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [75.40] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[75.40] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5346.225 --> 5243.725) of 6751 total.
+[75.40] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5207.225 --> 5104.725) of 6601 total.
 [75.40] [Target 1] Aura gained: {SpellID: 18807}
 [75.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [75.40] [Target 1] Aura refreshed: {SpellID: 15258}
 [76.00] [Target 1] Aura faded: {SpellID: 10894}
 [76.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:226.2, AfterTargetMods:248.8, AfterOutcome:248.8, AfterPostOutcome:273.7
-[76.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 153.282)
-[76.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:739.3, AfterPostOutcome:813.2
-[76.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 813.249 damage (SpellSchool: 32). (Threat: 455.419)
-[77.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5243.725 --> 5310.900) of 6751 total.
-[77.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[77.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[76.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 191.602)
+[76.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:621.0, AfterPostOutcome:683.1
+[76.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 683.129 damage (SpellSchool: 32). (Threat: 478.190)
+[77.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5104.725 --> 5173.650) of 6601 total.
+[77.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[77.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [77.50] [Target 1] Aura faded: {SpellID: 19280}
 [77.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[77.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[77.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [77.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [78.40] [Target 1] Aura faded: {SpellID: 18807}
-[78.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[78.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[78.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[78.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [78.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[78.41] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [78.50] [shadow-priest (#1)] Casting {SpellID: 10894} (Cost = 227.950, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [78.50] [shadow-priest (#1)] Completed cast {SpellID: 10894}
-[78.50] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (5310.900 --> 5082.950) of 6751 total.
+[78.50] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (5173.650 --> 4945.700) of 6601 total.
 [78.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} Miss (SpellSchool: 32). (Threat: 0.000)
-[79.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5082.950 --> 5150.125) of 6751 total.
+[79.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (4945.700 --> 5014.625) of 6601 total.
 [80.00] [shadow-priest (#1)] Casting {SpellID: 10894} (Cost = 227.950, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [80.00] [shadow-priest (#1)] Completed cast {SpellID: 10894}
-[80.00] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (5150.125 --> 4922.175) of 6751 total.
+[80.00] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (5014.625 --> 4786.675) of 6601 total.
 [80.00] [shadow-priest (#1)] [Target 1] {SpellID: 10894} Miss (SpellSchool: 32). (Threat: 0.000)
-[81.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (4922.175 --> 4989.350) of 6751 total.
+[81.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (4786.675 --> 4855.600) of 6601 total.
 [81.50] [shadow-priest (#1)] Casting {SpellID: 10894} (Cost = 227.950, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [81.50] [shadow-priest (#1)] Completed cast {SpellID: 10894}
-[81.50] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (4989.350 --> 4761.400) of 6751 total.
+[81.50] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (4855.600 --> 4627.650) of 6601 total.
 [81.50] [Target 1] Aura gained: {SpellID: 10894}
 [81.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [81.50] [Target 1] Aura refreshed: {SpellID: 15258}
-[81.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (4761.400 --> 4820.400) of 6751 total.
-[83.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (4820.400 --> 4887.575) of 6751 total.
+[81.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (4627.650 --> 4686.650) of 6601 total.
+[83.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (4686.650 --> 4755.575) of 6601 total.
 [83.00] [shadow-priest (#1)] Casting {SpellID: 1277328} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [83.00] [shadow-priest (#1)] Completed cast {SpellID: 1277328}
 [83.00] [shadow-priest (#1)] Aura gained: {SpellID: 1277328}
 [83.00] [shadow-priest (#1)] Major cooldown used: {SpellID: 1277328}
 [84.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[84.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[84.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [84.50] [shadow-priest (#1)] Casting {SpellID: 19280} (Cost = 231.475, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [84.50] [shadow-priest (#1)] Completed cast {SpellID: 19280}
-[84.50] [shadow-priest (#1)] Spent 231.475 mana from {SpellID: 19280} (4887.575 --> 4656.100) of 6751 total.
+[84.50] [shadow-priest (#1)] Spent 231.475 mana from {SpellID: 19280} (4755.575 --> 4524.100) of 6601 total.
 [84.50] [Target 1] Aura gained: {SpellID: 19280}
 [84.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [84.50] [Target 1] Aura refreshed: {SpellID: 15258}
-[85.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (4656.100 --> 4723.275) of 6751 total.
-[86.00] [shadow-priest (#1)] Gained 365.000 mana from {SpellID: 1277328} (4723.275 --> 5088.275) of 6751 total.
+[85.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (4524.100 --> 4593.025) of 6601 total.
+[86.00] [shadow-priest (#1)] Gained 367.800 mana from {SpellID: 1277328} (4593.025 --> 4960.825) of 6601 total.
 [86.00] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[87.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5088.275 --> 5155.450) of 6751 total.
+[87.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (4960.825 --> 5029.750) of 6601 total.
 [87.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[87.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[87.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [87.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[87.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[87.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [87.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [87.50] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[87.50] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5155.450 --> 4980.450) of 6751 total.
+[87.50] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5029.750 --> 4854.750) of 6601 total.
 [87.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:738.6, AfterAttackerMods:893.7, AfterResistances:893.7, AfterTargetMods:983.1, AfterOutcome:983.1, AfterPostOutcome:1081.4
-[87.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1081.356 damage (SpellSchool: 32). (Threat: 605.559)
+[87.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1081.356 damage (SpellSchool: 32). (Threat: 756.949)
 [87.50] [Target 1] Aura refreshed: {SpellID: 15258}
 [87.50] [shadow-priest (#1)] Casting {SpellID: 1309636} (Cost = 170.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [87.50] [shadow-priest (#1)] Completed cast {SpellID: 1309636}
-[87.50] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (4980.450 --> 4810.450) of 6751 total.
+[87.50] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (4854.750 --> 4684.750) of 6601 total.
 [87.50] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:683.8, AfterAttackerMods:868.8, AfterResistances:868.8, AfterTargetMods:955.7, AfterOutcome:955.7, AfterPostOutcome:1051.3
-[87.50] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 1051.275 damage (SpellSchool: 32). (Threat: 588.714)
+[87.50] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 1051.275 damage (SpellSchool: 32). (Threat: 735.893)
 [87.50] [Target 1] Aura refreshed: {SpellID: 15258}
-[87.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (4810.450 --> 4869.450) of 6751 total.
-[89.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (4869.450 --> 4936.625) of 6751 total.
-[89.00] [shadow-priest (#1)] Gained 365.000 mana from {SpellID: 1277328} (4936.625 --> 5301.625) of 6751 total.
+[87.51] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[87.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (4684.750 --> 4743.750) of 6601 total.
+[89.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (4743.750 --> 4812.675) of 6601 total.
+[89.00] [shadow-priest (#1)] Gained 367.800 mana from {SpellID: 1277328} (4812.675 --> 5180.475) of 6601 total.
 [89.00] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [89.00] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[89.00] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5301.625 --> 5199.125) of 6751 total.
+[89.00] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5180.475 --> 5077.975) of 6601 total.
 [89.00] [Target 1] Aura gained: {SpellID: 18807}
 [89.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [89.00] [Target 1] Aura refreshed: {SpellID: 15258}
-[90.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[90.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[90.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[90.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
 [90.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:150.8, AfterTargetMods:165.9, AfterOutcome:165.9, AfterPostOutcome:182.5
-[90.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (50% Resist) for 182.478 damage (SpellSchool: 32). (Threat: 102.188)
+[90.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (50% Resist) for 182.478 damage (SpellSchool: 32). (Threat: 127.735)
 [90.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[90.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[90.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [90.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[91.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5199.125 --> 5266.300) of 6751 total.
-[91.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[91.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[91.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5077.975 --> 5146.900) of 6601 total.
+[91.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[91.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [92.00] [Target 1] Aura faded: {SpellID: 18807}
-[92.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[92.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[92.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[92.00] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [92.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.00] [shadow-priest (#1)] Gained 365.000 mana from {SpellID: 1277328} (5266.300 --> 5631.300) of 6751 total.
+[92.00] [shadow-priest (#1)] Gained 367.800 mana from {SpellID: 1277328} (5146.900 --> 5514.700) of 6601 total.
+[92.01] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [92.10] [shadow-priest (#1)] Casting {ItemID: 272439} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [92.10] [shadow-priest (#1)] Completed cast {ItemID: 272439}
 [92.10] [shadow-priest (#1)] Aura gained: {ItemID: 272439}
@@ -659,59 +681,61 @@
 [92.10] [shadow-priest (#1)] Major cooldown used: {ItemID: 272439}
 [92.10] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [92.10] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[92.10] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5631.300 --> 5528.800) of 6751 total.
+[92.10] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5514.700 --> 5412.200) of 6601 total.
 [92.10] [Target 1] Aura gained: {SpellID: 18807}
 [92.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [92.10] [Target 1] Aura refreshed: {SpellID: 15258}
-[92.11] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5528.800 --> 5587.800) of 6751 total.
-[93.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (5587.800 --> 5664.850) of 6751 total.
-[93.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[93.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[92.11] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5412.200 --> 5471.200) of 6601 total.
+[93.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (5471.200 --> 5550.500) of 6601 total.
+[93.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[93.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
 [93.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:663.6, AfterPostOutcome:729.9
-[93.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Crit for 729.912 damage (SpellSchool: 32). (Threat: 408.751)
+[93.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Crit for 729.912 damage (SpellSchool: 32). (Threat: 510.939)
 [93.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:51.2, AfterTargetMods:56.3, AfterOutcome:56.3, AfterPostOutcome:62.0
-[93.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit (75% Resist) for 61.953 damage (SpellSchool: 32). (Threat: 34.694)
+[93.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit (75% Resist) for 61.953 damage (SpellSchool: 32). (Threat: 43.367)
 [93.50] [shadow-priest (#1)] Gained 61.953 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[94.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[94.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[94.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[94.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [94.10] [Target 1] Aura faded: {SpellID: 18807}
 [94.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [94.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [94.20] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[95.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (5664.850 --> 5741.900) of 6751 total.
-[95.00] [shadow-priest (#1)] Gained 380.800 mana from {SpellID: 1277328} (5741.900 --> 6122.700) of 6751 total.
+[95.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (5550.500 --> 5629.800) of 6601 total.
+[95.00] [shadow-priest (#1)] Gained 384.400 mana from {SpellID: 1277328} (5629.800 --> 6014.200) of 6601 total.
 [95.70] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[95.70] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6122.700 --> 5947.700) of 6751 total.
+[95.70] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6014.200 --> 5839.200) of 6601 total.
 [95.70] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:722.4, AfterAttackerMods:874.1, AfterResistances:874.1, AfterTargetMods:961.5, AfterOutcome:961.5, AfterPostOutcome:1057.7
-[95.70] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1057.676 damage (SpellSchool: 32). (Threat: 592.299)
+[95.70] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1057.676 damage (SpellSchool: 32). (Threat: 740.373)
 [95.70] [Target 1] Aura refreshed: {SpellID: 15258}
 [95.70] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [95.70] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[95.70] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5947.700 --> 5845.200) of 6751 total.
+[95.70] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5839.200 --> 5736.700) of 6601 total.
 [95.70] [Target 1] Aura gained: {SpellID: 18807}
 [95.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [95.70] [Target 1] Aura refreshed: {SpellID: 15258}
-[95.71] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5845.200 --> 5904.200) of 6751 total.
-[95.71] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5904.200 --> 5963.200) of 6751 total.
+[95.71] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5736.700 --> 5795.700) of 6601 total.
+[95.71] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[95.71] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5795.700 --> 5854.700) of 6601 total.
 [96.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[96.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[96.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [96.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[96.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[96.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [96.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[96.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[96.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[97.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (5963.200 --> 6040.250) of 6751 total.
-[97.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[97.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[96.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[96.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[97.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (5854.700 --> 5934.000) of 6601 total.
+[97.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[97.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [98.00] [shadow-priest (#1)] Aura faded: {SpellID: 1277328}
-[98.00] [shadow-priest (#1)] Gained 380.800 mana from {SpellID: 1277328} (6040.250 --> 6421.050) of 6751 total.
+[98.00] [shadow-priest (#1)] Gained 384.400 mana from {SpellID: 1277328} (5934.000 --> 6318.400) of 6601 total.
 [98.70] [Target 1] Aura faded: {SpellID: 18807}
-[98.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[98.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[98.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[98.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [98.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.71] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [98.80] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [98.80] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[98.80] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6421.050 --> 6318.550) of 6751 total.
+[98.80] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6318.400 --> 6215.900) of 6601 total.
 [98.80] [Target 1] Aura gained: {SpellID: 18807}
 [98.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [98.80] [Target 1] Aura refreshed: {SpellID: 15258}
@@ -720,176 +744,183 @@
 [98.81] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:176.4, AfterTargetMods:176.4, AfterOutcome:176.4, AfterPostOutcome:194.0
 [98.81] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 193.985 damage (SpellSchool: 32). (Threat: 193.985)
 [98.81] [shadow-priest (#1)] Gained 193.985 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
-[98.81] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6318.550 --> 6377.550) of 6751 total.
-[99.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (6377.550 --> 6454.600) of 6751 total.
+[98.81] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6215.900 --> 6274.900) of 6601 total.
+[99.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (6274.900 --> 6354.200) of 6601 total.
 [99.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:226.2, AfterTargetMods:248.8, AfterOutcome:248.8, AfterPostOutcome:273.7
-[99.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 153.282)
+[99.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 191.602)
 [99.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[99.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[99.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [99.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[99.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[99.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[100.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[100.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[101.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (6454.600 --> 6531.650) of 6751 total.
+[99.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[99.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[100.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[100.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
+[101.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (6354.200 --> 6433.500) of 6601 total.
 [101.80] [Target 1] Aura faded: {SpellID: 18807}
-[101.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[101.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[101.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[101.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [101.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[101.81] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [101.90] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [102.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:226.2, AfterTargetMods:248.8, AfterOutcome:248.8, AfterPostOutcome:273.7
-[102.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 153.282)
+[102.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 191.602)
 [102.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[102.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[102.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [102.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[103.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (6531.650 --> 6608.700) of 6751 total.
+[103.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (6433.500 --> 6512.800) of 6601 total.
 [103.40] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[103.40] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6608.700 --> 6433.700) of 6751 total.
+[103.40] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6512.800 --> 6337.800) of 6601 total.
 [103.40] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:724.4, AfterAttackerMods:876.6, AfterResistances:438.3, AfterTargetMods:482.1, AfterOutcome:482.1, AfterPostOutcome:530.3
-[103.40] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit (50% Resist) for 530.328 damage (SpellSchool: 32). (Threat: 296.984)
+[103.40] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit (50% Resist) for 530.328 damage (SpellSchool: 32). (Threat: 371.230)
 [103.40] [Target 1] Aura refreshed: {SpellID: 15258}
 [103.40] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [103.40] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[103.40] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6433.700 --> 6331.200) of 6751 total.
+[103.40] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6337.800 --> 6235.300) of 6601 total.
 [103.40] [Target 1] Aura gained: {SpellID: 18807}
 [103.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [103.40] [Target 1] Aura refreshed: {SpellID: 15258}
-[103.41] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6331.200 --> 6390.200) of 6751 total.
-[104.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[104.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[105.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (6390.200 --> 6467.250) of 6751 total.
-[105.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[105.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[103.41] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[103.41] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6235.300 --> 6294.300) of 6601 total.
+[104.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[104.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[105.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (6294.300 --> 6373.600) of 6601 total.
+[105.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[105.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [105.50] [Target 1] Aura faded: {SpellID: 10894}
 [105.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[105.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[105.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [105.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[105.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[105.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [105.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [106.40] [Target 1] Aura faded: {SpellID: 18807}
-[106.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[106.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[106.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[106.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [106.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[106.41] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [106.50] [shadow-priest (#1)] Casting {SpellID: 10894} (Cost = 227.950, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [106.50] [shadow-priest (#1)] Completed cast {SpellID: 10894}
-[106.50] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (6467.250 --> 6239.300) of 6751 total.
+[106.50] [shadow-priest (#1)] Spent 227.950 mana from {SpellID: 10894} (6373.600 --> 6145.650) of 6601 total.
 [106.50] [Target 1] Aura gained: {SpellID: 10894}
 [106.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [106.50] [Target 1] Aura refreshed: {SpellID: 15258}
-[106.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6239.300 --> 6298.300) of 6751 total.
-[107.00] [shadow-priest (#1)] Gained 77.050 mana from {OtherID: 2, Tag: 1} (6298.300 --> 6375.350) of 6751 total.
+[106.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6145.650 --> 6204.650) of 6601 total.
+[107.00] [shadow-priest (#1)] Gained 79.300 mana from {OtherID: 2, Tag: 1} (6204.650 --> 6283.950) of 6601 total.
 [107.10] [shadow-priest (#1)] Aura faded: {ItemID: 272439}
 [108.00] [shadow-priest (#1)] Lost {"Spirit": 72.000,} from fading {ItemID: 272439}.
 [108.00] [shadow-priest (#1)] Casting {SpellID: 1309636} (Cost = 170.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [108.00] [shadow-priest (#1)] Completed cast {SpellID: 1309636}
-[108.00] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (6375.350 --> 6205.350) of 6751 total.
+[108.00] [shadow-priest (#1)] Spent 170.000 mana from {SpellID: 1309636} (6283.950 --> 6113.950) of 6601 total.
 [108.00] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:685.7, AfterAttackerMods:871.2, AfterResistances:871.2, AfterTargetMods:958.3, AfterOutcome:958.3, AfterPostOutcome:1054.1
-[108.00] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 1054.136 damage (SpellSchool: 32). (Threat: 590.316)
+[108.00] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 1054.136 damage (SpellSchool: 32). (Threat: 737.895)
 [108.00] [Target 1] Aura refreshed: {SpellID: 15258}
-[108.01] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6205.350 --> 6264.350) of 6751 total.
+[108.01] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (6113.950 --> 6172.950) of 6601 total.
 [108.50] [Target 1] Aura faded: {SpellID: 19280}
 [108.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[108.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[108.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [108.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[109.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6264.350 --> 6331.525) of 6751 total.
+[109.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (6172.950 --> 6241.875) of 6601 total.
 [109.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[109.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[109.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [109.50] [shadow-priest (#1)] Casting {SpellID: 19280} (Cost = 231.475, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [109.50] [shadow-priest (#1)] Completed cast {SpellID: 19280}
-[109.50] [shadow-priest (#1)] Spent 231.475 mana from {SpellID: 19280} (6331.525 --> 6100.050) of 6751 total.
+[109.50] [shadow-priest (#1)] Spent 231.475 mana from {SpellID: 19280} (6241.875 --> 6010.400) of 6601 total.
 [109.50] [Target 1] Aura gained: {SpellID: 19280}
 [109.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [109.50] [Target 1] Aura refreshed: {SpellID: 15258}
-[111.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6100.050 --> 6167.225) of 6751 total.
+[111.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (6010.400 --> 6079.325) of 6601 total.
 [111.00] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [112.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[112.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[112.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [112.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[112.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[112.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [112.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [112.50] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[112.50] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6167.225 --> 5992.225) of 6751 total.
+[112.50] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6079.325 --> 5904.325) of 6601 total.
 [112.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:722.8, AfterAttackerMods:874.6, AfterResistances:874.6, AfterTargetMods:962.1, AfterOutcome:962.1, AfterPostOutcome:1058.3
-[112.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1058.275 damage (SpellSchool: 32). (Threat: 592.634)
+[112.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 1058.275 damage (SpellSchool: 32). (Threat: 740.792)
 [112.50] [Target 1] Aura refreshed: {SpellID: 15258}
 [112.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [112.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[112.50] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5992.225 --> 5889.725) of 6751 total.
+[112.50] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5904.325 --> 5801.825) of 6601 total.
 [112.50] [Target 1] Aura gained: {SpellID: 18807}
 [112.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [112.50] [Target 1] Aura refreshed: {SpellID: 15258}
-[112.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5889.725 --> 5948.725) of 6751 total.
-[113.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5948.725 --> 6015.900) of 6751 total.
-[113.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:739.3, AfterPostOutcome:813.2
-[113.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 813.249 damage (SpellSchool: 32). (Threat: 455.419)
-[114.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[114.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[115.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6015.900 --> 6083.075) of 6751 total.
+[112.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5801.825 --> 5860.825) of 6601 total.
+[112.51] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[113.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5860.825 --> 5929.750) of 6601 total.
+[113.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:621.0, AfterPostOutcome:683.1
+[113.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 683.129 damage (SpellSchool: 32). (Threat: 478.190)
+[114.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[114.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
+[115.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5929.750 --> 5998.675) of 6601 total.
 [115.50] [Target 1] Aura faded: {SpellID: 18807}
-[115.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[115.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[115.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[115.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [115.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [115.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:226.2, AfterTargetMods:248.8, AfterOutcome:248.8, AfterPostOutcome:273.7
-[115.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 153.282)
+[115.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 273.717 damage (SpellSchool: 32). (Threat: 191.602)
 [115.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[115.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[115.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [115.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
+[115.51] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [115.60] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [115.60] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[115.60] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6083.075 --> 5980.575) of 6751 total.
+[115.60] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5998.675 --> 5896.175) of 6601 total.
 [115.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Miss (SpellSchool: 32). (Threat: 0.000)
-[117.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5980.575 --> 6047.750) of 6751 total.
+[117.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5896.175 --> 5965.100) of 6601 total.
 [117.10] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [117.10] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[117.10] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (6047.750 --> 5945.250) of 6751 total.
+[117.10] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5965.100 --> 5862.600) of 6601 total.
 [117.10] [Target 1] Aura gained: {SpellID: 18807}
 [117.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [117.10] [Target 1] Aura refreshed: {SpellID: 15258}
-[117.11] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5945.250 --> 6004.250) of 6751 total.
-[118.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[118.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[117.11] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5862.600 --> 5921.600) of 6601 total.
+[118.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[118.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
 [118.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[118.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[118.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [118.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[118.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[118.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [118.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[119.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (6004.250 --> 6071.425) of 6751 total.
-[119.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[119.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[119.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5921.600 --> 5990.525) of 6601 total.
+[119.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[119.10] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
 [119.10] [Target 1] Aura faded: {SpellID: 18807}
 [119.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.20] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [120.70] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[120.70] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (6071.425 --> 5896.425) of 6751 total.
+[120.70] [shadow-priest (#1)] Spent 175.000 mana from {SpellID: 10947} (5990.525 --> 5815.525) of 6601 total.
 [120.70] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:731.3, AfterAttackerMods:884.8, AfterResistances:663.6, AfterTargetMods:730.0, AfterOutcome:1460.0, AfterPostOutcome:1606.0
-[120.70] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Crit (25% Resist) for 1605.952 damage (SpellSchool: 32). (Threat: 899.333)
+[120.70] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Crit (25% Resist) for 1605.952 damage (SpellSchool: 32). (Threat: 1124.166)
 [120.70] [Target 1] Aura refreshed: {SpellID: 15258}
 [120.70] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [120.70] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[120.70] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5896.425 --> 5793.925) of 6751 total.
+[120.70] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5815.525 --> 5713.025) of 6601 total.
 [120.70] [Target 1] Aura gained: {SpellID: 18807}
 [120.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [120.70] [Target 1] Aura refreshed: {SpellID: 15258}
-[120.71] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5793.925 --> 5852.925) of 6751 total.
-[121.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5852.925 --> 5920.100) of 6751 total.
+[120.71] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5713.025 --> 5772.025) of 6601 total.
+[120.71] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
+[121.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5772.025 --> 5840.950) of 6601 total.
 [121.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[121.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[121.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [121.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[121.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[121.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [121.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[121.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[121.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[122.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[122.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[123.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5920.100 --> 5987.275) of 6751 total.
+[121.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[121.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[122.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[122.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 409.877 damage (SpellSchool: 32). (Threat: 239.095)
+[123.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5840.950 --> 5909.875) of 6601 total.
 [123.70] [Target 1] Aura faded: {SpellID: 18807}
-[123.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[123.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
+[123.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[123.70] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 478.190 damage (SpellSchool: 32). (Threat: 239.095)
 [123.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.71] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [123.80] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 102.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [123.80] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[123.80] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5987.275 --> 5884.775) of 6751 total.
+[123.80] [shadow-priest (#1)] Spent 102.500 mana from {SpellID: 18807} (5909.875 --> 5807.375) of 6601 total.
 [123.80] [Target 1] Aura gained: {SpellID: 18807}
 [123.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [123.80] [Target 1] Aura refreshed: {SpellID: 15258}
@@ -899,23 +930,25 @@
 [123.81] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 193.985 damage (SpellSchool: 32). (Threat: 193.985)
 [123.81] [shadow-priest (#1)] Gained 193.985 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
 [124.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:237.4, AfterAttackerMods:301.6, AfterResistances:301.6, AfterTargetMods:331.8, AfterOutcome:331.8, AfterPostOutcome:365.0
-[124.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 204.375)
+[124.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 364.956 damage (SpellSchool: 32). (Threat: 255.469)
 [124.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:161.2, AfterAttackerMods:204.8, AfterResistances:204.8, AfterTargetMods:225.3, AfterOutcome:225.3, AfterPostOutcome:247.8
-[124.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 138.776)
+[124.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 247.814 damage (SpellSchool: 32). (Threat: 173.469)
 [124.50] [shadow-priest (#1)] Gained 247.814 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[124.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:369.7, AfterPostOutcome:406.6
-[124.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 406.624 damage (SpellSchool: 32). (Threat: 227.710)
-[125.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5884.775 --> 5951.950) of 6751 total.
-[125.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:739.3, AfterPostOutcome:813.2
-[125.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 813.249 damage (SpellSchool: 32). (Threat: 455.419)
+[124.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:310.5, AfterPostOutcome:341.6
+[124.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 341.565 damage (SpellSchool: 32). (Threat: 239.095)
+[125.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5807.375 --> 5876.300) of 6601 total.
+[125.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:621.0, AfterPostOutcome:683.1
+[125.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 819.755 damage (SpellSchool: 32). (Threat: 478.190)
 [126.80] [Target 1] Aura faded: {SpellID: 18807}
-[126.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:336.1, AfterResistances:336.1, AfterTargetMods:369.7, AfterOutcome:739.3, AfterPostOutcome:813.2
-[126.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 813.249 damage (SpellSchool: 32). (Threat: 455.419)
+[126.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 552.0, BaseDamage:222.2, AfterAttackerMods:282.3, AfterResistances:282.3, AfterTargetMods:310.5, AfterOutcome:621.0, AfterPostOutcome:683.1
+[126.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 956.381 damage (SpellSchool: 32). (Threat: 478.190)
 [126.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[126.81] [shadow-priest (#1)] Aura refreshed: {SpellID: 1326168}
 [126.90] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 175.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[127.00] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5951.950 --> 6019.125) of 6751 total.
+[127.00] [shadow-priest (#1)] Gained 68.925 mana from {OtherID: 2, Tag: 1} (5876.300 --> 5945.225) of 6601 total.
 [127.25] [shadow-priest (#1) - Shadowfiend] Aura faded: {SpellID: 10494, Tag: -1}
 [127.25] [shadow-priest (#1) - Shadowfiend] No pet summoned
+[127.25] [shadow-priest (#1)] Aura faded: {SpellID: 1326168}
 [127.25] [shadow-priest (#1)] Aura faded: {SpellID: 15473}
 [127.25] [shadow-priest (#1)] Aura faded: {SpellID: 10494, Tag: -1}
 [127.25] [shadow-priest (#1)] Aura faded: {SpellID: 24907, Tag: -1}

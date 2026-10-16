@@ -24,8 +24,8 @@
 [-2.43] [destruction-warlock (#1)] {OtherID: 20} stacks: 7 --> 0
 [-1.50] [destruction-warlock (#1)] Casting {SpellID: 11689} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [-1.50] [destruction-warlock (#1)] Completed cast {SpellID: 11689}
-[-1.50] [destruction-warlock (#1)] Spent 765.600 health from {OtherID: 9} (4364.000 --> 3598.400) of 4364 total.
-[-1.50] [destruction-warlock (#1)] Gained 765.600 mana from {SpellID: 11689} (6794.200 --> 6794.200) of 6794 total.
+[-1.50] [destruction-warlock (#1)] Spent 768.000 health from {OtherID: 9} (4364.000 --> 3596.000) of 4364 total.
+[-1.50] [destruction-warlock (#1)] Gained 768.000 mana from {SpellID: 11689} (6794.200 --> 6794.200) of 6794 total.
 [-1.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (6794.200 --> 6794.200) of 6794 total.
 [0.00] [destruction-warlock (#1)] Casting {SpellID: 1311680} (Cost = 200.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [0.00] [destruction-warlock (#1)] Completed cast {SpellID: 1311680}
@@ -51,7 +51,7 @@
 [4.21] [destruction-warlock (#1)] Completed cast {SpellID: 1260198}
 [4.21] [destruction-warlock (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:218.2, AfterAttackerMods:218.2, AfterResistances:218.2, AfterTargetMods:218.2, AfterOutcome:218.2, AfterPostOutcome:218.2
 [4.21] [destruction-warlock (#1)] [Target 1] {SpellID: 1260198} Hit for 218.200 damage (SpellSchool: 32). (Threat: 218.200)
-[4.21] [destruction-warlock (#1)] Gained 218.200 health from {SpellID: 1260198} (3598.400 --> 3816.600) of 4364 total.
+[4.21] [destruction-warlock (#1)] Gained 218.200 health from {SpellID: 1260198} (3596.000 --> 3814.200) of 4364 total.
 [4.21] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (6159.800 --> 6218.800) of 6794 total.
 [4.50] [destruction-warlock (#1)] Casting {SpellID: 25309} (Cost = 342.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [5.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (6218.800 --> 6249.600) of 6794 total.
@@ -382,7 +382,7 @@
 [38.90] [destruction-warlock (#1)] Queueing up {SpellID: 25309} to cast at 35.500000001s.
 [38.90] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
 [38.90] [destruction-warlock (#1)] {SpellID: 25309} failed to cast: casting/channeling while moving not allowed!
-[39.00] [destruction-warlock (#1)] Gained 88.600 mana from {OtherID: 2, Tag: 2} (5176.900 --> 5265.500) of 6794 total.
+[39.00] [destruction-warlock (#1)] Gained 89.000 mana from {OtherID: 2, Tag: 2} (5176.900 --> 5265.900) of 6794 total.
 [39.00] [destruction-warlock (#1)] {OtherID: 20} stacks: 30 --> 31
 [39.00] [destruction-warlock (#1)] Queueing up {SpellID: 25309} to cast at 35.500000001s.
 [39.00] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -435,7 +435,7 @@
 [40.80] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
 [40.90] [destruction-warlock (#1)] No available actions!
 [40.90] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
-[41.00] [destruction-warlock (#1)] Gained 88.600 mana from {OtherID: 2, Tag: 2} (5265.500 --> 5354.100) of 6794 total.
+[41.00] [destruction-warlock (#1)] Gained 89.000 mana from {OtherID: 2, Tag: 2} (5265.900 --> 5354.900) of 6794 total.
 [41.00] [destruction-warlock (#1)] No available actions!
 [41.00] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
 [41.10] [destruction-warlock (#1)] No available actions!
@@ -481,7 +481,7 @@
 [42.80] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
 [42.90] [destruction-warlock (#1)] No available actions!
 [42.90] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
-[43.00] [destruction-warlock (#1)] Gained 88.600 mana from {OtherID: 2, Tag: 2} (5354.100 --> 5442.700) of 6794 total.
+[43.00] [destruction-warlock (#1)] Gained 89.000 mana from {OtherID: 2, Tag: 2} (5354.900 --> 5443.900) of 6794 total.
 [43.00] [destruction-warlock (#1)] No available actions!
 [43.00] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
 [43.10] [destruction-warlock (#1)] No available actions!
@@ -539,41 +539,41 @@
 [44.71] [destruction-warlock (#1)] Aura faded: {OtherID: 20}
 [44.71] [destruction-warlock (#1)] {OtherID: 20} stacks: 30 --> 0
 [44.80] [destruction-warlock (#1)] Casting {SpellID: 25311} (Cost = 340.000, Cast Time = 1.2s, GCD = 1.5s, Effective Time = 1.5s)
-[45.00] [destruction-warlock (#1)] Gained 88.600 mana from {OtherID: 2, Tag: 2} (5442.700 --> 5531.300) of 6794 total.
+[45.00] [destruction-warlock (#1)] Gained 89.000 mana from {OtherID: 2, Tag: 2} (5443.900 --> 5532.900) of 6794 total.
 [45.50] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:172.2, AfterTargetMods:189.5, AfterOutcome:284.2, AfterPostOutcome:284.2
 [45.50] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Crit for 284.210 damage (SpellSchool: 32). (Threat: 227.368)
 [46.00] [destruction-warlock (#1)] Completed cast {SpellID: 25311}
-[46.00] [destruction-warlock (#1)] Spent 340.000 mana from {SpellID: 25311} (5531.300 --> 5191.300) of 6794 total.
+[46.00] [destruction-warlock (#1)] Spent 340.000 mana from {SpellID: 25311} (5532.900 --> 5192.900) of 6794 total.
 [46.00] [Target 1] Aura gained: {SpellID: 25311}
 [46.00] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[46.01] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (5191.300 --> 5250.300) of 6794 total.
+[46.01] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (5192.900 --> 5251.900) of 6794 total.
 [46.30] [destruction-warlock (#1)] Casting {SpellID: 25309} (Cost = 342.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[47.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (5250.300 --> 5281.100) of 6794 total.
+[47.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (5251.900 --> 5282.700) of 6794 total.
 [47.50] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:129.2, AfterTargetMods:142.1, AfterOutcome:142.1, AfterPostOutcome:142.1
 [47.50] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit (25% Resist) for 142.105 damage (SpellSchool: 32). (Threat: 113.684)
 [47.80] [destruction-warlock (#1)] Completed cast {SpellID: 25309}
-[47.80] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (5281.100 --> 4939.100) of 6794 total.
+[47.80] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (5282.700 --> 4940.700) of 6794 total.
 [47.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:239.0, AfterAttackerMods:262.9, AfterResistances:197.2, AfterTargetMods:216.9, AfterOutcome:0.0, AfterPostOutcome:0.0
 [47.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} Miss (SpellSchool: 4). (Threat: 0.000)
 [47.80] [destruction-warlock (#1)] Casting {SpellID: 25309} (Cost = 342.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[49.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (4939.100 --> 4969.900) of 6794 total.
+[49.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (4940.700 --> 4971.500) of 6794 total.
 [49.00] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:251.8
 [49.00] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 251.806 damage (SpellSchool: 32). (Threat: 201.445)
 [49.30] [destruction-warlock (#1)] Completed cast {SpellID: 25309}
-[49.30] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (4969.900 --> 4627.900) of 6794 total.
+[49.30] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (4971.500 --> 4629.500) of 6794 total.
 [49.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:239.0, AfterAttackerMods:262.9, AfterResistances:262.9, AfterTargetMods:289.2, AfterOutcome:0.0, AfterPostOutcome:0.0
 [49.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} Miss (SpellSchool: 4). (Threat: 0.000)
 [49.30] [destruction-warlock (#1)] Casting {SpellID: 25309} (Cost = 342.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [49.50] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:172.2, AfterTargetMods:189.5, AfterOutcome:189.5, AfterPostOutcome:189.5
 [49.50] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 189.474 damage (SpellSchool: 32). (Threat: 151.579)
 [50.80] [destruction-warlock (#1)] Completed cast {SpellID: 25309}
-[50.80] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (4627.900 --> 4285.900) of 6794 total.
+[50.80] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (4629.500 --> 4287.500) of 6794 total.
 [50.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:239.0, AfterAttackerMods:262.9, AfterResistances:262.9, AfterTargetMods:289.2, AfterOutcome:289.2, AfterPostOutcome:289.2
 [50.80] [Target 1] Aura gained: {SpellID: 25309, Tag: 1}
 [50.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} Hit for 289.190 damage (SpellSchool: 4). (Threat: 231.352)
 [50.80] [destruction-warlock (#1)] Casting {SpellID: 18871} (Cost = 328.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [50.80] [destruction-warlock (#1)] Completed cast {SpellID: 18871}
-[50.80] [destruction-warlock (#1)] Spent 328.500 mana from {SpellID: 18871} (4285.900 --> 3957.400) of 6794 total.
+[50.80] [destruction-warlock (#1)] Spent 328.500 mana from {SpellID: 18871} (4287.500 --> 3959.000) of 6794 total.
 [50.80] [destruction-warlock (#1)] [Target 1] {SpellID: 18871} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:489.5, AfterAttackerMods:681.1, AfterResistances:681.1, AfterTargetMods:749.2, AfterOutcome:749.2, AfterPostOutcome:749.2
 [50.80] [destruction-warlock (#1)] [Target 1] {SpellID: 18871} Hit for 749.229 damage (SpellSchool: 32). (Threat: 599.383)
 [50.80] [destruction-warlock (#1)] Aura gained: {SpellID: 426311}
@@ -581,9 +581,9 @@
 [50.81] [destruction-warlock (#1)] Completed cast {SpellID: 1260198}
 [50.81] [destruction-warlock (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:218.2, AfterAttackerMods:218.2, AfterResistances:218.2, AfterTargetMods:218.2, AfterOutcome:218.2, AfterPostOutcome:218.2
 [50.81] [destruction-warlock (#1)] [Target 1] {SpellID: 1260198} Hit for 218.200 damage (SpellSchool: 32). (Threat: 218.200)
-[50.81] [destruction-warlock (#1)] Gained 218.200 health from {SpellID: 1260198} (3816.600 --> 4034.800) of 4364 total.
-[50.81] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (3957.400 --> 4016.400) of 6794 total.
-[51.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (4016.400 --> 4047.200) of 6794 total.
+[50.81] [destruction-warlock (#1)] Gained 218.200 health from {SpellID: 1260198} (3814.200 --> 4032.400) of 4364 total.
+[50.81] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (3959.000 --> 4018.000) of 6794 total.
+[51.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (4018.000 --> 4048.800) of 6794 total.
 [51.50] [Target 1] Aura faded: {SpellID: 11713}
 [51.50] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:172.2, AfterTargetMods:189.5, AfterOutcome:189.5, AfterPostOutcome:189.5
 [51.50] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 189.474 damage (SpellSchool: 32). (Threat: 151.579)
@@ -591,21 +591,21 @@
 [52.00] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 251.806 damage (SpellSchool: 32). (Threat: 201.445)
 [52.30] [destruction-warlock (#1)] Casting {SpellID: 11713} (Cost = 215.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [52.30] [destruction-warlock (#1)] Completed cast {SpellID: 11713}
-[52.30] [destruction-warlock (#1)] Spent 215.000 mana from {SpellID: 11713} (4047.200 --> 3832.200) of 6794 total.
+[52.30] [destruction-warlock (#1)] Spent 215.000 mana from {SpellID: 11713} (4048.800 --> 3833.800) of 6794 total.
 [52.30] [Target 1] Aura gained: {SpellID: 11713}
 [52.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[53.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3832.200 --> 3863.000) of 6794 total.
+[53.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3833.800 --> 3864.600) of 6794 total.
 [53.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [53.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
 [53.80] [destruction-warlock (#1)] Casting {SpellID: 25307} (Cost = 342.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
 [54.00] [destruction-warlock (#1)] Aura faded: {SpellID: 1293816}
 [54.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:90.2, AfterAttackerMods:103.7, AfterResistances:77.8, AfterTargetMods:85.5, AfterOutcome:85.5, AfterPostOutcome:85.5
 [54.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit (25% Resist) for 85.544 damage (SpellSchool: 32). (Threat: 68.435)
-[55.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3863.000 --> 3893.800) of 6794 total.
+[55.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3864.600 --> 3895.400) of 6794 total.
 [55.00] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:208.1, AfterResistances:208.1, AfterTargetMods:228.9, AfterOutcome:228.9, AfterPostOutcome:228.9
 [55.00] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 228.914 damage (SpellSchool: 32). (Threat: 183.132)
 [56.30] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[56.30] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (3893.800 --> 3551.800) of 6794 total.
+[56.30] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (3895.400 --> 3553.400) of 6794 total.
 [56.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:700.6, AfterAttackerMods:886.3, AfterResistances:886.3, AfterTargetMods:974.9, AfterOutcome:974.9, AfterPostOutcome:974.9
 [56.30] [destruction-warlock (#1)] [DEBUG] Moving to 5.0 yards
 [56.30] [destruction-warlock (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
@@ -614,22 +614,22 @@
 [56.30] [destruction-warlock (#1)] {OtherID: 20} stacks: 0 --> 30
 [56.30] [destruction-warlock (#1)] Casting {SpellID: 18932} (Cost = 229.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [56.30] [destruction-warlock (#1)] Completed cast {SpellID: 18932}
-[56.30] [destruction-warlock (#1)] Spent 229.500 mana from {SpellID: 18932} (3551.800 --> 3322.300) of 6794 total.
+[56.30] [destruction-warlock (#1)] Spent 229.500 mana from {SpellID: 18932} (3553.400 --> 3323.900) of 6794 total.
 [56.30] [destruction-warlock (#1)] [Target 1] {SpellID: 18932} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:436.0, AfterAttackerMods:527.5, AfterResistances:131.9, AfterTargetMods:145.1, AfterOutcome:290.1, AfterPostOutcome:290.1
 [56.30] [destruction-warlock (#1)] [Target 1] {SpellID: 18932} Crit (75% Resist) for 290.125 damage (SpellSchool: 4). (Threat: 232.100)
 [56.30] [destruction-warlock (#1)] Aura gained: {SpellID: 1293816}
 [56.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:90.2, AfterAttackerMods:114.1, AfterResistances:114.1, AfterTargetMods:125.5, AfterOutcome:125.5, AfterPostOutcome:125.5
 [56.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 125.465 damage (SpellSchool: 32). (Threat: 100.372)
-[56.31] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (3322.300 --> 3381.300) of 6794 total.
+[56.31] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (3323.900 --> 3382.900) of 6794 total.
 [56.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [56.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
-[57.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3381.300 --> 3412.100) of 6794 total.
+[57.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3382.900 --> 3413.700) of 6794 total.
 [57.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} Hit for 974.912 damage (SpellSchool: 32). (Threat: 779.929)
 [57.80] [destruction-warlock (#1)] {OtherID: 20} stacks: 30 --> 19
 [57.80] [destruction-warlock (#1)] Queueing up {SpellID: 25307} to cast at 57.800000001s.
 [57.80] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
 [57.80] [destruction-warlock (#1)] {SpellID: 25307} failed to cast: casting/channeling while moving not allowed!
-[57.81] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (3412.100 --> 3471.100) of 6794 total.
+[57.81] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (3413.700 --> 3472.700) of 6794 total.
 [57.90] [destruction-warlock (#1)] {OtherID: 20} stacks: 19 --> 18
 [57.90] [destruction-warlock (#1)] Queueing up {SpellID: 25307} to cast at 57.800000001s.
 [57.90] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -675,7 +675,7 @@
 [58.90] [destruction-warlock (#1)] Queueing up {SpellID: 25307} to cast at 57.800000001s.
 [58.90] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
 [58.90] [destruction-warlock (#1)] {SpellID: 25307} failed to cast: casting/channeling while moving not allowed!
-[59.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3471.100 --> 3501.900) of 6794 total.
+[59.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3472.700 --> 3503.500) of 6794 total.
 [59.00] [destruction-warlock (#1)] Queueing up {SpellID: 25307} to cast at 57.800000001s.
 [59.00] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
 [59.00] [destruction-warlock (#1)] {SpellID: 25307} failed to cast: casting/channeling while moving not allowed!
@@ -716,56 +716,56 @@
 [59.90] [destruction-warlock (#1)] Casting {SpellID: 25307} (Cost = 342.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
 [60.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:90.2, AfterAttackerMods:114.1, AfterResistances:114.1, AfterTargetMods:125.5, AfterOutcome:125.5, AfterPostOutcome:125.5
 [60.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 125.465 damage (SpellSchool: 32). (Threat: 100.372)
-[61.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3501.900 --> 3532.700) of 6794 total.
+[61.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3503.500 --> 3534.300) of 6794 total.
 [61.00] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:377.7, AfterPostOutcome:377.7
 [61.00] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Crit for 377.709 damage (SpellSchool: 32). (Threat: 302.167)
 [62.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:143.2, AfterTargetMods:157.5, AfterOutcome:157.5, AfterPostOutcome:157.5
 [62.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 157.469 damage (SpellSchool: 32). (Threat: 125.975)
 [62.40] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[62.40] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (3532.700 --> 3190.700) of 6794 total.
+[62.40] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (3534.300 --> 3192.300) of 6794 total.
 [62.40] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:691.3, AfterAttackerMods:962.0, AfterResistances:962.0, AfterTargetMods:1058.2, AfterOutcome:0.0, AfterPostOutcome:0.0
 [62.40] [destruction-warlock (#1)] Casting {SpellID: 25307} (Cost = 342.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
 [62.65] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} Miss (SpellSchool: 32). (Threat: 0.000)
 [62.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [62.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
-[63.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3190.700 --> 3221.500) of 6794 total.
+[63.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3192.300 --> 3223.100) of 6794 total.
 [64.00] [Target 1] Aura faded: {SpellID: 25311}
 [64.00] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:251.8
 [64.00] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 251.806 damage (SpellSchool: 32). (Threat: 201.445)
 [64.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:143.2, AfterTargetMods:157.5, AfterOutcome:157.5, AfterPostOutcome:157.5
 [64.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 157.469 damage (SpellSchool: 32). (Threat: 125.975)
 [64.90] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[64.90] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (3221.500 --> 2879.500) of 6794 total.
+[64.90] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (3223.100 --> 2881.100) of 6794 total.
 [64.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:702.2, AfterAttackerMods:977.1, AfterResistances:977.1, AfterTargetMods:1074.8, AfterOutcome:0.0, AfterPostOutcome:0.0
 [64.90] [destruction-warlock (#1)] Casting {SpellID: 25311} (Cost = 340.000, Cast Time = 1.2s, GCD = 1.5s, Effective Time = 1.5s)
-[65.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (2879.500 --> 2910.300) of 6794 total.
+[65.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (2881.100 --> 2911.900) of 6794 total.
 [65.15] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} Miss (SpellSchool: 32). (Threat: 0.000)
 [65.80] [Target 1] Aura faded: {SpellID: 25309, Tag: 1}
 [65.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:97.7, AfterTargetMods:107.5, AfterOutcome:214.9, AfterPostOutcome:214.9
 [65.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Crit (25% Resist) for 214.923 damage (SpellSchool: 4). (Threat: 171.939)
 [66.10] [destruction-warlock (#1)] Completed cast {SpellID: 25311}
-[66.10] [destruction-warlock (#1)] Spent 340.000 mana from {SpellID: 25311} (2910.300 --> 2570.300) of 6794 total.
+[66.10] [destruction-warlock (#1)] Spent 340.000 mana from {SpellID: 25311} (2911.900 --> 2571.900) of 6794 total.
 [66.10] [Target 1] Aura gained: {SpellID: 25311}
 [66.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [66.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:143.2, AfterTargetMods:157.5, AfterOutcome:157.5, AfterPostOutcome:157.5
 [66.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 157.469 damage (SpellSchool: 32). (Threat: 125.975)
 [66.40] [destruction-warlock (#1)] Casting {SpellID: 25309} (Cost = 342.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[67.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (2570.300 --> 2601.100) of 6794 total.
+[67.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (2571.900 --> 2602.700) of 6794 total.
 [67.90] [destruction-warlock (#1)] Completed cast {SpellID: 25309}
-[67.90] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (2601.100 --> 2259.100) of 6794 total.
+[67.90] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (2602.700 --> 2260.700) of 6794 total.
 [67.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:239.0, AfterAttackerMods:289.2, AfterResistances:289.2, AfterTargetMods:318.1, AfterOutcome:318.1, AfterPostOutcome:318.1
 [67.90] [Target 1] Aura gained: {SpellID: 25309, Tag: 1}
 [67.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} Hit for 318.109 damage (SpellSchool: 4). (Threat: 254.487)
 [67.90] [destruction-warlock (#1)] Casting {SpellID: 18871} (Cost = 328.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [67.90] [destruction-warlock (#1)] Completed cast {SpellID: 18871}
-[67.90] [destruction-warlock (#1)] Spent 328.500 mana from {SpellID: 18871} (2259.100 --> 1930.600) of 6794 total.
+[67.90] [destruction-warlock (#1)] Spent 328.500 mana from {SpellID: 18871} (2260.700 --> 1932.200) of 6794 total.
 [67.90] [destruction-warlock (#1)] [Target 1] {SpellID: 18871} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:499.2, AfterAttackerMods:694.6, AfterResistances:694.6, AfterTargetMods:764.0, AfterOutcome:764.0, AfterPostOutcome:764.0
 [67.90] [destruction-warlock (#1)] [Target 1] {SpellID: 18871} Hit for 764.043 damage (SpellSchool: 32). (Threat: 611.234)
 [67.90] [destruction-warlock (#1)] Aura refreshed: {SpellID: 426311}
-[67.91] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1930.600 --> 1989.600) of 6794 total.
+[67.91] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1932.200 --> 1991.200) of 6794 total.
 [68.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:107.4, AfterTargetMods:118.1, AfterOutcome:118.1, AfterPostOutcome:118.1
 [68.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit (25% Resist) for 118.102 damage (SpellSchool: 32). (Threat: 94.481)
-[69.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1989.600 --> 2020.400) of 6794 total.
+[69.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1991.200 --> 2022.000) of 6794 total.
 [69.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:171.7, AfterTargetMods:188.9, AfterOutcome:188.9, AfterPostOutcome:188.9
 [69.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit (25% Resist) for 188.854 damage (SpellSchool: 32). (Threat: 151.084)
 [69.40] [destruction-warlock (#1)] Casting {SpellID: 25307} (Cost = 342.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
@@ -773,9 +773,9 @@
 [70.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 189.474 damage (SpellSchool: 32). (Threat: 151.579)
 [70.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [70.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
-[71.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (2020.400 --> 2051.200) of 6794 total.
+[71.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (2022.000 --> 2052.800) of 6794 total.
 [71.90] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[71.90] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (2051.200 --> 1709.200) of 6794 total.
+[71.90] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (2052.800 --> 1710.800) of 6794 total.
 [71.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:714.2, AfterAttackerMods:993.7, AfterResistances:993.7, AfterTargetMods:1093.1, AfterOutcome:1093.1, AfterPostOutcome:1093.1
 [71.90] [destruction-warlock (#1)] Casting {SpellID: 25307} (Cost = 342.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
 [72.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:251.8
@@ -783,13 +783,13 @@
 [72.15] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} Hit for 1093.117 damage (SpellSchool: 32). (Threat: 874.493)
 [72.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:172.2, AfterTargetMods:189.5, AfterOutcome:189.5, AfterPostOutcome:189.5
 [72.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 189.474 damage (SpellSchool: 32). (Threat: 151.579)
-[73.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1709.200 --> 1740.000) of 6794 total.
+[73.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1710.800 --> 1741.600) of 6794 total.
 [73.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [73.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
 [74.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:172.2, AfterTargetMods:189.5, AfterOutcome:189.5, AfterPostOutcome:189.5
 [74.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 189.474 damage (SpellSchool: 32). (Threat: 151.579)
 [74.40] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[74.40] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (1740.000 --> 1398.000) of 6794 total.
+[74.40] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (1741.600 --> 1399.600) of 6794 total.
 [74.40] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:701.6, AfterAttackerMods:976.3, AfterResistances:976.3, AfterTargetMods:1073.9, AfterOutcome:0.0, AfterPostOutcome:0.0
 [74.40] [destruction-warlock (#1)] [DEBUG] Moving to 30.0 yards
 [74.40] [destruction-warlock (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
@@ -818,7 +818,7 @@
 [74.90] [destruction-warlock (#1)] Queueing up {SpellID: 25307} to cast at 1m14.400000001s.
 [74.90] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
 [74.90] [destruction-warlock (#1)] {SpellID: 25307} failed to cast: casting/channeling while moving not allowed!
-[75.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1398.000 --> 1428.800) of 6794 total.
+[75.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1399.600 --> 1430.400) of 6794 total.
 [75.00] [destruction-warlock (#1)] {OtherID: 20} stacks: 8 --> 9
 [75.00] [destruction-warlock (#1)] Queueing up {SpellID: 25307} to cast at 1m14.400000001s.
 [75.00] [destruction-warlock (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -876,21 +876,21 @@
 [76.30] [destruction-warlock (#1)] {OtherID: 20} stacks: 17 --> 18
 [76.30] [destruction-warlock (#1)] Casting {SpellID: 11713} (Cost = 215.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [76.30] [destruction-warlock (#1)] Completed cast {SpellID: 11713}
-[76.30] [destruction-warlock (#1)] Spent 215.000 mana from {SpellID: 11713} (1428.800 --> 1213.800) of 6794 total.
+[76.30] [destruction-warlock (#1)] Spent 215.000 mana from {SpellID: 11713} (1430.400 --> 1215.400) of 6794 total.
 [76.30] [Target 1] Aura gained: {SpellID: 11713}
 [76.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[76.31] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1213.800 --> 1272.800) of 6794 total.
+[76.31] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1215.400 --> 1274.400) of 6794 total.
 [76.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [76.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
-[77.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1272.800 --> 1303.600) of 6794 total.
+[77.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1274.400 --> 1305.200) of 6794 total.
 [77.80] [destruction-warlock (#1)] {OtherID: 20} stacks: 18 --> 28
 [77.80] [destruction-warlock (#1)] Casting {SpellID: 18932} (Cost = 229.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [77.80] [destruction-warlock (#1)] Completed cast {SpellID: 18932}
-[77.80] [destruction-warlock (#1)] Spent 229.500 mana from {SpellID: 18932} (1303.600 --> 1074.100) of 6794 total.
+[77.80] [destruction-warlock (#1)] Spent 229.500 mana from {SpellID: 18932} (1305.200 --> 1075.700) of 6794 total.
 [77.80] [destruction-warlock (#1)] [Target 1] {SpellID: 18932} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:442.8, AfterAttackerMods:535.8, AfterResistances:535.8, AfterTargetMods:589.4, AfterOutcome:589.4, AfterPostOutcome:589.4
 [77.80] [destruction-warlock (#1)] [Target 1] {SpellID: 18932} Hit for 589.412 damage (SpellSchool: 4). (Threat: 471.530)
 [77.80] [destruction-warlock (#1)] Aura gained: {SpellID: 1293816}
-[77.81] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1074.100 --> 1133.100) of 6794 total.
+[77.81] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1075.700 --> 1134.700) of 6794 total.
 [77.97] [destruction-warlock (#1)] {OtherID: 20} stacks: 28 --> 30
 [77.97] [destruction-warlock (#1)] Aura faded: {OtherID: 20}
 [77.97] [destruction-warlock (#1)] {OtherID: 20} stacks: 30 --> 0
@@ -898,7 +898,7 @@
 [78.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 251.806 damage (SpellSchool: 32). (Threat: 201.445)
 [78.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:90.2, AfterAttackerMods:114.1, AfterResistances:114.1, AfterTargetMods:125.5, AfterOutcome:125.5, AfterPostOutcome:125.5
 [78.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 125.465 damage (SpellSchool: 32). (Threat: 100.372)
-[79.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1133.100 --> 1163.900) of 6794 total.
+[79.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1134.700 --> 1165.500) of 6794 total.
 [79.30] [destruction-warlock (#1)] [DEBUG] Moving to 25.0 yards
 [79.30] [destruction-warlock (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [79.30] [destruction-warlock (#1)] Completed cast {OtherID: 20}
@@ -940,48 +940,48 @@
 [80.10] [destruction-warlock (#1)] Casting {SpellID: 25307} (Cost = 342.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
 [80.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:90.2, AfterAttackerMods:114.1, AfterResistances:114.1, AfterTargetMods:125.5, AfterOutcome:125.5, AfterPostOutcome:125.5
 [80.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 125.465 damage (SpellSchool: 32). (Threat: 100.372)
-[81.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1163.900 --> 1194.700) of 6794 total.
+[81.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1165.500 --> 1196.300) of 6794 total.
 [81.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:171.7, AfterTargetMods:188.9, AfterOutcome:188.9, AfterPostOutcome:188.9
 [81.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit (25% Resist) for 188.854 damage (SpellSchool: 32). (Threat: 151.084)
 [82.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:90.2, AfterAttackerMods:114.1, AfterResistances:85.5, AfterTargetMods:94.1, AfterOutcome:141.1, AfterPostOutcome:141.1
 [82.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Crit (25% Resist) for 141.148 damage (SpellSchool: 32). (Threat: 112.918)
 [82.60] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[82.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (1194.700 --> 852.700) of 6794 total.
+[82.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (1196.300 --> 854.300) of 6794 total.
 [82.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:698.5, AfterAttackerMods:971.9, AfterResistances:971.9, AfterTargetMods:1069.1, AfterOutcome:1069.1, AfterPostOutcome:1069.1
 [82.60] [destruction-warlock (#1)] Casting {SpellID: 25309} (Cost = 342.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [82.90] [Target 1] Aura faded: {SpellID: 25309, Tag: 1}
 [82.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [82.90] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
-[83.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (852.700 --> 883.500) of 6794 total.
+[83.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (854.300 --> 885.100) of 6794 total.
 [83.85] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} Hit for 1069.139 damage (SpellSchool: 32). (Threat: 855.312)
-[83.86] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (883.500 --> 942.500) of 6794 total.
+[83.86] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (885.100 --> 944.100) of 6794 total.
 [84.10] [Target 1] Aura faded: {SpellID: 25311}
 [84.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:251.8
 [84.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 251.806 damage (SpellSchool: 32). (Threat: 201.445)
 [84.10] [destruction-warlock (#1)] Completed cast {SpellID: 25309}
-[84.10] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (942.500 --> 600.500) of 6794 total.
+[84.10] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (944.100 --> 602.100) of 6794 total.
 [84.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:239.0, AfterAttackerMods:289.2, AfterResistances:216.9, AfterTargetMods:238.6, AfterOutcome:238.6, AfterPostOutcome:238.6
 [84.10] [Target 1] Aura gained: {SpellID: 25309, Tag: 1}
 [84.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} Hit (25% Resist) for 238.582 damage (SpellSchool: 4). (Threat: 190.865)
 [84.10] [destruction-warlock (#1)] Casting {SpellID: 11689} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [84.10] [destruction-warlock (#1)] Completed cast {SpellID: 11689}
-[84.10] [destruction-warlock (#1)] Spent 765.600 health from {OtherID: 9} (4034.800 --> 3269.200) of 4364 total.
-[84.10] [destruction-warlock (#1)] Gained 765.600 mana from {SpellID: 11689} (600.500 --> 1366.100) of 6794 total.
+[84.10] [destruction-warlock (#1)] Spent 768.000 health from {OtherID: 9} (4032.400 --> 3264.400) of 4364 total.
+[84.10] [destruction-warlock (#1)] Gained 768.000 mana from {SpellID: 11689} (602.100 --> 1370.100) of 6794 total.
 [84.11] [destruction-warlock (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [84.11] [destruction-warlock (#1)] Completed cast {SpellID: 1260198}
 [84.11] [destruction-warlock (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:218.2, AfterAttackerMods:218.2, AfterResistances:218.2, AfterTargetMods:218.2, AfterOutcome:218.2, AfterPostOutcome:218.2
 [84.11] [destruction-warlock (#1)] [Target 1] {SpellID: 1260198} Hit for 218.200 damage (SpellSchool: 32). (Threat: 218.200)
-[84.11] [destruction-warlock (#1)] Gained 218.200 health from {SpellID: 1260198} (3269.200 --> 3487.400) of 4364 total.
+[84.11] [destruction-warlock (#1)] Gained 218.200 health from {SpellID: 1260198} (3264.400 --> 3482.600) of 4364 total.
 [84.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:90.2, AfterAttackerMods:114.1, AfterResistances:114.1, AfterTargetMods:125.5, AfterOutcome:125.5, AfterPostOutcome:125.5
 [84.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 125.465 damage (SpellSchool: 32). (Threat: 100.372)
-[85.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1366.100 --> 1396.900) of 6794 total.
+[85.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1370.100 --> 1400.900) of 6794 total.
 [85.60] [destruction-warlock (#1)] Casting {SpellID: 25311} (Cost = 340.000, Cast Time = 1.2s, GCD = 1.5s, Effective Time = 1.5s)
 [86.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:143.2, AfterTargetMods:157.5, AfterOutcome:157.5, AfterPostOutcome:157.5
 [86.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 157.469 damage (SpellSchool: 32). (Threat: 125.975)
 [86.80] [destruction-warlock (#1)] Completed cast {SpellID: 25311}
-[86.80] [destruction-warlock (#1)] Spent 340.000 mana from {SpellID: 25311} (1396.900 --> 1056.900) of 6794 total.
+[86.80] [destruction-warlock (#1)] Spent 340.000 mana from {SpellID: 25311} (1400.900 --> 1060.900) of 6794 total.
 [86.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} Miss (SpellSchool: 32). (Threat: 0.000)
-[87.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1056.900 --> 1087.700) of 6794 total.
+[87.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1060.900 --> 1091.700) of 6794 total.
 [87.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:97.7, AfterTargetMods:107.5, AfterOutcome:107.5, AfterPostOutcome:107.5
 [87.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit (25% Resist) for 107.462 damage (SpellSchool: 4). (Threat: 85.969)
 [87.10] [destruction-warlock (#1)] Casting {SpellID: 25311} (Cost = 340.000, Cast Time = 1.2s, GCD = 1.5s, Effective Time = 1.5s)
@@ -989,106 +989,106 @@
 [88.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:143.2, AfterTargetMods:157.5, AfterOutcome:157.5, AfterPostOutcome:157.5
 [88.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 157.469 damage (SpellSchool: 32). (Threat: 125.975)
 [88.30] [destruction-warlock (#1)] Completed cast {SpellID: 25311}
-[88.30] [destruction-warlock (#1)] Spent 340.000 mana from {SpellID: 25311} (1087.700 --> 747.700) of 6794 total.
+[88.30] [destruction-warlock (#1)] Spent 340.000 mana from {SpellID: 25311} (1091.700 --> 751.700) of 6794 total.
 [88.30] [Target 1] Aura gained: {SpellID: 25311}
 [88.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [88.60] [destruction-warlock (#1)] Casting {SpellID: 18871} (Cost = 328.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [88.60] [destruction-warlock (#1)] Completed cast {SpellID: 18871}
-[88.60] [destruction-warlock (#1)] Spent 328.500 mana from {SpellID: 18871} (747.700 --> 419.200) of 6794 total.
+[88.60] [destruction-warlock (#1)] Spent 328.500 mana from {SpellID: 18871} (751.700 --> 423.200) of 6794 total.
 [88.60] [destruction-warlock (#1)] [Target 1] {SpellID: 18871} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:492.1, AfterAttackerMods:684.8, AfterResistances:684.8, AfterTargetMods:753.3, AfterOutcome:753.3, AfterPostOutcome:753.3
 [88.60] [destruction-warlock (#1)] [Target 1] {SpellID: 18871} Hit for 753.282 damage (SpellSchool: 32). (Threat: 602.626)
 [88.60] [destruction-warlock (#1)] Aura gained: {SpellID: 426311}
-[89.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (419.200 --> 450.000) of 6794 total.
+[89.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (423.200 --> 454.000) of 6794 total.
 [90.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:97.7, AfterTargetMods:107.5, AfterOutcome:107.5, AfterPostOutcome:107.5
 [90.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit (25% Resist) for 107.462 damage (SpellSchool: 4). (Threat: 85.969)
 [90.10] [destruction-warlock (#1)] Casting {SpellID: 11689} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [90.10] [destruction-warlock (#1)] Completed cast {SpellID: 11689}
-[90.10] [destruction-warlock (#1)] Spent 765.600 health from {OtherID: 9} (3487.400 --> 2721.800) of 4364 total.
-[90.10] [destruction-warlock (#1)] Gained 765.600 mana from {SpellID: 11689} (450.000 --> 1215.600) of 6794 total.
+[90.10] [destruction-warlock (#1)] Spent 768.000 health from {OtherID: 9} (3482.600 --> 2714.600) of 4364 total.
+[90.10] [destruction-warlock (#1)] Gained 768.000 mana from {SpellID: 11689} (454.000 --> 1222.000) of 6794 total.
 [90.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:71.6, AfterTargetMods:78.7, AfterOutcome:78.7, AfterPostOutcome:78.7
 [90.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit (50% Resist) for 78.735 damage (SpellSchool: 32). (Threat: 62.988)
-[91.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1215.600 --> 1246.400) of 6794 total.
+[91.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1222.000 --> 1252.800) of 6794 total.
 [91.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:251.8
 [91.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 251.806 damage (SpellSchool: 32). (Threat: 201.445)
 [91.60] [destruction-warlock (#1)] Casting {SpellID: 25307} (Cost = 342.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
 [92.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:107.4, AfterTargetMods:118.1, AfterOutcome:118.1, AfterPostOutcome:118.1
 [92.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit (25% Resist) for 118.102 damage (SpellSchool: 32). (Threat: 94.481)
-[93.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1246.400 --> 1277.200) of 6794 total.
+[93.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1252.800 --> 1283.600) of 6794 total.
 [93.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [93.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
 [94.10] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[94.10] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (1277.200 --> 935.200) of 6794 total.
+[94.10] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (1283.600 --> 941.600) of 6794 total.
 [94.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:706.0, AfterAttackerMods:982.4, AfterResistances:982.4, AfterTargetMods:1080.6, AfterOutcome:1080.6, AfterPostOutcome:1080.6
 [94.10] [destruction-warlock (#1)] Casting {SpellID: 25307} (Cost = 342.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
 [94.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:377.7, AfterPostOutcome:377.7
 [94.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Crit for 377.709 damage (SpellSchool: 32). (Threat: 302.167)
 [94.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:172.2, AfterTargetMods:189.5, AfterOutcome:189.5, AfterPostOutcome:189.5
 [94.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 189.474 damage (SpellSchool: 32). (Threat: 151.579)
-[95.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (935.200 --> 966.000) of 6794 total.
+[95.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (941.600 --> 972.400) of 6794 total.
 [95.35] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} Hit for 1080.609 damage (SpellSchool: 32). (Threat: 864.487)
 [96.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:97.7, AfterTargetMods:107.5, AfterOutcome:107.5, AfterPostOutcome:107.5
 [96.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit (25% Resist) for 107.462 damage (SpellSchool: 4). (Threat: 85.969)
 [96.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:172.2, AfterTargetMods:189.5, AfterOutcome:189.5, AfterPostOutcome:189.5
 [96.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 189.474 damage (SpellSchool: 32). (Threat: 151.579)
 [96.60] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[96.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (966.000 --> 624.000) of 6794 total.
+[96.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (972.400 --> 630.400) of 6794 total.
 [96.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:712.7, AfterAttackerMods:991.7, AfterResistances:991.7, AfterTargetMods:1090.9, AfterOutcome:1090.9, AfterPostOutcome:1090.9
 [96.60] [destruction-warlock (#1)] Casting {SpellID: 11689} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [96.60] [destruction-warlock (#1)] Completed cast {SpellID: 11689}
-[96.60] [destruction-warlock (#1)] Spent 765.600 health from {OtherID: 9} (2721.800 --> 1956.200) of 4364 total.
-[96.60] [destruction-warlock (#1)] Gained 765.600 mana from {SpellID: 11689} (624.000 --> 1389.600) of 6794 total.
-[97.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1389.600 --> 1420.400) of 6794 total.
+[96.60] [destruction-warlock (#1)] Spent 768.000 health from {OtherID: 9} (2714.600 --> 1946.600) of 4364 total.
+[96.60] [destruction-warlock (#1)] Gained 768.000 mana from {SpellID: 11689} (630.400 --> 1398.400) of 6794 total.
+[97.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1398.400 --> 1429.200) of 6794 total.
 [97.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:251.8
 [97.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 251.806 damage (SpellSchool: 32). (Threat: 201.445)
 [97.80] [destruction-warlock (#1)] Aura faded: {SpellID: 1293816}
 [97.85] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} Hit for 1090.884 damage (SpellSchool: 32). (Threat: 872.707)
-[97.86] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1420.400 --> 1479.400) of 6794 total.
+[97.86] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1429.200 --> 1488.200) of 6794 total.
 [98.10] [destruction-warlock (#1)] Casting {SpellID: 25309} (Cost = 342.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [98.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:156.6, AfterResistances:156.6, AfterTargetMods:172.2, AfterOutcome:172.2, AfterPostOutcome:172.2
 [98.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 172.249 damage (SpellSchool: 32). (Threat: 137.799)
-[99.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1479.400 --> 1510.200) of 6794 total.
+[99.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1488.200 --> 1519.000) of 6794 total.
 [99.10] [Target 1] Aura faded: {SpellID: 25309, Tag: 1}
 [99.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [99.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
 [99.60] [destruction-warlock (#1)] Completed cast {SpellID: 25309}
-[99.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (1510.200 --> 1168.200) of 6794 total.
+[99.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (1519.000 --> 1177.000) of 6794 total.
 [99.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:239.0, AfterAttackerMods:289.2, AfterResistances:216.9, AfterTargetMods:238.6, AfterOutcome:238.6, AfterPostOutcome:238.6
 [99.60] [Target 1] Aura gained: {SpellID: 25309, Tag: 1}
 [99.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} Hit (25% Resist) for 238.582 damage (SpellSchool: 4). (Threat: 190.865)
 [99.60] [destruction-warlock (#1)] Casting {SpellID: 18932} (Cost = 229.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [99.60] [destruction-warlock (#1)] Completed cast {SpellID: 18932}
-[99.60] [destruction-warlock (#1)] Spent 229.500 mana from {SpellID: 18932} (1168.200 --> 938.700) of 6794 total.
+[99.60] [destruction-warlock (#1)] Spent 229.500 mana from {SpellID: 18932} (1177.000 --> 947.500) of 6794 total.
 [99.60] [destruction-warlock (#1)] [Target 1] {SpellID: 18932} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:465.7, AfterAttackerMods:563.5, AfterResistances:422.6, AfterTargetMods:464.9, AfterOutcome:464.9, AfterPostOutcome:464.9
 [99.60] [destruction-warlock (#1)] [Target 1] {SpellID: 18932} Hit (25% Resist) for 464.888 damage (SpellSchool: 4). (Threat: 371.911)
 [99.60] [destruction-warlock (#1)] Aura gained: {SpellID: 1293816}
-[99.61] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (938.700 --> 997.700) of 6794 total.
+[99.61] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (947.500 --> 1006.500) of 6794 total.
 [100.30] [Target 1] Aura faded: {SpellID: 11713}
 [100.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:172.2, AfterTargetMods:189.5, AfterOutcome:189.5, AfterPostOutcome:189.5
 [100.30] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 189.474 damage (SpellSchool: 32). (Threat: 151.579)
 [100.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:251.8
 [100.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 251.806 damage (SpellSchool: 32). (Threat: 201.445)
-[101.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (997.700 --> 1028.500) of 6794 total.
+[101.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1006.500 --> 1037.300) of 6794 total.
 [101.10] [destruction-warlock (#1)] Casting {SpellID: 11713} (Cost = 215.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [101.10] [destruction-warlock (#1)] Completed cast {SpellID: 11713}
-[101.10] [destruction-warlock (#1)] Spent 215.000 mana from {SpellID: 11713} (1028.500 --> 813.500) of 6794 total.
+[101.10] [destruction-warlock (#1)] Spent 215.000 mana from {SpellID: 11713} (1037.300 --> 822.300) of 6794 total.
 [101.10] [Target 1] Aura gained: {SpellID: 11713}
 [101.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
 [102.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:97.7, AfterTargetMods:107.5, AfterOutcome:107.5, AfterPostOutcome:107.5
 [102.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit (25% Resist) for 107.462 damage (SpellSchool: 4). (Threat: 85.969)
 [102.60] [destruction-warlock (#1)] Casting {SpellID: 25307} (Cost = 342.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[103.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (813.500 --> 844.300) of 6794 total.
+[103.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (822.300 --> 853.100) of 6794 total.
 [103.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:90.2, AfterAttackerMods:114.1, AfterResistances:114.1, AfterTargetMods:125.5, AfterOutcome:125.5, AfterPostOutcome:125.5
 [103.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 125.465 damage (SpellSchool: 32). (Threat: 100.372)
 [103.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:251.8
 [103.30] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 251.806 damage (SpellSchool: 32). (Threat: 201.445)
-[105.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (844.300 --> 875.100) of 6794 total.
+[105.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (853.100 --> 883.900) of 6794 total.
 [105.10] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[105.10] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (875.100 --> 533.100) of 6794 total.
+[105.10] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (883.900 --> 541.900) of 6794 total.
 [105.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:693.3, AfterAttackerMods:964.7, AfterResistances:964.7, AfterTargetMods:1061.2, AfterOutcome:2122.4, AfterPostOutcome:2122.4
 [105.10] [destruction-warlock (#1)] Casting {SpellID: 11689} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [105.10] [destruction-warlock (#1)] Completed cast {SpellID: 11689}
-[105.10] [destruction-warlock (#1)] Spent 765.600 health from {OtherID: 9} (1956.200 --> 1190.600) of 4364 total.
-[105.10] [destruction-warlock (#1)] Gained 765.600 mana from {SpellID: 11689} (533.100 --> 1298.700) of 6794 total.
+[105.10] [destruction-warlock (#1)] Spent 768.000 health from {OtherID: 9} (1946.600 --> 1178.600) of 4364 total.
+[105.10] [destruction-warlock (#1)] Gained 768.000 mana from {SpellID: 11689} (541.900 --> 1309.900) of 6794 total.
 [105.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:90.2, AfterAttackerMods:114.1, AfterResistances:85.5, AfterTargetMods:94.1, AfterOutcome:94.1, AfterPostOutcome:94.1
 [105.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit (25% Resist) for 94.098 damage (SpellSchool: 32). (Threat: 75.279)
 [105.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
@@ -1099,77 +1099,77 @@
 [106.35] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} Crit for 2122.355 damage (SpellSchool: 32). (Threat: 1697.884)
 [106.35] [Target 1] Aura gained: {SpellID: 17794}
 [106.60] [destruction-warlock (#1)] Casting {SpellID: 25311} (Cost = 340.000, Cast Time = 1.2s, GCD = 1.5s, Effective Time = 1.5s)
-[107.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1298.700 --> 1329.500) of 6794 total.
+[107.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1309.900 --> 1340.700) of 6794 total.
 [107.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:90.2, AfterAttackerMods:114.1, AfterResistances:114.1, AfterTargetMods:125.5, AfterOutcome:125.5, AfterPostOutcome:150.6
 [107.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 150.558 damage (SpellSchool: 32). (Threat: 120.446)
 [107.80] [destruction-warlock (#1)] Completed cast {SpellID: 25311}
-[107.80] [destruction-warlock (#1)] Spent 340.000 mana from {SpellID: 25311} (1329.500 --> 989.500) of 6794 total.
+[107.80] [destruction-warlock (#1)] Spent 340.000 mana from {SpellID: 25311} (1340.700 --> 1000.700) of 6794 total.
 [107.80] [Target 1] Aura gained: {SpellID: 25311}
 [107.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[107.81] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (989.500 --> 1048.500) of 6794 total.
+[107.81] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1000.700 --> 1059.700) of 6794 total.
 [108.10] [destruction-warlock (#1)] Casting {SpellID: 18871} (Cost = 328.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [108.10] [destruction-warlock (#1)] Completed cast {SpellID: 18871}
-[108.10] [destruction-warlock (#1)] Spent 328.500 mana from {SpellID: 18871} (1048.500 --> 720.000) of 6794 total.
+[108.10] [destruction-warlock (#1)] Spent 328.500 mana from {SpellID: 18871} (1059.700 --> 731.200) of 6794 total.
 [108.10] [destruction-warlock (#1)] [Target 1] {SpellID: 18871} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:487.7, AfterAttackerMods:678.6, AfterResistances:678.6, AfterTargetMods:746.5, AfterOutcome:746.5, AfterPostOutcome:895.8
 [108.10] [destruction-warlock (#1)] [Target 1] {SpellID: 18871} Hit for 895.762 damage (SpellSchool: 32). (Threat: 716.610)
 [108.10] [destruction-warlock (#1)] Aura refreshed: {SpellID: 426311}
 [108.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [108.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
-[109.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (720.000 --> 750.800) of 6794 total.
+[109.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (731.200 --> 762.000) of 6794 total.
 [109.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:90.2, AfterAttackerMods:114.1, AfterResistances:114.1, AfterTargetMods:125.5, AfterOutcome:125.5, AfterPostOutcome:150.6
 [109.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 150.558 damage (SpellSchool: 32). (Threat: 120.446)
 [109.60] [destruction-warlock (#1)] Casting {SpellID: 25307} (Cost = 342.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
 [110.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:302.2
 [110.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 302.167 damage (SpellSchool: 32). (Threat: 241.734)
-[111.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (750.800 --> 781.600) of 6794 total.
+[111.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (762.000 --> 792.800) of 6794 total.
 [111.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:107.4, AfterTargetMods:118.1, AfterOutcome:177.2, AfterPostOutcome:212.6
 [111.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Crit (25% Resist) for 212.583 damage (SpellSchool: 32). (Threat: 170.067)
 [111.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [111.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
 [112.10] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[112.10] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (781.600 --> 439.600) of 6794 total.
+[112.10] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (792.800 --> 450.800) of 6794 total.
 [112.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:710.3, AfterAttackerMods:988.3, AfterResistances:988.3, AfterTargetMods:1087.2, AfterOutcome:1087.2, AfterPostOutcome:1304.6
 [112.10] [destruction-warlock (#1)] Casting {SpellID: 11689} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [112.10] [destruction-warlock (#1)] Completed cast {SpellID: 11689}
-[112.10] [destruction-warlock (#1)] Spent 765.600 health from {OtherID: 9} (1190.600 --> 425.000) of 4364 total.
-[112.10] [destruction-warlock (#1)] Gained 765.600 mana from {SpellID: 11689} (439.600 --> 1205.200) of 6794 total.
-[113.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1205.200 --> 1236.000) of 6794 total.
+[112.10] [destruction-warlock (#1)] Spent 768.000 health from {OtherID: 9} (1178.600 --> 410.600) of 4364 total.
+[112.10] [destruction-warlock (#1)] Gained 768.000 mana from {SpellID: 11689} (450.800 --> 1218.800) of 6794 total.
+[113.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1218.800 --> 1249.600) of 6794 total.
 [113.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:143.2, AfterTargetMods:157.5, AfterOutcome:157.5, AfterPostOutcome:189.0
 [113.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 188.963 damage (SpellSchool: 32). (Threat: 151.170)
 [113.35] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} Hit for 1304.604 damage (SpellSchool: 32). (Threat: 1043.683)
-[113.36] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1236.000 --> 1295.000) of 6794 total.
+[113.36] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1249.600 --> 1308.600) of 6794 total.
 [113.60] [destruction-warlock (#1)] Casting {SpellID: 25309} (Cost = 342.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [113.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:302.2
 [113.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 302.167 damage (SpellSchool: 32). (Threat: 241.734)
 [114.60] [Target 1] Aura faded: {SpellID: 25309, Tag: 1}
 [114.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:107.6, AfterAttackerMods:130.3, AfterResistances:130.3, AfterTargetMods:143.3, AfterOutcome:143.3, AfterPostOutcome:143.3
 [114.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
-[115.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1295.000 --> 1325.800) of 6794 total.
+[115.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1308.600 --> 1339.400) of 6794 total.
 [115.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:143.2, AfterTargetMods:157.5, AfterOutcome:157.5, AfterPostOutcome:189.0
 [115.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 188.963 damage (SpellSchool: 32). (Threat: 151.170)
 [115.10] [destruction-warlock (#1)] Completed cast {SpellID: 25309}
-[115.10] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (1325.800 --> 983.800) of 6794 total.
+[115.10] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (1339.400 --> 997.400) of 6794 total.
 [115.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:239.0, AfterAttackerMods:289.2, AfterResistances:289.2, AfterTargetMods:318.1, AfterOutcome:0.0, AfterPostOutcome:0.0
 [115.10] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} Miss (SpellSchool: 4). (Threat: 0.000)
 [115.10] [destruction-warlock (#1)] Casting {SpellID: 25309} (Cost = 342.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [116.60] [destruction-warlock (#1)] Completed cast {SpellID: 25309}
-[116.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (983.800 --> 641.800) of 6794 total.
+[116.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25309} (997.400 --> 655.400) of 6794 total.
 [116.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:239.0, AfterAttackerMods:289.2, AfterResistances:289.2, AfterTargetMods:318.1, AfterOutcome:318.1, AfterPostOutcome:318.1
 [116.60] [Target 1] Aura gained: {SpellID: 25309, Tag: 1}
 [116.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309} Hit for 318.109 damage (SpellSchool: 4). (Threat: 254.487)
 [116.60] [destruction-warlock (#1)] Casting {SpellID: 11689} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [116.60] [destruction-warlock (#1)] Completed cast {SpellID: 11689}
-[116.60] [destruction-warlock (#1)] Spent 765.600 health from {OtherID: 9} (425.000 --> 0.000) of 4364 total.
-[116.60] [destruction-warlock (#1)] Gained 765.600 mana from {SpellID: 11689} (641.800 --> 1407.400) of 6794 total.
-[116.61] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1407.400 --> 1466.400) of 6794 total.
+[116.60] [destruction-warlock (#1)] Spent 768.000 health from {OtherID: 9} (410.600 --> 0.000) of 4364 total.
+[116.60] [destruction-warlock (#1)] Gained 768.000 mana from {SpellID: 11689} (655.400 --> 1423.400) of 6794 total.
+[116.61] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (1423.400 --> 1482.400) of 6794 total.
 [116.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:302.2
 [116.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 302.167 damage (SpellSchool: 32). (Threat: 241.734)
-[117.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1466.400 --> 1497.200) of 6794 total.
+[117.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1482.400 --> 1513.200) of 6794 total.
 [117.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:113.2, AfterAttackerMods:143.2, AfterResistances:107.4, AfterTargetMods:118.1, AfterOutcome:177.2, AfterPostOutcome:212.6
 [117.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Crit (25% Resist) for 212.583 damage (SpellSchool: 32). (Threat: 170.067)
 [118.10] [destruction-warlock (#1)] Casting {SpellID: 25307} (Cost = 342.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
 [118.35] [Target 1] Aura faded: {SpellID: 17794}
-[119.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1497.200 --> 1528.000) of 6794 total.
+[119.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1513.200 --> 1544.000) of 6794 total.
 [119.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:172.2, AfterTargetMods:189.5, AfterOutcome:189.5, AfterPostOutcome:189.5
 [119.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 189.474 damage (SpellSchool: 32). (Threat: 151.579)
 [119.60] [destruction-warlock (#1)] Aura faded: {SpellID: 1293816}
@@ -1178,11 +1178,11 @@
 [119.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:208.1, AfterResistances:208.1, AfterTargetMods:228.9, AfterOutcome:228.9, AfterPostOutcome:228.9
 [119.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 228.914 damage (SpellSchool: 32). (Threat: 183.132)
 [120.60] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[120.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (1528.000 --> 1186.000) of 6794 total.
+[120.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (1544.000 --> 1202.000) of 6794 total.
 [120.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:708.1, AfterAttackerMods:895.7, AfterResistances:895.7, AfterTargetMods:985.3, AfterOutcome:985.3, AfterPostOutcome:985.3
 [120.60] [destruction-warlock (#1)] Casting {SpellID: 18932} (Cost = 229.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [120.60] [destruction-warlock (#1)] Completed cast {SpellID: 18932}
-[120.60] [destruction-warlock (#1)] Spent 229.500 mana from {SpellID: 18932} (1186.000 --> 956.500) of 6794 total.
+[120.60] [destruction-warlock (#1)] Spent 229.500 mana from {SpellID: 18932} (1202.000 --> 972.500) of 6794 total.
 [120.60] [destruction-warlock (#1)] [Target 1] {SpellID: 18932} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:450.2, AfterAttackerMods:544.7, AfterResistances:544.7, AfterTargetMods:599.2, AfterOutcome:599.2, AfterPostOutcome:599.2
 [120.60] [destruction-warlock (#1)] [Target 1] {SpellID: 18932} Hit for 599.217 damage (SpellSchool: 4). (Threat: 479.373)
 [120.60] [destruction-warlock (#1)] Aura gained: {SpellID: 1293816}
@@ -1191,8 +1191,8 @@
 [120.61] [destruction-warlock (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:218.2, AfterAttackerMods:218.2, AfterResistances:218.2, AfterTargetMods:218.2, AfterOutcome:218.2, AfterPostOutcome:218.2
 [120.61] [destruction-warlock (#1)] [Target 1] {SpellID: 1260198} Hit for 218.200 damage (SpellSchool: 32). (Threat: 218.200)
 [120.61] [destruction-warlock (#1)] Gained 218.200 health from {SpellID: 1260198} (0.000 --> 218.200) of 4364 total.
-[120.61] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (956.500 --> 1015.500) of 6794 total.
-[121.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1015.500 --> 1046.300) of 6794 total.
+[120.61] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (972.500 --> 1031.500) of 6794 total.
+[121.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1031.500 --> 1062.300) of 6794 total.
 [121.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:172.2, AfterTargetMods:189.5, AfterOutcome:189.5, AfterPostOutcome:189.5
 [121.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit for 189.474 damage (SpellSchool: 32). (Threat: 151.579)
 [121.85] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} Hit for 985.296 damage (SpellSchool: 32). (Threat: 788.237)
@@ -1201,14 +1201,14 @@
 [122.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25309, Tag: 1} tick Hit for 143.282 damage (SpellSchool: 4). (Threat: 114.626)
 [122.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:171.7, AfterTargetMods:188.9, AfterOutcome:188.9, AfterPostOutcome:188.9
 [122.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit (25% Resist) for 188.854 damage (SpellSchool: 32). (Threat: 151.084)
-[123.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1046.300 --> 1077.100) of 6794 total.
+[123.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1062.300 --> 1093.100) of 6794 total.
 [123.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:172.2, AfterTargetMods:189.5, AfterOutcome:284.2, AfterPostOutcome:284.2
 [123.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Crit for 284.210 damage (SpellSchool: 32). (Threat: 227.368)
 [124.60] [destruction-warlock (#1)] Completed cast {SpellID: 25307}
-[124.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (1077.100 --> 735.100) of 6794 total.
+[124.60] [destruction-warlock (#1)] Spent 342.000 mana from {SpellID: 25307} (1093.100 --> 751.100) of 6794 total.
 [124.60] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:691.6, AfterAttackerMods:962.3, AfterResistances:962.3, AfterTargetMods:1058.5, AfterOutcome:1058.5, AfterPostOutcome:1058.5
 [124.60] [destruction-warlock (#1)] Casting {SpellID: 17923} (Cost = 151.200, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
-[125.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (735.100 --> 765.900) of 6794 total.
+[125.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (751.100 --> 781.900) of 6794 total.
 [125.10] [Target 1] Aura faded: {SpellID: 11713}
 [125.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:136.2, AfterAttackerMods:172.2, AfterResistances:129.2, AfterTargetMods:142.1, AfterOutcome:142.1, AfterPostOutcome:142.1
 [125.10] [destruction-warlock (#1)] [Target 1] {SpellID: 11713} tick Hit (25% Resist) for 142.105 damage (SpellSchool: 32). (Threat: 113.684)
@@ -1218,20 +1218,20 @@
 [125.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:174.0, AfterAttackerMods:228.9, AfterResistances:228.9, AfterTargetMods:251.8, AfterOutcome:251.8, AfterPostOutcome:251.8
 [125.80] [destruction-warlock (#1)] [Target 1] {SpellID: 25311} tick Hit for 251.806 damage (SpellSchool: 32). (Threat: 201.445)
 [125.85] [destruction-warlock (#1)] [Target 1] {SpellID: 25307} Hit for 1058.537 damage (SpellSchool: 32). (Threat: 846.829)
-[125.86] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (765.900 --> 824.900) of 6794 total.
+[125.86] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (781.900 --> 840.900) of 6794 total.
 [126.10] [destruction-warlock (#1)] Completed cast {SpellID: 17923}
-[126.10] [destruction-warlock (#1)] Spent 151.200 mana from {SpellID: 17923} (824.900 --> 673.700) of 6794 total.
+[126.10] [destruction-warlock (#1)] Spent 151.200 mana from {SpellID: 17923} (840.900 --> 689.700) of 6794 total.
 [126.10] [destruction-warlock (#1)] [Target 1] {SpellID: 17923} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 405.0, BaseDamage:287.1, AfterAttackerMods:347.4, AfterResistances:347.4, AfterTargetMods:382.1, AfterOutcome:382.1, AfterPostOutcome:382.1
 [126.10] [destruction-warlock (#1)] [Target 1] {SpellID: 17923} Hit for 382.110 damage (SpellSchool: 4). (Threat: 611.375)
 [126.10] [destruction-warlock (#1)] Casting {SpellID: 18871} (Cost = 328.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [126.10] [destruction-warlock (#1)] Completed cast {SpellID: 18871}
-[126.10] [destruction-warlock (#1)] Spent 328.500 mana from {SpellID: 18871} (673.700 --> 345.200) of 6794 total.
+[126.10] [destruction-warlock (#1)] Spent 328.500 mana from {SpellID: 18871} (689.700 --> 361.200) of 6794 total.
 [126.10] [destruction-warlock (#1)] [Target 1] {SpellID: 18871} [DEBUG] MAP: 80.0, RAP: 0.0, SP: 505.0, BaseDamage:475.2, AfterAttackerMods:661.2, AfterResistances:661.2, AfterTargetMods:727.3, AfterOutcome:727.3, AfterPostOutcome:727.3
 [126.10] [destruction-warlock (#1)] [Target 1] {SpellID: 18871} Hit for 727.338 damage (SpellSchool: 32). (Threat: 581.871)
 [126.10] [destruction-warlock (#1)] Aura refreshed: {SpellID: 426311}
-[126.11] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (345.200 --> 404.200) of 6794 total.
-[126.11] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (404.200 --> 463.200) of 6794 total.
-[127.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (463.200 --> 494.000) of 6794 total.
+[126.11] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (361.200 --> 420.200) of 6794 total.
+[126.11] [destruction-warlock (#1)] Gained 59.000 mana from {SpellID: 20355} (420.200 --> 479.200) of 6794 total.
+[127.00] [destruction-warlock (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (479.200 --> 510.000) of 6794 total.
 [127.25] [destruction-warlock (#1)] Aura faded: {SpellID: 18789}
 [127.25] [destruction-warlock (#1)] Aura faded: {SpellID: 1293816}
 [127.25] [destruction-warlock (#1)] Aura faded: {SpellID: 426311}

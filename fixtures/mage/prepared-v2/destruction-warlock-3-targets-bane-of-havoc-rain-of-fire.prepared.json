@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "65fc01115c06ab8d8be2e46d876ec3090a767525bc3779706d86f0e98e8bab5d",
@@ -518,7 +518,7 @@
       "SpellHitPercent": 10,
       "SpellHitRating": 50,
       "SpellPiercing": 0,
-      "Spirit": 214,
+      "Spirit": 216,
       "Stamina": 313,
       "Strength": 70
     },
@@ -1061,10 +1061,10 @@
       "demonic_sacrifice": 1,
       "destructive_reach": 1,
       "fel_vitality": 3,
+      "grim_reach": 2,
       "improved_corruption": 2,
       "improved_life_tap": 2,
       "improved_shadow_bolt": 5,
-      "malediction": 2,
       "ruin": 5,
       "shadow_and_flame": 5,
       "shadowburn": 1,
@@ -1082,9 +1082,9 @@
     "mana": {
       "max": 6794.2,
       "base": 1373,
-      "spirit_regen_per_second": 28.900000000000002,
+      "spirit_regen_per_second": 29.1,
       "regen_per_second_casting": 15.4,
-      "regen_per_second_not_casting": 44.300000000000004,
+      "regen_per_second_not_casting": 44.5,
       "teardown_max": 5483.2
     },
     "attack_table": {

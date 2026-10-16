@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "457b921928ec3793ee9a40f7a8e6cb46ef04a8fedba12595fec59b42ee76caad",
+  "request_sha256": "423e6f3fbe19c05d0f0f6913b8f45dd283e2455952b54a36e5bce5bdac301343",
   "scenario_id": "shadow-priest-3-targets-multidot-reads",
   "sim": {
     "iterations": 3000,
@@ -751,9 +751,9 @@
       "HealingPower": 208,
       "Health": 3527,
       "HolyDamage": 0,
-      "Intellect": 377,
+      "Intellect": 367,
       "MP5": 82,
-      "Mana": 6751,
+      "Mana": 6601,
       "MeleeCritRating": 56,
       "MeleeHasteRating": 0,
       "MeleeHitRating": 30,
@@ -770,7 +770,7 @@
       "ReducedCritTakenPercent": 0,
       "ShadowDamage": 160,
       "ShadowResistance": 60,
-      "SpellCritPercent": 15.1336,
+      "SpellCritPercent": 14.9656,
       "SpellCritRating": 56,
       "SpellDamage": 378,
       "SpellHasteRating": 0,
@@ -886,6 +886,50 @@
           "on_gain",
           "on_expire",
           "on_cast_complete"
+        ],
+        "icd": null,
+        "exclusive_effects": 0
+      },
+      {
+        "label": "Dark Inspiration",
+        "action_id": {
+          "spell_id": 1326168
+        },
+        "duration_ns": 10000000000,
+        "max_stacks": 0,
+        "active": false,
+        "stacks": 0,
+        "callbacks": [
+          "on_gain",
+          "on_expire"
+        ],
+        "icd": null,
+        "exclusive_effects": 0
+      },
+      {
+        "label": "Dark Inspiration Mind Blast",
+        "action_id": null,
+        "duration_ns": 9223372036854775807,
+        "max_stacks": 0,
+        "active": true,
+        "stacks": 0,
+        "callbacks": [
+          "on_reset",
+          "on_cast_complete"
+        ],
+        "icd": null,
+        "exclusive_effects": 0
+      },
+      {
+        "label": "Dark Inspiration Mind Flay",
+        "action_id": null,
+        "duration_ns": 9223372036854775807,
+        "max_stacks": 0,
+        "active": true,
+        "stacks": 0,
+        "callbacks": [
+          "on_reset",
+          "on_periodic_damage_dealt"
         ],
         "icd": null,
         "exclusive_effects": 0
@@ -1257,8 +1301,9 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "025300011303--500222501201302251",
+    "talents_string": "025303011030--50052201221302251",
     "talents": {
+      "dark_inspiration": 2,
       "darkness": 5,
       "devouring_contagion": 2,
       "early_demise": 2,
@@ -1270,7 +1315,6 @@
       "mental_agility": 1,
       "mental_strength": 3,
       "mind_flay": 1,
-      "shadow_affinity": 2,
       "shadow_focus": 5,
       "shadow_reach": 2,
       "shadow_weaving": 3,
@@ -1286,12 +1330,12 @@
     "distance_yards": 20,
     "cast_speed": 1,
     "mana": {
-      "max": 6751,
+      "max": 6601,
       "base": 1376,
       "spirit_regen_per_second": 34.375,
       "regen_per_second_casting": 33.5875,
       "regen_per_second_not_casting": 50.775,
-      "teardown_max": 5476
+      "teardown_max": 5356
     },
     "attack_table": {
       "base_spell_miss_chance": 0.17,
@@ -1502,13 +1546,13 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.25,
+        "damage_multiplier_additive": 1.05,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -1574,13 +1618,13 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.25,
+        "damage_multiplier_additive": 1.05,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -1646,13 +1690,13 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.25,
+        "damage_multiplier_additive": 1.05,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -1718,13 +1762,13 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.25,
+        "damage_multiplier_additive": 1.05,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -1790,13 +1834,13 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.25,
+        "damage_multiplier_additive": 1.05,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -1862,13 +1906,13 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.25,
+        "damage_multiplier_additive": 1.05,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -2174,7 +2218,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -2237,7 +2281,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -2300,7 +2344,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -2363,7 +2407,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -2426,7 +2470,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -2489,7 +2533,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -2552,7 +2596,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -2615,7 +2659,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -2678,7 +2722,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -2738,7 +2782,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -2808,7 +2852,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -2878,7 +2922,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -2948,7 +2992,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -3018,7 +3062,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -3088,7 +3132,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -3158,7 +3202,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -3228,7 +3272,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -3301,7 +3345,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3364,7 +3408,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3427,7 +3471,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -3490,7 +3534,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0.42899999022483826,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
@@ -5005,7 +5049,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -5078,7 +5122,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -5151,7 +5195,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -5224,7 +5268,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -5297,7 +5341,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -5370,7 +5414,7 @@
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 0.5599999999999999,
+        "threat_multiplier": 0.7,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": {
@@ -6173,6 +6217,16 @@
       ]
     },
     {
+      "kind": "improved_mind_flay",
+      "ramp_per_tick": 0.2
+    },
+    {
+      "aura": "Dark Inspiration",
+      "kind": "dark_inspiration",
+      "mind_blast_trigger": "Dark Inspiration Mind Blast",
+      "mind_flay_trigger": "Dark Inspiration Mind Flay"
+    },
+    {
       "aura": "Shadowform",
       "cost_percent": -0.5,
       "crit_multiplier": 1,
@@ -6440,7 +6494,7 @@
         },
         {
           "spell_id": 15265,
-          "tick_base": 13,
+          "tick_base": 9,
           "tick_can_crit": true
         },
         {
@@ -6591,6 +6645,37 @@
       ],
       "reason": "no registered spell summons the Shadowfiend",
       "unit_index": 4
+    },
+    {
+      "auras": [
+        "Dark Inspiration"
+      ],
+      "changed": [
+        "Spirit"
+      ],
+      "combos": [
+        {
+          "AttackPower": -10,
+          "MP5": 82,
+          "PhysicalCritPercent": 10.15,
+          "RangedAttackPower": 0,
+          "SpellCritPercent": 14.9656,
+          "SpellDamage": 378,
+          "Spirit": 225,
+          "SpiritManaRegenPerSecond": 34.375
+        },
+        {
+          "AttackPower": -10,
+          "MP5": 82,
+          "PhysicalCritPercent": 10.15,
+          "RangedAttackPower": 0,
+          "SpellCritPercent": 14.9656,
+          "SpellDamage": 378,
+          "Spirit": 239,
+          "SpiritManaRegenPerSecond": 36.125
+        }
+      ],
+      "kind": "stat_auras"
     },
     {
       "aura": "Chance of Death",

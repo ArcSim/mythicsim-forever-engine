@@ -427,19 +427,22 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
     let power_in_light = talents.i32("power_in_light");
     if power_in_light > 0 {
         // talents_discipline.go applyPowerInLight
-        let holy_fire: Vec<usize> = sim
+        // Holy Fire, and since the 16 October 2026 beta notes Shadow Word: Pain.
+        let dots: Vec<usize> = sim
             .unit(player)
             .spellbook
             .iter()
             .enumerate()
-            .filter(|(_, spell)| priest.holy_fire.contains(spell))
+            .filter(|(_, spell)| {
+                priest.holy_fire.contains(spell) || priest.shadow_word_pain.contains(spell)
+            })
             .map(|(position, _)| position)
             .collect();
         effects.push(json!({
             "kind": "power_in_light",
             "multiplier": data.power_in_light.multiplier_at(power_in_light),
             "spells": spells_matching(sim, player, masks::SMITE | masks::PENANCE),
-            "holy_fire_spells": holy_fire,
+            "dot_spells": dots,
         }));
     }
     if let Some(aura) = priest.searing_light_aura {

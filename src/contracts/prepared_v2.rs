@@ -2468,11 +2468,12 @@ pub enum Effect {
         ranks: Vec<FireballRank>,
     },
     /// Power in Light: the target's dynamic damage taken modifier multiplies `spells` while any
-    /// Holy Fire in `holy_fire_spells` burns it.
+    /// dot in `dot_spells` burns it: Holy Fire, and since the 16 October 2026 beta notes Shadow
+    /// Word: Pain.
     PowerInLight {
         multiplier: f64,
         spells: Vec<usize>,
-        holy_fire_spells: Vec<usize>,
+        dot_spells: Vec<usize>,
     },
     /// Searing Light: Holy Fire ticks may grant a free Holy Nova.
     SearingLight {

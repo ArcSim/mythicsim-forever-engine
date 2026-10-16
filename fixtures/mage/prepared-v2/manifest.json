@@ -10,10 +10,9 @@
   "cases": [
     {
       "id": "frost-reference",
-      "description": "The application's frozen Frost reference request (inventory/first-frost), unchanged.",
+      "description": "The application's frozen Frost reference request (inventory/first-frost), with its talents remapped field by field to client 70425's trees; the inventory keeps the string it recorded.",
       "request": {
-        "path": "inventory/first-frost/snapshot.json",
-        "pointer": "/request"
+        "path": "fixtures/mage/prepared-v2/frost-reference.request.json"
       },
       "prepared": "frost-reference.prepared.json",
       "prepared_sha256": "365b9576725812013c6fc380e7024da3be96c97dd606fd12bd8cdfaafadd5a44",

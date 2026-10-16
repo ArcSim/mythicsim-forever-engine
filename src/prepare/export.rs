@@ -333,7 +333,7 @@ pub(crate) fn export_spell_of(
         let aliases: Vec<Value> = spell
             .rank_aliases
             .iter()
-            .map(|id| spell_action_id(id))
+            .map(spell_action_id)
             .collect();
         out.insert("rank_aliases".into(), Value::Array(aliases));
     }

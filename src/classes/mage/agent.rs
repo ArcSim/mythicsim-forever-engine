@@ -938,8 +938,9 @@ impl Agent for MageAgent {
                 // A spell that travels spends the charge when it lands (patch 139), so an instant
                 // cast while it flies still sees the last one; the landing's own damage and procs
                 // at that instant come after.
+                // Ice Lance spends its charge at cast even though it travels (patch 144).
                 let travel = fight.travel_time(spell);
-                if travel <= 0 {
+                if travel <= 0 || fight.spells[spell].class_spell.as_deref() == Some("ice_lance") {
                     fight.remove_stack(aura);
                 } else {
                     fight.schedule_class_action(

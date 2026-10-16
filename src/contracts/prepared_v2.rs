@@ -2581,6 +2581,8 @@ pub enum Effect {
     HeatingUp {
         aura: String,
         trigger_aura: String,
+        /// The trigger that adds a stack on every Fire Blast cast (community #808).
+        fire_blast_trigger_aura: String,
         cast_time_per_stack: f64,
     },
     /// Combustion's major cooldown and stacking Fire crit buff.

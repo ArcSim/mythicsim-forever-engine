@@ -3,8 +3,8 @@
   "source": "community",
   "range": {
     "from": "f4b776b4f41d5c7799b8141697a2c9e67c89d426",
-    "to": "efd2a43eb5f0e96e3f2e8a1da9765904648c3ebc",
-    "commits": 358
+    "to": "b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1",
+    "commits": 360
   },
   "reviewed": "2026-10-16",
   "dispositions": [
@@ -5060,6 +5060,50 @@
       ],
       "disposition": "irrelevant",
       "reason": "Changelog or leaderboard bookkeeping."
+    },
+    {
+      "commit": "80c9efccc393f0fc56f79dc5af980aab73b17e54",
+      "date": "2026-10-16 06:42:24 +0000",
+      "subject": "data: Wowhead Forever data changed (2026-10-16) (#813)",
+      "pr": 813,
+      "areas": [
+        "assets/db_inputs",
+        "docs/data-changes"
+      ],
+      "disposition": "applicable",
+      "mechanics": [
+        "client_data"
+      ],
+      "reason": "Wowhead gear planner input; reaches the engine only through a later database regeneration.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 5af130344: fixtures re-exported at client build 1.60.1.70425"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ]
+    },
+    {
+      "commit": "b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1",
+      "date": "2026-10-16 06:42:55 +0000",
+      "subject": "data: Forever client build 1.60.1.70425 (#814)",
+      "pr": 814,
+      "areas": [
+        "assets/db_inputs",
+        "docs/data-changes"
+      ],
+      "disposition": "applicable",
+      "mechanics": [
+        "client_data"
+      ],
+      "reason": "Client build identity 70425. The fork's patch 142 carries the 70425 client data itself; adoption advances the client build and reference pin together.",
+      "adoption": {
+        "reference": "adopted",
+        "rust": "adopted with the reference pin 5af130344: game data re-imported and fixtures re-exported at client build 1.60.1.70425"
+      },
+      "regression": [
+        "fixtures/mage/prepared-v2/manifest.json"
+      ]
     }
   ]
 }

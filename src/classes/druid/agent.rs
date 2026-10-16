@@ -1153,6 +1153,7 @@ impl Agent for DruidAgent {
             DruidSpell::Prowl => Self::prowl(fight).can_cast(fight),
             DruidSpell::Builder(builder) => Self::builders(fight).can_cast(fight, builder),
             DruidSpell::Rip => Self::rip(fight).can_cast(fight),
+            DruidSpell::ShiftingPower => ShiftingPower::can_cast(fight),
             DruidSpell::FerociousBite => fight
                 .agent
                 .ferocious_bite

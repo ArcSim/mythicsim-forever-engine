@@ -202,7 +202,7 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `rake` | sim/druid/rake.go | The flat hit and the bleed's flat tick from client data and tick crit; a landed hit gives a combo point and applies the bleed |
 | `rip` | sim/druid/rip.go | The tick base and per combo point from client data, the attack power share a combo point and its cap, Go literals, tick crit and the five combo points its projection assumes |
 | `ferocious_bite` | sim/druid/ferocious_bite.go | Damage per point of excess energy and per combo point from client data, and attack power a combo point, a Go literal |
-| `shifting_power` | sim/druid/shifting_power.go | The energy from client data, plus Wolfshead Helm's |
+| `shifting_power` | sim/druid/shifting_power.go | The energy from client data, plus Wolfshead Helm's; it cannot be cast at full energy |
 | `faerie_fire` | sim/druid/faerie_fire.go, core/buffs | The target debuff, its armor reduction and how its exclusive effect reads: alone in its category, or held off by a stronger permanent debuff |
 | `berserk` | sim/druid/talents_feral_combat.go | The builders' crit bonus, a Go literal |
 | `blood_frenzy` | sim/druid/talents_feral_combat.go | The cat trigger's chance, builders and crit outcome, its combo point metrics, and the bear trigger's melee spells and Rage |

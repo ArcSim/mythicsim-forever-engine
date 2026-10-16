@@ -16,7 +16,7 @@ use crate::prepare::stats::Stat;
 use crate::prepare::Refusal;
 
 /// Go priest.TalentTreeSizes.
-const TALENT_TREE_SIZES: [usize; 3] = [18, 17, 18];
+const TALENT_TREE_SIZES: [usize; 3] = [18, 17, 17];
 
 /// Go `Inner Fire` rank 7's armor, which the charges never take away on a caster that is not
 /// hit.

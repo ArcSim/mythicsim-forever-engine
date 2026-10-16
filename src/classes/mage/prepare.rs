@@ -15,7 +15,7 @@ use crate::prepare::stats::Stat;
 use crate::prepare::Refusal;
 
 /// Go mage.TalentTreeSizes.
-const TALENT_TREE_SIZES: [usize; 3] = [18, 17, 19];
+const TALENT_TREE_SIZES: [usize; 3] = [19, 17, 19];
 
 /// tools/oracle-v2/mage.go `mageClassSpells`.
 static CLASS_SPELLS: &[ClassSpellName] = &[

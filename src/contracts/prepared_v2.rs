@@ -2108,6 +2108,14 @@ pub enum Effect {
         crit_aura: String,
         block_chance: f64,
         crit_chance: f64,
+        /// The charges each trigger adds (16 October 2026 beta notes), up to its maximum stacks.
+        charges_aura: String,
+        /// The permanent aura whose main-hand autos spend every charge.
+        spender_aura: String,
+        /// The main-hand swing each charge casts, booked under Reckoning's id.
+        extra_spell: usize,
+        /// The spells that spend the charges: every main-hand auto.
+        spender_spells: Vec<usize>,
     },
     /// Paladin talents_protection.go Iron Creed: a landed Holy Strike under Righteous Fury
     /// lowers damage taken.

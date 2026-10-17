@@ -213,25 +213,23 @@ pub(crate) struct Item {
     /// Whether the condition runs a cost check (Go `APLValueSpellCanCast`), whose bookkeeping
     /// must happen whenever Go asks it.
     asks_cost: bool,
-    /// The spells of the condition's checks when they are all `spellCanCast` nodes of its own:
-    /// asked where asking each leaves no trace, the condition keeps none either.
-    cost_check_spells: Option<Rc<[SpellId]>>,
+    /// Whether the condition's checks are all `spellCanCast` nodes of its own: asked where
+    /// asking each spell leaves no trace, the condition keeps none either.
+    asks_spell_costs: bool,
 }
 
 impl Item {
     fn new(condition: Option<Rc<Cond>>, action: Act) -> Item {
         let asks_cost = condition.as_deref().is_some_and(Cond::asks_cost);
-        let mut spells = Vec::new();
-        let cost_check_spells = (asks_cost
+        let asks_spell_costs = asks_cost
             && condition
                 .as_deref()
-                .is_some_and(|condition| condition.cost_check_spells(&mut spells)))
-        .then(|| spells.into());
+                .is_some_and(|condition| condition.cost_checks_all(&|_| true));
         Item {
             condition,
             action,
             asks_cost,
-            cost_check_spells,
+            asks_spell_costs,
         }
     }
 }
@@ -1922,10 +1920,11 @@ impl<A: Agent> Fight<A> {
     /// Whether every cost check an item's condition runs is a `spellCanCast` asked where asking
     /// leaves no trace.
     fn cost_checks_quiet(&self, item: usize) -> bool {
-        self.rotation[item]
-            .cost_check_spells
-            .as_deref()
-            .is_some_and(|spells| spells.iter().all(|&spell| self.asking_is_quiet(spell)))
+        let item = &self.rotation[item];
+        item.asks_spell_costs
+            && item.condition.as_deref().is_some_and(|condition| {
+                condition.cost_checks_all(&|spell| self.asking_is_quiet(spell))
+            })
     }
 
     /// For a spell that cannot cast or queue, asked where asking leaves no trace: until when

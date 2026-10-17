@@ -82,18 +82,15 @@ impl Cond {
     }
 
     /// Whether every check in the condition that can keep bookkeeping is a `spellCanCast`
-    /// node of its own, adding their spells: where asking each spell leaves no trace, nor does
-    /// the condition.
-    pub(crate) fn cost_check_spells(&self, spells: &mut Vec<SpellId>) -> bool {
+    /// node of its own whose spell `quiet` accepts: where asking each spell leaves no trace,
+    /// nor does the condition.
+    pub(crate) fn cost_checks_all(&self, quiet: &impl Fn(SpellId) -> bool) -> bool {
         match self {
-            Cond::SpellCanCast(spell) => {
-                spells.push(*spell);
-                true
-            }
+            Cond::SpellCanCast(spell) => quiet(*spell),
             Cond::And(values) | Cond::Or(values) => {
-                values.iter().all(|value| value.cost_check_spells(spells))
+                values.iter().all(|value| value.cost_checks_all(quiet))
             }
-            Cond::Not(value) => value.cost_check_spells(spells),
+            Cond::Not(value) => value.cost_checks_all(quiet),
             _ => !self.asks_cost(),
         }
     }

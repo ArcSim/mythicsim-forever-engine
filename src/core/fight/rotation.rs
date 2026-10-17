@@ -213,15 +213,25 @@ pub(crate) struct Item {
     /// Whether the condition runs a cost check (Go `APLValueSpellCanCast`), whose bookkeeping
     /// must happen whenever Go asks it.
     asks_cost: bool,
+    /// The spells of the condition's checks when they are all `spellCanCast` nodes of its own:
+    /// asked where asking each leaves no trace, the condition keeps none either.
+    cost_check_spells: Option<Rc<[SpellId]>>,
 }
 
 impl Item {
     fn new(condition: Option<Rc<Cond>>, action: Act) -> Item {
         let asks_cost = condition.as_deref().is_some_and(Cond::asks_cost);
+        let mut spells = Vec::new();
+        let cost_check_spells = (asks_cost
+            && condition
+                .as_deref()
+                .is_some_and(|condition| condition.cost_check_spells(&mut spells)))
+        .then(|| spells.into());
         Item {
             condition,
             action,
             asks_cost,
+            cost_check_spells,
         }
     }
 }
@@ -1819,6 +1829,8 @@ impl<A: Agent> Fight<A> {
             }
             return self.item_ready_asked(item);
         }
+        // Cost checks that all leave no trace keep no bookkeeping to do.
+        let asks_cost = asks_cost && !self.cost_checks_quiet(item);
         if let Act::Cast(spell, target) = self.rotation[item].action {
             if !asks_cost && self.asking_is_quiet(spell) {
                 let until = if self.timers_rule_out(spell) {
@@ -1905,6 +1917,52 @@ impl<A: Agent> Fight<A> {
         if A::CACHE_OVER_ENERGY {
             self.apl.walk_energy = self.apl.walk_energy.min(energy);
         }
+    }
+
+    /// Whether every cost check an item's condition runs is a `spellCanCast` asked where asking
+    /// leaves no trace.
+    fn cost_checks_quiet(&self, item: usize) -> bool {
+        self.rotation[item]
+            .cost_check_spells
+            .as_deref()
+            .is_some_and(|spells| spells.iter().all(|&spell| self.asking_is_quiet(spell)))
+    }
+
+    /// For a spell that cannot cast or queue, asked where asking leaves no trace: until when
+    /// the clock alone cannot change that, read as a cast item's proof reads it (its queue,
+    /// channel, GCD and cooldowns, then the form, the extra condition or the cost). A swapped
+    /// spell, and an energy cost where looks hold as energy rises, give no time.
+    pub(crate) fn cast_refused_until(&mut self, spell: SpellId) -> i64 {
+        let state = &self.spells[spell];
+        let energy = matches!(state.cost.map(|cost| cost.kind), Some(ResourceKind::Energy));
+        if state.flags.swapped || (A::CACHE_OVER_ENERGY && energy) {
+            return self.now;
+        }
+        let unit = &self.player;
+        let window = MAX_SPELL_QUEUE_WINDOW;
+        let mut at = self.now;
+        if !self.can_queue_spell() {
+            at = at.max(self.now + 1);
+        }
+        if state.flags.channeled && unit.hardcast.expires > self.now + window {
+            at = at.max(unit.hardcast.expires - window);
+        }
+        if state.default_cast.gcd > 0 && unit.gcd - self.now > window {
+            at = at.max(unit.gcd - window);
+        }
+        let ready = self.spell_ready_at(spell);
+        if ready - self.now > window {
+            at = at.max(ready - window);
+        }
+        if at > self.now {
+            return at;
+        }
+        if self.wrong_form(spell) || self.extra_cast_condition(spell) {
+            // The form refuses it, or the extra condition lets it go and the cost refuses it.
+            return NEVER_EXPIRES;
+        }
+        self.extra_condition_proof(spell)
+            .map_or(self.now, |(until, _)| until)
     }
 
     /// When a cast's timers stop ruling it out with nothing but the clock moving: once every

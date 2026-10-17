@@ -81,6 +81,23 @@ impl Cond {
         }
     }
 
+    /// Whether every check in the condition that can keep bookkeeping is a `spellCanCast`
+    /// node of its own, adding their spells: where asking each spell leaves no trace, nor does
+    /// the condition.
+    pub(crate) fn cost_check_spells(&self, spells: &mut Vec<SpellId>) -> bool {
+        match self {
+            Cond::SpellCanCast(spell) => {
+                spells.push(*spell);
+                true
+            }
+            Cond::And(values) | Cond::Or(values) => {
+                values.iter().all(|value| value.cost_check_spells(spells))
+            }
+            Cond::Not(value) => value.cost_check_spells(spells),
+            _ => !self.asks_cost(),
+        }
+    }
+
     /// Whether evaluating the condition can run a cost check (Go `APLValueSpellCanCast`).
     pub(crate) fn asks_cost(&self) -> bool {
         match self {
@@ -382,7 +399,18 @@ impl<A: Agent> Fight<A> {
                 NEVER_EXPIRES,
                 reads::PHASE,
             ),
-            Cond::SpellCanCast(spell) => (self.can_cast_or_queue(*spell), self.now, reads::ALL),
+            // Asked where it leaves no trace, a spell that cannot cast or queue stays so as a
+            // cast item's proof says, while nothing changes.
+            Cond::SpellCanCast(spell) => {
+                let quiet = self.asking_is_quiet(*spell);
+                let can = self.can_cast_or_queue(*spell);
+                let until = if can || !quiet {
+                    self.now
+                } else {
+                    self.cast_refused_until(*spell)
+                };
+                (can, until, reads::ALL)
+            }
             // A false `and` stays false while its first false operand does; a true one holds
             // while every operand does.
             Cond::And(values) => {

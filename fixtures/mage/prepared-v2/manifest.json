@@ -12713,6 +12713,573 @@
           "an item swap changes /player/pseudo_stats/threat_multiplier, which the runtime does not follow"
         ]
       }
+    },
+    {
+      "id": "apl-frost-preset-2-targets",
+      "description": "The fork's Frost preset against two targets, which reads spellInFlight and spellTravelTime",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-frost-preset-2-targets.request.json"
+      },
+      "prepared": "apl-frost-preset-2-targets.prepared.json",
+      "prepared_sha256": "f6b369e915b625affbde4f26e7789994f5fe2cc0221034fa9a4f47ea8f6a949d",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-frost-preset-2-targets.go-result.json",
+        "sha256": "d6816b185dc2915081503c37abfdbf00f7c282a1e208dcc94f8c3669272b2ccf"
+      },
+      "go_log": {
+        "file": "apl-frost-preset-2-targets.go-log.txt",
+        "sha256": "267320f15b1722269030a6aafbe61c2f7a1663ab13ad5fe279eba5f562ddacdb"
+      }
+    },
+    {
+      "id": "apl-shadow-cooldown-reads",
+      "description": "Shadow priest conditions on a spell's full cooldown, charges, time to charge, hasted GCD, min of values, input delay and channel clip delay",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-shadow-cooldown-reads.request.json"
+      },
+      "prepared": "apl-shadow-cooldown-reads.prepared.json",
+      "prepared_sha256": "bb8177de62cf201b6b7c0dd4be63a8cefd250b2bfff51a779b43359a5f8dde07",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-shadow-cooldown-reads.go-result.json",
+        "sha256": "1343d34c48e0fa35f88fabb01f9027ac7827d6ce219cb1dbfe3f087c3086ed5d"
+      },
+      "go_log": {
+        "file": "apl-shadow-cooldown-reads.go-log.txt",
+        "sha256": "10122ac2ad77b20bb420ca3d64491fbd554dbb23646edfd6387c0a0542ec87e6"
+      }
+    },
+    {
+      "id": "apl-shadow-channel-ticks",
+      "description": "Shadow priest Mind Flay interrupted on its channel state and channeled ticks, and a cast gated on casts per minute and the time percent",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-shadow-channel-ticks.request.json"
+      },
+      "prepared": "apl-shadow-channel-ticks.prepared.json",
+      "prepared_sha256": "b9b9920061c4f8aa8d5b673353ff3b35f202e9097cc59bd51b5406794fb32354",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-shadow-channel-ticks.go-result.json",
+        "sha256": "f74e73063d48f4a02dda9554f9fefb91ef2784bf06b5b17d0b7bcfd9198abf76"
+      },
+      "go_log": {
+        "file": "apl-shadow-channel-ticks.go-log.txt",
+        "sha256": "a27915881682b7eb74d93590f8e152aa3a817dc8a1b7fa6c503fba6a5d2b0c2c"
+      }
+    },
+    {
+      "id": "apl-shadow-max-min-regen",
+      "description": "Shadow priest conditions on max and min of values and mana regen, beside values the pinned Go builds nothing for, which drop out",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-shadow-max-min-regen.request.json"
+      },
+      "prepared": "apl-shadow-max-min-regen.prepared.json",
+      "prepared_sha256": "c87054cd62dd12e5a7846780219e7c6f6a42ce4e5aa58f937093f3fd018a33f7",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-shadow-max-min-regen.go-result.json",
+        "sha256": "78a0710bdbf57a04ca416ff430c1aed674b677b6b4eb63fe5a0ddc6bf72ef21a"
+      },
+      "go_log": {
+        "file": "apl-shadow-max-min-regen.go-log.txt",
+        "sha256": "569d8db64d3749318b67b476aafc7df14b4c21c6ac6445a8077d997d057d9c01"
+      }
+    },
+    {
+      "id": "apl-rogue-combo-energy",
+      "description": "Combat rogue conditions on max combo points and energyTimeToTarget",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-rogue-combo-energy.request.json"
+      },
+      "prepared": "apl-rogue-combo-energy.prepared.json",
+      "prepared_sha256": "cf7bf16d73443edea80bda758cfdc9b0e3f75c9179363282b055ccd5de279a80",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-rogue-combo-energy.go-result.json",
+        "sha256": "62d9546e8dd8049b8e16362854bcbe85c7ffe33b9550d02e9e340e222e094cb6"
+      },
+      "go_log": {
+        "file": "apl-rogue-combo-energy.go-log.txt",
+        "sha256": "402112679a793d1abe09e38d5a0d05df84eae3685eeed3a9a151552e0f587883"
+      }
+    },
+    {
+      "id": "apl-warrior-rage-autos",
+      "description": "Warrior conditions on max rage, the GCD's time to ready and the time since the last main hand and melee auto",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-warrior-rage-autos.request.json"
+      },
+      "prepared": "apl-warrior-rage-autos.prepared.json",
+      "prepared_sha256": "ee2f6d0cb5e779f97b2860c190941fc4b0f2403f709382de779e2ccfdb9f378f",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-warrior-rage-autos.go-result.json",
+        "sha256": "31f10d6268f4b0866d6ceb90e0926a869850155ce2d4d711030ba038393a39ea"
+      },
+      "go_log": {
+        "file": "apl-warrior-rage-autos.go-log.txt",
+        "sha256": "93f0a16c040070e0e15dd5a9785f449ffe662014fbe5f73a874265a803f1aebe"
+      }
+    },
+    {
+      "id": "apl-warrior-moving-distance",
+      "description": "Warrior charging while it moves, with conditions on the player's and the target's movement and the distance",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-warrior-moving-distance.request.json"
+      },
+      "prepared": "apl-warrior-moving-distance.prepared.json",
+      "prepared_sha256": "71ad281c276b72a9af00ae13a710dc1fbd3881d9406edf6c089bd4ed92f34999",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-warrior-moving-distance.go-result.json",
+        "sha256": "adb11570050f3f6a0d13a34b67f7b52c21a50dd74a9fdd07344dfdf604687a74"
+      },
+      "go_log": {
+        "file": "apl-warrior-moving-distance.go-log.txt",
+        "sha256": "97bacf5a7ebb543af8d53e55ac30c4c42deb534b5013f33fdf3c2cddf5d7a1d6"
+      }
+    },
+    {
+      "id": "apl-warrior-aura-icds",
+      "description": "Warrior conditions on an aura's internal cooldown, its readiness with and without reaction time, and an aura's duration",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-warrior-aura-icds.request.json"
+      },
+      "prepared": "apl-warrior-aura-icds.prepared.json",
+      "prepared_sha256": "b650c9a6f1f8682609cff01687deb3150a4497488f85a57fed0c560266b38d54",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-warrior-aura-icds.go-result.json",
+        "sha256": "b0aaf74bfaf21bac3130ee15e9af7aa042779b1218d054b9cdf771a0831b2149"
+      },
+      "go_log": {
+        "file": "apl-warrior-aura-icds.go-log.txt",
+        "sha256": "9e39765280848a27d505dfc7887d4c3a4d2e6757ed72ee274c143ce8e7146709"
+      }
+    },
+    {
+      "id": "apl-shadow-dots-2-targets",
+      "description": "Shadow priest against two targets reading a dot's lowest remaining time, its activity on all targets and its tick frequency",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-shadow-dots-2-targets.request.json"
+      },
+      "prepared": "apl-shadow-dots-2-targets.prepared.json",
+      "prepared_sha256": "f63fc323e3bc5c0b438822f512aec67aa9c338f3afddcc316a0c838f5b1584fd",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-shadow-dots-2-targets.go-result.json",
+        "sha256": "b34a3aabb31608f11301dc490205822f6507a375b5392c3a26d6cfd906dd7e62"
+      },
+      "go_log": {
+        "file": "apl-shadow-dots-2-targets.go-log.txt",
+        "sha256": "0c445d271f3f2011d904f8a9ec361e1696081d0c6a7d0fcccacfd3fb5157ca20"
+      }
+    },
+    {
+      "id": "apl-shadow-wait-until",
+      "description": "Shadow priest waiting until Mind Blast is ready instead of channelling, which blocks event reactions as Go's waitUntil does",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-shadow-wait-until.request.json"
+      },
+      "prepared": "apl-shadow-wait-until.prepared.json",
+      "prepared_sha256": "02799de9da1b5c4d8d1e0ebae28c3c36d73b2f0bf41edca8ebfaa9aafb8cd795",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-shadow-wait-until.go-result.json",
+        "sha256": "d9925f0cca78462d1cc58c3be0c043857c1f2606809d9743e87588828bcb9ae9"
+      },
+      "go_log": {
+        "file": "apl-shadow-wait-until.go-log.txt",
+        "sha256": "7ac1602117a2d4719b011d6104e1569e37a914f23fbd0524dbb66ad1b1b1502d"
+      }
+    },
+    {
+      "id": "apl-shadow-schedule",
+      "description": "Shadow priest scheduled casts at timings, one schedule with an unparsable timing",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-shadow-schedule.request.json"
+      },
+      "prepared": "apl-shadow-schedule.prepared.json",
+      "prepared_sha256": "1d220fb17069fbfcd715c5ff3b1e08b25774ea37a10f1ad1fa79f66c84512eda",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-shadow-schedule.go-result.json",
+        "sha256": "230904b28ce5435f67da165df38b7987c579bba3793249c0c82daf23c6b5fe9d"
+      },
+      "go_log": {
+        "file": "apl-shadow-schedule.go-log.txt",
+        "sha256": "5516354d16f231251ce7f4028b2354c1d15f6a84f294e7df9ba94076d3bbf80c"
+      }
+    },
+    {
+      "id": "apl-shadow-sequences",
+      "description": "Shadow priest sequence with its completion, readiness and time to ready, reset by resetSequence, and a read of a missing sequence",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-shadow-sequences.request.json"
+      },
+      "prepared": "apl-shadow-sequences.prepared.json",
+      "prepared_sha256": "4751e93ba8fcbb7e4beddbe3348b0989c31d33c640fe0215606881a11d30007a",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-shadow-sequences.go-result.json",
+        "sha256": "02bd0b8506db7673e9b8aabf6d3cef02e052cc6e68ae7fa2d64861b64cbdad1d"
+      },
+      "go_log": {
+        "file": "apl-shadow-sequences.go-log.txt",
+        "sha256": "5b012d3377c70b8092ff59c4121262e60b851845ab9a079e5c24baf6b10e51e0"
+      }
+    },
+    {
+      "id": "apl-survival-hunter-wait",
+      "description": "Survival hunter waitUntil on the time to and since the next melee auto",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-survival-hunter-wait.request.json"
+      },
+      "prepared": "apl-survival-hunter-wait.prepared.json",
+      "prepared_sha256": "259c6c86db75949ddd099b65fd789ccb82949ed0af50ee58a261bcd71d6da671",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-survival-hunter-wait.go-result.json",
+        "sha256": "3c6bca1b07cab65e3fb890e522b540d630d95ab430579999a3b9a6c06e5b2cb0"
+      },
+      "go_log": {
+        "file": "apl-survival-hunter-wait.go-log.txt",
+        "sha256": "68a826a316a5613564eb8fadf1e0b1f01e39b2c103377974ea893001ad5a901f"
+      }
+    },
+    {
+      "id": "apl-shadow-strict-multidot-2-targets",
+      "description": "Shadow priest strictMultidot of Shadow Word: Pain against two targets",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-shadow-strict-multidot-2-targets.request.json"
+      },
+      "prepared": "apl-shadow-strict-multidot-2-targets.prepared.json",
+      "prepared_sha256": "d52f5c39ff22c09855846fc060510d97f0ad211231eb94edb0916f4988bb8d07",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-shadow-strict-multidot-2-targets.go-result.json",
+        "sha256": "50d2f271ac16f94ad91a4ff11c843fb576c5fa0ab794a9571b36970b8ff63b62"
+      },
+      "go_log": {
+        "file": "apl-shadow-strict-multidot-2-targets.go-log.txt",
+        "sha256": "0d1d8272e0683f7a4faa6da47730ead11dc75a9f1040a0746ff6b90da98297d2"
+      }
+    },
+    {
+      "id": "apl-warrior-cancel-and-prepull-auras",
+      "description": "Warrior cancelAura in the priority list and prepull activateAuraWithStacks, triggerIcd and cancelAura",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-warrior-cancel-and-prepull-auras.request.json"
+      },
+      "prepared": "apl-warrior-cancel-and-prepull-auras.prepared.json",
+      "prepared_sha256": "d949bc7912cf68bd64642dd7e94e0969144bb5f6b4158ec9d15dbf000afb92e1",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-warrior-cancel-and-prepull-auras.go-result.json",
+        "sha256": "6f2500126d3eb796d5fc8c37f608bd211e17498701b81765755240b28ac9a458"
+      },
+      "go_log": {
+        "file": "apl-warrior-cancel-and-prepull-auras.go-log.txt",
+        "sha256": "245ab647bbc0c9a5b10cc7747cea5eb6883398ce5160b44764db9acd8a17e13c"
+      }
+    },
+    {
+      "id": "apl-mcp-prepull-swap-and-back",
+      "description": "Arms warrior prepull item swap to the swap set and back to the main set",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-mcp-prepull-swap-and-back.request.json"
+      },
+      "prepared": "apl-mcp-prepull-swap-and-back.prepared.json",
+      "prepared_sha256": "77338a9b5d6f334ce5ce51e2ec2a310543162b5696d8123d6e2af95352b5fb9d",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-mcp-prepull-swap-and-back.go-result.json",
+        "sha256": "65087ace1a8a6d01c52742b8d5bb617922a8458cbac5afa5e9c33fde2abe0904"
+      },
+      "go_log": {
+        "file": "apl-mcp-prepull-swap-and-back.go-log.txt",
+        "sha256": "051605ec9ead1dc343ae703b2fc93419c77dfbd1ceb768abcec0f87a67727f25"
+      }
+    },
+    {
+      "id": "apl-warlock-assigned-agony",
+      "description": "Affliction warlock castWarlockAssignedCurse with the assigned curse values",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-warlock-assigned-agony.request.json"
+      },
+      "prepared": "apl-warlock-assigned-agony.prepared.json",
+      "prepared_sha256": "198d2741086beb1737bd78ef5fcdf0623c5fed0489ace65923b5a8c0652fd027",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-warlock-assigned-agony.go-result.json",
+        "sha256": "4166b450c780e160ce64360017251f71aa265f1f32ad97759a9380fb5abdbe3f"
+      },
+      "go_log": {
+        "file": "apl-warlock-assigned-agony.go-log.txt",
+        "sha256": "e5b4f2fb05f3e4f092128b0a66363a6e2fc915caeb90664e049e4b19e8f07507"
+      }
+    },
+    {
+      "id": "apl-protection-warrior-boss-target",
+      "description": "Protection warrior conditions on the boss's current target",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-protection-warrior-boss-target.request.json"
+      },
+      "prepared": "apl-protection-warrior-boss-target.prepared.json",
+      "prepared_sha256": "d855c3b285cd68219374ba86b45c264b904d975a7c07f0539a386df22ca1e0cb",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-protection-warrior-boss-target.go-result.json",
+        "sha256": "ae6001099e42c068688b68811f30be344eee08598fd49ffb2c5f9fcab9c5735c"
+      },
+      "go_log": {
+        "file": "apl-protection-warrior-boss-target.go-log.txt",
+        "sha256": "1053340e2f63c6bb97048e4ee6bae0296062a7c5b4a2b45d32cf3a4b7983e8a2"
+      }
+    },
+    {
+      "id": "apl-warrior-boss-spells",
+      "description": "Warrior conditions on the boss's attack time to ready and casting, and a boss spell read on the player",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-warrior-boss-spells.request.json"
+      },
+      "prepared": "apl-warrior-boss-spells.prepared.json",
+      "prepared_sha256": "2ed806c8cd9c452f5724d3ea93fb55d791f0894889dbbf50fc6217685bc6c4e5",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-warrior-boss-spells.go-result.json",
+        "sha256": "409152dff6fd93cef0996a6afbdbfd6bb92a2dff6d2b439d96e9533708779f99"
+      },
+      "go_log": {
+        "file": "apl-warrior-boss-spells.go-log.txt",
+        "sha256": "595a2052ce4fa3f8bf0270d3c5c651080c58fe3804ee89240f7c5ffbc2b71c12"
+      }
+    },
+    {
+      "id": "apl-warrior-selected-consumables",
+      "description": "Warrior conditions on the selected potion and conjured item",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-warrior-selected-consumables.request.json"
+      },
+      "prepared": "apl-warrior-selected-consumables.prepared.json",
+      "prepared_sha256": "390489b0af168905e692a77332e7f0c311909dcd5317f97973857c3f144afc02",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-warrior-selected-consumables.go-result.json",
+        "sha256": "1399b93d8ae44e0df10b91fb3939c1346eb0e15c85c2ca8aded62dc534100cd5"
+      },
+      "go_log": {
+        "file": "apl-warrior-selected-consumables.go-log.txt",
+        "sha256": "595a2052ce4fa3f8bf0270d3c5c651080c58fe3804ee89240f7c5ffbc2b71c12"
+      }
+    },
+    {
+      "id": "apl-warrior-cd-usages",
+      "description": "Warrior multipleCdUsages of Death Wish against Recklessness",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-warrior-cd-usages.request.json"
+      },
+      "prepared": "apl-warrior-cd-usages.prepared.json",
+      "prepared_sha256": "2314b50b7bb75477b9ac112bb54458594f820be3f794c68b76b9b68cddd4673f",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-warrior-cd-usages.go-result.json",
+        "sha256": "663ea27a2551dfe274010460930e31999dde37247426c003f680384171a5c497"
+      },
+      "go_log": {
+        "file": "apl-warrior-cd-usages.go-log.txt",
+        "sha256": "6fed809076ac3318eae1b7dbbea8a6ced2c91ba73cd3dd0c048f8d16ab9dad25"
+      }
+    },
+    {
+      "id": "apl-warrior-item-stat-procs",
+      "description": "Warrior conditions on item stat procs: any and all active, available, min remaining time, max remaining ICD and the equipped count",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-warrior-item-stat-procs.request.json"
+      },
+      "prepared": "apl-warrior-item-stat-procs.prepared.json",
+      "prepared_sha256": "e98c6785c33ee878b3da87fe526debdb6f4e2ee775e8d79788b34a8da1fc7350",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-warrior-item-stat-procs.go-result.json",
+        "sha256": "7f6d79280a2151e34bd0e9d154f6d912d0373a4ddb9227e029363b6b3710b9ef"
+      },
+      "go_log": {
+        "file": "apl-warrior-item-stat-procs.go-log.txt",
+        "sha256": "6645e76309ea67a8fa5b8d6b1fbd845b59e628a48930e05153c21834d30ee6b9"
+      }
+    },
+    {
+      "id": "apl-warrior-cast-all-stat-buff-cooldowns",
+      "description": "Warrior castAllStatBuffCooldowns of attack power cooldowns",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-warrior-cast-all-stat-buff-cooldowns.request.json"
+      },
+      "prepared": "apl-warrior-cast-all-stat-buff-cooldowns.prepared.json",
+      "prepared_sha256": "17571650f2e55d436c9acb88871c2ec5c837c569c7f7794aa586e7f538629f10",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-warrior-cast-all-stat-buff-cooldowns.go-result.json",
+        "sha256": "1399b93d8ae44e0df10b91fb3939c1346eb0e15c85c2ca8aded62dc534100cd5"
+      },
+      "go_log": {
+        "file": "apl-warrior-cast-all-stat-buff-cooldowns.go-log.txt",
+        "sha256": "595a2052ce4fa3f8bf0270d3c5c651080c58fe3804ee89240f7c5ffbc2b71c12"
+      }
+    },
+    {
+      "id": "apl-warrior-prepull-stat-buffs",
+      "description": "Warrior prepull castAllStatBuffCooldowns and activateAllStatBuffProcAuras",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-warrior-prepull-stat-buffs.request.json"
+      },
+      "prepared": "apl-warrior-prepull-stat-buffs.prepared.json",
+      "prepared_sha256": "cb0b2f494aeb5a8aed3eafe5515fe2a49ba9be287b5f9dacd205ade90a283efd",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-warrior-prepull-stat-buffs.go-result.json",
+        "sha256": "8cee2954677d4436e2edf127769c6f0277ef40da4262bbc1718751762eafaf80"
+      },
+      "go_log": {
+        "file": "apl-warrior-prepull-stat-buffs.go-log.txt",
+        "sha256": "8f6cadd046b1b4026e2dfffb701a9a5bbbc9ceff5de0f3dacf9259146d6c11b1"
+      }
+    },
+    {
+      "id": "apl-shadow-dot-increase",
+      "description": "Shadow priest dotPercentIncrease and dotTickRatePercentIncrease read through Go's expected tick damage",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-shadow-dot-increase.request.json"
+      },
+      "prepared": "apl-shadow-dot-increase.prepared.json",
+      "prepared_sha256": "2d13dccef9350a20b1cb3b8e4ec01a1133090441ced1032bad443c63a6d272aa",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-shadow-dot-increase.go-result.json",
+        "sha256": "4736f989988266cfea4dace140a31485e1d024021c31cb7427f331754e61acad"
+      },
+      "go_log": {
+        "file": "apl-shadow-dot-increase.go-log.txt",
+        "sha256": "eac52fecbc0cc6eaa07dc17de19b2230e8b715f0663dd63aaf56c5ccd8bc36cf"
+      }
+    },
+    {
+      "id": "apl-feral-dot-increase",
+      "description": "Feral druid dotPercentIncrease of Rip and Rake through their expected tick damage",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-feral-dot-increase.request.json"
+      },
+      "prepared": "apl-feral-dot-increase.prepared.json",
+      "prepared_sha256": "368a10f360e90390aa03da6552e29c0dc459009fed664fdfc13e795f8a95643d",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-feral-dot-increase.go-result.json",
+        "sha256": "3d8e1129267fb42667fa22b0f4490d3cb9141e02f6cd2ae141b3c41e159cc2b6"
+      },
+      "go_log": {
+        "file": "apl-feral-dot-increase.go-log.txt",
+        "sha256": "6b7240e49c30dbfda2978a0977ad9cedc7f1b8c8c255cc0e67e7ffbe4cffcd33"
+      }
+    },
+    {
+      "id": "apl-shadow-change-target",
+      "description": "Shadow priest changeTarget to the first target in the priority list and the prepull",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/apl-shadow-change-target.request.json"
+      },
+      "prepared": "apl-shadow-change-target.prepared.json",
+      "prepared_sha256": "3fe2cceb48fb6c642511f8388e9d26398c05cce7d110eaf87a142dcd8829ab71",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "apl-shadow-change-target.go-result.json",
+        "sha256": "4da083df2ec5b2492dd0e7d524d2b74b68534a1c9389cd216571d2f356c424b9"
+      },
+      "go_log": {
+        "file": "apl-shadow-change-target.go-log.txt",
+        "sha256": "86ede77925a2e30eb881becd39e3bd794b90dc46f63da0e946f36992ead81242"
+      }
     }
   ]
 }

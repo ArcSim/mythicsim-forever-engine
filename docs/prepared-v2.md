@@ -1078,3 +1078,22 @@ imbue and as a temporary enchantment on both hands), `combat-rogue-battle-squawk
 `survival-hunter-no-hit-suppression` (the boss's 1% hit suppression off). The exporter refuses a fight
 that outlasts Battle Squawk's four minutes, and a pet that follows the owner's melee speed, since the
 expiry and the pass to the pet are not run.
+
+## Rotation coverage fixtures
+
+The rotation's full coverage of Go's APL added 27 requests, each with Go goldens and a first-fight
+log computed on linux/arm64, named `apl-*`. They take a production build and add the actions or
+values under test to its rotation, with conditions that decide casts so the reads change the fight:
+the fork's Frost preset against two targets (`spellInFlight` and `spellTravelTime`), the spell, player
+and timing values (`apl-shadow-cooldown-reads`, `apl-shadow-channel-ticks`, `apl-shadow-max-min-regen`,
+`apl-rogue-combo-energy`, `apl-warrior-rage-autos`, `apl-warrior-moving-distance`), aura internal
+cooldowns and the dots on every target (`apl-warrior-aura-icds`, `apl-shadow-dots-2-targets`), waits,
+schedules and sequences (`apl-shadow-wait-until`, `apl-survival-hunter-wait`, `apl-shadow-schedule`,
+`apl-shadow-sequences`), `apl-shadow-strict-multidot-2-targets`, the aura actions in the priority list
+and the prepull (`apl-warrior-cancel-and-prepull-auras`), a prepull item swap and back
+(`apl-mcp-prepull-swap-and-back`), the Warlock's assigned curse (`apl-warlock-assigned-agony`), the
+boss values (`apl-protection-warrior-boss-target`, `apl-warrior-boss-spells`), the values and actions
+that read `rotation_reads` (`apl-warrior-selected-consumables`, `apl-warrior-cd-usages`,
+`apl-warrior-item-stat-procs`, `apl-warrior-cast-all-stat-buff-cooldowns`,
+`apl-warrior-prepull-stat-buffs`), the dot increases through the expected tick
+(`apl-shadow-dot-increase`, `apl-feral-dot-increase`) and `apl-shadow-change-target`.

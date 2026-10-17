@@ -1647,6 +1647,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) priority_len: usize,
     /// Where each group instance's items are.
     pub(crate) group_ranges: Vec<std::ops::Range<usize>>,
+    /// A Warlock's assigned curse: the curse option and the curse spell's action.
+    pub(crate) assigned_curse: Option<(String, ActionId)>,
     /// The priority list's sequences by name, which reset sequence actions and sequence values
     /// find.
     pub(crate) rotation_sequences: Vec<(std::rc::Rc<str>, usize)>,
@@ -3647,6 +3649,7 @@ impl<A: Agent> Fight<A> {
             priority_len: 0,
             group_ranges: Vec::new(),
             rotation_sequences: Vec::new(),
+            assigned_curse: crate::engine::coverage::assigned_curse(prepared),
             prepull: Vec::new(),
             dot_base_durations: Vec::new(),
             in_rotation: false,

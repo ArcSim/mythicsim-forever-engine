@@ -362,6 +362,12 @@ pub enum Value {
     /// Go `APLValueDotTickFrequency`: the dot's tick period, or the one it would tick at now
     /// while it is down.
     DotTickFrequency(DotRef),
+    /// Go sim/warlock/apl_values.go `APLValueWarlockIsAssignedCurse`: whether the curse type
+    /// (Agony when absent) is the Warlock's assigned curse.
+    WarlockIsAssignedCurse(String),
+    /// Go `APLValueWarlockAssignedCurseIsActive`: the assigned curse's aura on the unit has
+    /// been up for the reaction time.
+    WarlockAssignedCurseIsActive(UnitRef),
     /// Go `APLValueSequenceIsComplete` of the sequence of the name.
     SequenceIsComplete(String),
     /// Go `APLValueSequenceIsReady`: the sequence's next step is ready.
@@ -548,6 +554,8 @@ impl Value {
             | Value::AuraIcdIsReady { .. }
             | Value::SequenceIsComplete(_)
             | Value::SequenceIsReady(_)
+            | Value::WarlockIsAssignedCurse(_)
+            | Value::WarlockAssignedCurseIsActive(_)
             | Value::DotIsActiveOnAllTargets(_) => ValueType::Bool,
             Value::SequenceTimeToReady(_) => ValueType::Duration,
             Value::AuraInternalCooldown { .. }
@@ -617,6 +625,8 @@ pub enum Action {
     },
     /// Go `APLActionCancelAura` of one of the player's auras.
     CancelAura(ActionId),
+    /// Go sim/warlock/apl_values.go `APLActionCastWarlockAssignedCurse` on the unit.
+    CastAssignedCurse(UnitRef),
     /// Go `APLActionActivateAuraWithStacks` of one of the player's auras, parsed only as a
     /// prepull action.
     ActivateAuraWithStacks {
@@ -740,6 +750,7 @@ impl Action {
             | Action::WaitUntil(_)
             | Action::ResetSequence(_)
             | Action::CancelAura(_)
+            | Action::CastAssignedCurse(_)
             | Action::ActivateAuraWithStacks { .. }
             | Action::TriggerIcd(_)
             | Action::GroupReference { .. } => Vec::new(),
@@ -1241,6 +1252,7 @@ fn parse_action_object(action: &Map<String, Json>, position: usize) -> Result<It
         Ok(("cancelAura", config)) => {
             parse_aura_action("cancelAura", config).map(Action::CancelAura)
         }
+        Ok(("castWarlockAssignedCurse", config)) => parse_assigned_curse(config),
         Ok(("move", config)) => parse_move(config),
         Ok(("moveDuration", config)) => parse_move_duration(config),
         Ok(("groupReference", config)) => parse_group_reference(config),
@@ -1483,6 +1495,29 @@ fn parse_cast_friendly_spell(config: &Json) -> Result<Action, String> {
         UnitRef::Player => Action::CastAtPlayer(spell),
         target => Action::CastSpell { spell, target },
     })
+}
+
+/// Go `newActionWarlockAssignedCurseAction`: the unit the curse is cast on, which the runtime
+/// casts on the first target or on no unit.
+fn parse_assigned_curse(config: &Json) -> Result<Action, String> {
+    let object = config
+        .as_object()
+        .ok_or("castWarlockAssignedCurse must be an object")?;
+    if let Some(key) = object.keys().find(|key| key.as_str() != "target") {
+        return Err(format!(
+            "castWarlockAssignedCurse field {key} is unsupported"
+        ));
+    }
+    match parse_unit_ref(object.get("target"), UnitRef::CurrentTarget) {
+        Ok(unit @ (UnitRef::CurrentTarget | UnitRef::Target(0) | UnitRef::Nobody)) => {
+            Ok(Action::CastAssignedCurse(unit))
+        }
+        _ => Err(unsupported_unit(
+            "castWarlockAssignedCurse",
+            "target",
+            object.get("target"),
+        )),
+    }
 }
 
 /// An action on one of the player's auras: its aura. Go builds no action without one, which Rust
@@ -2034,6 +2069,29 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                     )]
                 })?;
             Ok(Value::DotTickFrequency(DotRef { spell, target }))
+        }
+        "warlockIsAssignedCurse" => {
+            only(&["curseType"])?;
+            // protojson omits the zero value, Agony.
+            Ok(Value::WarlockIsAssignedCurse(
+                config
+                    .get("curseType")
+                    .and_then(Json::as_str)
+                    .unwrap_or("Agony")
+                    .to_string(),
+            ))
+        }
+        "warlockAssignedCurseIsActive" => {
+            only(&["targetUnit"])?;
+            let unit = parse_value_unit_ref(config.get("targetUnit"), UnitRef::CurrentTarget)
+                .map_err(|()| {
+                    vec![unsupported_unit(
+                        name,
+                        "targetUnit",
+                        config.get("targetUnit"),
+                    )]
+                })?;
+            Ok(Value::WarlockAssignedCurseIsActive(unit))
         }
         "sequenceIsComplete" | "sequenceIsReady" | "sequenceTimeToReady" => {
             // Go gives no value without a sequence name.
@@ -2684,6 +2742,9 @@ pub enum Compiled<R> {
     /// Go `APLValueDotLowestRemainingTime`: the dot on each target.
     DotLowestRemainingTime(Vec<DotAt>),
     DotTickFrequency(DotAt),
+    /// Go `APLValueWarlockIsAssignedCurse`, which Go settles as the rotation is built but does
+    /// not fold.
+    AssignedCurse(bool),
     /// Go `APLValueSequenceIsComplete` of the sequence of the name.
     SequenceIsComplete(String),
     SequenceIsReady(String),
@@ -2755,6 +2816,7 @@ impl<R> Compiled<R> {
             | Compiled::AuraIcdIsReady { .. }
             | Compiled::SequenceIsComplete(_)
             | Compiled::SequenceIsReady(_)
+            | Compiled::AssignedCurse(_)
             | Compiled::DotIsActiveOnAllTargets(_) => ValueType::Bool,
             Compiled::SequenceTimeToReady(_) => ValueType::Duration,
             Compiled::AuraInternalCooldown(_)
@@ -2932,6 +2994,9 @@ pub struct Lookup<'a, R> {
     pub icd_aura: &'a dyn Fn(Unit, &ActionId) -> Option<R>,
     /// Go `GetAPLMultidotSpell`: whether the spell has a dot `Spell.CurDot` returns.
     pub multidot: &'a dyn Fn(&ActionId) -> bool,
+    /// A Warlock's assigned curse: its option name and the action of the curse spell. Only a
+    /// Warlock builds the curse values.
+    pub assigned_curse: Option<(&'a str, &'a ActionId)>,
 }
 
 /// The player's resource bars: Go `HasManaBar`, the rage bar's `MaximumRage` and the energy
@@ -3180,6 +3245,25 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
             }
         }
         Value::DotTickFrequency(dot) => Compiled::DotTickFrequency(dot_at(dot, lookup)?),
+        Value::WarlockIsAssignedCurse(curse) => {
+            Compiled::AssignedCurse(lookup.assigned_curse?.0 == curse.as_str())
+        }
+        // Go reads the curse's aura of tag 1, else of tag 0, on the unit; Rust gives no value
+        // where Go would read an aura the unit lacks.
+        Value::WarlockAssignedCurseIsActive(unit) => {
+            let (_, curse) = lookup.assigned_curse?;
+            let tagged = |tag: i32| ActionId {
+                tag,
+                ..curse.clone()
+            };
+            let find = |id: &ActionId| match unit.resolve(lookup.targets) {
+                Some(Unit::Target(position)) => (lookup.target_aura)(position, id),
+                Some(Unit::Player) => aura(id),
+                None => None,
+            };
+            let found = find(&tagged(1)).or_else(|| find(&tagged(0)))?;
+            Compiled::AuraIsActiveAfterReaction(found.aura)
+        }
         // Go finds the sequence when the rotation is finalized; one of no action reads as done
         // nothing and never ready.
         Value::SequenceIsComplete(name) => Compiled::SequenceIsComplete(name.clone()),
@@ -3381,6 +3465,7 @@ mod tests {
             bars: Bars::default(),
             icd_aura: &|_, _| None,
             multidot: &|_| false,
+            assigned_curse: None,
         }
     }
 
@@ -3411,6 +3496,7 @@ mod tests {
             bars: Bars::default(),
             icd_aura: &|_, _| None,
             multidot: &|_| false,
+            assigned_curse: None,
             ..only_auras(&none, &|_, _| None)
         };
         assert_eq!(
@@ -4041,6 +4127,7 @@ mod tests {
             bars: Bars::default(),
             icd_aura: &|_, _| None,
             multidot: &|_| false,
+            assigned_curse: None,
         })
     }
 
@@ -4539,6 +4626,7 @@ mod tests {
             bars: Bars::default(),
             icd_aura: &|_, _| None,
             multidot: &|_| false,
+            assigned_curse: None,
         };
         let compare = |spell: i32| {
             let value = parse_value(&serde_json::json!({"cmp": {"op": "OpGt",

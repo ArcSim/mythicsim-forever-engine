@@ -1993,6 +1993,16 @@ pub(crate) fn prepared_coverage(
                         reachable.extend(cooldown_spell(prepared, cooldown));
                     }
                 }
+                // A Warlock's assigned curse reaches its curse spell.
+                Action::CastAssignedCurse(target)
+                    if target
+                        .resolve(prepared.encounter.target_count.max(1) as usize)
+                        .is_some() =>
+                {
+                    if let Some((_, id)) = assigned_curse(prepared) {
+                        reachable.extend(rotation_spell(prepared, &id));
+                    }
+                }
                 // Go builds no cast for a target that names no unit, so it reaches no spell.
                 Action::CastSpell { target, .. } | Action::ChannelSpell { target, .. }
                     if target
@@ -2386,6 +2396,7 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
     let pet_auras = crate::core::fight::pet::pet_agent_auras(prepared);
     let pet_aura_known =
         |pet: usize, id: &ActionId| pet_auras.get(pet).is_some_and(|auras| auras.contains(id));
+    let curse = assigned_curse(prepared);
     let lookup = Lookup {
         aura: &aura,
         target_aura: &target_aura,
@@ -2398,6 +2409,7 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
+        assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
     };
     let live = |index: usize| {
         compile_condition(rotation.priority_list[index].condition.as_ref(), &lookup)
@@ -2494,6 +2506,7 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
     let pet_auras = crate::core::fight::pet::pet_agent_auras(prepared);
     let pet_aura_known =
         |pet: usize, id: &ActionId| pet_auras.get(pet).is_some_and(|auras| auras.contains(id));
+    let curse = assigned_curse(prepared);
     let lookup = Lookup {
         aura: &aura,
         target_aura: &target_aura,
@@ -2506,6 +2519,7 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
+        assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
     };
     rotation
         .priority_list
@@ -2535,6 +2549,7 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
     let pet_auras = crate::core::fight::pet::pet_agent_auras(prepared);
     let pet_aura_known =
         |pet: usize, id: &ActionId| pet_auras.get(pet).is_some_and(|auras| auras.contains(id));
+    let curse = assigned_curse(prepared);
     let lookup = Lookup {
         aura: &aura,
         target_aura: &target_aura,
@@ -2547,6 +2562,7 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
+        assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
     };
     compile_condition(prepull.condition.as_ref(), &lookup)
         == crate::rotation::CompiledCondition::Pruned
@@ -2662,6 +2678,36 @@ fn find_aura(prepared: &PreparedV2, id: &ActionId) -> Option<FoundAura<ActionId>
     find_unit_aura(&prepared.player.auras, id)
 }
 
+/// sim/warlock/apl_values.go `GetAssignedCurse`: a Warlock's curse option, Agony when the
+/// options leave it out, and the action of the spell it names. Only a Warlock has one.
+pub(crate) fn assigned_curse(prepared: &PreparedV2) -> Option<(String, ActionId)> {
+    if prepared.player.class != "ClassWarlock" {
+        return None;
+    }
+    let option = prepared
+        .player
+        .class_options
+        .get("curseOptions")
+        .and_then(|value| value.as_str())
+        .unwrap_or("Agony")
+        .to_string();
+    let class_spell = match option.as_str() {
+        "Agony" => "bane_of_agony",
+        "Doom" => "bane_of_doom",
+        "Elements" => "curse_of_the_elements",
+        "Recklessness" => "curse_of_recklessness",
+        _ => return None,
+    };
+    let id = prepared
+        .player
+        .spells
+        .iter()
+        .find(|spell| spell.class_spell.as_deref() == Some(class_spell))?
+        .action_id
+        .clone()?;
+    Some((option, id))
+}
+
 /// Go `GetIcdAuraByID` on a unit's exported auras: the first with the action, or triggered by
 /// it, that has an ICD.
 fn find_icd_aura(prepared: &PreparedV2, unit: Unit, id: &ActionId) -> Option<ActionId> {
@@ -2706,6 +2752,7 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
     let pet_auras = crate::core::fight::pet::pet_agent_auras(prepared);
     let pet_aura_known =
         |pet: usize, id: &ActionId| pet_auras.get(pet).is_some_and(|auras| auras.contains(id));
+    let curse = assigned_curse(prepared);
     let lookup = Lookup {
         aura: &aura,
         target_aura: &target_aura,
@@ -2718,6 +2765,7 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
+        assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
     };
     rotation
         .priority_list

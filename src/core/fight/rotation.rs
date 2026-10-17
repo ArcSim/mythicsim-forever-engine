@@ -93,6 +93,8 @@ pub(crate) enum Act {
     },
     /// Go `APLActionCancelAura`.
     CancelAura(AuraRef),
+    /// Go `APLActionCastWarlockAssignedCurse`: the curse, cast without queueing.
+    CastAssignedCurse(SpellId),
     /// Go `APLActionResetSequence`: the name, and the sequence of that name the rotation's
     /// finalizing found.
     ResetSequence {
@@ -160,6 +162,8 @@ enum Ready {
     StrictMultidot(usize),
     /// An aura cancelled.
     CancelAura(AuraRef),
+    /// The assigned curse cast.
+    CastAssignedCurse(SpellId),
 }
 
 #[derive(Clone, Debug)]
@@ -377,6 +381,10 @@ impl<A: Agent> Fight<A> {
             bars: self.rotation_bars(),
             icd_aura: &icd_aura,
             multidot: &|id: &ActionId| self.multidot_dot(id).is_some(),
+            assigned_curse: self
+                .assigned_curse
+                .as_ref()
+                .map(|(name, id)| (name.as_str(), id)),
         };
         let mut prepull: Vec<(i64, PrepullAct)> = rotation
             .prepull
@@ -460,6 +468,10 @@ impl<A: Agent> Fight<A> {
             bars: self.rotation_bars(),
             icd_aura: &icd_aura,
             multidot: &|id: &ActionId| self.multidot_dot(id).is_some(),
+            assigned_curse: self
+                .assigned_curse
+                .as_ref()
+                .map(|(name, id)| (name.as_str(), id)),
         };
         // A reference whose condition is a constant false is pruned, and takes no part in
         // binding the groups.
@@ -664,6 +676,13 @@ impl<A: Agent> Fight<A> {
                     next: 0,
                 }
             }
+            // Go `newActionWarlockAssignedCurseAction`: only a Warlock builds it, and none for a
+            // target that names no unit.
+            ParsedAction::CastAssignedCurse(target) => {
+                let (_, curse) = lookup.assigned_curse?;
+                target.resolve(self.targets.len())?;
+                Act::CastAssignedCurse(self.apl_spell(curse)?)
+            }
             // Go `newActionCancelAura`: no action for an aura the player lacks.
             ParsedAction::CancelAura(id) => {
                 Act::CancelAura(self.rotation_aura(Side::Player, id)?.aura)
@@ -840,6 +859,7 @@ impl<A: Agent> Fight<A> {
                         && state.active
                         && self.now - state.start < self.config.reaction)
             }
+            Compiled::AssignedCurse(assigned) => *assigned,
             // Go `APLValueSequenceIsComplete`: no sequence of the name is never complete.
             Compiled::SequenceIsComplete(name) => match self.named_sequence(name) {
                 Some(item) => match self.rotation[item].action {
@@ -1561,6 +1581,10 @@ impl<A: Agent> Fight<A> {
             Act::StrictMultidot { .. } => self
                 .strict_multidot_ready(item)
                 .then_some(Ready::StrictMultidot(item)),
+            // Go `APLActionCastWarlockAssignedCurse.IsReady`: `CanCast`, which does not queue.
+            Act::CastAssignedCurse(spell) => self
+                .can_cast(spell)
+                .then_some(Ready::CastAssignedCurse(spell)),
             // Go `APLActionCancelAura.IsReady`: the aura is active.
             Act::CancelAura(aura) => self.aura(aura).active.then_some(Ready::CancelAura(aura)),
             // Go `APLActionResetSequence.IsReady`: its sequence has started.
@@ -2031,6 +2055,10 @@ impl<A: Agent> Fight<A> {
                 assert!(self.apl.controlling.is_none(), "nested controlling actions");
                 self.apl.controlling = Some(item);
             }
+            // Go `APLActionCastWarlockAssignedCurse.Execute`: `Spell.Cast` on the first target.
+            Ready::CastAssignedCurse(spell) => {
+                self.cast(spell, Side::Target);
+            }
             // Go `APLActionCancelAura.Execute`.
             Ready::CancelAura(aura) => {
                 if self.log.is_some() {
@@ -2164,6 +2192,7 @@ impl<A: Agent> Fight<A> {
                 | Act::Schedule { .. }
                 | Act::StrictMultidot { .. }
                 | Act::CancelAura(_)
+                | Act::CastAssignedCurse(_)
                 | Act::ResetSequence { .. } => {
                     if self.item_action_ready(item).is_some() {
                         return false;

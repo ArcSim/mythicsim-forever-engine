@@ -365,6 +365,28 @@ pub enum Value {
     /// Go `APLValueBossCurrentTarget`: whether the unit's current target is the player, which
     /// a target's is while the player tanks it.
     BossCurrentTarget(UnitRef),
+    /// Go `APLValueSelectedPotion`: whether the consumables select the potion.
+    SelectedPotion(i32),
+    /// Go `APLValueSelectedConjured`: whether the consumables select the conjured item.
+    SelectedConjured(i32),
+    /// Go `APLValueBossSpellIsCasting`: the unit hardcasts its spell of the action.
+    BossSpellIsCasting {
+        spell: ActionId,
+        unit: UnitRef,
+    },
+    /// Go `APLValueBossSpellTimeToReady`: the time until the unit's spell is ready.
+    BossSpellTimeToReady {
+        spell: ActionId,
+        unit: UnitRef,
+    },
+    /// Go `APLValueMultipleCdUsages`: whether casting the target spell now keeps the uses its
+    /// cooldown allows, lined up with the base spell's buff when the base spell has one.
+    MultipleCdUsages {
+        base: Option<ActionId>,
+        target: ActionId,
+        offset: Option<Box<Value>>,
+        align_cd_end: bool,
+    },
     /// Go sim/warlock/apl_values.go `APLValueWarlockIsAssignedCurse`: whether the curse type
     /// (Agony when absent) is the Warlock's assigned curse.
     WarlockIsAssignedCurse(String),
@@ -560,8 +582,14 @@ impl Value {
             | Value::WarlockIsAssignedCurse(_)
             | Value::WarlockAssignedCurseIsActive(_)
             | Value::BossCurrentTarget(_)
+            | Value::SelectedPotion(_)
+            | Value::SelectedConjured(_)
+            | Value::BossSpellIsCasting { .. }
+            | Value::MultipleCdUsages { .. }
             | Value::DotIsActiveOnAllTargets(_) => ValueType::Bool,
-            Value::SequenceTimeToReady(_) => ValueType::Duration,
+            Value::SequenceTimeToReady(_) | Value::BossSpellTimeToReady { .. } => {
+                ValueType::Duration
+            }
             Value::AuraInternalCooldown { .. }
             | Value::AuraDuration { .. }
             | Value::DotLowestRemainingTime(_)
@@ -2077,6 +2105,72 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                 })?;
             Ok(Value::DotTickFrequency(DotRef { spell, target }))
         }
+        "selectedPotion" | "selectedConjured" => {
+            let field = if name == "selectedPotion" {
+                "potionId"
+            } else {
+                "conjuredId"
+            };
+            only(&[field])?;
+            // Go gives no value without an item.
+            let item = match config.get(field) {
+                Some(id) => parse_action_id(id).map_err(|err| vec![err])?.item_id,
+                None => 0,
+            };
+            Ok(match (name, item) {
+                (_, 0) => Value::Unbuilt("selectedPotion"),
+                ("selectedPotion", item) => Value::SelectedPotion(item),
+                (_, item) => Value::SelectedConjured(item),
+            })
+        }
+        "bossSpellIsCasting" | "bossSpellTimeToReady" => {
+            only(&["spellId", "targetUnit"])?;
+            let Some(spell) = config.get("spellId") else {
+                return Ok(Value::Unbuilt("bossSpellIsCasting"));
+            };
+            let spell = parse_action_id(spell).map_err(|err| vec![err])?;
+            // Go `GetTargetUnit`: no unit reference means the current target.
+            let unit = parse_value_unit_ref(config.get("targetUnit"), UnitRef::CurrentTarget)
+                .map_err(|()| {
+                    vec![unsupported_unit(
+                        name,
+                        "targetUnit",
+                        config.get("targetUnit"),
+                    )]
+                })?;
+            Ok(if name == "bossSpellIsCasting" {
+                Value::BossSpellIsCasting { spell, unit }
+            } else {
+                Value::BossSpellTimeToReady { spell, unit }
+            })
+        }
+        "multipleCdUsages" => {
+            only(&["baseSpellId", "targetSpellId", "offset", "alignCdEnd"])?;
+            let base = match config.get("baseSpellId") {
+                Some(id) => Some(parse_action_id(id).map_err(|err| vec![err])?),
+                None => None,
+            };
+            let Some(target) = config.get("targetSpellId") else {
+                return Ok(Value::Unbuilt("multipleCdUsages"));
+            };
+            let target = parse_action_id(target).map_err(|err| vec![err])?;
+            let offset = match config.get("offset") {
+                Some(value) => Some(Box::new(parse_value(value)?)),
+                None => None,
+            };
+            let align_cd_end = match config.get("alignCdEnd") {
+                None => false,
+                Some(value) => value
+                    .as_bool()
+                    .ok_or_else(|| vec!["alignCdEnd must be a boolean".to_string()])?,
+            };
+            Ok(Value::MultipleCdUsages {
+                base,
+                target,
+                offset,
+                align_cd_end,
+            })
+        }
         "bossCurrentTarget" => {
             only(&["targetUnit"])?;
             // Go `GetSourceUnit`: no unit reference means the player itself.
@@ -2763,8 +2857,23 @@ pub enum Compiled<R> {
     DotLowestRemainingTime(Vec<DotAt>),
     DotTickFrequency(DotAt),
     /// A boolean whose state never changes during a fight, which Go reads each time without
-    /// folding: `APLValueWarlockIsAssignedCurse` and `APLValueBossCurrentTarget`.
+    /// folding: `APLValueWarlockIsAssignedCurse`, `APLValueBossCurrentTarget` and the selected
+    /// consumable values, and a target spell's hardcast, which no target without an AI starts.
     Settled(bool),
+    /// A duration that never changes during a fight, which Go reads without folding: the time
+    /// until a target's spell without a cooldown is ready.
+    SettledDuration(i64),
+    /// Go `APLValueBossSpellIsCasting` of one of the player's own spells.
+    PlayerSpellCasting(usize),
+    /// Go `APLValueMultipleCdUsages`: the target spell and its buff, the base spell and its buff
+    /// when it has one, the offset as a duration and whether to align with the fight's end.
+    MultipleCdUsages {
+        target: usize,
+        target_buff: R,
+        base: Option<(usize, R)>,
+        offset: Box<Compiled<R>>,
+        align_cd_end: bool,
+    },
     /// Go `APLValueSequenceIsComplete` of the sequence of the name.
     SequenceIsComplete(String),
     SequenceIsReady(String),
@@ -2837,8 +2946,10 @@ impl<R> Compiled<R> {
             | Compiled::SequenceIsComplete(_)
             | Compiled::SequenceIsReady(_)
             | Compiled::Settled(_)
+            | Compiled::PlayerSpellCasting(_)
+            | Compiled::MultipleCdUsages { .. }
             | Compiled::DotIsActiveOnAllTargets(_) => ValueType::Bool,
-            Compiled::SequenceTimeToReady(_) => ValueType::Duration,
+            Compiled::SequenceTimeToReady(_) | Compiled::SettledDuration(_) => ValueType::Duration,
             Compiled::AuraInternalCooldown(_)
             | Compiled::AuraDuration(_)
             | Compiled::DotLowestRemainingTime(_)
@@ -3019,6 +3130,12 @@ pub struct Lookup<'a, R> {
     pub assigned_curse: Option<(&'a str, &'a ActionId)>,
     /// Whether the player tanks the targets, whose current target it then is.
     pub tanked: bool,
+    /// What the rotation's values read that the rest of the input leaves out.
+    pub reads: Option<&'a crate::contracts::prepared_v2::RotationReads>,
+    /// Go `Unit.GetSpell` on the player: the spell of exactly the action.
+    pub exact_spell: &'a dyn Fn(&ActionId) -> Option<usize>,
+    /// Go `Spell.RelatedSelfBuff` of the spell at a spellbook position, as `reads` names it.
+    pub self_buff: &'a dyn Fn(usize) -> Option<R>,
 }
 
 /// The player's resource bars: Go `HasManaBar`, the rage bar's `MaximumRage` and the energy
@@ -3267,6 +3384,63 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
             }
         }
         Value::DotTickFrequency(dot) => Compiled::DotTickFrequency(dot_at(dot, lookup)?),
+        // Go `newValueSelectedPotion` and `newValueSelectedConjured`: the consumables' choice.
+        Value::SelectedPotion(item) => Compiled::Settled(lookup.reads?.potion_id? == *item),
+        Value::SelectedConjured(item) => Compiled::Settled(lookup.reads?.conjured_id? == *item),
+        // Go `GetTargetSpell`: the unit's spell of the action, none when it knows none. A target
+        // without an AI never hardcasts, and its spells without a cooldown are always ready.
+        Value::BossSpellIsCasting { spell, unit } | Value::BossSpellTimeToReady { spell, unit } => {
+            let casting = matches!(value, Value::BossSpellIsCasting { .. });
+            match unit.resolve(lookup.targets)? {
+                Unit::Player => {
+                    let spell = (lookup.exact_spell)(spell)?;
+                    if casting {
+                        Compiled::PlayerSpellCasting(spell)
+                    } else {
+                        Compiled::SpellTimeToReady(spell)
+                    }
+                }
+                Unit::Target(_) => {
+                    lookup
+                        .reads?
+                        .target_spells
+                        .iter()
+                        .find(|known| &known.spell == spell)?;
+                    if casting {
+                        Compiled::Settled(false)
+                    } else {
+                        Compiled::SettledDuration(0)
+                    }
+                }
+            }
+        }
+        // Go `newValueMultipleCdUsages`: no value without a target spell with a related self
+        // buff; a base spell without one leaves only the offset.
+        Value::MultipleCdUsages {
+            base,
+            target,
+            offset,
+            align_cd_end,
+        } => {
+            let target = (lookup.spell)(target)?;
+            let target_buff = (lookup.self_buff)(target)?;
+            let base = base
+                .as_ref()
+                .and_then(|id| (lookup.spell)(id))
+                .and_then(|spell| (lookup.self_buff)(spell).map(|buff| (spell, buff)));
+            let offset = offset
+                .as_deref()
+                .and_then(|offset| compile_value(offset, lookup))
+                .map(|offset| offset.coerce(ValueType::Duration))
+                .unwrap_or_else(|| Compiled::Const(parse_const("0ms").expect("duration constant")));
+            Compiled::MultipleCdUsages {
+                target,
+                target_buff,
+                base,
+                offset: Box::new(offset),
+                align_cd_end: *align_cd_end,
+            }
+        }
         // Go: the player's own current target is a target, and a target's is the player while
         // the player tanks it.
         Value::BossCurrentTarget(unit) => match unit.resolve(lookup.targets)? {
@@ -3495,6 +3669,9 @@ mod tests {
             multidot: &|_| false,
             assigned_curse: None,
             tanked: false,
+            reads: None,
+            exact_spell: &|_| None,
+            self_buff: &|_| None,
         }
     }
 
@@ -3527,6 +3704,9 @@ mod tests {
             multidot: &|_| false,
             assigned_curse: None,
             tanked: false,
+            reads: None,
+            exact_spell: &|_| None,
+            self_buff: &|_| None,
             ..only_auras(&none, &|_, _| None)
         };
         assert_eq!(
@@ -4159,6 +4339,9 @@ mod tests {
             multidot: &|_| false,
             assigned_curse: None,
             tanked: false,
+            reads: None,
+            exact_spell: &|_| None,
+            self_buff: &|_| None,
         })
     }
 
@@ -4659,6 +4842,9 @@ mod tests {
             multidot: &|_| false,
             assigned_curse: None,
             tanked: false,
+            reads: None,
+            exact_spell: &|_| None,
+            self_buff: &|_| None,
         };
         let compare = |spell: i32| {
             let value = parse_value(&serde_json::json!({"cmp": {"op": "OpGt",

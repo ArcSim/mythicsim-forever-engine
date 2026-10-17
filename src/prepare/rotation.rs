@@ -1195,6 +1195,7 @@ pub(crate) fn build_rotation(
         pruned.extend(group_pruned);
     }
     env.rotation_dot_base_durations = rotation_dot_base_durations(env, rotation);
+    env.rotation_reads = rotation_reads(env, rotation);
     env.prepull_actions += prepull;
     let player = env.player;
     for spell in casts.into_iter().chain(pruned) {
@@ -1202,4 +1203,126 @@ pub(crate) fn build_rotation(
         env.sim.remove_initial_major_cooldown(player, &action);
     }
     Ok(())
+}
+
+/// Every value message of the rotation, depth first.
+fn all_values<'a>(message: &'a Message, out: &mut Vec<&'a Message>) {
+    if message.type_name() == "proto.APLValue" {
+        out.push(message);
+    }
+    for name in message.set_fields() {
+        match message.get(name) {
+            Some(Value::Message(inner)) => all_values(inner, out),
+            Some(Value::List(items)) => {
+                for item in items {
+                    if let Value::Message(inner) = item {
+                        all_values(inner, out);
+                    }
+                }
+            }
+            _ => {}
+        }
+    }
+}
+
+/// apl_values_boss.go `GetTargetUnit` of a boss value: a target for no reference, the current,
+/// next, previous or an indexed one; none for the player or a set, which read no target.
+fn boss_value_target(env: &Environment, reference: Option<&Message>) -> Option<UnitId> {
+    let targets = &env.encounter.targets;
+    let first = *targets.first()?;
+    let Some(reference) = reference else {
+        return Some(first);
+    };
+    match reference.enum_name("type").as_str() {
+        "Unknown" | "CurrentTarget" | "NextTarget" | "PreviousTarget" => Some(first),
+        "Target" => usize::try_from(reference.i32("index"))
+            .ok()
+            .and_then(|index| targets.get(index).copied()),
+        _ => None,
+    }
+}
+
+/// The exporter's `rotationReads`: what the rotation's values read that the rest of the export
+/// leaves out, or none when no value reads any of it.
+fn rotation_reads(
+    env: &Environment,
+    rotation: &Message,
+) -> Option<crate::contracts::prepared_v2::RotationReads> {
+    use crate::contracts::prepared_v2::{RotationReads, RotationSelfBuff, RotationTargetSpell};
+    let mut values = Vec::new();
+    all_values(rotation, &mut values);
+    let mut reads = RotationReads::default();
+    let mut used = false;
+    let consumables = &env.sim.character(env.player).consumables;
+    for value in values {
+        let Some((kind, Value::Message(config))) = value.oneof("value") else {
+            continue;
+        };
+        match kind {
+            "selected_potion" => {
+                reads.potion_id = Some(consumables.i32("pot_id"));
+                used = true;
+            }
+            "selected_conjured" => {
+                reads.conjured_id = Some(consumables.i32("conjured_id"));
+                used = true;
+            }
+            "boss_spell_is_casting" | "boss_spell_time_to_ready" => {
+                let (Some(id), Some(target)) = (
+                    config.message("spell_id"),
+                    boss_value_target(env, config.message("target_unit")),
+                ) else {
+                    continue;
+                };
+                let id = proto_to_action_id(id);
+                let Some(spell) = env.sim.get_spell(target, &id) else {
+                    continue;
+                };
+                if reads.target_spells.iter().any(|known| known.spell == id) {
+                    continue;
+                }
+                let spell = env.sim.spell(spell);
+                reads.target_spells.push(RotationTargetSpell {
+                    spell: id,
+                    has_cooldown: spell.cd.timer.is_some() || spell.shared_cd.timer.is_some(),
+                });
+                used = true;
+            }
+            "multiple_cd_usages" => {
+                for field in ["base_spell_id", "target_spell_id"] {
+                    let Some(id) = config.message(field) else {
+                        continue;
+                    };
+                    let Some(spell) = apl_spell(env, &proto_to_action_id(id)) else {
+                        continue;
+                    };
+                    let state = env.sim.spell(spell);
+                    let Some(aura) = state.related_self_buff else {
+                        continue;
+                    };
+                    if reads
+                        .self_buffs
+                        .iter()
+                        .any(|known| known.spell == state.action_id)
+                    {
+                        continue;
+                    }
+                    reads.self_buffs.push(RotationSelfBuff {
+                        spell: state.action_id.clone(),
+                        aura: env.sim.aura(aura).label.clone(),
+                        has_cooldown: state.cd.timer.is_some(),
+                    });
+                    used = true;
+                }
+            }
+            _ => {}
+        }
+    }
+    if !used {
+        return None;
+    }
+    let key = |id: &ActionId| (id.spell_id, id.item_id, id.other_id.clone(), id.tag);
+    reads.target_spells.sort_by_key(|entry| key(&entry.spell));
+    reads.self_buffs.sort_by_key(|entry| key(&entry.spell));
+    Some(reads)
 }

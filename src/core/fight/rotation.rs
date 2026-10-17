@@ -311,6 +311,75 @@ impl<A: Agent> Fight<A> {
         })
     }
 
+    /// Go `Spell.RelatedSelfBuff` of a spell the rotation reads it of: the player's aura of the
+    /// label the input names for the spell.
+    fn self_buff(&self, spell: SpellId) -> Option<AuraRef> {
+        let reads = self.rotation_reads.as_ref()?;
+        let label = &reads
+            .self_buffs
+            .iter()
+            .find(|buff| buff.spell == self.spells[spell].id)?
+            .aura;
+        self.trackers[Side::Player.index()]
+            .auras
+            .iter()
+            .position(|aura| &aura.label == label)
+            .map(|index| AuraRef {
+                side: Side::Player,
+                index,
+            })
+    }
+
+    /// Go `APLValueMultipleCdUsages.GetBool`.
+    fn multiple_cd_usages(
+        &mut self,
+        target: SpellId,
+        target_buff: AuraRef,
+        base: Option<(SpellId, AuraRef)>,
+        offset: &Compiled,
+        align_cd_end: bool,
+    ) -> bool {
+        let total = self.duration;
+        let remaining = self.duration - self.now;
+        let cast_offset = self.get_duration(offset);
+        let cd = self.spells[target].cd.map_or(0, |(_, cd)| cd);
+        let duration = self.aura(target_buff).duration;
+        let effective = cd + duration;
+        // Go `1 + int(float64(totalTime)/float64(targetSpellCD))`; the gate requires a cooldown.
+        let max_uses = 1 + (total as f64 / cd as f64) as i64;
+        let full_at_end = remaining <= duration;
+        let second_within = remaining >= effective;
+        let Some((base, base_buff)) = base else {
+            return if align_cd_end {
+                full_at_end || second_within
+            } else {
+                true
+            };
+        };
+        let base_ready = self.spells[base]
+            .cd
+            .is_none_or(|(timer, _)| self.timers[timer] <= self.now);
+        let base_state = self.aura(base_buff);
+        let (base_active, base_duration) = (base_state.active, base_state.duration);
+        let active_and_should_cast = base_active && self.now >= cast_offset;
+        let will_lose_uses = base_ready && (max_uses - 1) * cd + duration + cast_offset > total;
+        let cast_and_can_again = !base_ready && second_within;
+        let active_at_end = cast_offset + base_duration >= total;
+        let exceeds = base_duration >= remaining - duration;
+        if align_cd_end {
+            if max_uses == 1 {
+                return full_at_end
+                    || (active_at_end && active_and_should_cast && !exceeds)
+                    || (!active_at_end && active_and_should_cast);
+            }
+            return full_at_end || active_and_should_cast || will_lose_uses || cast_and_can_again;
+        }
+        active_and_should_cast
+            || cast_and_can_again
+            || will_lose_uses
+            || (!base_ready && self.spell_ready(target))
+    }
+
     /// The player's resource bars, which values of a bar the player lacks give none for.
     fn rotation_bars(&self) -> crate::rotation::Bars {
         crate::rotation::Bars {
@@ -400,6 +469,13 @@ impl<A: Agent> Fight<A> {
                 .as_ref()
                 .map(|(name, id)| (name.as_str(), id)),
             tanked: self.tanked(),
+            reads: self.rotation_reads.as_ref(),
+            exact_spell: &|id: &ActionId| {
+                self.spells
+                    .iter()
+                    .position(|spell| spell.caster == Side::Player && &spell.id == id)
+            },
+            self_buff: &|spell: usize| self.self_buff(spell),
         };
         let mut channels = Vec::new();
         let mut prepull: Vec<(i64, PrepullAct)> = rotation
@@ -537,6 +613,13 @@ impl<A: Agent> Fight<A> {
                 .as_ref()
                 .map(|(name, id)| (name.as_str(), id)),
             tanked: self.tanked(),
+            reads: self.rotation_reads.as_ref(),
+            exact_spell: &|id: &ActionId| {
+                self.spells
+                    .iter()
+                    .position(|spell| spell.caster == Side::Player && &spell.id == id)
+            },
+            self_buff: &|spell: usize| self.self_buff(spell),
         };
         // A reference whose condition is a constant false is pruned, and takes no part in
         // binding the groups.
@@ -925,6 +1008,24 @@ impl<A: Agent> Fight<A> {
                         && self.now - state.start < self.config.reaction)
             }
             Compiled::Settled(value) => *value,
+            // Go: the player's hardcast is of the spell's action and still running.
+            Compiled::PlayerSpellCasting(spell) => {
+                let hardcast = self.player.hardcast;
+                hardcast
+                    .spell
+                    .is_some_and(|casting| self.spells[casting].id == self.spells[*spell].id)
+                    && hardcast.expires > self.now
+            }
+            Compiled::MultipleCdUsages {
+                target,
+                target_buff,
+                base,
+                offset,
+                align_cd_end,
+            } => {
+                let offset = offset.clone();
+                self.multiple_cd_usages(*target, *target_buff, *base, &offset, *align_cd_end)
+            }
             // Go `APLValueSequenceIsComplete`: no sequence of the name is never complete.
             Compiled::SequenceIsComplete(name) => match self.named_sequence(name) {
                 Some(item) => match self.rotation[item].action {
@@ -1210,6 +1311,7 @@ impl<A: Agent> Fight<A> {
             }
             // Go `Aura.Duration`.
             Compiled::AuraDuration(aura) => self.aura(*aura).duration,
+            Compiled::SettledDuration(duration) => *duration,
             // Go `APLValueSequenceTimeToReady`: never once done or without a sequence, else the
             // time until the next step's spell is ready.
             Compiled::SequenceTimeToReady(name) => match self.named_sequence(name) {

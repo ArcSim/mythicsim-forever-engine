@@ -1861,6 +1861,10 @@ pub(crate) fn prepared_coverage(
             "aura_condition_unsupported",
             aura_refresh_conditions(prepared, rotation),
         ));
+        reasons.extend(coded(
+            "rotation_unsupported",
+            rotation_read_limits(prepared),
+        ));
         if player.class != "ClassShaman" {
             for item in &rotation.priority_list {
                 let mut totems = false;
@@ -2455,6 +2459,25 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
         assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
         tanked: prepared.enemy.is_some(),
+        reads: prepared.player.rotation_reads.as_ref(),
+        exact_spell: &|id: &ActionId| {
+            prepared
+                .player
+                .spells
+                .iter()
+                .position(|spell| spell.action_id.as_ref() == Some(id))
+        },
+        self_buff: &|spell: usize| {
+            let id = prepared.player.spells[spell].action_id.as_ref()?;
+            prepared
+                .player
+                .rotation_reads
+                .as_ref()?
+                .self_buffs
+                .iter()
+                .any(|buff| &buff.spell == id)
+                .then(|| id.clone())
+        },
     };
     let live = |index: usize| {
         compile_condition(rotation.priority_list[index].condition.as_ref(), &lookup)
@@ -2566,6 +2589,25 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
         assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
         tanked: prepared.enemy.is_some(),
+        reads: prepared.player.rotation_reads.as_ref(),
+        exact_spell: &|id: &ActionId| {
+            prepared
+                .player
+                .spells
+                .iter()
+                .position(|spell| spell.action_id.as_ref() == Some(id))
+        },
+        self_buff: &|spell: usize| {
+            let id = prepared.player.spells[spell].action_id.as_ref()?;
+            prepared
+                .player
+                .rotation_reads
+                .as_ref()?
+                .self_buffs
+                .iter()
+                .any(|buff| &buff.spell == id)
+                .then(|| id.clone())
+        },
     };
     rotation
         .priority_list
@@ -2610,6 +2652,25 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
         assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
         tanked: prepared.enemy.is_some(),
+        reads: prepared.player.rotation_reads.as_ref(),
+        exact_spell: &|id: &ActionId| {
+            prepared
+                .player
+                .spells
+                .iter()
+                .position(|spell| spell.action_id.as_ref() == Some(id))
+        },
+        self_buff: &|spell: usize| {
+            let id = prepared.player.spells[spell].action_id.as_ref()?;
+            prepared
+                .player
+                .rotation_reads
+                .as_ref()?
+                .self_buffs
+                .iter()
+                .any(|buff| &buff.spell == id)
+                .then(|| id.clone())
+        },
     };
     compile_condition(prepull.condition.as_ref(), &lookup)
         == crate::rotation::CompiledCondition::Pruned
@@ -2755,6 +2816,33 @@ pub(crate) fn assigned_curse(prepared: &PreparedV2) -> Option<(String, ActionId)
     Some((option, id))
 }
 
+/// What the rotation's values read that Rust does not run: a target spell with a cooldown, which
+/// only a target AI starts, and a spell `multipleCdUsages` reads without a cooldown, whose
+/// division by it Go leaves to the platform or whose timer Go reads without one.
+fn rotation_read_limits(prepared: &PreparedV2) -> Vec<String> {
+    let Some(reads) = &prepared.player.rotation_reads else {
+        return Vec::new();
+    };
+    let mut reasons = Vec::new();
+    for spell in reads
+        .target_spells
+        .iter()
+        .filter(|spell| spell.has_cooldown)
+    {
+        reasons.push(format!(
+            "a boss value reads target spell {}, which has a cooldown",
+            spell.spell
+        ));
+    }
+    for buff in reads.self_buffs.iter().filter(|buff| !buff.has_cooldown) {
+        reasons.push(format!(
+            "multipleCdUsages reads spell {} without a cooldown",
+            buff.spell
+        ));
+    }
+    reasons
+}
+
 /// Go `GetIcdAuraByID` on a unit's exported auras: the first with the action, or triggered by
 /// it, that has an ICD.
 fn find_icd_aura(prepared: &PreparedV2, unit: Unit, id: &ActionId) -> Option<ActionId> {
@@ -2814,6 +2902,25 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
         assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
         tanked: prepared.enemy.is_some(),
+        reads: prepared.player.rotation_reads.as_ref(),
+        exact_spell: &|id: &ActionId| {
+            prepared
+                .player
+                .spells
+                .iter()
+                .position(|spell| spell.action_id.as_ref() == Some(id))
+        },
+        self_buff: &|spell: usize| {
+            let id = prepared.player.spells[spell].action_id.as_ref()?;
+            prepared
+                .player
+                .rotation_reads
+                .as_ref()?
+                .self_buffs
+                .iter()
+                .any(|buff| &buff.spell == id)
+                .then(|| id.clone())
+        },
     };
     rotation
         .priority_list

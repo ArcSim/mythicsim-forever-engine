@@ -1396,6 +1396,15 @@ pub(crate) enum Action {
     },
     /// A rotation prepull action: Go `APLActionCastSpell.Execute`.
     Prepull(SpellId),
+    /// A rotation prepull action: Go `APLActionCastFriendlySpell.Execute` at the player.
+    PrepullAtPlayer(SpellId),
+    /// A rotation prepull action: Go `APLActionChannelSpell.Execute`, with the item holding its
+    /// interrupt condition.
+    PrepullChannel(SpellId, usize),
+    /// A rotation prepull action: Go `APLActionItemSwap.Execute`.
+    PrepullItemSwap(bool),
+    /// apl.go's swap back to Main before the pull.
+    PrepullSwapBack,
     /// A rotation prepull action: Go `APLActionActivateAura.Execute`.
     PrepullAura(AuraRef),
     /// A rotation prepull action: Go `APLActionCancelAura.Execute`.
@@ -4060,7 +4069,9 @@ impl<A: Agent> Fight<A> {
         fight.priority_len = compilation.priority;
         fight.group_ranges = compilation.groups;
         fight.rotation_sequences = compilation.sequences;
-        fight.prepull = fight.compile_prepull(&parsed);
+        let (prepull, channels) = fight.compile_prepull(&parsed, fight.rotation.len());
+        fight.rotation.extend(channels);
+        fight.prepull = prepull;
         for effect in effects {
             if let Effect::SunderArmorRamp {
                 aura,
@@ -4818,6 +4829,10 @@ impl<A: Agent> Fight<A> {
             let (at, act) = self.prepull[index];
             let action = match act {
                 rotation::PrepullAct::Cast(spell) => Action::Prepull(spell),
+                rotation::PrepullAct::CastAtPlayer(spell) => Action::PrepullAtPlayer(spell),
+                rotation::PrepullAct::Channel(spell, item) => Action::PrepullChannel(spell, item),
+                rotation::PrepullAct::ItemSwap(to_swapped) => Action::PrepullItemSwap(to_swapped),
+                rotation::PrepullAct::SwapBackToMain => Action::PrepullSwapBack,
                 rotation::PrepullAct::ActivateAura(aura) => Action::PrepullAura(aura),
                 rotation::PrepullAct::CancelAura(aura) => Action::PrepullCancelAura(aura),
                 rotation::PrepullAct::ActivateAuraWithStacks(aura, stacks) => {
@@ -5228,6 +5243,11 @@ impl<A: Agent> Fight<A> {
             }
             Action::Pushback { chance } => self.pushback_handler(chance),
             Action::Prepull(spell) => self.cast_or_queue(spell, Side::Target),
+            Action::PrepullAtPlayer(spell) => self.cast_or_queue(spell, Side::Player),
+            Action::PrepullChannel(spell, item) => self.prepull_channel(spell, item),
+            Action::PrepullItemSwap(to_swapped) => self.item_swap_action(to_swapped),
+            // Go's `SwapItems` to Main, which logs nothing of its own.
+            Action::PrepullSwapBack => self.swap_items(false, false),
             Action::PrepullAura(aura) => self.activate_aura_action(aura),
             // Go `APLActionCancelAura.Execute`, which a prepull runs whether or not it is ready.
             Action::PrepullCancelAura(aura) => {

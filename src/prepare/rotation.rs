@@ -1138,21 +1138,16 @@ pub(crate) fn build_rotation(
             pruned_casts: Vec::new(),
             built_values: Vec::new(),
         };
+        // apl.go: the set the last prepull item swap Go builds goes to.
+        let mut last_swap: Option<String> = None;
         for item in rotation.messages("prepull_actions") {
             if item.bool("hide") {
                 continue;
             }
-            // apl.go: a prepull item swap, and the swap back to Main Go then schedules.
-            let swaps = item
+            let swap = item
                 .message("action")
-                .and_then(|action| action.oneof("action"))
-                .is_some_and(|(kind, _)| kind == "item_swap");
-            if swaps && builder.env.sim.item_swap(builder.env.player).is_some() {
-                return Err(Refusal::new(
-                    "item_swap",
-                    "a prepull item swap is unsupported".to_string(),
-                ));
-            }
+                .and_then(|action| action.message("item_swap"))
+                .map(|swap| swap.enum_name("swap_set"));
             let Some(at) = item.message("do_at_value") else {
                 continue;
             };
@@ -1170,7 +1165,15 @@ pub(crate) fn build_rotation(
             }
             if builder.action(item.message("action"))?.is_some() {
                 prepull += 1;
+                if let Some(set) = swap {
+                    last_swap = Some(set);
+                }
             }
+        }
+        // apl.go: Go swaps back to Main a nanosecond before the pull when the prepull's last
+        // item swap goes to another set.
+        if last_swap.is_some_and(|set| set != "Main") {
+            prepull += 1;
         }
         for item in rotation.messages("priority_list") {
             if item.bool("hide") {

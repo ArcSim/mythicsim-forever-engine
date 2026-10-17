@@ -1093,6 +1093,9 @@ fn parse_prepull(item: &Json, position: usize) -> Result<Option<Prepull>, String
         }
         ("move", config) => parse_move(config)?,
         ("moveDuration", config) => parse_move_duration(config)?,
+        ("castFriendlySpell", config) => parse_cast_friendly_spell(config)?,
+        ("channelSpell", config) => parse_channel_spell(config)?,
+        ("itemSwap", config) => Action::ItemSwap(parse_swap_set("itemSwap", config)?),
         ("cancelAura", config) => Action::CancelAura(parse_aura_action("cancelAura", config)?),
         ("triggerIcd", config) => Action::TriggerIcd(parse_aura_action("triggerIcd", config)?),
         ("activateAuraWithStacks", config) => {

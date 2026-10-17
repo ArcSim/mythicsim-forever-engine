@@ -119,6 +119,15 @@ pub(crate) struct Compilation {
 #[derive(Clone, Copy, Debug)]
 pub(crate) enum PrepullAct {
     Cast(SpellId),
+    /// Go `APLActionCastFriendlySpell` at the player.
+    CastAtPlayer(SpellId),
+    /// Go `APLActionChannelSpell` with an interrupt condition: the channel, and the item
+    /// holding the condition the rotation then reads.
+    Channel(SpellId, usize),
+    /// Go `APLActionItemSwap` to Swap1 (true) or Main.
+    ItemSwap(bool),
+    /// The swap back to Main Go registers when the prepull's last item swap is to another set.
+    SwapBackToMain,
     ActivateAura(AuraRef),
     /// Go `APLActionMove`: the player runs to the range from the target.
     Move(f64),
@@ -350,8 +359,13 @@ impl<A: Agent> Fight<A> {
         self.apl_spell(id)
     }
 
-    /// Go's prepull registration: each castable action at its time, in a stable time order.
-    pub(crate) fn compile_prepull(&self, rotation: &Rotation) -> Vec<(i64, PrepullAct)> {
+    /// Go's prepull registration: each castable action at its time, in a stable time order, and
+    /// the items holding the interrupt conditions of prepull channels, numbered from `base`.
+    pub(crate) fn compile_prepull(
+        &self,
+        rotation: &Rotation,
+        base: usize,
+    ) -> (Vec<(i64, PrepullAct)>, Vec<Item>) {
         let find = |side: Side, id: &ActionId| self.rotation_aura(side, id);
         let aura = |id: &ActionId| find(Side::Player, id);
         let target_aura = |position: usize, id: &ActionId| find(Side::target(position), id);
@@ -386,6 +400,7 @@ impl<A: Agent> Fight<A> {
                 .as_ref()
                 .map(|(name, id)| (name.as_str(), id)),
         };
+        let mut channels = Vec::new();
         let mut prepull: Vec<(i64, PrepullAct)> = rotation
             .prepull
             .iter()
@@ -401,6 +416,44 @@ impl<A: Agent> Fight<A> {
                     .resolve(self.targets.len())
                     .and_then(|_| self.apl_cast_spell(id))
                     .map(|spell| (prepull.do_at_ns, PrepullAct::Cast(spell))),
+                ParsedAction::CastAtPlayer(id) => self
+                    .apl_cast_spell(id)
+                    .map(|spell| (prepull.do_at_ns, PrepullAct::CastAtPlayer(spell))),
+                // Go `newActionChannelSpell`: a cast without an interrupt condition, otherwise a
+                // channel whose condition the rotation reads once it runs.
+                ParsedAction::ChannelSpell {
+                    spell: id,
+                    target,
+                    interrupt_if,
+                    allow_recast,
+                } => {
+                    target.resolve(self.targets.len())?;
+                    match crate::rotation::compile_bool_value(interrupt_if.as_ref(), &lookup) {
+                        None => self
+                            .apl_cast_spell(id)
+                            .map(|spell| (prepull.do_at_ns, PrepullAct::Cast(spell))),
+                        Some(interrupt) => {
+                            let spell = self
+                                .apl_spell(id)
+                                .filter(|&spell| self.spells[spell].flags.channeled)?;
+                            channels.push(Item::new(
+                                None,
+                                Act::Channel {
+                                    spell,
+                                    interrupt: Rc::new(interrupt),
+                                    allow_recast: *allow_recast,
+                                },
+                            ));
+                            let item = base + channels.len() - 1;
+                            Some((prepull.do_at_ns, PrepullAct::Channel(spell, item)))
+                        }
+                    }
+                }
+                // Go `newActionItemSwap`: no action without an item swap.
+                ParsedAction::ItemSwap(to_swapped) => self
+                    .item_swap
+                    .as_ref()
+                    .map(|_| (prepull.do_at_ns, PrepullAct::ItemSwap(*to_swapped))),
                 // Go GetAPLAura on the player: an unknown aura drops the action.
                 ParsedAction::ActivateAura(id) => find(Side::Player, id)
                     .map(|found| (prepull.do_at_ns, PrepullAct::ActivateAura(found.aura))),
@@ -432,8 +485,18 @@ impl<A: Agent> Fight<A> {
                 _ => None,
             })
             .collect();
+        // apl.go: with a swap the prepull leaves on another set, the swap back to Main a
+        // nanosecond before the pull (Go's `RegisterPrepullAction(-1, ...)`), registered after
+        // the rotation's.
+        let last_swap = prepull.iter().rev().find_map(|(_, act)| match act {
+            PrepullAct::ItemSwap(to_swapped) => Some(*to_swapped),
+            _ => None,
+        });
+        if last_swap == Some(true) {
+            prepull.push((-1, PrepullAct::SwapBackToMain));
+        }
         prepull.sort_by_key(|(do_at, _)| *do_at);
-        prepull
+        (prepull, channels)
     }
 
     /// Go `newAPLRotation` for the supported subset: the items of the priority list, then the
@@ -2102,6 +2165,17 @@ impl<A: Agent> Fight<A> {
                 self.apl.allow_channel_recast = allow_recast;
             }
         }
+    }
+
+    /// Go `APLActionChannelSpell.Execute` in the prepull: the cast, then the rotation reads the
+    /// channel's interrupt condition.
+    pub(crate) fn prepull_channel(&mut self, spell: SpellId, item: usize) {
+        self.cast_or_queue(spell, Side::Target);
+        let Act::Channel { allow_recast, .. } = self.rotation[item].action else {
+            unreachable!("item is a channel");
+        };
+        self.apl.interrupt_channel_if = Some(item);
+        self.apl.allow_channel_recast = allow_recast;
     }
 
     /// Go `Dot.ChannelCanBeInterrupted`.

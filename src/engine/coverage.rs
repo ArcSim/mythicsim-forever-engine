@@ -1890,6 +1890,9 @@ pub(crate) fn prepared_coverage(
         ));
         let mut reachable = Vec::new();
         let mut registered_prepull = 0;
+        // The set the prepull's last item swap goes to: Go swaps back to Main before the pull
+        // when it is another.
+        let mut last_prepull_swap: Option<bool> = None;
         let mut prepull_moves = false;
         let mut rotation_moves = false;
         // Prepull parsing accepts casts, aura activations and moves.
@@ -1932,15 +1935,56 @@ pub(crate) fn prepared_coverage(
                     aura.action_id.as_ref() == Some(id) && (!stacks || aura.max_stacks != 0)
                 })
             };
+            let targets = prepared.encounter.target_count.max(1) as usize;
             let registers = match &prepull.action {
                 Action::ActivateAura(id) | Action::CancelAura(id) => known(id, false),
                 Action::ActivateAuraWithStacks { id, .. } => known(id, true),
                 Action::TriggerIcd(id) => find_icd_aura(prepared, Unit::Player, id).is_some(),
+                Action::CastAtPlayer(id) => {
+                    let spell = rotation_spell(prepared, id);
+                    reachable.extend(spell);
+                    spell.is_some()
+                }
+                // Go `newActionChannelSpell`: none for a target that names no unit, or with an
+                // interrupt condition for a spell that does not channel.
+                Action::ChannelSpell {
+                    spell: id,
+                    target,
+                    interrupt_if,
+                    ..
+                } => {
+                    let spell = rotation_spell(prepared, id).filter(|spell| {
+                        interrupt_if.is_none() || spell.has_flag("SpellFlagChanneled")
+                    });
+                    if target.resolve(targets).is_none() {
+                        false
+                    } else if !matches!(target.resolve(targets), Some(Unit::Target(0))) {
+                        reasons.push(Refusal::new(
+                            "several_targets_unsupported",
+                            format!(
+                                "prepull action {}: channelSpell of {id} at a unit other than the \
+                                 first target is unsupported",
+                                prepull.position
+                            ),
+                        ));
+                        spell.is_some()
+                    } else {
+                        reachable.extend(spell);
+                        spell.is_some()
+                    }
+                }
+                Action::ItemSwap(to_swapped) if has_item_swap(prepared) => {
+                    last_prepull_swap = Some(*to_swapped);
+                    true
+                }
                 _ => false,
             };
             if registers {
                 registered_prepull += 1;
             }
+        }
+        if last_prepull_swap == Some(true) {
+            registered_prepull += 1;
         }
         if registered_prepull != player.prepull_actions {
             reasons.push(Refusal::new(

@@ -1869,6 +1869,10 @@ pub(crate) fn prepared_coverage(
             "rotation_unsupported",
             dot_increase_limits(prepared, rotation),
         ));
+        reasons.extend(coded(
+            "several_targets_unsupported",
+            change_target_limits(prepared, rotation),
+        ));
         if player.class != "ClassShaman" {
             for item in &rotation.priority_list {
                 let mut totems = false;
@@ -1989,6 +1993,7 @@ pub(crate) fn prepared_coverage(
                     reachable.extend(cast_all_spells(prepared, stats));
                     true
                 }
+                Action::ChangeTarget(unit) => unit.resolve(targets).is_some(),
                 // Go `newActionActivateAllStatBuffProcAuras`: none without a proc buff of the
                 // stats in the set, or for Swap1 without an item swap.
                 Action::ActivateAllStatBuffProcAuras { stats, swap1 } => {
@@ -2867,6 +2872,33 @@ pub(crate) fn assigned_curse(prepared: &PreparedV2) -> Option<(String, ActionId)
         .action_id
         .clone()?;
     Some((option, id))
+}
+
+/// Go `APLActionChangeTarget` moves the current target, which the runtime keeps on the first
+/// target: a change to another unit is refused.
+fn change_target_limits(prepared: &PreparedV2, rotation: &Rotation) -> Vec<String> {
+    let targets = prepared.encounter.target_count.max(1) as usize;
+    let mut reasons = Vec::new();
+    let actions = rotation
+        .priority_list
+        .iter()
+        .map(|item| (item.position, &item.action, "rotation item"))
+        .chain(
+            rotation
+                .prepull
+                .iter()
+                .map(|prepull| (prepull.position, &prepull.action, "prepull action")),
+        );
+    for (position, action, kind) in actions {
+        if let Action::ChangeTarget(unit) = action.scheduled() {
+            if !matches!(unit.resolve(targets), None | Some(Unit::Target(0))) {
+                reasons.push(format!(
+                    "{kind} {position}: a change of target to a unit other than the first target is unsupported"
+                ));
+            }
+        }
+    }
+    reasons
 }
 
 /// Go's dot increase values of Penance read its bolt's damage, which the runtime does not

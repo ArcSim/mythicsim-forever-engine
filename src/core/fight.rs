@@ -1415,6 +1415,8 @@ pub(crate) enum Action {
     PrepullItemSwap(bool),
     /// apl.go's swap back to Main before the pull.
     PrepullSwapBack,
+    /// A rotation prepull action: Go `APLActionChangeTarget.Execute` to the first target.
+    PrepullChangeTarget,
     /// A rotation prepull action that runs a list: every stat buff cooldown it casts, or every
     /// proc buff it activates for its set (Swap1 when true).
     PrepullList(bool, usize),
@@ -4853,6 +4855,7 @@ impl<A: Agent> Fight<A> {
                 rotation::PrepullAct::Channel(spell, item) => Action::PrepullChannel(spell, item),
                 rotation::PrepullAct::ItemSwap(to_swapped) => Action::PrepullItemSwap(to_swapped),
                 rotation::PrepullAct::SwapBackToMain => Action::PrepullSwapBack,
+                rotation::PrepullAct::ChangeTarget => Action::PrepullChangeTarget,
                 rotation::PrepullAct::CastAllStatBuffCooldowns(list) => {
                     Action::PrepullList(false, list)
                 }
@@ -5274,6 +5277,7 @@ impl<A: Agent> Fight<A> {
             Action::PrepullItemSwap(to_swapped) => self.item_swap_action(to_swapped),
             // Go's `SwapItems` to Main, which logs nothing of its own.
             Action::PrepullSwapBack => self.swap_items(false, false),
+            Action::PrepullChangeTarget => self.log_change_target(),
             Action::PrepullList(swap1, list) => match self.prepull_lists[list].clone() {
                 rotation::PrepullList::Spells(spells) => {
                     for spell in spells {

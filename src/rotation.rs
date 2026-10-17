@@ -703,6 +703,8 @@ pub enum Action {
     },
     /// Go `APLActionCancelAura` of one of the player's auras.
     CancelAura(ActionId),
+    /// Go `APLActionChangeTarget` to the unit, the player when it names none.
+    ChangeTarget(UnitRef),
     /// Go sim/warlock/apl_values.go `APLActionCastWarlockAssignedCurse` on the unit.
     CastAssignedCurse(UnitRef),
     /// Go `APLActionCastAllStatBuffCooldowns`: the instant cooldowns whose buff moves one of
@@ -837,6 +839,7 @@ impl Action {
             | Action::WaitUntil(_)
             | Action::ResetSequence(_)
             | Action::CancelAura(_)
+            | Action::ChangeTarget(_)
             | Action::CastAssignedCurse(_)
             | Action::CastAllStatBuffCooldowns(_)
             | Action::ActivateAllStatBuffProcAuras { .. }
@@ -1183,6 +1186,7 @@ fn parse_prepull(item: &Json, position: usize) -> Result<Option<Prepull>, String
         ("move", config) => parse_move(config)?,
         ("moveDuration", config) => parse_move_duration(config)?,
         ("castFriendlySpell", config) => parse_cast_friendly_spell(config)?,
+        ("changeTarget", config) => parse_change_target(config)?,
         ("castAllStatBuffCooldowns", config) => parse_cast_all_stat_buff_cooldowns(config)?,
         ("activateAllStatBuffProcAuras", config) => {
             let object = config
@@ -1374,6 +1378,7 @@ fn parse_action_object(action: &Map<String, Json>, position: usize) -> Result<It
             parse_aura_action("cancelAura", config).map(Action::CancelAura)
         }
         Ok(("castWarlockAssignedCurse", config)) => parse_assigned_curse(config),
+        Ok(("changeTarget", config)) => parse_change_target(config),
         Ok(("castAllStatBuffCooldowns", config)) => parse_cast_all_stat_buff_cooldowns(config),
         Ok(("move", config)) => parse_move(config),
         Ok(("moveDuration", config)) => parse_move_duration(config),
@@ -1617,6 +1622,17 @@ fn parse_cast_friendly_spell(config: &Json) -> Result<Action, String> {
         UnitRef::Player => Action::CastAtPlayer(spell),
         target => Action::CastSpell { spell, target },
     })
+}
+
+/// Go `newActionChangeTarget`: the unit `GetSourceUnit` finds, the player itself without one.
+fn parse_change_target(config: &Json) -> Result<Action, String> {
+    let object = config.as_object().ok_or("changeTarget must be an object")?;
+    if let Some(key) = object.keys().find(|key| key.as_str() != "newTarget") {
+        return Err(format!("changeTarget field {key} is unsupported"));
+    }
+    let unit = parse_unit_ref(object.get("newTarget"), UnitRef::Player)
+        .map_err(|()| unsupported_unit("changeTarget", "newTarget", object.get("newTarget")))?;
+    Ok(Action::ChangeTarget(unit))
 }
 
 /// Go `newActionCastAllStatBuffCooldowns`: the stats it matches.

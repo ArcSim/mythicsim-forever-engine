@@ -93,6 +93,11 @@ pub(crate) enum Act {
     },
     /// Go `APLActionCancelAura`.
     CancelAura(AuraRef),
+    /// Go `APLActionChangeTarget` to the first target, which the current target already is:
+    /// when it last ran, which lets it run once a timestep.
+    ChangeTarget {
+        last: i64,
+    },
     /// Go `APLActionCastWarlockAssignedCurse`: the curse, cast without queueing.
     CastAssignedCurse(SpellId),
     /// Go `APLActionCastAllStatBuffCooldowns`: its spells and those the last readiness check
@@ -151,6 +156,8 @@ pub(crate) enum PrepullAct {
     ActivateAuraWithStacks(AuraRef, i32),
     /// Go `APLActionTriggerICD`.
     TriggerIcd(AuraRef),
+    /// Go `APLActionChangeTarget` to the first target.
+    ChangeTarget,
 }
 
 /// The spells or auras a prepull action that runs several of them holds.
@@ -190,6 +197,8 @@ enum Ready {
     StrictMultidot(usize),
     /// An aura cancelled.
     CancelAura(AuraRef),
+    /// The target changed to the first.
+    ChangeTarget(usize),
     /// The assigned curse cast.
     CastAssignedCurse(SpellId),
     /// The stat buff cooldowns cast.
@@ -449,6 +458,14 @@ impl<A: Agent> Fight<A> {
                     self.expected_periodic_damage(spell, dot, target, base, outcome)
                 }
             }
+        }
+    }
+
+    /// Go `APLActionChangeTarget.Execute`'s log line, of the first target.
+    pub(crate) fn log_change_target(&mut self) {
+        if self.log.is_some() {
+            let line = format!("Changing target to {}", self.label_of(Side::Target));
+            self.player_log(&line);
         }
     }
 
@@ -736,6 +753,11 @@ impl<A: Agent> Fight<A> {
                             PrepullAct::ActivateAuraWithStacks(found.aura, stacks),
                         )
                     }),
+                // Go `newActionChangeTarget`: no action for a unit Go finds nothing for; the gate
+                // admits only the first target.
+                ParsedAction::ChangeTarget(unit) => unit
+                    .resolve(self.targets.len())
+                    .map(|_| (prepull.do_at_ns, PrepullAct::ChangeTarget)),
                 // Go `GetAPLICDAura` on the player.
                 ParsedAction::TriggerIcd(id) => self
                     .rotation_icd_aura(Unit::Player, id)
@@ -1030,6 +1052,14 @@ impl<A: Agent> Fight<A> {
                 ready: Vec::new(),
             },
             ParsedAction::ActivateAllStatBuffProcAuras { .. } => return None,
+            // Go `newActionChangeTarget`: no action for a unit Go finds nothing for; the gate
+            // admits only the first target, which the current target always is.
+            ParsedAction::ChangeTarget(unit) => {
+                unit.resolve(self.targets.len())?;
+                Act::ChangeTarget {
+                    last: NEVER_EXPIRES,
+                }
+            }
             // Go `newActionCancelAura`: no action for an aura the player lacks.
             ParsedAction::CancelAura(id) => {
                 Act::CancelAura(self.rotation_aura(Side::Player, id)?.aura)
@@ -2049,6 +2079,8 @@ impl<A: Agent> Fight<A> {
             Act::CastAssignedCurse(spell) => self
                 .can_cast(spell)
                 .then_some(Ready::CastAssignedCurse(spell)),
+            // Go `APLActionChangeTarget.IsReady`: once a timestep.
+            Act::ChangeTarget { last } => (last != self.now).then_some(Ready::ChangeTarget(item)),
             // Go `APLActionCancelAura.IsReady`: the aura is active.
             Act::CancelAura(aura) => self.aura(aura).active.then_some(Ready::CancelAura(aura)),
             // Go `APLActionResetSequence.IsReady`: its sequence has started.
@@ -2542,6 +2574,13 @@ impl<A: Agent> Fight<A> {
             Ready::CastAssignedCurse(spell) => {
                 self.cast(spell, Side::Target);
             }
+            // Go `APLActionChangeTarget.Execute`: the first target stays the current one.
+            Ready::ChangeTarget(item) => {
+                self.log_change_target();
+                if let Act::ChangeTarget { ref mut last } = self.rotation[item].action {
+                    *last = self.now;
+                }
+            }
             // Go `APLActionCancelAura.Execute`.
             Ready::CancelAura(aura) => {
                 if self.log.is_some() {
@@ -2686,6 +2725,7 @@ impl<A: Agent> Fight<A> {
                 | Act::Schedule { .. }
                 | Act::StrictMultidot { .. }
                 | Act::CancelAura(_)
+                | Act::ChangeTarget { .. }
                 | Act::CastAllStatBuffCooldowns { .. }
                 | Act::CastAssignedCurse(_)
                 | Act::ResetSequence { .. } => {
@@ -2808,6 +2848,7 @@ impl<A: Agent> Fight<A> {
                         self.apl.queue_hooks.retain(|&hooked| hooked != item);
                     }
                     Act::Schedule { ref mut next, .. } => *next = 0,
+                    Act::ChangeTarget { ref mut last } => *last = NEVER_EXPIRES,
                     Act::StrictMultidot {
                         ref mut next,
                         ref mut ready,

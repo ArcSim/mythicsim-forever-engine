@@ -1059,6 +1059,33 @@ impl<A: Agent> Fight<A> {
 
     /// Go `APLActionActivateAura.Execute`: an aura whose cooldown is not ready only logs so;
     /// otherwise it activates and its cooldown starts.
+    /// Go `APLActionActivateAuraWithStacks.Execute`: not while its ICD runs, then the aura
+    /// with its stacks.
+    pub(crate) fn activate_aura_with_stacks_action(&mut self, aura: AuraRef, stacks: i32) {
+        let id = self.aura(aura).action_id.clone().unwrap_or_default();
+        if let Some((timer, _)) = self.aura(aura).icd {
+            if self.timers[timer] > self.now {
+                if self.log.is_some() {
+                    let line = format!(
+                        "Could not activate aura {} ({stacks} stacks) because it's not ready",
+                        super::log::action_string(&id)
+                    );
+                    self.unit_log(aura.side, &line);
+                }
+                return;
+            }
+        }
+        if self.log.is_some() {
+            let line = format!(
+                "Activating aura {} ({stacks} stacks)",
+                super::log::action_string(&id)
+            );
+            self.unit_log(aura.side, &line);
+        }
+        self.activate_aura(aura);
+        self.set_stacks(aura, stacks);
+    }
+
     pub(crate) fn activate_aura_action(&mut self, aura: AuraRef) {
         let id = self.aura(aura).action_id.clone().unwrap_or_default();
         let icd = self.aura(aura).icd;

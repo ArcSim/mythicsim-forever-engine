@@ -1925,15 +1925,21 @@ pub(crate) fn prepared_coverage(
                     }
                 }
             }
-            // Go GetAPLAura on the player: a known aura registers the action.
-            if let Action::ActivateAura(id) = &prepull.action {
-                if player
-                    .auras
-                    .iter()
-                    .any(|aura| aura.action_id.as_ref() == Some(id))
-                {
-                    registered_prepull += 1;
-                }
+            // Go GetAPLAura on the player: a known aura registers the action, one that stacks
+            // for stacks, and GetAPLICDAura one with an ICD.
+            let known = |id: &ActionId, stacks: bool| {
+                player.auras.iter().any(|aura| {
+                    aura.action_id.as_ref() == Some(id) && (!stacks || aura.max_stacks != 0)
+                })
+            };
+            let registers = match &prepull.action {
+                Action::ActivateAura(id) | Action::CancelAura(id) => known(id, false),
+                Action::ActivateAuraWithStacks { id, .. } => known(id, true),
+                Action::TriggerIcd(id) => find_icd_aura(prepared, Unit::Player, id).is_some(),
+                _ => false,
+            };
+            if registers {
+                registered_prepull += 1;
             }
         }
         if registered_prepull != player.prepull_actions {

@@ -80,6 +80,19 @@ pub(crate) enum Act {
         next: usize,
         inner: usize,
     },
+    /// Go `APLActionStrictMultidot`: the spell it casts and the one whose dot it reads, its dot
+    /// count and overlap, and the targets the last readiness check found, which its strict
+    /// sequence runs in order.
+    StrictMultidot {
+        spell: SpellId,
+        dot_spell: SpellId,
+        max_dots: i32,
+        overlap: Rc<Compiled>,
+        ready: Vec<Side>,
+        next: usize,
+    },
+    /// Go `APLActionCancelAura`.
+    CancelAura(AuraRef),
     /// Go `APLActionResetSequence`: the name, and the sequence of that name the rotation's
     /// finalizing found.
     ResetSequence {
@@ -109,6 +122,12 @@ pub(crate) enum PrepullAct {
     Move(f64),
     /// Go `APLActionMoveDuration`: the player moves for the duration.
     MoveDuration(i64),
+    /// Go `APLActionCancelAura`.
+    CancelAura(AuraRef),
+    /// Go `APLActionActivateAuraWithStacks`, its stacks capped at the aura's maximum.
+    ActivateAuraWithStacks(AuraRef, i32),
+    /// Go `APLActionTriggerICD`.
+    TriggerIcd(AuraRef),
 }
 
 /// A ready action. Go keeps the cooldown found by `IsReady` for `Execute`.
@@ -137,6 +156,10 @@ enum Ready {
     Scheduled(usize, Box<Ready>),
     /// A sequence starting over.
     ResetSequence(usize),
+    /// A strict multidot taking control of the rotation.
+    StrictMultidot(usize),
+    /// An aura cancelled.
+    CancelAura(AuraRef),
 }
 
 #[derive(Clone, Debug)]
@@ -373,6 +396,23 @@ impl<A: Agent> Fight<A> {
                 // Go GetAPLAura on the player: an unknown aura drops the action.
                 ParsedAction::ActivateAura(id) => find(Side::Player, id)
                     .map(|found| (prepull.do_at_ns, PrepullAct::ActivateAura(found.aura))),
+                ParsedAction::CancelAura(id) => find(Side::Player, id)
+                    .map(|found| (prepull.do_at_ns, PrepullAct::CancelAura(found.aura))),
+                // Go `newActionActivateAuraWithStacks`: no action for an aura that does not
+                // stack.
+                ParsedAction::ActivateAuraWithStacks { id, stacks } => find(Side::Player, id)
+                    .filter(|found| found.max_stacks != 0)
+                    .map(|found| {
+                        let stacks = (*stacks).min(found.max_stacks);
+                        (
+                            prepull.do_at_ns,
+                            PrepullAct::ActivateAuraWithStacks(found.aura, stacks),
+                        )
+                    }),
+                // Go `GetAPLICDAura` on the player.
+                ParsedAction::TriggerIcd(id) => self
+                    .rotation_icd_aura(Unit::Player, id)
+                    .map(|aura| (prepull.do_at_ns, PrepullAct::TriggerIcd(aura))),
                 // The parser reads a constant range or duration in a prepull action.
                 ParsedAction::Move(Value::Const(range)) => {
                     Some((prepull.do_at_ns, PrepullAct::Move(range.float)))
@@ -602,6 +642,35 @@ impl<A: Agent> Fight<A> {
                     next: 0,
                     inner: inner.len() - 1,
                 }
+            }
+            // Go `newActionStrictMultidot`: as a multidot, its overlap 0ms without a value.
+            ParsedAction::StrictMultidot {
+                spell,
+                max_dots,
+                max_overlap,
+            } => {
+                let dot_spell = multidot_dot(spell)?;
+                let cast = self.apl_cast_spell(spell)?;
+                Act::StrictMultidot {
+                    spell: cast,
+                    dot_spell,
+                    max_dots: (*max_dots).min(self.targets.len() as i32),
+                    overlap: Rc::new(
+                        compile_duration_value(max_overlap.as_ref(), lookup).unwrap_or_else(|| {
+                            Compiled::Const(crate::rotation::parse_const("0ms").expect("0ms"))
+                        }),
+                    ),
+                    ready: Vec::new(),
+                    next: 0,
+                }
+            }
+            // Go `newActionCancelAura`: no action for an aura the player lacks.
+            ParsedAction::CancelAura(id) => {
+                Act::CancelAura(self.rotation_aura(Side::Player, id)?.aura)
+            }
+            // Parsed only among the prepull actions.
+            ParsedAction::ActivateAuraWithStacks { .. } | ParsedAction::TriggerIcd(_) => {
+                return None
             }
             // Go `newActionResetSequence`: no action without a name.
             ParsedAction::ResetSequence(name) => {
@@ -1489,6 +1558,11 @@ impl<A: Agent> Fight<A> {
                 self.item_ready(inner)
                     .map(|ready| Ready::Scheduled(item, Box::new(ready)))
             }
+            Act::StrictMultidot { .. } => self
+                .strict_multidot_ready(item)
+                .then_some(Ready::StrictMultidot(item)),
+            // Go `APLActionCancelAura.IsReady`: the aura is active.
+            Act::CancelAura(aura) => self.aura(aura).active.then_some(Ready::CancelAura(aura)),
             // Go `APLActionResetSequence.IsReady`: its sequence has started.
             Act::ResetSequence { sequence, .. } => sequence
                 .filter(|&sequence| self.sequence_next(sequence) != 0)
@@ -1519,6 +1593,70 @@ impl<A: Agent> Fight<A> {
                 .item_swap_ready(to_swapped)
                 .then_some(Ready::ItemSwap(to_swapped)),
         }
+    }
+
+    /// Go `APLActionStrictMultidot.IsReady`: the overlap, then each target in turn whose dot is
+    /// down or ends within it, or, after one that is taken, ends no later than the one before
+    /// it once the cast's time passes, and which the spell can be cast or queued on.
+    fn strict_multidot_ready(&mut self, item: usize) -> bool {
+        let Act::StrictMultidot {
+            spell,
+            dot_spell,
+            max_dots,
+            ref overlap,
+            ..
+        } = self.rotation[item].action
+        else {
+            unreachable!("item is a strict multidot");
+        };
+        let overlap = Rc::clone(overlap);
+        let overlap = self.get_duration(&overlap);
+        let dot = self.spells[dot_spell]
+            .dot
+            .expect("multidot spells have a dot");
+        let remaining = |fight: &Self, target: Side| {
+            let aura = fight.aura(fight.dots[fight.dot_on(dot, target)].aura);
+            (aura.active, aura.remaining(fight.now))
+        };
+        let mut ready = Vec::new();
+        let mut previous: Option<Side> = None;
+        for position in 0..max_dots.max(0) as usize {
+            let target = Side::target(position);
+            let (active, left) = remaining(self, target);
+            if (!active || left < overlap) && self.can_cast_or_queue(spell) {
+                ready.push(target);
+                previous = Some(target);
+            } else if let Some(before) = previous {
+                let (before_active, before_left) = remaining(self, before);
+                if (!before_active || left - self.effective_cast_time(spell) <= before_left)
+                    && self.can_cast_or_queue(spell)
+                {
+                    ready.push(target);
+                    previous = Some(target);
+                }
+            }
+        }
+        let any = !ready.is_empty();
+        if let Act::StrictMultidot {
+            ready: ref mut found,
+            ..
+        } = self.rotation[item].action
+        {
+            *found = ready;
+        }
+        any
+    }
+
+    /// Go `Spell.EffectiveCastTime`: the GCD or the cast, whichever is longer, with cast speed
+    /// unless the spell ignores haste.
+    fn effective_cast_time(&self, spell: SpellId) -> i64 {
+        let state = &self.spells[spell];
+        let mut cast = state.default_cast;
+        if !state.ignore_haste {
+            cast.gcd = self.apply_cast_speed_of(self.caster(spell), cast.gcd);
+            cast.cast_time = self.apply_cast_speed_for_spell(cast.cast_time, spell);
+        }
+        cast.effective_time()
     }
 
     /// Go `APLActionSequence.IsReady`: the next step's readiness inside the sequence.
@@ -1720,19 +1858,26 @@ impl<A: Agent> Fight<A> {
             && self.energy_now() < look.energy_limit
     }
 
-    /// Go `APLActionStrictSequence.GetNextAction`.
+    /// Go `APLActionStrictSequence.GetNextAction`, of a strict sequence or of the one a strict
+    /// multidot runs.
     fn sequence_next_action(&mut self, item: usize) -> Option<Ready> {
-        let Act::StrictSequence { ref spells, next } = self.rotation[item].action else {
-            unreachable!("only strict sequences and waits control the rotation");
+        let (spell, target) = match self.rotation[item].action {
+            Act::StrictSequence { ref spells, next } => (spells[next], Side::Target),
+            Act::StrictMultidot {
+                spell,
+                ref ready,
+                next,
+                ..
+            } => (spell, ready[next]),
+            _ => unreachable!("only strict sequences and waits control the rotation"),
         };
-        let spell = spells[next];
         if self.cast_ready(spell) {
             // Off the GCD the step advances now; otherwise the cast queues and the step
             // stays until it fires.
             if self.gcd_ready() {
                 self.advance_sequence(item);
             }
-            Some(Ready::Cast(spell, Side::Target))
+            Some(Ready::Cast(spell, target))
         } else if !self.can_queue_spell() {
             // A spell was queued this timestep: advance when its action fires.
             if !self.apl.queue_hooks.contains(&item) {
@@ -1753,26 +1898,38 @@ impl<A: Agent> Fight<A> {
     /// Go `APLActionStrictSequence.advanceSequence`, or a sequence's step advancing when its
     /// queued cast fires.
     pub(crate) fn advance_sequence(&mut self, item: usize) {
-        if let Act::Sequence { ref mut next, .. } = self.rotation[item].action {
-            *next += 1;
-            return;
-        }
-        let Act::StrictSequence {
-            ref spells,
-            ref mut next,
-        } = self.rotation[item].action
-        else {
-            unreachable!("item is a strict sequence");
+        let done = match self.rotation[item].action {
+            Act::Sequence { ref mut next, .. } => {
+                *next += 1;
+                return;
+            }
+            Act::StrictSequence {
+                ref spells,
+                ref mut next,
+            } => {
+                *next += 1;
+                *next == spells.len()
+            }
+            Act::StrictMultidot {
+                ref ready,
+                ref mut next,
+                ..
+            } => {
+                *next += 1;
+                *next == ready.len()
+            }
+            _ => unreachable!("item is a strict sequence"),
         };
-        *next += 1;
-        if *next == spells.len() {
+        if done {
             self.relinquish_sequence(item);
         }
     }
 
     /// Go `APLActionStrictSequence.relinquishControl`.
     fn relinquish_sequence(&mut self, item: usize) {
-        if let Act::StrictSequence { ref mut next, .. } = self.rotation[item].action {
+        if let Act::StrictSequence { ref mut next, .. } | Act::StrictMultidot { ref mut next, .. } =
+            self.rotation[item].action
+        {
             *next = 0;
         }
         self.apl.queue_hooks.retain(|&hooked| hooked != item);
@@ -1863,6 +2020,25 @@ impl<A: Agent> Fight<A> {
                     *at = until;
                 }
                 self.wait_until(until);
+            }
+            // Go `APLActionStrictMultidot.Execute`: a strict sequence of the casts on the targets
+            // its readiness found takes control.
+            Ready::StrictMultidot(item) => {
+                if let Act::StrictMultidot { ref mut next, .. } = self.rotation[item].action {
+                    *next = 0;
+                }
+                self.apl.in_sequence = true;
+                assert!(self.apl.controlling.is_none(), "nested controlling actions");
+                self.apl.controlling = Some(item);
+            }
+            // Go `APLActionCancelAura.Execute`.
+            Ready::CancelAura(aura) => {
+                if self.log.is_some() {
+                    let id = self.aura(aura).action_id.clone().unwrap_or_default();
+                    let line = format!("Cancelling aura {}", super::log::action_string(&id));
+                    self.unit_log(aura.side, &line);
+                }
+                self.deactivate_aura(aura);
             }
             // Go `APLActionWaitUntil.Execute`.
             Ready::WaitUntil(item) => {
@@ -1986,6 +2162,8 @@ impl<A: Agent> Fight<A> {
                 Act::Wait { .. }
                 | Act::WaitUntil(_)
                 | Act::Schedule { .. }
+                | Act::StrictMultidot { .. }
+                | Act::CancelAura(_)
                 | Act::ResetSequence { .. } => {
                     if self.item_action_ready(item).is_some() {
                         return false;
@@ -2106,6 +2284,15 @@ impl<A: Agent> Fight<A> {
                         self.apl.queue_hooks.retain(|&hooked| hooked != item);
                     }
                     Act::Schedule { ref mut next, .. } => *next = 0,
+                    Act::StrictMultidot {
+                        ref mut next,
+                        ref mut ready,
+                        ..
+                    } => {
+                        *next = 0;
+                        ready.clear();
+                        self.apl.queue_hooks.retain(|&hooked| hooked != item);
+                    }
                     _ => {}
                 }
             }

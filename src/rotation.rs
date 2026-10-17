@@ -607,6 +607,25 @@ pub enum Action {
     },
     /// Go `APLActionResetSequence`: starts the sequence of the name over.
     ResetSequence(String),
+    /// Go `APLActionStrictMultidot`: the spell on each of up to `max_dots` targets whose dot
+    /// is down or runs out within `max_overlap`, or before the previous one's, in one strict
+    /// sequence.
+    StrictMultidot {
+        spell: ActionId,
+        max_dots: i32,
+        max_overlap: Option<Value>,
+    },
+    /// Go `APLActionCancelAura` of one of the player's auras.
+    CancelAura(ActionId),
+    /// Go `APLActionActivateAuraWithStacks` of one of the player's auras, parsed only as a
+    /// prepull action.
+    ActivateAuraWithStacks {
+        id: ActionId,
+        stacks: i32,
+    },
+    /// Go `APLActionTriggerICD` of the player's aura with the ICD, parsed only as a prepull
+    /// action.
+    TriggerIcd(ActionId),
     /// Go `APLActionChannelSpell`: a channel the rotation may interrupt.
     ChannelSpell {
         spell: ActionId,
@@ -654,7 +673,9 @@ impl Action {
     pub fn values(&self) -> Vec<&Value> {
         match self {
             Action::ChannelSpell { interrupt_if, .. } => interrupt_if.iter().collect(),
-            Action::Multidot { max_overlap, .. } => max_overlap.iter().collect(),
+            Action::Multidot { max_overlap, .. } | Action::StrictMultidot { max_overlap, .. } => {
+                max_overlap.iter().collect()
+            }
             Action::Move(value) | Action::MoveDuration(value) => vec![value],
             Action::Wait(value) | Action::WaitUntil(value) => value.iter().collect(),
             // Go builds the inner action without the group's variables.
@@ -708,7 +729,9 @@ impl Action {
                 steps.iter().map(|step| &step.spell).collect()
             }
             Action::Schedule { inner, .. } => inner.action.spells(),
-            Action::ChannelSpell { spell, .. } | Action::Multidot { spell, .. } => vec![spell],
+            Action::ChannelSpell { spell, .. }
+            | Action::Multidot { spell, .. }
+            | Action::StrictMultidot { spell, .. } => vec![spell],
             Action::ActivateAura(_)
             | Action::Move(_)
             | Action::MoveDuration(_)
@@ -716,6 +739,9 @@ impl Action {
             | Action::Wait(_)
             | Action::WaitUntil(_)
             | Action::ResetSequence(_)
+            | Action::CancelAura(_)
+            | Action::ActivateAuraWithStacks { .. }
+            | Action::TriggerIcd(_)
             | Action::GroupReference { .. } => Vec::new(),
         }
     }
@@ -1056,6 +1082,31 @@ fn parse_prepull(item: &Json, position: usize) -> Result<Option<Prepull>, String
         }
         ("move", config) => parse_move(config)?,
         ("moveDuration", config) => parse_move_duration(config)?,
+        ("cancelAura", config) => Action::CancelAura(parse_aura_action("cancelAura", config)?),
+        ("triggerIcd", config) => Action::TriggerIcd(parse_aura_action("triggerIcd", config)?),
+        ("activateAuraWithStacks", config) => {
+            let object = config
+                .as_object()
+                .ok_or("activateAuraWithStacks must be an object")?;
+            if let Some(key) = object
+                .keys()
+                .find(|key| !matches!(key.as_str(), "auraId" | "numStacks"))
+            {
+                return Err(format!("activateAuraWithStacks field {key} is unsupported"));
+            }
+            Action::ActivateAuraWithStacks {
+                id: parse_action_id(
+                    object
+                        .get("auraId")
+                        .ok_or("activateAuraWithStacks has no auraId")?,
+                )?,
+                stacks: object
+                    .get("numStacks")
+                    .map(json_i32)
+                    .transpose()?
+                    .unwrap_or(0),
+            }
+        }
         (name, _) => return Err(format!("action {name} is unsupported")),
     };
     // A prepull action runs at a fixed time before the pull, where only a constant is read.
@@ -1175,6 +1226,21 @@ fn parse_action_object(action: &Map<String, Json>, position: usize) -> Result<It
         Ok(("sequence", config)) => parse_sequence(config),
         Ok(("channelSpell", config)) => parse_channel_spell(config),
         Ok(("multidot", config)) => parse_multidot(config),
+        Ok(("strictMultidot", config)) => match parse_multidot(config) {
+            Ok(Action::Multidot {
+                spell,
+                max_dots,
+                max_overlap,
+            }) => Ok(Action::StrictMultidot {
+                spell,
+                max_dots,
+                max_overlap,
+            }),
+            other => other,
+        },
+        Ok(("cancelAura", config)) => {
+            parse_aura_action("cancelAura", config).map(Action::CancelAura)
+        }
         Ok(("move", config)) => parse_move(config),
         Ok(("moveDuration", config)) => parse_move_duration(config),
         Ok(("groupReference", config)) => parse_group_reference(config),
@@ -1417,6 +1483,22 @@ fn parse_cast_friendly_spell(config: &Json) -> Result<Action, String> {
         UnitRef::Player => Action::CastAtPlayer(spell),
         target => Action::CastSpell { spell, target },
     })
+}
+
+/// An action on one of the player's auras: its aura. Go builds no action without one, which Rust
+/// refuses rather than reproduce.
+fn parse_aura_action(name: &str, config: &Json) -> Result<ActionId, String> {
+    let object = config
+        .as_object()
+        .ok_or_else(|| format!("{name} must be an object"))?;
+    if let Some(key) = object.keys().find(|key| key.as_str() != "auraId") {
+        return Err(format!("{name} field {key} is unsupported"));
+    }
+    parse_action_id(
+        object
+            .get("auraId")
+            .ok_or_else(|| format!("{name} has no auraId"))?,
+    )
 }
 
 /// Go `newActionMultidot`: its spell, dot count and overlap.
@@ -3595,16 +3677,16 @@ mod tests {
             "type": "TypeAPL",
             "priorityList": [
                 {"action": {"castSpell": {"spellId": {"spellId": 25304}},
-                            "condition": {"spellNumCharges": {"spellId": {"spellId": 1}}}}},
-                {"action": {"wait": {"duration": {"const": {"val": "1s"}}}}}
+                            "condition": {"notAValue": {"spellId": {"spellId": 1}}}}},
+                {"action": {"customRotation": {}}}
             ]
         });
         let reasons = parse(&rotation).unwrap_err();
         assert_eq!(
             reasons,
             [
-                "rotation item 1: value spellNumCharges is unsupported",
-                "rotation item 2: action wait is unsupported"
+                "rotation item 1: value notAValue is unsupported",
+                "rotation item 2: action customRotation is unsupported"
             ]
         );
     }

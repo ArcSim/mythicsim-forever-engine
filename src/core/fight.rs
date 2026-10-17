@@ -1398,6 +1398,12 @@ pub(crate) enum Action {
     Prepull(SpellId),
     /// A rotation prepull action: Go `APLActionActivateAura.Execute`.
     PrepullAura(AuraRef),
+    /// A rotation prepull action: Go `APLActionCancelAura.Execute`.
+    PrepullCancelAura(AuraRef),
+    /// A rotation prepull action: Go `APLActionActivateAuraWithStacks.Execute`.
+    PrepullAuraWithStacks(AuraRef, i32),
+    /// A rotation prepull action: Go `APLActionTriggerICD.Execute`.
+    PrepullTriggerIcd(AuraRef),
     /// A rotation prepull action: Go `APLActionMove.Execute`.
     PrepullMove(f64),
     /// A rotation prepull action: Go `APLActionMoveDuration.Execute`.
@@ -4810,6 +4816,11 @@ impl<A: Agent> Fight<A> {
             let action = match act {
                 rotation::PrepullAct::Cast(spell) => Action::Prepull(spell),
                 rotation::PrepullAct::ActivateAura(aura) => Action::PrepullAura(aura),
+                rotation::PrepullAct::CancelAura(aura) => Action::PrepullCancelAura(aura),
+                rotation::PrepullAct::ActivateAuraWithStacks(aura, stacks) => {
+                    Action::PrepullAuraWithStacks(aura, stacks)
+                }
+                rotation::PrepullAct::TriggerIcd(aura) => Action::PrepullTriggerIcd(aura),
                 rotation::PrepullAct::Move(range) => Action::PrepullMove(range),
                 rotation::PrepullAct::MoveDuration(duration) => {
                     Action::PrepullMoveDuration(duration)
@@ -5215,6 +5226,29 @@ impl<A: Agent> Fight<A> {
             Action::Pushback { chance } => self.pushback_handler(chance),
             Action::Prepull(spell) => self.cast_or_queue(spell, Side::Target),
             Action::PrepullAura(aura) => self.activate_aura_action(aura),
+            // Go `APLActionCancelAura.Execute`, which a prepull runs whether or not it is ready.
+            Action::PrepullCancelAura(aura) => {
+                if self.log.is_some() {
+                    let id = self.aura(aura).action_id.clone().unwrap_or_default();
+                    let line = format!("Cancelling aura {}", log::action_string(&id));
+                    self.unit_log(aura.side, &line);
+                }
+                self.deactivate_aura(aura);
+            }
+            Action::PrepullAuraWithStacks(aura, stacks) => {
+                self.activate_aura_with_stacks_action(aura, stacks)
+            }
+            // Go `APLActionTriggerICD.Execute`.
+            Action::PrepullTriggerIcd(aura) => {
+                if self.log.is_some() {
+                    let id = self.aura(aura).action_id.clone().unwrap_or_default();
+                    let line = format!("Triggering ICD {}", log::action_string(&id));
+                    self.unit_log(aura.side, &line);
+                }
+                let (timer, duration) = self.aura(aura).icd.expect("an ICD aura");
+                self.timers[timer] = self.now + duration;
+                self.changed(reads::TIMERS);
+            }
             Action::PrepullMove(range) => {
                 // Go `APLActionMove.Execute` logs the range even when the unit is already there.
                 if self.log.is_some() {

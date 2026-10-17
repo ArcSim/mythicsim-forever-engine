@@ -887,6 +887,38 @@ pub struct RotationReads {
     /// Go `APLValueMultipleCdUsages`: the related self buff of each spell it names that has one.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub self_buffs: Vec<RotationSelfBuff>,
+    /// Go `Character.ItemProcBuffs`, which the item stat proc values filter by stat and ICD.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub item_proc_buffs: Vec<RotationItemProcBuff>,
+    /// The major cooldowns whose buff aura moves one of the stats a stat buff cooldown value
+    /// names, as the value finds them while the rotation is built, by the stats.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub cooldown_buffs: Vec<RotationCooldownBuffs>,
+    /// The spells each `castAllStatBuffCooldowns` casts, by its stats.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub cast_cooldowns: Vec<RotationCooldownBuffs>,
+}
+
+/// A `StatBuffAura` of `Character.ItemProcBuffs`: the aura's label, the stats it buffs as Go's
+/// stat indices, and whether it is swapped out.
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct RotationItemProcBuff {
+    pub aura: String,
+    pub stats: Vec<i32>,
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub swapped: bool,
+}
+
+/// The major cooldowns matching stats: their spells and their buff auras' labels.
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct RotationCooldownBuffs {
+    pub stats: Vec<i32>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub spells: Vec<ActionId>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub auras: Vec<String>,
 }
 
 /// A spell the first target knows, which its identical copies share.

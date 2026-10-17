@@ -3,10 +3,13 @@
 package main
 
 import (
+	"fmt"
+	"slices"
 	"sort"
 
 	"github.com/wowsims/forever/sim/core"
 	"github.com/wowsims/forever/sim/core/proto"
+	"github.com/wowsims/forever/sim/core/stats"
 	googleProto "google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
@@ -22,6 +25,116 @@ type RotationReads struct {
 	// apl_values_misc.go APLValueMultipleCdUsages: the related self buff of each spell the value
 	// names that has one, and whether the spell has a cooldown.
 	SelfBuffs []RotationSelfBuff `json:"self_buffs,omitempty"`
+	// apl_values_aura_sets.go: Character.ItemProcBuffs, which the item stat proc values and the
+	// prepull's activateAllStatBuffProcAuras filter by stat and ICD.
+	ItemProcBuffs []RotationItemProcBuff `json:"item_proc_buffs,omitempty"`
+	// The major cooldowns whose buff aura moves one of the stats a stat buff cooldown value names,
+	// as the value finds them while the rotation is built, by the stats.
+	CooldownBuffs []RotationCooldownBuffs `json:"cooldown_buffs,omitempty"`
+	// The spells each castAllStatBuffCooldowns casts, by its stats, as it found them after the
+	// rotation was finalized; they leave the major cooldowns.
+	CastCooldowns []RotationCooldownBuffs `json:"cast_cooldowns,omitempty"`
+}
+
+// RotationItemProcBuff is a StatBuffAura of Character.ItemProcBuffs.
+type RotationItemProcBuff struct {
+	Aura    string  `json:"aura"`
+	Stats   []int32 `json:"stats"`
+	Swapped bool    `json:"swapped,omitempty"`
+}
+
+// RotationCooldownBuffs are the cooldowns matching stats: their spells and buff auras.
+type RotationCooldownBuffs struct {
+	Stats  []int32    `json:"stats"`
+	Spells []ActionID `json:"spells,omitempty"`
+	Auras  []string   `json:"auras,omitempty"`
+}
+
+func statInts(list []stats.Stat) []int32 {
+	out := make([]int32, len(list))
+	for i, stat := range list {
+		out[i] = int32(stat)
+	}
+	return out
+}
+
+// statKey is stats.IntTupleToStatsList of a value's stat types, as ints.
+func statKey(s1, s2, s3 int32) []int32 {
+	return statInts(stats.IntTupleToStatsList(s1, s2, s3))
+}
+
+// cooldownBuffsWithoutRotation reads the stat buff cooldowns as a value finds them while the
+// rotation is built, before the rotation takes the cooldowns it casts: from an environment built
+// with an empty rotation.
+func cooldownBuffsWithoutRotation(request *proto.RaidSimRequest, keys [][]int32) []RotationCooldownBuffs {
+	raid := googleProto.Clone(request.Raid).(*proto.Raid)
+	raid.Parties[0].Players[0].Rotation = &proto.APLRotation{Type: proto.APLRotation_TypeAPL}
+	env, _, _ := core.NewEnvironment(raid, request.Encounter, false, true)
+	character := env.Raid.Parties[0].Players[0].GetCharacter()
+	var out []RotationCooldownBuffs
+	for _, key := range keys {
+		statList := make([]stats.Stat, len(key))
+		for i, stat := range key {
+			statList[i] = stats.Stat(stat)
+		}
+		entry := RotationCooldownBuffs{Stats: key}
+		for _, spell := range character.GetMatchingStatBuffSpells(statList) {
+			entry.Spells = append(entry.Spells, *actionIDOrEmpty(spell.ActionID))
+		}
+		for _, aura := range character.GetMatchingStatBuffCooldownAuras(statList) {
+			entry.Auras = append(entry.Auras, aura.Label)
+		}
+		out = append(out, entry)
+	}
+	return out
+}
+
+// castCooldowns reads the spells each castAllStatBuffCooldowns of the built rotation casts.
+func castCooldowns(character *core.Character, keys [][]int32) []RotationCooldownBuffs {
+	rotation := character.Rotation
+	var actions []*core.APLAction
+	for _, field := range []string{"priorityList", "prepullActions"} {
+		list := readPrivate(privateField(rotation, field)).Interface().([]*core.APLAction)
+		for _, action := range list {
+			actions = append(actions, action.GetAllActions()...)
+		}
+	}
+	found := map[string][]ActionID{}
+	for _, action := range actions {
+		impl, ok := readPrivate(privateField(action, "impl")).Interface().(*core.APLActionCastAllStatBuffCooldowns)
+		if !ok {
+			continue
+		}
+		key := fmt.Sprint(statInts(readPrivate(privateField(impl, "statTypesToMatch")).Interface().([]stats.Stat)))
+		if _, seen := found[key]; seen {
+			continue
+		}
+		subactions := readPrivate(privateField(impl, "allSubactions"))
+		spells := []ActionID{}
+		for i := 0; i < subactions.Len(); i++ {
+			spell := readPrivate(privateField(subactions.Index(i).Interface(), "spell")).Interface().(*core.Spell)
+			spells = append(spells, *actionIDOrEmpty(spell.ActionID))
+		}
+		found[key] = spells
+	}
+	var out []RotationCooldownBuffs
+	for _, key := range keys {
+		if spells, ok := found[fmt.Sprint(key)]; ok {
+			out = append(out, RotationCooldownBuffs{Stats: key, Spells: spells})
+		}
+	}
+	return out
+}
+
+func addKey(keys [][]int32, key []int32) [][]int32 {
+	if slices.ContainsFunc(keys, func(known []int32) bool { return slices.Equal(known, key) }) {
+		return keys
+	}
+	return append(keys, key)
+}
+
+func sortKeys(keys [][]int32) {
+	sort.Slice(keys, func(i, j int) bool { return slices.Compare(keys[i], keys[j]) < 0 })
 }
 
 // RotationTargetSpell is a spell the first target knows, which its identical copies share.
@@ -135,8 +248,28 @@ func rotationReads(request *proto.RaidSimRequest, simulation *core.Simulation, c
 			HasCooldown: spell.CD.Timer != nil || spell.SharedCD.Timer != nil})
 		used = true
 	}
+	itemProcs := false
+	var cooldownKeys, castKeys [][]int32
 	for _, value := range rotationValues(player.GetRotation()) {
 		switch v := value.(type) {
+		case *proto.APLValueAllItemStatProcsActive, *proto.APLValueAnyItemStatProcsActive,
+			*proto.APLValueAnyItemStatProcsAvailable, *proto.APLValueItemProcsMinRemainingTime,
+			*proto.APLValueItemProcsMaxRemainingICD, *proto.APLValueNumEquippedStatProcItems,
+			*proto.APLActionActivateAllStatBuffProcAuras:
+			itemProcs = true
+			used = true
+		case *proto.APLValueNumStatBuffCooldowns:
+			cooldownKeys = addKey(cooldownKeys, statKey(v.StatType1, v.StatType2, v.StatType3))
+			used = true
+		case *proto.APLValueAnyStatBuffCooldownsActive:
+			cooldownKeys = addKey(cooldownKeys, statKey(v.StatType1, v.StatType2, v.StatType3))
+			used = true
+		case *proto.APLValueAnyStatBuffCooldownsMinDuration:
+			cooldownKeys = addKey(cooldownKeys, statKey(v.StatType1, v.StatType2, v.StatType3))
+			used = true
+		case *proto.APLActionCastAllStatBuffCooldowns:
+			castKeys = addKey(castKeys, statKey(v.StatType1, v.StatType2, v.StatType3))
+			used = true
 		case *proto.APLValueSelectedPotion:
 			id := character.Consumables.GetPotId()
 			reads.PotionID = &id
@@ -156,6 +289,20 @@ func rotationReads(request *proto.RaidSimRequest, simulation *core.Simulation, c
 	}
 	if !used {
 		return nil
+	}
+	if itemProcs {
+		for _, aura := range character.ItemProcBuffs {
+			reads.ItemProcBuffs = append(reads.ItemProcBuffs, RotationItemProcBuff{Aura: aura.Label,
+				Stats: statInts(aura.BuffedStatTypes), Swapped: aura.IsSwapped})
+		}
+	}
+	sortKeys(cooldownKeys)
+	sortKeys(castKeys)
+	if len(cooldownKeys) > 0 {
+		reads.CooldownBuffs = cooldownBuffsWithoutRotation(request, cooldownKeys)
+	}
+	if len(castKeys) > 0 {
+		reads.CastCooldowns = castCooldowns(character, castKeys)
 	}
 	sort.Slice(reads.TargetSpells, func(i, j int) bool {
 		return lessActionID(reads.TargetSpells[i].Spell, reads.TargetSpells[j].Spell)

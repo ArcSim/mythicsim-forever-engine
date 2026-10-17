@@ -95,6 +95,12 @@ pub(crate) enum Act {
     CancelAura(AuraRef),
     /// Go `APLActionCastWarlockAssignedCurse`: the curse, cast without queueing.
     CastAssignedCurse(SpellId),
+    /// Go `APLActionCastAllStatBuffCooldowns`: its spells and those the last readiness check
+    /// found ready.
+    CastAllStatBuffCooldowns {
+        spells: Rc<[SpellId]>,
+        ready: Vec<SpellId>,
+    },
     /// Go `APLActionResetSequence`: the name, and the sequence of that name the rotation's
     /// finalizing found.
     ResetSequence {
@@ -128,6 +134,12 @@ pub(crate) enum PrepullAct {
     ItemSwap(bool),
     /// The swap back to Main Go registers when the prepull's last item swap is to another set.
     SwapBackToMain,
+    /// Go `APLActionCastAllStatBuffCooldowns.Execute` before the pull: every one of its spells,
+    /// by the position of its list.
+    CastAllStatBuffCooldowns(usize),
+    /// Go `APLActionActivateAllStatBuffProcAuras.Execute`: the set it runs for (Swap1 when true)
+    /// and the position of its auras' list.
+    ActivateAllStatBuffProcAuras(bool, usize),
     ActivateAura(AuraRef),
     /// Go `APLActionMove`: the player runs to the range from the target.
     Move(f64),
@@ -139,6 +151,13 @@ pub(crate) enum PrepullAct {
     ActivateAuraWithStacks(AuraRef, i32),
     /// Go `APLActionTriggerICD`.
     TriggerIcd(AuraRef),
+}
+
+/// The spells or auras a prepull action that runs several of them holds.
+#[derive(Clone, Debug)]
+pub(crate) enum PrepullList {
+    Spells(Vec<SpellId>),
+    Auras(Vec<AuraRef>),
 }
 
 /// A ready action. Go keeps the cooldown found by `IsReady` for `Execute`.
@@ -173,6 +192,8 @@ enum Ready {
     CancelAura(AuraRef),
     /// The assigned curse cast.
     CastAssignedCurse(SpellId),
+    /// The stat buff cooldowns cast.
+    CastAllStatBuffCooldowns(usize),
 }
 
 #[derive(Clone, Debug)]
@@ -330,6 +351,61 @@ impl<A: Agent> Fight<A> {
             })
     }
 
+    /// The spells the input names for a `castAllStatBuffCooldowns` of the stats.
+    fn cast_all_spells(&self, stats: &[i32]) -> Vec<SpellId> {
+        let Some(reads) = self.rotation_reads.as_ref() else {
+            return Vec::new();
+        };
+        let Some(entry) = reads
+            .cast_cooldowns
+            .iter()
+            .find(|entry| entry.stats == stats)
+        else {
+            return Vec::new();
+        };
+        entry
+            .spells
+            .iter()
+            .filter_map(|id| {
+                self.spells
+                    .iter()
+                    .position(|spell| spell.caster == Side::Player && &spell.id == id)
+            })
+            .collect()
+    }
+
+    /// The player's aura of a label.
+    fn player_aura_by_label(&self, label: &str) -> Option<AuraRef> {
+        self.trackers[Side::Player.index()]
+            .auras
+            .iter()
+            .position(|aura| aura.label == label)
+            .map(|index| AuraRef {
+                side: Side::Player,
+                index,
+            })
+    }
+
+    /// Go `GetMatchingItemProcAuras` over the input's item proc buffs: those moving one of the
+    /// stats and, with a minimum, whose ICD is longer.
+    fn item_procs(&self, procs: &crate::rotation::StatProcs) -> Vec<(AuraRef, bool)> {
+        let Some(reads) = self.rotation_reads.as_ref() else {
+            return Vec::new();
+        };
+        reads
+            .item_proc_buffs
+            .iter()
+            .filter(|buff| buff.stats.iter().any(|stat| procs.stats.contains(stat)))
+            .filter_map(|buff| {
+                let aura = self.player_aura_by_label(&buff.aura)?;
+                let icd = self.aura(aura).icd;
+                let long_enough =
+                    procs.min_icd <= 0 || icd.is_some_and(|(_, duration)| duration > procs.min_icd);
+                long_enough.then_some((aura, buff.swapped))
+            })
+            .collect()
+    }
+
     /// Go `APLValueMultipleCdUsages.GetBool`.
     fn multiple_cd_usages(
         &mut self,
@@ -434,7 +510,7 @@ impl<A: Agent> Fight<A> {
         &self,
         rotation: &Rotation,
         base: usize,
-    ) -> (Vec<(i64, PrepullAct)>, Vec<Item>) {
+    ) -> (Vec<(i64, PrepullAct)>, Vec<Item>, Vec<PrepullList>) {
         let find = |side: Side, id: &ActionId| self.rotation_aura(side, id);
         let aura = |id: &ActionId| find(Side::Player, id);
         let target_aura = |position: usize, id: &ActionId| find(Side::target(position), id);
@@ -476,8 +552,11 @@ impl<A: Agent> Fight<A> {
                     .position(|spell| spell.caster == Side::Player && &spell.id == id)
             },
             self_buff: &|spell: usize| self.self_buff(spell),
+            item_procs: &|procs: &crate::rotation::StatProcs| self.item_procs(procs),
+            aura_by_label: &|label: &str| self.player_aura_by_label(label),
         };
         let mut channels = Vec::new();
+        let mut lists = Vec::new();
         let mut prepull: Vec<(i64, PrepullAct)> = rotation
             .prepull
             .iter()
@@ -526,6 +605,37 @@ impl<A: Agent> Fight<A> {
                         }
                     }
                 }
+                ParsedAction::CastAllStatBuffCooldowns(stats) => {
+                    lists.push(PrepullList::Spells(self.cast_all_spells(stats)));
+                    Some((
+                        prepull.do_at_ns,
+                        PrepullAct::CastAllStatBuffCooldowns(lists.len() - 1),
+                    ))
+                }
+                // Go `newActionActivateAllStatBuffProcAuras`: the proc buffs of the stats in the
+                // set; none without one, or for Swap1 without an item swap.
+                ParsedAction::ActivateAllStatBuffProcAuras { stats, swap1 } => {
+                    if *swap1 && self.item_swap.is_none() {
+                        return None;
+                    }
+                    let auras: Vec<AuraRef> = self
+                        .item_procs(&crate::rotation::StatProcs {
+                            stats: stats.clone(),
+                            min_icd: 0,
+                        })
+                        .into_iter()
+                        .filter(|(_, swapped)| swapped == swap1)
+                        .map(|(aura, _)| aura)
+                        .collect();
+                    if auras.is_empty() {
+                        return None;
+                    }
+                    lists.push(PrepullList::Auras(auras));
+                    Some((
+                        prepull.do_at_ns,
+                        PrepullAct::ActivateAllStatBuffProcAuras(*swap1, lists.len() - 1),
+                    ))
+                }
                 // Go `newActionItemSwap`: no action without an item swap.
                 ParsedAction::ItemSwap(to_swapped) => self
                     .item_swap
@@ -573,7 +683,7 @@ impl<A: Agent> Fight<A> {
             prepull.push((-1, PrepullAct::SwapBackToMain));
         }
         prepull.sort_by_key(|(do_at, _)| *do_at);
-        (prepull, channels)
+        (prepull, channels, lists)
     }
 
     /// Go `newAPLRotation` for the supported subset: the items of the priority list, then the
@@ -620,6 +730,8 @@ impl<A: Agent> Fight<A> {
                     .position(|spell| spell.caster == Side::Player && &spell.id == id)
             },
             self_buff: &|spell: usize| self.self_buff(spell),
+            item_procs: &|procs: &crate::rotation::StatProcs| self.item_procs(procs),
+            aura_by_label: &|label: &str| self.player_aura_by_label(label),
         };
         // A reference whose condition is a constant false is pruned, and takes no part in
         // binding the groups.
@@ -831,6 +943,13 @@ impl<A: Agent> Fight<A> {
                 target.resolve(self.targets.len())?;
                 Act::CastAssignedCurse(self.apl_spell(curse)?)
             }
+            // Go `processMajorCooldowns`: the spells the input names for its stats; none leaves
+            // an action that is never ready.
+            ParsedAction::CastAllStatBuffCooldowns(stats) => Act::CastAllStatBuffCooldowns {
+                spells: self.cast_all_spells(stats).into(),
+                ready: Vec::new(),
+            },
+            ParsedAction::ActivateAllStatBuffProcAuras { .. } => return None,
             // Go `newActionCancelAura`: no action for an aura the player lacks.
             ParsedAction::CancelAura(id) => {
                 Act::CancelAura(self.rotation_aura(Side::Player, id)?.aura)
@@ -1008,6 +1127,29 @@ impl<A: Agent> Fight<A> {
                         && self.now - state.start < self.config.reaction)
             }
             Compiled::Settled(value) => *value,
+            // Go `APLValueAllItemStatProcsActive`: a buff that can proc and is down or short of
+            // its stacks refuses.
+            Compiled::AllItemStatProcsActive(buffs) => buffs.iter().all(|&(aura, swapped)| {
+                let state = self.aura(aura);
+                !((!state.active || state.stacks < state.max_stacks) && !swapped)
+            }),
+            Compiled::AnyItemStatProcsActive(buffs) => buffs.iter().any(|&(aura, _)| {
+                let state = self.aura(aura);
+                state.active && state.stacks == state.max_stacks
+            }),
+            // Go: one that can proc, is down, and has a ready ICD.
+            Compiled::AnyItemStatProcsAvailable(buffs) => buffs.iter().any(|&(aura, swapped)| {
+                let state = self.aura(aura);
+                !state.active
+                    && !swapped
+                    && state
+                        .icd
+                        .is_some_and(|(timer, _)| self.timers[timer] <= self.now)
+            }),
+            Compiled::AnyStatBuffCooldownsActive(auras) => auras.iter().any(|&aura| {
+                let state = self.aura(aura);
+                state.active && state.stacks == state.max_stacks
+            }),
             // Go: the player's hardcast is of the spell's action and still running.
             Compiled::PlayerSpellCasting(spell) => {
                 let hardcast = self.player.hardcast;
@@ -1092,6 +1234,7 @@ impl<A: Agent> Fight<A> {
             // Go `Spell.GetNumCharges`: no spell of the fork has charges.
             Compiled::SpellNumCharges(_) => 0,
             Compiled::MaxComboPoints(max) => *max,
+            Compiled::SettledInt(value) => *value,
             // Go `APLValueMax.GetInt` and `APLValueMin.GetInt`.
             Compiled::Max(values) => {
                 let first = self.get_int(&values[0]);
@@ -1312,6 +1455,27 @@ impl<A: Agent> Fight<A> {
             // Go `Aura.Duration`.
             Compiled::AuraDuration(aura) => self.aura(*aura).duration,
             Compiled::SettledDuration(duration) => *duration,
+            // Go `APLValueItemProcsMinRemainingTime`: never without one up.
+            Compiled::ItemProcsMinRemainingTime(buffs) => buffs
+                .iter()
+                .filter(|(aura, _)| self.aura(*aura).active)
+                .map(|(aura, _)| self.aura(*aura).remaining(self.now))
+                .fold(NEVER_EXPIRES, i64::min),
+            // Go `APLValueItemProcsMaxRemainingICD`: zero without one down that can proc.
+            Compiled::ItemProcsMaxRemainingIcd(buffs) => buffs
+                .iter()
+                .filter(|(aura, swapped)| !swapped && !self.aura(*aura).active)
+                .filter_map(|(aura, _)| self.aura(*aura).icd)
+                .map(|(timer, _)| (self.timers[timer] - self.now).max(0))
+                .fold(0, i64::max),
+            Compiled::AnyStatBuffCooldownsMinDuration(auras) => auras
+                .iter()
+                .filter(|aura| {
+                    let state = self.aura(**aura);
+                    state.active && state.stacks == state.max_stacks
+                })
+                .map(|aura| self.aura(*aura).remaining(self.now))
+                .fold(NEVER_EXPIRES, i64::min),
             // Go `APLValueSequenceTimeToReady`: never once done or without a sequence, else the
             // time until the next step's spell is ready.
             Compiled::SequenceTimeToReady(name) => match self.named_sequence(name) {
@@ -1748,6 +1912,32 @@ impl<A: Agent> Fight<A> {
             Act::StrictMultidot { .. } => self
                 .strict_multidot_ready(item)
                 .then_some(Ready::StrictMultidot(item)),
+            // Go `APLActionCastAllStatBuffCooldowns.IsReady`: the ready casts of those worn, all of
+            // them inside a sequence.
+            Act::CastAllStatBuffCooldowns { ref spells, .. } => {
+                let spells = Rc::clone(spells);
+                if spells.is_empty() {
+                    return None;
+                }
+                let ready: Vec<SpellId> = spells
+                    .iter()
+                    .copied()
+                    .filter(|&spell| self.cast_ready(spell))
+                    .collect();
+                let go = if self.apl.in_sequence {
+                    ready.len() == spells.len()
+                } else {
+                    !ready.is_empty()
+                };
+                if let Act::CastAllStatBuffCooldowns {
+                    ready: ref mut found,
+                    ..
+                } = self.rotation[item].action
+                {
+                    *found = ready;
+                }
+                go.then_some(Ready::CastAllStatBuffCooldowns(item))
+            }
             // Go `APLActionCastWarlockAssignedCurse.IsReady`: `CanCast`, which does not queue.
             Act::CastAssignedCurse(spell) => self
                 .can_cast(spell)
@@ -2222,6 +2412,25 @@ impl<A: Agent> Fight<A> {
                 assert!(self.apl.controlling.is_none(), "nested controlling actions");
                 self.apl.controlling = Some(item);
             }
+            // Go `APLActionCastAllStatBuffCooldowns.Execute`: the ready ones, every one before
+            // the pull.
+            Ready::CastAllStatBuffCooldowns(item) => {
+                let Act::CastAllStatBuffCooldowns {
+                    ref spells,
+                    ref ready,
+                } = self.rotation[item].action
+                else {
+                    unreachable!("item casts the stat buff cooldowns");
+                };
+                let casts: Vec<SpellId> = if self.now < 0 {
+                    spells.to_vec()
+                } else {
+                    ready.clone()
+                };
+                for spell in casts {
+                    self.cast_or_queue(spell, Side::Target);
+                }
+            }
             // Go `APLActionCastWarlockAssignedCurse.Execute`: `Spell.Cast` on the first target.
             Ready::CastAssignedCurse(spell) => {
                 self.cast(spell, Side::Target);
@@ -2370,6 +2579,7 @@ impl<A: Agent> Fight<A> {
                 | Act::Schedule { .. }
                 | Act::StrictMultidot { .. }
                 | Act::CancelAura(_)
+                | Act::CastAllStatBuffCooldowns { .. }
                 | Act::CastAssignedCurse(_)
                 | Act::ResetSequence { .. } => {
                     if self.item_action_ready(item).is_some() {

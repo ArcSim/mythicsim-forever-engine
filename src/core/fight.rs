@@ -1405,6 +1405,9 @@ pub(crate) enum Action {
     PrepullItemSwap(bool),
     /// apl.go's swap back to Main before the pull.
     PrepullSwapBack,
+    /// A rotation prepull action that runs a list: every stat buff cooldown it casts, or every
+    /// proc buff it activates for its set (Swap1 when true).
+    PrepullList(bool, usize),
     /// A rotation prepull action: Go `APLActionActivateAura.Execute`.
     PrepullAura(AuraRef),
     /// A rotation prepull action: Go `APLActionCancelAura.Execute`.
@@ -1665,6 +1668,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) rotation_sequences: Vec<(std::rc::Rc<str>, usize)>,
     /// Prepull casts by time, in Go's stable time order.
     prepull: Vec<(i64, rotation::PrepullAct)>,
+    /// The spells and auras of the prepull actions that run several, by position.
+    prepull_lists: Vec<rotation::PrepullList>,
     /// The dot base durations the rotation's `dotBaseDuration` values captured, by spell.
     dot_base_durations: Vec<(ActionId, i64)>,
     in_rotation: bool,
@@ -3663,6 +3668,7 @@ impl<A: Agent> Fight<A> {
             assigned_curse: crate::engine::coverage::assigned_curse(prepared),
             rotation_reads: prepared.player.rotation_reads.clone(),
             prepull: Vec::new(),
+            prepull_lists: Vec::new(),
             dot_base_durations: Vec::new(),
             in_rotation: false,
             apl: rotation::AplState::default(),
@@ -4072,9 +4078,10 @@ impl<A: Agent> Fight<A> {
         fight.priority_len = compilation.priority;
         fight.group_ranges = compilation.groups;
         fight.rotation_sequences = compilation.sequences;
-        let (prepull, channels) = fight.compile_prepull(&parsed, fight.rotation.len());
+        let (prepull, channels, lists) = fight.compile_prepull(&parsed, fight.rotation.len());
         fight.rotation.extend(channels);
         fight.prepull = prepull;
+        fight.prepull_lists = lists;
         for effect in effects {
             if let Effect::SunderArmorRamp {
                 aura,
@@ -4836,6 +4843,12 @@ impl<A: Agent> Fight<A> {
                 rotation::PrepullAct::Channel(spell, item) => Action::PrepullChannel(spell, item),
                 rotation::PrepullAct::ItemSwap(to_swapped) => Action::PrepullItemSwap(to_swapped),
                 rotation::PrepullAct::SwapBackToMain => Action::PrepullSwapBack,
+                rotation::PrepullAct::CastAllStatBuffCooldowns(list) => {
+                    Action::PrepullList(false, list)
+                }
+                rotation::PrepullAct::ActivateAllStatBuffProcAuras(swap1, list) => {
+                    Action::PrepullList(swap1, list)
+                }
                 rotation::PrepullAct::ActivateAura(aura) => Action::PrepullAura(aura),
                 rotation::PrepullAct::CancelAura(aura) => Action::PrepullCancelAura(aura),
                 rotation::PrepullAct::ActivateAuraWithStacks(aura, stacks) => {
@@ -5251,6 +5264,23 @@ impl<A: Agent> Fight<A> {
             Action::PrepullItemSwap(to_swapped) => self.item_swap_action(to_swapped),
             // Go's `SwapItems` to Main, which logs nothing of its own.
             Action::PrepullSwapBack => self.swap_items(false, false),
+            Action::PrepullList(swap1, list) => match self.prepull_lists[list].clone() {
+                rotation::PrepullList::Spells(spells) => {
+                    for spell in spells {
+                        self.cast_or_queue(spell, Side::Target);
+                    }
+                }
+                // Go: nothing while the other set is worn, else each aura as an activate aura
+                // action activates it.
+                rotation::PrepullList::Auras(auras) => {
+                    if self.item_swap.is_some() && self.item_swapped() != swap1 {
+                        return;
+                    }
+                    for aura in auras {
+                        self.activate_aura_action(aura);
+                    }
+                }
+            },
             Action::PrepullAura(aura) => self.activate_aura_action(aura),
             // Go `APLActionCancelAura.Execute`, which a prepull runs whether or not it is ready.
             Action::PrepullCancelAura(aura) => {

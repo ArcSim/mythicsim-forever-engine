@@ -1981,6 +1981,22 @@ pub(crate) fn prepared_coverage(
                     last_prepull_swap = Some(*to_swapped);
                     true
                 }
+                Action::CastAllStatBuffCooldowns(stats) => {
+                    reachable.extend(cast_all_spells(prepared, stats));
+                    true
+                }
+                // Go `newActionActivateAllStatBuffProcAuras`: none without a proc buff of the
+                // stats in the set, or for Swap1 without an item swap.
+                Action::ActivateAllStatBuffProcAuras { stats, swap1 } => {
+                    let procs = crate::rotation::StatProcs {
+                        stats: stats.clone(),
+                        min_icd: 0,
+                    };
+                    (!*swap1 || has_item_swap(prepared))
+                        && coverage_item_procs(prepared, &procs)
+                            .iter()
+                            .any(|(_, swapped)| swapped == swap1)
+                }
                 _ => false,
             };
             if registers {
@@ -2040,6 +2056,9 @@ pub(crate) fn prepared_coverage(
                         }
                         reachable.extend(cooldown_spell(prepared, cooldown));
                     }
+                }
+                Action::CastAllStatBuffCooldowns(stats) => {
+                    reachable.extend(cast_all_spells(prepared, stats));
                 }
                 // A Warlock's assigned curse reaches its curse spell.
                 Action::CastAssignedCurse(target)
@@ -2467,6 +2486,15 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
                 .iter()
                 .position(|spell| spell.action_id.as_ref() == Some(id))
         },
+        item_procs: &|procs: &crate::rotation::StatProcs| coverage_item_procs(prepared, procs),
+        aura_by_label: &|label: &str| {
+            prepared
+                .player
+                .auras
+                .iter()
+                .find(|aura| aura.label == label)
+                .and_then(|aura| aura.action_id.clone())
+        },
         self_buff: &|spell: usize| {
             let id = prepared.player.spells[spell].action_id.as_ref()?;
             prepared
@@ -2597,6 +2625,15 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
                 .iter()
                 .position(|spell| spell.action_id.as_ref() == Some(id))
         },
+        item_procs: &|procs: &crate::rotation::StatProcs| coverage_item_procs(prepared, procs),
+        aura_by_label: &|label: &str| {
+            prepared
+                .player
+                .auras
+                .iter()
+                .find(|aura| aura.label == label)
+                .and_then(|aura| aura.action_id.clone())
+        },
         self_buff: &|spell: usize| {
             let id = prepared.player.spells[spell].action_id.as_ref()?;
             prepared
@@ -2659,6 +2696,15 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
                 .spells
                 .iter()
                 .position(|spell| spell.action_id.as_ref() == Some(id))
+        },
+        item_procs: &|procs: &crate::rotation::StatProcs| coverage_item_procs(prepared, procs),
+        aura_by_label: &|label: &str| {
+            prepared
+                .player
+                .auras
+                .iter()
+                .find(|aura| aura.label == label)
+                .and_then(|aura| aura.action_id.clone())
         },
         self_buff: &|spell: usize| {
             let id = prepared.player.spells[spell].action_id.as_ref()?;
@@ -2816,6 +2862,54 @@ pub(crate) fn assigned_curse(prepared: &PreparedV2) -> Option<(String, ActionId)
     Some((option, id))
 }
 
+/// The spells a `castAllStatBuffCooldowns` of the stats casts, as the input names them.
+fn cast_all_spells<'a>(prepared: &'a PreparedV2, stats: &[i32]) -> Vec<&'a Spell> {
+    let Some(reads) = &prepared.player.rotation_reads else {
+        return Vec::new();
+    };
+    reads
+        .cast_cooldowns
+        .iter()
+        .filter(|entry| entry.stats == stats)
+        .flat_map(|entry| entry.spells.iter())
+        .filter_map(|id| {
+            prepared
+                .player
+                .spells
+                .iter()
+                .find(|spell| spell.action_id.as_ref() == Some(id))
+        })
+        .collect()
+}
+
+/// The item proc buffs an item stat proc value matches, by their aura's action.
+fn coverage_item_procs(
+    prepared: &PreparedV2,
+    procs: &crate::rotation::StatProcs,
+) -> Vec<(ActionId, bool)> {
+    let Some(reads) = &prepared.player.rotation_reads else {
+        return Vec::new();
+    };
+    reads
+        .item_proc_buffs
+        .iter()
+        .filter(|buff| buff.stats.iter().any(|stat| procs.stats.contains(stat)))
+        .filter_map(|buff| {
+            let aura = prepared
+                .player
+                .auras
+                .iter()
+                .find(|aura| aura.label == buff.aura)?;
+            let long_enough = procs.min_icd <= 0
+                || aura
+                    .icd
+                    .as_ref()
+                    .is_some_and(|icd| icd.duration_ns > procs.min_icd);
+            long_enough.then(|| (aura.action_id.clone().unwrap_or_default(), buff.swapped))
+        })
+        .collect()
+}
+
 /// What the rotation's values read that Rust does not run: a target spell with a cooldown, which
 /// only a target AI starts, and a spell `multipleCdUsages` reads without a cooldown, whose
 /// division by it Go leaves to the platform or whose timer Go reads without one.
@@ -2839,6 +2933,13 @@ fn rotation_read_limits(prepared: &PreparedV2) -> Vec<String> {
             "multipleCdUsages reads spell {} without a cooldown",
             buff.spell
         ));
+    }
+    // An item swap swaps a proc buff, or a cooldown, in and out, which the reads leave out.
+    let stat_reads = !reads.item_proc_buffs.is_empty()
+        || !reads.cooldown_buffs.is_empty()
+        || !reads.cast_cooldowns.is_empty();
+    if stat_reads && has_item_swap(prepared) {
+        reasons.push("stat proc and stat buff cooldown values with an item swap".to_string());
     }
     reasons
 }
@@ -2909,6 +3010,15 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
                 .spells
                 .iter()
                 .position(|spell| spell.action_id.as_ref() == Some(id))
+        },
+        item_procs: &|procs: &crate::rotation::StatProcs| coverage_item_procs(prepared, procs),
+        aura_by_label: &|label: &str| {
+            prepared
+                .player
+                .auras
+                .iter()
+                .find(|aura| aura.label == label)
+                .and_then(|aura| aura.action_id.clone())
         },
         self_buff: &|spell: usize| {
             let id = prepared.player.spells[spell].action_id.as_ref()?;

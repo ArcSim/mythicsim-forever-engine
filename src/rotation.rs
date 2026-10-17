@@ -365,6 +365,24 @@ pub enum Value {
     /// Go `APLValueBossCurrentTarget`: whether the unit's current target is the player, which
     /// a target's is while the player tanks it.
     BossCurrentTarget(UnitRef),
+    /// Go `APLValueAllItemStatProcsActive`: every proc buff that can proc is up at full stacks.
+    AllItemStatProcsActive(StatProcs),
+    /// Go `APLValueAnyItemStatProcsActive`: one is up at full stacks.
+    AnyItemStatProcsActive(StatProcs),
+    /// Go `APLValueAnyItemStatProcsAvailable`: one that can proc is down with its ICD ready.
+    AnyItemStatProcsAvailable(StatProcs),
+    /// Go `APLValueItemProcsMinRemainingTime`: the least time left of those up.
+    ItemProcsMinRemainingTime(StatProcs),
+    /// Go `APLValueItemProcsMaxRemainingICD`: the longest ICD left of those that can proc and are down.
+    ItemProcsMaxRemainingIcd(StatProcs),
+    /// Go `APLValueNumEquippedStatProcItems`: how many can proc.
+    NumEquippedStatProcItems(StatProcs),
+    /// Go `APLValueNumStatBuffCooldowns`: how many of the matching cooldowns are worn.
+    NumStatBuffCooldowns(Vec<i32>),
+    /// Go `APLValueAnyStatBuffCooldownsActive`: a matching cooldown's buff is up at full stacks.
+    AnyStatBuffCooldownsActive(Vec<i32>),
+    /// Go `APLValueAnyStatBuffCooldownsMinDuration`: the least time left of those up at full stacks.
+    AnyStatBuffCooldownsMinDuration(Vec<i32>),
     /// Go `APLValueSelectedPotion`: whether the consumables select the potion.
     SelectedPotion(i32),
     /// Go `APLValueSelectedConjured`: whether the consumables select the conjured item.
@@ -403,6 +421,14 @@ pub enum Value {
     /// value without one does: Go's switch has no case for it, or its constructor is in a file
     /// the build leaves out.
     Unbuilt(&'static str),
+}
+
+/// What an item stat proc value matches: Go `IntTupleToStatsList` of its stat types, as Go's
+/// stat indices, and the ICD its buffs must exceed (`minIcdSeconds`), none at zero or less.
+#[derive(Clone, Debug, PartialEq)]
+pub struct StatProcs {
+    pub stats: Vec<i32>,
+    pub min_icd: i64,
 }
 
 /// Go `APLValueAutoSwingTime_SwingType`: which swing a value reads. Unknown reads as none.
@@ -584,12 +610,21 @@ impl Value {
             | Value::BossCurrentTarget(_)
             | Value::SelectedPotion(_)
             | Value::SelectedConjured(_)
+            | Value::AllItemStatProcsActive(_)
+            | Value::AnyItemStatProcsActive(_)
+            | Value::AnyItemStatProcsAvailable(_)
+            | Value::AnyStatBuffCooldownsActive(_)
             | Value::BossSpellIsCasting { .. }
             | Value::MultipleCdUsages { .. }
             | Value::DotIsActiveOnAllTargets(_) => ValueType::Bool,
             Value::SequenceTimeToReady(_) | Value::BossSpellTimeToReady { .. } => {
                 ValueType::Duration
             }
+            Value::ItemProcsMinRemainingTime(_) => ValueType::Duration,
+            Value::ItemProcsMaxRemainingIcd(_) => ValueType::Duration,
+            Value::AnyStatBuffCooldownsMinDuration(_) => ValueType::Duration,
+            Value::NumEquippedStatProcItems(_) => ValueType::Int,
+            Value::NumStatBuffCooldowns(_) => ValueType::Int,
             Value::AuraInternalCooldown { .. }
             | Value::AuraDuration { .. }
             | Value::DotLowestRemainingTime(_)
@@ -659,6 +694,15 @@ pub enum Action {
     CancelAura(ActionId),
     /// Go sim/warlock/apl_values.go `APLActionCastWarlockAssignedCurse` on the unit.
     CastAssignedCurse(UnitRef),
+    /// Go `APLActionCastAllStatBuffCooldowns`: the instant cooldowns whose buff moves one of
+    /// the stats, which leave the major cooldowns.
+    CastAllStatBuffCooldowns(Vec<i32>),
+    /// Go `APLActionActivateAllStatBuffProcAuras` of the stats and the set (Swap1 when true),
+    /// parsed only as a prepull action.
+    ActivateAllStatBuffProcAuras {
+        stats: Vec<i32>,
+        swap1: bool,
+    },
     /// Go `APLActionActivateAuraWithStacks` of one of the player's auras, parsed only as a
     /// prepull action.
     ActivateAuraWithStacks {
@@ -783,6 +827,8 @@ impl Action {
             | Action::ResetSequence(_)
             | Action::CancelAura(_)
             | Action::CastAssignedCurse(_)
+            | Action::CastAllStatBuffCooldowns(_)
+            | Action::ActivateAllStatBuffProcAuras { .. }
             | Action::ActivateAuraWithStacks { .. }
             | Action::TriggerIcd(_)
             | Action::GroupReference { .. } => Vec::new(),
@@ -1126,6 +1172,35 @@ fn parse_prepull(item: &Json, position: usize) -> Result<Option<Prepull>, String
         ("move", config) => parse_move(config)?,
         ("moveDuration", config) => parse_move_duration(config)?,
         ("castFriendlySpell", config) => parse_cast_friendly_spell(config)?,
+        ("castAllStatBuffCooldowns", config) => parse_cast_all_stat_buff_cooldowns(config)?,
+        ("activateAllStatBuffProcAuras", config) => {
+            let object = config
+                .as_object()
+                .ok_or("activateAllStatBuffProcAuras must be an object")?;
+            if let Some(key) = object.keys().find(|key| {
+                !matches!(
+                    key.as_str(),
+                    "statType1" | "statType2" | "statType3" | "swapSet"
+                )
+            }) {
+                return Err(format!(
+                    "activateAllStatBuffProcAuras field {key} is unsupported"
+                ));
+            }
+            let swap1 = match object.get("swapSet").and_then(Json::as_str) {
+                None | Some("Main") => false,
+                Some("Swap1") => true,
+                Some(other) => {
+                    return Err(format!(
+                        "activateAllStatBuffProcAuras swap set {other} is unsupported"
+                    ))
+                }
+            };
+            Action::ActivateAllStatBuffProcAuras {
+                stats: parse_stat_types(config)?,
+                swap1,
+            }
+        }
         ("channelSpell", config) => parse_channel_spell(config)?,
         ("itemSwap", config) => Action::ItemSwap(parse_swap_set("itemSwap", config)?),
         ("cancelAura", config) => Action::CancelAura(parse_aura_action("cancelAura", config)?),
@@ -1288,6 +1363,7 @@ fn parse_action_object(action: &Map<String, Json>, position: usize) -> Result<It
             parse_aura_action("cancelAura", config).map(Action::CancelAura)
         }
         Ok(("castWarlockAssignedCurse", config)) => parse_assigned_curse(config),
+        Ok(("castAllStatBuffCooldowns", config)) => parse_cast_all_stat_buff_cooldowns(config),
         Ok(("move", config)) => parse_move(config),
         Ok(("moveDuration", config)) => parse_move_duration(config),
         Ok(("groupReference", config)) => parse_group_reference(config),
@@ -1530,6 +1606,22 @@ fn parse_cast_friendly_spell(config: &Json) -> Result<Action, String> {
         UnitRef::Player => Action::CastAtPlayer(spell),
         target => Action::CastSpell { spell, target },
     })
+}
+
+/// Go `newActionCastAllStatBuffCooldowns`: the stats it matches.
+fn parse_cast_all_stat_buff_cooldowns(config: &Json) -> Result<Action, String> {
+    let object = config
+        .as_object()
+        .ok_or("castAllStatBuffCooldowns must be an object")?;
+    if let Some(key) = object
+        .keys()
+        .find(|key| !matches!(key.as_str(), "statType1" | "statType2" | "statType3"))
+    {
+        return Err(format!(
+            "castAllStatBuffCooldowns field {key} is unsupported"
+        ));
+    }
+    Ok(Action::CastAllStatBuffCooldowns(parse_stat_types(config)?))
 }
 
 /// Go `newActionWarlockAssignedCurseAction`: the unit the curse is cast on, which the runtime
@@ -2105,6 +2197,51 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                 })?;
             Ok(Value::DotTickFrequency(DotRef { spell, target }))
         }
+        "allItemStatProcsActive"
+        | "anyItemStatProcsActive"
+        | "anyItemStatProcsAvailable"
+        | "itemProcsMinRemainingTime"
+        | "itemProcsMaxRemainingIcd"
+        | "numEquippedStatProcItems"
+        | "numStatBuffCooldowns"
+        | "anyStatBuffCooldownsActive"
+        | "anyStatBuffCooldownsMinDuration" => {
+            only(&["statType1", "statType2", "statType3", "minIcdSeconds"])?;
+            let stats = parse_stat_types(config).map_err(|err| vec![err])?;
+            let cooldowns = matches!(
+                name,
+                "numStatBuffCooldowns"
+                    | "anyStatBuffCooldownsActive"
+                    | "anyStatBuffCooldownsMinDuration"
+            );
+            if cooldowns && config.get("minIcdSeconds").is_some() {
+                return Err(vec![format!("{name} field minIcdSeconds is unsupported")]);
+            }
+            let min_icd = match config.get("minIcdSeconds") {
+                None => 0,
+                Some(seconds) => duration_from_seconds(
+                    seconds
+                        .as_f64()
+                        .ok_or_else(|| vec!["minIcdSeconds must be a number".to_string()])?,
+                ),
+            };
+            let procs = StatProcs {
+                stats: stats.clone(),
+                min_icd,
+            };
+            Ok(match name {
+                "allItemStatProcsActive" => Value::AllItemStatProcsActive(procs),
+                "anyItemStatProcsActive" => Value::AnyItemStatProcsActive(procs),
+                "anyItemStatProcsAvailable" => Value::AnyItemStatProcsAvailable(procs),
+                "itemProcsMinRemainingTime" => Value::ItemProcsMinRemainingTime(procs),
+                "itemProcsMaxRemainingIcd" => Value::ItemProcsMaxRemainingIcd(procs),
+                "numEquippedStatProcItems" => Value::NumEquippedStatProcItems(procs),
+                "numStatBuffCooldowns" => Value::NumStatBuffCooldowns(stats),
+                "anyStatBuffCooldownsActive" => Value::AnyStatBuffCooldownsActive(stats),
+                "anyStatBuffCooldownsMinDuration" => Value::AnyStatBuffCooldownsMinDuration(stats),
+                _ => unreachable!("a stat proc value"),
+            })
+        }
         "selectedPotion" | "selectedConjured" => {
             let field = if name == "selectedPotion" {
                 "potionId"
@@ -2527,6 +2664,22 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
     }
 }
 
+/// Go `stats.IntTupleToStatsList` of `statType1` to `statType3`: the indices from zero up, a
+/// missing field reading Go's zero, Strength.
+fn parse_stat_types(config: &Json) -> Result<Vec<i32>, String> {
+    let mut stats = Vec::new();
+    for field in ["statType1", "statType2", "statType3"] {
+        let stat = match config.get(field) {
+            None => 0,
+            Some(value) => json_i32(value)?,
+        };
+        if stat >= 0 {
+            stats.push(stat);
+        }
+    }
+    Ok(stats)
+}
+
 /// An `APLValueAutoAttackType` field. protojson writes the enum by name and omits the zero
 /// value, UnknownAuto, which Go's switches read as any auto attack.
 fn parse_auto_attack_type(name: &str, config: &Json) -> Result<AutoAttackType, Vec<String>> {
@@ -2863,6 +3016,19 @@ pub enum Compiled<R> {
     /// A duration that never changes during a fight, which Go reads without folding: the time
     /// until a target's spell without a cooldown is ready.
     SettledDuration(i64),
+    /// An int that never changes during a fight, which Go reads without folding: the matching
+    /// stat buff cooldowns that are worn, and the matching proc buffs that can proc.
+    SettledInt(i32),
+    /// The item stat proc values over the matching proc buffs, each with whether it is
+    /// swapped out.
+    AllItemStatProcsActive(Vec<(R, bool)>),
+    AnyItemStatProcsActive(Vec<(R, bool)>),
+    AnyItemStatProcsAvailable(Vec<(R, bool)>),
+    ItemProcsMinRemainingTime(Vec<(R, bool)>),
+    ItemProcsMaxRemainingIcd(Vec<(R, bool)>),
+    /// The stat buff cooldown values over the matching cooldowns' buffs.
+    AnyStatBuffCooldownsActive(Vec<R>),
+    AnyStatBuffCooldownsMinDuration(Vec<R>),
     /// Go `APLValueBossSpellIsCasting` of one of the player's own spells.
     PlayerSpellCasting(usize),
     /// Go `APLValueMultipleCdUsages`: the target spell and its buff, the base spell and its buff
@@ -2948,8 +3114,17 @@ impl<R> Compiled<R> {
             | Compiled::Settled(_)
             | Compiled::PlayerSpellCasting(_)
             | Compiled::MultipleCdUsages { .. }
+            | Compiled::AllItemStatProcsActive(_)
+            | Compiled::AnyItemStatProcsActive(_)
+            | Compiled::AnyItemStatProcsAvailable(_)
+            | Compiled::AnyStatBuffCooldownsActive(_)
             | Compiled::DotIsActiveOnAllTargets(_) => ValueType::Bool,
-            Compiled::SequenceTimeToReady(_) | Compiled::SettledDuration(_) => ValueType::Duration,
+            Compiled::SequenceTimeToReady(_)
+            | Compiled::SettledDuration(_)
+            | Compiled::ItemProcsMinRemainingTime(_)
+            | Compiled::ItemProcsMaxRemainingIcd(_)
+            | Compiled::AnyStatBuffCooldownsMinDuration(_) => ValueType::Duration,
+            Compiled::SettledInt(_) => ValueType::Int,
             Compiled::AuraInternalCooldown(_)
             | Compiled::AuraDuration(_)
             | Compiled::DotLowestRemainingTime(_)
@@ -3136,6 +3311,11 @@ pub struct Lookup<'a, R> {
     pub exact_spell: &'a dyn Fn(&ActionId) -> Option<usize>,
     /// Go `Spell.RelatedSelfBuff` of the spell at a spellbook position, as `reads` names it.
     pub self_buff: &'a dyn Fn(usize) -> Option<R>,
+    /// Go `GetMatchingItemProcAuras`: the item proc buffs moving one of the stats whose ICD
+    /// exceeds the minimum when there is one, each with whether it is swapped out.
+    pub item_procs: &'a dyn Fn(&StatProcs) -> Vec<(R, bool)>,
+    /// The player's aura of a label.
+    pub aura_by_label: &'a dyn Fn(&str) -> Option<R>,
 }
 
 /// The player's resource bars: Go `HasManaBar`, the rage bar's `MaximumRage` and the energy
@@ -3384,6 +3564,66 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
             }
         }
         Value::DotTickFrequency(dot) => Compiled::DotTickFrequency(dot_at(dot, lookup)?),
+        // Go `newItemStatProcValue`: no value without a matching buff, except the count.
+        Value::AllItemStatProcsActive(procs)
+        | Value::AnyItemStatProcsActive(procs)
+        | Value::AnyItemStatProcsAvailable(procs)
+        | Value::ItemProcsMinRemainingTime(procs)
+        | Value::ItemProcsMaxRemainingIcd(procs)
+        | Value::NumEquippedStatProcItems(procs) => {
+            let found = (lookup.item_procs)(procs);
+            if let Value::NumEquippedStatProcItems(_) = value {
+                // Go `CanProc`: no custom condition of the fork's, so only a swapped out buff
+                // cannot proc.
+                return Some(Compiled::SettledInt(
+                    found.iter().filter(|(_, swapped)| !swapped).count() as i32,
+                ));
+            }
+            if found.is_empty() {
+                return None;
+            }
+            match value {
+                Value::AllItemStatProcsActive(_) => Compiled::AllItemStatProcsActive(found),
+                Value::AnyItemStatProcsActive(_) => Compiled::AnyItemStatProcsActive(found),
+                Value::AnyItemStatProcsAvailable(_) => Compiled::AnyItemStatProcsAvailable(found),
+                Value::ItemProcsMinRemainingTime(_) => Compiled::ItemProcsMinRemainingTime(found),
+                _ => Compiled::ItemProcsMaxRemainingIcd(found),
+            }
+        }
+        // Go `GetMatchingStatBuffSpells` as the rotation is built: the count of those worn,
+        // which no item swap changes, is a value even with none.
+        Value::NumStatBuffCooldowns(stats) => {
+            let count = lookup.reads.map_or(0, |reads| {
+                reads
+                    .cooldown_buffs
+                    .iter()
+                    .find(|entry| &entry.stats == stats)
+                    .map_or(0, |entry| entry.spells.len())
+            });
+            Compiled::SettledInt(count as i32)
+        }
+        // Go `GetMatchingStatBuffCooldownAuras`: no value without a matching cooldown.
+        Value::AnyStatBuffCooldownsActive(stats)
+        | Value::AnyStatBuffCooldownsMinDuration(stats) => {
+            let entry = lookup
+                .reads?
+                .cooldown_buffs
+                .iter()
+                .find(|entry| &entry.stats == stats)?;
+            if entry.auras.is_empty() {
+                return None;
+            }
+            let auras = entry
+                .auras
+                .iter()
+                .map(|label| (lookup.aura_by_label)(label))
+                .collect::<Option<Vec<R>>>()?;
+            if matches!(value, Value::AnyStatBuffCooldownsActive(_)) {
+                Compiled::AnyStatBuffCooldownsActive(auras)
+            } else {
+                Compiled::AnyStatBuffCooldownsMinDuration(auras)
+            }
+        }
         // Go `newValueSelectedPotion` and `newValueSelectedConjured`: the consumables' choice.
         Value::SelectedPotion(item) => Compiled::Settled(lookup.reads?.potion_id? == *item),
         Value::SelectedConjured(item) => Compiled::Settled(lookup.reads?.conjured_id? == *item),
@@ -3672,6 +3912,8 @@ mod tests {
             reads: None,
             exact_spell: &|_| None,
             self_buff: &|_| None,
+            item_procs: &|_| Vec::new(),
+            aura_by_label: &|_| None,
         }
     }
 
@@ -3707,6 +3949,8 @@ mod tests {
             reads: None,
             exact_spell: &|_| None,
             self_buff: &|_| None,
+            item_procs: &|_| Vec::new(),
+            aura_by_label: &|_| None,
             ..only_auras(&none, &|_, _| None)
         };
         assert_eq!(
@@ -4342,6 +4586,8 @@ mod tests {
             reads: None,
             exact_spell: &|_| None,
             self_buff: &|_| None,
+            item_procs: &|_| Vec::new(),
+            aura_by_label: &|_| None,
         })
     }
 
@@ -4845,6 +5091,8 @@ mod tests {
             reads: None,
             exact_spell: &|_| None,
             self_buff: &|_| None,
+            item_procs: &|_| Vec::new(),
+            aura_by_label: &|_| None,
         };
         let compare = |spell: i32| {
             let value = parse_value(&serde_json::json!({"cmp": {"op": "OpGt",

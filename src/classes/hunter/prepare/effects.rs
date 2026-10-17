@@ -17,7 +17,7 @@ use crate::prepare::spelldata::{spell::TickOutcomeKind, Ladder, Spell as Row};
 use super::spell_data::spell_data;
 use super::spells::{
     ARCANE_SHOT_RAP_COEFFICIENT, EXPLOSIVE_TRAP_RANGE, SERPENT_STING_RAP_PER_TICK,
-    SUMMON_HAWK_RAP_SHARE, SUMMON_HAWK_SWING_SHARE, VOLLEY_TICK_DAMAGE,
+    SUMMON_HAWK_RAP_SHARE, SUMMON_HAWK_SWING_SHARE, TRAP_ATTACK_POWER_SHARE, VOLLEY_TICK_DAMAGE,
 };
 use super::{masks, Hunter};
 
@@ -505,6 +505,8 @@ impl Hunter {
             effects.push(json!({
                 "kind": "immolation_trap", "spell_id": spell_id_of(sim, spell),
                 "tick_base": effect.periodic_effect().average(CHARACTER_LEVEL),
+                // traps.go trapAttackPowerShare (patch 147), split over the burn's ticks.
+                "attack_power_share": TRAP_ATTACK_POWER_SHARE,
                 // spelldata TickOutcomeHitRolled: a crit where the effect row states Periodic Can
                 // Crit.
                 "tick_can_crit": effect.periodic_can_crit(),
@@ -525,6 +527,8 @@ impl Hunter {
             effects.push(json!({
                 "kind": "explosive_trap", "spell_id": spell_id_of(sim, spell),
                 "hit_min": hit_range[0], "hit_max": hit_range[1],
+                // traps.go explosiveTrapHitDamage: trapAttackPowerShare (patch 147) on each roll.
+                "attack_power_share": TRAP_ATTACK_POWER_SHARE,
                 "hits": active_target_count(sim),
                 "aoe_cap_multiplier": aoe_cap_multiplier(active_target_count(sim)),
                 "tick_base": effect.effect(dbcenums::A_PERIODIC_DAMAGE, 0).average(CHARACTER_LEVEL),

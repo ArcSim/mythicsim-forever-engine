@@ -1038,10 +1038,9 @@ impl<A: Agent> Fight<A> {
                 .mul_add(self.bonus_damage(spell, side), -state.snapshot_spell_power);
         }
         if state.attack_power_share != 0.0 {
-            base += state.attack_power_share.mul_add(
-                self.melee_attack_power_of(self.caster(spell)),
-                -state.snapshot_attack_power,
-            );
+            base += state
+                .attack_power_share
+                .mul_add(self.dot_attack_power(dot), -state.snapshot_attack_power);
         }
         let attacker =
             self.attacker_multiplier(spell, true) * self.dots[dot].periodic_damage_multiplier;

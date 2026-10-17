@@ -36,9 +36,11 @@ pub(crate) struct Dot {
     pub(crate) snapshot_base: f64,
     pub(crate) snapshot_spell_power: f64,
     pub(crate) reads_spell_power: bool,
-    /// Go `attackPowerShare`: the share of the caster's melee attack power the snapshot holds,
-    /// which a tick reads again from the attack power it has then.
+    /// Go `attackPowerShare`: the share of the caster's attack power the snapshot holds, which
+    /// a tick reads again from the attack power it has then.
     pub(crate) attack_power_share: f64,
+    /// Go `attackPowerRanged`: the share is of ranged attack power, not melee.
+    pub(crate) attack_power_ranged: bool,
     /// Go `snapshotAttackPower`: that share of the attack power at the snapshot.
     pub(crate) snapshot_attack_power: f64,
 }
@@ -78,6 +80,7 @@ impl Dot {
             snapshot_spell_power: 0.0,
             reads_spell_power: false,
             attack_power_share: 0.0,
+            attack_power_ranged: false,
             snapshot_attack_power: 0.0,
         }
     }
@@ -199,18 +202,29 @@ impl<A: Agent> Fight<A> {
         state.snapshot_spell_power = spell_power;
         state.snapshot_base = snapshot;
         state.attack_power_share = 0.0;
+        state.attack_power_ranged = false;
         state.snapshot_attack_power = 0.0;
     }
 
-    /// Go `Dot.SnapshotAttackPowerShare` for melee attack power: `share` of it is already in
-    /// the base handed to [`Fight::snapshot_dot`], so a tick reads that share from the attack
-    /// power it has then.
-    pub(crate) fn snapshot_dot_attack_power_share(&mut self, dot: DotId, share: f64) {
-        let caster = self.caster(self.dots[dot].spell);
-        let attack_power = self.melee_attack_power_of(caster);
+    /// Go `Dot.SnapshotAttackPowerShare`: `share` of the caster's attack power, ranged when
+    /// `ranged` is set, is already in the base handed to [`Fight::snapshot_dot`], so a tick
+    /// reads that share from the attack power it has then.
+    pub(crate) fn snapshot_dot_attack_power_share(&mut self, dot: DotId, share: f64, ranged: bool) {
         let state = &mut self.dots[dot];
         state.attack_power_share = share;
-        state.snapshot_attack_power = share * attack_power;
+        state.attack_power_ranged = ranged;
+        let attack_power = self.dot_attack_power(dot);
+        self.dots[dot].snapshot_attack_power = share * attack_power;
+    }
+
+    /// Go `Dot.currentAttackPower`: the caster's ranged or melee attack power, as the dot's
+    /// share names.
+    pub(crate) fn dot_attack_power(&self, dot: DotId) -> f64 {
+        if self.dots[dot].attack_power_ranged {
+            self.ranged_attack_power()
+        } else {
+            self.melee_attack_power_of(self.caster(self.dots[dot].spell))
+        }
     }
 
     /// The dots that share an aura with this one, which Go registers once for each label: the

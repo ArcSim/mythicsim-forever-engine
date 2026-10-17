@@ -125,6 +125,7 @@ pub(crate) struct HunterAgent {
     expose_prey: Option<(SurvivalProc, bool)>,
     /// Rapid Recuperation's trigger and its regeneration.
     rapid_recuperation: Option<(SurvivalProc, f64)>,
+    immolation_trap: Option<melee::ImmolationTrap>,
     explosive_trap: Option<ExplosiveTrap>,
     volley: Option<Volley>,
 }
@@ -567,6 +568,7 @@ impl HunterAgent {
                 Effect::ImmolationTrap {
                     spell_id,
                     tick_base,
+                    attack_power_share,
                     tick_can_crit,
                     tick_magic,
                 } => {
@@ -576,6 +578,12 @@ impl HunterAgent {
                         .dot
                         .ok_or("Immolation Trap has no dot")?;
                     fight.dots[dot].tick_base = Some(*tick_base);
+                    // traps.go: the share split over the burn's ticks.
+                    fight.agent.immolation_trap = Some(melee::ImmolationTrap {
+                        tick_base: *tick_base,
+                        attack_power_per_tick: attack_power_share
+                            / f64::from(fight.dots[dot].base_tick_count),
+                    });
                     fight.dots[dot].tick_can_crit = explosive_trap::trap_tick_crit(
                         Outcome::tick_hit_rolled(*tick_can_crit, *tick_magic)?,
                     )?;
@@ -584,6 +592,7 @@ impl HunterAgent {
                     spell_id,
                     hit_min,
                     hit_max,
+                    attack_power_share,
                     hits,
                     aoe_cap_multiplier,
                     tick_base,
@@ -601,6 +610,7 @@ impl HunterAgent {
                         spell,
                         *hit_min,
                         *hit_max,
+                        *attack_power_share,
                         *hits,
                         *aoe_cap_multiplier,
                         *tick_base,
@@ -824,7 +834,13 @@ impl Agent for HunterAgent {
                 let base = fight.agent.wing_clip_damage;
                 melee::wing_clip(fight, spell, target, base);
             }
-            HunterSpell::ImmolationTrap => melee::immolation_trap(fight, spell, target),
+            HunterSpell::ImmolationTrap => {
+                let trap = fight
+                    .agent
+                    .immolation_trap
+                    .expect("Immolation Trap is bound");
+                melee::immolation_trap(fight, spell, target, trap);
+            }
             HunterSpell::ExplosiveTrap => fight
                 .agent
                 .explosive_trap

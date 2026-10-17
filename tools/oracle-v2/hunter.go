@@ -618,6 +618,8 @@ func hunterMeleeEffects(h *hunter.Hunter, character *core.Character) []map[strin
 		effects = append(effects, map[string]any{
 			"kind": "immolation_trap", "spell_id": h.ImmolationTrap.ActionID.SpellID,
 			"tick_base": effect.PeriodicEffect().Average(core.CharacterLevel),
+			// traps.go trapAttackPowerShare (patch 147), split over the burn's ticks.
+			"attack_power_share": 0.13,
 			// spelldata TickOutcomeHitRolled: a crit where the effect row states Periodic Can Crit.
 			"tick_can_crit": effect.PeriodicCanCrit(), "tick_magic": h.ImmolationTrap.DefenseType == core.DefenseTypeMagic,
 		})
@@ -633,6 +635,8 @@ func hunterMeleeEffects(h *hunter.Hunter, character *core.Character) []map[strin
 		effects = append(effects, map[string]any{
 			"kind": "explosive_trap", "spell_id": h.ExplosiveTrap.ActionID.SpellID,
 			"hit_min": hitRange[0], "hit_max": hitRange[1], "hits": character.Env.ActiveTargetCount(),
+			// traps.go explosiveTrapHitDamage: trapAttackPowerShare (patch 147) on each hit's roll.
+			"attack_power_share": 0.13,
 			"aoe_cap_multiplier": character.Env.Encounter.AOECapMultiplier(),
 			"tick_base":          effect.Effect(dbcenums.A_PERIODIC_DAMAGE, 0).Average(core.CharacterLevel),
 			"tick_can_crit":      effect.PeriodicCanCrit(), "tick_magic": h.ExplosiveTrap.DefenseType == core.DefenseTypeMagic,

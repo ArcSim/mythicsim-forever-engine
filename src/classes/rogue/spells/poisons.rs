@@ -82,7 +82,7 @@ pub(crate) fn deadly_poison<A: Agent>(
     let share = attack_power_share * stacks;
     let base = share.mul_add(fight.melee_attack_power(), tick_damage * stacks);
     fight.snapshot_dot(dot, base);
-    fight.snapshot_dot_attack_power_share(dot, share);
+    fight.snapshot_dot_attack_power_share(dot, share, false);
 }
 
 /// Wound Poison's effect: a magic hit roll; a landed one starts the debuff at one stack, or

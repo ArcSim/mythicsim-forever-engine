@@ -790,12 +790,15 @@ impl<A: Agent> Fight<A> {
     /// Go `AutoAttacks.holdArrivalSwingForRotation`: the rotation acts before the swing that
     /// lands the moment a weaver steps into melee range, so an on-next-swing ability pressed
     /// on arrival replaces that first swing instead of waiting behind a white hit. Only the
-    /// player's rotation can be held here; a Wait, which would block it, is unsupported.
+    /// player's rotation can be held here, and not while a Wait or WaitUntil holds it.
     pub(crate) fn hold_arrival_swing_for_rotation(&mut self, side: Side) {
         let autos = self.autos_of(side);
         let replaces = side == Side::Player
             && (self.config.melee.replace_main_hand_swing || autos.react_before_mh_swing);
         if !autos.ranged_auto || !replaces || !autos.mh.enabled || autos.mh.swing_at > self.now {
+            return;
+        }
+        if self.rotation_blocked() {
             return;
         }
         let swing_at = self.now + HELD_SWING_LAG;
@@ -889,9 +892,13 @@ impl<A: Agent> Fight<A> {
         self.cast(spell, Side::Target);
     }
 
-    /// Go `Unit.ReactToEvent(sim, false, false)`: the rotation runs, then evaluates again now.
+    /// Go `Unit.ReactToEvent(sim, false, false)`: the rotation runs, then evaluates again now,
+    /// unless a Wait or WaitUntil holds it.
     pub(crate) fn react_to_event_now(&mut self) {
         self.do_next_action();
+        if self.rotation_blocked() {
+            return;
+        }
         if self.player.rotation_timer > self.now {
             self.set_rotation_timer(self.now);
         }
@@ -926,6 +933,10 @@ impl<A: Agent> Fight<A> {
     /// Go `Unit.ReactToEvent(sim, false, true)`.
     pub(crate) fn react_to_event(&mut self, side: Side) {
         self.do_next_action_of(side);
+        // Go: a Wait or WaitUntil holding the rotation keeps the time it wakes at.
+        if side == Side::Player && self.rotation_blocked() {
+            return;
+        }
         let evaluation = self.now + self.unit_config(side).reaction;
         if self.unit(side).rotation_timer > evaluation {
             self.set_rotation_timer_of(side, evaluation);

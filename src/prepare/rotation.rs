@@ -770,6 +770,28 @@ impl Builder<'_> {
                 }
                 Ok(Some(Built::new(Vec::new())))
             }
+            // Go `newActionSchedule`: the inner action as `newAPLAction` builds it, whose casts
+            // leave the major cooldowns, then the times; one that fails to parse drops both.
+            "schedule" => {
+                let Some(inner) = self.action(action.message("inner_action"))? else {
+                    return Ok(None);
+                };
+                let parses = action
+                    .str("schedule")
+                    .split(',')
+                    .all(|timing| crate::rotation::parse_go_duration(timing.trim()).is_some());
+                if !parses {
+                    return Ok(None);
+                }
+                Ok(Some(Built::new(inner.casts)))
+            }
+            // Go `newActionResetSequence`: no action without a sequence name.
+            "reset_sequence" => {
+                if action.str("sequence_name").is_empty() {
+                    return Ok(None);
+                }
+                Ok(Some(Built::new(Vec::new())))
+            }
             // Go `newActionGroupReference`: no action without a group name. The group's own
             // actions are built with the groups.
             "group_reference" => {
@@ -990,7 +1012,8 @@ fn group_casts(
             interrupt_if: None,
             ..
         } if target.resolve(targets).is_some() => casts.extend(apl_cast_spell(env, spell)),
-        Action::Sequence(steps) => casts.extend(steps.iter().filter_map(|step| {
+        Action::Schedule { inner, .. } => group_casts(env, &inner.action, casts, pruned),
+        Action::Sequence { steps, .. } => casts.extend(steps.iter().filter_map(|step| {
             step.target
                 .resolve(targets)
                 .and_then(|_| apl_cast_spell(env, &step.spell))

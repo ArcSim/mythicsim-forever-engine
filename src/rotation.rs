@@ -362,6 +362,12 @@ pub enum Value {
     /// Go `APLValueDotTickFrequency`: the dot's tick period, or the one it would tick at now
     /// while it is down.
     DotTickFrequency(DotRef),
+    /// Go `APLValueSequenceIsComplete` of the sequence of the name.
+    SequenceIsComplete(String),
+    /// Go `APLValueSequenceIsReady`: the sequence's next step is ready.
+    SequenceIsReady(String),
+    /// Go `APLValueSequenceTimeToReady`: the time until its next step's spell is ready.
+    SequenceTimeToReady(String),
     /// A value the pinned Go engine builds nothing for, so it drops out of its parent as a
     /// value without one does: Go's switch has no case for it, or its constructor is in a file
     /// the build leaves out.
@@ -540,7 +546,10 @@ impl Value {
             Value::Max(values) | Value::Min(values) => highest_type(values),
             Value::UnitIsMoving(_)
             | Value::AuraIcdIsReady { .. }
+            | Value::SequenceIsComplete(_)
+            | Value::SequenceIsReady(_)
             | Value::DotIsActiveOnAllTargets(_) => ValueType::Bool,
+            Value::SequenceTimeToReady(_) => ValueType::Duration,
             Value::AuraInternalCooldown { .. }
             | Value::AuraDuration { .. }
             | Value::DotLowestRemainingTime(_)
@@ -579,8 +588,25 @@ pub enum Action {
     /// Go `APLActionStrictSequence`: casts that run in order once the first is ready.
     StrictSequence(Vec<Step>),
     /// Go `APLActionSequence`: casts that run one step at a time, each when it is ready, and
-    /// never again once done.
-    Sequence(Vec<Step>),
+    /// never again once done, until a reset sequence action of its name starts it over.
+    Sequence {
+        name: String,
+        steps: Vec<Step>,
+    },
+    /// Go `APLActionWait`: the rotation waits for the duration value; none when Go builds no
+    /// value.
+    Wait(Option<Value>),
+    /// Go `APLActionWaitUntil`: the rotation waits until the condition holds; none when Go
+    /// builds no value.
+    WaitUntil(Option<Value>),
+    /// Go `APLActionSchedule`: the inner action, ready at each of the times in turn. No times
+    /// when one fails to parse, which builds no action.
+    Schedule {
+        timings: Option<Vec<i64>>,
+        inner: Box<Item>,
+    },
+    /// Go `APLActionResetSequence`: starts the sequence of the name over.
+    ResetSequence(String),
     /// Go `APLActionChannelSpell`: a channel the rotation may interrupt.
     ChannelSpell {
         spell: ActionId,
@@ -630,6 +656,13 @@ impl Action {
             Action::ChannelSpell { interrupt_if, .. } => interrupt_if.iter().collect(),
             Action::Multidot { max_overlap, .. } => max_overlap.iter().collect(),
             Action::Move(value) | Action::MoveDuration(value) => vec![value],
+            Action::Wait(value) | Action::WaitUntil(value) => value.iter().collect(),
+            // Go builds the inner action without the group's variables.
+            Action::Schedule { inner, .. } => {
+                let mut values: Vec<&Value> = inner.condition.iter().collect();
+                values.extend(inner.action.values());
+                values
+            }
             Action::GroupReference { variables, .. } => {
                 variables.iter().map(|(_, value)| value).collect()
             }
@@ -641,11 +674,12 @@ impl Action {
     /// target names no unit builds no action, and takes the whole of a strict sequence with it.
     pub fn reachable_spells(&self, targets: usize) -> Vec<&ActionId> {
         match self {
-            Action::Sequence(steps) => steps
+            Action::Sequence { steps, .. } => steps
                 .iter()
                 .filter(|step| step.target.resolve(targets).is_some())
                 .map(|step| &step.spell)
                 .collect(),
+            Action::Schedule { inner, .. } => inner.action.reachable_spells(targets),
             Action::StrictSequence(steps)
                 if steps
                     .iter()
@@ -657,19 +691,31 @@ impl Action {
         }
     }
 
+    /// The action a schedule runs, through any schedules around it; any other action itself.
+    pub fn scheduled(&self) -> &Action {
+        match self {
+            Action::Schedule { inner, .. } => inner.action.scheduled(),
+            other => other,
+        }
+    }
+
     /// The spells the action names, in order, as Go `GetAllActions` visits casts.
     pub fn spells(&self) -> Vec<&ActionId> {
         match self {
             Action::CastSpell { spell: id, .. } | Action::CastAtPlayer(id) => vec![id],
             Action::AutocastOtherCooldowns => Vec::new(),
-            Action::StrictSequence(steps) | Action::Sequence(steps) => {
+            Action::StrictSequence(steps) | Action::Sequence { steps, .. } => {
                 steps.iter().map(|step| &step.spell).collect()
             }
+            Action::Schedule { inner, .. } => inner.action.spells(),
             Action::ChannelSpell { spell, .. } | Action::Multidot { spell, .. } => vec![spell],
             Action::ActivateAura(_)
             | Action::Move(_)
             | Action::MoveDuration(_)
             | Action::ItemSwap(_)
+            | Action::Wait(_)
+            | Action::WaitUntil(_)
+            | Action::ResetSequence(_)
             | Action::GroupReference { .. } => Vec::new(),
         }
     }
@@ -834,11 +880,68 @@ pub fn parse(rotation: &Json) -> Result<Rotation, Vec<String>> {
         }
     }
     VARIABLES.with(|scope| scope.borrow_mut().clear());
+    reasons.extend(group_sequence_reads(&parsed));
     if reasons.is_empty() {
         Ok(parsed)
     } else {
         Err(reasons)
     }
+}
+
+/// Go's reset sequence actions and sequence values find a sequence by name in the priority list's
+/// actions, then in the groups' configurations, which no reference runs. Rust finds those of the
+/// priority list; a name a group's sequence holds is refused.
+fn group_sequence_reads(rotation: &Rotation) -> Vec<String> {
+    fn sequence_names(item: &Item, out: &mut Vec<String>) {
+        match &item.action {
+            Action::Sequence { name, .. } => out.push(name.clone()),
+            Action::Schedule { inner, .. } => sequence_names(inner, out),
+            _ => {}
+        }
+    }
+    let mut in_groups = Vec::new();
+    for item in rotation.groups.iter().flat_map(|group| group.items.iter()) {
+        sequence_names(item, &mut in_groups);
+    }
+    let mut read = Vec::new();
+    let mut note = |value: &Value| match value {
+        Value::SequenceIsComplete(name)
+        | Value::SequenceIsReady(name)
+        | Value::SequenceTimeToReady(name) => read.push(name.clone()),
+        _ => {}
+    };
+    fn walk(item: &Item, note: &mut impl FnMut(&Value), read: &mut Vec<String>) {
+        if let Some(condition) = &item.condition {
+            condition.visit(note);
+        }
+        for value in item.action.values() {
+            value.visit(note);
+        }
+        match &item.action {
+            Action::ResetSequence(name) => read.push(name.clone()),
+            Action::Schedule { inner, .. } => walk(inner, note, read),
+            _ => {}
+        }
+    }
+    let mut names = Vec::new();
+    for item in rotation
+        .priority_list
+        .iter()
+        .chain(rotation.groups.iter().flat_map(|group| group.items.iter()))
+    {
+        walk(item, &mut note, &mut names);
+    }
+    names.extend(read);
+    let mut reasons = Vec::new();
+    for name in names {
+        if !name.is_empty() && in_groups.contains(&name) {
+            let reason = format!("a sequence {name:?} of a group read by name is unsupported");
+            if !reasons.contains(&reason) {
+                reasons.push(reason);
+            }
+        }
+    }
+    reasons
 }
 
 /// Go `newAPLRotation`'s group parsing: the group's variables and its actions, which are numbered
@@ -1046,6 +1149,11 @@ fn parse_item(item: &Json, position: usize) -> Result<Option<Item>, Vec<String>>
         .get("action")
         .and_then(Json::as_object)
         .ok_or_else(|| vec!["item has no action".to_string()])?;
+    parse_action_object(action, position).map(Some)
+}
+
+/// A protojson `APLAction`: its condition and what it does.
+fn parse_action_object(action: &Map<String, Json>, position: usize) -> Result<Item, Vec<String>> {
     let mut reasons = Vec::new();
     let condition = match action.get("condition") {
         Some(condition) => match parse_value(condition) {
@@ -1071,21 +1179,89 @@ fn parse_item(item: &Json, position: usize) -> Result<Option<Item>, Vec<String>>
         Ok(("moveDuration", config)) => parse_move_duration(config),
         Ok(("groupReference", config)) => parse_group_reference(config),
         Ok(("itemSwap", config)) => parse_swap_set("itemSwap", config).map(Action::ItemSwap),
+        Ok(("wait", config)) => parse_value_field("wait", config, "duration").map(Action::Wait),
+        Ok(("waitUntil", config)) => {
+            parse_value_field("waitUntil", config, "condition").map(Action::WaitUntil)
+        }
+        Ok(("schedule", config)) => parse_schedule(config, position),
+        Ok(("resetSequence", config)) => parse_sequence_name("resetSequence", config)
+            .map(|name| Action::ResetSequence(name.unwrap_or_default())),
         Ok((name, _)) => Err(format!("action {name} is unsupported")),
         Err(err) => Err(err),
     };
     match parsed {
-        Ok(action) if reasons.is_empty() => Ok(Some(Item {
+        Ok(action) if reasons.is_empty() => Ok(Item {
             position,
             condition,
             action,
-        })),
+        }),
         Ok(_) => Err(reasons),
         Err(reason) => {
             reasons.push(reason);
             Err(reasons)
         }
     }
+}
+
+/// An action's one value field, `None` when it is absent, which Go builds no value for.
+fn parse_value_field(name: &str, config: &Json, field: &str) -> Result<Option<Value>, String> {
+    let object = config
+        .as_object()
+        .ok_or_else(|| format!("{name} must be an object"))?;
+    if let Some(key) = object.keys().find(|key| key.as_str() != field) {
+        return Err(format!("{name} field {key} is unsupported"));
+    }
+    object
+        .get(field)
+        .map(|value| parse_value(value).map_err(|reasons| reasons.join("; ")))
+        .transpose()
+}
+
+/// Go `newActionSchedule`: the inner action, then the comma separated times, each Go
+/// `time.ParseDuration` of its trimmed text. One that fails to parse builds no action.
+fn parse_schedule(config: &Json, position: usize) -> Result<Action, String> {
+    let object = config.as_object().ok_or("schedule must be an object")?;
+    if let Some(key) = object
+        .keys()
+        .find(|key| !matches!(key.as_str(), "schedule" | "innerAction"))
+    {
+        return Err(format!("schedule field {key} is unsupported"));
+    }
+    let inner = object
+        .get("innerAction")
+        .and_then(Json::as_object)
+        .ok_or("a schedule without an inner action is unsupported")?;
+    let inner = parse_action_object(inner, position).map_err(|reasons| reasons.join("; "))?;
+    if matches!(inner.action, Action::GroupReference { .. }) {
+        return Err("a schedule of a group reference is unsupported".into());
+    }
+    let text = object
+        .get("schedule")
+        .and_then(Json::as_str)
+        .unwrap_or_default();
+    let timings = text
+        .split(',')
+        .map(|timing| parse_go_duration(timing.trim()))
+        .collect::<Option<Vec<i64>>>();
+    Ok(Action::Schedule {
+        timings,
+        inner: Box::new(inner),
+    })
+}
+
+/// The sequence a reset sequence action or a sequence value names, `None` when it names none.
+fn parse_sequence_name(name: &str, config: &Json) -> Result<Option<String>, String> {
+    let object = config
+        .as_object()
+        .ok_or_else(|| format!("{name} must be an object"))?;
+    if let Some(key) = object.keys().find(|key| key.as_str() != "sequenceName") {
+        return Err(format!("{name} field {key} is unsupported"));
+    }
+    Ok(object
+        .get("sequenceName")
+        .and_then(Json::as_str)
+        .filter(|name| !name.is_empty())
+        .map(str::to_string))
 }
 
 /// The swap set an item swap action or value names: `true` for Swap1, `false` for Main. Go builds
@@ -1156,8 +1332,8 @@ fn parse_strict_sequence(config: &Json) -> Result<Action, String> {
     Ok(Action::StrictSequence(spells))
 }
 
-/// Go `newActionSequence` for sequences of unconditional casts. The name only matters to a
-/// reset sequence action, which is unsupported.
+/// Go `newActionSequence` for sequences of unconditional casts, with the name reset sequence
+/// actions and sequence values find it by.
 fn parse_sequence(config: &Json) -> Result<Action, String> {
     let object = config.as_object().ok_or("sequence must be an object")?;
     for key in object.keys() {
@@ -1180,7 +1356,15 @@ fn parse_sequence(config: &Json) -> Result<Action, String> {
             (name, _) => return Err(format!("sequence action {name} is unsupported")),
         }
     }
-    Ok(Action::Sequence(spells))
+    let name = object
+        .get("name")
+        .and_then(Json::as_str)
+        .unwrap_or_default()
+        .to_string();
+    Ok(Action::Sequence {
+        name,
+        steps: spells,
+    })
 }
 
 /// Go `newActionChannelSpell`: the channel, the unit it is cast on and its interrupt condition.
@@ -1768,6 +1952,21 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                     )]
                 })?;
             Ok(Value::DotTickFrequency(DotRef { spell, target }))
+        }
+        "sequenceIsComplete" | "sequenceIsReady" | "sequenceTimeToReady" => {
+            // Go gives no value without a sequence name.
+            let Some(sequence) = parse_sequence_name(name, config).map_err(|err| vec![err])? else {
+                return Ok(Value::Unbuilt(match name {
+                    "sequenceIsComplete" => "sequenceIsComplete",
+                    "sequenceIsReady" => "sequenceIsReady",
+                    _ => "sequenceTimeToReady",
+                }));
+            };
+            Ok(match name {
+                "sequenceIsComplete" => Value::SequenceIsComplete(sequence),
+                "sequenceIsReady" => Value::SequenceIsReady(sequence),
+                _ => Value::SequenceTimeToReady(sequence),
+            })
         }
         "dotIsActiveOnAllTargets" | "dotLowestRemainingTime" => {
             only(&["spellId"])?;
@@ -2403,6 +2602,10 @@ pub enum Compiled<R> {
     /// Go `APLValueDotLowestRemainingTime`: the dot on each target.
     DotLowestRemainingTime(Vec<DotAt>),
     DotTickFrequency(DotAt),
+    /// Go `APLValueSequenceIsComplete` of the sequence of the name.
+    SequenceIsComplete(String),
+    SequenceIsReady(String),
+    SequenceTimeToReady(String),
     /// Go `APLValueCoerced`.
     Coerced {
         to: ValueType,
@@ -2468,7 +2671,10 @@ impl<R> Compiled<R> {
             Compiled::Max(values) | Compiled::Min(values) => values[0].value_type(),
             Compiled::PlayerIsMoving
             | Compiled::AuraIcdIsReady { .. }
+            | Compiled::SequenceIsComplete(_)
+            | Compiled::SequenceIsReady(_)
             | Compiled::DotIsActiveOnAllTargets(_) => ValueType::Bool,
+            Compiled::SequenceTimeToReady(_) => ValueType::Duration,
             Compiled::AuraInternalCooldown(_)
             | Compiled::AuraDuration(_)
             | Compiled::DotLowestRemainingTime(_)
@@ -2892,6 +3098,11 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
             }
         }
         Value::DotTickFrequency(dot) => Compiled::DotTickFrequency(dot_at(dot, lookup)?),
+        // Go finds the sequence when the rotation is finalized; one of no action reads as done
+        // nothing and never ready.
+        Value::SequenceIsComplete(name) => Compiled::SequenceIsComplete(name.clone()),
+        Value::SequenceIsReady(name) => Compiled::SequenceIsReady(name.clone()),
+        Value::SequenceTimeToReady(name) => Compiled::SequenceTimeToReady(name.clone()),
         Value::DotBaseDuration(id) => {
             Compiled::DotBaseDuration((lookup.dot_base_duration)(id.as_ref()?)?)
         }
@@ -3630,16 +3841,19 @@ mod tests {
         let item = &rotation.priority_list[0];
         assert_eq!(
             item.action,
-            Action::Sequence(vec![
-                Step {
-                    spell: ActionId::spell(2458),
-                    target: UnitRef::CurrentTarget
-                },
-                Step {
-                    spell: ActionId::spell(1719),
-                    target: UnitRef::CurrentTarget
-                }
-            ])
+            Action::Sequence {
+                name: "Stance into Reck".to_string(),
+                steps: vec![
+                    Step {
+                        spell: ActionId::spell(2458),
+                        target: UnitRef::CurrentTarget
+                    },
+                    Step {
+                        spell: ActionId::spell(1719),
+                        target: UnitRef::CurrentTarget
+                    }
+                ]
+            }
         );
         let Some(Value::Compare { lhs, .. }) = &item.condition else {
             panic!("expected a comparison");
@@ -3872,10 +4086,13 @@ mod tests {
         ] {
             assert_eq!(
                 step(target),
-                Ok(Action::Sequence(vec![Step {
-                    spell: ActionId::spell(1),
-                    target: unit
-                }]))
+                Ok(Action::Sequence {
+                    name: String::new(),
+                    steps: vec![Step {
+                        spell: ActionId::spell(1),
+                        target: unit
+                    }]
+                })
             );
         }
         let prepull = parse(&serde_json::json!({"type": "TypeAPL", "prepullActions": [{

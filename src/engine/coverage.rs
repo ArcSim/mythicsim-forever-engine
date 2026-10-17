@@ -2184,7 +2184,7 @@ fn other_target_casts(
     let mut spells = Vec::new();
     for item in &rotation.priority_list {
         // The runtime casts a step of a sequence on the first target.
-        if let Action::Sequence(steps) | Action::StrictSequence(steps) = &item.action {
+        if let Action::Sequence { steps, .. } | Action::StrictSequence(steps) = &item.action {
             for step in steps {
                 if !matches!(step.target.resolve(targets), None | Some(Unit::Target(0)))
                     && rotation_spell(prepared, &step.spell).is_some()
@@ -2454,6 +2454,25 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
                 &mut flat.priority_list,
             )?;
         }
+    }
+    // A schedule's inner action runs as an item of its own whose condition is both.
+    let mut index = 0;
+    while index < flat.priority_list.len() {
+        if let Action::Schedule { inner, .. } = &flat.priority_list[index].action {
+            let own = match (&flat.priority_list[index].condition, &inner.condition) {
+                (Some(outer), Some(inner)) => Some(Value::And(vec![outer.clone(), inner.clone()])),
+                (Some(only), None) | (None, Some(only)) => Some(only.clone()),
+                (None, None) => None,
+            };
+            position += 1;
+            let item = crate::rotation::Item {
+                position,
+                condition: own,
+                action: inner.action.clone(),
+            };
+            flat.priority_list.push(item);
+        }
+        index += 1;
     }
     Ok(flat)
 }

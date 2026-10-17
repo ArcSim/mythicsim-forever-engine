@@ -1641,6 +1641,9 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) priority_len: usize,
     /// Where each group instance's items are.
     pub(crate) group_ranges: Vec<std::ops::Range<usize>>,
+    /// The priority list's sequences by name, which reset sequence actions and sequence values
+    /// find.
+    pub(crate) rotation_sequences: Vec<(std::rc::Rc<str>, usize)>,
     /// Prepull casts by time, in Go's stable time order.
     prepull: Vec<(i64, rotation::PrepullAct)>,
     /// The dot base durations the rotation's `dotBaseDuration` values captured, by spell.
@@ -3637,6 +3640,7 @@ impl<A: Agent> Fight<A> {
             rotation: Vec::new(),
             priority_len: 0,
             group_ranges: Vec::new(),
+            rotation_sequences: Vec::new(),
             prepull: Vec::new(),
             dot_base_durations: Vec::new(),
             in_rotation: false,
@@ -4046,6 +4050,7 @@ impl<A: Agent> Fight<A> {
         fight.rotation = compilation.items;
         fight.priority_len = compilation.priority;
         fight.group_ranges = compilation.groups;
+        fight.rotation_sequences = compilation.sequences;
         fight.prepull = fight.compile_prepull(&parsed);
         for effect in effects {
             if let Effect::SunderArmorRamp {

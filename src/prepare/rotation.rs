@@ -745,7 +745,9 @@ impl Builder<'_> {
                     "a change of target to this unit is not prepared yet".to_string(),
                 )),
             },
-            "multidot" => {
+            // Go `newActionStrictMultidot` as `newActionMultidot`: its casts on each target are
+            // its own, which no walk of the rotation's actions reaches.
+            "multidot" | "strict_multidot" => {
                 let Some(id) = action.message("spell_id") else {
                     return Ok(None);
                 };

@@ -1604,6 +1604,9 @@ impl<A: Agent> Fight<A> {
             | SpellBehavior::PotionResource { .. } => {
                 Some((crate::core::time::NEVER_EXPIRES, f64::INFINITY))
             }
+            SpellBehavior::Class(behavior) => {
+                A::should_activate_until(self, spell, behavior).map(|until| (until, f64::INFINITY))
+            }
             _ => None,
         }
     }

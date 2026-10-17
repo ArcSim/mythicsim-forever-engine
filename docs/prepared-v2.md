@@ -59,7 +59,7 @@ RNG contract and implemented effects. Tests fail if it disagrees with the engine
 | `sim` | Iterations, seed, `labeled_rng`, first-iteration debug and `debug`, which logs every fight as the application's averaged timeline requests |
 | `encounter` | Base duration, variation and execute proportions, in nanoseconds, and `target_count`, written only for a fight against 2 to 5 targets |
 | `target` | Level, all stats, pseudo stats, every registered aura and whether it has a melee or ranged swing. In a fight against several targets every target past the first is an identical copy, which the exporter checks, so this one target describes them all |
-| `player` | Identity, talents, stats, pseudo stats, reaction time, distance, cast speed, mana, an energy bar when the player has one, attack table, spells, major cooldowns, rotation and the dot base durations its `dotBaseDuration` values captured |
+| `player` | Identity, talents, stats, pseudo stats, reaction time, distance, cast speed, mana, an energy bar when the player has one, attack table, spells, major cooldowns, rotation, the dot base durations its `dotBaseDuration` values captured and, when the rotation reads them, the `rotation_reads` it needs |
 | `melee` | The player's weapons and auto attack flags, and the physical attack table against the target with the defender's static chances resolved |
 | `enemy` | Present only when the player tanks the target. In a fight against several targets Go has every copy of the boss swing at the tank, so this one swing describes each copy, which the exporter checks, and Rust runs it per copy: the target's main hand swing at the player, every step of its damage and table resolved as Go computes it at reset, its table steps for each stat aura combination, the auras whose activation would change it, and the target auras, such as Vindication's debuff, that change only its attack power, with the attack power while each holds. The target multiplier's school and attack table factors let the runtime apply the player's live damage taken multiplier and live physical school damage taken multiplier, and the target's attack speed, melee speed and haste rating factors its live melee speed; auras that change only one of those, such as Stoneform's physical damage taken, are listed apart from the rest |
 | `effects` | Dynamic behavior and its parameters, one tagged variant per kind |
@@ -605,8 +605,8 @@ sequence runs one step each time it is ready, inside the sequence flag, and stop
 done. A channel's interrupt condition is evaluated on each tick and each GCD wake, with Go's
 check of whether the rotation would recast the same channel. An aura value's `sourceUnit`, a dot value's
 `targetUnit` and a cast's `target` resolve as Go's `UnitReference` does in a fight of identical
-targets: `Self` and `Player` index 0 are the player; `CurrentTarget` is the first target, since no
-change target action is supported; `NextTarget` and `PreviousTarget` wrap around the
+targets: `Self` and `Player` index 0 are the player; `CurrentTarget` is the first target, since a
+change of target to any other unit is refused; `NextTarget` and `PreviousTarget` wrap around the
 targets; `Target` with an index is that target, and past the fight's targets it is no unit.
 Go reads only the fields a type uses: `Self`, `CurrentTarget`, `NextTarget` and `PreviousTarget`
 ignore an index and an owner, and the one player of the raid is index 0, so any other `Player`
@@ -693,6 +693,48 @@ reference is bound to a group of its name. A group reference in the prepull is u
 Preparation builds every group and the variables each condition reads, so a stack read in a
 group registers its callbacks on the aura, and the casts of every group, referenced or not, leave
 the major cooldowns.
+
+The rotation accepts every value Go's APL builds at the pin and every action but the ones the
+application's rotation editor does not offer (`multishield`, `customRotation`, and the Druid's
+`catOptimalRotationAction`, `bearOptimalRotationAction` and `guardianHotwDpsRotation`), which
+are refused. Each is a separate variant that runs as Go's does. Beside those above, the actions are `wait` and `waitUntil`, which hold the
+rotation and block its reaction to events and the swings that wait for it, as Go's blocking
+controlling action does; `schedule` of an action at its timings; `resetSequence` of a named
+sequence; `strictMultidot`, which runs a temporary strict sequence of a cast at each target that
+needs the dot; `cancelAura`, `activateAuraWithStacks` and `triggerIcd` of a player aura;
+`castWarlockAssignedCurse`; `castAllStatBuffCooldowns` and `activateAllStatBuffProcAuras` of the
+stats they name; `itemSwap`; and `changeTarget` to the first target, which logs the change and
+runs once a timestep. The prepull takes the same kinds Go accepts there, an item swap among them,
+and the automatic swap back to the main set runs a nanosecond before the pull, as Go registers
+it. The values add the spell's travel time, casts per minute, in flight state, charges, full
+cooldown, hasted GCD, channel state and ticks; `max` and `min`; the time percent, health, mana,
+rage, energy and combo point bars; `energyTimeToTarget`; the unit's movement and distance; the
+GCD's time to ready, the time since the last auto attack, input delay and channel clip delay;
+an aura's internal cooldown, its readiness and its duration; a dot's activity on all targets,
+lowest remaining time, tick frequency, percent increase and tick rate increase, which read the
+tick Go's expected tick damage would deal now against the one the dot holds; a sequence's
+completion, readiness and time to ready; the Warlock's assigned curse; the boss's current target
+and its spell's casting and time to ready; the selected potion and conjured item;
+`multipleCdUsages`; and the item stat proc and stat buff cooldown values (`allItemStatProcsActive`,
+`anyItemStatProcsActive`, `anyItemStatProcsAvailable`, `itemProcsMaxRemainingIcd`,
+`itemProcsMinRemainingTime`, `numEquippedStatProcItems`, `anyStatBuffCooldownsActive`,
+`anyStatBuffCooldownsMinDuration`, `numStatBuffCooldowns`). A value Go's builder returns nothing
+for at the pin (`currentGenericResource`, the solar and lunar energy and eclipse phase,
+`protectionPaladinDamageTakenLastGlobal` and `dotCritPercentIncrease`) drops out of its condition
+as it does in Go. A value whose readiness check has Go's side effects, such as `spellCanCast`'s
+cost check, `sequenceIsReady` or a dot increase's expected tick, is never skipped by the rotation
+cache.
+
+Some of these values read what Go keeps on the character, which the exporter and Rust
+preparation write to `player.rotation_reads` only when the rotation uses them: the selected
+potion and conjured item, the spells a boss value names and whether each has a cooldown, the
+self buffs a spell names, the item proc stat buffs in `Character.ItemProcBuffs` order with their
+stats and whether the item swap holds their item out, the stats, spells and auras of the major
+cooldowns' buff auras as an environment with an empty rotation builds them, and the cooldowns
+each `castAllStatBuffCooldowns` matched. The gate refuses a boss spell with a cooldown, a
+`multipleCdUsages` spell without one, a stat read beside an item swap, Penance's dot increase,
+`useBaseValue`, a change of target to any unit but the first target, a group's sequence read by
+name, a `schedule` of a group reference and `max` or `min` of a boolean or string.
 
 ## Examples
 

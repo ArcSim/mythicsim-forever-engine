@@ -399,6 +399,7 @@ impl<A: Agent> Fight<A> {
                 .assigned_curse
                 .as_ref()
                 .map(|(name, id)| (name.as_str(), id)),
+            tanked: self.tanked(),
         };
         let mut channels = Vec::new();
         let mut prepull: Vec<(i64, PrepullAct)> = rotation
@@ -535,6 +536,7 @@ impl<A: Agent> Fight<A> {
                 .assigned_curse
                 .as_ref()
                 .map(|(name, id)| (name.as_str(), id)),
+            tanked: self.tanked(),
         };
         // A reference whose condition is a constant false is pruned, and takes no part in
         // binding the groups.
@@ -922,7 +924,7 @@ impl<A: Agent> Fight<A> {
                         && state.active
                         && self.now - state.start < self.config.reaction)
             }
-            Compiled::AssignedCurse(assigned) => *assigned,
+            Compiled::Settled(value) => *value,
             // Go `APLValueSequenceIsComplete`: no sequence of the name is never complete.
             Compiled::SequenceIsComplete(name) => match self.named_sequence(name) {
                 Some(item) => match self.rotation[item].action {

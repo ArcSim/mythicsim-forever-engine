@@ -362,6 +362,9 @@ pub enum Value {
     /// Go `APLValueDotTickFrequency`: the dot's tick period, or the one it would tick at now
     /// while it is down.
     DotTickFrequency(DotRef),
+    /// Go `APLValueBossCurrentTarget`: whether the unit's current target is the player, which
+    /// a target's is while the player tanks it.
+    BossCurrentTarget(UnitRef),
     /// Go sim/warlock/apl_values.go `APLValueWarlockIsAssignedCurse`: whether the curse type
     /// (Agony when absent) is the Warlock's assigned curse.
     WarlockIsAssignedCurse(String),
@@ -556,6 +559,7 @@ impl Value {
             | Value::SequenceIsReady(_)
             | Value::WarlockIsAssignedCurse(_)
             | Value::WarlockAssignedCurseIsActive(_)
+            | Value::BossCurrentTarget(_)
             | Value::DotIsActiveOnAllTargets(_) => ValueType::Bool,
             Value::SequenceTimeToReady(_) => ValueType::Duration,
             Value::AuraInternalCooldown { .. }
@@ -2073,6 +2077,19 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                 })?;
             Ok(Value::DotTickFrequency(DotRef { spell, target }))
         }
+        "bossCurrentTarget" => {
+            only(&["targetUnit"])?;
+            // Go `GetSourceUnit`: no unit reference means the player itself.
+            let unit =
+                parse_value_unit_ref(config.get("targetUnit"), UnitRef::Player).map_err(|()| {
+                    vec![unsupported_unit(
+                        name,
+                        "targetUnit",
+                        config.get("targetUnit"),
+                    )]
+                })?;
+            Ok(Value::BossCurrentTarget(unit))
+        }
         "warlockIsAssignedCurse" => {
             only(&["curseType"])?;
             // protojson omits the zero value, Agony.
@@ -2745,9 +2762,9 @@ pub enum Compiled<R> {
     /// Go `APLValueDotLowestRemainingTime`: the dot on each target.
     DotLowestRemainingTime(Vec<DotAt>),
     DotTickFrequency(DotAt),
-    /// Go `APLValueWarlockIsAssignedCurse`, which Go settles as the rotation is built but does
-    /// not fold.
-    AssignedCurse(bool),
+    /// A boolean whose state never changes during a fight, which Go reads each time without
+    /// folding: `APLValueWarlockIsAssignedCurse` and `APLValueBossCurrentTarget`.
+    Settled(bool),
     /// Go `APLValueSequenceIsComplete` of the sequence of the name.
     SequenceIsComplete(String),
     SequenceIsReady(String),
@@ -2819,7 +2836,7 @@ impl<R> Compiled<R> {
             | Compiled::AuraIcdIsReady { .. }
             | Compiled::SequenceIsComplete(_)
             | Compiled::SequenceIsReady(_)
-            | Compiled::AssignedCurse(_)
+            | Compiled::Settled(_)
             | Compiled::DotIsActiveOnAllTargets(_) => ValueType::Bool,
             Compiled::SequenceTimeToReady(_) => ValueType::Duration,
             Compiled::AuraInternalCooldown(_)
@@ -3000,6 +3017,8 @@ pub struct Lookup<'a, R> {
     /// A Warlock's assigned curse: its option name and the action of the curse spell. Only a
     /// Warlock builds the curse values.
     pub assigned_curse: Option<(&'a str, &'a ActionId)>,
+    /// Whether the player tanks the targets, whose current target it then is.
+    pub tanked: bool,
 }
 
 /// The player's resource bars: Go `HasManaBar`, the rage bar's `MaximumRage` and the energy
@@ -3248,8 +3267,14 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
             }
         }
         Value::DotTickFrequency(dot) => Compiled::DotTickFrequency(dot_at(dot, lookup)?),
+        // Go: the player's own current target is a target, and a target's is the player while
+        // the player tanks it.
+        Value::BossCurrentTarget(unit) => match unit.resolve(lookup.targets)? {
+            Unit::Player => Compiled::Settled(false),
+            Unit::Target(_) => Compiled::Settled(lookup.tanked),
+        },
         Value::WarlockIsAssignedCurse(curse) => {
-            Compiled::AssignedCurse(lookup.assigned_curse?.0 == curse.as_str())
+            Compiled::Settled(lookup.assigned_curse?.0 == curse.as_str())
         }
         // Go reads the curse's aura of tag 1, else of tag 0, on the unit; Rust gives no value
         // where Go would read an aura the unit lacks.
@@ -3469,6 +3494,7 @@ mod tests {
             icd_aura: &|_, _| None,
             multidot: &|_| false,
             assigned_curse: None,
+            tanked: false,
         }
     }
 
@@ -3500,6 +3526,7 @@ mod tests {
             icd_aura: &|_, _| None,
             multidot: &|_| false,
             assigned_curse: None,
+            tanked: false,
             ..only_auras(&none, &|_, _| None)
         };
         assert_eq!(
@@ -4131,6 +4158,7 @@ mod tests {
             icd_aura: &|_, _| None,
             multidot: &|_| false,
             assigned_curse: None,
+            tanked: false,
         })
     }
 
@@ -4630,6 +4658,7 @@ mod tests {
             icd_aura: &|_, _| None,
             multidot: &|_| false,
             assigned_curse: None,
+            tanked: false,
         };
         let compare = |spell: i32| {
             let value = parse_value(&serde_json::json!({"cmp": {"op": "OpGt",

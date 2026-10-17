@@ -2454,6 +2454,7 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
         assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
+        tanked: prepared.enemy.is_some(),
     };
     let live = |index: usize| {
         compile_condition(rotation.priority_list[index].condition.as_ref(), &lookup)
@@ -2564,6 +2565,7 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
         assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
+        tanked: prepared.enemy.is_some(),
     };
     rotation
         .priority_list
@@ -2607,6 +2609,7 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
         assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
+        tanked: prepared.enemy.is_some(),
     };
     compile_condition(prepull.condition.as_ref(), &lookup)
         == crate::rotation::CompiledCondition::Pruned
@@ -2810,6 +2813,7 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
         multidot: &|id: &ActionId| rotation_multidot(prepared, id),
         assigned_curse: curse.as_ref().map(|(name, id)| (name.as_str(), id)),
+        tanked: prepared.enemy.is_some(),
     };
     rotation
         .priority_list

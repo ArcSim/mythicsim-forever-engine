@@ -41,6 +41,12 @@ pub(crate) enum Outcome {
     TickMagicHitAndCrit,
     /// A melee or ranged attack table applier, for a spell of any school.
     Table(super::melee::PhysicalOutcome),
+    /// Go `OutcomeExpectedMagicHit`: the damage scaled by the chance to hit, with no roll.
+    ExpectedMagicHit,
+    /// Go `OutcomeExpectedMagicAlwaysHit`: the damage as it is.
+    ExpectedMagicAlwaysHit,
+    /// Go `OutcomeExpectedMagicCrit`: the damage scaled by the average crit.
+    ExpectedMagicCrit,
 }
 
 impl Outcome {
@@ -468,9 +474,16 @@ impl<A: Agent> Fight<A> {
         // physical hit takes armor instead, and a physical tick takes none.
         let binary = self.spells[spell].flags.binary;
         let physical = self.spells[spell].school & 1 != 0;
+        // The expected outcomes are read only of ticks, `CalcPeriodicDamage` and
+        // `CalcSnapshotDamage`.
         let periodic = matches!(
             outcome,
-            Outcome::Tick | Outcome::TickMagicCrit | Outcome::TickMagicHitAndCrit
+            Outcome::Tick
+                | Outcome::TickMagicCrit
+                | Outcome::TickMagicHitAndCrit
+                | Outcome::ExpectedMagicHit
+                | Outcome::ExpectedMagicAlwaysHit
+                | Outcome::ExpectedMagicCrit
         );
         result.armor_multiplier = 1.0;
         if physical {
@@ -610,6 +623,24 @@ impl<A: Agent> Fight<A> {
                 self.outcome_magic_hit_and_crit(spell, result, binary, false, false)
             }
             Outcome::MagicCrit => self.outcome_magic_crit(spell, result),
+            Outcome::ExpectedMagicHit => {
+                let binary_hit =
+                    binary.then(|| binary_resist_hit(self.resist(spell, result.target, true)));
+                let miss = spell_chance_to_miss(
+                    self.unit_config(self.caster(spell))
+                        .table
+                        .base_spell_miss_chance,
+                    binary_hit,
+                    self.spell_hit_chance(spell),
+                );
+                result.damage *= 1.0 - miss;
+            }
+            Outcome::ExpectedMagicAlwaysHit => {}
+            // Go's arm64 build fuses the average crit into the 1.
+            Outcome::ExpectedMagicCrit => {
+                let crit = self.spell_crit_chance(spell);
+                result.damage *= crit.mul_add(self.crit_multiplier(spell) - 1.0, 1.0);
+            }
             Outcome::Tick => self.outcome_tick(spell, result, false),
             Outcome::TickPhysicalCrit => self.outcome_tick_physical_crit(spell, result),
             Outcome::TickMagicCrit => self.outcome_tick(spell, result, true),
@@ -1015,6 +1046,27 @@ impl<A: Agent> Fight<A> {
         let attacker =
             self.attacker_multiplier(spell, true) * self.dots[dot].periodic_damage_multiplier;
         self.calc_damage_internal(spell, side, base, attacker, outcome)
+    }
+
+    /// Go `Spell.CalcPeriodicDamage` with an expected outcome: the spell's dot's share of the
+    /// bonus damage on the base, the attacker and periodic multipliers, the damage only.
+    pub(crate) fn expected_periodic_damage(
+        &mut self,
+        spell: SpellId,
+        dot: super::DotId,
+        target: Side,
+        mut base: f64,
+        outcome: Outcome,
+    ) -> f64 {
+        let coefficient = self.dots[dot].bonus_coefficient;
+        if coefficient > 0.0 {
+            // Go `baseDamage += coefficient * BonusDamage`, which the arm64 build fuses.
+            base = coefficient.mul_add(self.bonus_damage(spell, target), base);
+        }
+        let attacker =
+            self.attacker_multiplier(spell, true) * self.dots[dot].periodic_damage_multiplier;
+        self.calc_damage_internal(spell, target, base, attacker, outcome)
+            .damage
     }
 
     /// Go `Spell.TravelTime`.

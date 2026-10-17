@@ -374,6 +374,84 @@ impl<A: Agent> Fight<A> {
             .collect()
     }
 
+    /// The spell holding the dot of a spell whose Go `ExpectedTickDamage` the runtime computes:
+    /// Rake and Rip by their class, the Priest's dots, Agony and Flame Shock here.
+    fn expected_tick_spell(&self, id: &ActionId) -> Option<SpellId> {
+        let spell = self.apl_spell(id)?;
+        let holder = match self.spells[spell].dot {
+            Some(_) => spell,
+            None => self.spells[spell].related_dot_spell?,
+        };
+        self.spells[holder].dot?;
+        // Each class sets the tick base these dots read once the rotation is compiled.
+        let known = [
+            "rake",
+            "rip",
+            "shadow_word_pain",
+            "devouring_plague",
+            "mind_flay",
+            "starshards",
+            "bane_of_agony",
+            "flame_shock_dot",
+        ];
+        self.spells[holder]
+            .class_spell
+            .as_deref()
+            .is_some_and(|name| known.contains(&name))
+            .then_some(holder)
+    }
+
+    /// Go `Spell.ExpectedTickDamage` (`snapshot` false) and
+    /// `ExpectedTickDamageFromCurrentSnapshot` of the spell holding the dot, on a target.
+    fn expected_tick_damage(&mut self, spell: SpellId, target: Side, snapshot: bool) -> f64 {
+        if let Some(damage) = A::expected_tick_damage(self, spell, target, snapshot) {
+            return damage;
+        }
+        let dot = self.dot_on(self.spells[spell].dot.expect("a dot spell"), target);
+        let base = self.dots[dot]
+            .tick_base
+            .expect("an expected tick has its base");
+        match self.spells[spell].class_spell.as_deref() {
+            // shocks.go: the tick its rank rolls, or the average crit, per second of its period.
+            Some("flame_shock_dot") => {
+                if snapshot {
+                    let outcome = super::damage::Outcome::tick_hit_rolled(
+                        self.dots[dot].tick_can_crit,
+                        self.spells[spell].magic_defense,
+                    )
+                    .unwrap_or(super::damage::Outcome::Tick);
+                    let damage = self
+                        .snapshot_dot_tick_calc_with(dot, target, outcome)
+                        .damage;
+                    damage / crate::core::time::seconds(self.dots[dot].tick_period)
+                } else {
+                    let damage = self.expected_periodic_damage(
+                        spell,
+                        dot,
+                        target,
+                        base,
+                        super::damage::Outcome::ExpectedMagicCrit,
+                    );
+                    damage / crate::core::time::seconds(self.calc_tick_period(dot))
+                }
+            }
+            class => {
+                // agony.go reads every tick as a hit; the Priest's dots scale by the hit chance.
+                let outcome = if class == Some("bane_of_agony") {
+                    super::damage::Outcome::ExpectedMagicAlwaysHit
+                } else {
+                    super::damage::Outcome::ExpectedMagicHit
+                };
+                if snapshot {
+                    self.snapshot_dot_tick_calc_with(dot, target, outcome)
+                        .damage
+                } else {
+                    self.expected_periodic_damage(spell, dot, target, base, outcome)
+                }
+            }
+        }
+    }
+
     /// The player's aura of a label.
     fn player_aura_by_label(&self, label: &str) -> Option<AuraRef> {
         self.trackers[Side::Player.index()]
@@ -554,6 +632,7 @@ impl<A: Agent> Fight<A> {
             self_buff: &|spell: usize| self.self_buff(spell),
             item_procs: &|procs: &crate::rotation::StatProcs| self.item_procs(procs),
             aura_by_label: &|label: &str| self.player_aura_by_label(label),
+            expected_tick: &|id: &ActionId| self.expected_tick_spell(id),
         };
         let mut channels = Vec::new();
         let mut lists = Vec::new();
@@ -732,6 +811,7 @@ impl<A: Agent> Fight<A> {
             self_buff: &|spell: usize| self.self_buff(spell),
             item_procs: &|procs: &crate::rotation::StatProcs| self.item_procs(procs),
             aura_by_label: &|label: &str| self.player_aura_by_label(label),
+            expected_tick: &|id: &ActionId| self.expected_tick_spell(id),
         };
         // A reference whose condition is a constant false is pruned, and takes no part in
         // binding the groups.
@@ -1301,6 +1381,33 @@ impl<A: Agent> Fight<A> {
                 }
             }
             Compiled::NumberTargets => self.targets.len() as f64,
+            // Go `APLValueDotPercentIncrease.GetFloat`: 1 without a snapshot to compare, else the
+            // ratio to it, rounded to five places, less 1.
+            Compiled::DotPercentIncrease(at) => {
+                let side = Side::target(at.target);
+                let snapshot = self.expected_tick_damage(at.spell, side, true);
+                if snapshot == 0.0 {
+                    1.0
+                } else {
+                    let fresh = self.expected_tick_damage(at.spell, side, false);
+                    ((fresh / snapshot) * 100000.0).round() / 100000.0 - 1.0
+                }
+            }
+            // Go `APLValueDotTickRatePercentIncrease.GetFloat`: 1 while the dot is down, else the
+            // running period over the one it would tick at now, less 1.
+            Compiled::DotTickRatePercentIncrease(at) => {
+                let dot = self.dot_of(*at);
+                let current = if self.dot_active(*at) {
+                    crate::core::time::seconds(self.dots[dot].tick_period)
+                } else {
+                    0.0
+                };
+                if current == 0.0 {
+                    1.0
+                } else {
+                    current / crate::core::time::seconds(self.calc_tick_period(dot)) - 1.0
+                }
+            }
             // Go `Duration.Seconds` of the time so far over the fight's.
             Compiled::CurrentTimePercent => {
                 crate::core::time::seconds(self.now) / crate::core::time::seconds(self.duration)

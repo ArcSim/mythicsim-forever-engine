@@ -1865,6 +1865,10 @@ pub(crate) fn prepared_coverage(
             "rotation_unsupported",
             rotation_read_limits(prepared),
         ));
+        reasons.extend(coded(
+            "rotation_unsupported",
+            dot_increase_limits(prepared, rotation),
+        ));
         if player.class != "ClassShaman" {
             for item in &rotation.priority_list {
                 let mut totems = false;
@@ -2487,6 +2491,7 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
                 .position(|spell| spell.action_id.as_ref() == Some(id))
         },
         item_procs: &|procs: &crate::rotation::StatProcs| coverage_item_procs(prepared, procs),
+        expected_tick: &|id: &ActionId| coverage_expected_tick(prepared, id),
         aura_by_label: &|label: &str| {
             prepared
                 .player
@@ -2626,6 +2631,7 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
                 .position(|spell| spell.action_id.as_ref() == Some(id))
         },
         item_procs: &|procs: &crate::rotation::StatProcs| coverage_item_procs(prepared, procs),
+        expected_tick: &|id: &ActionId| coverage_expected_tick(prepared, id),
         aura_by_label: &|label: &str| {
             prepared
                 .player
@@ -2698,6 +2704,7 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
                 .position(|spell| spell.action_id.as_ref() == Some(id))
         },
         item_procs: &|procs: &crate::rotation::StatProcs| coverage_item_procs(prepared, procs),
+        expected_tick: &|id: &ActionId| coverage_expected_tick(prepared, id),
         aura_by_label: &|label: &str| {
             prepared
                 .player
@@ -2862,6 +2869,59 @@ pub(crate) fn assigned_curse(prepared: &PreparedV2) -> Option<(String, ActionId)
     Some((option, id))
 }
 
+/// Go's dot increase values of Penance read its bolt's damage, which the runtime does not
+/// compute, so they are refused rather than dropped.
+fn dot_increase_limits(prepared: &PreparedV2, rotation: &Rotation) -> Vec<String> {
+    let mut reasons = Vec::new();
+    let mut visit = |value: &Value| {
+        if let Value::DotPercentIncrease(dot) | Value::DotTickRatePercentIncrease(dot) = value {
+            let penance = dot
+                .spell
+                .as_ref()
+                .and_then(|id| rotation_spell_index(prepared, id))
+                .and_then(|index| dot_owner(prepared, index))
+                .is_some_and(|holder| {
+                    prepared.player.spells[holder].class_spell.as_deref() == Some("penance")
+                });
+            let reason = "a dot increase value of Penance is unsupported".to_string();
+            if penance && !reasons.contains(&reason) {
+                reasons.push(reason);
+            }
+        }
+    };
+    for item in &rotation.priority_list {
+        if let Some(condition) = &item.condition {
+            condition.visit(&mut visit);
+        }
+        for value in item.action.values() {
+            value.visit(&mut visit);
+        }
+    }
+    reasons
+}
+
+/// The spell holding the dot of a spell whose `ExpectedTickDamage` the runtime computes.
+fn coverage_expected_tick(prepared: &PreparedV2, id: &ActionId) -> Option<usize> {
+    let index = rotation_spell_index(prepared, id)?;
+    let holder = dot_owner(prepared, index)?;
+    let spell = &prepared.player.spells[holder];
+    let known = [
+        "rake",
+        "rip",
+        "shadow_word_pain",
+        "devouring_plague",
+        "mind_flay",
+        "starshards",
+        "bane_of_agony",
+        "flame_shock_dot",
+    ];
+    spell
+        .class_spell
+        .as_deref()
+        .is_some_and(|name| known.contains(&name))
+        .then_some(holder)
+}
+
 /// The spells a `castAllStatBuffCooldowns` of the stats casts, as the input names them.
 fn cast_all_spells<'a>(prepared: &'a PreparedV2, stats: &[i32]) -> Vec<&'a Spell> {
     let Some(reads) = &prepared.player.rotation_reads else {
@@ -3012,6 +3072,7 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
                 .position(|spell| spell.action_id.as_ref() == Some(id))
         },
         item_procs: &|procs: &crate::rotation::StatProcs| coverage_item_procs(prepared, procs),
+        expected_tick: &|id: &ActionId| coverage_expected_tick(prepared, id),
         aura_by_label: &|label: &str| {
             prepared
                 .player

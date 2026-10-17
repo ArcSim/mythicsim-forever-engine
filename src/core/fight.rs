@@ -231,6 +231,16 @@ pub(crate) trait Agent: Sized {
     ) -> Option<f64> {
         None
     }
+    /// A class spell's Go `ExpectedTickDamage` on a target, from the dot's snapshot or for a
+    /// tick cast now, where the class computes it itself.
+    fn expected_tick_damage(
+        _fight: &mut Fight<Self>,
+        _spell: SpellId,
+        _target: Side,
+        _snapshot: bool,
+    ) -> Option<f64> {
+        None
+    }
     /// When a class's totem of the slot expires, for Go's `totemRemainingTime`. The gate
     /// admits the value only for a class that implements this.
     fn totem_expiration(_fight: &Fight<Self>, _totem: crate::rotation::Totem) -> i64 {

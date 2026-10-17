@@ -1057,6 +1057,26 @@ impl Agent for DruidAgent {
         }
     }
 
+    /// Go rake.go and rip.go `ExpectedTickDamage`.
+    fn expected_tick_damage(
+        fight: &mut Fight<Self>,
+        spell: SpellId,
+        target: Side,
+        snapshot: bool,
+    ) -> Option<f64> {
+        match fight.spells[spell].behavior {
+            crate::core::fight::SpellBehavior::Class(DruidSpell::Rake) => {
+                let rake = fight.agent.rake.clone()?;
+                Some(rake.expected_tick_damage(fight, spell, target, snapshot))
+            }
+            crate::core::fight::SpellBehavior::Class(DruidSpell::Rip) => {
+                let rip = fight.agent.rip.clone()?;
+                Some(rip.expected_tick_damage(fight, spell, target, snapshot))
+            }
+            _ => None,
+        }
+    }
+
     fn apply_effects(fight: &mut Fight<Self>, spell: SpellId, target: Side, behavior: DruidSpell) {
         match behavior {
             DruidSpell::MoonkinForm => {

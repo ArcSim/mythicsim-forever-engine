@@ -362,6 +362,12 @@ pub enum Value {
     /// Go `APLValueDotTickFrequency`: the dot's tick period, or the one it would tick at now
     /// while it is down.
     DotTickFrequency(DotRef),
+    /// Go `APLValueDotPercentIncrease`: how much more a tick cast now would deal than the
+    /// dot's snapshot, through the spell's `ExpectedTickDamage`.
+    DotPercentIncrease(DotRef),
+    /// Go `APLValueDotTickRatePercentIncrease`: how much longer the running tick period is
+    /// than one cast now.
+    DotTickRatePercentIncrease(DotRef),
     /// Go `APLValueBossCurrentTarget`: whether the unit's current target is the player, which
     /// a target's is while the player tanks it.
     BossCurrentTarget(UnitRef),
@@ -468,6 +474,10 @@ impl Value {
                 values.iter().for_each(|value| value.visit(f))
             }
             Value::EnergyTimeToTarget(value) => value.visit(f),
+            Value::MultipleCdUsages {
+                offset: Some(offset),
+                ..
+            } => offset.visit(f),
             Value::Variable { resolved, .. } => resolved.visit(f),
             _ => {}
         }
@@ -629,6 +639,7 @@ impl Value {
             | Value::AuraDuration { .. }
             | Value::DotLowestRemainingTime(_)
             | Value::DotTickFrequency(_) => ValueType::Duration,
+            Value::DotPercentIncrease(_) | Value::DotTickRatePercentIncrease(_) => ValueType::Float,
             Value::MaxComboPoints => ValueType::Int,
             Value::CurrentTimePercent
             | Value::CurrentHealth
@@ -2181,6 +2192,33 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                 _ => Value::DotTimeToNextTick(dot),
             })
         }
+        "dotPercentIncrease" | "dotTickRatePercentIncrease" => {
+            only(&["spellId", "targetUnit", "useBaseValue"])?;
+            // Go registers an aura for the base value, which the preparation refuses.
+            if config.get("useBaseValue").and_then(Json::as_bool) == Some(true) {
+                return Err(vec![format!(
+                    "{name} against its base value is unsupported"
+                )]);
+            }
+            let spell = match config.get("spellId") {
+                Some(id) => Some(parse_action_id(id).map_err(|err| vec![err])?),
+                None => None,
+            };
+            let target = parse_value_unit_ref(config.get("targetUnit"), UnitRef::CurrentTarget)
+                .map_err(|()| {
+                    vec![unsupported_unit(
+                        name,
+                        "targetUnit",
+                        config.get("targetUnit"),
+                    )]
+                })?;
+            let dot = DotRef { spell, target };
+            Ok(if name == "dotPercentIncrease" {
+                Value::DotPercentIncrease(dot)
+            } else {
+                Value::DotTickRatePercentIncrease(dot)
+            })
+        }
         "dotTickFrequency" => {
             only(&["spellId", "targetUnit"])?;
             let spell = match config.get("spellId") {
@@ -3009,6 +3047,10 @@ pub enum Compiled<R> {
     /// Go `APLValueDotLowestRemainingTime`: the dot on each target.
     DotLowestRemainingTime(Vec<DotAt>),
     DotTickFrequency(DotAt),
+    /// Go `APLValueDotPercentIncrease` of the spell holding the dot, on a target.
+    DotPercentIncrease(DotAt),
+    /// Go `APLValueDotTickRatePercentIncrease`.
+    DotTickRatePercentIncrease(DotAt),
     /// A boolean whose state never changes during a fight, which Go reads each time without
     /// folding: `APLValueWarlockIsAssignedCurse`, `APLValueBossCurrentTarget` and the selected
     /// consumable values, and a target spell's hardcast, which no target without an AI starts.
@@ -3125,6 +3167,9 @@ impl<R> Compiled<R> {
             | Compiled::ItemProcsMaxRemainingIcd(_)
             | Compiled::AnyStatBuffCooldownsMinDuration(_) => ValueType::Duration,
             Compiled::SettledInt(_) => ValueType::Int,
+            Compiled::DotPercentIncrease(_) | Compiled::DotTickRatePercentIncrease(_) => {
+                ValueType::Float
+            }
             Compiled::AuraInternalCooldown(_)
             | Compiled::AuraDuration(_)
             | Compiled::DotLowestRemainingTime(_)
@@ -3316,6 +3361,9 @@ pub struct Lookup<'a, R> {
     pub item_procs: &'a dyn Fn(&StatProcs) -> Vec<(R, bool)>,
     /// The player's aura of a label.
     pub aura_by_label: &'a dyn Fn(&str) -> Option<R>,
+    /// Go `GetAPLSpell` of a spell with an `ExpectedTickDamage`, as the spellbook position of
+    /// the spell holding its dot.
+    pub expected_tick: &'a dyn Fn(&ActionId) -> Option<usize>,
 }
 
 /// The player's resource bars: Go `HasManaBar`, the rage bar's `MaximumRage` and the energy
@@ -3564,6 +3612,20 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
             }
         }
         Value::DotTickFrequency(dot) => Compiled::DotTickFrequency(dot_at(dot, lookup)?),
+        // Go `newDotIncreaseValue`: no value for a spell without an `ExpectedTickDamage`; a
+        // target that names no unit, or the player, has no dot to read.
+        Value::DotPercentIncrease(dot) | Value::DotTickRatePercentIncrease(dot) => {
+            let spell = (lookup.expected_tick)(dot.spell.as_ref()?)?;
+            let Unit::Target(target) = dot.target.resolve(lookup.targets)? else {
+                return None;
+            };
+            let at = DotAt { spell, target };
+            if matches!(value, Value::DotPercentIncrease(_)) {
+                Compiled::DotPercentIncrease(at)
+            } else {
+                Compiled::DotTickRatePercentIncrease(at)
+            }
+        }
         // Go `newItemStatProcValue`: no value without a matching buff, except the count.
         Value::AllItemStatProcsActive(procs)
         | Value::AnyItemStatProcsActive(procs)
@@ -3914,6 +3976,7 @@ mod tests {
             self_buff: &|_| None,
             item_procs: &|_| Vec::new(),
             aura_by_label: &|_| None,
+            expected_tick: &|_| None,
         }
     }
 
@@ -3951,6 +4014,7 @@ mod tests {
             self_buff: &|_| None,
             item_procs: &|_| Vec::new(),
             aura_by_label: &|_| None,
+            expected_tick: &|_| None,
             ..only_auras(&none, &|_, _| None)
         };
         assert_eq!(
@@ -4588,6 +4652,7 @@ mod tests {
             self_buff: &|_| None,
             item_procs: &|_| Vec::new(),
             aura_by_label: &|_| None,
+            expected_tick: &|_| None,
         })
     }
 
@@ -5093,6 +5158,7 @@ mod tests {
             self_buff: &|_| None,
             item_procs: &|_| Vec::new(),
             aura_by_label: &|_| None,
+            expected_tick: &|_| None,
         };
         let compare = |spell: i32| {
             let value = parse_value(&serde_json::json!({"cmp": {"op": "OpGt",

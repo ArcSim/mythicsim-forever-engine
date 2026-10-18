@@ -177,10 +177,10 @@ func paladinEffects(agent core.Agent, character *core.Character) []map[string]an
 		effects = append(effects, map[string]any{
 			"kind": "seal_of_command", "ranks": ranks, "proc_spell_id": procRank.ID,
 			"weapon_percent": procEffect.Percent() * paladinImprovedSeals.MultiplierAt(talents.ImprovedSeals),
-			"coefficient": procEffect.Coeff(), "proc_chance": dpm.Chance(core.ProcMaskMeleeMHAuto, nil),
+			"coefficient":    procEffect.Coeff(), "proc_chance": dpm.Chance(core.ProcMaskMeleeMHAuto, nil),
 			// SealOfCommandBonusTakesImprovedSeals (patch 169): the target bonus takes the talent too.
 			"target_bonus_coefficient": procEffect.Coeff() * paladinImprovedSeals.MultiplierAt(talents.ImprovedSeals),
-			"rng_label": "Seal of Command", "icd_ns": nanos(time.Second), "deal_delay_ns": dealDelay,
+			"rng_label":                "Seal of Command", "icd_ns": nanos(time.Second), "deal_delay_ns": dealDelay,
 		})
 	}
 	{ // seal_of_righteousness.go

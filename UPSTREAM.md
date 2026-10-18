@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `12ffe586e5c4b2e622e6ccad0d6146ff10c394d1`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `2fe7678a0844a6d19f3e6a4ec1469e542763710b`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -518,6 +518,20 @@ The pin moved from `5af130344` to `12ffe586e` on 2026-10-17, four commits: the f
 174 of the 614 Go goldens changed, 134 in DPS, and the paladin, shaman and classic weapon preparation
 goldens follow. Rust matches all 612 accepted fixtures with a Go golden, and preparation writes exactly
 what the exporter writes for every one of the 614. The recorded sweeps were not rerun.
+
+The pin moved from `12ffe586e` to `2fe7678a0` on 2026-10-17, one commit: the fork's patch 147 (branch
+`mythicsim/oct17-traps`), measured in game on client 70425. The community base `b7083fac1` and client
+build 70425 did not move, so the ledger has no new commit.
+
+- Hunter (patch 147): Immolation Trap and Explosive Trap's explosion take 13% of the higher of ranged
+  and melee attack power, with no spell power. Immolation Trap splits it over its five ticks and each
+  tick reads the attack power it picked at the snapshot as it stands, as Go's
+  `SnapshotAttackPowerShare` does with its ranged flag; the burning ground Explosive Trap leaves takes
+  none. The exporter and Rust preparation export the share.
+
+12 of the 641 Go goldens changed, all Survival hunter builds that lay traps, and the Hunter preparation
+goldens follow. Rust matches all 639 accepted fixtures with a Go golden, and preparation writes exactly
+what the exporter writes for every one of the 641. The recorded sweeps were not rerun.
 
 ## Ledger
 

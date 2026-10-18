@@ -4074,6 +4074,9 @@ pub enum Effect {
     ImmolationTrap {
         spell_id: i32,
         tick_base: f64,
+        /// The share of the higher of ranged and melee attack power the whole burn takes, a Go
+        /// literal (patch 147), split over its ticks.
+        attack_power_share: f64,
         /// Whether the effect row lets a tick crit, and whether the trap is a magic spell.
         tick_can_crit: bool,
         tick_magic: bool,
@@ -4085,6 +4088,9 @@ pub enum Effect {
         spell_id: i32,
         hit_min: f64,
         hit_max: f64,
+        /// The share of the higher of ranged and melee attack power each hit adds to its roll,
+        /// a Go literal (patch 147); the burning ground takes none.
+        attack_power_share: f64,
         hits: i32,
         aoe_cap_multiplier: f64,
         tick_base: f64,

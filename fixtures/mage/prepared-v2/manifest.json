@@ -4,7 +4,7 @@
   "engine_revision": "37c2dfbdae9ce927cb2e2be648378cb269db23c1",
   "client_build": "1.60.1.70425",
   "exporter": "tools/oracle-v2/main.go",
-  "exporter_sha256": "9526f1361b4a1cb9816a73e52e928b692c47b7d19e5becebcf1d9669fa9326f9",
+  "exporter_sha256": "29888f46c8f0b895990458c89d29649ed10e3c16f87926d73436ca280158a296",
   "generator": "python3 tools/prepared_v2.py capture --output output/prepared-v2-capture",
   "note": "Accepted prepared inputs exported from the pinned Go engine. Capture re-exports into scratch and must match these files exactly.",
   "cases": [
@@ -13279,6 +13279,342 @@
       "go_log": {
         "file": "apl-shadow-change-target.go-log.txt",
         "sha256": "86ede77925a2e30eb881becd39e3bd794b90dc46f63da0e946f36992ead81242"
+      }
+    },
+    {
+      "id": "fire-mage-dragonfire-potion",
+      "description": "Fire mage drinks Dragonfire Potion: a Fire hit and burn on the target (patch 167)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\fire-mage-dragonfire-potion.request.json"
+      },
+      "prepared": "fire-mage-dragonfire-potion.prepared.json",
+      "prepared_sha256": "a0d19c6d1571bd8539b46ea007f93cf98e61ad7ab83c471ce145032081badce8",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "fire-mage-dragonfire-potion.go-result.json",
+        "sha256": "1115270b2ce6806c47f4d171a9c9cd1a7d42471daf344add6d2f20831d1dbaca"
+      },
+      "go_log": {
+        "file": "fire-mage-dragonfire-potion.go-log.txt",
+        "sha256": "1705918c973bb6dd19f125ecb4956d4bd857f4bc02b36f072bfc4edd0a02dd88"
+      }
+    },
+    {
+      "id": "combat-rogue-3-targets-caustic-smog-potion",
+      "description": "Combat rogue against three targets throws Caustic Smog Potion: a hit roll and rolled Nature ticks on each target (patch 167)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\combat-rogue-3-targets-caustic-smog-potion.request.json"
+      },
+      "prepared": "combat-rogue-3-targets-caustic-smog-potion.prepared.json",
+      "prepared_sha256": "afc914c242d330581407be586dff66929537f7f625e7487a6eb164c6c71d915f",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "combat-rogue-3-targets-caustic-smog-potion.go-result.json",
+        "sha256": "532aa74a0ca3aeac2432f73e956f1d7ef12bad43c7e1c91b5d8b6b9331b05e3f"
+      },
+      "go_log": {
+        "file": "combat-rogue-3-targets-caustic-smog-potion.go-log.txt",
+        "sha256": "e11eb423cc16317414c26dec6fe3c06f51561b1322b6f2aa97e6038489d9db12"
+      }
+    },
+    {
+      "id": "shadow-priest-elemental-purging-potion",
+      "description": "Shadow priest against an Elemental drinks Potion of Elemental Purging: 105 spell damage against Elementals while it holds (patch 167)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\shadow-priest-elemental-purging-potion.request.json"
+      },
+      "prepared": "shadow-priest-elemental-purging-potion.prepared.json",
+      "prepared_sha256": "121b74eb243998318d0cc07bc7bbf3e65482320a7d5c78ea75ee672057956bca",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "shadow-priest-elemental-purging-potion.go-result.json",
+        "sha256": "8726a975f22f13d3b7abe1966cef94cbf1a9875cd32edc7033e99e4d97d76a8d"
+      },
+      "go_log": {
+        "file": "shadow-priest-elemental-purging-potion.go-log.txt",
+        "sha256": "f8115b10c7547e5feffcfb0c51a40f1a77d116ff29beeb362378acce6b1411c5"
+      }
+    },
+    {
+      "id": "frostfire-mage-revelation",
+      "description": "Frostfire mage with Revelation on the main hand: non-crit hits trigger the buff, the next cast spends it (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\frostfire-mage-revelation.request.json"
+      },
+      "prepared": "frostfire-mage-revelation.prepared.json",
+      "prepared_sha256": "1bc7d60d3ea9558e5c980547c18a49cdba33cbc8304679835e5179f3702cde2d",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "frostfire-mage-revelation.go-result.json",
+        "sha256": "98bf2a53741180c064c517210be85af1ac42f3071b4c0bef1878236c97a47380"
+      },
+      "go_log": {
+        "file": "frostfire-mage-revelation.go-log.txt",
+        "sha256": "e8c8596364e29da8260f8ac336bb5ce95a23c71917775a583ad77a0255852e1a"
+      }
+    },
+    {
+      "id": "frost-mage-blizzard-revelation",
+      "description": "Frost mage with Revelation casting Blizzard: the channel holds the buff to its end (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\frost-mage-blizzard-revelation.request.json"
+      },
+      "prepared": "frost-mage-blizzard-revelation.prepared.json",
+      "prepared_sha256": "c8040fc1fd1d9d1052865d4abe71dc033c478b6929ba6b767f70542e9510ce72",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "frost-mage-blizzard-revelation.go-result.json",
+        "sha256": "79fc76b0a8c6c3b4af8cc921c2ef3f5cd39d2022078a6cef2174fed1910fad26"
+      },
+      "go_log": {
+        "file": "frost-mage-blizzard-revelation.go-log.txt",
+        "sha256": "7f432b013bde7b1c687aa6117ce443b117e84685789820f645e1f2607340f278"
+      }
+    },
+    {
+      "id": "affliction-warlock-hellfire-revelation",
+      "description": "Affliction warlock with Revelation casting Hellfire: its ticks trigger the buff and the channel's end ends it (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\affliction-warlock-hellfire-revelation.request.json"
+      },
+      "prepared": "affliction-warlock-hellfire-revelation.prepared.json",
+      "prepared_sha256": "56a7bbdab19377c7b3873c33498e7776c3a849783753c472cd703ca89ae2ba6a",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "affliction-warlock-hellfire-revelation.go-result.json",
+        "sha256": "9808ccb4c07c21d56653a24e4f39556fd9dd88308eed60bc82590f63c24aef40"
+      },
+      "go_log": {
+        "file": "affliction-warlock-hellfire-revelation.go-log.txt",
+        "sha256": "28ebe444afbc669d99a741a1cc37071c8f19477c205480112c983db41b3a0ed1"
+      }
+    },
+    {
+      "id": "destruction-warlock-revelation",
+      "description": "Destruction warlock with Revelation: Immolate and the dots never trigger it (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\destruction-warlock-revelation.request.json"
+      },
+      "prepared": "destruction-warlock-revelation.prepared.json",
+      "prepared_sha256": "de0e7852c36e996907eb67fda7dc1160375b6c2478952e24af93f40ee12e5a0f",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "destruction-warlock-revelation.go-result.json",
+        "sha256": "1f3f1604e0fd4aa0c9388214718828e88ad3cb4c687c09d285050e8d48bf8bb8"
+      },
+      "go_log": {
+        "file": "destruction-warlock-revelation.go-log.txt",
+        "sha256": "9df4f3a27c74a7049d126963d47b7ae451a0a31ce06a722a6c42f2c3ef4dc105"
+      }
+    },
+    {
+      "id": "shadow-priest-revelation",
+      "description": "Shadow priest with Revelation: Mind Blast triggers it, Mind Flay holds it to the channel's end (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\shadow-priest-revelation.request.json"
+      },
+      "prepared": "shadow-priest-revelation.prepared.json",
+      "prepared_sha256": "a54ebb1fbfc0ea3edd94bb5cd7c565249298e91387d48e9a6311f55917298068",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "shadow-priest-revelation.go-result.json",
+        "sha256": "8c8c76e0d41cbe47f21d387fb52548ae9ddb94291d7a67510e4df3c1403d5fd4"
+      },
+      "go_log": {
+        "file": "shadow-priest-revelation.go-log.txt",
+        "sha256": "543fce01fed770ac2cf306dc058b2d6289eb7a31ef71eee09ff636a456accd45"
+      }
+    },
+    {
+      "id": "smite-priest-revelation",
+      "description": "Smite priest with Revelation: Smite triggers and spends it, Holy Fire never triggers it (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\smite-priest-revelation.request.json"
+      },
+      "prepared": "smite-priest-revelation.prepared.json",
+      "prepared_sha256": "a47c70526d46179805332c10e95767c6aba78d257a98da513580d1738a09e395",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "smite-priest-revelation.go-result.json",
+        "sha256": "caa7ce2491e8efde0e79e40c6389de404becd54e45599c2127191aafc1cc17e4"
+      },
+      "go_log": {
+        "file": "smite-priest-revelation.go-log.txt",
+        "sha256": "511277620576687fa1d7cc5cececfff59f87ca07fe271752f365ea651e682865"
+      }
+    },
+    {
+      "id": "elemental-shaman-revelation",
+      "description": "Elemental shaman with Revelation: Lightning Bolt and Chain Lightning trigger it, Flame Shock does not (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\elemental-shaman-revelation.request.json"
+      },
+      "prepared": "elemental-shaman-revelation.prepared.json",
+      "prepared_sha256": "25603dfb7033b130c54ce5f3dacb5c5f8ea5f94877e851c3a0b685a6e8074db8",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "elemental-shaman-revelation.go-result.json",
+        "sha256": "1472420f38855d9bbe113df90fc8e1823543c6cdb857cac270afeb9960be7199"
+      },
+      "go_log": {
+        "file": "elemental-shaman-revelation.go-log.txt",
+        "sha256": "4b166412e6664c56597301b23c9e7e2a0c08d933d343167db81fb95d391ab8aa"
+      }
+    },
+    {
+      "id": "enhancement-shaman-revelation",
+      "description": "Enhancement shaman with Revelation on a two-hander: its magic hits trigger the buff (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\enhancement-shaman-revelation.request.json"
+      },
+      "prepared": "enhancement-shaman-revelation.prepared.json",
+      "prepared_sha256": "80f4e7ac50b7e645dcb44ebec4a36c36c5b2cb934772e6ec9175e6a769215389",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "enhancement-shaman-revelation.go-result.json",
+        "sha256": "b76035c0412900467d06318a5f337e109a6a8fabd83ba3364295081a9c963eeb"
+      },
+      "go_log": {
+        "file": "enhancement-shaman-revelation.go-log.txt",
+        "sha256": "1fc6674e78b57631057d70f5fbc2e076ffd29c87a274887ea4f046afe7b4d03c"
+      }
+    },
+    {
+      "id": "shockadin-paladin-revelation",
+      "description": "Holy Shock paladin with Revelation: heals and Holy Shock trigger it (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\shockadin-paladin-revelation.request.json"
+      },
+      "prepared": "shockadin-paladin-revelation.prepared.json",
+      "prepared_sha256": "1c7fe8e2b3726561bb732589a3020d2abf1f4a37510f40e85ce4dfa22762d46b",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "shockadin-paladin-revelation.go-result.json",
+        "sha256": "85098b250e09d7abc2bd4c8d6658d63af4ef00e6202e37b7d56cce4990f456e7"
+      },
+      "go_log": {
+        "file": "shockadin-paladin-revelation.go-log.txt",
+        "sha256": "12c326a9aa2a350471def36c6b4b7bdfc59ed06cfbaf7528cc16385dd191da84"
+      }
+    },
+    {
+      "id": "protection-paladin-revelation",
+      "description": "Protection paladin with Revelation: Consecration's ticks trigger it (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\protection-paladin-revelation.request.json"
+      },
+      "prepared": "protection-paladin-revelation.prepared.json",
+      "prepared_sha256": "1789b0910c0c305d8b6b8a39a794ea23dee8964694608938efd9046ddbbcbba2",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "protection-paladin-revelation.go-result.json",
+        "sha256": "ad6b65a762a6cebde98bdf9d3dc3dcf96bc9141ca3646eccac31a855e80f180a"
+      },
+      "go_log": {
+        "file": "protection-paladin-revelation.go-log.txt",
+        "sha256": "241a5bb973ba5f71c1e7f2e57f2d9b4db3902245db9b1ca42ff5284c3c24dd92"
+      }
+    },
+    {
+      "id": "balance-druid-revelation",
+      "description": "Balance druid with Revelation: Wrath and Starfire trigger it, Moonfire does not (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\balance-druid-revelation.request.json"
+      },
+      "prepared": "balance-druid-revelation.prepared.json",
+      "prepared_sha256": "9b41eed5ea8ebe47eea8351551f20daea861845b89cb15f75b6c616e3d3d0042",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "balance-druid-revelation.go-result.json",
+        "sha256": "853751cc906ec6a442e1865bb97263392a514082f81ce672ccac27bbe246a6bd"
+      },
+      "go_log": {
+        "file": "balance-druid-revelation.go-log.txt",
+        "sha256": "9918843fd1b25b24c36c35d30ae2d1dbcf37fc60270db7baea9c685472623a25"
+      }
+    },
+    {
+      "id": "marksmanship-hunter-revelation",
+      "description": "Marksmanship hunter with Revelation: the triggers and the buff register, and no shot of the fight triggers it (patches 157, 170)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\marksmanship-hunter-revelation.request.json"
+      },
+      "prepared": "marksmanship-hunter-revelation.prepared.json",
+      "prepared_sha256": "6b2dfdf8a4f9b4e4c921ed54e03022feabeb2fadf7f4d2fa1f21d41445487dae",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "marksmanship-hunter-revelation.go-result.json",
+        "sha256": "ef3828b22fd3ba1d1a8abfd6c1681c2fe7da7f9464af74faf36fa23ebd05230d"
+      },
+      "go_log": {
+        "file": "marksmanship-hunter-revelation.go-log.txt",
+        "sha256": "5628305c52a80ed271626dea947ea476f44dd559c4638f7d8d3476bf11fa4f0a"
+      }
+    },
+    {
+      "id": "warrior-revelation",
+      "description": "Warrior with Revelation: no buff for the class, so the enchant registers nothing (patch 157)",
+      "request": {
+        "path": "fixtures\\mage\\prepared-v2\\warrior-revelation.request.json"
+      },
+      "prepared": "warrior-revelation.prepared.json",
+      "prepared_sha256": "41913b2f8c8022a13282271758e77f59b84640d524a002ad8ae1d93d5f84f691",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "warrior-revelation.go-result.json",
+        "sha256": "a8ed2bfe8ce8c6fbdb535c34eace96b78602d0452d3e1e0b0ca1ae49f8151971"
+      },
+      "go_log": {
+        "file": "warrior-revelation.go-log.txt",
+        "sha256": "1b8ea6eeaaa2823efa67ecc36731de011ddc512e985231c13b726bc34d812efb"
       }
     }
   ]

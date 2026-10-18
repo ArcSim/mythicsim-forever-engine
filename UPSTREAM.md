@@ -554,16 +554,21 @@ ledger has no new commit.
 - Hunter: Mortal Shots raises Sniper Shot's crit damage (172).
 - Data: patch 164's hotfix cache, which among others changes Holy Fire and gives Hurricane back its
   plain proc, so item 2824 leaves the Forever items.
-
-Not modelled yet, so preparation refuses them and the request falls back to Go: the Revelation
-enchant (8217, patch 157) and the three Forever potions with an effect of their own, Dragonfire,
-Caustic Smog and Elemental Purging (167).
+- Enchants (157, 170): Enchant Weapon - Revelation. Its triggers roll 9.8% times one less the
+  player's spell crit on a landed hit, heal or tick that does not crit, of the spells Go's rule
+  admits, and a batch window later activate the class's buff: 100% more crit on the spells its
+  class mask names, until the next cast of one that is no channel or proc, or the end of a channel
+  it names. The exporter and Rust preparation describe it as the `revelation` effect.
+- Potions (167): Dragonfire Potion's Fire hit and burn on every target, Caustic Smog Potion's hit roll
+  and rolled Nature ticks on every target, and Potion of Elemental Purging's 105 spell damage against
+  Elementals, Go's `AttackTable.MobTypeBonusStats`, which the runtime's bonus damage now reads.
 
 501 of the 641 Go goldens changed. 84 moved DPS by 1% or more: 80 paladin builds, two Elemental
 Enhancement shamans, a shaman's item swap and the Hurricane hunter. The rest are the consumable crit
 and the hotfix data, a median move of 0.02%. The Hunter, Mage, Paladin and Priest preparation goldens
-and 9 classic weapon goldens follow. Rust matches all 639 accepted fixtures with a Go golden, and
-preparation writes exactly what the exporter writes for every one of the 641. The recorded sweeps
+and 9 classic weapon goldens follow. 16 new fixtures cover the potions and Revelation in every class
+with a buff, and a warrior that has none. Rust matches all 655 accepted fixtures with a Go golden, and
+preparation writes exactly what the exporter writes for every one of the 657. The recorded sweeps
 were not rerun.
 
 ## Ledger

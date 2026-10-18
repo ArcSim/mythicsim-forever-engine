@@ -22,8 +22,8 @@ const FOREVER_ITEMS: [i32; 151] = [
 ];
 
 /// The enchants of the same files.
-const FOREVER_ENCHANTS: [i32; 15] = [
-    30, 32, 33, 36, 44, 63, 663, 664, 803, 1898, 7941, 7942, 8216, 8220, 8721,
+const FOREVER_ENCHANTS: [i32; 16] = [
+    30, 32, 33, 36, 44, 63, 663, 664, 803, 1898, 7941, 7942, 8216, 8217, 8220, 8721,
 ];
 
 #[test]

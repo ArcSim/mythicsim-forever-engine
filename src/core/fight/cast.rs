@@ -926,6 +926,44 @@ impl<A: Agent> Fight<A> {
                     },
                 );
             }
+            // Go consumes.go: the potion casts its spell at the current target, which a cast on
+            // the player is too.
+            SpellBehavior::CastsSpell(inner) => {
+                let target = if target == Side::Player {
+                    Side::Target
+                } else {
+                    target
+                };
+                self.cast(inner, target);
+            }
+            SpellBehavior::DragonfirePotion { direct, .. } => {
+                let dot = self.spells[spell]
+                    .dot
+                    .expect("Dragonfire Potion has its dot");
+                for position in 0..self.targets.len() {
+                    let side = Side::target(position);
+                    let result = self.calc_damage(spell, side, direct);
+                    if result.landed() {
+                        let copy = self.dot_on(dot, side);
+                        self.apply_dot(copy);
+                    }
+                    self.deal_damage(spell, result, false);
+                }
+            }
+            SpellBehavior::CausticSmogPotion { .. } => {
+                let dot = self.spells[spell]
+                    .dot
+                    .expect("Caustic Smog Potion has its dot");
+                for position in 0..self.targets.len() {
+                    let side = Side::target(position);
+                    let result = self.calc_outcome(spell, side, super::Outcome::MagicHit);
+                    if result.landed() {
+                        let copy = self.dot_on(dot, side);
+                        self.apply_dot(copy);
+                    }
+                    self.deal_damage(spell, result, false);
+                }
+            }
             SpellBehavior::AreaRollDamage { min, max } => {
                 for position in 0..self.targets.len() {
                     let base = self.go_roll(min, max);
@@ -1433,6 +1471,9 @@ impl<A: Agent> Fight<A> {
             SpellBehavior::ExternalCooldown => self.external_cooldown_should_activate(spell),
             // Go's default ShouldActivate.
             SpellBehavior::Eureka
+            | SpellBehavior::CastsSpell(_)
+            | SpellBehavior::DragonfirePotion { .. }
+            | SpellBehavior::CausticSmogPotion { .. }
             | SpellBehavior::ActivateAura(_)
             | SpellBehavior::GoblinSapper
             | SpellBehavior::BasicExplosive { .. }

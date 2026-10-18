@@ -3472,6 +3472,33 @@ pub enum Effect {
         #[serde(default)]
         expire_log: Option<String>,
     },
+    /// consumes_forever_potions.go Dragonfire Potion: the cast casts `spell`, a magic hit and
+    /// crit of the literal on every target, and on each it lands on the spell's dot, which ticks
+    /// its literal.
+    DragonfirePotion {
+        item_id: i32,
+        spell: usize,
+        direct_damage: f64,
+        tick_damage: f64,
+    },
+    /// consumes_forever_potions.go Caustic Smog Potion: the cast casts `spell`, a magic hit roll
+    /// on every target, and on each it lands on the spell's dot, whose ticks roll the literal
+    /// within the variance under the label.
+    CausticSmogPotion {
+        item_id: i32,
+        spell: usize,
+        tick_damage: f64,
+        tick_variance: f64,
+        rng_label: String,
+    },
+    /// consumes_forever_potions.go Potion of Elemental Purging: the cast activates the aura, which
+    /// adds the spell damage against targets of the mob type while it holds.
+    ElementalPurgingPotion {
+        item_id: i32,
+        aura: String,
+        spell_damage: f64,
+        mob_type: String,
+    },
     /// Warrior stances.go: the starting stance and each stance's cast and aura.
     WarriorStances {
         default_stance: String,
@@ -4568,6 +4595,9 @@ impl Effect {
             Effect::ExtraAttackProc { .. } => "extra_attack_proc",
             Effect::PlayerDamageTaken { .. } => "player_damage_taken",
             Effect::PotionResource { .. } => "potion_resource",
+            Effect::DragonfirePotion { .. } => "dragonfire_potion",
+            Effect::CausticSmogPotion { .. } => "caustic_smog_potion",
+            Effect::ElementalPurgingPotion { .. } => "elemental_purging_potion",
             Effect::WarriorStances { .. } => "warrior_stances",
             Effect::Bloodthirst { .. } => "bloodthirst",
             Effect::Whirlwind { .. } => "whirlwind",

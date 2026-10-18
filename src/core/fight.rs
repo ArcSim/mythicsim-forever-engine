@@ -425,6 +425,24 @@ pub(crate) enum SpellBehavior<S> {
         /// The potion's resource metrics, by resource, registered lazily.
         metrics: Vec<(ResourceKind, usize)>,
     },
+    /// Go consumes.go `makePotionActivationSpellInternal` for a Forever potion with a spell of
+    /// its own: the cast casts that spell at the current target.
+    CastsSpell(SpellId),
+    /// Go consumes_forever_potions.go Dragonfire Potion's spell: on every target in unit index
+    /// order, a magic hit and crit of `direct`, whose landing applies the dot, dealt before the
+    /// next target's; each tick deals `tick`.
+    DragonfirePotion {
+        direct: f64,
+        tick: f64,
+    },
+    /// Go consumes_forever_potions.go Caustic Smog Potion's spell: on every target in unit index
+    /// order, a magic hit roll whose landing applies the dot; each tick rolls `tick` within the
+    /// variance under the label.
+    CausticSmogPotion {
+        tick: f64,
+        variance: f64,
+        label: String,
+    },
     /// Go consumes.go conjured item: rolled only when the spread exceeds one.
     ConjuredMana {
         label: String,
@@ -1750,6 +1768,10 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) healing_dealt_factor: f64,
     /// Dragonbreath Chili, when the character ate it.
     pub(crate) chili: Option<DragonbreathChili>,
+    /// Go `AttackTable.MobTypeBonusStats`' spell damage, which only the Potion of Elemental
+    /// Purging gives: its aura and the bonus the player's spells take while it holds, when the
+    /// targets are of its mob type.
+    pub(crate) mob_type_spell_damage: Option<(AuraRef, f64)>,
     /// Item damage procs built from client rows, by their aura's position.
     pub(crate) damage_procs: Vec<DamageProc>,
     /// Enchant heal procs, by their position among the heal proc effects.
@@ -2389,6 +2411,16 @@ impl<A: Agent> Fight<A> {
                                 metrics: Vec::new(),
                             })
                         }
+                        Effect::DragonfirePotion { item_id, spell, .. }
+                        | Effect::CausticSmogPotion { item_id, spell, .. }
+                            if *item_id == item =>
+                        {
+                            Some(SpellBehavior::CastsSpell(*spell))
+                        }
+                        Effect::ElementalPurgingPotion { item_id, aura, .. } if *item_id == item => {
+                            activations.push((spells.len(), aura));
+                            Some(SpellBehavior::None)
+                        }
                         Effect::ConjuredMana {
                             item_id,
                             rng_label,
@@ -2565,6 +2597,26 @@ impl<A: Agent> Fight<A> {
                                 .ok()
                                 .map(SpellBehavior::OnUseDamage)
                         }
+                        Effect::DragonfirePotion {
+                            spell,
+                            direct_damage,
+                            tick_damage,
+                            ..
+                        } if *spell == spells.len() => Some(SpellBehavior::DragonfirePotion {
+                            direct: *direct_damage,
+                            tick: *tick_damage,
+                        }),
+                        Effect::CausticSmogPotion {
+                            spell,
+                            tick_damage,
+                            tick_variance,
+                            rng_label,
+                            ..
+                        } if *spell == spells.len() => Some(SpellBehavior::CausticSmogPotion {
+                            tick: *tick_damage,
+                            variance: *tick_variance,
+                            label: rng_label.clone(),
+                        }),
                         // The spell of a weapon's extra attack proc: it grants the attacks.
                         Effect::ExtraAttackProc {
                             spell: Some(spell),
@@ -3740,6 +3792,7 @@ impl<A: Agent> Fight<A> {
             power_infusion: None,
             healing_dealt_factor: 1.0,
             chili: None,
+            mob_type_spell_damage: None,
             damage_procs: Vec::new(),
             spell_stat_procs: Vec::new(),
             aura_mods: Vec::new(),
@@ -4178,6 +4231,14 @@ impl<A: Agent> Fight<A> {
                         spell,
                         delay: *delay_ns,
                     });
+                }
+                Effect::ElementalPurgingPotion {
+                    aura,
+                    spell_damage,
+                    mob_type,
+                    ..
+                } if target.mob_type.as_deref() == Some(mob_type.as_str()) => {
+                    fight.mob_type_spell_damage = Some((fight.player_aura(aura)?, *spell_damage));
                 }
                 Effect::EmeraldDragonWhelp { .. } => fight.bind_whelp(effect)?,
                 Effect::SulfurasHandOfRagnaros { .. } => fight.bind_sulfuras(effect)?,

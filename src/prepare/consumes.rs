@@ -262,9 +262,11 @@ fn consumable_stats(mut stats: Stats) -> Stats {
     stats
 }
 
-/// Go's three Forever potions with an effect of their own (MythicSim patch 167): Dragonfire,
-/// Caustic Smog and Elemental Purging, which the runtime does not model.
-const FOREVER_EFFECT_POTIONS: [i32; 3] = [250953, 250951, 250954];
+/// Go consumes_forever_potions.go: the Merchant's Favor potions whose effect is not a stat buff
+/// (MythicSim patch 167).
+pub(crate) const DRAGONFIRE_POTION: i32 = 250953;
+pub(crate) const CAUSTIC_SMOG_POTION: i32 = 250951;
+pub(crate) const ELEMENTAL_PURGING_POTION: i32 = 250954;
 
 /// Go `applyConsumeEffects`.
 pub(crate) fn apply_consume_effects(
@@ -716,15 +718,6 @@ fn make_potion_activation_spell_internal(
     potion: &Consumable,
 ) -> Result<MajorCooldown, Refusal> {
     let unit = env.player;
-    if FOREVER_EFFECT_POTIONS.contains(&potion.id) {
-        return Err(Refusal::new(
-            "consumable",
-            format!(
-                "potion {} has an effect of its own, which the runtime does not model",
-                potion.id
-            ),
-        ));
-    }
     let cooldown_duration = if potion.cooldown_duration > 0 {
         potion.cooldown_duration
     } else {
@@ -759,6 +752,11 @@ fn make_potion_activation_spell_internal(
         allow_spell_queueing: false,
         timings: Vec::new(),
     };
+    if let Some(related_aura) = forever_potion_effect(env, potion.id) {
+        mcd.cooldown_type = cooldown_type::DPS;
+        env.sim.spell_mut(spell).related_self_buff = related_aura;
+        return Ok(mcd);
+    }
     if potion.buff_duration > 0 {
         // Add stat buff aura if applicable.
         let aura = env.sim.new_temporary_stats_aura(
@@ -808,6 +806,64 @@ fn make_potion_activation_spell_internal(
         );
     }
     Ok(mcd)
+}
+
+/// Go `Character.foreverPotionEffect`: registers what one of the Forever potions does when drunk
+/// and returns the aura to show as its buff, `Some(None)` for a potion without one; `None` for
+/// every other potion.
+fn forever_potion_effect(env: &mut Environment, item_id: i32) -> Option<Option<AuraId>> {
+    let unit = env.player;
+    let damage_spell =
+        |spell_id: i32, spell_school: u8, label: &str, tick_length, ticks| SpellConfig {
+            action_id: ActionId::spell(spell_id),
+            spell_school,
+            defense_type: DefenseType::Magic,
+            proc_mask: ProcMask::EMPTY,
+            flags: SpellFlag::NO_ON_CAST_COMPLETE | SpellFlag::PASSIVE_SPELL,
+            damage_multiplier: 1.0,
+            threat_multiplier: 1.0,
+            dot: super::spell::DotConfig {
+                aura: AuraConfig {
+                    label: label.to_string(),
+                    ..AuraConfig::default()
+                },
+                tick_length,
+                number_of_ticks: ticks,
+                ..super::spell::DotConfig::default()
+            },
+            ..SpellConfig::default()
+        };
+    match item_id {
+        // newDragonfirePotionSpell (1252554): 280 Fire at once, then 35 every 2 sec for 8 sec.
+        DRAGONFIRE_POTION => {
+            let config = damage_spell(1252554, school::FIRE, "Dragonfire Potion", 2 * SECOND, 4);
+            env.sim.get_or_register_spell(unit, config);
+            Some(None)
+        }
+        // newCausticSmogPotionSpell (1252543): 33 Nature every sec for 12 sec.
+        CAUSTIC_SMOG_POTION => {
+            let config = damage_spell(1252543, school::NATURE, "Caustic Smog Potion", SECOND, 12);
+            env.sim.get_or_register_spell(unit, config);
+            Some(None)
+        }
+        // newElementalPurgingAura: 105 spell damage against Elementals for 5 min.
+        ELEMENTAL_PURGING_POTION => {
+            let noop: super::sim::AuraCallback = Rc::new(|_: &mut Sim, _| {});
+            let aura = env.sim.get_or_register_aura(
+                unit,
+                AuraConfig {
+                    label: "Potion of Elemental Purging".to_string(),
+                    action_id: Some(ActionId::item(ELEMENTAL_PURGING_POTION)),
+                    duration: 300 * SECOND,
+                    on_gain: Some(noop.clone()),
+                    on_expire: Some(noop),
+                    ..AuraConfig::default()
+                },
+            );
+            Some(Some(aura))
+        }
+        _ => None,
+    }
 }
 
 /// Go `registerConjuredCD`.

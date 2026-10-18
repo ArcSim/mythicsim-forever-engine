@@ -1412,7 +1412,7 @@ impl ExternalActivation {
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum Effect {
     Frostbolt {},
-    /// The Gnome racial Eureka!: a major cooldown whose three stacks lower the cost and raise
+    /// The Gnome racial Eureka!: a major cooldown whose 8 second buff lowers the cost and raises
     /// the damage of the spells the class names, resolved into spell positions.
     Eureka {
         spell_id: i32,
@@ -1423,7 +1423,6 @@ pub enum Effect {
         cost_spells: Vec<usize>,
         damage_spells: Vec<usize>,
         tick_cancel_spells: Vec<usize>,
-        spending_spells: Vec<usize>,
     },
     /// The Undead racial Touch of the Grave: landed hits can drain the target.
     TouchOfTheGrave {

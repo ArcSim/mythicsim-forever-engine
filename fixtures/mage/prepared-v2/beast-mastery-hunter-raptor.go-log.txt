@@ -19,7 +19,7 @@
 [0.00] [hunter (#1)] Aura gained: {SpellID: 25918, Tag: -1}
 [0.00] [hunter (#1) - Raptor] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [hunter (#1) - Raptor] Aura gained: {SpellID: 20905, Tag: -1}
-[0.00] [hunter (#1) - Raptor] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2650.880,"MP5": 25.000,"PhysicalCritPercent": 28.032,"SpellCritPercent": 10.000,}
+[0.00] [hunter (#1) - Raptor] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2650.880,"MP5": 25.000,"PhysicalCritPercent": 30.032,"SpellCritPercent": 10.000,}
 [0.00] [hunter (#1) - Raptor] Pet inherited stats: {"PhysicalCritPercent": 20.032,}
 [0.00] [hunter (#1) - Raptor] Pet summoned
 [-10.00] [hunter (#1)] Casting {SpellID: 25296} (Cost = 120.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
@@ -1793,8 +1793,9 @@
 [58.20] [hunter (#1) - Raptor] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
 [58.20] [hunter (#1) - Raptor] Completed cast {SpellID: 3009}
 [58.20] [hunter (#1) - Raptor] Spent 25.000 focus from {SpellID: 3009} (27.000 --> 2.000) of 100 total.
-[58.20] [hunter (#1) - Raptor] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.9, AfterAttackerMods:83.6, AfterResistances:71.0, AfterTargetMods:71.0, AfterOutcome:71.0, AfterPostOutcome:71.0
-[58.20] [hunter (#1) - Raptor] [Target 1] {SpellID: 3009} Hit for 71.026 damage (SpellSchool: 1). (Threat: 71.026)
+[58.20] [hunter (#1) - Raptor] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.9, AfterAttackerMods:83.6, AfterResistances:71.0, AfterTargetMods:71.0, AfterOutcome:142.1, AfterPostOutcome:142.1
+[58.20] [hunter (#1) - Raptor] [Target 1] {SpellID: 3009} Crit for 142.052 damage (SpellSchool: 1). (Threat: 142.052)
+[58.21] [hunter (#1) - Raptor] Aura refreshed: {SpellID: 19615}
 [58.29] [hunter (#1)] No available actions!
 [58.29] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [58.34] [hunter (#1) - Raptor] Gained 3.000 focus from {OtherID: 6} (2.000 --> 5.000) of 100 total.
@@ -2818,7 +2819,7 @@
 [94.34] [hunter (#1) - Raptor] Gained 3.000 focus from {OtherID: 6} (9.000 --> 12.000) of 100 total.
 [94.34] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [94.34] [hunter (#1)] Completed cast {OtherID: 4}
-[94.34] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:560.8, AfterAttackerMods:572.0, AfterResistances:485.8, AfterTargetMods:485.8, AfterOutcome:485.8, AfterPostOutcome:485.8
+[94.34] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:560.8, AfterAttackerMods:572.0, AfterResistances:485.8, AfterTargetMods:485.8, AfterOutcome:1088.3, AfterPostOutcome:1088.3
 [94.35] [hunter (#1) - Raptor] Pausing rotation for 1.023511099s due to resources / CDs.
 [94.41] [hunter (#1)] No available actions!
 [94.41] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -2829,7 +2830,7 @@
 [94.59] [hunter (#1) - Raptor] Gained 3.000 focus from {OtherID: 6} (12.000 --> 15.000) of 100 total.
 [94.61] [hunter (#1)] No available actions!
 [94.61] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.64] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 485.834 damage (SpellSchool: 1). (Threat: 485.834)
+[94.64] [hunter (#1)] [Target 1] {OtherID: 4} Crit for 1088.268 damage (SpellSchool: 1). (Threat: 1088.268)
 [94.71] [hunter (#1)] No available actions!
 [94.71] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [94.81] [hunter (#1)] No available actions!
@@ -2999,7 +3000,7 @@
 [100.34] [hunter (#1) - Raptor] Gained 3.000 focus from {OtherID: 6} (6.000 --> 9.000) of 100 total.
 [100.36] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [100.36] [hunter (#1)] Completed cast {OtherID: 4}
-[100.36] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:523.3, AfterAttackerMods:533.7, AfterResistances:453.3, AfterTargetMods:453.3, AfterOutcome:453.3, AfterPostOutcome:453.3
+[100.36] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:523.3, AfterAttackerMods:533.7, AfterResistances:453.3, AfterTargetMods:453.3, AfterOutcome:1015.4, AfterPostOutcome:1015.4
 [100.46] [hunter (#1)] No available actions!
 [100.46] [hunter (#1)] Pausing rotation for 281.892036ms due to resources / CDs.
 [100.59] [hunter (#1) - Raptor] Gained 3.000 focus from {OtherID: 6} (9.000 --> 12.000) of 100 total.
@@ -3007,7 +3008,7 @@
 [100.62] [hunter (#1) - Raptor] Completed cast {OtherID: 3, Tag: 1}
 [100.62] [hunter (#1) - Raptor] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.0, AfterAttackerMods:79.0, AfterResistances:67.1, AfterTargetMods:67.1, AfterOutcome:37.5, AfterPostOutcome:37.5
 [100.62] [hunter (#1) - Raptor] [Target 1] {OtherID: 3, Tag: 1} Glance for 37.490 damage (SpellSchool: 1). (Threat: 37.490)
-[100.66] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 453.308 damage (SpellSchool: 1). (Threat: 453.308)
+[100.66] [hunter (#1)] [Target 1] {OtherID: 4} Crit for 1015.409 damage (SpellSchool: 1). (Threat: 1015.409)
 [100.67] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (2912.510 --> 2971.510) of 3465 total.
 [100.72] [hunter (#1) - Raptor] Pausing rotation for 628.461539ms due to resources / CDs.
 [100.75] [hunter (#1)] No available actions!
@@ -3367,8 +3368,9 @@
 [112.55] [hunter (#1) - Raptor] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
 [112.55] [hunter (#1) - Raptor] Completed cast {SpellID: 3009}
 [112.55] [hunter (#1) - Raptor] Spent 25.000 focus from {SpellID: 3009} (28.000 --> 3.000) of 100 total.
-[112.55] [hunter (#1) - Raptor] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:55.9, AfterAttackerMods:90.1, AfterResistances:76.6, AfterTargetMods:76.6, AfterOutcome:76.6, AfterPostOutcome:76.6
-[112.55] [hunter (#1) - Raptor] [Target 1] {SpellID: 3009} Hit for 76.553 damage (SpellSchool: 1). (Threat: 76.553)
+[112.55] [hunter (#1) - Raptor] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:55.9, AfterAttackerMods:90.1, AfterResistances:76.6, AfterTargetMods:76.6, AfterOutcome:153.1, AfterPostOutcome:153.1
+[112.55] [hunter (#1) - Raptor] [Target 1] {SpellID: 3009} Crit for 153.107 damage (SpellSchool: 1). (Threat: 153.107)
+[112.56] [hunter (#1) - Raptor] Aura refreshed: {SpellID: 19615}
 [112.59] [hunter (#1) - Raptor] Gained 3.000 focus from {OtherID: 6} (3.000 --> 6.000) of 100 total.
 [112.62] [hunter (#1) - Raptor] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [112.62] [hunter (#1) - Raptor] Completed cast {OtherID: 3, Tag: 1}

@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `b1137248e6b4f230bc706a4d6492b5f7c8d6b64c`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `713b825aae50c2a1277081488a7aca742542b0d6`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `f7598154eb8a138831290b34d4d321a532295224` (2026-10-10) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -359,6 +359,29 @@ build differs from the accepted goldens in the last bits of 591 others. Rust mat
 fixtures with a Go golden, and preparation writes exactly what the exporter writes for every one of the
 614. The pet uptime test now allows the rotation's next evaluation, 1.1 seconds after half the fight,
 where Go's log has it. The recorded sweeps were not rerun.
+
+The pin moved from `b1137248e` to `713b825aa` on 2026-10-16, one commit: the fork's patch 137 (branch
+`mythicsim/racials-20261016`), the racials of the 16 October 2026 beta development notes. The community
+base `f7598154e` and client build 70338 did not move, so the ledger has no new commit; community #806 and
+#809 make the same changes on the other line.
+
+- Human Ruthless (2% crit) and Orc Savage (1%) replace the sword and axe specializations and need no
+  weapon, so they no longer leave Auto Shot out; Dwarf Earth Fury replaces Mace Specialization with 2%
+  crit damage, as Tauren Endurance does instead of 1% hit. The weapon racials' item swap callbacks go,
+  and `Player.disable_weapon_specialization` no longer changes anything.
+- Blood Fury's cooldown is 3 minutes, Shatter Curse takes 5% off magic damage (was 15%) and Wind Blessed
+  is 3% haste (was 1%).
+- Eureka! is an 8 second buff with no charges: its effect drops `spending_spells` and the runtime its
+  stacks.
+- Touch of the Grave procs 30% (20% for paladins, rogues and warriors) behind a 25 second cooldown, and
+  its drain ignores every modifier.
+
+361 of the 614 Go goldens changed, 350 in DPS, and the preparation goldens of every class follow. Rust
+matches all 612 accepted fixtures with a Go golden, and preparation writes exactly what the exporter
+writes for every one of the 614. Two tests move with the random stream: the hunter pet exports no
+disable stats once Ruthless counts for Auto Shot, and the Cyclone test now stops where Go's `keepsTie`
+hands the category to a Cyclone the clap no longer outlasts, which its new seed reaches. The recorded
+sweeps were not rerun.
 
 ## Ledger
 

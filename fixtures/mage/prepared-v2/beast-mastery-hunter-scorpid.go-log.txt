@@ -19,7 +19,7 @@
 [0.00] [hunter (#1)] Aura gained: {SpellID: 25918, Tag: -1}
 [0.00] [hunter (#1) - Scorpid] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [hunter (#1) - Scorpid] Aura gained: {SpellID: 20905, Tag: -1}
-[0.00] [hunter (#1) - Scorpid] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2790.400,"MP5": 25.000,"PhysicalCritPercent": 28.032,"SpellCritPercent": 10.000,}
+[0.00] [hunter (#1) - Scorpid] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2790.400,"MP5": 25.000,"PhysicalCritPercent": 30.032,"SpellCritPercent": 10.000,}
 [0.00] [hunter (#1) - Scorpid] Pet inherited stats: {"PhysicalCritPercent": 20.032,}
 [0.00] [hunter (#1) - Scorpid] Pet summoned
 [-10.00] [hunter (#1)] Casting {SpellID: 25296} (Cost = 120.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
@@ -1782,8 +1782,8 @@
 [58.67] [hunter (#1)] Spent 227.500 mana from {SpellID: 25295} (2252.830 --> 2025.330) of 3465 total.
 [58.70] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [58.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (19.000 --> 22.000) of 100 total.
-[58.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:36.7, AfterTargetMods:36.7, AfterOutcome:36.7, AfterPostOutcome:36.7
-[58.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit for 36.656 damage (SpellSchool: 8). (Threat: 36.656)
+[58.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:36.7, AfterTargetMods:36.7, AfterOutcome:73.3, AfterPostOutcome:73.3
+[58.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Crit for 73.312 damage (SpellSchool: 8). (Threat: 73.312)
 [58.92] [hunter (#1) - Scorpid] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [58.92] [hunter (#1) - Scorpid] Completed cast {OtherID: 3, Tag: 1}
 [58.92] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:43.7, AfterAttackerMods:60.2, AfterResistances:51.1, AfterTargetMods:51.1, AfterOutcome:0.0, AfterPostOutcome:0.0
@@ -2992,8 +2992,8 @@
 [98.67] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 36.193 damage (SpellSchool: 1). (Threat: 36.193)
 [98.77] [hunter (#1) - Scorpid] Pausing rotation for 500ms due to resources / CDs.
 [98.84] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (29.000 --> 32.000) of 100 total.
-[98.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:36.7, AfterTargetMods:36.7, AfterOutcome:36.7, AfterPostOutcome:36.7
-[98.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Hit for 36.656 damage (SpellSchool: 8). (Threat: 36.656)
+[98.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:25.0, AfterAttackerMods:36.7, AfterResistances:36.7, AfterTargetMods:36.7, AfterOutcome:73.3, AfterPostOutcome:73.3
+[98.90] [hunter (#1) - Scorpid] [Target 1] {SpellID: 24587} tick Crit for 73.312 damage (SpellSchool: 8). (Threat: 73.312)
 [99.09] [hunter (#1) - Scorpid] Gained 3.000 focus from {OtherID: 6} (32.000 --> 35.000) of 100 total.
 [99.18] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:0.0, AfterPostOutcome:0.0
 [99.18] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Miss (SpellSchool: 1). (Threat: 0.000)
@@ -3615,7 +3615,7 @@
 [119.62] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.71] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [119.71] [hunter (#1)] Completed cast {OtherID: 4}
-[119.71] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:549.7, AfterAttackerMods:560.7, AfterResistances:476.2, AfterTargetMods:476.2, AfterOutcome:476.2, AfterPostOutcome:476.2
+[119.71] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:549.7, AfterAttackerMods:560.7, AfterResistances:476.2, AfterTargetMods:476.2, AfterOutcome:1066.6, AfterPostOutcome:1066.6
 [119.72] [hunter (#1)] Casting {SpellID: 1293527} (Cost = 172.900, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [119.72] [hunter (#1)] Completed cast {SpellID: 1293527}
 [119.72] [hunter (#1)] Spent 172.900 mana from {SpellID: 1293527} (1801.670 --> 1628.770) of 3465 total.
@@ -3631,7 +3631,7 @@
 [119.94] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:50.0, AfterAttackerMods:68.9, AfterResistances:58.5, AfterTargetMods:58.5, AfterOutcome:40.2, AfterPostOutcome:40.2
 [119.94] [hunter (#1) - Scorpid] [Target 1] {OtherID: 3, Tag: 1} Glance for 40.195 damage (SpellSchool: 1). (Threat: 40.195)
 [120.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (1628.770 --> 1681.570) of 3465 total.
-[120.01] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 476.172 damage (SpellSchool: 1). (Threat: 476.172)
+[120.01] [hunter (#1)] [Target 1] {OtherID: 4} Crit for 1066.625 damage (SpellSchool: 1). (Threat: 1066.625)
 [120.02] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [120.02] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [120.02] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (1681.570 --> 1740.570) of 3465 total.

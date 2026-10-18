@@ -19,7 +19,7 @@
 [0.00] [hunter (#1)] Aura gained: {SpellID: 25918, Tag: -1}
 [0.00] [hunter (#1) - Cat] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [hunter (#1) - Cat] Aura gained: {SpellID: 20905, Tag: -1}
-[0.00] [hunter (#1) - Cat] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2734.592,"MP5": 25.000,"PhysicalCritPercent": 28.032,"SpellCritPercent": 10.000,}
+[0.00] [hunter (#1) - Cat] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2734.592,"MP5": 25.000,"PhysicalCritPercent": 30.032,"SpellCritPercent": 10.000,}
 [0.00] [hunter (#1) - Cat] Pet inherited stats: {"PhysicalCritPercent": 20.032,}
 [0.00] [hunter (#1) - Cat] Pet summoned
 [-10.00] [hunter (#1)] Casting {SpellID: 25296} (Cost = 120.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
@@ -672,8 +672,9 @@
 [17.78] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (2413.300 --> 2472.300) of 3465 total.
 [17.79] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [17.79] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[17.79] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.2, AfterAttackerMods:119.1, AfterResistances:101.2, AfterTargetMods:101.2, AfterOutcome:101.2, AfterPostOutcome:101.2
-[17.79] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Hit for 101.188 damage (SpellSchool: 1). (Threat: 101.188)
+[17.79] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.2, AfterAttackerMods:119.1, AfterResistances:101.2, AfterTargetMods:101.2, AfterOutcome:202.4, AfterPostOutcome:202.4
+[17.79] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Crit for 202.377 damage (SpellSchool: 1). (Threat: 202.377)
+[17.80] [hunter (#1) - Cat] Aura refreshed: {SpellID: 19615}
 [17.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (6.000 --> 9.000) of 100 total.
 [17.86] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [17.86] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
@@ -3917,8 +3918,9 @@
 [110.88] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
 [110.88] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
 [110.88] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (25.000 --> 0.000) of 100 total.
-[110.88] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:50.0, AfterAttackerMods:80.6, AfterResistances:68.4, AfterTargetMods:68.4, AfterOutcome:68.4, AfterPostOutcome:68.4
-[110.88] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Hit for 68.446 damage (SpellSchool: 1). (Threat: 68.446)
+[110.88] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:50.0, AfterAttackerMods:80.6, AfterResistances:68.4, AfterTargetMods:68.4, AfterOutcome:136.9, AfterPostOutcome:136.9
+[110.88] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Crit for 136.893 damage (SpellSchool: 1). (Threat: 136.893)
+[110.89] [hunter (#1) - Cat] Aura refreshed: {SpellID: 19615}
 [110.97] [hunter (#1)] No available actions!
 [110.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [111.07] [hunter (#1)] No available actions!
@@ -3986,7 +3988,6 @@
 [112.77] [hunter (#1)] No available actions!
 [112.77] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [112.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (21.000 --> 24.000) of 100 total.
-[112.85] [hunter (#1) - Cat] Aura faded: {SpellID: 19615}
 [112.87] [hunter (#1)] No available actions!
 [112.87] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [112.97] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
@@ -3994,20 +3995,20 @@
 [112.97] [hunter (#1)] No available actions!
 [112.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [112.98] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
+[113.05] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[113.05] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[113.05] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:47.6, AfterAttackerMods:76.8, AfterResistances:65.2, AfterTargetMods:65.2, AfterOutcome:46.8, AfterPostOutcome:46.8
+[113.05] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 46.779 damage (SpellSchool: 1). (Threat: 46.779)
 [113.07] [hunter (#1)] No available actions!
 [113.07] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [113.09] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (24.000 --> 27.000) of 100 total.
-[113.10] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[113.10] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[113.10] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:47.6, AfterAttackerMods:76.8, AfterResistances:65.2, AfterTargetMods:65.2, AfterOutcome:46.8, AfterPostOutcome:46.8
-[113.10] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 46.779 damage (SpellSchool: 1). (Threat: 46.779)
+[113.15] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[113.15] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
+[113.15] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (27.000 --> 2.000) of 100 total.
+[113.15] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:53.8, AfterAttackerMods:86.7, AfterResistances:73.6, AfterTargetMods:73.6, AfterOutcome:73.6, AfterPostOutcome:73.6
+[113.15] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Hit for 73.640 damage (SpellSchool: 1). (Threat: 73.640)
 [113.17] [hunter (#1)] No available actions!
 [113.17] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.20] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
-[113.20] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
-[113.20] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (27.000 --> 2.000) of 100 total.
-[113.20] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:53.8, AfterAttackerMods:86.7, AfterResistances:73.6, AfterTargetMods:73.6, AfterOutcome:73.6, AfterPostOutcome:73.6
-[113.20] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Hit for 73.640 damage (SpellSchool: 1). (Threat: 73.640)
 [113.27] [hunter (#1)] No available actions!
 [113.27] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [113.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (2.000 --> 5.000) of 100 total.
@@ -4025,9 +4026,14 @@
 [113.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (8.000 --> 11.000) of 100 total.
 [113.87] [hunter (#1)] No available actions!
 [113.87] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[113.97] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[113.97] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[113.97] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.0, AfterAttackerMods:72.6, AfterResistances:61.6, AfterTargetMods:61.6, AfterOutcome:44.5, AfterPostOutcome:44.5
+[113.97] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 44.498 damage (SpellSchool: 1). (Threat: 44.498)
 [113.97] [hunter (#1)] No available actions!
 [113.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [114.00] [hunter (#1)] Gained 74.800 mana from {OtherID: 2, Tag: 2} (3465.000 --> 3465.000) of 3465 total.
+[114.07] [hunter (#1) - Cat] Pausing rotation for 676.923077ms due to resources / CDs.
 [114.07] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [114.07] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [114.07] [hunter (#1)] No available actions!
@@ -4037,17 +4043,13 @@
 [114.17] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [114.27] [hunter (#1)] No available actions!
 [114.27] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.30] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[114.30] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[114.30] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:46.2, AfterAttackerMods:74.5, AfterResistances:63.2, AfterTargetMods:63.2, AfterOutcome:63.2, AfterPostOutcome:63.2
-[114.30] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Hit for 63.242 damage (SpellSchool: 1). (Threat: 63.242)
 [114.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (14.000 --> 17.000) of 100 total.
 [114.37] [hunter (#1)] No available actions!
 [114.37] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [114.37] [hunter (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [114.37] [hunter (#1)] Completed cast {OtherID: 3, Tag: 1}
-[114.37] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:545.1, AfterAttackerMods:556.0, AfterResistances:472.2, AfterTargetMods:472.2, AfterOutcome:944.5, AfterPostOutcome:944.5
-[114.37] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 944.454 damage (SpellSchool: 1). (Threat: 944.454)
+[114.37] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:541.9, AfterAttackerMods:552.7, AfterResistances:469.4, AfterTargetMods:469.4, AfterOutcome:0.0, AfterPostOutcome:0.0
+[114.37] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
 [114.37] [hunter (#1)] Casting {SpellID: 1293527} (Cost = 172.900, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [114.37] [hunter (#1)] Completed cast {SpellID: 1293527}
 [114.37] [hunter (#1)] Spent 172.900 mana from {SpellID: 1293527} (3465.000 --> 3292.100) of 3465 total.
@@ -4058,30 +4060,35 @@
 [114.37] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:0.0, AfterPostOutcome:0.0
 [114.37] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Dodge (SpellSchool: 1). (Threat: 0.000)
 [114.38] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (3292.100 --> 3351.100) of 3465 total.
-[114.40] [hunter (#1) - Cat] Pausing rotation for 400ms due to resources / CDs.
 [114.47] [hunter (#1)] No available actions!
 [114.47] [hunter (#1)] Pausing rotation for 1.4s due to resources / CDs.
 [114.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (17.000 --> 20.000) of 100 total.
-[114.80] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
+[114.75] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [114.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (20.000 --> 23.000) of 100 total.
+[114.89] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[114.89] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[114.89] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:43.9, AfterAttackerMods:70.8, AfterResistances:60.1, AfterTargetMods:60.1, AfterOutcome:0.0, AfterPostOutcome:0.0
+[114.89] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[114.99] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [115.09] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (23.000 --> 26.000) of 100 total.
-[115.30] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
-[115.30] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
-[115.30] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (26.000 --> 1.000) of 100 total.
-[115.30] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:43.7, AfterAttackerMods:70.5, AfterResistances:59.9, AfterTargetMods:59.9, AfterOutcome:0.0, AfterPostOutcome:0.0
-[115.30] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Miss (SpellSchool: 1). (Threat: 0.000)
-[115.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (1.000 --> 4.000) of 100 total.
+[115.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (26.000 --> 29.000) of 100 total.
 [115.47] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [115.47] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
-[115.50] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[115.50] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[115.50] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:46.2, AfterAttackerMods:74.6, AfterResistances:63.3, AfterTargetMods:63.3, AfterOutcome:63.3, AfterPostOutcome:63.3
-[115.50] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Hit for 63.328 damage (SpellSchool: 1). (Threat: 63.328)
+[115.49] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[115.49] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
+[115.49] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (29.000 --> 4.000) of 100 total.
+[115.49] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:47.0, AfterAttackerMods:75.8, AfterResistances:64.3, AfterTargetMods:64.3, AfterOutcome:128.7, AfterPostOutcome:128.7
+[115.49] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Crit for 128.687 damage (SpellSchool: 1). (Threat: 128.687)
+[115.50] [hunter (#1) - Cat] Aura refreshed: {SpellID: 19615}
 [115.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (4.000 --> 7.000) of 100 total.
-[115.60] [hunter (#1) - Cat] Pausing rotation for 1.3s due to resources / CDs.
+[115.82] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[115.82] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[115.82] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:44.2, AfterAttackerMods:71.3, AfterResistances:60.6, AfterTargetMods:60.6, AfterOutcome:45.3, AfterPostOutcome:45.3
+[115.82] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 45.339 damage (SpellSchool: 1). (Threat: 45.339)
 [115.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (7.000 --> 10.000) of 100 total.
 [115.87] [hunter (#1)] No available actions!
 [115.87] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.92] [hunter (#1) - Cat] Pausing rotation for 1.176923077s due to resources / CDs.
 [115.97] [hunter (#1)] No available actions!
 [115.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [116.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (3351.100 --> 3403.900) of 3465 total.
@@ -4102,60 +4109,58 @@
 [116.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (16.000 --> 19.000) of 100 total.
 [116.67] [hunter (#1)] No available actions!
 [116.67] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.70] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[116.70] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[116.70] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:46.1, AfterAttackerMods:74.4, AfterResistances:63.2, AfterTargetMods:63.2, AfterOutcome:0.0, AfterPostOutcome:0.0
-[116.70] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[116.74] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[116.74] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[116.74] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:50.2, AfterAttackerMods:80.9, AfterResistances:68.7, AfterTargetMods:68.7, AfterOutcome:0.0, AfterPostOutcome:0.0
+[116.74] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
 [116.77] [hunter (#1)] No available actions!
 [116.77] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.80] [hunter (#1) - Cat] Pausing rotation for 100ms due to resources / CDs.
 [116.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (19.000 --> 22.000) of 100 total.
+[116.84] [hunter (#1) - Cat] Pausing rotation for 253.846154ms due to resources / CDs.
 [116.87] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [116.87] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [116.87] [hunter (#1)] No available actions!
 [116.87] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.90] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [116.97] [hunter (#1)] No available actions!
 [116.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [117.07] [hunter (#1)] No available actions!
 [117.07] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [117.09] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (22.000 --> 25.000) of 100 total.
+[117.09] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[117.09] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
+[117.09] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (25.000 --> 0.000) of 100 total.
+[117.09] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:57.7, AfterAttackerMods:93.1, AfterResistances:79.1, AfterTargetMods:79.1, AfterOutcome:79.1, AfterPostOutcome:79.1
+[117.09] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Hit for 79.085 damage (SpellSchool: 1). (Threat: 79.085)
 [117.17] [hunter (#1)] No available actions!
 [117.17] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [117.27] [hunter (#1)] No available actions!
 [117.27] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[117.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (25.000 --> 28.000) of 100 total.
+[117.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (0.000 --> 3.000) of 100 total.
 [117.37] [hunter (#1)] No available actions!
 [117.37] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[117.40] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
-[117.40] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
-[117.40] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (28.000 --> 3.000) of 100 total.
-[117.40] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:57.4, AfterAttackerMods:92.6, AfterResistances:78.6, AfterTargetMods:78.6, AfterOutcome:157.2, AfterPostOutcome:157.2
-[117.40] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Crit for 157.228 damage (SpellSchool: 1). (Threat: 157.228)
-[117.41] [hunter (#1) - Cat] Aura gained: {SpellID: 19615}
 [117.47] [hunter (#1)] No available actions!
 [117.47] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [117.57] [hunter (#1)] No available actions!
 [117.57] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [117.57] [hunter (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [117.57] [hunter (#1)] Completed cast {OtherID: 3, Tag: 1}
-[117.57] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:522.1, AfterAttackerMods:532.5, AfterResistances:452.2, AfterTargetMods:452.2, AfterOutcome:452.2, AfterPostOutcome:452.2
-[117.57] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 452.241 damage (SpellSchool: 1). (Threat: 452.241)
+[117.57] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:509.4, AfterAttackerMods:519.6, AfterResistances:441.3, AfterTargetMods:441.3, AfterOutcome:882.6, AfterPostOutcome:882.6
+[117.57] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 882.596 damage (SpellSchool: 1). (Threat: 882.596)
 [117.57] [hunter (#1)] No available actions!
 [117.57] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [117.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (3.000 --> 6.000) of 100 total.
+[117.66] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[117.66] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[117.66] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:44.0, AfterAttackerMods:71.0, AfterResistances:60.3, AfterTargetMods:60.3, AfterOutcome:35.5, AfterPostOutcome:35.5
+[117.66] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 35.451 damage (SpellSchool: 1). (Threat: 35.451)
 [117.67] [hunter (#1)] No available actions!
 [117.67] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[117.76] [hunter (#1) - Cat] Pausing rotation for 930.769231ms due to resources / CDs.
 [117.77] [hunter (#1)] No available actions!
 [117.77] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[117.79] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[117.79] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[117.79] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:44.8, AfterAttackerMods:72.2, AfterResistances:61.3, AfterTargetMods:61.3, AfterOutcome:0.0, AfterPostOutcome:0.0
-[117.79] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
 [117.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (6.000 --> 9.000) of 100 total.
 [117.87] [hunter (#1)] No available actions!
 [117.87] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[117.89] [hunter (#1) - Cat] Pausing rotation for 1.113076924s due to resources / CDs.
 [117.97] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [117.97] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [117.97] [hunter (#1)] No available actions!
@@ -4175,22 +4180,22 @@
 [118.47] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [118.57] [hunter (#1)] No available actions!
 [118.57] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.58] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[118.58] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[118.58] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:53.9, AfterAttackerMods:87.0, AfterResistances:73.9, AfterTargetMods:73.9, AfterOutcome:73.9, AfterPostOutcome:73.9
+[118.58] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Hit for 73.866 damage (SpellSchool: 1). (Threat: 73.866)
 [118.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (15.000 --> 18.000) of 100 total.
 [118.67] [hunter (#1)] No available actions!
 [118.67] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[118.71] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[118.71] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[118.71] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.0, AfterAttackerMods:87.0, AfterResistances:73.9, AfterTargetMods:73.9, AfterOutcome:0.0, AfterPostOutcome:0.0
-[118.71] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[118.68] [hunter (#1) - Cat] Pausing rotation for 100ms due to resources / CDs.
 [118.77] [hunter (#1)] No available actions!
 [118.77] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[118.81] [hunter (#1) - Cat] Pausing rotation for 190.000001ms due to resources / CDs.
+[118.78] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [118.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (18.000 --> 21.000) of 100 total.
 [118.87] [hunter (#1)] No available actions!
 [118.87] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [118.97] [hunter (#1)] No available actions!
 [118.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[119.00] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [119.07] [hunter (#1)] No available actions!
 [119.07] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.09] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (21.000 --> 24.000) of 100 total.
@@ -4198,28 +4203,29 @@
 [119.17] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.27] [hunter (#1)] No available actions!
 [119.27] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[119.28] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [119.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (24.000 --> 27.000) of 100 total.
-[119.37] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
-[119.37] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
+[119.37] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:0.0, AfterPostOutcome:0.0
+[119.37] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Dodge (SpellSchool: 1). (Threat: 0.000)
 [119.37] [hunter (#1)] No available actions!
 [119.37] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.47] [hunter (#1)] No available actions!
 [119.47] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[119.50] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
-[119.50] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
-[119.50] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (27.000 --> 2.000) of 100 total.
-[119.50] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.4, AfterAttackerMods:79.6, AfterResistances:67.6, AfterTargetMods:67.6, AfterOutcome:67.6, AfterPostOutcome:67.6
-[119.50] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Hit for 67.637 damage (SpellSchool: 1). (Threat: 67.637)
+[119.51] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[119.51] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[119.51] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.3, AfterAttackerMods:82.8, AfterResistances:70.3, AfterTargetMods:70.3, AfterOutcome:45.2, AfterPostOutcome:45.2
+[119.51] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 45.180 damage (SpellSchool: 1). (Threat: 45.180)
 [119.57] [hunter (#1)] No available actions!
 [119.57] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[119.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (2.000 --> 5.000) of 100 total.
-[119.63] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[119.63] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[119.63] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.4, AfterAttackerMods:79.7, AfterResistances:67.7, AfterTargetMods:67.7, AfterOutcome:0.0, AfterPostOutcome:0.0
-[119.63] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
+[119.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (27.000 --> 30.000) of 100 total.
+[119.61] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[119.61] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
+[119.61] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (30.000 --> 5.000) of 100 total.
+[119.61] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:46.1, AfterAttackerMods:74.4, AfterResistances:63.2, AfterTargetMods:63.2, AfterOutcome:126.4, AfterPostOutcome:126.4
+[119.61] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Crit for 126.406 damage (SpellSchool: 1). (Threat: 126.406)
+[119.62] [hunter (#1) - Cat] Aura refreshed: {SpellID: 19615}
 [119.67] [hunter (#1)] No available actions!
 [119.67] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[119.73] [hunter (#1) - Cat] Pausing rotation for 1.366923078s due to resources / CDs.
 [119.77] [hunter (#1)] No available actions!
 [119.77] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (5.000 --> 8.000) of 100 total.
@@ -4242,70 +4248,70 @@
 [120.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (11.000 --> 14.000) of 100 total.
 [120.37] [hunter (#1)] No available actions!
 [120.37] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[120.43] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[120.43] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[120.43] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.9, AfterAttackerMods:111.1, AfterResistances:94.4, AfterTargetMods:94.4, AfterOutcome:188.8, AfterPostOutcome:188.8
+[120.43] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Crit for 188.795 damage (SpellSchool: 1). (Threat: 188.795)
+[120.44] [hunter (#1) - Cat] Aura refreshed: {SpellID: 19615}
 [120.47] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [120.47] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [120.47] [hunter (#1)] No available actions!
 [120.47] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.55] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[120.55] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[120.55] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.7, AfterAttackerMods:117.7, AfterResistances:100.0, AfterTargetMods:100.0, AfterOutcome:0.0, AfterPostOutcome:0.0
-[120.55] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[120.53] [hunter (#1) - Cat] Pausing rotation for 676.923077ms due to resources / CDs.
 [120.57] [hunter (#1)] No available actions!
 [120.57] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [120.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (14.000 --> 17.000) of 100 total.
-[120.65] [hunter (#1) - Cat] Pausing rotation for 443.846155ms due to resources / CDs.
 [120.67] [hunter (#1)] No available actions!
 [120.67] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [120.77] [hunter (#1)] No available actions!
 [120.77] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [120.77] [hunter (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [120.77] [hunter (#1)] Completed cast {OtherID: 3, Tag: 1}
-[120.77] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:558.3, AfterAttackerMods:569.4, AfterResistances:483.6, AfterTargetMods:483.6, AfterOutcome:0.0, AfterPostOutcome:0.0
-[120.77] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[120.77] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:554.6, AfterAttackerMods:565.7, AfterResistances:480.4, AfterTargetMods:480.4, AfterOutcome:309.7, AfterPostOutcome:309.7
+[120.77] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 309.689 damage (SpellSchool: 1). (Threat: 309.689)
 [120.77] [hunter (#1)] Casting {SpellID: 1293527} (Cost = 172.900, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [120.77] [hunter (#1)] Completed cast {SpellID: 1293527}
 [120.77] [hunter (#1)] Spent 172.900 mana from {SpellID: 1293527} (3259.000 --> 3086.100) of 3465 total.
-[120.77] [hunter (#1)] [Target 1] {SpellID: 1293527} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:198.3, AfterAttackerMods:232.7, AfterResistances:197.6, AfterTargetMods:197.6, AfterOutcome:395.2, AfterPostOutcome:395.2
-[120.77] [hunter (#1)] [Target 1] {SpellID: 1293527} Crit for 395.199 damage (SpellSchool: 1). (Threat: 395.199)
+[120.77] [hunter (#1)] [Target 1] {SpellID: 1293527} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:198.3, AfterAttackerMods:232.7, AfterResistances:197.6, AfterTargetMods:197.6, AfterOutcome:197.6, AfterPostOutcome:197.6
+[120.77] [hunter (#1)] [Target 1] {SpellID: 1293527} Hit for 197.600 damage (SpellSchool: 1). (Threat: 197.600)
 [120.77] [Target 1] Aura faded: {SpellID: 1293527, Tag: 2}
 [120.77] [Target 1] Aura gained: {SpellID: 1293527, Tag: 2}
 [120.77] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [120.77] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
-[120.78] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (3086.100 --> 3145.100) of 3465 total.
 [120.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (17.000 --> 20.000) of 100 total.
 [120.87] [hunter (#1)] No available actions!
 [120.87] [hunter (#1)] Pausing rotation for 1.4s due to resources / CDs.
 [121.09] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (20.000 --> 23.000) of 100 total.
-[121.10] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
+[121.21] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [121.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (23.000 --> 26.000) of 100 total.
-[121.48] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[121.48] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[121.48] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:52.7, AfterAttackerMods:127.4, AfterResistances:108.2, AfterTargetMods:108.2, AfterOutcome:108.2, AfterPostOutcome:108.2
-[121.48] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Hit for 108.236 damage (SpellSchool: 1). (Threat: 108.236)
-[121.58] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
-[121.58] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
-[121.58] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (26.000 --> 1.000) of 100 total.
-[121.58] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.7, AfterAttackerMods:110.7, AfterResistances:94.0, AfterTargetMods:94.0, AfterOutcome:94.0, AfterPostOutcome:94.0
-[121.58] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Hit for 93.992 damage (SpellSchool: 1). (Threat: 93.992)
+[121.35] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[121.35] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[121.35] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:43.7, AfterAttackerMods:105.8, AfterResistances:89.8, AfterTargetMods:89.8, AfterOutcome:179.7, AfterPostOutcome:179.7
+[121.35] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Crit for 179.677 damage (SpellSchool: 1). (Threat: 179.677)
+[121.36] [hunter (#1) - Cat] Aura refreshed: {SpellID: 19615}
+[121.45] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[121.45] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
+[121.45] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (26.000 --> 1.000) of 100 total.
+[121.45] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:58.2, AfterAttackerMods:140.8, AfterResistances:119.5, AfterTargetMods:119.5, AfterOutcome:119.5, AfterPostOutcome:119.5
+[121.45] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Hit for 119.538 damage (SpellSchool: 1). (Threat: 119.538)
 [121.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (1.000 --> 4.000) of 100 total.
 [121.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (4.000 --> 7.000) of 100 total.
 [121.87] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [121.87] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
-[122.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (3145.100 --> 3197.900) of 3465 total.
+[122.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (3086.100 --> 3138.900) of 3465 total.
 [122.09] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (7.000 --> 10.000) of 100 total.
 [122.27] [hunter (#1)] No available actions!
 [122.27] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.28] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[122.28] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[122.28] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.2, AfterAttackerMods:109.5, AfterResistances:93.0, AfterTargetMods:93.0, AfterOutcome:65.8, AfterPostOutcome:65.8
+[122.28] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 65.793 damage (SpellSchool: 1). (Threat: 65.793)
 [122.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (10.000 --> 13.000) of 100 total.
 [122.37] [hunter (#1)] No available actions!
 [122.37] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.40] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[122.40] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[122.40] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.1, AfterAttackerMods:123.6, AfterResistances:105.0, AfterTargetMods:105.0, AfterOutcome:210.0, AfterPostOutcome:210.0
-[122.40] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Crit for 210.012 damage (SpellSchool: 1). (Threat: 210.012)
-[122.41] [hunter (#1) - Cat] Aura refreshed: {SpellID: 19615}
+[122.38] [hunter (#1) - Cat] Pausing rotation for 676.923077ms due to resources / CDs.
 [122.47] [hunter (#1)] No available actions!
 [122.47] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.50] [hunter (#1) - Cat] Pausing rotation for 676.923077ms due to resources / CDs.
 [122.57] [hunter (#1)] No available actions!
 [122.57] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [122.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (13.000 --> 16.000) of 100 total.
@@ -4318,37 +4324,38 @@
 [122.87] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [122.97] [hunter (#1)] No available actions!
 [122.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.05] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [123.07] [hunter (#1)] No available actions!
 [123.07] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [123.09] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (19.000 --> 22.000) of 100 total.
 [123.17] [hunter (#1)] No available actions!
 [123.17] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.18] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
+[123.20] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[123.20] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[123.20] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:53.5, AfterAttackerMods:129.3, AfterResistances:109.8, AfterTargetMods:109.8, AfterOutcome:77.5, AfterPostOutcome:77.5
+[123.20] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 77.542 damage (SpellSchool: 1). (Threat: 77.542)
 [123.27] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [123.27] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [123.27] [hunter (#1)] No available actions!
 [123.27] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.32] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[123.32] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[123.32] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:52.9, AfterAttackerMods:128.0, AfterResistances:108.7, AfterTargetMods:108.7, AfterOutcome:108.7, AfterPostOutcome:108.7
-[123.32] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Hit for 108.683 damage (SpellSchool: 1). (Threat: 108.683)
+[123.30] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [123.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (22.000 --> 25.000) of 100 total.
 [123.37] [hunter (#1)] No available actions!
 [123.37] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.42] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
-[123.42] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
-[123.42] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (25.000 --> 0.000) of 100 total.
-[123.42] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.8, AfterAttackerMods:118.1, AfterResistances:100.3, AfterTargetMods:100.3, AfterOutcome:100.3, AfterPostOutcome:100.3
-[123.42] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Hit for 100.322 damage (SpellSchool: 1). (Threat: 100.322)
 [123.47] [hunter (#1)] No available actions!
 [123.47] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [123.57] [hunter (#1)] No available actions!
 [123.57] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (0.000 --> 3.000) of 100 total.
+[123.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (25.000 --> 28.000) of 100 total.
 [123.67] [hunter (#1)] No available actions!
 [123.67] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [123.77] [hunter (#1)] No available actions!
 [123.77] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.80] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[123.80] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
+[123.80] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (28.000 --> 3.000) of 100 total.
+[123.80] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:46.9, AfterAttackerMods:113.5, AfterResistances:96.4, AfterTargetMods:96.4, AfterOutcome:96.4, AfterPostOutcome:96.4
+[123.80] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Hit for 96.364 damage (SpellSchool: 1). (Threat: 96.364)
 [123.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (3.000 --> 6.000) of 100 total.
 [123.87] [hunter (#1)] No available actions!
 [123.87] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -4356,25 +4363,25 @@
 [123.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [123.97] [hunter (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [123.97] [hunter (#1)] Completed cast {OtherID: 3, Tag: 1}
-[123.97] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:531.3, AfterAttackerMods:542.0, AfterResistances:460.3, AfterTargetMods:460.3, AfterOutcome:460.3, AfterPostOutcome:460.3
-[123.97] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 460.283 damage (SpellSchool: 1). (Threat: 460.283)
+[123.97] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:502.9, AfterAttackerMods:513.0, AfterResistances:435.7, AfterTargetMods:435.7, AfterOutcome:435.7, AfterPostOutcome:435.7
+[123.97] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 435.680 damage (SpellSchool: 1). (Threat: 435.680)
 [123.97] [hunter (#1)] No available actions!
 [123.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.98] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (3138.900 --> 3197.900) of 3465 total.
 [124.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (3197.900 --> 3250.700) of 3465 total.
 [124.07] [hunter (#1)] No available actions!
 [124.07] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [124.09] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (6.000 --> 9.000) of 100 total.
+[124.12] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[124.12] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[124.12] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:44.9, AfterAttackerMods:108.7, AfterResistances:92.3, AfterTargetMods:92.3, AfterOutcome:56.1, AfterPostOutcome:56.1
+[124.12] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 56.124 damage (SpellSchool: 1). (Threat: 56.124)
 [124.17] [hunter (#1)] No available actions!
 [124.17] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.25] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[124.25] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[124.25] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:52.3, AfterAttackerMods:126.5, AfterResistances:107.4, AfterTargetMods:107.4, AfterOutcome:214.9, AfterPostOutcome:214.9
-[124.25] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Crit for 214.857 damage (SpellSchool: 1). (Threat: 214.857)
-[124.26] [hunter (#1) - Cat] Aura refreshed: {SpellID: 19615}
+[124.22] [hunter (#1) - Cat] Pausing rotation for 1.176923077s due to resources / CDs.
 [124.27] [hunter (#1)] No available actions!
 [124.27] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [124.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (9.000 --> 12.000) of 100 total.
-[124.35] [hunter (#1) - Cat] Pausing rotation for 676.923077ms due to resources / CDs.
 [124.37] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [124.37] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [124.37] [hunter (#1)] No available actions!
@@ -4393,22 +4400,22 @@
 [124.87] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [124.97] [hunter (#1)] No available actions!
 [124.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.02] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
+[125.05] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[125.05] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[125.05] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.6, AfterAttackerMods:124.7, AfterResistances:105.9, AfterTargetMods:105.9, AfterOutcome:67.0, AfterPostOutcome:67.0
+[125.05] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 67.029 damage (SpellSchool: 1). (Threat: 67.029)
 [125.07] [hunter (#1)] No available actions!
 [125.07] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [125.09] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (18.000 --> 21.000) of 100 total.
-[125.17] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[125.17] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[125.17] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:52.0, AfterAttackerMods:125.7, AfterResistances:106.8, AfterTargetMods:106.8, AfterOutcome:66.3, AfterPostOutcome:66.3
-[125.17] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 66.265 damage (SpellSchool: 1). (Threat: 66.265)
+[125.15] [hunter (#1) - Cat] Pausing rotation for 253.846154ms due to resources / CDs.
 [125.17] [hunter (#1)] No available actions!
 [125.17] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.27] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [125.27] [hunter (#1)] No available actions!
 [125.27] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [125.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (21.000 --> 24.000) of 100 total.
 [125.37] [hunter (#1)] No available actions!
 [125.37] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[125.40] [hunter (#1) - Cat] Pausing rotation for 500ms due to resources / CDs.
 [125.47] [hunter (#1)] No available actions!
 [125.47] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [125.57] [hunter (#1)] No available actions!
@@ -4416,32 +4423,32 @@
 [125.59] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (24.000 --> 27.000) of 100 total.
 [125.67] [hunter (#1)] No available actions!
 [125.67] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.77] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
-[125.77] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
-[125.77] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (27.000 --> 2.000) of 100 total.
-[125.77] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.0, AfterAttackerMods:130.6, AfterResistances:111.0, AfterTargetMods:111.0, AfterOutcome:221.9, AfterPostOutcome:221.9
-[125.77] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Crit for 221.907 damage (SpellSchool: 1). (Threat: 221.907)
 [125.77] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [125.77] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [125.77] [hunter (#1)] No available actions!
 [125.77] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.78] [hunter (#1) - Cat] Aura refreshed: {SpellID: 19615}
-[125.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (2.000 --> 5.000) of 100 total.
+[125.84] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (27.000 --> 30.000) of 100 total.
 [125.87] [hunter (#1)] No available actions!
 [125.87] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[125.90] [hunter (#1) - Cat] Casting {SpellID: 3009} (Cost = 25.000, Cast Time = 0s, GCD = 1.6s, Effective Time = 1.6s)
+[125.90] [hunter (#1) - Cat] Completed cast {SpellID: 3009}
+[125.90] [hunter (#1) - Cat] Spent 25.000 focus from {SpellID: 3009} (30.000 --> 5.000) of 100 total.
+[125.90] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:57.2, AfterAttackerMods:138.4, AfterResistances:117.6, AfterTargetMods:117.6, AfterOutcome:235.1, AfterPostOutcome:235.1
+[125.90] [hunter (#1) - Cat] [Target 1] {SpellID: 3009} Crit for 235.149 damage (SpellSchool: 1). (Threat: 235.149)
+[125.91] [hunter (#1) - Cat] Aura refreshed: {SpellID: 19615}
+[125.97] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[125.97] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[125.97] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.1, AfterAttackerMods:118.9, AfterResistances:101.0, AfterTargetMods:101.0, AfterOutcome:101.0, AfterPostOutcome:101.0
+[125.97] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Hit for 100.953 damage (SpellSchool: 1). (Threat: 100.953)
 [125.97] [hunter (#1)] No available actions!
 [125.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [126.00] [hunter (#1)] Gained 74.800 mana from {OtherID: 2, Tag: 2} (3250.700 --> 3325.500) of 3465 total.
+[126.07] [hunter (#1) - Cat] Pausing rotation for 1.430769231s due to resources / CDs.
 [126.07] [hunter (#1)] No available actions!
 [126.07] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [126.09] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (5.000 --> 8.000) of 100 total.
-[126.09] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[126.09] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[126.09] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.0, AfterAttackerMods:118.5, AfterResistances:100.6, AfterTargetMods:100.6, AfterOutcome:56.2, AfterPostOutcome:56.2
-[126.09] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 56.235 damage (SpellSchool: 1). (Threat: 56.235)
 [126.17] [hunter (#1)] No available actions!
 [126.17] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.19] [hunter (#1) - Cat] Pausing rotation for 1.176923077s due to resources / CDs.
 [126.27] [hunter (#1)] No available actions!
 [126.27] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [126.34] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (8.000 --> 11.000) of 100 total.
@@ -4461,22 +4468,23 @@
 [126.87] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [126.87] [hunter (#1)] No available actions!
 [126.87] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
+[126.89] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[126.89] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
+[126.89] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.6, AfterAttackerMods:132.1, AfterResistances:112.2, AfterTargetMods:112.2, AfterOutcome:224.4, AfterPostOutcome:224.4
+[126.89] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Crit for 224.449 damage (SpellSchool: 1). (Threat: 224.449)
+[126.90] [hunter (#1) - Cat] Aura refreshed: {SpellID: 19615}
 [126.97] [hunter (#1)] No available actions!
 [126.97] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[127.02] [hunter (#1) - Cat] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[127.02] [hunter (#1) - Cat] Completed cast {OtherID: 3, Tag: 1}
-[127.02] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.6, AfterAttackerMods:117.6, AfterResistances:99.9, AfterTargetMods:99.9, AfterOutcome:64.1, AfterPostOutcome:64.1
-[127.02] [hunter (#1) - Cat] [Target 1] {OtherID: 3, Tag: 1} Glance for 64.066 damage (SpellSchool: 1). (Threat: 64.066)
+[126.99] [hunter (#1) - Cat] Pausing rotation for 507.692308ms due to resources / CDs.
 [127.07] [hunter (#1)] No available actions!
 [127.07] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [127.09] [hunter (#1) - Cat] Gained 3.000 focus from {OtherID: 6} (17.000 --> 20.000) of 100 total.
-[127.12] [hunter (#1) - Cat] Pausing rotation for 253.846154ms due to resources / CDs.
 [127.17] [hunter (#1)] No available actions!
 [127.17] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [127.17] [hunter (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [127.17] [hunter (#1)] Completed cast {OtherID: 3, Tag: 1}
-[127.17] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:560.9, AfterAttackerMods:572.2, AfterResistances:485.9, AfterTargetMods:485.9, AfterOutcome:971.8, AfterPostOutcome:971.8
-[127.17] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 971.846 damage (SpellSchool: 1). (Threat: 971.846)
+[127.17] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:548.9, AfterAttackerMods:559.9, AfterResistances:475.5, AfterTargetMods:475.5, AfterOutcome:951.1, AfterPostOutcome:951.1
+[127.17] [hunter (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 951.081 damage (SpellSchool: 1). (Threat: 951.081)
 [127.17] [hunter (#1)] Casting {SpellID: 1293527} (Cost = 172.900, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [127.17] [hunter (#1)] Completed cast {SpellID: 1293527}
 [127.17] [hunter (#1)] Spent 172.900 mana from {SpellID: 1293527} (3325.500 --> 3152.600) of 3465 total.
@@ -4484,12 +4492,8 @@
 [127.17] [hunter (#1)] [Target 1] {SpellID: 1293527} Hit for 197.600 damage (SpellSchool: 1). (Threat: 197.600)
 [127.17] [Target 1] Aura faded: {SpellID: 1293527, Tag: 1}
 [127.17] [Target 1] Aura gained: {SpellID: 1293527, Tag: 1}
-[127.17] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
-[127.17] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
-[127.18] [hunter (#1)] Casting {SpellID: 15851} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[127.18] [hunter (#1)] Completed cast {SpellID: 15851}
-[127.18] [hunter (#1)] [Target 1] {SpellID: 15851} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:255.4, AfterAttackerMods:260.5, AfterResistances:260.5, AfterTargetMods:260.5, AfterOutcome:260.5, AfterPostOutcome:260.5
-[127.18] [hunter (#1)] [Target 1] {SpellID: 15851} Hit for 260.485 damage (SpellSchool: 4). (Threat: 260.485)
+[127.17] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:0.0, AfterPostOutcome:0.0
+[127.17] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Dodge (SpellSchool: 1). (Threat: 0.000)
 [127.25] [hunter (#1) - Cat] Aura faded: {SpellID: 19615}
 [127.25] [hunter (#1) - Cat] Aura faded: {SpellID: 19574}
 [127.25] [hunter (#1) - Cat] Aura faded: {SpellID: 10494, Tag: -1}

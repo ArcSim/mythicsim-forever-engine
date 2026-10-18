@@ -141,8 +141,9 @@ fn stat_inheritance(owner_stats: &Stats) -> Stats {
 }
 
 /// Go `HunterPet.inheritAutoShotCritMods`: the crit modifiers on the owner's Auto Shot spell
-/// (today only the weapon racials' take-back) reach the pet while it is out, read when it is
-/// enabled.
+/// reach the pet while it is out, read when it is enabled (the weapon racials took their crit
+/// back off Auto Shot this way until the 16 October 2026 beta notes replaced them with crit that
+/// needs no weapon).
 fn inherit_auto_shot_crit_mods(sim: &mut Sim, pet: UnitId, owner: UnitId) {
     let applied = sim.new_state_slot(0.0);
     sim.pet_data_mut(pet).on_pet_enable = Some(Rc::new(move |sim: &mut Sim, pet| {

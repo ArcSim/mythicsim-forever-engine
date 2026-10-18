@@ -88,6 +88,17 @@ impl Shaman {
         );
     }
 
+    /// Go `swapMainHandCarries`: whether the main hand worn once the swap's set is on carries the
+    /// temporary enchantment (a swap that leaves the main hand alone keeps the pull's weapon).
+    fn swap_main_hand_carries(sim: &Sim, unit: UnitId, effect_id: i32) -> bool {
+        let swapped = sim
+            .item_swap(unit)
+            .map(|swap| &swap.un_equipped[slot::MAIN_HAND])
+            .filter(|item| item.id != 0);
+        let item = swapped.unwrap_or(&sim.character(unit).equipment[slot::MAIN_HAND]);
+        item.temp_enchant == effect_id
+    }
+
     /// Go `RegisterWindfuryImbue`.
     pub(super) fn register_windfury_imbue(&self, sim: &mut Sim, unit: UnitId, proc_mask: ProcMask) {
         let swap = sim.item_swap(unit).is_some();
@@ -145,7 +156,11 @@ impl Shaman {
             },
         );
 
-        if mask.matches(ProcMask::MELEE_MH) {
+        // Go `WindfuryImbueReplacesTotemAfterSwap` (MythicSim patch 156): Windfury Weapon on only the
+        // swap's main hand also replaces the party's totem once that weapon is in the hand.
+        let swap_main_hand = sim.item_swap(unit).is_some_and(|swap| swap.is_enabled())
+            && Self::swap_main_hand_carries(sim, unit, WINDFURY_ENCHANT_ID);
+        if mask.matches(ProcMask::MELEE_MH) || swap_main_hand {
             // Needs to be higher than Windfury Totem priority.
             sim.new_exclusive_effect(
                 aura,
@@ -155,6 +170,11 @@ impl Shaman {
                 None,
                 None,
             );
+        }
+        if swap_main_hand && !mask.matches(ProcMask::MELEE_MH) {
+            // Imbued on the swap's weapon only: the aura, and the totem's category with it, waits
+            // for the swap, which activates it.
+            sim.aura_mut(aura).on_reset = None;
         }
         // RegisterOnItemSwapWithImbue: the trigger is up while a hand carries the imbue.
         sim.register_item_swap_callback(

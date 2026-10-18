@@ -23,818 +23,563 @@
 [0.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 235.300, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [0.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
 [0.50] [arcane-mage (#1)] Spent 235.300 mana from {SpellID: 1239700} (7113.000 --> 6877.700) of 7113 total.
-[0.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:759.3, AfterAttackerMods:1009.9, AfterResistances:1009.9, AfterTargetMods:1110.9, AfterOutcome:1110.9, AfterPostOutcome:1110.9
-[0.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 1110.921 damage (SpellSchool: 64). (Threat: 777.645)
+[0.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:455.5, AfterAttackerMods:605.8, AfterResistances:605.8, AfterTargetMods:666.4, AfterOutcome:666.4, AfterPostOutcome:666.4
+[0.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 666.357 damage (SpellSchool: 64). (Threat: 466.450)
 [0.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
 [0.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
+[0.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.15): {"SpellDamage": 61.800,}
 [0.50] [arcane-mage (#1)] Aura faded: {SpellID: 12043}
 [1.50] [arcane-mage (#1)] [Target 1] {ItemID: 11905} Miss (SpellSchool: 1). (Threat: 0.000)
 [2.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6877.700 --> 6974.750) of 7113 total.
-[2.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 552.050, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[4.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6974.750 --> 7071.800) of 7113 total.
-[4.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[4.50] [arcane-mage (#1)] Spent 552.050 mana from {SpellID: 1239700} (7071.800 --> 6519.750) of 7113 total.
-[4.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:738.6, AfterAttackerMods:982.4, AfterResistances:982.4, AfterTargetMods:1080.6, AfterOutcome:2161.2, AfterPostOutcome:2161.2
-[4.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 2161.216 damage (SpellSchool: 64). (Threat: 1512.851)
-[4.50] [arcane-mage (#1)] Aura gained: {SpellID: 12536}
-[4.50] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[4.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
-[4.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 0.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[6.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6519.750 --> 6616.800) of 7113 total.
-[7.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[7.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:712.0, AfterAttackerMods:947.0, AfterResistances:947.0, AfterTargetMods:1041.7, AfterOutcome:2083.4, AfterPostOutcome:2083.4
-[7.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 2083.399 damage (SpellSchool: 64). (Threat: 1458.379)
-[7.00] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[7.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 3
-[7.00] [arcane-mage (#1)] Aura faded: {SpellID: 12536}
-[7.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 377.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
-[7.01] [arcane-mage (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[7.01] [arcane-mage (#1)] Completed cast {SpellID: 1260198}
-[7.01] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 465.0, BaseDamage:123.5, AfterAttackerMods:123.5, AfterResistances:123.5, AfterTargetMods:123.5, AfterOutcome:123.5, AfterPostOutcome:123.5
-[7.01] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} Hit for 123.500 damage (SpellSchool: 32). (Threat: 123.500)
-[7.01] [arcane-mage (#1)] Gained 123.500 health from {SpellID: 1260198} (2470.000 --> 2470.000) of 2470 total.
-[8.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6616.800 --> 6713.850) of 7113 total.
-[10.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 2} (6713.850 --> 6810.900) of 7113 total.
-[10.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
-[10.00] [arcane-mage (#1)] Spent 377.000 mana from {SpellID: 25304} (6810.900 --> 6433.900) of 7113 total.
-[10.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 480.0, BaseDamage:877.8, AfterAttackerMods:1430.8, AfterResistances:1430.8, AfterTargetMods:1573.9, AfterOutcome:1573.9, AfterPostOutcome:1573.9
-[10.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[10.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 3 --> 0
-[10.00] [arcane-mage (#1)] Casting {ItemID: 14152} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[10.00] [arcane-mage (#1)] Completed cast {ItemID: 14152}
-[10.00] [arcane-mage (#1)] Gained 534.382 mana from {ItemID: 14152} (6433.900 --> 6968.282) of 7113 total.
-[10.00] [arcane-mage (#1)] Major cooldown used: {ItemID: 14152}
-[10.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 235.300, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[10.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1573.919 damage (SpellSchool: 16). (Threat: 1573.919)
-[10.71] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[10.72] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6968.282 --> 7027.282) of 7113 total.
-[12.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (7027.282 --> 7113.000) of 7113 total.
-[12.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[12.50] [arcane-mage (#1)] Spent 235.300 mana from {SpellID: 1239700} (7113.000 --> 6877.700) of 7113 total.
-[12.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:753.0, AfterAttackerMods:1001.5, AfterResistances:751.1, AfterTargetMods:826.2, AfterOutcome:1652.4, AfterPostOutcome:1652.4
-[12.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit (25% Resist) for 1652.406 damage (SpellSchool: 64). (Threat: 1156.684)
-[12.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[12.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[12.50] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 196.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[12.50] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[12.50] [arcane-mage (#1)] Spent 196.500 mana from {SpellID: 25345} (6877.700 --> 6681.200) of 7113 total.
-[12.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[12.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 0
-[12.50] [Target 1] Aura gained: {SpellID: 25345}
-[12.50] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[13.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[13.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[13.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:512.9, AfterResistances:512.9, AfterTargetMods:564.2, AfterOutcome:1128.4, AfterPostOutcome:1128.4
-[13.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[13.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[13.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:512.9, AfterResistances:512.9, AfterTargetMods:564.2, AfterOutcome:0.0, AfterPostOutcome:0.0
-[14.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6681.200 --> 6778.250) of 7113 total.
-[14.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 1128.419 damage (SpellSchool: 64). (Threat: 789.893)
-[14.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[14.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[14.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:512.9, AfterResistances:512.9, AfterTargetMods:564.2, AfterOutcome:564.2, AfterPostOutcome:564.2
-[14.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6778.250 --> 6837.250) of 7113 total.
-[14.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Miss (SpellSchool: 64). (Threat: 0.000)
-[14.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[14.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[14.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:512.9, AfterResistances:512.9, AfterTargetMods:564.2, AfterOutcome:564.2, AfterPostOutcome:564.2
-[15.00] [Target 1] Aura faded: {SpellID: 25345}
-[15.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[15.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[15.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:512.9, AfterResistances:512.9, AfterTargetMods:564.2, AfterOutcome:564.2, AfterPostOutcome:564.2
-[15.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 564.209 damage (SpellSchool: 64). (Threat: 394.947)
-[15.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 235.300, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
+[2.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 552.050, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[3.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[3.50] [arcane-mage (#1)] Spent 552.050 mana from {SpellID: 1239700} (6974.750 --> 6422.700) of 7113 total.
+[3.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:469.6, AfterAttackerMods:624.5, AfterResistances:624.5, AfterTargetMods:687.0, AfterOutcome:1374.0, AfterPostOutcome:1374.0
+[3.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 1373.975 damage (SpellSchool: 64). (Threat: 961.782)
+[3.50] [arcane-mage (#1)] Aura gained: {SpellID: 12536}
+[3.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
+[3.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.30): {"SpellDamage": 61.800,}
+[3.50] [arcane-mage (#1)] Casting {ItemID: 14152} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[3.50] [arcane-mage (#1)] Completed cast {ItemID: 14152}
+[3.50] [arcane-mage (#1)] Gained 393.263 mana from {ItemID: 14152} (6422.700 --> 6815.963) of 7113 total.
+[3.50] [arcane-mage (#1)] Major cooldown used: {ItemID: 14152}
+[3.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[4.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6815.963 --> 6913.013) of 7113 total.
+[5.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[5.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 604.6, BaseDamage:498.9, AfterAttackerMods:663.6, AfterResistances:663.6, AfterTargetMods:729.9, AfterOutcome:1459.9, AfterPostOutcome:1459.9
+[5.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 1459.872 damage (SpellSchool: 64). (Threat: 1021.910)
+[5.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 3
+[5.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.45): {"SpellDamage": 61.800,}
+[5.00] [arcane-mage (#1)] Aura faded: {SpellID: 12536}
+[5.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 377.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[6.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6913.013 --> 7010.063) of 7113 total.
+[8.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (7010.063 --> 7107.113) of 7113 total.
+[8.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[8.00] [arcane-mage (#1)] Spent 377.000 mana from {SpellID: 25304} (7107.113 --> 6730.113) of 7113 total.
+[8.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1026.9, AfterAttackerMods:1365.8, AfterResistances:1365.8, AfterTargetMods:1502.4, AfterOutcome:1502.4, AfterPostOutcome:1502.4
+[8.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 377.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[8.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1502.401 damage (SpellSchool: 16). (Threat: 1502.401)
+[8.72] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6730.113 --> 6789.113) of 7113 total.
+[10.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6789.113 --> 6886.163) of 7113 total.
+[11.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[11.00] [arcane-mage (#1)] Spent 377.000 mana from {SpellID: 25304} (6886.163 --> 6509.163) of 7113 total.
+[11.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1008.3, AfterAttackerMods:1341.1, AfterResistances:1341.1, AfterTargetMods:1475.2, AfterOutcome:2212.8, AfterPostOutcome:2212.8
+[11.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 377.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[11.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Crit for 2212.774 damage (SpellSchool: 16). (Threat: 2212.774)
+[12.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6509.163 --> 6606.213) of 7113 total.
+[14.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6606.213 --> 6703.263) of 7113 total.
+[14.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[14.00] [arcane-mage (#1)] Spent 377.000 mana from {SpellID: 25304} (6703.263 --> 6326.263) of 7113 total.
+[14.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1022.6, AfterAttackerMods:1360.1, AfterResistances:1360.1, AfterTargetMods:1496.1, AfterOutcome:2244.1, AfterPostOutcome:2244.1
+[14.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 377.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[14.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Crit for 2244.123 damage (SpellSchool: 16). (Threat: 2244.123)
+[14.72] [arcane-mage (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[14.72] [arcane-mage (#1)] Completed cast {SpellID: 1260198}
+[14.72] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 650.4, BaseDamage:123.5, AfterAttackerMods:123.5, AfterResistances:123.5, AfterTargetMods:123.5, AfterOutcome:123.5, AfterPostOutcome:123.5
+[14.72] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} Hit for 123.500 damage (SpellSchool: 32). (Threat: 123.500)
+[14.72] [arcane-mage (#1)] Gained 123.500 health from {SpellID: 1260198} (2470.000 --> 2470.000) of 2470 total.
+[14.72] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6326.263 --> 6385.263) of 7113 total.
 [15.50] [arcane-mage (#1)] Aura faded: {SpellID: 12042}
-[15.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 564.209 damage (SpellSchool: 64). (Threat: 394.947)
-[16.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6837.250 --> 6934.300) of 7113 total.
-[16.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 564.209 damage (SpellSchool: 64). (Threat: 394.947)
-[16.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6934.300 --> 6993.300) of 7113 total.
-[17.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[17.50] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6993.300 --> 6812.300) of 7113 total.
-[17.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:727.0, AfterAttackerMods:748.8, AfterResistances:748.8, AfterTargetMods:823.7, AfterOutcome:0.0, AfterPostOutcome:0.0
-[17.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Miss (SpellSchool: 64). (Threat: 0.000)
-[17.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[17.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[17.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[18.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6812.300 --> 6909.350) of 7113 total.
-[20.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6909.350 --> 7006.400) of 7113 total.
+[15.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
+[16.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 3 --> 0
+[16.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {"SpellDamage": -185.400,}
+[16.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {}
+[16.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6385.263 --> 6482.313) of 7113 total.
+[17.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[17.00] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6482.313 --> 6192.313) of 7113 total.
+[17.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 480.0, BaseDamage:859.3, AfterAttackerMods:885.1, AfterResistances:885.1, AfterTargetMods:973.6, AfterOutcome:973.6, AfterPostOutcome:973.6
+[17.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[17.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 973.624 damage (SpellSchool: 16). (Threat: 973.624)
+[18.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6192.313 --> 6289.363) of 7113 total.
+[18.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[18.50] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6289.363 --> 6108.363) of 7113 total.
+[18.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:425.7, AfterAttackerMods:438.4, AfterResistances:438.4, AfterTargetMods:482.3, AfterOutcome:0.0, AfterPostOutcome:0.0
+[18.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Miss (SpellSchool: 64). (Threat: 0.000)
+[18.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
+[18.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
+[18.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.15): {"SpellDamage": 61.800,}
+[18.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[20.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6108.363 --> 6205.413) of 7113 total.
 [20.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[20.00] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (7006.400 --> 6508.650) of 7113 total.
-[20.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:760.7, AfterAttackerMods:783.6, AfterResistances:783.6, AfterTargetMods:861.9, AfterOutcome:861.9, AfterPostOutcome:861.9
-[20.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 861.909 damage (SpellSchool: 64). (Threat: 603.336)
-[20.00] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
+[20.00] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (6205.413 --> 5707.663) of 7113 total.
+[20.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:452.6, AfterAttackerMods:466.2, AfterResistances:466.2, AfterTargetMods:512.8, AfterOutcome:512.8, AfterPostOutcome:512.8
+[20.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 512.842 damage (SpellSchool: 64). (Threat: 358.989)
 [20.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
-[20.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 814.500, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[22.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6508.650 --> 6605.700) of 7113 total.
-[22.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[22.50] [arcane-mage (#1)] Spent 814.500 mana from {SpellID: 1239700} (6605.700 --> 5791.200) of 7113 total.
-[22.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:756.3, AfterAttackerMods:779.0, AfterResistances:584.2, AfterTargetMods:642.7, AfterOutcome:642.7, AfterPostOutcome:642.7
-[22.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit (25% Resist) for 642.653 damage (SpellSchool: 64). (Threat: 449.857)
-[22.50] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[22.50] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[22.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 3
-[22.50] [arcane-mage (#1)] Casting {ItemID: 8008} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[22.50] [arcane-mage (#1)] Completed cast {ItemID: 8008}
-[22.50] [arcane-mage (#1)] Gained 1100.000 mana from {ItemID: 8008} (5791.200 --> 6891.200) of 7113 total.
-[22.50] [arcane-mage (#1)] Major cooldown used: {ItemID: 8008}
-[22.50] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[22.50] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[22.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[22.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 3 --> 0
-[22.50] [Target 1] Aura gained: {SpellID: 25345}
-[22.50] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[23.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[23.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[23.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:512.9, AfterResistances:512.9, AfterTargetMods:564.2, AfterOutcome:564.2, AfterPostOutcome:564.2
-[23.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[23.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[23.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:512.9, AfterResistances:512.9, AfterTargetMods:564.2, AfterOutcome:564.2, AfterPostOutcome:564.2
-[24.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6891.200 --> 6988.250) of 7113 total.
-[24.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 564.209 damage (SpellSchool: 64). (Threat: 394.947)
-[24.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[24.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[24.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:512.9, AfterResistances:512.9, AfterTargetMods:564.2, AfterOutcome:564.2, AfterPostOutcome:564.2
-[24.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 564.209 damage (SpellSchool: 64). (Threat: 394.947)
-[24.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[24.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[24.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:512.9, AfterResistances:512.9, AfterTargetMods:564.2, AfterOutcome:1128.4, AfterPostOutcome:1128.4
-[24.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6988.250 --> 7047.250) of 7113 total.
-[25.00] [Target 1] Aura faded: {SpellID: 25345}
-[25.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[25.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[25.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:512.9, AfterResistances:512.9, AfterTargetMods:564.2, AfterOutcome:564.2, AfterPostOutcome:564.2
-[25.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 564.209 damage (SpellSchool: 64). (Threat: 394.947)
-[25.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[25.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (7047.250 --> 7106.250) of 7113 total.
-[25.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 1128.419 damage (SpellSchool: 64). (Threat: 789.893)
-[26.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (7106.250 --> 7113.000) of 7113 total.
-[26.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 564.209 damage (SpellSchool: 64). (Threat: 394.947)
-[26.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (7113.000 --> 7113.000) of 7113 total.
-[27.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[27.50] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (7113.000 --> 6932.000) of 7113 total.
-[27.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:753.9, AfterAttackerMods:776.5, AfterResistances:776.5, AfterTargetMods:854.2, AfterOutcome:1708.4, AfterPostOutcome:1708.4
-[27.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 1708.375 damage (SpellSchool: 64). (Threat: 1195.863)
-[27.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[27.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[27.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[27.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6932.000 --> 6991.000) of 7113 total.
-[28.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6991.000 --> 7088.050) of 7113 total.
-[30.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (7088.050 --> 7113.000) of 7113 total.
-[30.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[30.00] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (7113.000 --> 6615.250) of 7113 total.
-[30.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:756.7, AfterAttackerMods:779.4, AfterResistances:584.5, AfterTargetMods:643.0, AfterOutcome:1286.0, AfterPostOutcome:1286.0
-[30.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit (25% Resist) for 1285.995 damage (SpellSchool: 64). (Threat: 900.197)
-[30.00] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[30.00] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[30.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
-[30.00] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[30.00] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[30.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[30.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 0
-[30.00] [Target 1] Aura gained: {SpellID: 25345}
-[30.00] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[30.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6615.250 --> 6674.250) of 7113 total.
-[30.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[30.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[30.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[31.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[31.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[31.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[31.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[31.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[31.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[31.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:230.5, AfterTargetMods:253.5, AfterOutcome:507.0, AfterPostOutcome:507.0
-[31.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6674.250 --> 6733.250) of 7113 total.
-[32.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6733.250 --> 6830.300) of 7113 total.
-[32.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[32.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[32.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[32.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:230.5, AfterTargetMods:253.5, AfterOutcome:253.5, AfterPostOutcome:253.5
-[32.01] [arcane-mage (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[32.01] [arcane-mage (#1)] Completed cast {SpellID: 1260198}
-[32.01] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 465.0, BaseDamage:123.5, AfterAttackerMods:123.5, AfterResistances:123.5, AfterTargetMods:123.5, AfterOutcome:0.0, AfterPostOutcome:0.0
-[32.01] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} Miss (SpellSchool: 32). (Threat: 0.000)
-[32.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6830.300 --> 6889.300) of 7113 total.
-[32.50] [Target 1] Aura faded: {SpellID: 25345}
-[32.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[32.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[32.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:345.7, AfterTargetMods:380.3, AfterOutcome:0.0, AfterPostOutcome:0.0
-[32.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit (50% Resist) for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[32.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[33.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit (50% Resist) for 253.513 damage (SpellSchool: 64). (Threat: 177.459)
-[33.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Miss (SpellSchool: 64). (Threat: 0.000)
-[34.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6889.300 --> 6986.350) of 7113 total.
+[20.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.30): {"SpellDamage": 61.800,}
+[20.00] [arcane-mage (#1)] Casting {ItemID: 8008} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[20.00] [arcane-mage (#1)] Completed cast {ItemID: 8008}
+[20.00] [arcane-mage (#1)] Gained 1100.000 mana from {ItemID: 8008} (5707.663 --> 6807.663) of 7113 total.
+[20.00] [arcane-mage (#1)] Major cooldown used: {ItemID: 8008}
+[20.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 814.500, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[21.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[21.50] [arcane-mage (#1)] Spent 814.500 mana from {SpellID: 1239700} (6807.663 --> 5993.163) of 7113 total.
+[21.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 604.6, BaseDamage:509.5, AfterAttackerMods:524.8, AfterResistances:524.8, AfterTargetMods:577.3, AfterOutcome:577.3, AfterPostOutcome:577.3
+[21.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 577.287 damage (SpellSchool: 64). (Threat: 404.101)
+[21.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 3
+[21.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.45): {"SpellDamage": 61.800,}
+[21.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[21.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5993.163 --> 6052.163) of 7113 total.
+[22.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6052.163 --> 6149.213) of 7113 total.
+[24.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6149.213 --> 6246.263) of 7113 total.
+[24.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[24.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6246.263 --> 5956.263) of 7113 total.
+[24.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1027.7, AfterAttackerMods:1058.5, AfterResistances:1058.5, AfterTargetMods:1164.3, AfterOutcome:1164.3, AfterPostOutcome:1164.3
+[24.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[25.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1164.334 damage (SpellSchool: 16). (Threat: 1164.334)
+[25.21] [arcane-mage (#1)] Aura gained: {SpellID: 12536}
+[25.22] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5956.263 --> 6015.263) of 7113 total.
+[26.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6015.263 --> 6112.313) of 7113 total.
+[27.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[27.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1011.3, AfterAttackerMods:1041.6, AfterResistances:1041.6, AfterTargetMods:1145.8, AfterOutcome:1145.8, AfterPostOutcome:1145.8
+[27.50] [arcane-mage (#1)] Aura faded: {SpellID: 12536}
+[27.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[28.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6112.313 --> 6209.363) of 7113 total.
+[28.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1145.799 damage (SpellSchool: 16). (Threat: 1145.799)
+[30.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 2} (6209.363 --> 6306.413) of 7113 total.
+[30.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[30.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6306.413 --> 6016.413) of 7113 total.
+[30.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1024.3, AfterAttackerMods:1055.1, AfterResistances:1055.1, AfterTargetMods:1160.6, AfterOutcome:1160.6, AfterPostOutcome:1160.6
+[30.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[31.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1160.566 damage (SpellSchool: 16). (Threat: 1160.566)
+[32.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6016.413 --> 6113.463) of 7113 total.
+[33.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
+[33.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 3 --> 0
+[33.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {"SpellDamage": -185.400,}
+[33.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {}
+[33.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[33.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6113.463 --> 5823.463) of 7113 total.
+[33.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 480.0, BaseDamage:849.8, AfterAttackerMods:875.3, AfterResistances:875.3, AfterTargetMods:962.8, AfterOutcome:962.8, AfterPostOutcome:962.8
+[33.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[34.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5823.463 --> 5920.513) of 7113 total.
+[34.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 962.823 damage (SpellSchool: 16). (Threat: 962.823)
 [35.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[35.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6986.350 --> 6805.350) of 7113 total.
-[35.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:718.5, AfterAttackerMods:740.1, AfterResistances:740.1, AfterTargetMods:814.1, AfterOutcome:814.1, AfterPostOutcome:814.1
-[35.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 814.086 damage (SpellSchool: 64). (Threat: 569.860)
+[35.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (5920.513 --> 5739.513) of 7113 total.
+[35.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:430.3, AfterAttackerMods:443.2, AfterResistances:443.2, AfterTargetMods:487.5, AfterOutcome:487.5, AfterPostOutcome:487.5
+[35.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 487.521 damage (SpellSchool: 64). (Threat: 341.265)
+[35.00] [arcane-mage (#1)] Aura gained: {SpellID: 12536}
 [35.00] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
 [35.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[35.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[35.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6805.350 --> 6864.350) of 7113 total.
-[36.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6864.350 --> 6961.400) of 7113 total.
-[37.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[37.50] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (6961.400 --> 6463.650) of 7113 total.
-[37.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:708.8, AfterAttackerMods:730.1, AfterResistances:730.1, AfterTargetMods:803.1, AfterOutcome:803.1, AfterPostOutcome:803.1
-[37.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 803.062 damage (SpellSchool: 64). (Threat: 562.144)
-[37.50] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[37.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
-[37.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 814.500, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[38.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6463.650 --> 6560.700) of 7113 total.
-[40.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6560.700 --> 6657.750) of 7113 total.
-[40.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[40.00] [arcane-mage (#1)] Spent 814.500 mana from {SpellID: 1239700} (6657.750 --> 5843.250) of 7113 total.
-[40.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:733.8, AfterAttackerMods:755.8, AfterResistances:755.8, AfterTargetMods:831.4, AfterOutcome:831.4, AfterPostOutcome:831.4
-[40.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 831.426 damage (SpellSchool: 64). (Threat: 581.998)
-[40.00] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[40.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 3
-[40.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
-[40.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5843.250 --> 5902.250) of 7113 total.
-[42.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5902.250 --> 5999.300) of 7113 total.
-[43.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
-[43.00] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (5999.300 --> 5709.300) of 7113 total.
-[43.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 480.0, BaseDamage:869.5, AfterAttackerMods:1156.5, AfterResistances:1156.5, AfterTargetMods:1272.1, AfterOutcome:1272.1, AfterPostOutcome:1272.1
-[43.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[43.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 3 --> 0
-[43.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[43.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1272.111 damage (SpellSchool: 16). (Threat: 1272.111)
-[44.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5709.300 --> 5806.350) of 7113 total.
-[45.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[45.50] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (5806.350 --> 5625.350) of 7113 total.
-[45.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:738.3, AfterAttackerMods:760.5, AfterResistances:760.5, AfterTargetMods:836.5, AfterOutcome:1673.1, AfterPostOutcome:1673.1
-[45.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 1673.060 damage (SpellSchool: 64). (Threat: 1171.142)
-[45.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[45.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[45.50] [arcane-mage (#1)] Casting {ItemID: 12662} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[45.50] [arcane-mage (#1)] Completed cast {ItemID: 12662}
-[45.50] [arcane-mage (#1)] Gained 1200.000 mana from {ItemID: 12662} (5625.350 --> 6825.350) of 7113 total.
-[45.50] [arcane-mage (#1)] Major cooldown used: {ItemID: 12662}
-[45.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[45.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6825.350 --> 6884.350) of 7113 total.
-[46.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6884.350 --> 6981.400) of 7113 total.
-[48.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6981.400 --> 7078.450) of 7113 total.
-[48.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[48.00] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (7078.450 --> 6580.700) of 7113 total.
-[48.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:728.5, AfterAttackerMods:750.3, AfterResistances:750.3, AfterTargetMods:825.4, AfterOutcome:825.4, AfterPostOutcome:825.4
-[48.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 825.352 damage (SpellSchool: 64). (Threat: 577.747)
-[48.00] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[48.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
-[48.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 814.500, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[48.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6580.700 --> 6639.700) of 7113 total.
-[50.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6639.700 --> 6736.750) of 7113 total.
-[50.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[50.50] [arcane-mage (#1)] Spent 814.500 mana from {SpellID: 1239700} (6736.750 --> 5922.250) of 7113 total.
-[50.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:746.1, AfterAttackerMods:768.5, AfterResistances:768.5, AfterTargetMods:845.4, AfterOutcome:845.4, AfterPostOutcome:845.4
-[50.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 845.351 damage (SpellSchool: 64). (Threat: 591.746)
-[50.50] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[50.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 3
-[50.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
-[50.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5922.250 --> 5981.250) of 7113 total.
-[52.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5981.250 --> 6078.300) of 7113 total.
-[53.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
-[53.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6078.300 --> 5788.300) of 7113 total.
-[53.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 480.0, BaseDamage:866.2, AfterAttackerMods:1152.0, AfterResistances:1152.0, AfterTargetMods:1267.2, AfterOutcome:1900.8, AfterPostOutcome:1900.8
-[53.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[53.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 3 --> 0
-[53.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[54.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5788.300 --> 5885.350) of 7113 total.
-[54.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Crit for 1900.845 damage (SpellSchool: 16). (Threat: 1900.845)
-[54.22] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5885.350 --> 5944.350) of 7113 total.
-[56.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5944.350 --> 6041.400) of 7113 total.
-[56.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[56.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6041.400 --> 5860.400) of 7113 total.
-[56.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:718.2, AfterAttackerMods:739.7, AfterResistances:739.7, AfterTargetMods:813.7, AfterOutcome:813.7, AfterPostOutcome:813.7
-[56.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 813.681 damage (SpellSchool: 64). (Threat: 569.576)
-[56.00] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[56.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[56.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[58.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5860.400 --> 5957.450) of 7113 total.
-[58.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[58.50] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (5957.450 --> 5459.700) of 7113 total.
-[58.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:740.3, AfterAttackerMods:762.5, AfterResistances:762.5, AfterTargetMods:838.7, AfterOutcome:838.7, AfterPostOutcome:838.7
-[58.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 838.716 damage (SpellSchool: 64). (Threat: 587.101)
-[58.50] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[58.50] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[58.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
-[58.50] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[58.50] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[58.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[58.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 0
-[58.50] [Target 1] Aura gained: {SpellID: 25345}
-[58.50] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[59.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[59.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[59.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[59.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[59.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[59.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[60.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5459.700 --> 5556.750) of 7113 total.
-[60.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[60.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[60.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[60.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:1014.1, AfterPostOutcome:1014.1
-[60.01] [arcane-mage (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[60.01] [arcane-mage (#1)] Completed cast {SpellID: 1260198}
-[60.01] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 465.0, BaseDamage:123.5, AfterAttackerMods:123.5, AfterResistances:123.5, AfterTargetMods:123.5, AfterOutcome:123.5, AfterPostOutcome:123.5
-[60.01] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} Hit for 123.500 damage (SpellSchool: 32). (Threat: 123.500)
-[60.01] [arcane-mage (#1)] Gained 123.500 health from {SpellID: 1260198} (2470.000 --> 2470.000) of 2470 total.
-[60.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5556.750 --> 5615.750) of 7113 total.
-[60.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[60.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[60.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[60.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:1014.1, AfterPostOutcome:1014.1
-[61.00] [Target 1] Aura faded: {SpellID: 25345}
-[61.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[61.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[61.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[61.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 1014.052 damage (SpellSchool: 64). (Threat: 709.836)
-[61.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[61.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 1014.052 damage (SpellSchool: 64). (Threat: 709.836)
-[62.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5615.750 --> 5712.800) of 7113 total.
-[62.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[62.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5712.800 --> 5771.800) of 7113 total.
-[63.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[63.50] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (5771.800 --> 5590.800) of 7113 total.
-[63.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:736.7, AfterAttackerMods:758.8, AfterResistances:758.8, AfterTargetMods:834.7, AfterOutcome:834.7, AfterPostOutcome:834.7
-[63.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 834.699 damage (SpellSchool: 64). (Threat: 584.289)
-[63.50] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[63.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[63.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[63.50] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[63.50] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[63.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[63.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 0
-[63.50] [Target 1] Aura gained: {SpellID: 25345}
-[63.50] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[63.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5590.800 --> 5649.800) of 7113 total.
-[64.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5649.800 --> 5746.850) of 7113 total.
-[64.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[64.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[64.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:899.7, AfterPostOutcome:899.7
-[64.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[64.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[64.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:0.0, AfterPostOutcome:0.0
-[65.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 899.685 damage (SpellSchool: 64). (Threat: 629.780)
-[65.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[65.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[65.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[65.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Miss (SpellSchool: 64). (Threat: 0.000)
-[65.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[65.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[65.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:899.7, AfterPostOutcome:899.7
-[66.00] [Target 1] Aura faded: {SpellID: 25345}
-[66.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[66.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[66.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:204.5, AfterTargetMods:224.9, AfterOutcome:224.9, AfterPostOutcome:224.9
-[66.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5746.850 --> 5843.900) of 7113 total.
-[66.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[66.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[66.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 899.685 damage (SpellSchool: 64). (Threat: 629.780)
-[66.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5843.900 --> 5902.900) of 7113 total.
-[67.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit (50% Resist) for 224.921 damage (SpellSchool: 64). (Threat: 157.445)
-[68.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5902.900 --> 5999.950) of 7113 total.
-[68.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[68.50] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (5999.950 --> 5818.950) of 7113 total.
-[68.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:708.5, AfterAttackerMods:729.7, AfterResistances:729.7, AfterTargetMods:802.7, AfterOutcome:802.7, AfterPostOutcome:802.7
-[68.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 802.680 damage (SpellSchool: 64). (Threat: 561.876)
-[68.50] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[68.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[68.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[68.50] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[68.50] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[68.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[68.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 0
-[68.50] [Target 1] Aura gained: {SpellID: 25345}
-[68.50] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[69.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[69.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[69.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:306.7, AfterTargetMods:337.4, AfterOutcome:674.8, AfterPostOutcome:674.8
-[69.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[69.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[69.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[70.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5818.950 --> 5916.000) of 7113 total.
-[70.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit (25% Resist) for 674.764 damage (SpellSchool: 64). (Threat: 472.335)
-[70.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[70.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[70.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:0.0, AfterPostOutcome:0.0
-[70.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5916.000 --> 5975.000) of 7113 total.
-[70.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[70.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[70.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[70.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[71.00] [Target 1] Aura faded: {SpellID: 25345}
-[71.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[71.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[71.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[71.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Miss (SpellSchool: 64). (Threat: 0.000)
-[71.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[71.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[72.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5975.000 --> 6072.050) of 7113 total.
-[72.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[73.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[73.50] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6072.050 --> 5891.050) of 7113 total.
-[73.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:764.0, AfterAttackerMods:786.9, AfterResistances:786.9, AfterTargetMods:865.6, AfterOutcome:865.6, AfterPostOutcome:865.6
-[73.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 865.597 damage (SpellSchool: 64). (Threat: 605.918)
-[73.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[73.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[73.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[73.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5891.050 --> 5950.050) of 7113 total.
-[74.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5950.050 --> 6047.100) of 7113 total.
-[76.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6047.100 --> 6144.150) of 7113 total.
+[35.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.15): {"SpellDamage": 61.800,}
+[35.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[35.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5739.513 --> 5798.513) of 7113 total.
+[36.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5798.513 --> 5895.563) of 7113 total.
+[36.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[36.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:460.2, AfterAttackerMods:474.0, AfterResistances:474.0, AfterTargetMods:521.4, AfterOutcome:521.4, AfterPostOutcome:521.4
+[36.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 521.382 damage (SpellSchool: 64). (Threat: 364.967)
+[36.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
+[36.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.30): {"SpellDamage": 61.800,}
+[36.50] [arcane-mage (#1)] Aura faded: {SpellID: 12536}
+[36.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 814.500, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[36.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5895.563 --> 5954.563) of 7113 total.
+[38.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5954.563 --> 6051.613) of 7113 total.
+[38.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[38.00] [arcane-mage (#1)] Spent 814.500 mana from {SpellID: 1239700} (6051.613 --> 5237.113) of 7113 total.
+[38.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 604.6, BaseDamage:491.2, AfterAttackerMods:506.0, AfterResistances:506.0, AfterTargetMods:556.6, AfterOutcome:556.6, AfterPostOutcome:556.6
+[38.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 556.570 damage (SpellSchool: 64). (Threat: 389.599)
+[38.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 3
+[38.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.45): {"SpellDamage": 61.800,}
+[38.00] [arcane-mage (#1)] Casting {ItemID: 12662} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[38.00] [arcane-mage (#1)] Completed cast {ItemID: 12662}
+[38.00] [arcane-mage (#1)] Gained 1200.000 mana from {ItemID: 12662} (5237.113 --> 6437.113) of 7113 total.
+[38.00] [arcane-mage (#1)] Major cooldown used: {ItemID: 12662}
+[38.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[40.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6437.113 --> 6534.163) of 7113 total.
+[41.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[41.00] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6534.163 --> 6244.163) of 7113 total.
+[41.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1000.6, AfterAttackerMods:1030.6, AfterResistances:1030.6, AfterTargetMods:1133.7, AfterOutcome:1700.5, AfterPostOutcome:1700.5
+[41.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[41.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Crit for 1700.532 damage (SpellSchool: 16). (Threat: 1700.532)
+[41.71] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
+[41.72] [arcane-mage (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[41.72] [arcane-mage (#1)] Completed cast {SpellID: 1260198}
+[41.72] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 650.4, BaseDamage:123.5, AfterAttackerMods:123.5, AfterResistances:123.5, AfterTargetMods:123.5, AfterOutcome:123.5, AfterPostOutcome:123.5
+[41.72] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} Hit for 123.500 damage (SpellSchool: 32). (Threat: 123.500)
+[41.72] [arcane-mage (#1)] Gained 123.500 health from {SpellID: 1260198} (2470.000 --> 2470.000) of 2470 total.
+[42.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6244.163 --> 6341.213) of 7113 total.
+[44.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6341.213 --> 6438.263) of 7113 total.
+[44.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[44.00] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6438.263 --> 6148.263) of 7113 total.
+[44.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1033.4, AfterAttackerMods:1064.4, AfterResistances:1064.4, AfterTargetMods:1170.8, AfterOutcome:1170.8, AfterPostOutcome:1170.8
+[44.00] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[44.00] [arcane-mage (#1)] Completed cast {SpellID: 25345}
+[44.00] [Target 1] Aura gained: {SpellID: 25345}
+[44.00] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
+[44.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[44.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[44.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 666.4, BaseDamage:399.6, AfterAttackerMods:411.6, AfterResistances:411.6, AfterTargetMods:452.7, AfterOutcome:0.0, AfterPostOutcome:0.0
+[44.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1170.807 damage (SpellSchool: 16). (Threat: 1170.807)
+[44.72] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6148.263 --> 6207.263) of 7113 total.
+[45.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[45.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[45.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 666.4, BaseDamage:399.6, AfterAttackerMods:411.6, AfterResistances:411.6, AfterTargetMods:452.7, AfterOutcome:452.7, AfterPostOutcome:452.7
+[45.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Miss (SpellSchool: 64). (Threat: 0.000)
+[45.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[45.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[45.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 666.4, BaseDamage:399.6, AfterAttackerMods:411.6, AfterResistances:411.6, AfterTargetMods:452.7, AfterOutcome:452.7, AfterPostOutcome:452.7
+[46.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6207.263 --> 6304.313) of 7113 total.
+[46.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 452.736 damage (SpellSchool: 64). (Threat: 316.915)
+[46.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[46.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[46.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 666.4, BaseDamage:399.6, AfterAttackerMods:411.6, AfterResistances:411.6, AfterTargetMods:452.7, AfterOutcome:452.7, AfterPostOutcome:452.7
+[46.50] [Target 1] Aura faded: {SpellID: 25345}
+[46.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[46.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[46.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 666.4, BaseDamage:399.6, AfterAttackerMods:411.6, AfterResistances:411.6, AfterTargetMods:452.7, AfterOutcome:452.7, AfterPostOutcome:452.7
+[46.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 452.736 damage (SpellSchool: 64). (Threat: 316.915)
+[46.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[47.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 452.736 damage (SpellSchool: 64). (Threat: 316.915)
+[47.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6304.313 --> 6363.313) of 7113 total.
+[47.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 452.736 damage (SpellSchool: 64). (Threat: 316.915)
+[47.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6363.313 --> 6422.313) of 7113 total.
+[48.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6422.313 --> 6519.363) of 7113 total.
+[49.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[49.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6519.363 --> 6229.363) of 7113 total.
+[49.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1012.0, AfterAttackerMods:1042.4, AfterResistances:1042.4, AfterTargetMods:1146.6, AfterOutcome:0.0, AfterPostOutcome:0.0
+[49.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[50.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
+[50.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 3 --> 0
+[50.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {"SpellDamage": -185.400,}
+[50.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {}
+[50.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6229.363 --> 6326.413) of 7113 total.
+[50.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Miss (SpellSchool: 16). (Threat: 0.000)
+[52.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6326.413 --> 6423.463) of 7113 total.
+[52.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[52.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6423.463 --> 6133.463) of 7113 total.
+[52.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 480.0, BaseDamage:869.2, AfterAttackerMods:895.3, AfterResistances:895.3, AfterTargetMods:984.8, AfterOutcome:984.8, AfterPostOutcome:984.8
+[52.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[53.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 984.846 damage (SpellSchool: 16). (Threat: 984.846)
+[53.21] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
+[53.22] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6133.463 --> 6192.463) of 7113 total.
+[54.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6192.463 --> 6289.513) of 7113 total.
+[54.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[54.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6289.513 --> 6108.513) of 7113 total.
+[54.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:439.3, AfterAttackerMods:452.5, AfterResistances:113.1, AfterTargetMods:124.4, AfterOutcome:124.4, AfterPostOutcome:124.4
+[54.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit (75% Resist) for 124.437 damage (SpellSchool: 64). (Threat: 87.106)
+[54.00] [arcane-mage (#1)] Aura refreshed: {SpellID: 44404}
+[54.00] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
+[54.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
+[54.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.15): {"SpellDamage": 61.800,}
+[54.00] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[54.00] [arcane-mage (#1)] Completed cast {SpellID: 25345}
+[54.00] [Target 1] Aura gained: {SpellID: 25345}
+[54.00] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
+[54.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[54.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[54.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:364.2, AfterAttackerMods:375.2, AfterResistances:281.4, AfterTargetMods:309.5, AfterOutcome:0.0, AfterPostOutcome:0.0
+[55.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[55.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[55.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:364.2, AfterAttackerMods:375.2, AfterResistances:375.2, AfterTargetMods:412.7, AfterOutcome:412.7, AfterPostOutcome:412.7
+[55.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Miss (SpellSchool: 64). (Threat: 0.000)
+[55.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[55.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[55.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:364.2, AfterAttackerMods:375.2, AfterResistances:375.2, AfterTargetMods:412.7, AfterOutcome:412.7, AfterPostOutcome:412.7
+[56.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6108.513 --> 6205.563) of 7113 total.
+[56.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 412.685 damage (SpellSchool: 64). (Threat: 288.879)
+[56.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[56.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[56.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:364.2, AfterAttackerMods:375.2, AfterResistances:375.2, AfterTargetMods:412.7, AfterOutcome:825.4, AfterPostOutcome:825.4
+[56.50] [Target 1] Aura faded: {SpellID: 25345}
+[56.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[56.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[56.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:364.2, AfterAttackerMods:375.2, AfterResistances:375.2, AfterTargetMods:412.7, AfterOutcome:825.4, AfterPostOutcome:825.4
+[56.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 412.685 damage (SpellSchool: 64). (Threat: 288.879)
+[56.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[56.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6205.563 --> 6264.563) of 7113 total.
+[57.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 825.370 damage (SpellSchool: 64). (Threat: 577.759)
+[57.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 825.370 damage (SpellSchool: 64). (Threat: 577.759)
+[58.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6264.563 --> 6361.613) of 7113 total.
+[58.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[58.00] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (6361.613 --> 5863.863) of 7113 total.
+[58.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:470.6, AfterAttackerMods:484.7, AfterResistances:484.7, AfterTargetMods:533.1, AfterOutcome:533.1, AfterPostOutcome:533.1
+[58.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 533.138 damage (SpellSchool: 64). (Threat: 373.197)
+[58.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
+[58.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.30): {"SpellDamage": 61.800,}
+[58.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 814.500, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[58.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5863.863 --> 5922.863) of 7113 total.
+[59.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[59.50] [arcane-mage (#1)] Spent 814.500 mana from {SpellID: 1239700} (5922.863 --> 5108.363) of 7113 total.
+[59.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 604.6, BaseDamage:505.4, AfterAttackerMods:520.6, AfterResistances:520.6, AfterTargetMods:572.7, AfterOutcome:572.7, AfterPostOutcome:572.7
+[59.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 572.654 damage (SpellSchool: 64). (Threat: 400.858)
+[59.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 3
+[59.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.45): {"SpellDamage": 61.800,}
+[59.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[60.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5108.363 --> 5205.413) of 7113 total.
+[62.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5205.413 --> 5302.463) of 7113 total.
+[62.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[62.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (5302.463 --> 5012.463) of 7113 total.
+[62.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1005.3, AfterAttackerMods:1035.4, AfterResistances:1035.4, AfterTargetMods:1139.0, AfterOutcome:1139.0, AfterPostOutcome:1139.0
+[62.50] [arcane-mage (#1)] Casting {ItemID: 13444} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[62.50] [arcane-mage (#1)] Completed cast {ItemID: 13444}
+[62.50] [arcane-mage (#1)] Gained 1800.000 mana from {ItemID: 13444} (5012.463 --> 6812.463) of 7113 total.
+[62.50] [arcane-mage (#1)] Major cooldown used: {ItemID: 13444}
+[62.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[63.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1138.959 damage (SpellSchool: 16). (Threat: 1138.959)
+[64.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6812.463 --> 6909.513) of 7113 total.
+[65.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[65.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6909.513 --> 6619.513) of 7113 total.
+[65.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1030.4, AfterAttackerMods:1061.3, AfterResistances:1061.3, AfterTargetMods:1167.4, AfterOutcome:0.0, AfterPostOutcome:0.0
+[65.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[66.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6619.513 --> 6716.563) of 7113 total.
+[66.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Miss (SpellSchool: 16). (Threat: 0.000)
+[68.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6716.563 --> 6813.613) of 7113 total.
+[68.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[68.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6813.613 --> 6523.613) of 7113 total.
+[68.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1002.8, AfterAttackerMods:1032.9, AfterResistances:1032.9, AfterTargetMods:1136.1, AfterOutcome:1136.1, AfterPostOutcome:1136.1
+[68.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[69.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
+[69.21] [arcane-mage (#1)] {SpellID: 400573} stacks: 3 --> 0
+[69.21] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {"SpellDamage": -185.400,}
+[69.21] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {}
+[69.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1136.137 damage (SpellSchool: 16). (Threat: 1136.137)
+[69.22] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6523.613 --> 6582.613) of 7113 total.
+[70.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6582.613 --> 6679.663) of 7113 total.
+[71.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[71.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6679.663 --> 6389.663) of 7113 total.
+[71.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 480.0, BaseDamage:865.3, AfterAttackerMods:891.3, AfterResistances:891.3, AfterTargetMods:980.4, AfterOutcome:1470.6, AfterPostOutcome:1470.6
+[71.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[72.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6389.663 --> 6486.713) of 7113 total.
+[72.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Crit for 1470.563 damage (SpellSchool: 16). (Threat: 1470.563)
+[72.22] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6486.713 --> 6545.713) of 7113 total.
+[73.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[73.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6545.713 --> 6364.713) of 7113 total.
+[73.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:460.1, AfterAttackerMods:473.9, AfterResistances:473.9, AfterTargetMods:521.3, AfterOutcome:521.3, AfterPostOutcome:521.3
+[73.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 521.265 damage (SpellSchool: 64). (Threat: 364.885)
+[73.00] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
+[73.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
+[73.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.15): {"SpellDamage": 61.800,}
+[73.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[74.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6364.713 --> 6461.763) of 7113 total.
+[74.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[74.50] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (6461.763 --> 5964.013) of 7113 total.
+[74.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:470.6, AfterAttackerMods:484.7, AfterResistances:484.7, AfterTargetMods:533.2, AfterOutcome:0.0, AfterPostOutcome:0.0
+[74.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Miss (SpellSchool: 64). (Threat: 0.000)
+[74.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
+[74.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.30): {"SpellDamage": 61.800,}
+[74.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 814.500, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[76.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5964.013 --> 6061.063) of 7113 total.
 [76.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[76.00] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (6144.150 --> 5646.400) of 7113 total.
-[76.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:755.2, AfterAttackerMods:777.8, AfterResistances:777.8, AfterTargetMods:855.6, AfterOutcome:1711.3, AfterPostOutcome:1711.3
-[76.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 1711.261 damage (SpellSchool: 64). (Threat: 1197.883)
-[76.00] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[76.00] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[76.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
-[76.00] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[76.00] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[76.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[76.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 0
-[76.00] [Target 1] Aura gained: {SpellID: 25345}
-[76.00] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[76.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5646.400 --> 5705.400) of 7113 total.
-[76.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[76.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[76.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:1014.1, AfterPostOutcome:1014.1
-[77.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[77.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[77.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[77.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 1014.052 damage (SpellSchool: 64). (Threat: 709.836)
-[77.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[77.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[77.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[77.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5705.400 --> 5764.400) of 7113 total.
-[78.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5764.400 --> 5861.450) of 7113 total.
-[78.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[78.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[78.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[78.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[78.50] [Target 1] Aura faded: {SpellID: 25345}
-[78.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[78.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[78.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[78.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[78.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[78.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5861.450 --> 5920.450) of 7113 total.
-[79.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[79.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5920.450 --> 5979.450) of 7113 total.
-[79.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[79.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5979.450 --> 6038.450) of 7113 total.
-[80.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6038.450 --> 6135.500) of 7113 total.
-[81.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[81.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6135.500 --> 5954.500) of 7113 total.
-[81.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:720.4, AfterAttackerMods:742.0, AfterResistances:742.0, AfterTargetMods:816.2, AfterOutcome:0.0, AfterPostOutcome:0.0
-[81.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Miss (SpellSchool: 64). (Threat: 0.000)
-[81.00] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[81.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[81.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[82.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5954.500 --> 6051.550) of 7113 total.
-[83.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[83.50] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (6051.550 --> 5553.800) of 7113 total.
-[83.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:744.9, AfterAttackerMods:767.3, AfterResistances:767.3, AfterTargetMods:844.0, AfterOutcome:844.0, AfterPostOutcome:844.0
-[83.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 844.009 damage (SpellSchool: 64). (Threat: 590.806)
-[83.50] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[83.50] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[83.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
-[83.50] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[83.50] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[83.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[83.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 0
-[83.50] [Target 1] Aura gained: {SpellID: 25345}
-[83.50] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[83.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5553.800 --> 5612.800) of 7113 total.
-[84.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5612.800 --> 5709.850) of 7113 total.
-[84.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[84.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[84.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[84.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[84.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[84.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[85.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[85.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[85.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[85.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:0.0, AfterPostOutcome:0.0
-[85.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5709.850 --> 5768.850) of 7113 total.
-[85.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[85.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[85.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[85.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:0.0, AfterPostOutcome:0.0
-[85.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5768.850 --> 5827.850) of 7113 total.
-[86.00] [Target 1] Aura faded: {SpellID: 25345}
-[86.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[86.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[86.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[86.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5827.850 --> 5924.900) of 7113 total.
-[86.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Miss (SpellSchool: 64). (Threat: 0.000)
-[86.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[86.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Miss (SpellSchool: 64). (Threat: 0.000)
-[87.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[88.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5924.900 --> 6021.950) of 7113 total.
-[88.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[88.50] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6021.950 --> 5840.950) of 7113 total.
-[88.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:717.4, AfterAttackerMods:738.9, AfterResistances:738.9, AfterTargetMods:812.8, AfterOutcome:812.8, AfterPostOutcome:812.8
-[88.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 812.769 damage (SpellSchool: 64). (Threat: 568.939)
-[88.50] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[88.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[88.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[88.50] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[88.50] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[88.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[88.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 0
-[88.50] [Target 1] Aura gained: {SpellID: 25345}
-[88.50] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[88.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5840.950 --> 5899.950) of 7113 total.
-[89.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[89.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[89.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[89.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[89.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[89.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:899.7, AfterPostOutcome:899.7
-[90.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5899.950 --> 5997.000) of 7113 total.
-[90.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[90.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[90.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[90.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[90.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5997.000 --> 6056.000) of 7113 total.
-[90.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 899.685 damage (SpellSchool: 64). (Threat: 629.780)
-[90.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[90.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[90.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[90.51] [arcane-mage (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[90.51] [arcane-mage (#1)] Completed cast {SpellID: 1260198}
-[90.51] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 465.0, BaseDamage:123.5, AfterAttackerMods:123.5, AfterResistances:123.5, AfterTargetMods:123.5, AfterOutcome:123.5, AfterPostOutcome:123.5
-[90.51] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} Hit for 123.500 damage (SpellSchool: 32). (Threat: 123.500)
-[90.51] [arcane-mage (#1)] Gained 123.500 health from {SpellID: 1260198} (2470.000 --> 2470.000) of 2470 total.
-[91.00] [Target 1] Aura faded: {SpellID: 25345}
-[91.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[91.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[91.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[91.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[91.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[91.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6056.000 --> 6115.000) of 7113 total.
-[91.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[91.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6115.000 --> 6174.000) of 7113 total.
-[92.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6174.000 --> 6271.050) of 7113 total.
-[92.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[93.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[93.50] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6271.050 --> 6090.050) of 7113 total.
-[93.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:728.5, AfterAttackerMods:750.3, AfterResistances:750.3, AfterTargetMods:825.4, AfterOutcome:825.4, AfterPostOutcome:825.4
-[93.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 825.372 damage (SpellSchool: 64). (Threat: 577.760)
-[93.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[93.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[93.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[94.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6090.050 --> 6187.100) of 7113 total.
-[96.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6187.100 --> 6284.150) of 7113 total.
-[96.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[96.00] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (6284.150 --> 5786.400) of 7113 total.
-[96.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:710.7, AfterAttackerMods:732.0, AfterResistances:732.0, AfterTargetMods:805.2, AfterOutcome:1610.4, AfterPostOutcome:1610.4
-[96.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 1610.444 damage (SpellSchool: 64). (Threat: 1127.311)
-[96.00] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[96.00] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[96.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
-[96.00] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[96.00] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[96.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[96.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 0
-[96.00] [Target 1] Aura gained: {SpellID: 25345}
-[96.00] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[96.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5786.400 --> 5845.400) of 7113 total.
-[96.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[96.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[96.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[97.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[97.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[97.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:345.7, AfterTargetMods:380.3, AfterOutcome:0.0, AfterPostOutcome:0.0
-[97.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[97.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[97.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[97.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[97.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5845.400 --> 5904.400) of 7113 total.
-[98.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5904.400 --> 6001.450) of 7113 total.
-[98.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Miss (SpellSchool: 64). (Threat: 0.000)
-[98.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[98.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[98.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:1014.1, AfterPostOutcome:1014.1
-[98.50] [Target 1] Aura faded: {SpellID: 25345}
-[98.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[98.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[98.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:345.7, AfterTargetMods:380.3, AfterOutcome:380.3, AfterPostOutcome:380.3
-[98.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[98.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[99.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 1014.052 damage (SpellSchool: 64). (Threat: 709.836)
-[99.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6001.450 --> 6060.450) of 7113 total.
-[99.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit (25% Resist) for 380.270 damage (SpellSchool: 64). (Threat: 266.189)
-[100.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6060.450 --> 6157.500) of 7113 total.
-[101.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[101.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6157.500 --> 5976.500) of 7113 total.
-[101.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:742.7, AfterAttackerMods:764.9, AfterResistances:764.9, AfterTargetMods:841.4, AfterOutcome:841.4, AfterPostOutcome:841.4
-[101.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 841.435 damage (SpellSchool: 64). (Threat: 589.004)
-[101.00] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[101.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[101.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[101.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5976.500 --> 6035.500) of 7113 total.
-[102.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6035.500 --> 6132.550) of 7113 total.
-[103.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[103.50] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (6132.550 --> 5634.800) of 7113 total.
-[103.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:754.6, AfterAttackerMods:777.3, AfterResistances:777.3, AfterTargetMods:855.0, AfterOutcome:855.0, AfterPostOutcome:855.0
-[103.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 855.002 damage (SpellSchool: 64). (Threat: 598.501)
-[103.50] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[103.50] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[103.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
-[103.50] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[103.50] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[103.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[103.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 0
-[103.50] [Target 1] Aura gained: {SpellID: 25345}
-[103.50] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[103.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5634.800 --> 5693.800) of 7113 total.
-[104.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5693.800 --> 5790.850) of 7113 total.
-[104.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[104.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[104.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:1014.1, AfterPostOutcome:1014.1
-[104.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[104.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[104.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[105.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 1014.052 damage (SpellSchool: 64). (Threat: 709.836)
-[105.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[105.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[105.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[105.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5790.850 --> 5849.850) of 7113 total.
-[105.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[105.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[105.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[105.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[106.00] [Target 1] Aura faded: {SpellID: 25345}
-[106.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[106.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[106.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[106.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5849.850 --> 5946.900) of 7113 total.
-[106.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[106.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[106.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5946.900 --> 6005.900) of 7113 total.
-[106.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[107.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[107.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6005.900 --> 6064.900) of 7113 total.
-[108.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6064.900 --> 6161.950) of 7113 total.
-[108.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[108.50] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6161.950 --> 5980.950) of 7113 total.
-[108.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:764.1, AfterAttackerMods:787.0, AfterResistances:787.0, AfterTargetMods:865.8, AfterOutcome:0.0, AfterPostOutcome:0.0
-[108.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Miss (SpellSchool: 64). (Threat: 0.000)
-[108.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[108.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[108.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[110.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5980.950 --> 6078.000) of 7113 total.
-[111.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[111.00] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (6078.000 --> 5580.250) of 7113 total.
-[111.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:715.1, AfterAttackerMods:736.6, AfterResistances:736.6, AfterTargetMods:810.2, AfterOutcome:810.2, AfterPostOutcome:810.2
-[111.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 810.239 damage (SpellSchool: 64). (Threat: 567.167)
-[111.00] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[111.00] [arcane-mage (#1)] Aura refreshed: {SpellID: 400573}
-[111.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
-[111.00] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[111.00] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[111.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[111.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 0
-[111.00] [Target 1] Aura gained: {SpellID: 25345}
-[111.00] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[111.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5580.250 --> 5639.250) of 7113 total.
-[111.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[111.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[111.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:1014.1, AfterPostOutcome:1014.1
-[112.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5639.250 --> 5736.300) of 7113 total.
-[112.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[112.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[112.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[112.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 1014.052 damage (SpellSchool: 64). (Threat: 709.836)
-[112.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[112.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[112.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[113.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[113.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[113.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[113.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[113.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5736.300 --> 5795.300) of 7113 total.
-[113.50] [Target 1] Aura faded: {SpellID: 25345}
-[113.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[113.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[113.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:460.9, AfterResistances:460.9, AfterTargetMods:507.0, AfterOutcome:507.0, AfterPostOutcome:507.0
-[113.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[113.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[113.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5795.300 --> 5854.300) of 7113 total.
-[114.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5854.300 --> 5951.350) of 7113 total.
-[114.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[114.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 507.026 damage (SpellSchool: 64). (Threat: 354.918)
-[114.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5951.350 --> 6010.350) of 7113 total.
-[116.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 2} (6010.350 --> 6107.400) of 7113 total.
-[116.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[116.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6107.400 --> 5926.400) of 7113 total.
-[116.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:743.3, AfterAttackerMods:765.6, AfterResistances:765.6, AfterTargetMods:842.1, AfterOutcome:1684.2, AfterPostOutcome:1684.2
-[116.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 1684.213 damage (SpellSchool: 64). (Threat: 1178.949)
-[116.00] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[116.00] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[116.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[116.00] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[116.00] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[116.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[116.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 0
-[116.00] [Target 1] Aura gained: {SpellID: 25345}
-[116.00] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[116.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5926.400 --> 5985.400) of 7113 total.
-[116.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[116.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[116.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[117.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[117.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[117.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:306.7, AfterTargetMods:337.4, AfterOutcome:337.4, AfterPostOutcome:337.4
-[117.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[117.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[117.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[117.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[117.51] [arcane-mage (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[117.51] [arcane-mage (#1)] Completed cast {SpellID: 1260198}
-[117.51] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 465.0, BaseDamage:123.5, AfterAttackerMods:123.5, AfterResistances:123.5, AfterTargetMods:123.5, AfterOutcome:123.5, AfterPostOutcome:123.5
-[117.51] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} Hit for 123.500 damage (SpellSchool: 32). (Threat: 123.500)
-[117.51] [arcane-mage (#1)] Gained 123.500 health from {SpellID: 1260198} (2470.000 --> 2470.000) of 2470 total.
-[117.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5985.400 --> 6044.400) of 7113 total.
-[118.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6044.400 --> 6141.450) of 7113 total.
-[118.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit (25% Resist) for 337.382 damage (SpellSchool: 64). (Threat: 236.167)
-[118.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[118.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[118.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[118.50] [Target 1] Aura faded: {SpellID: 25345}
+[76.00] [arcane-mage (#1)] Spent 814.500 mana from {SpellID: 1239700} (6061.063 --> 5246.563) of 7113 total.
+[76.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 604.6, BaseDamage:482.2, AfterAttackerMods:496.7, AfterResistances:248.4, AfterTargetMods:273.2, AfterOutcome:273.2, AfterPostOutcome:273.2
+[76.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit (50% Resist) for 273.193 damage (SpellSchool: 64). (Threat: 191.235)
+[76.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 3
+[76.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.45): {"SpellDamage": 61.800,}
+[76.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[76.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5246.563 --> 5305.563) of 7113 total.
+[78.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5305.563 --> 5402.613) of 7113 total.
+[79.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[79.00] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (5402.613 --> 5112.613) of 7113 total.
+[79.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1028.8, AfterAttackerMods:1059.7, AfterResistances:1059.7, AfterTargetMods:1165.6, AfterOutcome:1165.6, AfterPostOutcome:1165.6
+[79.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[79.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1165.646 damage (SpellSchool: 16). (Threat: 1165.646)
+[79.72] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5112.613 --> 5171.613) of 7113 total.
+[80.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5171.613 --> 5268.663) of 7113 total.
+[82.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5268.663 --> 5365.713) of 7113 total.
+[82.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[82.00] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (5365.713 --> 5075.713) of 7113 total.
+[82.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1019.7, AfterAttackerMods:1050.3, AfterResistances:1050.3, AfterTargetMods:1155.4, AfterOutcome:1155.4, AfterPostOutcome:1155.4
+[82.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[82.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1155.374 damage (SpellSchool: 16). (Threat: 1155.374)
+[84.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (5075.713 --> 5172.763) of 7113 total.
+[85.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[85.00] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (5172.763 --> 4882.763) of 7113 total.
+[85.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1032.8, AfterAttackerMods:1063.8, AfterResistances:1063.8, AfterTargetMods:1170.1, AfterOutcome:0.0, AfterPostOutcome:0.0
+[85.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[85.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Miss (SpellSchool: 16). (Threat: 0.000)
+[86.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (4882.763 --> 4979.813) of 7113 total.
+[88.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
+[88.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 3 --> 0
+[88.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {"SpellDamage": -185.400,}
+[88.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {}
+[88.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (4979.813 --> 5076.863) of 7113 total.
+[88.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[88.00] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (5076.863 --> 4786.863) of 7113 total.
+[88.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 480.0, BaseDamage:878.4, AfterAttackerMods:904.7, AfterResistances:904.7, AfterTargetMods:995.2, AfterOutcome:995.2, AfterPostOutcome:995.2
+[88.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[88.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 995.189 damage (SpellSchool: 16). (Threat: 995.189)
+[89.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[89.50] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (4786.863 --> 4605.863) of 7113 total.
+[89.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:456.1, AfterAttackerMods:469.8, AfterResistances:469.8, AfterTargetMods:516.7, AfterOutcome:516.7, AfterPostOutcome:516.7
+[89.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 516.746 damage (SpellSchool: 64). (Threat: 361.722)
+[89.50] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
+[89.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
+[89.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.15): {"SpellDamage": 61.800,}
+[89.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[89.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (4605.863 --> 4664.863) of 7113 total.
+[90.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (4664.863 --> 4761.913) of 7113 total.
+[91.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[91.00] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (4761.913 --> 4264.163) of 7113 total.
+[91.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:479.5, AfterAttackerMods:493.9, AfterResistances:493.9, AfterTargetMods:543.3, AfterOutcome:1086.5, AfterPostOutcome:1086.5
+[91.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 1086.540 damage (SpellSchool: 64). (Threat: 760.578)
+[91.00] [arcane-mage (#1)] Aura gained: {SpellID: 12536}
+[91.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
+[91.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.30): {"SpellDamage": 61.800,}
+[91.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[91.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (4264.163 --> 4323.163) of 7113 total.
+[92.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (4323.163 --> 4420.213) of 7113 total.
+[92.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[92.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 604.6, BaseDamage:487.9, AfterAttackerMods:502.6, AfterResistances:502.6, AfterTargetMods:552.8, AfterOutcome:552.8, AfterPostOutcome:552.8
+[92.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 552.821 damage (SpellSchool: 64). (Threat: 386.975)
+[92.50] [arcane-mage (#1)] Aura refreshed: {SpellID: 12536}
+[92.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 3
+[92.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.45): {"SpellDamage": 61.800,}
+[92.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 0.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[94.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (4420.213 --> 4517.263) of 7113 total.
+[95.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[95.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1019.9, AfterAttackerMods:1050.5, AfterResistances:1050.5, AfterTargetMods:1155.6, AfterOutcome:1155.6, AfterPostOutcome:1155.6
+[95.50] [arcane-mage (#1)] Aura faded: {SpellID: 12536}
+[95.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[96.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 2} (4517.263 --> 4614.313) of 7113 total.
+[96.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1155.576 damage (SpellSchool: 16). (Threat: 1155.576)
+[96.22] [arcane-mage (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[96.22] [arcane-mage (#1)] Completed cast {SpellID: 1260198}
+[96.22] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 650.4, BaseDamage:123.5, AfterAttackerMods:123.5, AfterResistances:123.5, AfterTargetMods:123.5, AfterOutcome:123.5, AfterPostOutcome:123.5
+[96.22] [arcane-mage (#1)] [Target 1] {SpellID: 1260198} Hit for 123.500 damage (SpellSchool: 32). (Threat: 123.500)
+[96.22] [arcane-mage (#1)] Gained 123.500 health from {SpellID: 1260198} (2470.000 --> 2470.000) of 2470 total.
+[96.22] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (4614.313 --> 4673.313) of 7113 total.
+[98.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 2} (4673.313 --> 4770.363) of 7113 total.
+[98.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[98.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (4770.363 --> 4480.363) of 7113 total.
+[98.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:999.1, AfterAttackerMods:1029.0, AfterResistances:1029.0, AfterTargetMods:1131.9, AfterOutcome:1131.9, AfterPostOutcome:1131.9
+[98.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[99.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1131.940 damage (SpellSchool: 16). (Threat: 1131.940)
+[99.22] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (4480.363 --> 4539.363) of 7113 total.
+[100.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (4539.363 --> 4636.413) of 7113 total.
+[101.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[101.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (4636.413 --> 4346.413) of 7113 total.
+[101.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1021.1, AfterAttackerMods:1051.7, AfterResistances:1051.7, AfterTargetMods:1156.9, AfterOutcome:1156.9, AfterPostOutcome:1156.9
+[101.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[102.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (4346.413 --> 4443.463) of 7113 total.
+[102.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1156.919 damage (SpellSchool: 16). (Threat: 1156.919)
+[102.22] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (4443.463 --> 4502.463) of 7113 total.
+[104.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (4502.463 --> 4599.513) of 7113 total.
+[104.50] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
+[104.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 3 --> 0
+[104.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {"SpellDamage": -185.400,}
+[104.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {}
+[104.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[104.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (4599.513 --> 4309.513) of 7113 total.
+[104.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 480.0, BaseDamage:861.1, AfterAttackerMods:886.9, AfterResistances:886.9, AfterTargetMods:975.6, AfterOutcome:975.6, AfterPostOutcome:975.6
+[104.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[105.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 975.578 damage (SpellSchool: 16). (Threat: 975.578)
+[105.22] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (4309.513 --> 4368.513) of 7113 total.
+[106.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (4368.513 --> 4465.563) of 7113 total.
+[106.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[106.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (4465.563 --> 4284.563) of 7113 total.
+[106.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:440.0, AfterAttackerMods:453.2, AfterResistances:453.2, AfterTargetMods:498.5, AfterOutcome:997.1, AfterPostOutcome:997.1
+[106.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 997.052 damage (SpellSchool: 64). (Threat: 697.937)
+[106.00] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
+[106.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
+[106.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.15): {"SpellDamage": 61.800,}
+[106.00] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 497.750, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[106.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (4284.563 --> 4343.563) of 7113 total.
+[107.50] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[107.50] [arcane-mage (#1)] Spent 497.750 mana from {SpellID: 1239700} (4343.563 --> 3845.813) of 7113 total.
+[107.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:463.4, AfterAttackerMods:477.3, AfterResistances:477.3, AfterTargetMods:525.0, AfterOutcome:525.0, AfterPostOutcome:525.0
+[107.50] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 524.978 damage (SpellSchool: 64). (Threat: 367.484)
+[107.50] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 2
+[107.50] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.30): {"SpellDamage": 61.800,}
+[107.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 814.500, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[107.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (3845.813 --> 3904.813) of 7113 total.
+[108.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (3904.813 --> 4001.863) of 7113 total.
+[109.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[109.00] [arcane-mage (#1)] Spent 814.500 mana from {SpellID: 1239700} (4001.863 --> 3187.363) of 7113 total.
+[109.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 604.6, BaseDamage:491.9, AfterAttackerMods:506.7, AfterResistances:506.7, AfterTargetMods:557.3, AfterOutcome:557.3, AfterPostOutcome:557.3
+[109.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Hit for 557.336 damage (SpellSchool: 64). (Threat: 390.135)
+[109.00] [arcane-mage (#1)] Aura gained: {SpellID: 12536}
+[109.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 2 --> 3
+[109.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.45): {"SpellDamage": 61.800,}
+[109.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 0.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[110.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (3187.363 --> 3284.413) of 7113 total.
+[112.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (3284.413 --> 3381.463) of 7113 total.
+[112.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[112.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1017.3, AfterAttackerMods:1047.8, AfterResistances:1047.8, AfterTargetMods:1152.6, AfterOutcome:1152.6, AfterPostOutcome:1152.6
+[112.00] [arcane-mage (#1)] Aura faded: {SpellID: 12536}
+[112.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[112.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1152.607 damage (SpellSchool: 16). (Threat: 1152.607)
+[114.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 2} (3381.463 --> 3478.513) of 7113 total.
+[115.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[115.00] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (3478.513 --> 3188.513) of 7113 total.
+[115.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1028.9, AfterAttackerMods:1059.7, AfterResistances:1059.7, AfterTargetMods:1165.7, AfterOutcome:1165.7, AfterPostOutcome:1165.7
+[115.00] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
+[115.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1165.715 damage (SpellSchool: 16). (Threat: 1165.715)
+[115.71] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
+[115.72] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (3188.513 --> 3247.513) of 7113 total.
+[116.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (3247.513 --> 3344.563) of 7113 total.
+[118.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (3344.563 --> 3441.613) of 7113 total.
+[118.00] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[118.00] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (3441.613 --> 3151.613) of 7113 total.
+[118.00] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 665.4, BaseDamage:1005.0, AfterAttackerMods:1035.1, AfterResistances:1035.1, AfterTargetMods:1138.6, AfterOutcome:1707.9, AfterPostOutcome:1707.9
+[118.00] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[118.00] [arcane-mage (#1)] Completed cast {SpellID: 25345}
+[118.00] [Target 1] Aura gained: {SpellID: 25345}
+[118.00] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
 [118.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [118.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[118.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[118.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[118.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[119.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[119.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[119.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6141.450 --> 6200.450) of 7113 total.
-[120.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6200.450 --> 6297.500) of 7113 total.
-[121.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[121.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6297.500 --> 6116.500) of 7113 total.
-[121.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:737.1, AfterAttackerMods:759.2, AfterResistances:759.2, AfterTargetMods:835.1, AfterOutcome:1670.2, AfterPostOutcome:1670.2
-[121.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 1670.182 damage (SpellSchool: 64). (Threat: 1169.127)
-[121.00] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[121.00] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[121.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[121.00] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[121.00] [arcane-mage (#1)] Completed cast {SpellID: 25345}
+[118.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 666.4, BaseDamage:399.6, AfterAttackerMods:411.6, AfterResistances:411.6, AfterTargetMods:452.7, AfterOutcome:452.7, AfterPostOutcome:452.7
+[118.71] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Crit for 1707.942 damage (SpellSchool: 16). (Threat: 1707.942)
+[119.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[119.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[119.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 666.4, BaseDamage:399.6, AfterAttackerMods:411.6, AfterResistances:411.6, AfterTargetMods:452.7, AfterOutcome:452.7, AfterPostOutcome:452.7
+[119.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 452.736 damage (SpellSchool: 64). (Threat: 316.915)
+[119.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[119.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[119.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 666.4, BaseDamage:399.6, AfterAttackerMods:411.6, AfterResistances:411.6, AfterTargetMods:452.7, AfterOutcome:905.5, AfterPostOutcome:905.5
+[119.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (3151.613 --> 3210.613) of 7113 total.
+[120.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (3210.613 --> 3307.663) of 7113 total.
+[120.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 452.736 damage (SpellSchool: 64). (Threat: 316.915)
+[120.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[120.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[120.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 666.4, BaseDamage:399.6, AfterAttackerMods:411.6, AfterResistances:411.6, AfterTargetMods:452.7, AfterOutcome:452.7, AfterPostOutcome:452.7
+[120.50] [Target 1] Aura faded: {SpellID: 25345}
+[120.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[120.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[120.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 666.4, BaseDamage:399.6, AfterAttackerMods:411.6, AfterResistances:308.7, AfterTargetMods:339.6, AfterOutcome:339.6, AfterPostOutcome:339.6
+[120.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 905.472 damage (SpellSchool: 64). (Threat: 633.830)
+[120.50] [arcane-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 3s, GCD = 1.5s, Effective Time = 3s)
 [121.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[121.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 0
-[121.00] [Target 1] Aura gained: {SpellID: 25345}
-[121.00] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[121.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6116.500 --> 6175.500) of 7113 total.
-[121.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[121.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[121.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[122.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6175.500 --> 6272.550) of 7113 total.
-[122.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[122.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[122.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:204.5, AfterTargetMods:224.9, AfterOutcome:224.9, AfterPostOutcome:224.9
-[122.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[122.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[122.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[122.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
-[122.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6272.550 --> 6331.550) of 7113 total.
-[123.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit (50% Resist) for 224.921 damage (SpellSchool: 64). (Threat: 157.445)
-[123.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[123.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[123.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:899.7, AfterPostOutcome:899.7
-[123.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6331.550 --> 6390.550) of 7113 total.
-[123.50] [Target 1] Aura faded: {SpellID: 25345}
-[123.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[123.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[123.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:899.7, AfterPostOutcome:899.7
-[123.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 449.843 damage (SpellSchool: 64). (Threat: 314.890)
-[123.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[123.51] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6390.550 --> 6449.550) of 7113 total.
-[124.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (6449.550 --> 6546.600) of 7113 total.
-[124.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 899.685 damage (SpellSchool: 64). (Threat: 629.780)
-[124.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Crit for 899.685 damage (SpellSchool: 64). (Threat: 629.780)
-[126.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 2} (6546.600 --> 6643.650) of 7113 total.
-[126.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
-[126.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (6643.650 --> 6462.650) of 7113 total.
-[126.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:752.3, AfterAttackerMods:774.8, AfterResistances:774.8, AfterTargetMods:852.3, AfterOutcome:1704.7, AfterPostOutcome:1704.7
-[126.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 1704.661 damage (SpellSchool: 64). (Threat: 1193.263)
-[126.00] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
-[126.00] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
-[126.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
-[126.00] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[126.00] [arcane-mage (#1)] Completed cast {SpellID: 25345}
-[126.00] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
-[126.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 0
-[126.00] [Target 1] Aura gained: {SpellID: 25345}
-[126.00] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
-[126.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6462.650 --> 6521.650) of 7113 total.
+[121.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 3 --> 0
+[121.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {"SpellDamage": -185.400,}
+[121.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {}
+[121.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 452.736 damage (SpellSchool: 64). (Threat: 316.915)
+[121.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (3307.663 --> 3366.663) of 7113 total.
+[121.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit (25% Resist) for 339.552 damage (SpellSchool: 64). (Threat: 237.686)
+[122.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (3366.663 --> 3463.713) of 7113 total.
+[123.50] [arcane-mage (#1)] Completed cast {SpellID: 25304}
+[123.50] [arcane-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (3463.713 --> 3173.713) of 7113 total.
+[123.50] [arcane-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 480.0, BaseDamage:851.2, AfterAttackerMods:876.7, AfterResistances:876.7, AfterTargetMods:964.4, AfterOutcome:0.0, AfterPostOutcome:0.0
+[123.50] [arcane-mage (#1)] Casting {SpellID: 1239700} (Cost = 181.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[124.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (3173.713 --> 3270.763) of 7113 total.
+[124.21] [arcane-mage (#1)] [Target 1] {SpellID: 25304} Miss (SpellSchool: 16). (Threat: 0.000)
+[125.00] [arcane-mage (#1)] Completed cast {SpellID: 1239700}
+[125.00] [arcane-mage (#1)] Spent 181.000 mana from {SpellID: 1239700} (3270.763 --> 3089.763) of 7113 total.
+[125.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:457.8, AfterAttackerMods:471.5, AfterResistances:471.5, AfterTargetMods:518.7, AfterOutcome:1037.3, AfterPostOutcome:1037.3
+[125.00] [arcane-mage (#1)] [Target 1] {SpellID: 1239700} Crit for 1037.315 damage (SpellSchool: 64). (Threat: 726.121)
+[125.00] [arcane-mage (#1)] Aura gained: {SpellID: 12536}
+[125.00] [arcane-mage (#1)] Aura gained: {SpellID: 44404}
+[125.00] [arcane-mage (#1)] Aura gained: {SpellID: 400573}
+[125.00] [arcane-mage (#1)] {SpellID: 400573} stacks: 0 --> 1
+[125.00] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.15): {"SpellDamage": 61.800,}
+[125.00] [arcane-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[125.00] [arcane-mage (#1)] Completed cast {SpellID: 25345}
+[125.00] [Target 1] Aura gained: {SpellID: 25345}
+[125.00] [arcane-mage (#1)] Aura faded: {SpellID: 44404}
+[125.01] [arcane-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (3089.763 --> 3148.763) of 7113 total.
+[125.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[125.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[125.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:364.2, AfterAttackerMods:375.2, AfterResistances:375.2, AfterTargetMods:412.7, AfterOutcome:412.7, AfterPostOutcome:412.7
+[126.00] [arcane-mage (#1)] Gained 97.050 mana from {OtherID: 2, Tag: 1} (3148.763 --> 3245.813) of 7113 total.
+[126.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[126.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
+[126.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:364.2, AfterAttackerMods:375.2, AfterResistances:375.2, AfterTargetMods:412.7, AfterOutcome:412.7, AfterPostOutcome:412.7
+[126.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 412.685 damage (SpellSchool: 64). (Threat: 288.879)
 [126.50] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [126.50] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[126.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:449.8, AfterPostOutcome:449.8
+[126.50] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:364.2, AfterAttackerMods:375.2, AfterResistances:375.2, AfterTargetMods:412.7, AfterOutcome:825.4, AfterPostOutcome:825.4
+[127.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} Hit for 412.685 damage (SpellSchool: 64). (Threat: 288.879)
 [127.00] [arcane-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [127.00] [arcane-mage (#1)] Completed cast {SpellID: 25346}
-[127.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 481.0, BaseDamage:346.6, AfterAttackerMods:408.9, AfterResistances:408.9, AfterTargetMods:449.8, AfterOutcome:0.0, AfterPostOutcome:0.0
+[127.00] [arcane-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 542.8, BaseDamage:364.2, AfterAttackerMods:375.2, AfterResistances:375.2, AfterTargetMods:412.7, AfterOutcome:825.4, AfterPostOutcome:825.4
+[127.25] [arcane-mage (#1)] Aura faded: {SpellID: 12536}
 [127.25] [arcane-mage (#1)] Aura faded: {SpellID: 10494, Tag: -1}
 [127.25] [arcane-mage (#1)] Aura faded: {SpellID: 24907, Tag: -1}
 [127.25] [arcane-mage (#1)] Aura faded: {SpellID: 23028, Tag: -1}
@@ -842,6 +587,10 @@
 [127.25] [arcane-mage (#1)] Aura faded: {SpellID: 21850, Tag: -1}
 [127.25] [arcane-mage (#1)] Aura faded: {SpellID: 25898, Tag: -1}
 [127.25] [arcane-mage (#1)] Aura faded: {SpellID: 25918, Tag: -1}
+[127.25] [arcane-mage (#1)] Aura faded: {SpellID: 400573}
+[127.25] [arcane-mage (#1)] {SpellID: 400573} stacks: 1 --> 0
+[127.25] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {"SpellDamage": -48.450,}
+[127.25] [arcane-mage (#1)] Dynamic dep updated (SpellDamage += Intellect * 0.00): {}
 [127.25] [arcane-mage (#1)] Aura faded: {SpellID: 22783}
 [127.25] [Target 1] Aura faded: {SpellID: 20355, Tag: -1}
 [127.25] [Target 1] Aura faded: {SpellID: 1311680, Tag: -1}

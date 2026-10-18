@@ -1,5 +1,5 @@
 //! Translated by tools/rust_buffs.py from the reference's sim/core/buffs/buffs_auto_gen.go and
-//! debuffs_auto_gen.go at 1007c66bf8f55b364308f4e303b83e37ded8c66e. Do not edit; run `python3 tools/rust_buffs.py write`.
+//! debuffs_auto_gen.go at 5af130344b6fb5150a5b3a2295f26d20adee625d. Do not edit; run `python3 tools/rust_buffs.py write`.
 
 use crate::contracts::request::Message;
 
@@ -58,8 +58,8 @@ pub(crate) static MANA_SPRING_TOTEM: Meta = Meta {
 pub(crate) static MANA_TIDE_TOTEMS: Meta = Meta {
     kind: MetaKind::Buff,
     label: "Mana Tide Totem",
-    spell: 17360,
-    cast: Some(17359),
+    spell: 1325257,
+    cast: Some(1325256),
     category: "ManaTideTotem",
     ..Meta::DEFAULT
 };
@@ -292,7 +292,7 @@ pub(crate) static GREATER_BLESSING_OF_WISDOM: Meta = Meta {
 
 pub(crate) static GREATER_BLESSING_OF_SALVATION: Meta = Meta {
     kind: MetaKind::Buff,
-    label: "Greater Blessing of Salvation",
+    label: "Mass Salvation",
     spell: 25895,
     ..Meta::DEFAULT
 };

@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "75004c8c462485533fcefbc8615e1096b9008e3aa80cf42f7893557b2f2ea425",
+  "request_sha256": "befd4c311b32beec39e436deee9f966fc6a707ea74e2745ccfff4ecaba7b6440",
   "scenario_id": "affliction-warlock-3-targets-casts-at-no-unit",
   "sim": {
     "iterations": 3000,
@@ -1105,17 +1105,18 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "05550020135201351--055000500310105",
+    "talents_string": "05520320135201351--055000500310105",
     "talents": {
       "agonizing_flames": 3,
       "amplify_curse": 1,
       "bane": 5,
       "bane_of_havoc": 1,
       "conflagrate": 1,
+      "grim_reach": 2,
       "improved_bane_of_agony": 2,
       "improved_corruption": 5,
+      "improved_drains": 3,
       "improved_shadow_bolt": 5,
-      "malediction": 5,
       "malevolence": 5,
       "nightfall": 2,
       "pandemic": 3,
@@ -2097,7 +2098,7 @@
           "base_tick_count": 5,
           "base_tick_length_ns": 1000000000,
           "bonus_coefficient": 0.10000000149011612,
-          "periodic_damage_multiplier": 1,
+          "periodic_damage_multiplier": 1.2,
           "base_duration_multiplier": 1,
           "base_duration_flat_ns": 0,
           "affected_by_cast_speed": true,
@@ -3333,7 +3334,7 @@
           "base_tick_count": 6,
           "base_tick_length_ns": 1000000000,
           "bonus_coefficient": 0.14300000667572021,
-          "periodic_damage_multiplier": 1,
+          "periodic_damage_multiplier": 1.2,
           "base_duration_multiplier": 1,
           "base_duration_flat_ns": 0,
           "affected_by_cast_speed": true,

@@ -20,9 +20,11 @@ pub(crate) const GATE: ClassGate = ClassGate {
 
 /// Priest effect kinds implemented in Rust and validated against the pinned Go reference.
 const EFFECTS: &[&str] = &[
+    "dark_inspiration",
     "dark_sacrifice",
     "devouring_plague",
     "holy_fire",
+    "improved_mind_flay",
     "inner_focus",
     "mind_blast",
     "mind_flay",
@@ -95,6 +97,14 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
             ("player", aura),
             ("pet unit", pet),
             ("pet", mana_restore_aura),
+        ],
+        Effect::DarkInspiration {
+            mind_blast_trigger,
+            mind_flay_trigger,
+            ..
+        } => vec![
+            ("player", mind_blast_trigger),
+            ("player", mind_flay_trigger),
         ],
         Effect::Shadowform { aura, .. }
         | Effect::InnerFocus { aura, .. }

@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "781f7476f5500f28aad48ae383811d617135833e67477a9c4117bfc21e84a623",
+  "request_sha256": "d670934169ab5840c8bb43096b44c80d21db8409305d455c383c2976c719d99e",
   "scenario_id": "smite-priest-holy-nova-own-and-external-power-infusion-12-sources",
   "sim": {
     "iterations": 500,
@@ -1282,7 +1282,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "505030031300001001-305051130020003-50002",
+    "talents_string": "505030031030001001-305051130020003-50002",
     "talents": {
       "blessed_recovery": 1,
       "divine_fury": 5,
@@ -6592,7 +6592,7 @@
         },
         {
           "spell_id": 15265,
-          "tick_base": 13,
+          "tick_base": 9,
           "tick_can_crit": true
         },
         {

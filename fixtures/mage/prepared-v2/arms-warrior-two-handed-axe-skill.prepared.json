@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "7898d1cf3357a54d1c2aad76d6d3689a9d0326b19b8cad0a2382cb836b9958e1",
@@ -5199,7 +5199,7 @@
       "kind": "bloodthrill",
       "proc_chance": 0.2,
       "trigger_aura": "Bloodthrill - Trigger",
-      "window_ns": 6000000000
+      "window_ns": 5000000000
     },
     {
       "excluded_class_spells": [

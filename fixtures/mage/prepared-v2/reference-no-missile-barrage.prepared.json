@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "dba7d9232111e213b6350eaa4aa252b2e5bc1591394b2135a2c8c70d7fc246fd",
+  "request_sha256": "0b2ddab22c0bfefc03e62af8b29097ad58000ad59c16cce7ead64b0413ea4292",
   "scenario_id": "reference-no-missile-barrage",
   "sim": {
     "iterations": 3000,
@@ -1137,7 +1137,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "05020500300000-03-0555000301001301251",
+    "talents_string": "05002050030000-03-0555000301001301251",
     "talents": {
       "arcane_concentration": 5,
       "arcane_focus": 5,
@@ -5763,7 +5763,7 @@
     },
     {
       "aura": "Winter's Chill",
-      "crit_per_stack": 2,
+      "damage_per_stack": 0.05,
       "duration_ns": 15000000000,
       "kind": "winters_chill",
       "max_stacks": 5,
@@ -5788,7 +5788,6 @@
       "spell_id": 12051
     },
     {
-      "arcane_blast_bonus_per_stack": 0.15,
       "kind": "arcane_missiles",
       "ranks": [
         {

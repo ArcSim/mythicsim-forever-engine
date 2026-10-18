@@ -15,6 +15,7 @@ use crate::prepare::spell::{
 };
 use crate::prepare::spell_mod::{SpellModConfig, SpellModType};
 use crate::prepare::stats::SchoolIndex;
+use crate::prepare::stats::Stat;
 
 use super::super::masks;
 use super::super::spell_data::spell_data;
@@ -30,7 +31,6 @@ impl Priest {
         // Blackout and Spirit Tap model nothing in Go either.
 
         // Tier 2
-        self.apply_shadow_affinity(sim, unit);
         self.apply_improved_shadow_word_pain(sim, unit);
         self.apply_shadow_reach(sim, unit);
 
@@ -38,10 +38,10 @@ impl Priest {
         self.apply_improved_mind_blast(sim, unit);
         // Improved Psychic Scream models nothing in Go either.
         self.apply_mind_flay(sim, unit);
-        self.apply_improved_mind_flay(sim, unit);
+        // Improved Mind Flay's ramp is in Mind Flay's tick, which the fight runs.
 
         // Tier 4
-        // Improved Fade models nothing in Go either.
+        self.apply_dark_inspiration(sim, unit);
         self.apply_vampiric_embrace(sim, unit);
         self.apply_shadow_weaving(sim, unit);
 
@@ -108,23 +108,6 @@ impl Priest {
                 .value_at(points);
     }
 
-    fn apply_shadow_affinity(&self, sim: &mut Sim, unit: UnitId) {
-        let points = self.talents.i32("shadow_affinity");
-        if points == 0 {
-            return;
-        }
-        sim.add_static_mod(
-            unit,
-            SpellModConfig {
-                class_mask: masks::ALL,
-                school: school::SHADOW,
-                float_value: spell_data().shadow_affinity.fraction_at(points),
-                kind: SpellModType::ThreatMultiplierPct,
-                ..SpellModConfig::default()
-            },
-        );
-    }
-
     /// +3 sec of duration per point, which is one more tick at Shadow Word: Pain's 3 second
     /// cadence.
     fn apply_improved_shadow_word_pain(&self, sim: &mut Sim, unit: UnitId) {
@@ -171,23 +154,46 @@ impl Priest {
         });
     }
 
-    /// Improved Mind Flay is new in Forever: +10% damage per point, plus range and slow the sim
-    /// ignores.
-    fn apply_improved_mind_flay(&self, sim: &mut Sim, unit: UnitId) {
-        let points = self.talents.i32("improved_mind_flay");
+    /// Dark Inspiration (client 70425): Mind Blast and a fully channeled Mind Flay raise the
+    /// priest's Spirit by 3% a point for 10 sec. The party half is not applied.
+    fn apply_dark_inspiration(&self, sim: &mut Sim, unit: UnitId) {
+        let points = self.talents.i32("dark_inspiration");
         if points == 0 {
             return;
         }
-        sim.add_static_mod(
+        let data = spell_data();
+        let buff = data.dark_inspiration_triggered.highest();
+        let spirit = sim.new_dynamic_multiply_stat(
             unit,
-            SpellModConfig {
-                class_mask: masks::MIND_FLAY,
-                float_value: spell_data()
-                    .improved_mind_flay
-                    .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_DOT)
-                    .fraction_at(points),
-                kind: SpellModType::DamageDoneFlat,
-                ..SpellModConfig::default()
+            Stat::Spirit,
+            data.dark_inspiration.multiplier_at(points),
+        );
+        let aura = sim.register_aura(
+            unit,
+            AuraConfig {
+                label: "Dark Inspiration".to_string(),
+                action_id: Some(ActionId::spell(buff.id)),
+                duration: buff.duration(),
+                ..AuraConfig::default()
+            },
+        );
+        sim.attach_stat_dependency(aura, spirit);
+        sim.make_proc_trigger_aura(
+            unit,
+            &ProcTrigger {
+                name: "Dark Inspiration Mind Blast".to_string(),
+                callback: CallbackMask::ON_CAST_COMPLETE,
+                class_spell_mask: masks::MIND_BLAST,
+                ..ProcTrigger::default()
+            },
+        );
+        sim.make_proc_trigger_aura(
+            unit,
+            &ProcTrigger {
+                name: "Dark Inspiration Mind Flay".to_string(),
+                callback: CallbackMask::ON_PERIODIC_DAMAGE_DEALT,
+                class_spell_mask: masks::MIND_FLAY,
+                ..ProcTrigger::default()
             },
         );
     }

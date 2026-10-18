@@ -4,12 +4,12 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `1007c66bf8f55b364308f4e303b83e37ded8c66e`, on community base `efd2a43eb5f0e96e3f2e8a1da9765904648c3ebc` |
-| [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `efd2a43eb5f0e96e3f2e8a1da9765904648c3ebc` (2026-10-16) |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `5af130344b6fb5150a5b3a2295f26d20adee625d`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
 intentionally differ from inherited Classic behavior. Fixture client build:
-`1.60.1.70374`.
+`1.60.1.70425`.
 
 The pin is written once, in [upstream/sources.json](upstream/sources.json). The Rust
 build script, the Python tools and the Go helpers they build (through `-ldflags -X`)
@@ -465,6 +465,37 @@ base `efd2a43eb` and client build 70374 did not move, so the ledger has no new c
   hand's autos do; the exported trigger spells list it.
 
 51 of the 614 Go goldens changed, 22 in DPS, and the Shaman preparation goldens with an Enhancement build follow. Rust
+matches all 612 accepted fixtures with a Go golden, and preparation writes exactly what the exporter
+writes for every one of the 614. The recorded sweeps were not rerun.
+
+The pin moved from `1007c66bf` to `5af130344` on 2026-10-16, two commits: the fork's merge of
+community #813 and #814 (client build 1.60.1.70425 and Wowhead data) and its patch 142, the 70425
+client data with the 16 October talent trees and redesigns. The community base moves to `b7083fac1`;
+the ledger reviews the two commits.
+
+- Data: game data at client 70425; the buff tables take Mana Tide Totem rank 4. A total stat
+  percentage names its stats in the stat mask, which wins when set.
+- Trees: Mage 19/17/19 and Priest 18/17/17, and the Shaman and Warlock trees moved. Every talent
+  string in the repository is remapped field by field, as the fork remapped its own: renamed
+  talents keep their points, and the points of removed or capped ones go where patch 142 put them.
+- Mage: Arcane Blast's stacks give 15% of Intellect as spell damage each, a stacking stat aura, for
+  15 sec from the first stack, and nothing spends them. Arcane Wrath is new. Missile Barrage has two
+  ranks and procs off a missile and Arcane Wrath too. Fire Power counts the mage's Fire effects on the
+  target, up to four, through a damage done by caster handler the exporters now describe. Wake of Fire
+  is Improved Fire Blast, and Winter's Chill raises Cone of Cold's damage.
+- Priest: Improved Mind Flay ramps each tick; Dark Inspiration raises Spirit after Mind Blast or a
+  full Mind Flay channel, a stat aura behind its triggers' batch window; Silent Resolve reaches Holy and
+  Shadow. Shadow Affinity and Improved Fade are gone.
+- Shaman: Elemental Mastery is a major cooldown that speeds Lightning Bolt and Lava Burst and cancels
+  Chain Lightning's cooldown, through a new runtime cooldown modifier. Lava Burst has rank 4, and a
+  rotation naming an older rank presses it through the spell's `rank_aliases`. Trial by Fire lengthens
+  Magma Totem; Chain Lightning's cost and Fire Nova's coefficient come from their rows.
+- Warlock, warrior and paladin: Demonic Embrace lost its Spirit penalty, Grim Reach takes
+  Malediction's slot, and Bloodthrill opens the 5 sec Overpower window.
+- Items: Blade of Hanna (2801) is new and runs in Rust; Lord Sakrasis' Scepter registers no effect, as
+  in Go; The Green Tower follows its generated name.
+
+329 of the 614 Go goldens changed, 276 in DPS, and the preparation goldens of every class follow. Rust
 matches all 612 accepted fixtures with a Go golden, and preparation writes exactly what the exporter
 writes for every one of the 614. The recorded sweeps were not rerun.
 

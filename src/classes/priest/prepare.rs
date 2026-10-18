@@ -16,7 +16,7 @@ use crate::prepare::stats::Stat;
 use crate::prepare::Refusal;
 
 /// Go priest.TalentTreeSizes.
-const TALENT_TREE_SIZES: [usize; 3] = [18, 17, 18];
+const TALENT_TREE_SIZES: [usize; 3] = [18, 17, 17];
 
 /// Go `Inner Fire` rank 7's armor, which the charges never take away on a caster that is not
 /// hit.
@@ -234,6 +234,15 @@ impl PrepAgent for Priest {
     /// Go `Shadowfiend.Reset`: the pet is dismissed.
     fn reset_pet(&mut self, sim: &mut Sim, pet: UnitId) {
         shadowfiend::reset(sim, pet);
+    }
+
+    /// talents_shadow.go applyDarkInspiration: its Spirit multiplier is a stat aura.
+    fn stat_auras(&self, _sim: &Sim, _unit: UnitId) -> Vec<String> {
+        if self.talents.i32("dark_inspiration") > 0 {
+            vec!["Dark Inspiration".to_string()]
+        } else {
+            Vec::new()
+        }
     }
 
     fn talents(&self) -> &Message {

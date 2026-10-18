@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "7bcce93344bfa2f6c0883dba3a89d56161b56b5d4d9e45d6ffcaabd404668fca",
@@ -1498,7 +1498,7 @@
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
         "min_range": 0,
-        "max_range": 30,
+        "max_range": 50000,
         "max_charges": 0,
         "cd": null,
         "shared_cd": null,
@@ -5478,7 +5478,7 @@
       "stone_multiplier": 1
     },
     {
-      "average": 90,
+      "average": 105,
       "can_crit": true,
       "chances": [
         {
@@ -5580,7 +5580,7 @@
         46,
         48
       ],
-      "variance": 0.3333333432674408
+      "variance": 0.20000000298023224
     },
     {
       "chances": [

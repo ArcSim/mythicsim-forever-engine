@@ -777,9 +777,22 @@ pub struct Spell {
     /// Go `MetricSplits`: the spell reports one tagged metric entry per split.
     #[serde(default, skip_serializing_if = "is_zero_usize")]
     pub metric_splits: usize,
+    /// Go `RankAliases`: older rank IDs a rotation may still name, which `GetAPLSpell` falls
+    /// back to (Lava Burst rank 4, client 70425).
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub rank_aliases: Vec<ActionId>,
 }
 
 impl Spell {
+    /// Go `slices.ContainsFunc(RankAliases, id.SameAction)`.
+    pub fn has_rank_alias(&self, id: &ActionId) -> bool {
+        self.rank_aliases.iter().any(|alias| {
+            alias.spell_id == id.spell_id
+                && alias.item_id == id.item_id
+                && alias.other_id == id.other_id
+        })
+    }
+
     pub fn has_flag(&self, flag: &str) -> bool {
         self.flags.iter().any(|f| f == flag)
     }
@@ -1427,6 +1440,17 @@ pub enum Effect {
         tick_cancel_spells: Vec<usize>,
     },
     /// The Undead racial Touch of the Grave: landed hits can drain the target.
+    /// items_70425.go Blade of Hanna: a landed main hand swing among `trigger_spells` stacks
+    /// `stacks_aura`; at its most the stacks go, `strike_spell` deals `damage` to the target on the
+    /// melee special table, and `buff_aura`, a stat aura, comes up.
+    BladeOfHanna {
+        trigger_aura: String,
+        stacks_aura: String,
+        buff_aura: String,
+        damage: f64,
+        strike_spell: usize,
+        trigger_spells: Vec<usize>,
+    },
     TouchOfTheGrave {
         trigger_aura: String,
         drain_spell_id: i32,
@@ -2372,6 +2396,18 @@ pub enum Effect {
     MindFlay {
         ranks: Vec<FireballRank>,
     },
+    /// Improved Mind Flay (client 70425): each Mind Flay tick deals `ramp_per_tick` more than the
+    /// one before, a step added per tick.
+    ImprovedMindFlay {
+        ramp_per_tick: f64,
+    },
+    /// Dark Inspiration (client 70425): Mind Blast's cast and a full Mind Flay channel's last tick
+    /// activate `aura`, a stat aura.
+    DarkInspiration {
+        aura: String,
+        mind_blast_trigger: String,
+        mind_flay_trigger: String,
+    },
     /// Holy Nova: each rank's rolled hit, then its triggered heal on the priest, with the
     /// healing modifiers Go reads.
     HolyNova {
@@ -2651,11 +2687,30 @@ pub enum Effect {
         cast_time_percent: f64,
     },
     /// Arcane Blast and its stacking buff.
+    /// Arcane Blast and its stacks (client 70425): each stack's spell damage from Intellect is a
+    /// stacking stat aura; the stacks raise Arcane Blast's own cost.
     ArcaneBlast {
         spell_id: i32,
         aura: String,
-        damage_per_stack: f64,
+        /// The share of Intellect each stack gives as spell damage, for the log line.
+        intellect_per_stack: f64,
+        /// The Intellect left once an iteration's end has deactivated the auras registered
+        /// before the stacks', which their last log line reads.
+        done_intellect: f64,
         cost_per_stack: f64,
+    },
+    /// Arcane Wrath (client 70425): the hit adds `mana_share` of maximum mana as spell damage at
+    /// its `coefficient`.
+    ArcaneWrath {
+        spell_id: i32,
+        coefficient: f64,
+        mana_share: f64,
+    },
+    /// Fire Power (client 70425): Fire spells, Ignite aside, deal `per_effect` more per Fire
+    /// effect of the mage on the target, up to `max_effects`.
+    FirePower {
+        per_effect: f64,
+        max_effects: i32,
     },
     IceLance {
         spell_id: i32,
@@ -2663,9 +2718,6 @@ pub enum Effect {
     },
     ArcaneMissiles {
         ranks: Vec<MissileRank>,
-        /// The additive damage bonus each Arcane Blast stack the channel spent gives its
-        /// missiles.
-        arcane_blast_bonus_per_stack: f64,
     },
     ColdSnap {
         spell_id: i32,
@@ -2695,6 +2747,8 @@ pub enum Effect {
         trigger_aura: String,
         aura: String,
         arcane_blast_chance: f64,
+        /// An Arcane Missiles missile's chance (client 70425).
+        missile_chance: f64,
         bolt_chance: f64,
         rng_label: String,
         cost_percent_add: f64,
@@ -2714,7 +2768,8 @@ pub enum Effect {
         talent_rank: i32,
         proc_chance: f64,
         max_stacks: i32,
-        crit_per_stack: f64,
+        /// Each stack's Cone of Cold damage (client 70425).
+        damage_per_stack: f64,
         duration_ns: i64,
         trigger_aura: String,
         aura: String,
@@ -3262,6 +3317,14 @@ pub enum Effect {
         spell_id: i32,
         aura: String,
         melee_speed_multiplier: f64,
+    },
+    /// Elemental Mastery (client 70425): a major cooldown whose aura makes Lightning Bolt and
+    /// Lava Burst cast faster and cancels Chain Lightning's cooldown.
+    ElementalMastery {
+        spell_id: i32,
+        aura: String,
+        cast_time_delta_ns: i64,
+        chain_lightning_cooldown_ns: i64,
     },
     /// Elemental Focus: a completed elemental cast may grant Clearcasting.
     ElementalFocus {
@@ -4202,6 +4265,8 @@ impl Effect {
         match self {
             Effect::Frostbolt {} => "frostbolt",
             Effect::ArcaneBlast { .. } => "arcane_blast",
+            Effect::ArcaneWrath { .. } => "arcane_wrath",
+            Effect::FirePower { .. } => "fire_power",
             Effect::ArcanePower { .. } => "arcane_power",
             Effect::Ignite { .. } => "ignite",
             Effect::FireBlast {} => "fire_blast",
@@ -4219,6 +4284,7 @@ impl Effect {
             Effect::FrostfireBolt { .. } => "frostfire_bolt",
             Effect::Scorch { .. } => "scorch",
             Effect::TouchOfTheGrave { .. } => "touch_of_the_grave",
+            Effect::BladeOfHanna { .. } => "blade_of_hanna",
             Effect::Eureka { .. } => "eureka",
             Effect::Berserking { .. } => "berserking",
             Effect::BloodFury { .. } => "blood_fury",
@@ -4244,6 +4310,8 @@ impl Effect {
             Effect::ShadowWordPain { .. } => "shadow_word_pain",
             Effect::DevouringPlague { .. } => "devouring_plague",
             Effect::MindFlay { .. } => "mind_flay",
+            Effect::ImprovedMindFlay { .. } => "improved_mind_flay",
+            Effect::DarkInspiration { .. } => "dark_inspiration",
             Effect::Starshards { .. } => "starshards",
             Effect::HolyNova { .. } => "holy_nova",
             Effect::Shadowfiend { .. } => "shadowfiend",
@@ -4400,6 +4468,7 @@ impl Effect {
             Effect::ImprovedStormstrike { .. } => "improved_stormstrike",
             Effect::MaelstromWeapon { .. } => "maelstrom_weapon",
             Effect::RageOfTheFarseer { .. } => "rage_of_the_farseer",
+            Effect::ElementalMastery { .. } => "elemental_mastery",
             Effect::RockbiterWeapon { .. } => "rockbiter_weapon",
             Effect::FrostShock { .. } => "frost_shock",
             Effect::WeaponSync { .. } => "weapon_sync",

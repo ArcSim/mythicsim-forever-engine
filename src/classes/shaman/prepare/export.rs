@@ -290,6 +290,20 @@ impl Shaman {
                     + row.effect(dbcenums::A_MOD_MELEE_RANGED_HASTE_2, 0).percent(),
             }));
         }
+        if self.has_talent("elemental_mastery") {
+            // talents_elemental.go applyElementalMastery: a major cooldown whose aura speeds
+            // Lightning Bolt and Lava Burst and cancels Chain Lightning's cooldown.
+            let row = data.elemental_mastery.highest();
+            let chain = data.chain_lightning.highest();
+            effects.push(json!({
+                "kind": "elemental_mastery", "spell_id": row.id, "aura": "Elemental Mastery",
+                "cast_time_delta_ns": nanos(super::talents::millis(
+                    row.effect(dbcenums::A_ADD_FLAT_MODIFIER, dbcenums::SPELLMOD_CASTING_TIME)
+                        .base_points,
+                )),
+                "chain_lightning_cooldown_ns": nanos(chain.cooldown().max(chain.category_cooldown())),
+            }));
+        }
         if has("elemental_focus") {
             // talents_elemental.go applyElementalFocus
             let clearcasting = data.elemental_focus_triggered.highest();
@@ -339,7 +353,8 @@ impl Shaman {
         effects.push(json!({
             "kind": "magma_totem", "spell_id": magma.id,
             "pulse_damage": data.magma_totem_triggered.by_id(10581).damage_effect().average(CHARACTER_LEVEL),
-            "duration_ns": nanos(magma.duration()),
+            // Trial by Fire (client 70425) lengthens it.
+            "duration_ns": nanos(magma.duration() + super::spells::magma_totem_bonus(self.talent("trial_by_fire"))),
         }));
         // registerLightningShieldSpell: the cast puts up every charge. Its trigger hears only
         // the shield self proc, which needs a proc rate the exporter rejects, so the orb never

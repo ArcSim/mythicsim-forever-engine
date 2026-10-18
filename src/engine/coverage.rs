@@ -191,6 +191,7 @@ const COMMON_EFFECTS: &[&str] = &[
     "force_reactive_disk",
     "stacking_on_use",
     "sulfuras_hand_of_ragnaros",
+    "blade_of_hanna",
     "energize_proc",
     "eureka",
     "exclusive_category",
@@ -449,6 +450,11 @@ fn common_claims(effect: &Effect) -> Vec<(&'static str, &str)> {
             immolation_aura,
             ..
         } => vec![("player", trigger_aura), ("player", immolation_aura)],
+        Effect::BladeOfHanna {
+            trigger_aura,
+            stacks_aura,
+            ..
+        } => vec![("player", trigger_aura), ("player", stacks_aura)],
         Effect::StatProc {
             trigger_aura, aura, ..
         }
@@ -1533,6 +1539,12 @@ pub(crate) fn rotation_spell_index(prepared: &PreparedV2, id: &ActionId) -> Opti
             spells
                 .iter()
                 .position(|spell| spell.action_id.as_ref() == Some(id))
+        })
+        // Go `RankAliases`: an older rank a rotation names presses the known one.
+        .or_else(|| {
+            spells
+                .iter()
+                .position(|spell| spell.has_flag("SpellFlagAPL") && spell.has_rank_alias(id))
         })
 }
 

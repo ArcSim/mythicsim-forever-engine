@@ -206,6 +206,8 @@ type classExport struct {
 	effects          func(agent core.Agent, character *core.Character) []map[string]any
 	// How many of the target's dynamic damage taken modifiers the class effects describe.
 	damageTakenModifiers func(agent core.Agent) int
+	// The damage done by caster handlers the class's effects describe, on every attack table.
+	casterDamageHandlers func(agent core.Agent) int
 	// Why a registered pet never acts in this build, or "" when it may.
 	inertPet func(agent core.Agent, pet *core.Pet) string
 	// Optional: stable names for class spells Go registers without a class mask, by action.
@@ -420,6 +422,8 @@ type Spell struct {
 	RelatedDotSpell *int `json:"related_dot_spell,omitempty"`
 	// spell.go splitSpellMetrics: how many tagged metric entries the spell reports under.
 	MetricSplits int `json:"metric_splits,omitempty"`
+	// spell.go RankAliases: older rank IDs a rotation may still name, which GetAPLSpell reads.
+	RankAliases []ActionID `json:"rank_aliases,omitempty"`
 }
 
 type Aura struct {
@@ -1001,7 +1005,16 @@ func exportSpell(spell *core.Spell, target *core.Unit, class classExport, timers
 		CritMultiplierAdditive: spell.CritMultiplierAdditive, BonusBaseDamage: spell.BonusBaseDamage, BonusCoefficient: spell.BonusCoefficient,
 		ThreatMultiplier: spell.ThreatMultiplier, FlatThreatBonus: spell.FlatThreatBonus, PushbackResist: spell.PushbackResist, Dot: dot,
 		MetricSplits: map[bool]int{true: spell.GetMetricSplitCount(), false: 0}[spell.GetMetricSplitCount() > 1],
+		RankAliases:  rankAliases(spell),
 	}
+}
+
+func rankAliases(spell *core.Spell) []ActionID {
+	aliases := []ActionID{}
+	for _, id := range spell.RankAliases {
+		aliases = append(aliases, *actionID(id))
+	}
+	return aliases
 }
 
 // shapeshift.go castRequirementFailure, as the player auras whose form the requirement refuses.
@@ -1264,6 +1277,18 @@ func commonEffects(character *core.Character, target *core.Unit, request *proto.
 		effects = append(effects, map[string]any{
 			"kind": "stacking_on_use", "spell_id": aura.ActionID.SpellID, "aura": aura.Label,
 			"period_ns": nanos(2 * time.Second), "ticks": int32(10),
+		})
+	}
+	// items_70425.go Blade of Hanna: each landed main hand swing stacks Improving Form; at its most
+	// the stacks go, Perfected Form strikes the target for its row's flat Physical damage on the melee
+	// special table, and its stats aura comes up.
+	if trigger := character.GetAura("Blade of Hanna"); trigger != nil {
+		perfected := spelldata.MustFind(1325508)
+		effects = append(effects, map[string]any{
+			"kind": "blade_of_hanna", "trigger_aura": trigger.Label, "stacks_aura": "Improving Form",
+			"buff_aura": "Perfected Form", "damage": perfected.EffectN(1).BasePoints,
+			"strike_spell": spellPosition(character, character.GetSpell(core.ActionID{SpellID: perfected.ID})),
+			"trigger_spells": procTriggerSpells(character, core.ProcTrigger{ProcMask: core.ProcMaskMeleeMHAuto}),
 		})
 	}
 	consumes := request.Raid.Parties[0].Players[0].Consumables
@@ -1665,7 +1690,7 @@ func prepareSet(request *proto.RaidSimRequest, digest, scenario string, swapped 
 	note(privateField(simulation, "executePhaseCallbacks").Len() != describedCallbacks, "execute phase callbacks are unsupported")
 	note(simulation.Encounter.AllTargets[0].AI != nil, "target AI is unsupported")
 	table := character.AttackTables[target.UnitIndex]
-	note(table.DamageDoneByCasterMultiplier != nil || len(table.DamageDoneByCasterExtraMultiplier) != 0, "caster damage callbacks are unsupported")
+	note(table.DamageDoneByCasterMultiplier != nil || casterHandlers(table) > describedCasterHandlers(agent), "caster damage callbacks are unsupported")
 	class, exported := classExports[character.Class]
 	described := 0
 	if exported && class.damageTakenModifiers != nil {
@@ -2392,4 +2417,24 @@ func main() {
 	default:
 		fail(fmt.Errorf("unsupported command %s", os.Args[1]))
 	}
+}
+
+// The damage done by caster handlers set on an attack table.
+func casterHandlers(table *core.AttackTable) int {
+	count := 0
+	for _, handler := range table.DamageDoneByCasterExtraMultiplier {
+		if handler != nil {
+			count++
+		}
+	}
+	return count
+}
+
+// The handlers on every attack table the class's effects describe.
+func describedCasterHandlers(agent core.Agent) int {
+	class, ok := classExports[agent.GetCharacter().Class]
+	if !ok || class.casterDamageHandlers == nil {
+		return 0
+	}
+	return class.casterDamageHandlers(agent)
 }

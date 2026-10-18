@@ -22,7 +22,7 @@ impl Warlock {
         self.apply_improved_corruption(sim, unit);
 
         // Tier 2
-        self.apply_malediction(sim, unit);
+        self.apply_grim_reach(sim, unit);
         // Soul Harvest models nothing in Go either.
         self.apply_improved_drains(sim, unit);
 
@@ -107,11 +107,10 @@ impl Warlock {
         );
     }
 
-    /// The 16 October 2026 beta notes replace Malediction (1225177, +1% periodic damage a point)
-    /// with Grim Reach, +10/20% range on Affliction spells and nothing for damage. The new client
-    /// tree is not out yet, so the talent keeps Malediction's field and points in it do nothing:
-    /// the sim models no spell range for Grim Reach to extend.
-    fn apply_malediction(&self, _sim: &mut Sim, _unit: UnitId) {}
+    /// Client 70425 replaced Malediction (1225177, +1% periodic damage a point) with Grim Reach
+    /// (18218), +10/20% range on Affliction spells and nothing for damage: the sim models no
+    /// spell range for it to extend.
+    fn apply_grim_reach(&self, _sim: &mut Sim, _unit: UnitId) {}
 
     /// Improved Drains: 7/13/20% more drain damage (403511, a dot modifier).
     fn apply_improved_drains(&self, sim: &mut Sim, unit: UnitId) {

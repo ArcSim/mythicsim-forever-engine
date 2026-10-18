@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "d3cc7efca5bd87c58250db5b4202ce44ccca9eef0fa4ef5a051de24408814c03",
+  "request_sha256": "e45f603257854e75200b03618b4a9b5a5dc320dc68f7e83dc77d707eded47eb1",
   "scenario_id": "enhancement-shaman-grace-replaces-windfury-totem",
   "sim": {
     "iterations": 3000,
@@ -1150,7 +1150,7 @@
         "action_id": {
           "spell_id": 10587
         },
-        "duration_ns": 20000000000,
+        "duration_ns": 40000000000,
         "max_stacks": 0,
         "active": false,
         "stacks": 0,
@@ -1391,7 +1391,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "450033102-055030031005102251",
+    "talents_string": "453003102-055030031005102251",
     "talents": {
       "ancestral_knowledge": 5,
       "call_of_flame": 3,
@@ -1401,7 +1401,6 @@
       "elemental_focus": 1,
       "elemental_weapons": 3,
       "flurry": 5,
-      "improved_fire_nova": 2,
       "improved_stormstrike": 2,
       "maelstrom_weapon": 5,
       "mental_dexterity": 3,
@@ -1409,7 +1408,8 @@
       "rage_of_the_farseer": 1,
       "shamanistic_focus": 1,
       "stormstrike": 1,
-      "thundering_strikes": 5
+      "thundering_strikes": 5,
+      "trial_by_fire": 2
     },
     "class_options": {
       "imbueMh": "RockbiterWeapon"
@@ -1991,13 +1991,13 @@
         "missile_speed": 0,
         "cost": {
           "resource": "mana",
-          "base_cost": 146,
+          "base_cost": 145,
           "flat_modifier": 0,
           "percent_modifier": 1,
           "additive_percent_modifier": 0.92
         },
         "default_cast": {
-          "cost": 134.32,
+          "cost": 133.4,
           "gcd_ns": 1500000000,
           "gcd_min_ns": 0,
           "cast_time_ns": 2000000000,
@@ -2114,13 +2114,13 @@
         "missile_speed": 0,
         "cost": {
           "resource": "mana",
-          "base_cost": 198,
+          "base_cost": 200,
           "flat_modifier": 0,
           "percent_modifier": 1,
           "additive_percent_modifier": 0.92
         },
         "default_cast": {
-          "cost": 182.16,
+          "cost": 184,
           "gcd_ns": 1500000000,
           "gcd_min_ns": 0,
           "cast_time_ns": 2000000000,
@@ -2237,13 +2237,13 @@
         "missile_speed": 0,
         "cost": {
           "resource": "mana",
-          "base_cost": 254,
+          "base_cost": 250,
           "flat_modifier": 0,
           "percent_modifier": 1,
           "additive_percent_modifier": 0.92
         },
         "default_cast": {
-          "cost": 233.68,
+          "cost": 230,
           "gcd_ns": 1500000000,
           "gcd_min_ns": 0,
           "cast_time_ns": 2000000000,
@@ -3878,7 +3878,7 @@
         "dot": {
           "unit": "self",
           "aura_label": "Magma Totem",
-          "base_tick_count": 10,
+          "base_tick_count": 20,
           "base_tick_length_ns": 2000000000,
           "bonus_coefficient": 0.032999999821186066,
           "periodic_damage_multiplier": 1,
@@ -4143,13 +4143,13 @@
         "missile_speed": 0,
         "cost": {
           "resource": "mana",
-          "base_cost": 520,
+          "base_cost": 375,
           "flat_modifier": 0,
           "percent_modifier": 1,
           "additive_percent_modifier": 1
         },
         "default_cast": {
-          "cost": 520,
+          "cost": 375,
           "gcd_ns": 1500000000,
           "gcd_min_ns": 0,
           "cast_time_ns": 0,
@@ -4179,7 +4179,7 @@
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
-        "bonus_coefficient": 0.143,
+        "bonus_coefficient": 0.14300000667572021,
         "threat_multiplier": 1,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
@@ -5324,7 +5324,7 @@
       "tick_can_crit": true
     },
     {
-      "base_damage": 420,
+      "base_damage": 245,
       "kind": "fire_nova",
       "spell_id": 408345
     },
@@ -5346,7 +5346,7 @@
       "spell_id": 10473
     },
     {
-      "duration_ns": 20000000000,
+      "duration_ns": 40000000000,
       "kind": "magma_totem",
       "pulse_damage": 73,
       "spell_id": 10587

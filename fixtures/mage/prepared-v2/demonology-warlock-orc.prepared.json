@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "1007c66bf8f55b364308f4e303b83e37ded8c66e",
-    "client_build": "1.60.1.70374",
+    "engine_revision": "5af130344b6fb5150a5b3a2295f26d20adee625d",
+    "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "3d6235896de94b8b3199dac91e0c4dced0dbf14e44b21c3c3d1281164ce1b66d",
@@ -514,7 +514,7 @@
       "SpellHitPercent": 7,
       "SpellHitRating": 50,
       "SpellPiercing": 0,
-      "Spirit": 205,
+      "Spirit": 207,
       "Stamina": 290,
       "Strength": 74
     },
@@ -1127,9 +1127,9 @@
     "mana": {
       "max": 6845.95,
       "base": 1373,
-      "spirit_regen_per_second": 28,
+      "spirit_regen_per_second": 28.200000000000003,
       "regen_per_second_casting": 15.4,
-      "regen_per_second_not_casting": 43.4,
+      "regen_per_second_not_casting": 43.6,
       "teardown_max": 5534.95
     },
     "attack_table": {

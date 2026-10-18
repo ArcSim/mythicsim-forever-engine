@@ -33,8 +33,8 @@ func init() {
 	// pet.go: the pet is enabled on start and never summoned after; its rotation may disable it
 	// once the fight passes its uptime, which the hunter_pet effect describes.
 	resetOnlyPetClasses[proto.Class_ClassHunter] = true
-	// pet.go inheritAutoShotCritMods (patch 136): the pet's enable and disable callbacks add the
-	// Auto Shot's crit modifiers to its physical crit and take them back.
+	// pet.go trackPetCritOffset (patches 136 and 138): the pet's disable callback clears the crit
+	// offset its owner keeps for the inheritance and moves no stat.
 	statCallbackPets = append(statCallbackPets, func(pet *core.Pet) bool {
 		return pet.Owner != nil && pet.Owner.Class == proto.Class_ClassHunter && pet.EnabledOnStart() && !pet.IsGuardian()
 	})
@@ -656,6 +656,8 @@ func hunterMeleeEffects(h *hunter.Hunter, character *core.Character) []map[strin
 			"kind": "resourcefulness", "trigger_aura": trigger.Label, "aura": character.GetAura("Resourcefulness").Label,
 			"proc_chance": 0.5 * float64(talents.Resourcefulness),
 			"regen":       buff.Effect(dbcenums.A_MOD_MANA_REGEN_INTERRUPT, 0).Average(core.CharacterLevel) / 100,
+			// 16 October 2026 beta notes: only melee and ranged ability crits.
+			"spells": procTriggerSpells(character, core.ProcTrigger{ProcMask: core.ProcMaskMeleeSpecial | core.ProcMaskRangedSpecial}),
 		})
 	}
 	if trigger := character.GetAura("Expose Prey"); trigger != nil {

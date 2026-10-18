@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "713b825aae50c2a1277081488a7aca742542b0d6",
+    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
     "client_build": "1.60.1.70338",
     "exporter": "tools/oracle-v2"
   },
@@ -748,7 +748,7 @@
       "NatureResistance": 27,
       "ParryPercent": 0,
       "ParryRating": 0,
-      "PhysicalCritPercent": 13.15,
+      "PhysicalCritPercent": 10.15,
       "PhysicalDamage": 0,
       "PhysicalHitPercent": 3,
       "RangedAttackPower": 0,
@@ -955,7 +955,7 @@
       },
       {
         "label": "Moonkin Aura (External)",
-        "tag": "DruidCritAura",
+        "tag": "MoonkinAura",
         "action_id": {
           "spell_id": 24907,
           "tag": -1
@@ -973,7 +973,7 @@
         "exclusive_effects": 1,
         "exclusive_memberships": [
           {
-            "category": "DruidCritAura",
+            "category": "MoonkinAura",
             "single_aura": true,
             "priority": 3,
             "position": 0
@@ -1507,7 +1507,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.2,
+        "damage_multiplier_additive": 1.25,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
@@ -1579,7 +1579,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.2,
+        "damage_multiplier_additive": 1.25,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
@@ -1651,7 +1651,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.2,
+        "damage_multiplier_additive": 1.25,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
@@ -1723,7 +1723,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.2,
+        "damage_multiplier_additive": 1.25,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
@@ -1795,7 +1795,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.2,
+        "damage_multiplier_additive": 1.25,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
@@ -1867,7 +1867,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1.2,
+        "damage_multiplier_additive": 1.25,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
@@ -1930,7 +1930,7 @@
         "max_charges": 0,
         "cd": {
           "timer": "timer-1",
-          "duration_ns": 60000000000
+          "duration_ns": 30000000000
         },
         "shared_cd": null,
         "bonus_hit_percent": 0,
@@ -3290,7 +3290,7 @@
         "max_charges": 0,
         "cd": {
           "timer": "timer-7",
-          "duration_ns": 15000000000
+          "duration_ns": 18000000000
         },
         "shared_cd": null,
         "bonus_hit_percent": 0,
@@ -3300,7 +3300,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1,
+        "damage_multiplier_additive": 1.05,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
@@ -3353,7 +3353,7 @@
         "max_charges": 0,
         "cd": {
           "timer": "timer-7",
-          "duration_ns": 15000000000
+          "duration_ns": 18000000000
         },
         "shared_cd": null,
         "bonus_hit_percent": 0,
@@ -3363,7 +3363,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1,
+        "damage_multiplier_additive": 1.05,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
@@ -3416,7 +3416,7 @@
         "max_charges": 0,
         "cd": {
           "timer": "timer-7",
-          "duration_ns": 15000000000
+          "duration_ns": 18000000000
         },
         "shared_cd": null,
         "bonus_hit_percent": 0,
@@ -3426,7 +3426,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1,
+        "damage_multiplier_additive": 1.05,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
@@ -3479,7 +3479,7 @@
         "max_charges": 0,
         "cd": {
           "timer": "timer-7",
-          "duration_ns": 15000000000
+          "duration_ns": 18000000000
         },
         "shared_cd": null,
         "bonus_hit_percent": 0,
@@ -3489,7 +3489,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1.1,
-        "damage_multiplier_additive": 1,
+        "damage_multiplier_additive": 1.05,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
@@ -4994,7 +4994,7 @@
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",
-          "duration_ns": 60000000000
+          "duration_ns": 24000000000
         },
         "shared_cd": null,
         "bonus_hit_percent": 0,
@@ -5067,7 +5067,7 @@
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",
-          "duration_ns": 60000000000
+          "duration_ns": 24000000000
         },
         "shared_cd": null,
         "bonus_hit_percent": 0,
@@ -5140,7 +5140,7 @@
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",
-          "duration_ns": 60000000000
+          "duration_ns": 24000000000
         },
         "shared_cd": null,
         "bonus_hit_percent": 0,
@@ -5213,7 +5213,7 @@
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",
-          "duration_ns": 60000000000
+          "duration_ns": 24000000000
         },
         "shared_cd": null,
         "bonus_hit_percent": 0,
@@ -5286,7 +5286,7 @@
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",
-          "duration_ns": 60000000000
+          "duration_ns": 24000000000
         },
         "shared_cd": null,
         "bonus_hit_percent": 0,
@@ -5359,7 +5359,7 @@
         "max_charges": 0,
         "cd": {
           "timer": "timer-10",
-          "duration_ns": 60000000000
+          "duration_ns": 24000000000
         },
         "shared_cd": null,
         "bonus_hit_percent": 0,

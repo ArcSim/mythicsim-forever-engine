@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "713b825aae50c2a1277081488a7aca742542b0d6",
+    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
     "client_build": "1.60.1.70338",
     "exporter": "tools/oracle-v2"
   },
@@ -436,7 +436,7 @@
       "ReducedCritTakenPercent": 0.52,
       "ShadowDamage": 0,
       "ShadowResistance": 27,
-      "SpellCritPercent": 11,
+      "SpellCritPercent": 8,
       "SpellCritRating": 42,
       "SpellDamage": 185,
       "SpellHasteRating": 0,
@@ -760,7 +760,7 @@
       },
       {
         "label": "Leader of the Pack (External)",
-        "tag": "DruidCritAura",
+        "tag": "LeaderOfThePack",
         "action_id": {
           "spell_id": 24932,
           "tag": -1
@@ -778,7 +778,7 @@
         "exclusive_effects": 1,
         "exclusive_memberships": [
           {
-            "category": "DruidCritAura",
+            "category": "LeaderOfThePack",
             "single_aura": true,
             "priority": 3,
             "position": 0
@@ -891,14 +891,8 @@
           "on_reset"
         ],
         "icd": null,
-        "exclusive_effects": 3,
+        "exclusive_effects": 2,
         "exclusive_memberships": [
-          {
-            "category": "AirTotem",
-            "single_aura": true,
-            "priority": 2,
-            "position": 0
-          },
           {
             "category": "FlametongueTotem",
             "single_aura": false,
@@ -3667,7 +3661,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3675,7 +3669,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3683,7 +3677,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3691,7 +3685,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3699,7 +3693,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3707,7 +3701,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3715,7 +3709,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3723,7 +3717,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3731,7 +3725,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3739,7 +3733,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3747,7 +3741,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3755,7 +3749,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3763,7 +3757,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3771,7 +3765,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3779,7 +3773,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         },
         {
@@ -3787,7 +3781,7 @@
           "MP5": 0,
           "PhysicalCritPercent": 26.627000000000002,
           "RangedAttackPower": 253,
-          "SpellCritPercent": 11,
+          "SpellCritPercent": 8,
           "SpellDamage": 185
         }
       ],

@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `713b825aae50c2a1277081488a7aca742542b0d6`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `d0bd691f087689c4b154d67f4bf284e1fa820ac5`, on community base `f7598154eb8a138831290b34d4d321a532295224` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `f7598154eb8a138831290b34d4d321a532295224` (2026-10-10) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -382,6 +382,40 @@ writes for every one of the 614. Two tests move with the random stream: the hunt
 disable stats once Ruthless counts for Auto Shot, and the Cyclone test now stops where Go's `keepsTie`
 hands the category to a Cyclone the clap no longer outlasts, which its new seed reaches. The recorded
 sweeps were not rerun.
+
+The pin moved from `713b825aa` to `d0bd691f0` on 2026-10-16, one commit: the fork's patch 138 (branch
+`mythicsim/oct16-notes`), part one of the 16 October 2026 beta development notes: every class change
+that states its numbers or rule outright and needs no new client row. The community base `f7598154e` and
+client build 70338 did not move, so the ledger has no new commit; community #807, #808, #810 and #811 make
+some of the same changes on the other line.
+
+- Core: Auto Shot needs 0.5 seconds of standing still after a move. Leader of the Pack and Moonkin Aura
+  reach the whole raid and stack: Leader of the Pack reads its row's crit as melee and ranged crit,
+  Moonkin Aura as spell crit, through the new parse option `ReadAuraAs`.
+- Paladin: Consecration's coefficient 0.042, Righteous Fury's Holy threat 90%, Shield Specialization 4%
+  mana and Champion of the Light 10/20/30%. Reckoning banks up to 4 charges that the next main hand auto
+  spends on one extra attack each, through an always-up spender aura.
+- Hunter: the pet inherits its owner's physical crit plus the higher of the Auto Shot's ranged-only crit
+  and the swing's melee-only crit, an offset the owner keeps, and its Expertise; a pet stat inheritance
+  takes the simulation, and the exporters probe it on a separate reset copy. Resourcefulness reduces
+  Strider Kick's cost and hears only melee and ranged ability crits.
+- Priest: Devouring Plague 24 seconds, Shadow Word: Death 18, Vampiric Embrace 30; Twin Disciplines adds
+  Shadow Word: Death, Mind Flay, Starshards and Penance, and Power in Light also waits on Shadow Word:
+  Pain (`dot_spells`).
+- Rogue: a Mutilate spends Cold Blood once both hands struck if either crit.
+- Warlock: Grim Reach replaces Malediction, range only; Shadow Mastery is 2% a point.
+- Warrior: Shield Bash and Shield Slam no longer trigger Weaponmaster's Sword Specialization.
+- Druid: Faerie Fire no longer triggers Omen of Clarity in Cat or Bear Form.
+- Mage: Ice Lance +200% on a frozen target; a Fire Blast crit adds 2 Heating Up stacks, and a Pyroblast
+  under Presence of Mind keeps them.
+- Shaman: Chain Lightning costs 35% less, Stormstrike 8% of base mana, Fire Nova's coefficient is 0.143
+  and Call of Flame adds 3 seconds of Flame Shock a rank. Grace of Air no longer shares an air totem slot
+  with Windfury Totem: the category goes, the party's Grace of Air stands beside the party's Windfury
+  Totem, and only the party's Windfury Totem contests the shaman's own.
+
+602 of the 614 Go goldens changed, 525 in DPS, and the preparation goldens of every class follow. Rust
+matches all 612 accepted fixtures with a Go golden, and preparation writes exactly what the exporter
+writes for every one of the 614. The recorded sweeps were not rerun.
 
 ## Ledger
 

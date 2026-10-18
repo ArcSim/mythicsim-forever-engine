@@ -626,6 +626,7 @@ impl<A: Agent> Fight<A> {
         pet.config.distance = pet.start_distance;
         pet.state.moving = false;
         pet.state.movement = None;
+        pet.state.movement_ended_at = -NEVER_EXPIRES;
         // Go enableDynamicStats: a fresh inheritance action with nothing pending.
         if let Some(inheritance) = pet.inheritance.as_mut() {
             inheritance.pending = Powers::default();

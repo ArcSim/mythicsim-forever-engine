@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "713b825aae50c2a1277081488a7aca742542b0d6",
+    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
     "client_build": "1.60.1.70338",
     "exporter": "tools/oracle-v2"
   },
@@ -768,18 +768,12 @@
           "on_expire"
         ],
         "icd": null,
-        "exclusive_effects": 2,
+        "exclusive_effects": 1,
         "exclusive_memberships": [
           {
             "category": "GraceOfAirTotemAgilityAdd",
             "single_aura": false,
             "priority": 89,
-            "position": 0
-          },
-          {
-            "category": "AirTotem",
-            "single_aura": true,
-            "priority": 1,
             "position": 0
           }
         ]
@@ -3442,7 +3436,7 @@
         "NatureResistance": 0,
         "ParryPercent": 0,
         "ParryRating": 0,
-        "PhysicalCritPercent": 30.0325,
+        "PhysicalCritPercent": 32.0325,
         "PhysicalDamage": 0,
         "PhysicalHitPercent": 0,
         "RangedAttackPower": 75,
@@ -4030,8 +4024,8 @@
         }
       ],
       "summon_log": [
-        "Pet stats: {\"Strength\": 136.000,\"Agility\": 100.000,\"Stamina\": 274.000,\"Intellect\": 50.000,\"Spirit\": 80.000,\"AttackPower\": 252.000,\"RangedAttackPower\": 75.000,\"Armor\": 200.000,\"Health\": 2734.592,\"MP5\": 25.000,\"PhysicalCritPercent\": 30.032,\"SpellCritPercent\": 10.000,}",
-        "Pet inherited stats: {\"PhysicalCritPercent\": 20.032,}"
+        "Pet stats: {\"Strength\": 136.000,\"Agility\": 100.000,\"Stamina\": 274.000,\"Intellect\": 50.000,\"Spirit\": 80.000,\"AttackPower\": 252.000,\"RangedAttackPower\": 75.000,\"Armor\": 200.000,\"Health\": 2734.592,\"MP5\": 25.000,\"PhysicalCritPercent\": 32.032,\"SpellCritPercent\": 10.000,}",
+        "Pet inherited stats: {\"PhysicalCritPercent\": 22.032,}"
       ],
       "dismiss_log": "{\"Strength\": 136.000,\"Agility\": 100.000,\"Stamina\": 274.000,\"Intellect\": 50.000,\"Spirit\": 80.000,\"AttackPower\": 252.000,\"Armor\": 200.000,\"Health\": 2734.592,\"PhysicalCritPercent\": 10.000,\"SpellCritPercent\": 10.000,}",
       "dynamic_stats": true,
@@ -4048,8 +4042,8 @@
           "coefficient": 1
         },
         {
-          "owner": "RangedCritPercent",
-          "pet": "PhysicalCritPercent",
+          "owner": "ExpertisePercent",
+          "pet": "ExpertisePercent",
           "coefficient": 1
         }
       ],
@@ -4059,7 +4053,7 @@
         "Health": -180,
         "Intellect": 50,
         "MP5": 25,
-        "PhysicalCritPercent": 30.0325,
+        "PhysicalCritPercent": 32.0325,
         "RangedAttackPower": 75,
         "SpellCritPercent": 10,
         "Spirit": 80,
@@ -4150,7 +4144,7 @@
         }
       ],
       "inherited_stats": {
-        "PhysicalCritPercent": 20.0325
+        "PhysicalCritPercent": 22.0325
       },
       "dismiss_stats": [
         {

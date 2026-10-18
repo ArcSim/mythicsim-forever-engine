@@ -279,7 +279,7 @@ func itemSwapCallbacks(character *core.Character, sets swapSets, note func(bool,
 				aura := c.aura(character, 6)
 				op["kind"], op["aura"] = "aura", aura.Label
 				both(func(e *core.Equipment) string { return auraState(hasEnchantIn(e, enchantID, slots), "keep", "off") })
-			case "github.com/wowsims/forever/sim/paladin.(*Paladin).applyWeaponSpecialization.func1",
+			case "github.com/wowsims/forever/sim/paladin.(*Paladin).followMainHand.func1",
 				"github.com/wowsims/forever/sim/warrior.(*Warrior).registerTwoHandedWeaponSpecialization.func1":
 				// The paladin's: paladin, handType, weaponMod. The warrior's: warrior, weaponMod, for
 				// a two-hander.

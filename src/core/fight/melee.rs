@@ -1246,8 +1246,15 @@ impl<A: Agent> Fight<A> {
         };
         let after_attacker = result.damage;
         result.armor_multiplier = 1.0;
-        if !self.spells[spell].flags.ignore_resists && !self.spells[spell].flags.binary {
-            let (multiplier, partial) = self.partial_resist(spell, target);
+        if !self.spells[spell].flags.ignore_resists {
+            // Spell Vulnerability multiplies the partial resist, and a binary spell's whole hit.
+            let vulnerability = self.spell_vulnerability(spell, target);
+            let (multiplier, partial) = if self.spells[spell].flags.binary {
+                (vulnerability, 0)
+            } else {
+                let (partial, outcome) = self.partial_resist(spell, target);
+                (partial * vulnerability, outcome)
+            };
             result.armor_multiplier = multiplier;
             result.damage *= multiplier;
             result.outcome |= partial;

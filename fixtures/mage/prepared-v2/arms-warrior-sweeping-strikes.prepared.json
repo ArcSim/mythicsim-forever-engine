@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "b477c15744bf4640e6a183f5be95a36511cd788d",
+    "engine_revision": "0025d73986eebd90df1849c202b8c9a88d1f01c9",
     "client_build": "1.60.1.70338",
     "exporter": "tools/oracle-v2"
   },
@@ -5461,7 +5461,23 @@
     "defender_bonus_attack_power": 0,
     "defender_bonus_physical_damage_taken": 8,
     "defender_reduced_physical_hit_taken": 0,
-    "replace_main_hand_swing": true
+    "replace_main_hand_swing": true,
+    "main_hand_skill": {
+      "skill": 7,
+      "miss_chance": 0.058,
+      "hit_suppression": 0,
+      "defender_dodge": 0.058,
+      "glance_multiplier": 0.9299999999999999,
+      "glance_spread": 0.02999999999999997
+    },
+    "off_hand_skill": {
+      "skill": 7,
+      "miss_chance": 0.058,
+      "hit_suppression": 0,
+      "defender_dodge": 0.058,
+      "glance_multiplier": 0.9299999999999999,
+      "glance_spread": 0.02999999999999997
+    }
   },
   "effects": [
     {

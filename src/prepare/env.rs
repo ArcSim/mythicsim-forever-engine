@@ -222,7 +222,9 @@ impl Environment {
             let options = encounter_options.messages("targets")[index].clone();
             super::target::initialize_target(&mut env.sim, target, &options);
         }
-        // Character.initialize: the major cooldown manager and item swap hold nothing yet.
+        // Character.initialize: the major cooldown manager holds nothing yet, and the item swap
+        // takes its character.
+        env.sim.initialize_item_swap(env.player);
         env.apply_character_effects(raid, &player_message)?;
         let player = env.player;
         env.agent.initialize(&mut env.sim, player);
@@ -371,6 +373,9 @@ impl Environment {
         individual: &Message,
     ) -> Result<(), Refusal> {
         let unit = self.player;
+        // Go sets the hook here, not in NewCharacter, so the set bonuses' skill reaches the
+        // character.
+        self.sim.unit_mut(unit).on_weapon_skill_change = true;
         if !self.sim.character(unit).disable_racials {
             super::racials::apply_race_effects(self)?;
         }
@@ -558,6 +563,8 @@ impl Environment {
         let default = self.sim.unit(unit).default_target;
         self.sim.unit_mut(unit).current_target = default;
         self.agent.reset(&mut self.sim, unit);
+        // Go Character.reset: the item swap's reset, after the agent's.
+        self.item_swap_reset();
         self.reset_pets();
     }
 }

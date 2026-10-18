@@ -106,6 +106,9 @@ pub(crate) struct AuraConfig {
     pub events: EventCallbacks,
     /// The aura's dynamic proc manager, if it has one.
     pub dpm: Option<Rc<DynamicProcManager>>,
+    /// The lines Go logs as the aura is gained and fades, as `NewTemporaryStatsAura`'s
+    /// "Gained" and "Lost" lines.
+    pub stat_logs: Option<(String, String)>,
 }
 
 #[derive(Clone)]
@@ -130,6 +133,8 @@ pub(crate) struct Aura {
     pub on_stacks_change: Option<StacksCallback>,
     pub events: EventCallbacks,
     pub dpm: Option<Rc<DynamicProcManager>>,
+    /// See [`AuraConfig::stat_logs`].
+    pub stat_logs: Option<(String, String)>,
     /// The action ID the aura's metrics were registered with.
     pub metrics_id: Option<ActionId>,
     /// Activations this iteration: `metrics.Procs`.
@@ -320,6 +325,14 @@ pub(crate) struct Unit {
     pub current_health: f64,
     /// The pet half of a pet unit (pet.rs).
     pub pet: Option<Box<super::pet::Pet>>,
+    /// Go `Unit.weaponSkill`: the skill above base attacks with the main hand, off hand and
+    /// ranged weapon take (weapon_skill.rs).
+    pub weapon_skill: [f64; super::weapon_skill::HANDS],
+    /// Go `Unit.weaponSkillBonus`: skill from auras such as set bonuses, by skill line.
+    pub weapon_skill_bonus: [f64; super::weapon_skill::NUM_WEAPON_SKILLS],
+    /// Go `Unit.onWeaponSkillChange`, which a character sets as its effects apply: a skill
+    /// bonus recomputes the hands.
+    pub on_weapon_skill_change: bool,
 }
 
 impl Unit {
@@ -379,6 +392,9 @@ impl Unit {
             absorption_auras: Vec::new(),
             current_health: 0.0,
             pet: None,
+            weapon_skill: [0.0; super::weapon_skill::HANDS],
+            weapon_skill_bonus: [0.0; super::weapon_skill::NUM_WEAPON_SKILLS],
+            on_weapon_skill_change: false,
         }
     }
 }
@@ -803,6 +819,7 @@ impl Sim {
             on_stacks_change: config.on_stacks_change,
             events: config.events,
             dpm: config.dpm,
+            stat_logs: config.stat_logs,
             procs: 0,
             initialized: false,
             start_time: 0,

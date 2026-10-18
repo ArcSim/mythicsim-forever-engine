@@ -267,6 +267,12 @@ fn defias_leather_4(env: &mut Environment, aura: AuraId) {
     env.sim.attach_proc_trigger(aura, &listener);
 }
 
+/// Increased Daggers +1 (7534), the old 3 piece bonus Forever moved to five pieces (patch 135).
+fn defias_leather_5(env: &mut Environment, aura: AuraId) {
+    env.sim
+        .attach_weapon_skill(aura, super::weapon_skill::WeaponSkill::Daggers, 1.0);
+}
+
 // ---------------------------------------------------------------------------------------------
 // item_sets_classic.go: crafted, PvP and dungeon sets.
 // ---------------------------------------------------------------------------------------------
@@ -673,7 +679,7 @@ pub(crate) static ITEM_SETS: &[ItemSet] = &[
             (2, defias_leather_2),
             (3, defias_leather_3),
             (4, defias_leather_4),
-            (5, set_noop),
+            (5, defias_leather_5),
         ]
     ),
     set!(

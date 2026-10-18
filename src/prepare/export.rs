@@ -13,6 +13,7 @@ use super::env::Environment;
 use super::sim::{AuraId, Cooldown, Sim, TimerId, UnitId};
 use super::spell::SpellFlag;
 use super::stats::{PseudoStats, Stat, Stats, SCHOOL_LEN};
+use super::weapon_skill::{self as skill, TableUnits};
 use super::Refusal;
 
 const SCHOOL_NAMES: [&str; SCHOOL_LEN] = [
@@ -490,6 +491,33 @@ pub(crate) fn export_melee_of(
     if replaced {
         out["replace_main_hand_swing"] = json!(true);
     }
+    // Go weapon_skill.go: the table an attack with a hand reads where its weapon's skill moves it.
+    let units = TableUnits {
+        attacker_level: sim.unit(player).level,
+        defender_type: t.unit_type,
+        defender_level: t.level,
+    };
+    for (key, hand) in [
+        ("main_hand_skill", skill::MAIN_HAND),
+        ("off_hand_skill", skill::OFF_HAND),
+        ("ranged_skill", skill::RANGED),
+    ] {
+        let bonus = sim.unit(player).weapon_skill[hand];
+        if !skill::moves_table(units, bonus) {
+            continue;
+        }
+        let (glance_multiplier, glance_spread) = skill::glance(table, units, bonus);
+        out[key] = json!({
+            "skill": bonus,
+            "miss_chance": skill::miss_chance(table, units, bonus),
+            "hit_suppression": skill::hit_suppression(table, units, bonus),
+            "defender_dodge": defender.base_dodge_chance
+                + skill::dodge_chance(table, units, bonus)
+                + t.stats[Stat::DodgePercent] / 100.0,
+            "glance_multiplier": glance_multiplier,
+            "glance_spread": glance_spread,
+        });
+    }
     if aa.auto_swing_ranged {
         out["ranged_state"] = json!({
             "ranged_speed_multiplier": pseudo.ranged_speed_multiplier,
@@ -806,6 +834,29 @@ pub(crate) fn export(
     digest: &str,
     scenario: &str,
 ) -> Result<Value, Refusal> {
+    let (mut prepared, unrepresented) = export_state(env, digest, scenario)?;
+    if !unrepresented.is_empty() {
+        // The exporter would describe the request as unrepresented, which the gate refuses:
+        // Go prepares it and the gate sends it to Go.
+        return Err(Refusal::new("unrepresented", unrepresented.join("; ")));
+    }
+    // tools/oracle-v2/item_swap.go itemSwapEffect, after everything else.
+    if let Some(effect) = super::item_swap::item_swap_effect(env, digest, scenario, &prepared)? {
+        prepared["effects"]
+            .as_array_mut()
+            .expect("the effects are a list")
+            .push(effect);
+    }
+    Ok(prepared)
+}
+
+/// Go `prepareSet`: the prepared state of the environment as it stands, and what the exporter
+/// cannot describe of it, sorted.
+pub(crate) fn export_state(
+    env: &mut Environment,
+    digest: &str,
+    scenario: &str,
+) -> Result<(Value, Vec<String>), Refusal> {
     let mut unrepresented: Vec<String> = Vec::new();
     let mut timers = TimerNames::default();
     let request = env.request.clone();
@@ -1044,7 +1095,9 @@ pub(crate) fn export(
     // main.go `healthAtReset`: the health a reset leaves where it differs from the maximum,
     // which a form the agent enters after the health reset raises.
     {
-        let unit = env.sim.unit(player);
+        // Read from a reset simulation of its own, which a swapped one is not.
+        let fresh = env.fresh();
+        let unit = fresh.sim.unit(fresh.player);
         if unit.health_bar && unit.current_health != unit.stats[Stat::Health] {
             prepared["player"]["health_at_reset"] = json!(unit.current_health);
         }
@@ -1111,11 +1164,6 @@ pub(crate) fn export(
             "regen_per_second_casting": 0.0, "regen_per_second_not_casting": 0.0, "teardown_max": 0.0});
     }
     unrepresented.sort();
-    if !unrepresented.is_empty() {
-        // The exporter would describe the request as unrepresented, which the gate refuses:
-        // Go prepares it and the gate sends it to Go.
-        return Err(Refusal::new("unrepresented", unrepresented.join("; ")));
-    }
     prepared["unrepresented"] = json!(unrepresented);
-    Ok(prepared)
+    Ok((prepared, unrepresented))
 }

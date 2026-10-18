@@ -266,3 +266,79 @@ fn battle_squawks_hold_their_stacks_from_the_reset() {
     assert!(logs.contains("[0.00] [combat-rogue (#1)] {SpellID: 23060} stacks: 0 --> 3"));
     assert!(logs.contains("{SpellID: 23060} stacks: 3 --> 0"));
 }
+
+/// The production Combat Rogue run for `iterations`, its result.
+fn combat_result(value: Value, iterations: u64) -> Value {
+    let mut value = value;
+    value["sim"]["iterations"] = serde_json::json!(iterations);
+    value["sim"]["debug_first_iteration"] = serde_json::json!(false);
+    let prepared: PreparedV2 = serde_json::from_value(value).unwrap();
+    forever_engine::simulate_prepared(&prepared).unwrap().result
+}
+
+/// The white swings of one hand (`OtherActionAttack` tag 1 or 2) against the target: the count
+/// of one outcome field.
+fn white_swings(result: &Value, tag: u64, field: &str) -> f64 {
+    result["raidMetrics"]["parties"][0]["players"][0]["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| {
+            action["id"]["otherId"] == "OtherActionAttack" && action["id"]["tag"] == tag
+        })
+        .flat_map(|action| action["targets"].as_array().unwrap())
+        .map(|target| target[field].as_f64().unwrap_or(0.0))
+        .sum()
+}
+
+/// Go patch 135: a hand whose weapon skill moves the table reads its own miss, hit suppression,
+/// dodge and glance; a table equal to the base one changes nothing, bit for bit.
+#[test]
+fn a_hand_reads_its_weapon_skill_table() {
+    let base = combat_json();
+    let base_table = |value: &Value| {
+        let melee = &value["melee"];
+        serde_json::json!({
+            "skill": 1.0,
+            "miss_chance": melee["base_miss_chance"],
+            "hit_suppression": melee["hit_suppression"],
+            "defender_dodge": melee["defender_dodge"],
+            "glance_multiplier": melee["glance_multiplier"],
+            "glance_spread": melee["glance_spread"],
+        })
+    };
+    let mut same = base.clone();
+    for hand in ["main_hand_skill", "off_hand_skill", "ranged_skill"] {
+        same["melee"][hand] = base_table(&base);
+    }
+    let reference = combat_result(base.clone(), 20);
+    let same = combat_result(same, 20);
+    for part in ["raidMetrics", "encounterMetrics"] {
+        assert_eq!(same[part], reference[part], "{part}");
+    }
+
+    // A main hand that cannot be dodged and whose glances keep all the damage, beside an off
+    // hand on the base table.
+    let mut moved = base.clone();
+    let mut table = base_table(&base);
+    table["defender_dodge"] = serde_json::json!(0.0);
+    table["glance_multiplier"] = serde_json::json!(1.0);
+    table["glance_spread"] = serde_json::json!(0.0);
+    moved["melee"]["main_hand_skill"] = table;
+    let result = combat_result(moved, 20);
+    assert!(white_swings(&reference, 1, "dodges") > 0.0);
+    assert_eq!(white_swings(&result, 1, "dodges"), 0.0);
+    assert!(white_swings(&result, 2, "dodges") > 0.0);
+    // A glance now deals what a hit would, so the main hand's glances average its hits'.
+    let glances = white_swings(&result, 1, "glances");
+    assert!(glances > 0.0);
+    let glance = white_swings(&result, 1, "glanceDamage") / glances;
+    let hit = (white_swings(&result, 1, "damage")
+        - white_swings(&result, 1, "critDamage")
+        - white_swings(&result, 1, "glanceDamage"))
+        / white_swings(&result, 1, "hits");
+    assert!(
+        (glance / hit - 1.0).abs() < 0.05,
+        "glances keep {glance}, hits {hit}"
+    );
+}

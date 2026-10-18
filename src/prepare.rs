@@ -38,6 +38,7 @@ pub(crate) mod item_aura;
 pub(crate) mod item_effects;
 pub(crate) mod item_proc;
 pub(crate) mod item_sets;
+pub(crate) mod item_swap;
 #[cfg(test)]
 pub(crate) mod item_test_support;
 pub(crate) mod itemhelpers;
@@ -69,6 +70,7 @@ pub(crate) mod spelldata;
 pub(crate) mod stat_auras;
 pub(crate) mod stats;
 pub(crate) mod target;
+pub(crate) mod weapon_skill;
 
 use crate::contracts::prepared_v2::PreparedV2;
 use crate::contracts::request::Request;

@@ -246,6 +246,26 @@ fn add_mob_type_bonus_stats(env: &mut Environment, mob_type: &'static str, bonus
         }));
 }
 
+/// Go `consumableCritRiderItems` (MythicSim patch 171): the elixirs whose identical +2% crit rider
+/// applies once, however many are taken.
+const CONSUMABLE_CRIT_RIDER_ITEMS: [i32; 5] = [13452, 250337, 250338, 250348, 250351];
+
+/// Go `consumableStats` with `ConsumableCritIsAllCrit` on (MythicSim patch 166): a consumable's crit
+/// rating with no spell crit of its own counts for spells too, at the same percent.
+fn consumable_stats(mut stats: Stats) -> Stats {
+    let melee = stats[Stat::MeleeCritRating];
+    if melee != 0.0 && stats[Stat::SpellCritRating] == 0.0 {
+        stats[Stat::SpellCritRating] = melee
+            / super::character::constants::PHYSICAL_CRIT_RATING_PER_CRIT_PERCENT
+            * super::character::constants::SPELL_CRIT_RATING_PER_CRIT_PERCENT;
+    }
+    stats
+}
+
+/// Go's three Forever potions with an effect of their own (MythicSim patch 167): Dragonfire,
+/// Caustic Smog and Elemental Purging, which the runtime does not model.
+const FOREVER_EFFECT_POTIONS: [i32; 3] = [250953, 250951, 250954];
+
 /// Go `applyConsumeEffects`.
 pub(crate) fn apply_consume_effects(
     env: &mut Environment,
@@ -254,9 +274,18 @@ pub(crate) fn apply_consume_effects(
     let unit = env.player;
     let consumables = env.sim.character(unit).consumables.clone();
 
-    let add_consumable_stats = |env: &mut Environment, id: i32| {
-        let stats = consumable_by_id(id).stats;
-        env.sim.add_stats(unit, &stats);
+    // Go `addConsumable`: the crit rider counts once (`ConsumableCritRiderStacks` off), then
+    // `consumableStats`.
+    let mut riders = 0;
+    let mut add_consumable_stats = |env: &mut Environment, id: i32| {
+        let mut stats = consumable_by_id(id).stats;
+        if CONSUMABLE_CRIT_RIDER_ITEMS.contains(&id) {
+            if riders > 0 {
+                stats[Stat::MeleeCritRating] = 0.0;
+            }
+            riders += 1;
+        }
+        env.sim.add_stats(unit, &consumable_stats(stats));
     };
 
     let flask = consumables.i32("flask_id");
@@ -687,6 +716,15 @@ fn make_potion_activation_spell_internal(
     potion: &Consumable,
 ) -> Result<MajorCooldown, Refusal> {
     let unit = env.player;
+    if FOREVER_EFFECT_POTIONS.contains(&potion.id) {
+        return Err(Refusal::new(
+            "consumable",
+            format!(
+                "potion {} has an effect of its own, which the runtime does not model",
+                potion.id
+            ),
+        ));
+    }
     let cooldown_duration = if potion.cooldown_duration > 0 {
         potion.cooldown_duration
     } else {

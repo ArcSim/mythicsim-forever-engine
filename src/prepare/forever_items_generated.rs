@@ -101,7 +101,6 @@ pub(crate) const ITEMS: &[Registration] = &[
     Registration::Proc(ProcKind::Damage, SpellDataProc { trigger_spell_id: 18815, buff_spell_id: 18817, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 1168, item_name: "Skullflame Shield -  - " }]),
     Registration::Proc(ProcKind::Proc, SpellDataProc { trigger_spell_id: 18097, buff_spell_id: 17154, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 1204, item_name: "The Green Tower - NatureResistance - " }]),
     Registration::Proc(ProcKind::Proc, SpellDataProc { trigger_spell_id: 19409, buff_spell_id: 18828, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 1979, item_name: "Wall of the Dead" }]),
-    Registration::Proc(ProcKind::Damage, SpellDataProc { trigger_spell_id: 1316319, buff_spell_id: 29502, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 2824, item_name: "Hurricane" }]),
     Registration::Proc(ProcKind::Damage, SpellDataProc { trigger_spell_id: 9233, buff_spell_id: 9057, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 7284, item_name: "Red Whelp Gloves" }]),
     Registration::Proc(ProcKind::Damage, SpellDataProc { trigger_spell_id: 7619, buff_spell_id: 1293421, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 7747, item_name: "Vile Protector" }]),
     Registration::Proc(ProcKind::Heal, SpellDataProc { trigger_spell_id: 9778, buff_spell_id: 9777, ..SpellDataProc::EMPTY }, &[ItemVariant { item_id: 7939, item_name: "Truesilver Breastplate" }]),

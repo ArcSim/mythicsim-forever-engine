@@ -1455,6 +1455,16 @@ impl Agent for WarriorAgent {
         }
     }
 
+    /// Every rule above reads only rage, health, the targets or the class's settings, which
+    /// change only with what a cached look reads, so a refusal holds while the look does.
+    fn should_activate_until(
+        _fight: &Fight<Self>,
+        _spell: SpellId,
+        _behavior: WarriorSpell,
+    ) -> Option<i64> {
+        Some(crate::core::time::NEVER_EXPIRES)
+    }
+
     fn replace_mh_swing(fight: &mut Fight<Self>, swing: SpellId) -> SpellId {
         // heroic_strike_cleave.go TryHSOrCleave.
         let Some(current) = fight.agent.queue.current else {

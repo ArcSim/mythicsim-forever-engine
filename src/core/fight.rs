@@ -212,6 +212,17 @@ pub(crate) trait Agent: Sized {
     fn should_activate(_fight: &Fight<Self>, _spell: SpellId, _behavior: Self::Spell) -> bool {
         true
     }
+    /// For a class cooldown whose [`Agent::should_activate`] just refused it: until when the
+    /// clock alone cannot make it accept while nothing a cached look reads changes. `None`
+    /// where the class does not say, and the autocast promises nothing past this look. A rule
+    /// whose answer can change as energy rises has none.
+    fn should_activate_until(
+        _fight: &Fight<Self>,
+        _spell: SpellId,
+        _behavior: Self::Spell,
+    ) -> Option<i64> {
+        None
+    }
     /// The `WaitTravelTime` callback of a class spell scheduled with
     /// [`Fight::class_after_travel`]: by default the result is dealt on arrival.
     fn on_travel(

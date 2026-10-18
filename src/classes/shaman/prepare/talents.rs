@@ -699,8 +699,8 @@ impl Shaman {
     }
 
     /// Maelstrom Weapon is new in Forever: melee hits stack a buff that makes the next Lightning
-    /// Bolt faster and cheaper, and the cast consumes it. The client states no proc rate; 2 PPM
-    /// per point is ours.
+    /// Bolt faster and cheaper, and the cast consumes it. The client states no proc rate; beta
+    /// logs give 10 PPM whatever the points, Season of Discovery's base (community #775).
     fn apply_maelstrom_weapon(&self, sim: &mut Sim, unit: UnitId) {
         let points = self.talent("maelstrom_weapon");
         if points == 0 {
@@ -712,7 +712,7 @@ impl Shaman {
         let per_stack = data.maelstrom_weapon.effect_at(1).fraction_at(points);
 
         // NewLegacyPPMManager: an item swap rebuilds it.
-        let ppm = 2.0 * f64::from(points);
+        let ppm = 10.0;
         let ppmm = Rc::new(
             sim.new_ppm_manager(unit, ppm, ProcMask::MELEE)
                 .rebuilt_by_swap(

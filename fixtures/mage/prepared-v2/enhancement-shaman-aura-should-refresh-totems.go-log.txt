@@ -2,7 +2,6 @@
 [0.00] [Target 1] Aura gained: {SpellID: 11717, Tag: -1}
 [0.00] [Target 1] Aura gained: {SpellID: 9907, Tag: -1}
 [0.00] [Target 1] Aura gained: {SpellID: 11198, Tag: -1}
-[0.00] [enhancement-shaman (#1)] Aura gained: {SpellID: 20574}
 [0.00] [enhancement-shaman (#1)] Aura gained: {SpellID: 24932, Tag: -1}
 [0.00] [enhancement-shaman (#1)] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [enhancement-shaman (#1)] Aura gained: {SpellID: 25580, Tag: -1}
@@ -1125,7 +1124,6 @@
 [63.50] [enhancement-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (2959.100 --> 2439.100) of 4105 total.
 [63.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:456.1, AfterAttackerMods:615.7, AfterResistances:615.7, AfterTargetMods:615.7, AfterOutcome:923.6, AfterPostOutcome:923.6
 [63.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} Crit for 923.560 damage (SpellSchool: 4). (Threat: 923.560)
-[63.51] [enhancement-shaman (#1)] Aura gained: {SpellID: 29178}
 [63.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2439.100 --> 2498.100) of 4105 total.
 [64.72] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [64.72] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
@@ -1230,11 +1228,11 @@
 [68.59] [enhancement-shaman (#1)] Lost {"Strength": 100.000,} from fading {SpellID: 20007, Tag: 1}.
 [68.59] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [68.59] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[68.59] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:797.4, AfterAttackerMods:797.4, AfterResistances:677.2, AfterTargetMods:677.2, AfterOutcome:1354.5, AfterPostOutcome:1354.5
-[68.59] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 1354.457 damage (SpellSchool: 1). (Threat: 1354.457)
+[68.59] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:797.4, AfterAttackerMods:797.4, AfterResistances:677.2, AfterTargetMods:677.2, AfterOutcome:677.2, AfterPostOutcome:677.2
+[68.59] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 677.229 damage (SpellSchool: 1). (Threat: 677.229)
 [68.59] [enhancement-shaman (#1)] No available actions!
 [68.59] [enhancement-shaman (#1)] Pausing rotation for 912.550014ms due to resources / CDs.
-[68.60] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
+[68.60] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
 [68.60] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
 [68.60] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 4 --> 5
 [68.69] [enhancement-shaman (#1)] No available actions!
@@ -1261,13 +1259,12 @@
 [71.00] [enhancement-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (2587.500 --> 2067.500) of 4105 total.
 [71.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:456.1, AfterAttackerMods:615.7, AfterResistances:615.7, AfterTargetMods:615.7, AfterOutcome:923.6, AfterPostOutcome:923.6
 [71.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} Crit for 923.560 damage (SpellSchool: 4). (Threat: 923.560)
-[71.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 29178}
 [71.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2067.500 --> 2126.500) of 4105 total.
 [71.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (2126.500 --> 2157.300) of 4105 total.
 [71.63] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [71.63] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[71.63] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:821.2, AfterAttackerMods:821.2, AfterResistances:697.5, AfterTargetMods:697.5, AfterOutcome:1394.9, AfterPostOutcome:1394.9
-[71.63] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 1394.915 damage (SpellSchool: 1). (Threat: 1394.915)
+[71.63] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:821.2, AfterAttackerMods:821.2, AfterResistances:697.5, AfterTargetMods:697.5, AfterOutcome:697.5, AfterPostOutcome:697.5
+[71.63] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 697.458 damage (SpellSchool: 1). (Threat: 697.458)
 [71.63] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
 [71.63] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
 [71.63] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
@@ -1278,8 +1275,7 @@
 [71.63] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
 [71.63] [enhancement-shaman (#1)] No available actions!
 [71.63] [enhancement-shaman (#1)] Pausing rotation for 872.550014ms due to resources / CDs.
-[71.64] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
-[71.64] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
+[71.64] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 1
 [71.64] [enhancement-shaman (#1)] Aura gained: {SpellID: 408505}
 [71.64] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 0 --> 1
 [71.64] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2157.300 --> 2216.300) of 4105 total.
@@ -1323,7 +1319,8 @@
 [74.67] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
 [74.67] [enhancement-shaman (#1)] No available actions!
 [74.67] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.68] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 1
+[74.68] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 1 --> 0
+[74.68] [enhancement-shaman (#1)] Aura faded: {SpellID: 16257}
 [74.77] [enhancement-shaman (#1)] No available actions!
 [74.77] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [74.87] [enhancement-shaman (#1)] No available actions!
@@ -1380,28 +1377,26 @@
 [77.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 615.707 damage (SpellSchool: 4). (Threat: 615.707)
 [77.50] [enhancement-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
 [77.50] [enhancement-shaman (#1)] Aura faded: {SpellID: 16246}
-[77.71] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[77.71] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[77.71] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:817.1, AfterAttackerMods:817.1, AfterResistances:693.9, AfterTargetMods:693.9, AfterOutcome:693.9, AfterPostOutcome:693.9
-[77.71] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 693.930 damage (SpellSchool: 1). (Threat: 693.930)
-[77.71] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
-[77.71] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
-[77.71] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[77.71] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
-[77.71] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2504.6, RAP: 106.0, SP: 242.3, BaseDamage:850.0, AfterAttackerMods:850.0, AfterResistances:721.9, AfterTargetMods:721.9, AfterOutcome:444.5, AfterPostOutcome:444.5
-[77.71] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Glance for 444.456 damage (SpellSchool: 1). (Threat: 444.456)
-[77.71] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
-[77.71] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
-[77.71] [enhancement-shaman (#1)] No available actions!
-[77.71] [enhancement-shaman (#1)] Pausing rotation for 1.292550015s due to resources / CDs.
-[77.72] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 1 --> 0
-[77.72] [enhancement-shaman (#1)] Aura faded: {SpellID: 16257}
-[77.72] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[77.72] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 2 --> 3
-[77.72] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2035.200 --> 2094.200) of 4105 total.
-[77.72] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2094.200 --> 2153.200) of 4105 total.
-[77.81] [enhancement-shaman (#1)] No available actions!
-[77.81] [enhancement-shaman (#1)] Pausing rotation for 1.192550015s due to resources / CDs.
+[78.46] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[78.46] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[78.46] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:817.1, AfterAttackerMods:817.1, AfterResistances:693.9, AfterTargetMods:693.9, AfterOutcome:693.9, AfterPostOutcome:693.9
+[78.46] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 693.930 damage (SpellSchool: 1). (Threat: 693.930)
+[78.46] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
+[78.46] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
+[78.46] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[78.46] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
+[78.46] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2504.6, RAP: 106.0, SP: 242.3, BaseDamage:850.0, AfterAttackerMods:850.0, AfterResistances:721.9, AfterTargetMods:721.9, AfterOutcome:444.5, AfterPostOutcome:444.5
+[78.46] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Glance for 444.456 damage (SpellSchool: 1). (Threat: 444.456)
+[78.46] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
+[78.46] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
+[78.46] [enhancement-shaman (#1)] No available actions!
+[78.46] [enhancement-shaman (#1)] Pausing rotation for 535.050015ms due to resources / CDs.
+[78.47] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[78.47] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 2 --> 3
+[78.47] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2035.200 --> 2094.200) of 4105 total.
+[78.47] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2094.200 --> 2153.200) of 4105 total.
+[78.56] [enhancement-shaman (#1)] No available actions!
+[78.56] [enhancement-shaman (#1)] Pausing rotation for 435.050015ms due to resources / CDs.
 [79.00] [enhancement-shaman (#1)] Casting {SpellID: 29228} (Cost = 192.700, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [79.00] [enhancement-shaman (#1)] Completed cast {SpellID: 29228}
 [79.00] [enhancement-shaman (#1)] Spent 192.700 mana from {SpellID: 29228} (2153.200 --> 1960.500) of 4105 total.
@@ -1429,7 +1424,6 @@
 [80.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [81.00] [enhancement-shaman (#1)] No available actions!
 [81.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.01] [enhancement-shaman (#1)] Aura faded: {SpellID: 29178}
 [81.10] [enhancement-shaman (#1)] No available actions!
 [81.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [81.20] [enhancement-shaman (#1)] No available actions!
@@ -1441,172 +1435,183 @@
 [81.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (2050.300 --> 2081.100) of 4105 total.
 [81.50] [enhancement-shaman (#1)] No available actions!
 [81.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.50] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[81.50] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[81.50] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:773.5, AfterAttackerMods:773.5, AfterResistances:656.9, AfterTargetMods:656.9, AfterOutcome:1313.9, AfterPostOutcome:1313.9
-[81.50] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 1313.881 damage (SpellSchool: 1). (Threat: 1313.881)
-[81.50] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
-[81.50] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
-[81.50] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[81.50] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
-[81.50] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2504.6, RAP: 106.0, SP: 242.3, BaseDamage:890.3, AfterAttackerMods:890.3, AfterResistances:756.2, AfterTargetMods:756.2, AfterOutcome:1512.3, AfterPostOutcome:1512.3
-[81.50] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Crit for 1512.319 damage (SpellSchool: 1). (Threat: 1512.319)
-[81.50] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
-[81.50] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
-[81.50] [enhancement-shaman (#1)] No available actions!
-[81.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[81.51] [enhancement-shaman (#1)] Aura gained: {SpellID: 16257}
-[81.51] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 0 --> 3
-[81.51] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[81.51] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 3 --> 4
-[81.51] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
-[81.51] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[81.51] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 4 --> 5
-[81.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2081.100 --> 2140.100) of 4105 total.
-[81.60] [enhancement-shaman (#1)] Casting {SpellID: 15208} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[81.60] [enhancement-shaman (#1)] Completed cast {SpellID: 15208}
-[81.60] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:377.3, AfterAttackerMods:396.1, AfterResistances:297.1, AfterTargetMods:356.5, AfterOutcome:356.5, AfterPostOutcome:356.5
-[81.60] [enhancement-shaman (#1)] Aura faded: {SpellID: 408505}
-[81.60] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 5 --> 0
-[81.60] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Hit (25% Resist) for 356.524 damage (SpellSchool: 8). (Threat: 356.524)
-[81.60] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[81.60] [Target 1] Aura faded: {SpellID: 17364}
+[81.60] [enhancement-shaman (#1)] No available actions!
+[81.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[81.70] [enhancement-shaman (#1)] No available actions!
+[81.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [81.73] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [81.73] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
-[81.73] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:88.5, AfterPostOutcome:88.5
-[81.73] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 88.474 damage (SpellSchool: 4). (Threat: 88.474)
-[82.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:39.8, AfterTargetMods:39.8, AfterOutcome:39.8, AfterPostOutcome:39.8
-[82.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (50% Resist) for 39.807 damage (SpellSchool: 4). (Threat: 39.807)
-[83.10] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m23.500000008s.
-[83.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[83.20] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m23.500000008s.
-[83.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[83.30] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m23.500000008s.
-[83.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[83.40] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m23.500000008s.
-[83.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[83.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (2140.100 --> 2170.900) of 4105 total.
+[81.73] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:44.2, AfterTargetMods:44.2, AfterOutcome:44.2, AfterPostOutcome:44.2
+[81.73] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 44.237 damage (SpellSchool: 4). (Threat: 44.237)
+[81.80] [enhancement-shaman (#1)] No available actions!
+[81.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[81.90] [enhancement-shaman (#1)] No available actions!
+[81.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[82.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:119.4, AfterPostOutcome:119.4
+[82.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 119.422 damage (SpellSchool: 4). (Threat: 119.422)
+[82.00] [enhancement-shaman (#1)] No available actions!
+[82.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[82.10] [enhancement-shaman (#1)] No available actions!
+[82.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[82.20] [enhancement-shaman (#1)] No available actions!
+[82.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[82.26] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[82.26] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[82.26] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:823.6, AfterAttackerMods:823.6, AfterResistances:699.5, AfterTargetMods:699.5, AfterOutcome:1398.9, AfterPostOutcome:1398.9
+[82.26] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 1398.903 damage (SpellSchool: 1). (Threat: 1398.903)
+[82.26] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
+[82.26] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
+[82.26] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[82.26] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
+[82.26] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2504.6, RAP: 106.0, SP: 242.3, BaseDamage:906.1, AfterAttackerMods:906.1, AfterResistances:769.6, AfterTargetMods:769.6, AfterOutcome:1539.1, AfterPostOutcome:1539.1
+[82.26] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Crit for 1539.127 damage (SpellSchool: 1). (Threat: 1539.127)
+[82.26] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
+[82.26] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
+[82.26] [enhancement-shaman (#1)] No available actions!
+[82.26] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[82.27] [enhancement-shaman (#1)] Aura gained: {SpellID: 16257}
+[82.27] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 0 --> 3
+[82.27] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[82.27] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 3 --> 4
+[82.27] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
+[82.36] [enhancement-shaman (#1)] No available actions!
+[82.36] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[82.46] [enhancement-shaman (#1)] No available actions!
+[82.46] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[82.56] [enhancement-shaman (#1)] No available actions!
+[82.56] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[82.66] [enhancement-shaman (#1)] No available actions!
+[82.66] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[82.76] [enhancement-shaman (#1)] No available actions!
+[82.76] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[82.86] [enhancement-shaman (#1)] No available actions!
+[82.86] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[82.96] [enhancement-shaman (#1)] No available actions!
+[82.96] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.06] [enhancement-shaman (#1)] No available actions!
+[83.06] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.16] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m23.500000008s.
+[83.16] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.26] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m23.500000008s.
+[83.26] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.36] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m23.500000008s.
+[83.36] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.46] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m23.500000008s.
+[83.46] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[83.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (2081.100 --> 2111.900) of 4105 total.
 [83.50] [enhancement-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [83.50] [enhancement-shaman (#1)] Completed cast {SpellID: 408345}
-[83.50] [enhancement-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (2170.900 --> 1650.900) of 4105 total.
-[83.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:456.1, AfterAttackerMods:615.7, AfterResistances:615.7, AfterTargetMods:615.7, AfterOutcome:615.7, AfterPostOutcome:615.7
-[83.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 615.707 damage (SpellSchool: 4). (Threat: 615.707)
+[83.50] [enhancement-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (2111.900 --> 1591.900) of 4105 total.
+[83.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:456.1, AfterAttackerMods:615.7, AfterResistances:615.7, AfterTargetMods:615.7, AfterOutcome:923.6, AfterPostOutcome:923.6
+[83.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} Crit for 923.560 damage (SpellSchool: 4). (Threat: 923.560)
+[83.50] [enhancement-shaman (#1)] Aura gained: {SpellID: 16246}
+[83.50] [enhancement-shaman (#1)] {SpellID: 16246} stacks: 0 --> 1
+[83.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1591.900 --> 1650.900) of 4105 total.
 [84.16] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [84.16] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
 [84.16] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
 [84.16] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 58.982 damage (SpellSchool: 4). (Threat: 58.982)
-[84.55] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[84.55] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[84.55] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:788.9, AfterAttackerMods:788.9, AfterResistances:670.0, AfterTargetMods:670.0, AfterOutcome:670.0, AfterPostOutcome:670.0
-[84.55] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 670.012 damage (SpellSchool: 1). (Threat: 670.012)
-[84.55] [enhancement-shaman (#1)] No available actions!
-[84.55] [enhancement-shaman (#1)] Pausing rotation for 453.050016ms due to resources / CDs.
-[84.56] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
-[84.56] [enhancement-shaman (#1)] Aura gained: {SpellID: 408505}
-[84.56] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 0 --> 1
-[84.56] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1650.900 --> 1709.900) of 4105 total.
-[84.65] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m25.000000009s.
-[84.65] [enhancement-shaman (#1)] Pausing rotation for 353.050016ms due to resources / CDs.
 [85.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
-[85.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:59.7, AfterTargetMods:59.7, AfterOutcome:89.6, AfterPostOutcome:89.6
-[85.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit (25% Resist) for 89.566 damage (SpellSchool: 4). (Threat: 89.566)
+[85.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
+[85.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
 [85.00] [enhancement-shaman (#1)] Casting {SpellID: 17364} (Cost = 121.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [85.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
-[85.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (1709.900 --> 1588.900) of 4105 total.
+[85.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (1650.900 --> 1529.900) of 4105 total.
 [85.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[85.00] [Target 1] Aura gained: {SpellID: 17364}
-[85.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
+[85.00] [Target 1] Aura refreshed: {SpellID: 17364}
 [85.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [85.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
-[85.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:836.2, AfterAttackerMods:836.2, AfterResistances:710.2, AfterTargetMods:710.2, AfterOutcome:710.2, AfterPostOutcome:710.2
-[85.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} Hit for 710.152 damage (SpellSchool: 1). (Threat: 710.152)
+[85.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:790.3, AfterAttackerMods:790.3, AfterResistances:671.2, AfterTargetMods:671.2, AfterOutcome:671.2, AfterPostOutcome:671.2
+[85.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} Hit for 671.203 damage (SpellSchool: 1). (Threat: 671.203)
+[85.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[85.01] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 4 --> 5
+[85.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1529.900 --> 1588.900) of 4105 total.
 [85.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
+[85.31] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[85.31] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[85.31] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:838.4, AfterAttackerMods:838.4, AfterResistances:712.0, AfterTargetMods:712.0, AfterOutcome:712.0, AfterPostOutcome:712.0
+[85.31] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 712.028 damage (SpellSchool: 1). (Threat: 712.028)
+[85.31] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
+[85.31] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
+[85.31] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[85.31] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
+[85.31] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2504.6, RAP: 106.0, SP: 242.3, BaseDamage:904.1, AfterAttackerMods:904.1, AfterResistances:767.8, AfterTargetMods:767.8, AfterOutcome:1535.7, AfterPostOutcome:1535.7
+[85.31] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Crit for 1535.686 damage (SpellSchool: 1). (Threat: 1535.686)
+[85.31] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
+[85.31] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
+[85.31] [enhancement-shaman (#1)] No available actions!
+[85.31] [enhancement-shaman (#1)] Pausing rotation for 1.193050016s due to resources / CDs.
+[85.32] [enhancement-shaman (#1)] Aura gained: {SpellID: 20007, Tag: 1}
+[85.32] [enhancement-shaman (#1)] Gained {"Strength": 100.000,} from {SpellID: 20007, Tag: 1}.
+[85.32] [enhancement-shaman (#1)] Gained 95.378 health from {SpellID: 20007} (4210.000 --> 4210.000) of 4210 total.
+[85.32] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
+[85.32] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[85.32] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
+[85.32] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 3
+[85.41] [enhancement-shaman (#1)] No available actions!
+[85.41] [enhancement-shaman (#1)] Pausing rotation for 1.093050016s due to resources / CDs.
 [85.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1588.900 --> 1619.700) of 4105 total.
-[86.50] [enhancement-shaman (#1)] Casting {SpellID: 10414} (Cost = 211.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[86.50] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
-[86.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (1619.700 --> 1408.200) of 4105 total.
-[86.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:393.1, AfterAttackerMods:412.7, AfterResistances:412.7, AfterTargetMods:495.3, AfterOutcome:742.9, AfterPostOutcome:742.9
-[86.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Crit for 742.884 damage (SpellSchool: 8). (Threat: 742.884)
+[86.50] [enhancement-shaman (#1)] Casting {SpellID: 15208} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[86.50] [enhancement-shaman (#1)] Completed cast {SpellID: 15208}
+[86.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:376.4, AfterAttackerMods:395.3, AfterResistances:197.6, AfterTargetMods:237.2, AfterOutcome:237.2, AfterPostOutcome:237.2
+[86.50] [enhancement-shaman (#1)] Aura faded: {SpellID: 408505}
+[86.50] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 5 --> 0
+[86.50] [enhancement-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
+[86.50] [enhancement-shaman (#1)] Aura faded: {SpellID: 16246}
+[86.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Hit (50% Resist) for 237.163 damage (SpellSchool: 8). (Threat: 237.163)
 [86.50] [Target 1] {SpellID: 17364} stacks: 1 --> 0
 [86.50] [Target 1] Aura faded: {SpellID: 17364}
-[86.51] [enhancement-shaman (#1)] Aura gained: {SpellID: 29178}
-[86.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1408.200 --> 1467.200) of 4105 total.
 [86.59] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [86.59] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
-[86.59] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:44.2, AfterTargetMods:44.2, AfterOutcome:0.0, AfterPostOutcome:0.0
-[86.59] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Miss (SpellSchool: 4). (Threat: 0.000)
-[87.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1467.200 --> 1498.000) of 4105 total.
-[87.59] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[87.59] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[87.59] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:862.7, AfterAttackerMods:862.7, AfterResistances:732.7, AfterTargetMods:732.7, AfterOutcome:0.0, AfterPostOutcome:0.0
-[87.59] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
-[87.59] [enhancement-shaman (#1)] No available actions!
-[87.59] [enhancement-shaman (#1)] Pausing rotation for 413.050016ms due to resources / CDs.
-[87.60] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 1
-[87.69] [enhancement-shaman (#1)] No available actions!
-[87.69] [enhancement-shaman (#1)] Pausing rotation for 313.050016ms due to resources / CDs.
-[88.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:59.7, AfterTargetMods:59.7, AfterOutcome:59.7, AfterPostOutcome:59.7
+[86.59] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
+[86.59] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 58.982 damage (SpellSchool: 4). (Threat: 58.982)
+[87.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1619.700 --> 1650.500) of 4105 total.
+[88.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:59.7, AfterTargetMods:59.7, AfterOutcome:59.7, AfterPostOutcome:59.7
 [88.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (25% Resist) for 59.711 damage (SpellSchool: 4). (Threat: 59.711)
-[88.00] [enhancement-shaman (#1)] No available actions!
-[88.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[88.10] [enhancement-shaman (#1)] No available actions!
-[88.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[88.20] [enhancement-shaman (#1)] No available actions!
-[88.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[88.30] [enhancement-shaman (#1)] No available actions!
-[88.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[88.40] [enhancement-shaman (#1)] No available actions!
-[88.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[88.50] [enhancement-shaman (#1)] No available actions!
-[88.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[88.60] [enhancement-shaman (#1)] No available actions!
-[88.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[88.70] [enhancement-shaman (#1)] No available actions!
-[88.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[88.80] [enhancement-shaman (#1)] No available actions!
-[88.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[88.90] [enhancement-shaman (#1)] No available actions!
-[88.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[89.00] [enhancement-shaman (#1)] No available actions!
-[89.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[88.00] [enhancement-shaman (#1)] Casting {SpellID: 10414} (Cost = 211.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[88.00] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
+[88.00] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (1650.500 --> 1439.000) of 4105 total.
+[88.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:400.2, AfterAttackerMods:420.2, AfterResistances:420.2, AfterTargetMods:420.2, AfterOutcome:420.2, AfterPostOutcome:420.2
+[88.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 420.182 damage (SpellSchool: 8). (Threat: 420.182)
+[88.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1439.000 --> 1498.000) of 4105 total.
+[88.35] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[88.35] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[88.35] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:882.9, AfterAttackerMods:882.9, AfterResistances:749.8, AfterTargetMods:749.8, AfterOutcome:473.1, AfterPostOutcome:473.1
+[88.35] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 473.134 damage (SpellSchool: 1). (Threat: 473.134)
+[88.35] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
+[88.35] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
+[88.35] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[88.35] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
+[88.35] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2724.6, RAP: 106.0, SP: 242.3, BaseDamage:897.8, AfterAttackerMods:897.8, AfterResistances:762.5, AfterTargetMods:762.5, AfterOutcome:1525.1, AfterPostOutcome:1525.1
+[88.35] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Crit for 1525.062 damage (SpellSchool: 1). (Threat: 1525.062)
+[88.35] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
+[88.35] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
+[88.35] [enhancement-shaman (#1)] No available actions!
+[88.35] [enhancement-shaman (#1)] Pausing rotation for 1.153050016s due to resources / CDs.
+[88.36] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
+[88.36] [enhancement-shaman (#1)] Aura gained: {SpellID: 408505}
+[88.36] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 0 --> 1
+[88.36] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
+[88.36] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 3
+[88.36] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[88.36] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 1 --> 2
+[88.36] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1498.000 --> 1557.000) of 4105 total.
+[88.45] [enhancement-shaman (#1)] No available actions!
+[88.45] [enhancement-shaman (#1)] Pausing rotation for 1.053050016s due to resources / CDs.
 [89.02] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [89.02] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
-[89.02] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
+[89.02] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
 [89.02] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 58.982 damage (SpellSchool: 4). (Threat: 58.982)
-[89.10] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m29.500000009s.
-[89.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[89.20] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m29.500000009s.
-[89.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[89.30] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m29.500000009s.
-[89.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[89.40] [enhancement-shaman (#1)] Queueing up {SpellID: 408345} to cast at 1m29.500000009s.
-[89.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[89.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1498.000 --> 1528.800) of 4105 total.
+[89.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1557.000 --> 1587.800) of 4105 total.
 [89.50] [enhancement-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [89.50] [enhancement-shaman (#1)] Completed cast {SpellID: 408345}
-[89.50] [enhancement-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (1528.800 --> 1008.800) of 4105 total.
-[89.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:456.1, AfterAttackerMods:615.7, AfterResistances:615.7, AfterTargetMods:615.7, AfterOutcome:615.7, AfterPostOutcome:615.7
+[89.50] [enhancement-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (1587.800 --> 1067.800) of 4105 total.
+[89.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:456.1, AfterAttackerMods:615.7, AfterResistances:615.7, AfterTargetMods:615.7, AfterOutcome:615.7, AfterPostOutcome:615.7
 [89.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 615.707 damage (SpellSchool: 4). (Threat: 615.707)
-[89.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1008.800 --> 1067.800) of 4105 total.
+[89.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1067.800 --> 1126.800) of 4105 total.
 [90.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
-[90.63] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[90.63] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[90.63] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:802.4, AfterAttackerMods:802.4, AfterResistances:681.5, AfterTargetMods:681.5, AfterOutcome:1363.0, AfterPostOutcome:1363.0
-[90.63] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 1362.973 damage (SpellSchool: 1). (Threat: 1362.973)
-[90.63] [enhancement-shaman (#1)] No available actions!
-[90.63] [enhancement-shaman (#1)] Pausing rotation for 373.050016ms due to resources / CDs.
-[90.64] [enhancement-shaman (#1)] Aura gained: {SpellID: 20007, Tag: 1}
-[90.64] [enhancement-shaman (#1)] Gained {"Strength": 100.000,} from {SpellID: 20007, Tag: 1}.
-[90.64] [enhancement-shaman (#1)] Gained 103.447 health from {SpellID: 20007} (4210.000 --> 4210.000) of 4210 total.
-[90.64] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
-[90.64] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 1 --> 3
-[90.64] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[90.64] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 1 --> 2
-[90.64] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1067.800 --> 1126.800) of 4105 total.
-[90.73] [enhancement-shaman (#1)] No available actions!
-[90.73] [enhancement-shaman (#1)] Pausing rotation for 273.050016ms due to resources / CDs.
-[91.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
-[91.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
+[91.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:39.8, AfterTargetMods:39.8, AfterOutcome:39.8, AfterPostOutcome:39.8
+[91.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (50% Resist) for 39.807 damage (SpellSchool: 4). (Threat: 39.807)
 [91.00] [enhancement-shaman (#1)] No available actions!
 [91.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [91.10] [enhancement-shaman (#1)] No available actions!
@@ -1615,180 +1620,171 @@
 [91.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [91.30] [enhancement-shaman (#1)] No available actions!
 [91.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[91.40] [enhancement-shaman (#1)] No available actions!
-[91.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[91.39] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[91.39] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[91.39] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:830.8, AfterAttackerMods:830.8, AfterResistances:705.6, AfterTargetMods:705.6, AfterOutcome:510.7, AfterPostOutcome:510.7
+[91.39] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 510.679 damage (SpellSchool: 1). (Threat: 510.679)
+[91.39] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
+[91.39] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
+[91.39] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[91.39] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
+[91.39] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2724.6, RAP: 106.0, SP: 242.3, BaseDamage:944.1, AfterAttackerMods:944.1, AfterResistances:801.8, AfterTargetMods:801.8, AfterOutcome:801.8, AfterPostOutcome:801.8
+[91.39] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Hit for 801.810 damage (SpellSchool: 1). (Threat: 801.810)
+[91.39] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
+[91.39] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
+[91.39] [enhancement-shaman (#1)] No available actions!
+[91.39] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[91.40] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
+[91.40] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[91.40] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 2 --> 3
+[91.40] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[91.40] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 3 --> 4
+[91.40] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1126.800 --> 1185.800) of 4105 total.
 [91.45] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [91.45] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
-[91.45] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
-[91.45] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 58.982 damage (SpellSchool: 4). (Threat: 58.982)
-[91.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1126.800 --> 1157.600) of 4105 total.
-[91.50] [enhancement-shaman (#1)] No available actions!
-[91.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[91.60] [enhancement-shaman (#1)] No available actions!
-[91.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[91.70] [enhancement-shaman (#1)] No available actions!
-[91.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[91.80] [enhancement-shaman (#1)] No available actions!
-[91.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[91.90] [enhancement-shaman (#1)] No available actions!
-[91.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.00] [enhancement-shaman (#1)] No available actions!
-[92.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.10] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m32.500000009s.
-[92.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.20] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m32.500000009s.
-[92.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.30] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m32.500000009s.
-[92.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.40] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m32.500000009s.
-[92.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.50] [enhancement-shaman (#1)] Casting {SpellID: 10414} (Cost = 211.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[92.50] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
-[92.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (1157.600 --> 946.100) of 4105 total.
-[92.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:394.4, AfterAttackerMods:414.1, AfterResistances:414.1, AfterTargetMods:414.1, AfterOutcome:621.2, AfterPostOutcome:621.2
-[92.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Crit for 621.183 damage (SpellSchool: 8). (Threat: 621.183)
-[92.51] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 29178}
-[92.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (946.100 --> 1005.100) of 4105 total.
-[93.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1005.100 --> 1035.900) of 4105 total.
-[93.67] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[93.67] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[93.67] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:883.0, AfterAttackerMods:883.0, AfterResistances:749.9, AfterTargetMods:749.9, AfterOutcome:0.0, AfterPostOutcome:0.0
-[93.67] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
-[93.67] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m34.000000009s.
-[93.67] [enhancement-shaman (#1)] Pausing rotation for 333.050016ms due to resources / CDs.
-[93.68] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
-[93.68] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1035.900 --> 1094.900) of 4105 total.
-[93.77] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m34.000000009s.
-[93.77] [enhancement-shaman (#1)] Pausing rotation for 233.050016ms due to resources / CDs.
+[91.45] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:88.5, AfterPostOutcome:88.5
+[91.45] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 88.474 damage (SpellSchool: 4). (Threat: 88.474)
+[91.49] [enhancement-shaman (#1)] No available actions!
+[91.49] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[91.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1185.800 --> 1216.600) of 4105 total.
+[91.59] [enhancement-shaman (#1)] No available actions!
+[91.59] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[91.69] [enhancement-shaman (#1)] No available actions!
+[91.69] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[91.79] [enhancement-shaman (#1)] No available actions!
+[91.79] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[91.89] [enhancement-shaman (#1)] No available actions!
+[91.89] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[91.99] [enhancement-shaman (#1)] No available actions!
+[91.99] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[92.09] [enhancement-shaman (#1)] No available actions!
+[92.09] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[92.19] [enhancement-shaman (#1)] No available actions!
+[92.19] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[92.29] [enhancement-shaman (#1)] No available actions!
+[92.29] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[92.39] [enhancement-shaman (#1)] No available actions!
+[92.39] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[92.49] [enhancement-shaman (#1)] No available actions!
+[92.49] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[92.59] [enhancement-shaman (#1)] No available actions!
+[92.59] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[92.69] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m33.000000009s.
+[92.69] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[92.79] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m33.000000009s.
+[92.79] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[92.89] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m33.000000009s.
+[92.89] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[92.99] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m33.000000009s.
+[92.99] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[93.00] [enhancement-shaman (#1)] Casting {SpellID: 17364} (Cost = 121.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[93.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
+[93.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (1216.600 --> 1095.600) of 4105 total.
+[93.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
+[93.00] [Target 1] Aura gained: {SpellID: 17364}
+[93.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
+[93.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[93.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
+[93.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:850.4, AfterAttackerMods:850.4, AfterResistances:722.3, AfterTargetMods:722.3, AfterOutcome:722.3, AfterPostOutcome:722.3
+[93.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} Hit for 722.278 damage (SpellSchool: 1). (Threat: 722.278)
+[93.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[93.01] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 4 --> 5
+[93.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
+[93.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1095.600 --> 1126.400) of 4105 total.
 [93.88] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [93.88] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
-[93.88] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:29.5, AfterTargetMods:29.5, AfterOutcome:29.5, AfterPostOutcome:29.5
-[93.88] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit (50% Resist) for 29.491 damage (SpellSchool: 4). (Threat: 29.491)
-[94.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
-[94.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
-[94.00] [enhancement-shaman (#1)] Casting {SpellID: 17364} (Cost = 121.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[94.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
-[94.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (1094.900 --> 973.900) of 4105 total.
-[94.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Dodge (SpellSchool: 1). (Threat: 0.000)
-[94.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
+[93.88] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
+[93.88] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 58.982 damage (SpellSchool: 4). (Threat: 58.982)
+[94.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:59.7, AfterTargetMods:59.7, AfterOutcome:59.7, AfterPostOutcome:59.7
+[94.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (25% Resist) for 59.711 damage (SpellSchool: 4). (Threat: 59.711)
+[94.43] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[94.43] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[94.43] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:848.5, AfterAttackerMods:848.5, AfterResistances:720.6, AfterTargetMods:720.6, AfterOutcome:413.0, AfterPostOutcome:413.0
+[94.43] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 413.022 damage (SpellSchool: 1). (Threat: 413.022)
+[94.43] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
+[94.43] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
+[94.43] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[94.43] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
+[94.43] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2724.6, RAP: 106.0, SP: 242.3, BaseDamage:941.1, AfterAttackerMods:941.1, AfterResistances:799.3, AfterTargetMods:799.3, AfterOutcome:1598.5, AfterPostOutcome:1598.5
+[94.43] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Crit for 1598.549 damage (SpellSchool: 1). (Threat: 1598.549)
+[94.43] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
+[94.43] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
+[94.43] [enhancement-shaman (#1)] Queueing up {SpellID: 15208} to cast at 1m34.50000001s.
+[94.43] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[94.44] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 1
+[94.44] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
+[94.44] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 1 --> 3
+[94.44] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[94.44] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1126.400 --> 1185.400) of 4105 total.
+[94.44] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1185.400 --> 1244.400) of 4105 total.
+[94.50] [enhancement-shaman (#1)] Casting {SpellID: 15208} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[94.50] [enhancement-shaman (#1)] Completed cast {SpellID: 15208}
+[94.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:375.5, AfterAttackerMods:394.3, AfterResistances:394.3, AfterTargetMods:473.1, AfterOutcome:473.1, AfterPostOutcome:473.1
+[94.50] [enhancement-shaman (#1)] Aura faded: {SpellID: 408505}
+[94.50] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 5 --> 0
+[94.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 473.103 damage (SpellSchool: 8). (Threat: 473.103)
+[94.50] [Target 1] {SpellID: 17364} stacks: 1 --> 0
+[94.50] [Target 1] Aura faded: {SpellID: 17364}
+[94.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1244.400 --> 1303.400) of 4105 total.
 [95.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
-[95.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (973.900 --> 1004.700) of 4105 total.
-[95.50] [enhancement-shaman (#1)] No available actions!
-[95.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[95.60] [enhancement-shaman (#1)] No available actions!
-[95.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[95.70] [enhancement-shaman (#1)] No available actions!
-[95.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[95.80] [enhancement-shaman (#1)] No available actions!
-[95.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[95.90] [enhancement-shaman (#1)] No available actions!
-[95.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.00] [enhancement-shaman (#1)] No available actions!
-[96.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.10] [enhancement-shaman (#1)] No available actions!
-[96.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.20] [enhancement-shaman (#1)] No available actions!
-[96.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.30] [enhancement-shaman (#1)] No available actions!
-[96.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[95.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1303.400 --> 1334.200) of 4105 total.
+[96.00] [enhancement-shaman (#1)] Casting {SpellID: 408345} (Cost = 520.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[96.00] [enhancement-shaman (#1)] Completed cast {SpellID: 408345}
+[96.00] [enhancement-shaman (#1)] Spent 520.000 mana from {SpellID: 408345} (1334.200 --> 814.200) of 4105 total.
+[96.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:456.1, AfterAttackerMods:615.7, AfterResistances:615.7, AfterTargetMods:615.7, AfterOutcome:615.7, AfterPostOutcome:615.7
+[96.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 408345} Hit for 615.707 damage (SpellSchool: 4). (Threat: 615.707)
+[96.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (814.200 --> 873.200) of 4105 total.
 [96.31] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [96.31] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
-[96.31] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:0.0, AfterPostOutcome:0.0
-[96.31] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Miss (SpellSchool: 4). (Threat: 0.000)
-[96.40] [enhancement-shaman (#1)] No available actions!
-[96.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.50] [enhancement-shaman (#1)] No available actions!
-[96.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.60] [enhancement-shaman (#1)] No available actions!
-[96.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.70] [enhancement-shaman (#1)] No available actions!
-[96.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.71] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[96.71] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[96.71] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:910.9, AfterAttackerMods:910.9, AfterResistances:773.6, AfterTargetMods:773.6, AfterOutcome:574.8, AfterPostOutcome:574.8
-[96.71] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 574.836 damage (SpellSchool: 1). (Threat: 574.836)
-[96.71] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
-[96.71] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
-[96.71] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[96.71] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
-[96.71] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2724.6, RAP: 106.0, SP: 242.3, BaseDamage:961.4, AfterAttackerMods:961.4, AfterResistances:816.5, AfterTargetMods:816.5, AfterOutcome:469.7, AfterPostOutcome:469.7
-[96.71] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Glance for 469.697 damage (SpellSchool: 1). (Threat: 469.697)
-[96.71] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
-[96.71] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
-[96.71] [enhancement-shaman (#1)] No available actions!
-[96.71] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.72] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 1
-[96.72] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[96.72] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 2 --> 3
-[96.72] [enhancement-shaman (#1)] Casting {SpellID: 15851} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[96.72] [enhancement-shaman (#1)] Completed cast {SpellID: 15851}
-[96.72] [enhancement-shaman (#1)] [Target 1] {SpellID: 15851} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:319.3, AfterAttackerMods:319.3, AfterResistances:319.3, AfterTargetMods:319.3, AfterOutcome:0.0, AfterPostOutcome:0.0
-[96.72] [enhancement-shaman (#1)] [Target 1] {SpellID: 15851} Miss (SpellSchool: 4). (Threat: 0.000)
-[96.81] [enhancement-shaman (#1)] No available actions!
-[96.81] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.91] [enhancement-shaman (#1)] No available actions!
-[96.91] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[97.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:59.7, AfterTargetMods:59.7, AfterOutcome:59.7, AfterPostOutcome:59.7
-[97.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (25% Resist) for 59.711 damage (SpellSchool: 4). (Threat: 59.711)
-[97.01] [enhancement-shaman (#1)] No available actions!
-[97.01] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[97.11] [enhancement-shaman (#1)] No available actions!
-[97.11] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[97.21] [enhancement-shaman (#1)] No available actions!
-[97.21] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[97.31] [enhancement-shaman (#1)] No available actions!
-[97.31] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[97.41] [enhancement-shaman (#1)] No available actions!
-[97.41] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[97.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1004.700 --> 1035.500) of 4105 total.
-[97.51] [enhancement-shaman (#1)] No available actions!
-[97.51] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[97.61] [enhancement-shaman (#1)] No available actions!
-[97.61] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[97.71] [enhancement-shaman (#1)] No available actions!
-[97.71] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[97.81] [enhancement-shaman (#1)] No available actions!
-[97.81] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[97.91] [enhancement-shaman (#1)] No available actions!
-[97.91] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[98.01] [enhancement-shaman (#1)] No available actions!
-[98.01] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[98.11] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m38.500000009s.
-[98.11] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[98.21] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m38.500000009s.
-[98.21] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[98.31] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m38.500000009s.
-[98.31] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[98.41] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m38.500000009s.
-[98.41] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[98.50] [enhancement-shaman (#1)] Casting {SpellID: 10414} (Cost = 211.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[98.50] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
-[98.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (1035.500 --> 824.000) of 4105 total.
-[98.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:387.7, AfterAttackerMods:407.1, AfterResistances:407.1, AfterTargetMods:407.1, AfterOutcome:407.1, AfterPostOutcome:407.1
-[98.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 407.128 damage (SpellSchool: 8). (Threat: 407.128)
-[98.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (824.000 --> 883.000) of 4105 total.
+[96.31] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
+[96.31] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 58.982 damage (SpellSchool: 4). (Threat: 58.982)
+[97.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
+[97.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
+[97.47] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[97.47] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[97.47] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:853.9, AfterAttackerMods:853.9, AfterResistances:725.2, AfterTargetMods:725.2, AfterOutcome:505.9, AfterPostOutcome:505.9
+[97.47] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 505.861 damage (SpellSchool: 1). (Threat: 505.861)
+[97.47] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m37.500000011s.
+[97.47] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.48] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
+[97.48] [enhancement-shaman (#1)] Aura gained: {SpellID: 408505}
+[97.48] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 0 --> 1
+[97.48] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (873.200 --> 932.200) of 4105 total.
+[97.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (932.200 --> 963.000) of 4105 total.
+[97.50] [enhancement-shaman (#1)] Casting {SpellID: 10414} (Cost = 211.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[97.50] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
+[97.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (963.000 --> 751.500) of 4105 total.
+[97.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:389.3, AfterAttackerMods:408.7, AfterResistances:408.7, AfterTargetMods:408.7, AfterOutcome:408.7, AfterPostOutcome:408.7
+[97.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 408.747 damage (SpellSchool: 8). (Threat: 408.747)
 [98.74] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [98.74] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
 [98.74] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:88.5, AfterPostOutcome:88.5
 [98.74] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 88.474 damage (SpellSchool: 4). (Threat: 88.474)
-[99.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (883.000 --> 913.800) of 4105 total.
-[99.75] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[99.75] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[99.75] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:874.3, AfterAttackerMods:874.3, AfterResistances:742.6, AfterTargetMods:742.6, AfterOutcome:1485.1, AfterPostOutcome:1485.1
-[99.75] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 1485.132 damage (SpellSchool: 1). (Threat: 1485.132)
-[99.75] [enhancement-shaman (#1)] No available actions!
-[99.75] [enhancement-shaman (#1)] Pausing rotation for 253.050017ms due to resources / CDs.
-[99.76] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
-[99.76] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 1 --> 3
-[99.76] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[99.76] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 3 --> 4
-[99.76] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (913.800 --> 972.800) of 4105 total.
-[99.85] [enhancement-shaman (#1)] No available actions!
-[99.85] [enhancement-shaman (#1)] Pausing rotation for 153.050017ms due to resources / CDs.
+[99.00] [enhancement-shaman (#1)] No available actions!
+[99.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.10] [enhancement-shaman (#1)] No available actions!
+[99.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.20] [enhancement-shaman (#1)] No available actions!
+[99.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.30] [enhancement-shaman (#1)] No available actions!
+[99.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.40] [enhancement-shaman (#1)] No available actions!
+[99.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (751.500 --> 782.300) of 4105 total.
+[99.50] [enhancement-shaman (#1)] No available actions!
+[99.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.60] [enhancement-shaman (#1)] No available actions!
+[99.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.70] [enhancement-shaman (#1)] No available actions!
+[99.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.80] [enhancement-shaman (#1)] No available actions!
+[99.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[99.90] [enhancement-shaman (#1)] No available actions!
+[99.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [100.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
 [100.00] [Target 1] Aura faded: {SpellID: 29228, Tag: 1}
-[100.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:119.4, AfterPostOutcome:119.4
-[100.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 119.422 damage (SpellSchool: 4). (Threat: 119.422)
+[100.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
+[100.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
 [100.00] [enhancement-shaman (#1)] No available actions!
 [100.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [100.10] [enhancement-shaman (#1)] No available actions!
@@ -1797,112 +1793,140 @@
 [100.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [100.30] [enhancement-shaman (#1)] No available actions!
 [100.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[100.32] [enhancement-shaman (#1)] Aura faded: {SpellID: 20007, Tag: 1}
+[100.40] [enhancement-shaman (#1)] Lost {"Strength": 100.000,} from fading {SpellID: 20007, Tag: 1}.
 [100.40] [enhancement-shaman (#1)] No available actions!
 [100.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [100.50] [enhancement-shaman (#1)] No available actions!
 [100.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[100.60] [enhancement-shaman (#1)] No available actions!
-[100.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[100.70] [enhancement-shaman (#1)] No available actions!
-[100.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[100.80] [enhancement-shaman (#1)] No available actions!
-[100.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[100.90] [enhancement-shaman (#1)] No available actions!
-[100.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[101.00] [enhancement-shaman (#1)] No available actions!
-[101.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[101.10] [enhancement-shaman (#1)] No available actions!
-[101.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[100.51] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[100.51] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[100.51] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:847.5, AfterAttackerMods:847.5, AfterResistances:719.8, AfterTargetMods:719.8, AfterOutcome:437.8, AfterPostOutcome:437.8
+[100.51] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 437.763 damage (SpellSchool: 1). (Threat: 437.763)
+[100.51] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
+[100.51] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
+[100.51] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[100.51] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
+[100.51] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2504.6, RAP: 106.0, SP: 242.3, BaseDamage:892.1, AfterAttackerMods:892.1, AfterResistances:757.7, AfterTargetMods:757.7, AfterOutcome:495.0, AfterPostOutcome:495.0
+[100.51] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Glance for 494.958 damage (SpellSchool: 1). (Threat: 494.958)
+[100.51] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
+[100.51] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
+[100.51] [enhancement-shaman (#1)] No available actions!
+[100.51] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[100.52] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 1
+[100.52] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[100.52] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 1 --> 2
+[100.52] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[100.52] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 2 --> 3
+[100.52] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (782.300 --> 841.300) of 4105 total.
+[100.61] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m41.00000001s.
+[100.61] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[100.71] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m41.00000001s.
+[100.71] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[100.81] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m41.00000001s.
+[100.81] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[100.91] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m41.00000001s.
+[100.91] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[101.00] [enhancement-shaman (#1)] Casting {SpellID: 17364} (Cost = 121.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[101.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
+[101.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (841.300 --> 720.300) of 4105 total.
+[101.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
+[101.00] [Target 1] Aura gained: {SpellID: 17364}
+[101.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
+[101.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[101.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
+[101.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:813.4, AfterAttackerMods:813.4, AfterResistances:690.8, AfterTargetMods:690.8, AfterOutcome:690.8, AfterPostOutcome:690.8
+[101.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} Hit for 690.798 damage (SpellSchool: 1). (Threat: 690.798)
+[101.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (720.300 --> 779.300) of 4105 total.
+[101.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
 [101.17] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [101.17] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
-[101.17] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:88.5, AfterPostOutcome:88.5
-[101.17] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 88.474 damage (SpellSchool: 4). (Threat: 88.474)
-[101.20] [enhancement-shaman (#1)] No available actions!
-[101.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[101.30] [enhancement-shaman (#1)] No available actions!
-[101.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[101.40] [enhancement-shaman (#1)] No available actions!
-[101.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[101.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (972.800 --> 1003.600) of 4105 total.
-[101.50] [enhancement-shaman (#1)] No available actions!
-[101.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[101.60] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m42.000000009s.
-[101.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[101.70] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m42.000000009s.
-[101.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[101.80] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m42.000000009s.
-[101.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[101.90] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m42.000000009s.
-[101.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[102.00] [enhancement-shaman (#1)] Casting {SpellID: 17364} (Cost = 121.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[102.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
-[102.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (1003.600 --> 882.600) of 4105 total.
-[102.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[102.00] [Target 1] Aura gained: {SpellID: 17364}
-[102.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
-[102.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[102.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
-[102.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:859.2, AfterAttackerMods:859.2, AfterResistances:729.7, AfterTargetMods:729.7, AfterOutcome:1459.4, AfterPostOutcome:1459.4
-[102.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} Crit for 1459.412 damage (SpellSchool: 1). (Threat: 1459.412)
-[102.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
-[102.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[102.01] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 4 --> 5
-[102.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (882.600 --> 941.600) of 4105 total.
-[102.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
-[102.51] [enhancement-shaman (#1)] Aura faded: {SpellID: 29178}
-[102.79] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[102.79] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[102.79] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:891.8, AfterAttackerMods:891.8, AfterResistances:757.4, AfterTargetMods:757.4, AfterOutcome:464.0, AfterPostOutcome:464.0
-[102.79] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 464.002 damage (SpellSchool: 1). (Threat: 464.002)
-[102.79] [enhancement-shaman (#1)] No available actions!
-[102.79] [enhancement-shaman (#1)] Pausing rotation for 713.050017ms due to resources / CDs.
-[102.80] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
-[102.80] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[102.80] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (941.600 --> 1000.600) of 4105 total.
-[102.89] [enhancement-shaman (#1)] No available actions!
-[102.89] [enhancement-shaman (#1)] Pausing rotation for 613.050017ms due to resources / CDs.
-[103.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1000.600 --> 1031.400) of 4105 total.
-[103.50] [enhancement-shaman (#1)] Casting {SpellID: 15208} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[103.50] [enhancement-shaman (#1)] Completed cast {SpellID: 15208}
-[103.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:364.5, AfterAttackerMods:382.7, AfterResistances:382.7, AfterTargetMods:459.3, AfterOutcome:459.3, AfterPostOutcome:459.3
-[103.50] [enhancement-shaman (#1)] Aura faded: {SpellID: 408505}
-[103.50] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 5 --> 0
-[103.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 459.287 damage (SpellSchool: 8). (Threat: 459.287)
-[103.50] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[103.50] [Target 1] Aura faded: {SpellID: 17364}
-[103.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1031.400 --> 1090.400) of 4105 total.
+[101.17] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
+[101.17] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 58.982 damage (SpellSchool: 4). (Threat: 58.982)
+[101.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (779.300 --> 810.100) of 4105 total.
+[102.50] [enhancement-shaman (#1)] No available actions!
+[102.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[102.60] [enhancement-shaman (#1)] No available actions!
+[102.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[102.70] [enhancement-shaman (#1)] No available actions!
+[102.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[102.80] [enhancement-shaman (#1)] No available actions!
+[102.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[102.90] [enhancement-shaman (#1)] No available actions!
+[102.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[103.00] [enhancement-shaman (#1)] No available actions!
+[103.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[103.10] [enhancement-shaman (#1)] No available actions!
+[103.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[103.20] [enhancement-shaman (#1)] Queueing up {SpellID: 29228} to cast at 1m43.500000012s.
+[103.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[103.30] [enhancement-shaman (#1)] Queueing up {SpellID: 29228} to cast at 1m43.500000012s.
+[103.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[103.40] [enhancement-shaman (#1)] Queueing up {SpellID: 29228} to cast at 1m43.500000012s.
+[103.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[103.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (810.100 --> 840.900) of 4105 total.
+[103.50] [enhancement-shaman (#1)] Queueing up {SpellID: 29228} to cast at 1m43.500000012s.
+[103.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[103.50] [enhancement-shaman (#1)] Casting {SpellID: 29228} (Cost = 192.700, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[103.50] [enhancement-shaman (#1)] Completed cast {SpellID: 29228}
+[103.50] [enhancement-shaman (#1)] Spent 192.700 mana from {SpellID: 29228} (840.900 --> 648.200) of 4105 total.
+[103.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:220.0, AfterAttackerMods:253.0, AfterResistances:253.0, AfterTargetMods:253.0, AfterOutcome:253.0, AfterPostOutcome:253.0
+[103.50] [enhancement-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[103.50] [enhancement-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
+[103.50] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
+[103.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228} Hit for 252.991 damage (SpellSchool: 4). (Threat: 252.991)
+[103.55] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[103.55] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[103.55] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:825.3, AfterAttackerMods:825.3, AfterResistances:700.9, AfterTargetMods:700.9, AfterOutcome:0.0, AfterPostOutcome:0.0
+[103.55] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
+[103.55] [enhancement-shaman (#1)] No available actions!
+[103.55] [enhancement-shaman (#1)] Pausing rotation for 1.45305002s due to resources / CDs.
+[103.56] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 1 --> 0
+[103.56] [enhancement-shaman (#1)] Aura faded: {SpellID: 16257}
 [103.60] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [103.60] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
-[103.60] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:44.2, AfterTargetMods:44.2, AfterOutcome:44.2, AfterPostOutcome:44.2
-[103.60] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 44.237 damage (SpellSchool: 4). (Threat: 44.237)
+[103.60] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
+[103.60] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 58.982 damage (SpellSchool: 4). (Threat: 58.982)
+[103.65] [enhancement-shaman (#1)] No available actions!
+[103.65] [enhancement-shaman (#1)] Pausing rotation for 1.35305002s due to resources / CDs.
 [105.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
-[105.00] [enhancement-shaman (#1)] Casting {SpellID: 29228} (Cost = 192.700, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[105.00] [enhancement-shaman (#1)] Completed cast {SpellID: 29228}
-[105.00] [enhancement-shaman (#1)] Spent 192.700 mana from {SpellID: 29228} (1090.400 --> 897.700) of 4105 total.
-[105.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:220.0, AfterAttackerMods:253.0, AfterResistances:253.0, AfterTargetMods:253.0, AfterOutcome:253.0, AfterPostOutcome:253.0
-[105.00] [enhancement-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[105.00] [enhancement-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
-[105.00] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
-[105.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228} Hit for 252.991 damage (SpellSchool: 4). (Threat: 252.991)
-[105.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (897.700 --> 956.700) of 4105 total.
-[105.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (956.700 --> 987.500) of 4105 total.
-[105.64] [enhancement-shaman (#1)] Aura faded: {SpellID: 20007, Tag: 1}
-[105.83] [enhancement-shaman (#1)] Lost {"Strength": 100.000,} from fading {SpellID: 20007, Tag: 1}.
-[105.83] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[105.83] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[105.83] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:785.5, AfterAttackerMods:785.5, AfterResistances:667.1, AfterTargetMods:667.1, AfterOutcome:667.1, AfterPostOutcome:667.1
-[105.83] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 667.143 damage (SpellSchool: 1). (Threat: 667.143)
-[105.83] [enhancement-shaman (#1)] No available actions!
-[105.83] [enhancement-shaman (#1)] Pausing rotation for 673.050017ms due to resources / CDs.
-[105.84] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 1
-[105.84] [enhancement-shaman (#1)] Aura gained: {SpellID: 408505}
-[105.84] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 0 --> 1
-[105.93] [enhancement-shaman (#1)] No available actions!
-[105.93] [enhancement-shaman (#1)] Pausing rotation for 573.050017ms due to resources / CDs.
+[105.00] [enhancement-shaman (#1)] No available actions!
+[105.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.10] [enhancement-shaman (#1)] No available actions!
+[105.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.20] [enhancement-shaman (#1)] No available actions!
+[105.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.30] [enhancement-shaman (#1)] No available actions!
+[105.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.40] [enhancement-shaman (#1)] No available actions!
+[105.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (648.200 --> 679.000) of 4105 total.
+[105.50] [enhancement-shaman (#1)] No available actions!
+[105.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.60] [enhancement-shaman (#1)] No available actions!
+[105.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.70] [enhancement-shaman (#1)] No available actions!
+[105.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.80] [enhancement-shaman (#1)] No available actions!
+[105.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[105.90] [enhancement-shaman (#1)] No available actions!
+[105.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[106.00] [enhancement-shaman (#1)] No available actions!
+[106.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [106.03] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [106.03] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
-[106.03] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:44.2, AfterTargetMods:44.2, AfterOutcome:44.2, AfterPostOutcome:44.2
-[106.03] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 44.237 damage (SpellSchool: 4). (Threat: 44.237)
+[106.03] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
+[106.03] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 58.982 damage (SpellSchool: 4). (Threat: 58.982)
+[106.10] [enhancement-shaman (#1)] No available actions!
+[106.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[106.20] [enhancement-shaman (#1)] No available actions!
+[106.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[106.30] [enhancement-shaman (#1)] No available actions!
+[106.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[106.40] [enhancement-shaman (#1)] No available actions!
+[106.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[106.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
+[106.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
 [106.50] [enhancement-shaman (#1)] No available actions!
 [106.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [106.60] [enhancement-shaman (#1)] No available actions!
@@ -1921,401 +1945,397 @@
 [107.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [107.30] [enhancement-shaman (#1)] No available actions!
 [107.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[107.40] [enhancement-shaman (#1)] No available actions!
-[107.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[107.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (987.500 --> 1018.300) of 4105 total.
-[107.50] [enhancement-shaman (#1)] No available actions!
-[107.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[107.60] [enhancement-shaman (#1)] No available actions!
-[107.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[107.70] [enhancement-shaman (#1)] No available actions!
-[107.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[107.80] [enhancement-shaman (#1)] No available actions!
-[107.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[107.90] [enhancement-shaman (#1)] No available actions!
-[107.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
-[108.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
-[108.00] [enhancement-shaman (#1)] No available actions!
-[108.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.10] [enhancement-shaman (#1)] No available actions!
-[108.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.20] [enhancement-shaman (#1)] No available actions!
-[108.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.30] [enhancement-shaman (#1)] No available actions!
-[108.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.40] [enhancement-shaman (#1)] No available actions!
-[108.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[107.34] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[107.34] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[107.34] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:828.8, AfterAttackerMods:828.8, AfterResistances:703.9, AfterTargetMods:703.9, AfterOutcome:1407.7, AfterPostOutcome:1407.7
+[107.34] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 1407.719 damage (SpellSchool: 1). (Threat: 1407.719)
+[107.34] [enhancement-shaman (#1)] No available actions!
+[107.34] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[107.35] [enhancement-shaman (#1)] Aura gained: {SpellID: 16257}
+[107.35] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 0 --> 3
+[107.35] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[107.35] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 3 --> 4
+[107.35] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (679.000 --> 738.000) of 4105 total.
+[107.44] [enhancement-shaman (#1)] No available actions!
+[107.44] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[107.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (738.000 --> 768.800) of 4105 total.
+[107.54] [enhancement-shaman (#1)] No available actions!
+[107.54] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[107.64] [enhancement-shaman (#1)] No available actions!
+[107.64] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[107.74] [enhancement-shaman (#1)] No available actions!
+[107.74] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[107.84] [enhancement-shaman (#1)] No available actions!
+[107.84] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[107.94] [enhancement-shaman (#1)] No available actions!
+[107.94] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.04] [enhancement-shaman (#1)] No available actions!
+[108.04] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.14] [enhancement-shaman (#1)] No available actions!
+[108.14] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.24] [enhancement-shaman (#1)] No available actions!
+[108.24] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.34] [enhancement-shaman (#1)] No available actions!
+[108.34] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.44] [enhancement-shaman (#1)] No available actions!
+[108.44] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [108.46] [Target 1] Aura faded: {SpellID: 10438}
 [108.46] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [108.46] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
-[108.46] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
-[108.46] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 58.982 damage (SpellSchool: 4). (Threat: 58.982)
-[108.50] [enhancement-shaman (#1)] No available actions!
-[108.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.60] [enhancement-shaman (#1)] No available actions!
-[108.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.70] [enhancement-shaman (#1)] No available actions!
-[108.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.80] [enhancement-shaman (#1)] No available actions!
-[108.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.87] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[108.87] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[108.87] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:796.8, AfterAttackerMods:796.8, AfterResistances:676.7, AfterTargetMods:676.7, AfterOutcome:501.8, AfterPostOutcome:501.8
-[108.87] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 501.820 damage (SpellSchool: 1). (Threat: 501.820)
-[108.87] [enhancement-shaman (#1)] No available actions!
-[108.87] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.88] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 1 --> 0
-[108.88] [enhancement-shaman (#1)] Aura faded: {SpellID: 16257}
-[108.88] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[108.88] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 1 --> 2
-[108.97] [enhancement-shaman (#1)] No available actions!
-[108.97] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.07] [enhancement-shaman (#1)] No available actions!
-[109.07] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.17] [enhancement-shaman (#1)] No available actions!
-[109.17] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.27] [enhancement-shaman (#1)] No available actions!
-[109.27] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.37] [enhancement-shaman (#1)] No available actions!
-[109.37] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.47] [enhancement-shaman (#1)] No available actions!
-[109.47] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1018.300 --> 1049.100) of 4105 total.
-[109.57] [enhancement-shaman (#1)] No available actions!
-[109.57] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.67] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m50.00000001s.
-[109.67] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.77] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m50.00000001s.
-[109.77] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.87] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m50.00000001s.
-[109.87] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[109.97] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m50.00000001s.
-[109.97] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.46] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:51.3, AfterAttackerMods:59.0, AfterResistances:44.2, AfterTargetMods:44.2, AfterOutcome:44.2, AfterPostOutcome:44.2
+[108.46] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit (25% Resist) for 44.237 damage (SpellSchool: 4). (Threat: 44.237)
+[108.54] [enhancement-shaman (#1)] No available actions!
+[108.54] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.64] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m49.000000011s.
+[108.64] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.74] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m49.000000011s.
+[108.74] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.84] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m49.000000011s.
+[108.84] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[108.94] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m49.000000011s.
+[108.94] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[109.00] [enhancement-shaman (#1)] Casting {SpellID: 17364} (Cost = 121.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[109.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
+[109.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (768.800 --> 647.800) of 4105 total.
+[109.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
+[109.00] [Target 1] Aura refreshed: {SpellID: 17364}
+[109.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[109.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
+[109.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:773.9, AfterAttackerMods:773.9, AfterResistances:657.3, AfterTargetMods:657.3, AfterOutcome:1314.6, AfterPostOutcome:1314.6
+[109.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} Crit for 1314.594 damage (SpellSchool: 1). (Threat: 1314.594)
+[109.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
+[109.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[109.01] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 4 --> 5
+[109.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
+[109.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (647.800 --> 678.600) of 4105 total.
+[109.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
+[109.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
 [110.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
-[110.00] [enhancement-shaman (#1)] Casting {SpellID: 17364} (Cost = 121.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[110.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
-[110.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (1049.100 --> 928.100) of 4105 total.
-[110.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[110.00] [Target 1] Aura gained: {SpellID: 17364}
-[110.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
-[110.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[110.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
-[110.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:783.3, AfterAttackerMods:783.3, AfterResistances:665.3, AfterTargetMods:665.3, AfterOutcome:1330.5, AfterPostOutcome:1330.5
-[110.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} Crit for 1330.548 damage (SpellSchool: 1). (Threat: 1330.548)
-[110.01] [enhancement-shaman (#1)] Aura gained: {SpellID: 16257}
-[110.01] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 0 --> 3
-[110.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[110.01] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 2 --> 3
-[110.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (928.100 --> 987.100) of 4105 total.
-[110.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
-[111.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:119.4, AfterPostOutcome:119.4
-[111.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 119.422 damage (SpellSchool: 4). (Threat: 119.422)
-[111.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (987.100 --> 1017.900) of 4105 total.
-[111.50] [enhancement-shaman (#1)] Casting {SpellID: 10414} (Cost = 211.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[111.50] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
-[111.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (1017.900 --> 806.400) of 4105 total.
-[111.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:401.8, AfterAttackerMods:421.9, AfterResistances:421.9, AfterTargetMods:506.3, AfterOutcome:506.3, AfterPostOutcome:506.3
-[111.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 506.311 damage (SpellSchool: 8). (Threat: 506.311)
-[111.50] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[111.50] [Target 1] Aura faded: {SpellID: 17364}
-[111.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (806.400 --> 865.400) of 4105 total.
-[112.13] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[112.13] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[112.13] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:805.1, AfterAttackerMods:805.1, AfterResistances:683.8, AfterTargetMods:683.8, AfterOutcome:683.8, AfterPostOutcome:683.8
-[112.13] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 683.768 damage (SpellSchool: 1). (Threat: 683.768)
-[112.13] [enhancement-shaman (#1)] No available actions!
-[112.13] [enhancement-shaman (#1)] Pausing rotation for 866.440015ms due to resources / CDs.
-[112.14] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
-[112.23] [enhancement-shaman (#1)] No available actions!
-[112.23] [enhancement-shaman (#1)] Pausing rotation for 766.440015ms due to resources / CDs.
-[113.00] [enhancement-shaman (#1)] No available actions!
-[113.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.10] [enhancement-shaman (#1)] No available actions!
-[113.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.20] [enhancement-shaman (#1)] No available actions!
-[113.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.30] [enhancement-shaman (#1)] No available actions!
-[113.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.40] [enhancement-shaman (#1)] No available actions!
-[113.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (865.400 --> 896.200) of 4105 total.
-[113.50] [enhancement-shaman (#1)] No available actions!
-[113.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.60] [enhancement-shaman (#1)] No available actions!
-[113.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.70] [enhancement-shaman (#1)] No available actions!
-[113.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.80] [enhancement-shaman (#1)] No available actions!
-[113.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[113.90] [enhancement-shaman (#1)] No available actions!
-[113.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
-[114.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
-[114.00] [enhancement-shaman (#1)] No available actions!
-[114.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.10] [enhancement-shaman (#1)] No available actions!
-[114.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.20] [enhancement-shaman (#1)] No available actions!
-[114.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.30] [enhancement-shaman (#1)] No available actions!
-[114.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.40] [enhancement-shaman (#1)] No available actions!
-[114.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.50] [enhancement-shaman (#1)] No available actions!
-[114.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.60] [enhancement-shaman (#1)] No available actions!
-[114.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.70] [enhancement-shaman (#1)] No available actions!
-[114.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.80] [enhancement-shaman (#1)] No available actions!
-[114.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[114.90] [enhancement-shaman (#1)] No available actions!
-[114.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[110.39] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[110.39] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[110.39] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:830.7, AfterAttackerMods:830.7, AfterResistances:705.5, AfterTargetMods:705.5, AfterOutcome:434.4, AfterPostOutcome:434.4
+[110.39] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 434.418 damage (SpellSchool: 1). (Threat: 434.418)
+[110.39] [enhancement-shaman (#1)] Queueing up {SpellID: 15208} to cast at 1m50.500000012s.
+[110.39] [enhancement-shaman (#1)] Pausing rotation for 113.550019ms due to resources / CDs.
+[110.40] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
+[110.40] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (678.600 --> 737.600) of 4105 total.
+[110.49] [enhancement-shaman (#1)] Queueing up {SpellID: 15208} to cast at 1m50.500000012s.
+[110.49] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[110.50] [enhancement-shaman (#1)] Casting {SpellID: 15208} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[110.50] [enhancement-shaman (#1)] Completed cast {SpellID: 15208}
+[110.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:369.8, AfterAttackerMods:388.3, AfterResistances:388.3, AfterTargetMods:465.9, AfterOutcome:465.9, AfterPostOutcome:465.9
+[110.50] [enhancement-shaman (#1)] Aura faded: {SpellID: 408505}
+[110.50] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 5 --> 0
+[110.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 465.934 damage (SpellSchool: 8). (Threat: 465.934)
+[110.50] [Target 1] {SpellID: 17364} stacks: 1 --> 0
+[110.50] [Target 1] Aura faded: {SpellID: 17364}
+[111.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (737.600 --> 768.400) of 4105 total.
+[112.00] [enhancement-shaman (#1)] Casting {SpellID: 10414} (Cost = 211.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[112.00] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
+[112.00] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (768.400 --> 556.900) of 4105 total.
+[112.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:400.2, AfterAttackerMods:420.2, AfterResistances:420.2, AfterTargetMods:420.2, AfterOutcome:420.2, AfterPostOutcome:420.2
+[112.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 420.173 damage (SpellSchool: 8). (Threat: 420.173)
+[112.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:59.7, AfterTargetMods:59.7, AfterOutcome:59.7, AfterPostOutcome:59.7
+[112.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit (25% Resist) for 59.711 damage (SpellSchool: 4). (Threat: 59.711)
+[113.43] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[113.43] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[113.43] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:779.4, AfterAttackerMods:779.4, AfterResistances:661.9, AfterTargetMods:661.9, AfterOutcome:661.9, AfterPostOutcome:661.9
+[113.43] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 661.928 damage (SpellSchool: 1). (Threat: 661.928)
+[113.43] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
+[113.43] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
+[113.43] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[113.43] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
+[113.43] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2504.6, RAP: 106.0, SP: 242.3, BaseDamage:868.2, AfterAttackerMods:868.2, AfterResistances:737.3, AfterTargetMods:737.3, AfterOutcome:0.0, AfterPostOutcome:0.0
+[113.43] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Dodge (SpellSchool: 1). (Threat: 0.000)
+[113.43] [enhancement-shaman (#1)] No available actions!
+[113.43] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[113.44] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 1
+[113.44] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (556.900 --> 615.900) of 4105 total.
+[113.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (615.900 --> 646.700) of 4105 total.
+[113.53] [enhancement-shaman (#1)] No available actions!
+[113.53] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[113.63] [enhancement-shaman (#1)] No available actions!
+[113.63] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[113.73] [enhancement-shaman (#1)] No available actions!
+[113.73] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[113.83] [enhancement-shaman (#1)] No available actions!
+[113.83] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[113.93] [enhancement-shaman (#1)] No available actions!
+[113.93] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[114.03] [enhancement-shaman (#1)] No available actions!
+[114.03] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[114.13] [enhancement-shaman (#1)] No available actions!
+[114.13] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[114.23] [enhancement-shaman (#1)] No available actions!
+[114.23] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[114.33] [enhancement-shaman (#1)] No available actions!
+[114.33] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[114.43] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
+[114.43] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
+[114.43] [enhancement-shaman (#1)] No available actions!
+[114.43] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[114.53] [enhancement-shaman (#1)] No available actions!
+[114.53] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[114.63] [enhancement-shaman (#1)] No available actions!
+[114.63] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[114.73] [enhancement-shaman (#1)] No available actions!
+[114.73] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[114.83] [enhancement-shaman (#1)] No available actions!
+[114.83] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[114.93] [enhancement-shaman (#1)] No available actions!
+[114.93] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [115.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
-[115.00] [enhancement-shaman (#1)] No available actions!
-[115.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.10] [enhancement-shaman (#1)] No available actions!
-[115.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.17] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[115.17] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[115.17] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:826.1, AfterAttackerMods:826.1, AfterResistances:701.6, AfterTargetMods:701.6, AfterOutcome:428.8, AfterPostOutcome:428.8
-[115.17] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 428.755 damage (SpellSchool: 1). (Threat: 428.755)
-[115.17] [enhancement-shaman (#1)] No available actions!
-[115.17] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.18] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 1
-[115.18] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[115.18] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 3 --> 4
-[115.27] [enhancement-shaman (#1)] No available actions!
-[115.27] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.37] [enhancement-shaman (#1)] No available actions!
-[115.37] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.47] [enhancement-shaman (#1)] No available actions!
-[115.47] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (896.200 --> 927.000) of 4105 total.
-[115.57] [enhancement-shaman (#1)] No available actions!
-[115.57] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.67] [enhancement-shaman (#1)] No available actions!
-[115.67] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.77] [enhancement-shaman (#1)] No available actions!
-[115.77] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.87] [enhancement-shaman (#1)] No available actions!
-[115.87] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[115.97] [enhancement-shaman (#1)] No available actions!
-[115.97] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.07] [enhancement-shaman (#1)] No available actions!
-[116.07] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.17] [enhancement-shaman (#1)] No available actions!
-[116.17] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.27] [enhancement-shaman (#1)] No available actions!
-[116.27] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.37] [enhancement-shaman (#1)] No available actions!
-[116.37] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.03] [enhancement-shaman (#1)] No available actions!
+[115.03] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.13] [enhancement-shaman (#1)] No available actions!
+[115.13] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.23] [enhancement-shaman (#1)] No available actions!
+[115.23] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.33] [enhancement-shaman (#1)] No available actions!
+[115.33] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.43] [enhancement-shaman (#1)] No available actions!
+[115.43] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (646.700 --> 677.500) of 4105 total.
+[115.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
+[115.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
+[115.53] [enhancement-shaman (#1)] No available actions!
+[115.53] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.63] [enhancement-shaman (#1)] No available actions!
+[115.63] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.73] [enhancement-shaman (#1)] No available actions!
+[115.73] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.83] [enhancement-shaman (#1)] No available actions!
+[115.83] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[115.93] [enhancement-shaman (#1)] No available actions!
+[115.93] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.03] [enhancement-shaman (#1)] No available actions!
+[116.03] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.13] [enhancement-shaman (#1)] No available actions!
+[116.13] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.23] [enhancement-shaman (#1)] No available actions!
+[116.23] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.33] [enhancement-shaman (#1)] No available actions!
+[116.33] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.43] [enhancement-shaman (#1)] No available actions!
+[116.43] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.47] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[116.47] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[116.47] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:829.0, AfterAttackerMods:829.0, AfterResistances:704.1, AfterTargetMods:704.1, AfterOutcome:1408.1, AfterPostOutcome:1408.1
+[116.47] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 1408.104 damage (SpellSchool: 1). (Threat: 1408.104)
 [116.47] [enhancement-shaman (#1)] No available actions!
 [116.47] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[116.48] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
+[116.48] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 1 --> 3
 [116.57] [enhancement-shaman (#1)] No available actions!
 [116.57] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.67] [enhancement-shaman (#1)] No available actions!
+[116.67] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m57.000000012s.
 [116.67] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.77] [enhancement-shaman (#1)] No available actions!
+[116.77] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m57.000000012s.
 [116.77] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.87] [enhancement-shaman (#1)] No available actions!
+[116.87] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m57.000000012s.
 [116.87] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.97] [enhancement-shaman (#1)] No available actions!
+[116.97] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 1m57.000000012s.
 [116.97] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[117.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
-[117.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
-[117.07] [enhancement-shaman (#1)] No available actions!
-[117.07] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[117.17] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m57.500000011s.
-[117.17] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[117.27] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m57.500000011s.
-[117.27] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[117.37] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m57.500000011s.
-[117.37] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[117.47] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 1m57.500000011s.
-[117.47] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[117.50] [enhancement-shaman (#1)] Gained 82.800 mana from {OtherID: 2, Tag: 2} (927.000 --> 1009.800) of 4105 total.
-[117.50] [enhancement-shaman (#1)] Casting {SpellID: 10414} (Cost = 211.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[117.50] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
-[117.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (1009.800 --> 798.300) of 4105 total.
-[117.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:387.8, AfterAttackerMods:407.2, AfterResistances:407.2, AfterTargetMods:407.2, AfterOutcome:407.2, AfterPostOutcome:407.2
-[117.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 407.198 damage (SpellSchool: 8). (Threat: 407.198)
-[117.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (798.300 --> 857.300) of 4105 total.
-[118.21] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[118.21] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[118.21] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:867.5, AfterAttackerMods:867.5, AfterResistances:736.7, AfterTargetMods:736.7, AfterOutcome:736.7, AfterPostOutcome:736.7
-[118.21] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 736.725 damage (SpellSchool: 1). (Threat: 736.725)
-[118.21] [enhancement-shaman (#1)] No available actions!
-[118.21] [enhancement-shaman (#1)] Pausing rotation for 786.440016ms due to resources / CDs.
-[118.22] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 1 --> 0
-[118.22] [enhancement-shaman (#1)] Aura faded: {SpellID: 16257}
-[118.22] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[118.22] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 4 --> 5
-[118.22] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (857.300 --> 916.300) of 4105 total.
-[118.31] [enhancement-shaman (#1)] No available actions!
-[118.31] [enhancement-shaman (#1)] Pausing rotation for 686.440016ms due to resources / CDs.
-[119.00] [enhancement-shaman (#1)] Casting {SpellID: 17364} (Cost = 121.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[119.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
-[119.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (916.300 --> 795.300) of 4105 total.
-[119.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[119.00] [Target 1] Aura gained: {SpellID: 17364}
-[119.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
-[119.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[119.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
-[119.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:859.7, AfterAttackerMods:859.7, AfterResistances:730.1, AfterTargetMods:730.1, AfterOutcome:730.1, AfterPostOutcome:730.1
-[119.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} Hit for 730.119 damage (SpellSchool: 1). (Threat: 730.119)
-[119.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[119.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
-[119.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (795.300 --> 826.100) of 4105 total.
+[117.00] [enhancement-shaman (#1)] Casting {SpellID: 17364} (Cost = 121.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[117.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
+[117.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (677.500 --> 556.500) of 4105 total.
+[117.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
+[117.00] [Target 1] Aura gained: {SpellID: 17364}
+[117.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
+[117.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[117.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
+[117.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:852.6, AfterAttackerMods:852.6, AfterResistances:724.1, AfterTargetMods:724.1, AfterOutcome:724.1, AfterPostOutcome:724.1
+[117.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} Hit for 724.065 damage (SpellSchool: 1). (Threat: 724.065)
+[117.01] [enhancement-shaman (#1)] Aura gained: {SpellID: 408505}
+[117.01] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 0 --> 1
+[117.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (556.500 --> 615.500) of 4105 total.
+[117.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
+[117.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (615.500 --> 646.300) of 4105 total.
+[118.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:119.4, AfterPostOutcome:119.4
+[118.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 119.422 damage (SpellSchool: 4). (Threat: 119.422)
+[118.50] [enhancement-shaman (#1)] Casting {SpellID: 10414} (Cost = 211.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[118.50] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
+[118.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (646.300 --> 434.800) of 4105 total.
+[118.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:391.8, AfterAttackerMods:411.3, AfterResistances:411.3, AfterTargetMods:493.6, AfterOutcome:493.6, AfterPostOutcome:493.6
+[118.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 493.609 damage (SpellSchool: 8). (Threat: 493.609)
+[118.50] [Target 1] {SpellID: 17364} stacks: 1 --> 0
+[118.50] [Target 1] Aura faded: {SpellID: 17364}
+[118.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (434.800 --> 493.800) of 4105 total.
+[119.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (493.800 --> 524.600) of 4105 total.
+[119.51] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[119.51] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[119.51] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:834.6, AfterAttackerMods:834.6, AfterResistances:708.8, AfterTargetMods:708.8, AfterOutcome:519.2, AfterPostOutcome:519.2
+[119.51] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Glance for 519.209 damage (SpellSchool: 1). (Threat: 519.209)
+[119.51] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
+[119.51] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
+[119.51] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[119.51] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
+[119.51] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2504.6, RAP: 106.0, SP: 242.3, BaseDamage:841.2, AfterAttackerMods:841.2, AfterResistances:714.4, AfterTargetMods:714.4, AfterOutcome:714.4, AfterPostOutcome:714.4
+[119.51] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Hit for 714.381 damage (SpellSchool: 1). (Threat: 714.381)
+[119.51] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
+[119.51] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
+[119.51] [enhancement-shaman (#1)] No available actions!
+[119.51] [enhancement-shaman (#1)] Pausing rotation for 493.55002ms due to resources / CDs.
+[119.52] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
+[119.52] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[119.52] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 1 --> 2
+[119.52] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[119.52] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 2 --> 3
+[119.52] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (524.600 --> 583.600) of 4105 total.
+[119.52] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (583.600 --> 642.600) of 4105 total.
+[119.61] [enhancement-shaman (#1)] No available actions!
+[119.61] [enhancement-shaman (#1)] Pausing rotation for 393.55002ms due to resources / CDs.
 [120.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
-[120.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:119.4, AfterPostOutcome:119.4
-[120.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 119.422 damage (SpellSchool: 4). (Threat: 119.422)
-[120.50] [enhancement-shaman (#1)] Casting {SpellID: 15208} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[120.50] [enhancement-shaman (#1)] Completed cast {SpellID: 15208}
-[120.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:378.1, AfterAttackerMods:397.0, AfterResistances:397.0, AfterTargetMods:476.4, AfterOutcome:476.4, AfterPostOutcome:476.4
-[120.50] [enhancement-shaman (#1)] Aura faded: {SpellID: 408505}
-[120.50] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 5 --> 0
-[120.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 476.385 damage (SpellSchool: 8). (Threat: 476.385)
-[120.50] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[120.50] [Target 1] Aura faded: {SpellID: 17364}
-[120.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (826.100 --> 885.100) of 4105 total.
-[121.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (885.100 --> 915.900) of 4105 total.
+[120.00] [enhancement-shaman (#1)] No available actions!
+[120.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[120.10] [enhancement-shaman (#1)] No available actions!
+[120.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[120.20] [enhancement-shaman (#1)] No available actions!
+[120.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[120.30] [enhancement-shaman (#1)] No available actions!
+[120.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[120.40] [enhancement-shaman (#1)] No available actions!
+[120.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[120.50] [enhancement-shaman (#1)] No available actions!
+[120.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[120.60] [enhancement-shaman (#1)] No available actions!
+[120.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[120.70] [enhancement-shaman (#1)] No available actions!
+[120.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[120.80] [enhancement-shaman (#1)] No available actions!
+[120.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[120.90] [enhancement-shaman (#1)] No available actions!
+[120.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[121.00] [enhancement-shaman (#1)] No available actions!
+[121.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[121.10] [enhancement-shaman (#1)] No available actions!
+[121.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[121.20] [enhancement-shaman (#1)] No available actions!
+[121.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[121.30] [enhancement-shaman (#1)] No available actions!
+[121.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[121.40] [enhancement-shaman (#1)] No available actions!
+[121.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[121.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (642.600 --> 673.400) of 4105 total.
+[121.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
+[121.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
+[121.50] [enhancement-shaman (#1)] No available actions!
+[121.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[121.60] [enhancement-shaman (#1)] No available actions!
+[121.60] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[121.70] [enhancement-shaman (#1)] No available actions!
+[121.70] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[121.80] [enhancement-shaman (#1)] No available actions!
+[121.80] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[121.90] [enhancement-shaman (#1)] No available actions!
+[121.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [122.00] [enhancement-shaman (#1)] No available actions!
 [122.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.01] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[122.01] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[122.01] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:774.7, AfterAttackerMods:774.7, AfterResistances:658.0, AfterTargetMods:658.0, AfterOutcome:1316.0, AfterPostOutcome:1316.0
-[122.01] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 1315.969 damage (SpellSchool: 1). (Threat: 1315.969)
-[122.01] [enhancement-shaman (#1)] No available actions!
-[122.01] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.02] [enhancement-shaman (#1)] Aura gained: {SpellID: 16257}
-[122.02] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 0 --> 3
-[122.02] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (915.900 --> 974.900) of 4105 total.
-[122.11] [enhancement-shaman (#1)] No available actions!
-[122.11] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.21] [enhancement-shaman (#1)] No available actions!
-[122.21] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.31] [enhancement-shaman (#1)] No available actions!
-[122.31] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.41] [enhancement-shaman (#1)] No available actions!
-[122.41] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.51] [enhancement-shaman (#1)] No available actions!
-[122.51] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.61] [enhancement-shaman (#1)] No available actions!
-[122.61] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.71] [enhancement-shaman (#1)] No available actions!
-[122.71] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.81] [enhancement-shaman (#1)] No available actions!
-[122.81] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.91] [enhancement-shaman (#1)] No available actions!
-[122.91] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:119.4, AfterPostOutcome:119.4
-[123.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Crit for 119.422 damage (SpellSchool: 4). (Threat: 119.422)
-[123.01] [enhancement-shaman (#1)] No available actions!
-[123.01] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.11] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 2m3.500000012s.
-[123.11] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.21] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 2m3.500000012s.
-[123.21] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.31] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 2m3.500000012s.
-[123.31] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.41] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 2m3.500000012s.
-[123.41] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (974.900 --> 1005.700) of 4105 total.
-[123.50] [enhancement-shaman (#1)] Casting {SpellID: 10414} (Cost = 211.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[123.50] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
-[123.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (1005.700 --> 794.200) of 4105 total.
-[123.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:395.7, AfterAttackerMods:415.5, AfterResistances:415.5, AfterTargetMods:415.5, AfterOutcome:415.5, AfterPostOutcome:415.5
-[123.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 415.470 damage (SpellSchool: 8). (Threat: 415.470)
+[122.10] [enhancement-shaman (#1)] No available actions!
+[122.10] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.20] [enhancement-shaman (#1)] No available actions!
+[122.20] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.30] [enhancement-shaman (#1)] No available actions!
+[122.30] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.40] [enhancement-shaman (#1)] No available actions!
+[122.40] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.50] [enhancement-shaman (#1)] No available actions!
+[122.50] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.55] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[122.55] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[122.55] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:865.8, AfterAttackerMods:865.8, AfterResistances:735.3, AfterTargetMods:735.3, AfterOutcome:735.3, AfterPostOutcome:735.3
+[122.55] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 735.327 damage (SpellSchool: 1). (Threat: 735.327)
+[122.55] [enhancement-shaman (#1)] No available actions!
+[122.55] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.56] [enhancement-shaman (#1)] Aura gained: {SpellID: 20007, Tag: 1}
+[122.56] [enhancement-shaman (#1)] Gained {"Strength": 100.000,} from {SpellID: 20007, Tag: 1}.
+[122.56] [enhancement-shaman (#1)] Gained 123.951 health from {SpellID: 20007} (4210.000 --> 4210.000) of 4210 total.
+[122.56] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 1
+[122.56] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (673.400 --> 732.400) of 4105 total.
+[122.65] [enhancement-shaman (#1)] No available actions!
+[122.65] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.75] [enhancement-shaman (#1)] No available actions!
+[122.75] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.85] [enhancement-shaman (#1)] No available actions!
+[122.85] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.95] [enhancement-shaman (#1)] No available actions!
+[122.95] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.05] [enhancement-shaman (#1)] No available actions!
+[123.05] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.15] [enhancement-shaman (#1)] No available actions!
+[123.15] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.25] [enhancement-shaman (#1)] No available actions!
+[123.25] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.35] [enhancement-shaman (#1)] No available actions!
+[123.35] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.45] [enhancement-shaman (#1)] No available actions!
+[123.45] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (732.400 --> 763.200) of 4105 total.
+[123.55] [enhancement-shaman (#1)] No available actions!
+[123.55] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.65] [enhancement-shaman (#1)] No available actions!
+[123.65] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.75] [enhancement-shaman (#1)] No available actions!
+[123.75] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.85] [enhancement-shaman (#1)] No available actions!
+[123.85] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.95] [enhancement-shaman (#1)] No available actions!
+[123.95] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.05] [enhancement-shaman (#1)] No available actions!
+[124.05] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.15] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 2m4.500000013s.
+[124.15] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.25] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 2m4.500000013s.
+[124.25] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.35] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 2m4.500000013s.
+[124.35] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.45] [enhancement-shaman (#1)] Queueing up {SpellID: 10414} to cast at 2m4.500000013s.
+[124.45] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.50] [Target 1] Aura faded: {SpellID: 29228, Tag: 1}
+[124.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
+[124.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
+[124.50] [enhancement-shaman (#1)] Casting {SpellID: 10414} (Cost = 211.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[124.50] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
+[124.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (763.200 --> 551.700) of 4105 total.
+[124.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:389.1, AfterAttackerMods:408.5, AfterResistances:408.5, AfterTargetMods:408.5, AfterOutcome:408.5, AfterPostOutcome:408.5
+[124.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 408.540 damage (SpellSchool: 8). (Threat: 408.540)
 [125.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
-[125.00] [enhancement-shaman (#1)] No available actions!
-[125.00] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.05] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[125.05] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[125.05] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:829.0, AfterAttackerMods:829.0, AfterResistances:704.1, AfterTargetMods:704.1, AfterOutcome:1408.1, AfterPostOutcome:1408.1
-[125.05] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 1408.104 damage (SpellSchool: 1). (Threat: 1408.104)
-[125.05] [enhancement-shaman (#1)] No available actions!
-[125.05] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.06] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
-[125.15] [enhancement-shaman (#1)] No available actions!
-[125.15] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.25] [enhancement-shaman (#1)] No available actions!
-[125.25] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.35] [enhancement-shaman (#1)] No available actions!
-[125.35] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.45] [enhancement-shaman (#1)] No available actions!
-[125.45] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (794.200 --> 825.000) of 4105 total.
-[125.55] [enhancement-shaman (#1)] No available actions!
-[125.55] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.65] [enhancement-shaman (#1)] No available actions!
-[125.65] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.75] [enhancement-shaman (#1)] No available actions!
-[125.75] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.85] [enhancement-shaman (#1)] No available actions!
-[125.85] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.95] [enhancement-shaman (#1)] No available actions!
-[125.95] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.00] [Target 1] Aura faded: {SpellID: 29228, Tag: 1}
-[126.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:69.2, AfterAttackerMods:79.6, AfterResistances:79.6, AfterTargetMods:79.6, AfterOutcome:79.6, AfterPostOutcome:79.6
-[126.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 79.615 damage (SpellSchool: 4). (Threat: 79.615)
-[126.05] [enhancement-shaman (#1)] No available actions!
-[126.05] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.15] [enhancement-shaman (#1)] No available actions!
-[126.15] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.25] [enhancement-shaman (#1)] No available actions!
-[126.25] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.35] [enhancement-shaman (#1)] No available actions!
-[126.35] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.45] [enhancement-shaman (#1)] No available actions!
-[126.45] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.55] [enhancement-shaman (#1)] No available actions!
-[126.55] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.65] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 2m7.000000012s.
-[126.65] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.75] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 2m7.000000012s.
-[126.75] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.85] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 2m7.000000012s.
-[126.85] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.95] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 2m7.000000012s.
-[126.95] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[127.00] [enhancement-shaman (#1)] Casting {SpellID: 17364} (Cost = 121.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[127.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
-[127.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (825.000 --> 704.000) of 4105 total.
-[127.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[127.00] [Target 1] Aura gained: {SpellID: 17364}
-[127.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
-[127.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[127.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
-[127.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 242.3, BaseDamage:858.0, AfterAttackerMods:858.0, AfterResistances:728.7, AfterTargetMods:728.7, AfterOutcome:1457.4, AfterPostOutcome:1457.4
-[127.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} Crit for 1457.422 damage (SpellSchool: 1). (Threat: 1457.422)
-[127.00] [enhancement-shaman (#1)] Aura gained: {SpellID: 10610, Tag: -1}
-[127.00] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 2
-[127.00] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[127.00] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 25584}
-[127.00] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 2504.6, RAP: 106.0, SP: 242.3, BaseDamage:930.2, AfterAttackerMods:930.2, AfterResistances:790.0, AfterTargetMods:790.0, AfterOutcome:485.9, AfterPostOutcome:485.9
-[127.00] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 25584} Glance for 485.885 damage (SpellSchool: 1). (Threat: 485.885)
-[127.00] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 2 --> 1
-[127.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
-[127.01] [enhancement-shaman (#1)] Aura gained: {SpellID: 408505}
-[127.01] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 0 --> 1
-[127.01] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
-[127.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
-[127.01] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 1 --> 2
-[127.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (704.000 --> 763.000) of 4105 total.
-[127.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
-[127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 20574}
-[127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 16257}
-[127.25] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 0
+[125.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (551.700 --> 582.500) of 4105 total.
+[125.59] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[125.59] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
+[125.59] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:868.7, AfterAttackerMods:868.7, AfterResistances:737.8, AfterTargetMods:737.8, AfterOutcome:737.8, AfterPostOutcome:737.8
+[125.59] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 737.765 damage (SpellSchool: 1). (Threat: 737.765)
+[125.59] [enhancement-shaman (#1)] No available actions!
+[125.59] [enhancement-shaman (#1)] Pausing rotation for 413.550021ms due to resources / CDs.
+[125.60] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 1 --> 0
+[125.60] [enhancement-shaman (#1)] Aura faded: {SpellID: 16257}
+[125.60] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[125.60] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 3 --> 4
+[125.60] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (582.500 --> 641.500) of 4105 total.
+[125.69] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 2m6.000000014s.
+[125.69] [enhancement-shaman (#1)] Pausing rotation for 313.550021ms due to resources / CDs.
+[126.00] [enhancement-shaman (#1)] Casting {SpellID: 17364} (Cost = 121.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[126.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
+[126.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (641.500 --> 520.500) of 4105 total.
+[126.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
+[126.00] [Target 1] Aura gained: {SpellID: 17364}
+[126.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
+[126.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[126.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
+[126.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 242.3, BaseDamage:856.2, AfterAttackerMods:856.2, AfterResistances:727.1, AfterTargetMods:727.1, AfterOutcome:727.1, AfterPostOutcome:727.1
+[126.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} Hit for 727.125 damage (SpellSchool: 1). (Threat: 727.125)
+[126.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
+[126.01] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 4 --> 5
+[126.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (520.500 --> 579.500) of 4105 total.
+[126.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
+[127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 20007, Tag: 1}
+[127.25] [enhancement-shaman (#1)] Lost {"Strength": 100.000,} from fading {SpellID: 20007, Tag: 1}.
 [127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 1238931}
 [127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 408505}
-[127.25] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 2 --> 0
+[127.25] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 5 --> 0
 [127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 25289, Tag: -1}
 [127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 24932, Tag: -1}
 [127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 10494, Tag: -1}
-[127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 10610, Tag: -1}
-[127.25] [enhancement-shaman (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
 [127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 25580, Tag: -1}
 [127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 25587, Tag: -1}
 [127.25] [enhancement-shaman (#1)] Aura faded: {SpellID: 23028, Tag: -1}

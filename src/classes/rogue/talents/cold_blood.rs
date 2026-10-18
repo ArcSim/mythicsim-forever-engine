@@ -1,9 +1,8 @@
 //! Cold Blood (14177), from Go sim/rogue/talents_assassination.go `registerColdBlood`: the
 //! cast activates an aura whose attached modifier raises the crit chance of the masked
-//! strikes and finishers, until one of them deals a hit, landed or not. Mutilate's hand
-//! strikes take the crit without spending it on their own (community #690); since the 16
-//! October 2026 beta notes the Mutilate spends it once both hands struck if either crit, which
-//! the rogue agent follows.
+//! strikes and finishers, until one of them deals a hit, landed or not. Both Mutilate hands
+//! take the crit, then the off-hand strike spends it (community #785), which the rogue agent
+//! follows.
 
 use crate::core::fight::{Agent, AuraRef, Fight, ModId, ModKind, SpellId};
 

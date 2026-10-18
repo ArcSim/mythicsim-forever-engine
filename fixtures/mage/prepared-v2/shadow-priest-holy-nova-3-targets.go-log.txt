@@ -22,9 +22,9 @@
 [0.00] [shadow-priest (#1)] Completed cast {SpellID: 10947}
 [0.00] [shadow-priest (#1)] Spent 350.000 mana from {SpellID: 10947} (6751.000 --> 6401.000) of 6751 total.
 [0.00] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:730.6, AfterAttackerMods:803.6, AfterResistances:803.6, AfterTargetMods:884.0, AfterOutcome:884.0, AfterPostOutcome:884.0
-[0.00] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 883.994 damage (SpellSchool: 32). (Threat: 707.196)
-[0.00] [shadow-priest (#1)] Aura gained: {SpellID: 15258}
-[0.00] [shadow-priest (#1)] {SpellID: 15258} stacks: 0 --> 1
+[0.00] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 883.994 damage (SpellSchool: 32). (Threat: 495.037)
+[0.00] [Target 1] Aura gained: {SpellID: 15258}
+[0.00] [Target 1] {SpellID: 15258} stacks: 0 --> 1
 [0.00] [shadow-priest (#1)] Casting {SpellID: 27801} (Cost = 727.500, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [0.00] [shadow-priest (#1)] Completed cast {SpellID: 27801}
 [0.00] [shadow-priest (#1)] Spent 727.500 mana from {SpellID: 27801} (6401.000 --> 5673.500) of 6751 total.
@@ -42,9 +42,9 @@
 [0.01] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5673.500 --> 5732.500) of 6751 total.
 [0.01] [shadow-priest (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [0.01] [shadow-priest (#1)] Completed cast {SpellID: 1260198}
-[0.01] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:176.4, AfterTargetMods:176.4, AfterOutcome:176.4, AfterPostOutcome:176.4
-[0.01] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 176.350 damage (SpellSchool: 32). (Threat: 176.350)
-[0.01] [shadow-priest (#1)] Gained 176.350 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
+[0.01] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:176.4, AfterTargetMods:176.4, AfterOutcome:176.4, AfterPostOutcome:179.9
+[0.01] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 179.877 damage (SpellSchool: 32). (Threat: 179.877)
+[0.01] [shadow-priest (#1)] Gained 179.877 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
 [0.01] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5732.500 --> 5791.500) of 6751 total.
 [0.01] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (5791.500 --> 5850.500) of 6751 total.
 [0.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (5850.500 --> 5917.675) of 6751 total.
@@ -193,8 +193,8 @@
 [13.50] [shadow-priest (#1)] [shadow-priest (#1)] {SpellID: 27805} Crit for 499.884 healing. (Threat: 0.000)
 [13.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (422.225 --> 481.225) of 6751 total.
 [14.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (481.225 --> 548.400) of 6751 total.
-[15.00] [shadow-priest (#1)] Aura faded: {SpellID: 15258}
-[15.00] [shadow-priest (#1)] {SpellID: 15258} stacks: 1 --> 0
+[15.00] [Target 1] Aura faded: {SpellID: 15258}
+[15.00] [Target 1] {SpellID: 15258} stacks: 1 --> 0
 [15.00] [shadow-priest (#1)] Casting {SpellID: 10060} (Cost = 266.750, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [15.00] [shadow-priest (#1)] Completed cast {SpellID: 10060}
 [15.00] [shadow-priest (#1)] Spent 266.750 mana from {SpellID: 10060} (548.400 --> 281.650) of 6751 total.
@@ -300,22 +300,22 @@
 [25.50] [shadow-priest (#1)] Completed cast {SpellID: 10947}
 [25.50] [shadow-priest (#1)] Spent 350.000 mana from {SpellID: 10947} (817.025 --> 467.025) of 6751 total.
 [25.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:711.0, AfterAttackerMods:938.6, AfterResistances:469.3, AfterTargetMods:516.2, AfterOutcome:516.2, AfterPostOutcome:516.2
-[25.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit (50% Resist) for 516.207 damage (SpellSchool: 32). (Threat: 412.966)
-[25.50] [shadow-priest (#1)] Aura gained: {SpellID: 15258}
-[25.50] [shadow-priest (#1)] {SpellID: 15258} stacks: 0 --> 1
+[25.50] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit (50% Resist) for 516.207 damage (SpellSchool: 32). (Threat: 289.076)
+[25.50] [Target 1] Aura gained: {SpellID: 15258}
+[25.50] [Target 1] {SpellID: 15258} stacks: 0 --> 1
 [25.50] [shadow-priest (#1)] Casting {SpellID: 10894} (Cost = 455.900, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [25.50] [shadow-priest (#1)] Completed cast {SpellID: 10894}
 [25.50] [shadow-priest (#1)] Spent 455.900 mana from {SpellID: 10894} (467.025 --> 11.125) of 6751 total.
 [25.50] [Target 1] Aura gained: {SpellID: 10894}
 [25.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[25.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[25.50] [shadow-priest (#1)] {SpellID: 15258} stacks: 1 --> 2
+[25.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[25.50] [Target 1] {SpellID: 15258} stacks: 1 --> 2
 [25.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (11.125 --> 70.125) of 6751 total.
 [25.51] [shadow-priest (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [25.51] [shadow-priest (#1)] Completed cast {SpellID: 1260198}
-[25.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:176.4, AfterTargetMods:176.4, AfterOutcome:176.4, AfterPostOutcome:176.4
-[25.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 176.350 damage (SpellSchool: 32). (Threat: 176.350)
-[25.51] [shadow-priest (#1)] Gained 176.350 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
+[25.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:176.4, AfterTargetMods:176.4, AfterOutcome:176.4, AfterPostOutcome:183.4
+[25.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 183.404 damage (SpellSchool: 32). (Threat: 183.404)
+[25.51] [shadow-priest (#1)] Gained 183.404 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
 [26.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (70.125 --> 137.300) of 6751 total.
 [27.00] [shadow-priest (#1)] No available actions!
 [27.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -349,15 +349,15 @@
 [28.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [28.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (137.300 --> 204.475) of 6751 total.
 [28.50] [shadow-priest (#1)] Gained 365.000 mana from {SpellID: 1277328} (204.475 --> 569.475) of 6751 total.
-[28.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:338.2, AfterResistances:338.2, AfterTargetMods:372.0, AfterOutcome:372.0, AfterPostOutcome:372.0
-[28.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 371.978 damage (SpellSchool: 32). (Threat: 297.582)
+[28.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:325.2, AfterResistances:325.2, AfterTargetMods:357.7, AfterOutcome:357.7, AfterPostOutcome:372.0
+[28.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 371.978 damage (SpellSchool: 32). (Threat: 208.308)
 [28.50] [shadow-priest (#1)] Casting {SpellID: 19280} (Cost = 462.950, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [28.50] [shadow-priest (#1)] Completed cast {SpellID: 19280}
 [28.50] [shadow-priest (#1)] Spent 462.950 mana from {SpellID: 19280} (569.475 --> 106.525) of 6751 total.
 [28.50] [Target 1] Aura gained: {SpellID: 19280}
 [28.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[28.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[28.50] [shadow-priest (#1)] {SpellID: 15258} stacks: 2 --> 3
+[28.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[28.50] [Target 1] {SpellID: 15258} stacks: 2 --> 3
 [28.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (106.525 --> 165.525) of 6751 total.
 [30.00] [shadow-priest (#1)] Aura faded: {SpellID: 10060}
 [30.00] [shadow-priest (#1)] No available actions!
@@ -376,30 +376,30 @@
 [30.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (232.700 --> 27.700) of 6751 total.
 [30.50] [Target 1] Aura gained: {SpellID: 18807}
 [30.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[30.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[30.50] [shadow-priest (#1)] {SpellID: 15258} stacks: 3 --> 4
+[30.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[30.50] [Target 1] {SpellID: 15258} stacks: 3 --> 4
 [30.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (27.700 --> 86.700) of 6751 total.
 [31.50] [shadow-priest (#1)] Gained 365.000 mana from {SpellID: 1277328} (86.700 --> 451.700) of 6751 total.
-[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:292.6, AfterResistances:292.6, AfterTargetMods:321.9, AfterOutcome:321.9, AfterPostOutcome:321.9
-[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 321.904 damage (SpellSchool: 32). (Threat: 257.523)
-[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:199.3, AfterResistances:199.3, AfterTargetMods:219.3, AfterOutcome:219.3, AfterPostOutcome:219.3
-[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 219.268 damage (SpellSchool: 32). (Threat: 175.414)
+[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:271.0, AfterResistances:271.0, AfterTargetMods:298.1, AfterOutcome:298.1, AfterPostOutcome:321.9
+[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 321.904 damage (SpellSchool: 32). (Threat: 180.266)
+[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:184.6, AfterResistances:184.6, AfterTargetMods:203.0, AfterOutcome:203.0, AfterPostOutcome:219.3
+[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 219.268 damage (SpellSchool: 32). (Threat: 122.790)
 [31.50] [shadow-priest (#1)] Gained 219.268 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:326.5, AfterResistances:326.5, AfterTargetMods:359.1, AfterOutcome:359.1, AfterPostOutcome:359.1
-[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 359.118 damage (SpellSchool: 32). (Threat: 287.295)
+[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:359.1
+[31.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 359.118 damage (SpellSchool: 32). (Threat: 201.106)
 [32.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (451.700 --> 518.875) of 6751 total.
-[32.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:326.5, AfterResistances:326.5, AfterTargetMods:359.1, AfterOutcome:359.1, AfterPostOutcome:359.1
-[32.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 359.118 damage (SpellSchool: 32). (Threat: 287.295)
+[32.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:359.1
+[32.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 359.118 damage (SpellSchool: 32). (Threat: 201.106)
 [32.50] [Target 1] Aura faded: {SpellID: 18807}
 [32.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [32.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [32.60] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 350.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [34.10] [shadow-priest (#1)] Completed cast {SpellID: 10947}
 [34.10] [shadow-priest (#1)] Spent 350.000 mana from {SpellID: 10947} (518.875 --> 168.875) of 6751 total.
-[34.10] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:733.3, AfterAttackerMods:871.1, AfterResistances:871.1, AfterTargetMods:958.2, AfterOutcome:958.2, AfterPostOutcome:958.2
-[34.10] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 958.224 damage (SpellSchool: 32). (Threat: 766.579)
-[34.10] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[34.10] [shadow-priest (#1)] {SpellID: 15258} stacks: 4 --> 5
+[34.10] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:733.3, AfterAttackerMods:806.6, AfterResistances:806.6, AfterTargetMods:887.2, AfterOutcome:887.2, AfterPostOutcome:958.2
+[34.10] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 958.224 damage (SpellSchool: 32). (Threat: 536.606)
+[34.10] [Target 1] Aura refreshed: {SpellID: 15258}
+[34.10] [Target 1] {SpellID: 15258} stacks: 4 --> 5
 [34.10] [shadow-priest (#1)] No available actions!
 [34.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [34.11] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (168.875 --> 227.875) of 6751 total.
@@ -408,36 +408,36 @@
 [34.20] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (227.875 --> 22.875) of 6751 total.
 [34.20] [Target 1] Aura gained: {SpellID: 18807}
 [34.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[34.20] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
+[34.20] [Target 1] Aura refreshed: {SpellID: 15258}
 [34.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (22.875 --> 90.050) of 6751 total.
 [34.50] [shadow-priest (#1)] Gained 365.000 mana from {SpellID: 1277328} (90.050 --> 455.050) of 6751 total.
-[34.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:298.1, AfterResistances:223.5, AfterTargetMods:245.9, AfterOutcome:245.9, AfterPostOutcome:245.9
-[34.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 245.899 damage (SpellSchool: 32). (Threat: 196.719)
-[34.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:203.0, AfterResistances:203.0, AfterTargetMods:223.3, AfterOutcome:223.3, AfterPostOutcome:223.3
-[34.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 223.328 damage (SpellSchool: 32). (Threat: 178.663)
+[34.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:271.0, AfterResistances:203.2, AfterTargetMods:223.5, AfterOutcome:223.5, AfterPostOutcome:245.9
+[34.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 245.899 damage (SpellSchool: 32). (Threat: 137.703)
+[34.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:184.6, AfterResistances:184.6, AfterTargetMods:203.0, AfterOutcome:203.0, AfterPostOutcome:223.3
+[34.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 223.328 damage (SpellSchool: 32). (Threat: 125.064)
 [34.50] [shadow-priest (#1)] Gained 223.328 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[35.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[35.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[36.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[36.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
+[35.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[35.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[36.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[36.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
 [36.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (455.050 --> 522.225) of 6751 total.
 [37.20] [Target 1] Aura faded: {SpellID: 18807}
-[37.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[37.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
+[37.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[37.20] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
 [37.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [37.30] [shadow-priest (#1)] Casting {SpellID: 1309636} (Cost = 340.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [37.30] [shadow-priest (#1)] Completed cast {SpellID: 1309636}
 [37.30] [shadow-priest (#1)] Spent 340.000 mana from {SpellID: 1309636} (522.225 --> 182.225) of 6751 total.
-[37.30] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:701.1, AfterAttackerMods:890.7, AfterResistances:890.7, AfterTargetMods:979.8, AfterOutcome:979.8, AfterPostOutcome:979.8
-[37.30] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 979.815 damage (SpellSchool: 32). (Threat: 783.852)
-[37.30] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
+[37.30] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:701.1, AfterAttackerMods:809.8, AfterResistances:809.8, AfterTargetMods:890.7, AfterOutcome:890.7, AfterPostOutcome:979.8
+[37.30] [shadow-priest (#1)] [Target 1] {SpellID: 1309636} Hit for 979.815 damage (SpellSchool: 32). (Threat: 548.696)
+[37.30] [Target 1] Aura refreshed: {SpellID: 15258}
 [37.31] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (182.225 --> 241.225) of 6751 total.
 [37.50] [shadow-priest (#1)] Aura faded: {SpellID: 1277328}
 [37.50] [shadow-priest (#1)] Gained 365.000 mana from {SpellID: 1277328} (241.225 --> 606.225) of 6751 total.
-[37.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:298.1, AfterResistances:298.1, AfterTargetMods:327.9, AfterOutcome:491.8, AfterPostOutcome:491.8
-[37.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Crit for 491.798 damage (SpellSchool: 32). (Threat: 393.438)
-[37.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:203.0, AfterResistances:203.0, AfterTargetMods:223.3, AfterOutcome:335.0, AfterPostOutcome:335.0
-[37.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Crit for 334.993 damage (SpellSchool: 32). (Threat: 267.994)
+[37.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:271.0, AfterResistances:271.0, AfterTargetMods:298.1, AfterOutcome:447.1, AfterPostOutcome:491.8
+[37.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Crit for 491.798 damage (SpellSchool: 32). (Threat: 275.407)
+[37.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:184.6, AfterResistances:184.6, AfterTargetMods:203.0, AfterOutcome:304.5, AfterPostOutcome:335.0
+[37.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Crit for 334.993 damage (SpellSchool: 32). (Threat: 187.596)
 [37.50] [shadow-priest (#1)] Gained 334.993 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
 [38.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (606.225 --> 673.400) of 6751 total.
 [38.80] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
@@ -445,87 +445,127 @@
 [38.80] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (673.400 --> 468.400) of 6751 total.
 [38.80] [Target 1] Aura gained: {SpellID: 18807}
 [38.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[38.80] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
+[38.80] [Target 1] Aura refreshed: {SpellID: 15258}
 [38.81] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (468.400 --> 527.400) of 6751 total.
-[39.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[39.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
+[39.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[39.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
 [40.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (527.400 --> 594.575) of 6751 total.
-[40.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:298.1, AfterResistances:298.1, AfterTargetMods:327.9, AfterOutcome:327.9, AfterPostOutcome:327.9
-[40.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 327.865 damage (SpellSchool: 32). (Threat: 262.292)
-[40.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:203.0, AfterResistances:203.0, AfterTargetMods:223.3, AfterOutcome:223.3, AfterPostOutcome:223.3
-[40.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 223.328 damage (SpellSchool: 32). (Threat: 178.663)
+[40.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:271.0, AfterResistances:271.0, AfterTargetMods:298.1, AfterOutcome:298.1, AfterPostOutcome:327.9
+[40.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 327.865 damage (SpellSchool: 32). (Threat: 183.605)
+[40.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:184.6, AfterResistances:184.6, AfterTargetMods:203.0, AfterOutcome:203.0, AfterPostOutcome:223.3
+[40.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 223.328 damage (SpellSchool: 32). (Threat: 125.064)
 [40.50] [shadow-priest (#1)] Gained 223.328 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[40.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:548.7, AfterPostOutcome:548.7
-[40.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 548.653 damage (SpellSchool: 32). (Threat: 438.923)
+[40.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:498.8, AfterPostOutcome:548.7
+[40.80] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 548.653 damage (SpellSchool: 32). (Threat: 307.246)
 [40.80] [Target 1] Aura faded: {SpellID: 18807}
 [40.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [40.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[40.90] [shadow-priest (#1)] Casting {SpellID: 14751} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[40.90] [shadow-priest (#1)] Completed cast {SpellID: 14751}
-[40.90] [shadow-priest (#1)] Aura gained: {SpellID: 14751}
-[40.90] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 0.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[40.90] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 350.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
 [42.40] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[42.40] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:724.3, AfterAttackerMods:876.4, AfterResistances:876.4, AfterTargetMods:964.1, AfterOutcome:964.1, AfterPostOutcome:964.1
-[42.40] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 964.058 damage (SpellSchool: 32). (Threat: 771.246)
-[42.40] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[42.40] [shadow-priest (#1)] Aura faded: {SpellID: 14751}
+[42.40] [shadow-priest (#1)] Spent 350.000 mana from {SpellID: 10947} (594.575 --> 244.575) of 6751 total.
+[42.40] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:724.3, AfterAttackerMods:796.7, AfterResistances:796.7, AfterTargetMods:876.4, AfterOutcome:876.4, AfterPostOutcome:964.1
+[42.40] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit for 964.058 damage (SpellSchool: 32). (Threat: 539.872)
+[42.40] [Target 1] Aura refreshed: {SpellID: 15258}
 [42.40] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [42.40] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[42.40] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (594.575 --> 389.575) of 6751 total.
+[42.40] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (244.575 --> 39.575) of 6751 total.
 [42.40] [Target 1] Aura gained: {SpellID: 18807}
 [42.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[42.40] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[42.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (389.575 --> 456.750) of 6751 total.
-[43.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[43.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[43.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:298.1, AfterResistances:223.5, AfterTargetMods:245.9, AfterOutcome:245.9, AfterPostOutcome:245.9
-[43.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 245.899 damage (SpellSchool: 32). (Threat: 196.719)
-[43.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:203.0, AfterResistances:152.3, AfterTargetMods:167.5, AfterOutcome:251.2, AfterPostOutcome:251.2
-[43.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Crit (25% Resist) for 251.245 damage (SpellSchool: 32). (Threat: 200.996)
+[42.40] [Target 1] Aura refreshed: {SpellID: 15258}
+[42.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (39.575 --> 106.750) of 6751 total.
+[43.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[43.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[43.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:271.0, AfterResistances:203.2, AfterTargetMods:223.5, AfterOutcome:223.5, AfterPostOutcome:245.9
+[43.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 245.899 damage (SpellSchool: 32). (Threat: 137.703)
+[43.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:184.6, AfterResistances:138.4, AfterTargetMods:152.3, AfterOutcome:228.4, AfterPostOutcome:251.2
+[43.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Crit (25% Resist) for 251.245 damage (SpellSchool: 32). (Threat: 140.697)
 [43.50] [shadow-priest (#1)] Gained 251.245 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[44.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[44.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[44.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (456.750 --> 523.925) of 6751 total.
+[44.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[44.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[44.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (106.750 --> 173.925) of 6751 total.
 [45.40] [Target 1] Aura faded: {SpellID: 18807}
-[45.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[45.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
+[45.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[45.40] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
 [45.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[45.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[45.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[45.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (523.925 --> 318.925) of 6751 total.
-[45.50] [Target 1] Aura gained: {SpellID: 18807}
-[45.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[45.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[46.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (318.925 --> 386.100) of 6751 total.
-[46.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:298.1, AfterResistances:298.1, AfterTargetMods:327.9, AfterOutcome:327.9, AfterPostOutcome:327.9
-[46.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 327.865 damage (SpellSchool: 32). (Threat: 262.292)
-[46.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:203.0, AfterResistances:203.0, AfterTargetMods:223.3, AfterOutcome:223.3, AfterPostOutcome:223.3
-[46.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 223.328 damage (SpellSchool: 32). (Threat: 178.663)
+[45.50] [shadow-priest (#1)] No available actions!
+[45.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[45.60] [shadow-priest (#1)] No available actions!
+[45.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[45.70] [shadow-priest (#1)] No available actions!
+[45.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[45.80] [shadow-priest (#1)] No available actions!
+[45.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[45.90] [shadow-priest (#1)] No available actions!
+[45.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[46.00] [shadow-priest (#1)] No available actions!
+[46.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[46.10] [shadow-priest (#1)] No available actions!
+[46.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[46.20] [shadow-priest (#1)] No available actions!
+[46.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[46.30] [shadow-priest (#1)] No available actions!
+[46.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[46.40] [shadow-priest (#1)] No available actions!
+[46.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[46.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (173.925 --> 241.100) of 6751 total.
+[46.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:271.0, AfterResistances:271.0, AfterTargetMods:298.1, AfterOutcome:298.1, AfterPostOutcome:327.9
+[46.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 327.865 damage (SpellSchool: 32). (Threat: 183.605)
+[46.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:184.6, AfterResistances:184.6, AfterTargetMods:203.0, AfterOutcome:203.0, AfterPostOutcome:223.3
+[46.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 223.328 damage (SpellSchool: 32). (Threat: 125.064)
 [46.50] [shadow-priest (#1)] Gained 223.328 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[46.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[46.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[47.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[47.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
+[46.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[46.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
+[46.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (241.100 --> 36.100) of 6751 total.
+[46.50] [Target 1] Aura gained: {SpellID: 18807}
+[46.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
+[46.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[46.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (36.100 --> 95.100) of 6751 total.
+[47.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[47.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[48.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (95.100 --> 162.275) of 6751 total.
+[48.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[48.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
 [48.50] [Target 1] Aura faded: {SpellID: 18807}
-[48.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:548.7, AfterPostOutcome:548.7
-[48.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 548.653 damage (SpellSchool: 32). (Threat: 438.923)
 [48.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[48.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (386.100 --> 453.275) of 6751 total.
-[48.60] [shadow-priest (#1)] Casting {SpellID: 10947} (Cost = 350.000, Cast Time = 1.5s, GCD = 1.5s, Effective Time = 1.5s)
+[48.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[48.60] [shadow-priest (#1)] No available actions!
+[48.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[48.70] [shadow-priest (#1)] No available actions!
+[48.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[48.80] [shadow-priest (#1)] No available actions!
+[48.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[48.90] [shadow-priest (#1)] No available actions!
+[48.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[49.00] [shadow-priest (#1)] No available actions!
+[49.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[49.10] [shadow-priest (#1)] No available actions!
+[49.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[49.20] [shadow-priest (#1)] No available actions!
+[49.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[49.30] [shadow-priest (#1)] No available actions!
+[49.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[49.40] [shadow-priest (#1)] No available actions!
+[49.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.50] [Target 1] Aura faded: {SpellID: 10894}
-[49.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:298.1, AfterResistances:298.1, AfterTargetMods:327.9, AfterOutcome:327.9, AfterPostOutcome:327.9
-[49.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit for 327.865 damage (SpellSchool: 32). (Threat: 262.292)
-[49.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:203.0, AfterResistances:203.0, AfterTargetMods:223.3, AfterOutcome:223.3, AfterPostOutcome:223.3
-[49.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 223.328 damage (SpellSchool: 32). (Threat: 178.663)
+[49.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:234.6, AfterAttackerMods:271.0, AfterResistances:203.2, AfterTargetMods:223.5, AfterOutcome:223.5, AfterPostOutcome:245.9
+[49.50] [shadow-priest (#1)] [Target 1] {SpellID: 10894} tick Hit (25% Resist) for 245.899 damage (SpellSchool: 32). (Threat: 137.703)
+[49.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:184.6, AfterResistances:184.6, AfterTargetMods:203.0, AfterOutcome:203.0, AfterPostOutcome:223.3
+[49.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 223.328 damage (SpellSchool: 32). (Threat: 125.064)
 [49.50] [shadow-priest (#1)] Gained 223.328 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[50.10] [shadow-priest (#1)] Completed cast {SpellID: 10947}
-[50.10] [shadow-priest (#1)] Spent 350.000 mana from {SpellID: 10947} (453.275 --> 103.275) of 6751 total.
-[50.10] [shadow-priest (#1)] [Target 1] {SpellID: 10947} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:717.8, AfterAttackerMods:868.5, AfterResistances:651.4, AfterTargetMods:716.5, AfterOutcome:716.5, AfterPostOutcome:716.5
-[50.10] [shadow-priest (#1)] [Target 1] {SpellID: 10947} Hit (25% Resist) for 716.549 damage (SpellSchool: 32). (Threat: 573.239)
-[50.10] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
+[49.50] [shadow-priest (#1)] No available actions!
+[49.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[49.60] [shadow-priest (#1)] No available actions!
+[49.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[49.70] [shadow-priest (#1)] No available actions!
+[49.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[49.80] [shadow-priest (#1)] No available actions!
+[49.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[49.90] [shadow-priest (#1)] No available actions!
+[49.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[50.00] [shadow-priest (#1)] No available actions!
+[50.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.10] [shadow-priest (#1)] No available actions!
 [50.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[50.11] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (103.275 --> 162.275) of 6751 total.
 [50.20] [shadow-priest (#1)] No available actions!
 [50.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.30] [shadow-priest (#1)] No available actions!
@@ -538,19 +578,39 @@
 [50.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (229.450 --> 24.450) of 6751 total.
 [50.50] [Target 1] Aura gained: {SpellID: 18807}
 [50.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[50.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[51.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:548.7, AfterPostOutcome:548.7
-[51.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 548.653 damage (SpellSchool: 32). (Threat: 438.923)
+[50.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[50.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (24.450 --> 83.450) of 6751 total.
+[51.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[51.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
 [52.50] [Target 1] Aura faded: {SpellID: 19280}
-[52.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:203.0, AfterResistances:203.0, AfterTargetMods:223.3, AfterOutcome:223.3, AfterPostOutcome:223.3
-[52.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 223.328 damage (SpellSchool: 32). (Threat: 178.663)
+[52.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:159.8, AfterAttackerMods:184.6, AfterResistances:184.6, AfterTargetMods:203.0, AfterOutcome:203.0, AfterPostOutcome:223.3
+[52.50] [shadow-priest (#1)] [Target 1] {SpellID: 19280} tick Hit for 223.328 damage (SpellSchool: 32). (Threat: 125.064)
 [52.50] [shadow-priest (#1)] Gained 223.328 health from {SpellID: 19280, Tag: 1} (3527.000 --> 3527.000) of 3527 total.
-[52.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (24.450 --> 91.625) of 6751 total.
-[52.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[52.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[53.50] [Target 1] Aura faded: {SpellID: 18807}
-[53.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[53.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
+[52.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (83.450 --> 150.625) of 6751 total.
+[52.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[52.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[52.50] [Target 1] Aura faded: {SpellID: 18807}
+[52.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[52.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[52.60] [shadow-priest (#1)] No available actions!
+[52.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[52.70] [shadow-priest (#1)] No available actions!
+[52.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[52.80] [shadow-priest (#1)] No available actions!
+[52.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[52.90] [shadow-priest (#1)] No available actions!
+[52.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[53.00] [shadow-priest (#1)] No available actions!
+[53.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[53.10] [shadow-priest (#1)] No available actions!
+[53.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[53.20] [shadow-priest (#1)] No available actions!
+[53.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[53.30] [shadow-priest (#1)] No available actions!
+[53.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[53.40] [shadow-priest (#1)] No available actions!
+[53.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[53.50] [shadow-priest (#1)] No available actions!
 [53.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [53.60] [shadow-priest (#1)] No available actions!
 [53.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -570,37 +630,11 @@
 [54.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [54.40] [shadow-priest (#1)] No available actions!
 [54.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[54.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (91.625 --> 158.800) of 6751 total.
-[54.50] [shadow-priest (#1)] No available actions!
-[54.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[54.60] [shadow-priest (#1)] No available actions!
-[54.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[54.70] [shadow-priest (#1)] No available actions!
-[54.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[54.80] [shadow-priest (#1)] No available actions!
-[54.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[54.90] [shadow-priest (#1)] No available actions!
-[54.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[55.00] [shadow-priest (#1)] No available actions!
-[55.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[55.10] [shadow-priest (#1)] No available actions!
-[55.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[55.20] [shadow-priest (#1)] No available actions!
-[55.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[55.30] [shadow-priest (#1)] No available actions!
-[55.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[55.40] [shadow-priest (#1)] No available actions!
-[55.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[55.50] [shadow-priest (#1)] No available actions!
-[55.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[55.60] [shadow-priest (#1)] No available actions!
-[55.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[55.70] [shadow-priest (#1)] No available actions!
-[55.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[55.80] [shadow-priest (#1)] No available actions!
-[55.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[55.90] [shadow-priest (#1)] No available actions!
-[55.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[54.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (150.625 --> 217.800) of 6751 total.
+[54.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[54.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
+[54.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (217.800 --> 12.800) of 6751 total.
+[54.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Miss (SpellSchool: 32). (Threat: 0.000)
 [56.00] [shadow-priest (#1)] No available actions!
 [56.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [56.10] [shadow-priest (#1)] No available actions!
@@ -611,21 +645,49 @@
 [56.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [56.40] [shadow-priest (#1)] No available actions!
 [56.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[56.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (158.800 --> 260.350) of 6751 total.
-[56.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[56.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[56.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (260.350 --> 55.350) of 6751 total.
-[56.50] [Target 1] Aura gained: {SpellID: 18807}
-[56.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[56.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[56.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (55.350 --> 114.350) of 6751 total.
-[57.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[57.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[58.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (114.350 --> 181.525) of 6751 total.
-[58.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[58.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[58.50] [Target 1] Aura faded: {SpellID: 18807}
-[58.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[56.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (12.800 --> 79.975) of 6751 total.
+[56.50] [shadow-priest (#1)] No available actions!
+[56.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[56.60] [shadow-priest (#1)] No available actions!
+[56.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[56.70] [shadow-priest (#1)] No available actions!
+[56.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[56.80] [shadow-priest (#1)] No available actions!
+[56.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[56.90] [shadow-priest (#1)] No available actions!
+[56.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[57.00] [shadow-priest (#1)] No available actions!
+[57.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[57.10] [shadow-priest (#1)] No available actions!
+[57.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[57.20] [shadow-priest (#1)] No available actions!
+[57.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[57.30] [shadow-priest (#1)] No available actions!
+[57.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[57.40] [shadow-priest (#1)] No available actions!
+[57.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[57.50] [shadow-priest (#1)] No available actions!
+[57.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[57.60] [shadow-priest (#1)] No available actions!
+[57.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[57.70] [shadow-priest (#1)] No available actions!
+[57.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[57.80] [shadow-priest (#1)] No available actions!
+[57.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[57.90] [shadow-priest (#1)] No available actions!
+[57.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[58.00] [shadow-priest (#1)] No available actions!
+[58.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[58.10] [shadow-priest (#1)] No available actions!
+[58.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[58.20] [shadow-priest (#1)] No available actions!
+[58.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[58.30] [shadow-priest (#1)] No available actions!
+[58.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[58.40] [shadow-priest (#1)] No available actions!
+[58.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[58.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (79.975 --> 147.150) of 6751 total.
+[58.50] [shadow-priest (#1)] No available actions!
 [58.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [58.60] [shadow-priest (#1)] No available actions!
 [58.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -665,19 +727,18 @@
 [60.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [60.40] [shadow-priest (#1)] No available actions!
 [60.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[60.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (181.525 --> 248.700) of 6751 total.
+[60.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (147.150 --> 248.700) of 6751 total.
 [60.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [60.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
 [60.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (248.700 --> 43.700) of 6751 total.
 [60.50] [Target 1] Aura gained: {SpellID: 18807}
 [60.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[60.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[60.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (43.700 --> 102.700) of 6751 total.
-[61.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[61.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[62.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (102.700 --> 169.875) of 6751 total.
-[62.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[62.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
+[60.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[61.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[61.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[62.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (43.700 --> 110.875) of 6751 total.
+[62.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[62.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
 [62.50] [Target 1] Aura faded: {SpellID: 18807}
 [62.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [62.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -719,175 +780,175 @@
 [64.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [64.40] [shadow-priest (#1)] No available actions!
 [64.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[64.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (169.875 --> 237.050) of 6751 total.
-[64.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[64.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[64.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (237.050 --> 32.050) of 6751 total.
-[64.50] [Target 1] Aura gained: {SpellID: 18807}
-[64.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[64.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[64.51] [shadow-priest (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[64.51] [shadow-priest (#1)] Completed cast {SpellID: 1260198}
-[64.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:176.4, AfterTargetMods:176.4, AfterOutcome:176.4, AfterPostOutcome:176.4
-[64.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 176.350 damage (SpellSchool: 32). (Threat: 176.350)
-[64.51] [shadow-priest (#1)] Gained 176.350 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
-[64.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (32.050 --> 91.050) of 6751 total.
-[65.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[65.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[66.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (91.050 --> 158.225) of 6751 total.
-[66.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[66.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[66.50] [Target 1] Aura faded: {SpellID: 18807}
-[66.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[66.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[66.60] [shadow-priest (#1)] No available actions!
-[66.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[66.70] [shadow-priest (#1)] No available actions!
-[66.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[66.80] [shadow-priest (#1)] No available actions!
-[66.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[66.90] [shadow-priest (#1)] No available actions!
-[66.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.00] [shadow-priest (#1)] No available actions!
-[67.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.10] [shadow-priest (#1)] No available actions!
-[67.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.20] [shadow-priest (#1)] No available actions!
-[67.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.30] [shadow-priest (#1)] No available actions!
-[67.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.40] [shadow-priest (#1)] No available actions!
-[67.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.50] [shadow-priest (#1)] No available actions!
-[67.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.60] [shadow-priest (#1)] No available actions!
-[67.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.70] [shadow-priest (#1)] No available actions!
-[67.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.80] [shadow-priest (#1)] No available actions!
-[67.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[67.90] [shadow-priest (#1)] No available actions!
-[67.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[68.00] [shadow-priest (#1)] No available actions!
-[68.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[68.10] [shadow-priest (#1)] No available actions!
-[68.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[68.20] [shadow-priest (#1)] No available actions!
-[68.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[68.30] [shadow-priest (#1)] No available actions!
-[68.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[68.40] [shadow-priest (#1)] No available actions!
-[68.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[68.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (158.225 --> 225.400) of 6751 total.
-[68.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[68.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[68.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (225.400 --> 20.400) of 6751 total.
-[68.50] [Target 1] Aura gained: {SpellID: 18807}
-[68.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[68.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[68.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (20.400 --> 79.400) of 6751 total.
-[69.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[69.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[70.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (79.400 --> 146.575) of 6751 total.
-[70.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:548.7, AfterPostOutcome:548.7
-[70.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 548.653 damage (SpellSchool: 32). (Threat: 438.923)
-[70.50] [Target 1] Aura faded: {SpellID: 18807}
-[70.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[70.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[70.60] [shadow-priest (#1)] No available actions!
-[70.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[70.70] [shadow-priest (#1)] No available actions!
-[70.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[70.80] [shadow-priest (#1)] No available actions!
-[70.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[70.90] [shadow-priest (#1)] No available actions!
-[70.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[71.00] [shadow-priest (#1)] No available actions!
-[71.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[71.10] [shadow-priest (#1)] No available actions!
-[71.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[71.20] [shadow-priest (#1)] No available actions!
-[71.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[71.30] [shadow-priest (#1)] No available actions!
-[71.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[71.40] [shadow-priest (#1)] No available actions!
-[71.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[71.50] [shadow-priest (#1)] No available actions!
-[71.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[71.60] [shadow-priest (#1)] No available actions!
-[71.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[71.70] [shadow-priest (#1)] No available actions!
-[71.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[71.80] [shadow-priest (#1)] No available actions!
-[71.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[71.90] [shadow-priest (#1)] No available actions!
-[71.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[72.00] [shadow-priest (#1)] No available actions!
-[72.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[72.10] [shadow-priest (#1)] No available actions!
-[72.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[72.20] [shadow-priest (#1)] No available actions!
-[72.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[72.30] [shadow-priest (#1)] No available actions!
-[72.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[72.40] [shadow-priest (#1)] No available actions!
-[72.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[72.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (146.575 --> 213.750) of 6751 total.
-[72.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[72.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[72.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (213.750 --> 8.750) of 6751 total.
-[72.50] [Target 1] Aura gained: {SpellID: 18807}
-[72.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[72.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[72.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (8.750 --> 67.750) of 6751 total.
-[73.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[73.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[74.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (67.750 --> 134.925) of 6751 total.
-[74.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:548.7, AfterPostOutcome:548.7
-[74.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 548.653 damage (SpellSchool: 32). (Threat: 438.923)
-[74.50] [Target 1] Aura faded: {SpellID: 18807}
-[74.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.60] [shadow-priest (#1)] No available actions!
-[74.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.70] [shadow-priest (#1)] No available actions!
-[74.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.80] [shadow-priest (#1)] No available actions!
-[74.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.90] [shadow-priest (#1)] No available actions!
-[74.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.00] [shadow-priest (#1)] No available actions!
-[75.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.10] [shadow-priest (#1)] No available actions!
-[75.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.20] [shadow-priest (#1)] No available actions!
-[75.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.30] [shadow-priest (#1)] No available actions!
-[75.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.40] [shadow-priest (#1)] No available actions!
-[75.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.50] [shadow-priest (#1)] No available actions!
-[75.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.60] [shadow-priest (#1)] No available actions!
-[75.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.70] [shadow-priest (#1)] No available actions!
-[75.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.80] [shadow-priest (#1)] No available actions!
-[75.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.90] [shadow-priest (#1)] No available actions!
-[75.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.00] [shadow-priest (#1)] No available actions!
-[76.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.10] [shadow-priest (#1)] No available actions!
-[76.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.20] [shadow-priest (#1)] No available actions!
-[76.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.30] [shadow-priest (#1)] No available actions!
-[76.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.40] [shadow-priest (#1)] No available actions!
-[76.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (134.925 --> 202.100) of 6751 total.
-[76.50] [shadow-priest (#1)] No available actions!
+[64.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (110.875 --> 178.050) of 6751 total.
+[64.50] [shadow-priest (#1)] No available actions!
+[64.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.60] [shadow-priest (#1)] No available actions!
+[64.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.70] [shadow-priest (#1)] No available actions!
+[64.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.80] [shadow-priest (#1)] No available actions!
+[64.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.90] [shadow-priest (#1)] No available actions!
+[64.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.00] [shadow-priest (#1)] No available actions!
+[65.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.10] [shadow-priest (#1)] No available actions!
+[65.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.20] [shadow-priest (#1)] No available actions!
+[65.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.30] [shadow-priest (#1)] No available actions!
+[65.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.40] [shadow-priest (#1)] No available actions!
+[65.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.50] [shadow-priest (#1)] No available actions!
+[65.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.60] [shadow-priest (#1)] No available actions!
+[65.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.70] [shadow-priest (#1)] No available actions!
+[65.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.80] [shadow-priest (#1)] No available actions!
+[65.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[65.90] [shadow-priest (#1)] No available actions!
+[65.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.00] [shadow-priest (#1)] No available actions!
+[66.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.10] [shadow-priest (#1)] No available actions!
+[66.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.20] [shadow-priest (#1)] No available actions!
+[66.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.30] [shadow-priest (#1)] No available actions!
+[66.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.40] [shadow-priest (#1)] No available actions!
+[66.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[66.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (178.050 --> 279.600) of 6751 total.
+[66.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[66.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
+[66.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (279.600 --> 74.600) of 6751 total.
+[66.50] [Target 1] Aura gained: {SpellID: 18807}
+[66.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
+[66.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[66.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (74.600 --> 133.600) of 6751 total.
+[67.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[67.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[68.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (133.600 --> 200.775) of 6751 total.
+[68.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[68.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[68.50] [Target 1] Aura faded: {SpellID: 18807}
+[68.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[68.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[68.60] [shadow-priest (#1)] No available actions!
+[68.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[68.70] [shadow-priest (#1)] No available actions!
+[68.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[68.80] [shadow-priest (#1)] No available actions!
+[68.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[68.90] [shadow-priest (#1)] No available actions!
+[68.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[69.00] [shadow-priest (#1)] No available actions!
+[69.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[69.10] [shadow-priest (#1)] No available actions!
+[69.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[69.20] [shadow-priest (#1)] No available actions!
+[69.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[69.30] [shadow-priest (#1)] No available actions!
+[69.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[69.40] [shadow-priest (#1)] No available actions!
+[69.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[69.50] [shadow-priest (#1)] No available actions!
+[69.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[69.60] [shadow-priest (#1)] No available actions!
+[69.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[69.70] [shadow-priest (#1)] No available actions!
+[69.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[69.80] [shadow-priest (#1)] No available actions!
+[69.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[69.90] [shadow-priest (#1)] No available actions!
+[69.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.00] [shadow-priest (#1)] No available actions!
+[70.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.10] [shadow-priest (#1)] No available actions!
+[70.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.20] [shadow-priest (#1)] No available actions!
+[70.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.30] [shadow-priest (#1)] No available actions!
+[70.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.40] [shadow-priest (#1)] No available actions!
+[70.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[70.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (200.775 --> 267.950) of 6751 total.
+[70.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[70.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
+[70.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (267.950 --> 62.950) of 6751 total.
+[70.50] [Target 1] Aura gained: {SpellID: 18807}
+[70.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
+[70.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[70.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (62.950 --> 121.950) of 6751 total.
+[71.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[71.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[72.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (121.950 --> 189.125) of 6751 total.
+[72.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[72.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[72.50] [Target 1] Aura faded: {SpellID: 18807}
+[72.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[72.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[72.60] [shadow-priest (#1)] No available actions!
+[72.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[72.70] [shadow-priest (#1)] No available actions!
+[72.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[72.80] [shadow-priest (#1)] No available actions!
+[72.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[72.90] [shadow-priest (#1)] No available actions!
+[72.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[73.00] [shadow-priest (#1)] No available actions!
+[73.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[73.10] [shadow-priest (#1)] No available actions!
+[73.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[73.20] [shadow-priest (#1)] No available actions!
+[73.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[73.30] [shadow-priest (#1)] No available actions!
+[73.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[73.40] [shadow-priest (#1)] No available actions!
+[73.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[73.50] [shadow-priest (#1)] No available actions!
+[73.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[73.60] [shadow-priest (#1)] No available actions!
+[73.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[73.70] [shadow-priest (#1)] No available actions!
+[73.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[73.80] [shadow-priest (#1)] No available actions!
+[73.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[73.90] [shadow-priest (#1)] No available actions!
+[73.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[74.00] [shadow-priest (#1)] No available actions!
+[74.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[74.10] [shadow-priest (#1)] No available actions!
+[74.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[74.20] [shadow-priest (#1)] No available actions!
+[74.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[74.30] [shadow-priest (#1)] No available actions!
+[74.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[74.40] [shadow-priest (#1)] No available actions!
+[74.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[74.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (189.125 --> 256.300) of 6751 total.
+[74.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[74.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
+[74.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (256.300 --> 51.300) of 6751 total.
+[74.50] [Target 1] Aura gained: {SpellID: 18807}
+[74.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
+[74.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[74.51] [shadow-priest (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[74.51] [shadow-priest (#1)] Completed cast {SpellID: 1260198}
+[74.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:176.4, AfterTargetMods:176.4, AfterOutcome:176.4, AfterPostOutcome:194.0
+[74.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 193.985 damage (SpellSchool: 32). (Threat: 193.985)
+[74.51] [shadow-priest (#1)] Gained 193.985 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
+[74.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (51.300 --> 110.300) of 6751 total.
+[75.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[75.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[76.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (110.300 --> 177.475) of 6751 total.
+[76.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[76.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[76.50] [Target 1] Aura faded: {SpellID: 18807}
+[76.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [76.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [76.60] [shadow-priest (#1)] No available actions!
 [76.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -927,23 +988,21 @@
 [78.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [78.40] [shadow-priest (#1)] No available actions!
 [78.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[78.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (202.100 --> 303.650) of 6751 total.
+[78.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (177.475 --> 244.650) of 6751 total.
 [78.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [78.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[78.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (303.650 --> 98.650) of 6751 total.
-[78.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Miss (SpellSchool: 32). (Threat: 0.000)
-[80.00] [shadow-priest (#1)] No available actions!
-[80.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[80.10] [shadow-priest (#1)] No available actions!
-[80.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[80.20] [shadow-priest (#1)] No available actions!
-[80.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[80.30] [shadow-priest (#1)] No available actions!
-[80.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[80.40] [shadow-priest (#1)] No available actions!
-[80.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[78.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (244.650 --> 39.650) of 6751 total.
+[78.50] [Target 1] Aura gained: {SpellID: 18807}
+[78.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
+[78.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[78.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (39.650 --> 98.650) of 6751 total.
+[79.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[79.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
 [80.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (98.650 --> 165.825) of 6751 total.
-[80.50] [shadow-priest (#1)] No available actions!
+[80.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:498.8, AfterPostOutcome:548.7
+[80.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 548.653 damage (SpellSchool: 32). (Threat: 307.246)
+[80.50] [Target 1] Aura faded: {SpellID: 18807}
+[80.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [80.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [80.60] [shadow-priest (#1)] No available actions!
 [80.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -989,12 +1048,13 @@
 [82.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (233.000 --> 28.000) of 6751 total.
 [82.50] [Target 1] Aura gained: {SpellID: 18807}
 [82.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[82.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[83.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[83.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[84.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (28.000 --> 95.175) of 6751 total.
-[84.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[84.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
+[82.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[82.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (28.000 --> 87.000) of 6751 total.
+[83.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[83.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[84.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (87.000 --> 154.175) of 6751 total.
+[84.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:498.8, AfterPostOutcome:548.7
+[84.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 548.653 damage (SpellSchool: 32). (Threat: 307.246)
 [84.50] [Target 1] Aura faded: {SpellID: 18807}
 [84.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [84.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -1036,37 +1096,11 @@
 [86.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [86.40] [shadow-priest (#1)] No available actions!
 [86.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[86.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (95.175 --> 162.350) of 6751 total.
-[86.50] [shadow-priest (#1)] No available actions!
-[86.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[86.60] [shadow-priest (#1)] No available actions!
-[86.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[86.70] [shadow-priest (#1)] No available actions!
-[86.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[86.80] [shadow-priest (#1)] No available actions!
-[86.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[86.90] [shadow-priest (#1)] No available actions!
-[86.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[87.00] [shadow-priest (#1)] No available actions!
-[87.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[87.10] [shadow-priest (#1)] No available actions!
-[87.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[87.20] [shadow-priest (#1)] No available actions!
-[87.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[87.30] [shadow-priest (#1)] No available actions!
-[87.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[87.40] [shadow-priest (#1)] No available actions!
-[87.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[87.50] [shadow-priest (#1)] No available actions!
-[87.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[87.60] [shadow-priest (#1)] No available actions!
-[87.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[87.70] [shadow-priest (#1)] No available actions!
-[87.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[87.80] [shadow-priest (#1)] No available actions!
-[87.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[87.90] [shadow-priest (#1)] No available actions!
-[87.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[86.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (154.175 --> 221.350) of 6751 total.
+[86.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[86.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
+[86.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (221.350 --> 16.350) of 6751 total.
+[86.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Miss (SpellSchool: 32). (Threat: 0.000)
 [88.00] [shadow-priest (#1)] No available actions!
 [88.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [88.10] [shadow-priest (#1)] No available actions!
@@ -1077,20 +1111,49 @@
 [88.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [88.40] [shadow-priest (#1)] No available actions!
 [88.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[88.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (162.350 --> 263.900) of 6751 total.
-[88.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[88.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[88.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (263.900 --> 58.900) of 6751 total.
-[88.50] [Target 1] Aura gained: {SpellID: 18807}
-[88.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[88.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[89.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[89.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[90.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (58.900 --> 126.075) of 6751 total.
-[90.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[90.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[90.50] [Target 1] Aura faded: {SpellID: 18807}
-[90.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[88.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (16.350 --> 83.525) of 6751 total.
+[88.50] [shadow-priest (#1)] No available actions!
+[88.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[88.60] [shadow-priest (#1)] No available actions!
+[88.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[88.70] [shadow-priest (#1)] No available actions!
+[88.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[88.80] [shadow-priest (#1)] No available actions!
+[88.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[88.90] [shadow-priest (#1)] No available actions!
+[88.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.00] [shadow-priest (#1)] No available actions!
+[89.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.10] [shadow-priest (#1)] No available actions!
+[89.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.20] [shadow-priest (#1)] No available actions!
+[89.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.30] [shadow-priest (#1)] No available actions!
+[89.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.40] [shadow-priest (#1)] No available actions!
+[89.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.50] [shadow-priest (#1)] No available actions!
+[89.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.60] [shadow-priest (#1)] No available actions!
+[89.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.70] [shadow-priest (#1)] No available actions!
+[89.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.80] [shadow-priest (#1)] No available actions!
+[89.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[89.90] [shadow-priest (#1)] No available actions!
+[89.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.00] [shadow-priest (#1)] No available actions!
+[90.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.10] [shadow-priest (#1)] No available actions!
+[90.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.20] [shadow-priest (#1)] No available actions!
+[90.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.30] [shadow-priest (#1)] No available actions!
+[90.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.40] [shadow-priest (#1)] No available actions!
+[90.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[90.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (83.525 --> 150.700) of 6751 total.
+[90.50] [shadow-priest (#1)] No available actions!
 [90.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [90.60] [shadow-priest (#1)] No available actions!
 [90.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -1130,120 +1193,114 @@
 [92.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [92.40] [shadow-priest (#1)] No available actions!
 [92.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (126.075 --> 193.250) of 6751 total.
-[92.50] [shadow-priest (#1)] No available actions!
-[92.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.60] [shadow-priest (#1)] No available actions!
-[92.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.70] [shadow-priest (#1)] No available actions!
-[92.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.80] [shadow-priest (#1)] No available actions!
-[92.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[92.90] [shadow-priest (#1)] No available actions!
-[92.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.00] [shadow-priest (#1)] No available actions!
-[93.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.10] [shadow-priest (#1)] No available actions!
-[93.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.20] [shadow-priest (#1)] No available actions!
-[93.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.30] [shadow-priest (#1)] No available actions!
-[93.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.40] [shadow-priest (#1)] No available actions!
-[93.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.50] [shadow-priest (#1)] No available actions!
-[93.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.60] [shadow-priest (#1)] No available actions!
-[93.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.70] [shadow-priest (#1)] No available actions!
-[93.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.80] [shadow-priest (#1)] No available actions!
-[93.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[93.90] [shadow-priest (#1)] No available actions!
-[93.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.00] [shadow-priest (#1)] No available actions!
-[94.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.10] [shadow-priest (#1)] No available actions!
-[94.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.20] [shadow-priest (#1)] No available actions!
-[94.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.30] [shadow-priest (#1)] No available actions!
-[94.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.40] [shadow-priest (#1)] No available actions!
-[94.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[94.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (193.250 --> 294.800) of 6751 total.
-[94.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[94.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[94.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (294.800 --> 89.800) of 6751 total.
-[94.50] [Target 1] Aura gained: {SpellID: 18807}
-[94.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[94.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[94.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (89.800 --> 148.800) of 6751 total.
-[95.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[95.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[96.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (148.800 --> 215.975) of 6751 total.
-[96.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:548.7, AfterPostOutcome:548.7
-[96.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 548.653 damage (SpellSchool: 32). (Threat: 438.923)
-[96.50] [Target 1] Aura faded: {SpellID: 18807}
+[92.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (150.700 --> 252.250) of 6751 total.
+[92.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[92.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
+[92.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (252.250 --> 47.250) of 6751 total.
+[92.50] [Target 1] Aura gained: {SpellID: 18807}
+[92.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
+[92.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[93.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[93.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[94.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (47.250 --> 114.425) of 6751 total.
+[94.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[94.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[94.50] [Target 1] Aura faded: {SpellID: 18807}
+[94.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[94.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[94.60] [shadow-priest (#1)] No available actions!
+[94.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[94.70] [shadow-priest (#1)] No available actions!
+[94.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[94.80] [shadow-priest (#1)] No available actions!
+[94.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[94.90] [shadow-priest (#1)] No available actions!
+[94.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[95.00] [shadow-priest (#1)] No available actions!
+[95.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[95.10] [shadow-priest (#1)] No available actions!
+[95.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[95.20] [shadow-priest (#1)] No available actions!
+[95.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[95.30] [shadow-priest (#1)] No available actions!
+[95.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[95.40] [shadow-priest (#1)] No available actions!
+[95.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[95.50] [shadow-priest (#1)] No available actions!
+[95.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[95.60] [shadow-priest (#1)] No available actions!
+[95.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[95.70] [shadow-priest (#1)] No available actions!
+[95.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[95.80] [shadow-priest (#1)] No available actions!
+[95.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[95.90] [shadow-priest (#1)] No available actions!
+[95.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.00] [shadow-priest (#1)] No available actions!
+[96.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.10] [shadow-priest (#1)] No available actions!
+[96.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.20] [shadow-priest (#1)] No available actions!
+[96.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.30] [shadow-priest (#1)] No available actions!
+[96.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.40] [shadow-priest (#1)] No available actions!
+[96.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (114.425 --> 181.600) of 6751 total.
+[96.50] [shadow-priest (#1)] No available actions!
 [96.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[96.60] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[96.60] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[96.60] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (215.975 --> 10.975) of 6751 total.
-[96.60] [Target 1] Aura gained: {SpellID: 18807}
-[96.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[96.60] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[96.61] [shadow-priest (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[96.61] [shadow-priest (#1)] Completed cast {SpellID: 1260198}
-[96.61] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:176.4, AfterTargetMods:176.4, AfterOutcome:176.4, AfterPostOutcome:176.4
-[96.61] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 176.350 damage (SpellSchool: 32). (Threat: 176.350)
-[96.61] [shadow-priest (#1)] Gained 176.350 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
-[97.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[97.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[98.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (10.975 --> 78.150) of 6751 total.
-[98.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[98.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[98.60] [Target 1] Aura faded: {SpellID: 18807}
-[98.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[98.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[98.70] [shadow-priest (#1)] No available actions!
-[98.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[98.80] [shadow-priest (#1)] No available actions!
-[98.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[98.90] [shadow-priest (#1)] No available actions!
-[98.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[99.00] [shadow-priest (#1)] No available actions!
-[99.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[99.10] [shadow-priest (#1)] No available actions!
-[99.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[99.20] [shadow-priest (#1)] No available actions!
-[99.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[99.30] [shadow-priest (#1)] No available actions!
-[99.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[99.40] [shadow-priest (#1)] No available actions!
-[99.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[99.50] [shadow-priest (#1)] No available actions!
-[99.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[99.60] [shadow-priest (#1)] No available actions!
-[99.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[99.70] [shadow-priest (#1)] No available actions!
-[99.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[99.80] [shadow-priest (#1)] No available actions!
-[99.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[99.90] [shadow-priest (#1)] No available actions!
-[99.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[100.00] [shadow-priest (#1)] No available actions!
-[100.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[100.10] [shadow-priest (#1)] No available actions!
-[100.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[100.20] [shadow-priest (#1)] No available actions!
-[100.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[100.30] [shadow-priest (#1)] No available actions!
-[100.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[100.40] [shadow-priest (#1)] No available actions!
-[100.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.60] [shadow-priest (#1)] No available actions!
+[96.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.70] [shadow-priest (#1)] No available actions!
+[96.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.80] [shadow-priest (#1)] No available actions!
+[96.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[96.90] [shadow-priest (#1)] No available actions!
+[96.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.00] [shadow-priest (#1)] No available actions!
+[97.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.10] [shadow-priest (#1)] No available actions!
+[97.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.20] [shadow-priest (#1)] No available actions!
+[97.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.30] [shadow-priest (#1)] No available actions!
+[97.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.40] [shadow-priest (#1)] No available actions!
+[97.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.50] [shadow-priest (#1)] No available actions!
+[97.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.60] [shadow-priest (#1)] No available actions!
+[97.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.70] [shadow-priest (#1)] No available actions!
+[97.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.80] [shadow-priest (#1)] No available actions!
+[97.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[97.90] [shadow-priest (#1)] No available actions!
+[97.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.00] [shadow-priest (#1)] No available actions!
+[98.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.10] [shadow-priest (#1)] No available actions!
+[98.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.20] [shadow-priest (#1)] No available actions!
+[98.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.30] [shadow-priest (#1)] No available actions!
+[98.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.40] [shadow-priest (#1)] No available actions!
+[98.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[98.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (181.600 --> 283.150) of 6751 total.
+[98.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[98.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
+[98.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (283.150 --> 78.150) of 6751 total.
+[98.50] [Target 1] Aura gained: {SpellID: 18807}
+[98.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
+[98.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[99.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[99.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
 [100.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (78.150 --> 145.325) of 6751 total.
-[100.50] [shadow-priest (#1)] No available actions!
+[100.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[100.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[100.50] [Target 1] Aura faded: {SpellID: 18807}
+[100.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [100.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [100.60] [shadow-priest (#1)] No available actions!
 [100.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -1283,18 +1340,19 @@
 [102.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [102.40] [shadow-priest (#1)] No available actions!
 [102.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[102.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (145.325 --> 246.875) of 6751 total.
+[102.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (145.325 --> 212.500) of 6751 total.
 [102.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [102.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[102.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (246.875 --> 41.875) of 6751 total.
+[102.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (212.500 --> 7.500) of 6751 total.
 [102.50] [Target 1] Aura gained: {SpellID: 18807}
 [102.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[102.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[103.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[103.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[104.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (41.875 --> 109.050) of 6751 total.
-[104.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[104.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
+[102.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[102.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (7.500 --> 66.500) of 6751 total.
+[103.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[103.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[104.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (66.500 --> 133.675) of 6751 total.
+[104.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:498.8, AfterPostOutcome:548.7
+[104.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 548.653 damage (SpellSchool: 32). (Threat: 307.246)
 [104.50] [Target 1] Aura faded: {SpellID: 18807}
 [104.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [104.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -1336,7 +1394,7 @@
 [106.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [106.40] [shadow-priest (#1)] No available actions!
 [106.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[106.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (109.050 --> 176.225) of 6751 total.
+[106.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (133.675 --> 200.850) of 6751 total.
 [106.50] [shadow-priest (#1)] No available actions!
 [106.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [106.60] [shadow-priest (#1)] No available actions!
@@ -1377,23 +1435,25 @@
 [108.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [108.40] [shadow-priest (#1)] No available actions!
 [108.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[108.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (176.225 --> 277.775) of 6751 total.
+[108.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (200.850 --> 302.400) of 6751 total.
 [108.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [108.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[108.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (277.775 --> 72.775) of 6751 total.
-[108.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Miss (SpellSchool: 32). (Threat: 0.000)
-[110.00] [shadow-priest (#1)] No available actions!
-[110.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[110.10] [shadow-priest (#1)] No available actions!
-[110.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[110.20] [shadow-priest (#1)] No available actions!
-[110.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[110.30] [shadow-priest (#1)] No available actions!
-[110.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[110.40] [shadow-priest (#1)] No available actions!
-[110.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[110.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (72.775 --> 139.950) of 6751 total.
-[110.50] [shadow-priest (#1)] No available actions!
+[108.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (302.400 --> 97.400) of 6751 total.
+[108.50] [Target 1] Aura gained: {SpellID: 18807}
+[108.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
+[108.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[108.51] [shadow-priest (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[108.51] [shadow-priest (#1)] Completed cast {SpellID: 1260198}
+[108.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:176.4, AfterTargetMods:176.4, AfterOutcome:176.4, AfterPostOutcome:194.0
+[108.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit for 193.985 damage (SpellSchool: 32). (Threat: 193.985)
+[108.51] [shadow-priest (#1)] Gained 193.985 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
+[109.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[109.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[110.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (97.400 --> 164.575) of 6751 total.
+[110.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[110.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[110.50] [Target 1] Aura faded: {SpellID: 18807}
+[110.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [110.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [110.60] [shadow-priest (#1)] No available actions!
 [110.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -1433,19 +1493,18 @@
 [112.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [112.40] [shadow-priest (#1)] No available actions!
 [112.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[112.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (139.950 --> 207.125) of 6751 total.
+[112.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (164.575 --> 231.750) of 6751 total.
 [112.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [112.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[112.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (207.125 --> 2.125) of 6751 total.
+[112.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (231.750 --> 26.750) of 6751 total.
 [112.50] [Target 1] Aura gained: {SpellID: 18807}
 [112.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[112.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[112.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (2.125 --> 61.125) of 6751 total.
-[113.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[113.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[114.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (61.125 --> 128.300) of 6751 total.
-[114.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[114.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
+[112.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[113.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[113.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[114.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (26.750 --> 93.925) of 6751 total.
+[114.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[114.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
 [114.50] [Target 1] Aura faded: {SpellID: 18807}
 [114.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [114.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -1487,7 +1546,7 @@
 [116.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [116.40] [shadow-priest (#1)] No available actions!
 [116.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[116.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (128.300 --> 195.475) of 6751 total.
+[116.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (93.925 --> 161.100) of 6751 total.
 [116.50] [shadow-priest (#1)] No available actions!
 [116.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [116.60] [shadow-priest (#1)] No available actions!
@@ -1528,10 +1587,10 @@
 [118.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [118.40] [shadow-priest (#1)] No available actions!
 [118.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[118.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (195.475 --> 297.025) of 6751 total.
+[118.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (161.100 --> 262.650) of 6751 total.
 [118.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [118.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[118.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (297.025 --> 92.025) of 6751 total.
+[118.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (262.650 --> 57.650) of 6751 total.
 [118.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Miss (SpellSchool: 32). (Threat: 0.000)
 [120.00] [shadow-priest (#1)] No available actions!
 [120.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -1543,7 +1602,7 @@
 [120.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [120.40] [shadow-priest (#1)] No available actions!
 [120.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[120.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (92.025 --> 159.200) of 6751 total.
+[120.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (57.650 --> 124.825) of 6751 total.
 [120.50] [shadow-priest (#1)] No available actions!
 [120.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [120.60] [shadow-priest (#1)] No available actions!
@@ -1584,85 +1643,69 @@
 [122.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
 [122.40] [shadow-priest (#1)] No available actions!
 [122.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[122.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (159.200 --> 226.375) of 6751 total.
-[122.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[122.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
-[122.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (226.375 --> 21.375) of 6751 total.
-[122.50] [Target 1] Aura gained: {SpellID: 18807}
-[122.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
-[122.50] [shadow-priest (#1)] Aura refreshed: {SpellID: 15258}
-[122.51] [shadow-priest (#1)] Casting {SpellID: 1260198} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[122.51] [shadow-priest (#1)] Completed cast {SpellID: 1260198}
-[122.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:176.4, AfterAttackerMods:176.4, AfterResistances:132.3, AfterTargetMods:132.3, AfterOutcome:132.3, AfterPostOutcome:132.3
-[122.51] [shadow-priest (#1)] [Target 1] {SpellID: 1260198} Hit (25% Resist) for 132.263 damage (SpellSchool: 32). (Threat: 132.263)
-[122.51] [shadow-priest (#1)] Gained 132.263 health from {SpellID: 1260198} (3527.000 --> 3527.000) of 3527 total.
-[123.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:548.7, AfterPostOutcome:548.7
-[123.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Crit for 548.653 damage (SpellSchool: 32). (Threat: 438.923)
-[124.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (21.375 --> 88.550) of 6751 total.
-[124.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:332.5, AfterResistances:332.5, AfterTargetMods:365.8, AfterOutcome:365.8, AfterPostOutcome:365.8
-[124.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 292.615)
-[124.50] [Target 1] Aura faded: {SpellID: 18807}
-[124.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.60] [shadow-priest (#1)] No available actions!
-[124.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.70] [shadow-priest (#1)] No available actions!
-[124.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.80] [shadow-priest (#1)] No available actions!
-[124.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.90] [shadow-priest (#1)] No available actions!
-[124.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.00] [shadow-priest (#1)] No available actions!
-[125.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.10] [shadow-priest (#1)] No available actions!
-[125.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.20] [shadow-priest (#1)] No available actions!
-[125.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.30] [shadow-priest (#1)] No available actions!
-[125.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.40] [shadow-priest (#1)] No available actions!
-[125.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.50] [shadow-priest (#1)] No available actions!
-[125.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.60] [shadow-priest (#1)] No available actions!
-[125.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.70] [shadow-priest (#1)] No available actions!
-[125.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.80] [shadow-priest (#1)] No available actions!
-[125.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[125.90] [shadow-priest (#1)] No available actions!
-[125.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.00] [shadow-priest (#1)] No available actions!
-[126.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.10] [shadow-priest (#1)] No available actions!
-[126.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.20] [shadow-priest (#1)] No available actions!
-[126.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.30] [shadow-priest (#1)] No available actions!
-[126.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.40] [shadow-priest (#1)] No available actions!
-[126.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (88.550 --> 155.725) of 6751 total.
-[126.50] [shadow-priest (#1)] No available actions!
+[122.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (124.825 --> 192.000) of 6751 total.
+[122.50] [shadow-priest (#1)] No available actions!
+[122.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.60] [shadow-priest (#1)] No available actions!
+[122.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.70] [shadow-priest (#1)] No available actions!
+[122.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.80] [shadow-priest (#1)] No available actions!
+[122.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.90] [shadow-priest (#1)] No available actions!
+[122.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.00] [shadow-priest (#1)] No available actions!
+[123.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.10] [shadow-priest (#1)] No available actions!
+[123.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.20] [shadow-priest (#1)] No available actions!
+[123.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.30] [shadow-priest (#1)] No available actions!
+[123.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.40] [shadow-priest (#1)] No available actions!
+[123.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.50] [shadow-priest (#1)] No available actions!
+[123.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.60] [shadow-priest (#1)] No available actions!
+[123.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.70] [shadow-priest (#1)] No available actions!
+[123.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.80] [shadow-priest (#1)] No available actions!
+[123.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[123.90] [shadow-priest (#1)] No available actions!
+[123.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.00] [shadow-priest (#1)] No available actions!
+[124.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.10] [shadow-priest (#1)] No available actions!
+[124.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.20] [shadow-priest (#1)] No available actions!
+[124.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.30] [shadow-priest (#1)] No available actions!
+[124.30] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.40] [shadow-priest (#1)] No available actions!
+[124.40] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[124.50] [shadow-priest (#1)] Gained 101.550 mana from {OtherID: 2, Tag: 2} (192.000 --> 293.550) of 6751 total.
+[124.50] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[124.50] [shadow-priest (#1)] Completed cast {SpellID: 18807}
+[124.50] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (293.550 --> 88.550) of 6751 total.
+[124.50] [Target 1] Aura gained: {SpellID: 18807}
+[124.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Hit for 0.000 damage (SpellSchool: 32). (Threat: 0.000)
+[124.50] [Target 1] Aura refreshed: {SpellID: 15258}
+[124.51] [shadow-priest (#1)] Gained 59.000 mana from {SpellID: 20355} (88.550 --> 147.550) of 6751 total.
+[125.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[125.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[126.50] [shadow-priest (#1)] Gained 67.175 mana from {OtherID: 2, Tag: 1} (147.550 --> 214.725) of 6751 total.
+[126.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 538.0, BaseDamage:219.8, AfterAttackerMods:302.3, AfterResistances:302.3, AfterTargetMods:332.5, AfterOutcome:332.5, AfterPostOutcome:365.8
+[126.50] [shadow-priest (#1)] [Target 1] {SpellID: 18807} tick Hit for 365.769 damage (SpellSchool: 32). (Threat: 204.831)
+[126.50] [Target 1] Aura faded: {SpellID: 18807}
 [126.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.60] [shadow-priest (#1)] No available actions!
-[126.60] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.70] [shadow-priest (#1)] No available actions!
-[126.70] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.80] [shadow-priest (#1)] No available actions!
-[126.80] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[126.90] [shadow-priest (#1)] No available actions!
-[126.90] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[127.00] [shadow-priest (#1)] No available actions!
-[127.00] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[127.10] [shadow-priest (#1)] No available actions!
-[127.10] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
-[127.20] [shadow-priest (#1)] No available actions!
-[127.20] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[126.50] [shadow-priest (#1)] Pausing rotation for 100ms due to resources / CDs.
+[126.60] [shadow-priest (#1)] Casting {SpellID: 18807} (Cost = 205.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[126.60] [shadow-priest (#1)] Completed cast {SpellID: 18807}
+[126.60] [shadow-priest (#1)] Spent 205.000 mana from {SpellID: 18807} (214.725 --> 9.725) of 6751 total.
+[126.60] [shadow-priest (#1)] [Target 1] {SpellID: 18807} Miss (SpellSchool: 32). (Threat: 0.000)
 [127.25] [shadow-priest (#1) - Shadowfiend] Aura faded: {SpellID: 10494, Tag: -1}
 [127.25] [shadow-priest (#1) - Shadowfiend] No pet summoned
-[127.25] [shadow-priest (#1)] Aura faded: {SpellID: 15258}
-[127.25] [shadow-priest (#1)] {SpellID: 15258} stacks: 5 --> 0
 [127.25] [shadow-priest (#1)] Aura faded: {SpellID: 10494, Tag: -1}
 [127.25] [shadow-priest (#1)] Aura faded: {SpellID: 24907, Tag: -1}
 [127.25] [shadow-priest (#1)] Aura faded: {SpellID: 23028, Tag: -1}
@@ -1676,6 +1719,8 @@
 [127.25] [shadow-priest (#1)] Aura faded: {SpellID: 25918, Tag: -1}
 [127.25] [Target 1] Aura faded: {SpellID: 20355, Tag: -1}
 [127.25] [Target 1] Aura faded: {SpellID: 1311680, Tag: -1}
+[127.25] [Target 1] Aura faded: {SpellID: 15258}
+[127.25] [Target 1] {SpellID: 15258} stacks: 5 --> 0
 [127.25] [Target 2] Aura faded: {SpellID: 20355, Tag: -1}
 [127.25] [Target 2] Aura faded: {SpellID: 1311680, Tag: -1}
 [127.25] [Target 3] Aura faded: {SpellID: 20355, Tag: -1}

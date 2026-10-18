@@ -205,11 +205,17 @@ func priestDamageRows(rows map[int32]*spelldata.Spell) {
 
 // Dynamic damage taken modifiers the priest effects describe: Power in Light registers one on
 // every target (talents_discipline.go applyPowerInLight).
+// Power in Light's modifier and Shadow Weaving's (community #777), one on each target.
 func priestDamageTakenModifiers(agent core.Agent) int {
-	if agent.(priest.PriestAgent).GetPriest().Talents.PowerInLight > 0 {
-		return 1
+	talents := agent.(priest.PriestAgent).GetPriest().Talents
+	count := 0
+	if talents.PowerInLight > 0 {
+		count++
 	}
-	return 0
+	if talents.ShadowWeaving > 0 {
+		count++
+	}
+	return count
 }
 
 // The spellbook positions a spell modifier with a class mask and school applies to, by core
@@ -329,7 +335,9 @@ func priestEffects(agent core.Agent, character *core.Character) []map[string]any
 			"spender_spells": spenders,
 		})
 	}
-	if aura := p.ShadowWeavingAura; aura != nil { // talents_shadow.go applyShadowWeaving
+	if p.ShadowWeavingAuras != nil { // talents_shadow.go applyShadowWeaving
+		// The stacks are a debuff on each target, multiplying this priest's Shadow damage on it.
+		aura := p.ShadowWeavingAuras.Get(character.CurrentTarget)
 		stack := priestShadowWeavingTriggered.Highest()
 		trigger := core.ProcTrigger{
 			Name: "Shadow Weaving Trigger", Callback: core.CallbackOnSpellHitDealt, ClassSpellMask: priest.PriestShadowSpells,
@@ -341,7 +349,6 @@ func priestEffects(agent core.Agent, character *core.Character) []map[string]any
 			"trigger_immediately": trigger.TriggerImmediately, "proc_chance": trigger.ProcChance,
 			"trigger_spells":   procTriggerSpells(character, trigger),
 			"damage_per_stack": stack.Effect(dbcenums.A_MOD_SCHOOL_MASK_DAMAGE_FROM_CASTER, 32).Average(core.CharacterLevel) / 100,
-			"damage_spells":    priestModSpells(character, priest.PriestSpellsAll, core.SpellSchoolShadow),
 		})
 	}
 	// smite.go: a cast on the rank's own row.

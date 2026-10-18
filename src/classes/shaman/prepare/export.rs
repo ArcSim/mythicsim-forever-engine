@@ -210,6 +210,9 @@ impl Shaman {
                 // Forever's rank lacks the bit: a crit from a spell flagged Proc, as an
                 // overload, does not count.
                 "can_proc_from_procs": data.elemental_devastation.highest().can_proc_from_procs(),
+                // Totems and what they cast never trigger it, Fire Nova included (community
+                // #789).
+                "excluded_class_spells": ["fire_nova"],
             }));
         }
         if talent("flurry") > 0 {
@@ -235,8 +238,7 @@ impl Shaman {
                     .effect(dbcenums::A_MOD_MANA_REGEN_INTERRUPT, 0).percent(),
             }));
         }
-        // talents_enhancement.go applyMaelstromWeapon: 2 PPM a point, a Go literal, rolled per
-        // hand.
+        // talents_enhancement.go applyMaelstromWeapon: 10 PPM, a Go literal, rolled per hand.
         if let Some(trigger) = sim.get_aura(player, "Maelstrom Weapon Trigger") {
             let aura = sim.aura(trigger);
             if talent("maelstrom_weapon") > 0 {

@@ -401,10 +401,10 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
             "callbacks": callback_names(trigger.callback), "outcome": outcome_names(trigger.outcome),
             "trigger_immediately": trigger.trigger_immediately, "proc_chance": trigger.proc_chance,
             "trigger_spells": proc_trigger_spells(env, &trigger),
+            // The debuff on each target, multiplying this priest's Shadow damage on it.
             "damage_per_stack": stack
                 .effect(dbcenums::A_MOD_SCHOOL_MASK_DAMAGE_FROM_CASTER, 32)
                 .average(CHARACTER_LEVEL) / 100.0,
-            "damage_spells": mod_spells(sim, player, masks::ALL, school::SHADOW),
         }));
     }
     // smite.go: a cast on the rank's own row.

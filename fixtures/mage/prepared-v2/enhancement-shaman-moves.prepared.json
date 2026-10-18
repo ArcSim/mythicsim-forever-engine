@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
-    "client_build": "1.60.1.70338",
+    "engine_revision": "771c6349a7f15ca331c32d80273b8b9139cb115e",
+    "client_build": "1.60.1.70374",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "8da818c38a7dff83c51783361ea1e9d1c1b0483254f87526a2b610c1a0a8bc56",
@@ -503,23 +503,6 @@
           "on_reset",
           "on_spell_hit_taken",
           "on_periodic_damage_taken"
-        ],
-        "icd": null,
-        "exclusive_effects": 0
-      },
-      {
-        "label": "Savage",
-        "action_id": {
-          "spell_id": 20574
-        },
-        "duration_ns": 9223372036854775807,
-        "max_stacks": 0,
-        "active": true,
-        "stacks": 0,
-        "callbacks": [
-          "on_reset",
-          "on_gain",
-          "on_expire"
         ],
         "icd": null,
         "exclusive_effects": 0
@@ -5742,6 +5725,9 @@
     {
       "aura": "Elemental Devastation",
       "can_proc_from_procs": false,
+      "excluded_class_spells": [
+        "fire_nova"
+      ],
       "kind": "elemental_devastation",
       "melee_crit": 9,
       "trigger_aura": "Elemental Devastation Trigger"

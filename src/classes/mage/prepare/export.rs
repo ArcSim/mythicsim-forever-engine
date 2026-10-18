@@ -261,6 +261,7 @@ pub(super) fn effects(talents: &Message, sim: &Sim, unit: UnitId) -> Vec<Value> 
         let buff = data.heating_up_triggered.highest();
         effects.push(json!({
             "kind": "heating_up", "aura": "Heating Up", "trigger_aura": "Heating Up Trigger",
+            "fire_blast_trigger_aura": "Hot Streak Fire Blast Trigger",
             "cast_time_per_stack": buff
                 .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_CASTING_TIME)
                 .percent(),

@@ -266,7 +266,7 @@ impl Paladin {
     /// Reckoning: gives you a chance to gain an extra attack after Blocking a melee attack and
     /// after being the victim of a non-periodic critical strike.
     fn apply_reckoning(&mut self, sim: &mut Sim, unit: UnitId) {
-        /// Go `ReckoningMaxCharges` (16 October 2026 beta notes).
+        /// The most Reckoning charges a paladin holds (16 October 2026 beta notes).
         const RECKONING_MAX_CHARGES: i32 = 4;
         let points = self.talents.i32("reckoning");
         if points == 0 {
@@ -276,26 +276,17 @@ impl Paladin {
         let crit_chance = block_chance * 2.5;
         let label = sim.unit(unit).label.clone();
 
-        // The 16 October 2026 beta notes: each trigger adds a charge, up to 4, and the next
-        // main-hand melee swing uses them all for one extra attack each, without resetting the
-        // auto attack timer. The charges wait for the next swing.
-        let rank = spell_data().reckoning_triggered.highest();
+        // 16 Oct build: each proc banks a charge (max 4) and the next melee swing (auto attack)
+        // spends them all, 1 extra attack each, a free swing that leaves the swing timer alone. Client
+        // 70291+ gives 20177 a 1.5 s proc cooldown, shared by both triggers.
+        sim.new_timer(unit);
         sim.register_aura(
             unit,
             AuraConfig {
                 label: format!("Reckoning{label}"),
-                action_id: Some(spell_action(rank.id)),
+                action_id: Some(spell_action(20178)),
                 duration: NEVER_EXPIRES,
                 max_stacks: RECKONING_MAX_CHARGES,
-                ..AuraConfig::default()
-            },
-        );
-        // The spender is always up, so gaining and spending charges never reorders the unit's
-        // hit callbacks. Its extra attacks are main-hand swings booked under Reckoning's id.
-        let spender = sim.register_aura(
-            unit,
-            AuraConfig {
-                label: format!("Reckoning Charges Spender{label}"),
                 events: EventCallbacks {
                     on_spell_hit_dealt: true,
                     ..EventCallbacks::default()
@@ -303,21 +294,6 @@ impl Paladin {
                 ..AuraConfig::default()
             },
         );
-        let tag = rank.id;
-        sim.apply_on_init(
-            spender,
-            Rc::new(move |sim: &mut Sim, _| {
-                let mut config = sim
-                    .unit(unit)
-                    .auto_attacks
-                    .mh_config
-                    .clone()
-                    .unwrap_or_default();
-                config.action_id.tag = tag;
-                sim.get_or_register_spell(unit, config);
-            }),
-        );
-        sim.make_permanent(spender);
 
         sim.make_proc_trigger_aura(
             unit,

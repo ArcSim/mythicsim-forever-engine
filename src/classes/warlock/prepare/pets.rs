@@ -52,13 +52,24 @@ impl Summon {
                 (Stat::Spirit, 260.0),
                 (Stat::Mana, 576.0),
             ]),
-            Summon::Voidwalker | Summon::Succubus | Summon::Felhunter => Stats::from_pairs(&[
+            Summon::Voidwalker | Summon::Felhunter => Stats::from_pairs(&[
                 (Stat::Strength, 129.0),
                 (Stat::Agility, 85.0),
                 (Stat::Stamina, 234.0),
                 (Stat::Intellect, 70.0),
                 (Stat::Spirit, 150.0),
                 (Stat::Mana, 1066.0),
+            ]),
+            // The Succubus' Lash of Pain crits about 6% whatever its master's crit: demons carry
+            // their own base crit (community #790).
+            Summon::Succubus => Stats::from_pairs(&[
+                (Stat::Strength, 129.0),
+                (Stat::Agility, 85.0),
+                (Stat::Stamina, 234.0),
+                (Stat::Intellect, 70.0),
+                (Stat::Spirit, 150.0),
+                (Stat::Mana, 1066.0),
+                (Stat::SpellCritPercent, 6.2),
             ]),
         }
     }

@@ -2,8 +2,8 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "d0bd691f087689c4b154d67f4bf284e1fa820ac5",
-    "client_build": "1.60.1.70338",
+    "engine_revision": "771c6349a7f15ca331c32d80273b8b9139cb115e",
+    "client_build": "1.60.1.70374",
     "exporter": "tools/oracle-v2"
   },
   "request_sha256": "edf84a32695c2c71096b515ef9bae26c7247b58bc6159191b07376dfb76890ef",
@@ -1839,7 +1839,7 @@
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 0,
         "bonus_base_damage": 0,
-        "bonus_coefficient": 0,
+        "bonus_coefficient": 0.06,
         "threat_multiplier": 1,
         "flat_threat_bonus": 0,
         "pushback_resist": 0,
@@ -1971,6 +1971,7 @@
           "ProcMaskMeleeMHSpecial"
         ],
         "flags": [
+          "SpellFlagIgnoreResists",
           "SpellFlagMeleeMetrics",
           "SpellFlagAPL"
         ],
@@ -3712,7 +3713,7 @@
       "tick_per_combo_point": 25.5
     },
     {
-      "attack_power_share": 0.0526,
+      "attack_power_share": 0.05,
       "flat_damage": 61,
       "kind": "rake",
       "short_name": "Rake",

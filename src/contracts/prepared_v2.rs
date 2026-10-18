@@ -452,6 +452,8 @@ pub struct ImprovedSealOfFury {
     pub max_levels: f64,
     pub levels: f64,
     pub metrics_action_id: ActionId,
+    /// Its mana makes no threat (client 70374).
+    pub no_threat: bool,
 }
 
 /// A Seal of the Crusader rank: its seal, judgement, the judgement's target aura, the melee
@@ -2103,6 +2105,8 @@ pub enum Effect {
         proc_chance: f64,
         mana_share: f64,
         metrics_action_id: ActionId,
+        /// Its mana makes no threat (client 70374).
+        no_threat: bool,
     },
     /// Paladin talents_protection.go Reckoning: blocks and crits taken can grant an extra
     /// attack.
@@ -2111,13 +2115,11 @@ pub enum Effect {
         crit_aura: String,
         block_chance: f64,
         crit_chance: f64,
-        /// The charges each trigger adds (16 October 2026 beta notes), up to its maximum stacks.
+        /// The charges each trigger adds behind the shared cooldown, which the next main hand
+        /// auto spends on one free main hand swing each (16 October 2026 beta notes).
         charges_aura: String,
-        /// The permanent aura whose main-hand autos spend every charge.
-        spender_aura: String,
-        /// The main-hand swing each charge casts, booked under Reckoning's id.
-        extra_spell: usize,
-        /// The spells that spend the charges: every main-hand auto.
+        icd_ns: i64,
+        /// The spells that spend the charges: every main hand auto.
         spender_spells: Vec<usize>,
     },
     /// Paladin talents_protection.go Iron Creed: a landed Holy Strike under Righteous Fury
@@ -2443,8 +2445,9 @@ pub enum Effect {
         trigger_immediately: bool,
         proc_chance: f64,
         trigger_spells: Vec<usize>,
+        /// Each stack of the target's debuff `aura` multiplies this priest's Shadow damage on
+        /// that target (community #777).
         damage_per_stack: f64,
-        damage_spells: Vec<usize>,
     },
     /// Dark Sacrifice: a self-only periodic mana gain of the client base plus Spirit over a
     /// divisor, a major cooldown used once the whole gain fits.
@@ -2578,6 +2581,8 @@ pub enum Effect {
     HeatingUp {
         aura: String,
         trigger_aura: String,
+        /// The trigger that adds a stack on every Fire Blast cast (community #808).
+        fire_blast_trigger_aura: String,
         cast_time_per_stack: f64,
     },
     /// Combustion's major cooldown and stacking Fire crit buff.
@@ -3112,6 +3117,8 @@ pub enum Effect {
         melee_crit: f64,
         /// Whether a crit from a spell flagged Proc can trigger it.
         can_proc_from_procs: bool,
+        /// The class spells whose crits never trigger it (community #789).
+        excluded_class_spells: Vec<String>,
     },
     /// Flurry: melee crits grant charges of melee speed that white hits spend.
     Flurry {
@@ -3578,13 +3585,11 @@ pub enum Effect {
         proc_chance: f64,
         delay_ns: i64,
     },
-    /// Blood Craze: a hot of maximum health after a crit or a large hit taken, or a landed
-    /// Bloodthirst.
+    /// Blood Craze: a hot of maximum health after a crit or a large hit taken.
     BloodCraze {
         spell_id: i32,
         heal: HealModifiers,
         damage_taken_aura: String,
-        bloodthirst_aura: String,
         health_fraction: f64,
         hit_threshold: f64,
     },
@@ -3726,6 +3731,8 @@ pub enum Effect {
         proc_chance: f64,
         min_damage: f64,
         max_damage: f64,
+        /// The share of attack power each hit adds (community #781).
+        attack_power_share: f64,
     },
     DeadlyPoison {
         trigger_aura: String,
@@ -3734,6 +3741,9 @@ pub enum Effect {
         proc_mask: Vec<String>,
         proc_chance: f64,
         tick_damage: f64,
+        /// The share of attack power each stack adds to a tick, read at the tick (community
+        /// #781).
+        attack_power_share: f64,
     },
     /// Go sim/rogue/stealth.go and vanish.go: Stealth before the pull, and Vanish.
     Stealth {

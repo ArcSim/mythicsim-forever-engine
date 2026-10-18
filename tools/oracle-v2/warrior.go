@@ -167,13 +167,10 @@ func warriorStanceName(stance proto.WarriorStance) string {
 // core/rage.go EnableRageBar's OnSpellHitDealt: the rage each landed white hit gives, with Go's
 // operation order: the hit factor, halved for the off hand, times the swing speed, the bar's base
 // multiplier and the hand's multiplier, then raised for a two-handed weapon. A critical hit adds
-// the swing's rage before that two-hander factor times CritRageMultiplier less one
-// (CritRageBonusSkipsTwoHand), which the crit rage values carry.
+// the swing's rage before that two-hander factor times CritRageBonus, which the crit rage values
+// carry.
 func rageBarEffect(character *core.Character, baseRageMultiplier float64) map[string]any {
 	bar := privateField(character, "rageBar")
-	if !core.CritRageBonusSkipsTwoHand {
-		fail(fmt.Errorf("a critical auto attack's extra rage includes the two-hander's factor"))
-	}
 	hitRage := func(weapon *core.Weapon, offHand bool) (float64, float64) {
 		hitFactor := core.BaseRageHitFactor
 		handMultiplier := 1.0
@@ -186,7 +183,7 @@ func rageBarEffect(character *core.Character, baseRageMultiplier float64) map[st
 		if weapon.NormalizedSwingSpeed == core.TwoHandNormalizedSwingSpeed {
 			generated *= core.TwoHandRageMultiplier
 		}
-		return generated, baseRage * (core.CritRageMultiplier - 1)
+		return generated, baseRage * core.CritRageBonus
 	}
 	mainHand, mainHandCrit := hitRage(character.AutoAttacks.MH(), false)
 	offHand, offHandCrit := hitRage(character.AutoAttacks.OH(), true)
@@ -609,13 +606,9 @@ func warriorTankEffects(war *warrior.Warrior, character *core.Character, target 
 	// health by its share, gaining that much health, and takes it back on expiry, leaving at
 	// least 1.
 	if aura := character.GetAura("Last Stand"); aura != nil {
-		// talents_protection.go reads the share from A_MOD_MAX_HEALTH, or from
-		// A_MOD_INCREASE_HEALTH where client 70291 moved it (fork patch 112).
-		buff := warriorLastStandTriggered.Highest()
-		share := buff.FindEffect(dbcenums.E_APPLY_AURA, dbcenums.A_MOD_MAX_HEALTH, 0)
-		if share == spelldata.NilEffect {
-			share = buff.Effect(dbcenums.A_MOD_INCREASE_HEALTH, 0)
-		}
+		// talents_protection.go reads the share from A_MOD_INCREASE_HEALTH, where client 70291
+		// moved it.
+		share := warriorLastStandTriggered.Highest().Effect(dbcenums.A_MOD_INCREASE_HEALTH, 0)
 		effects = append(effects, map[string]any{"kind": "last_stand", "spell_id": warriorLastStand.Highest().ID,
 			"aura": aura.Label, "health_share": share.Percent(),
 			"metrics_action_id": actionID(aura.ActionID)})
@@ -667,13 +660,12 @@ func warriorTankEffects(war *warrior.Warrior, character *core.Character, target 
 		}
 	}
 	// talents_fury.go registerBloodCraze: a heal of maximum health over the hot's ticks, after a
-	// crit or a large hit taken, or a landed Bloodthirst; both triggers wait a spell batch window.
-	// The Bloodthirst trigger acts whether or not anything hits the player.
+	// crit or a large hit taken, a spell batch window later. Bloodthirst no longer triggers it.
 	if talents.BloodCraze > 0 {
 		if hot := character.GetSpell(core.ActionID{SpellID: 16488}); hot != nil {
 			effects = append(effects, map[string]any{"kind": "blood_craze", "spell_id": hot.ActionID.SpellID,
 				"heal":              healModifiers(character, &character.Unit),
-				"damage_taken_aura": "Blood Craze - Damage Taken", "bloodthirst_aura": "Blood Craze - Bloodthirst",
+				"damage_taken_aura": "Blood Craze - Damage Taken",
 				"health_fraction": warriorBloodCraze.EffectAt(1).FractionAt(talents.BloodCraze),
 				"hit_threshold":   warriorBloodCraze.EffectAt(2).FractionAt(talents.BloodCraze)})
 		}

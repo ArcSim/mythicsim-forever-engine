@@ -718,7 +718,7 @@ fn a_potion_leaves_the_bear_in_form() {
     assert!(drops_form(&logged(old)));
 }
 
-/// Rake adds 5.26% of attack power to its hit and every tick (mythicsim patch 99), so its
+/// Rake adds 5% of attack power to its hit and every tick (community #769), so its
 /// projected tick falls without the share.
 #[test]
 fn rake_scales_with_attack_power() {
@@ -731,7 +731,7 @@ fn rake_scales_with_attack_power() {
             .and_then(|power| power.trim().parse().ok())
             .expect("the first fight applies Rake")
     };
-    let with = snapshot(0.0526);
+    let with = snapshot(0.05);
     let without = snapshot(0.0);
     assert!(with > without + 10.0, "{with} against {without}");
 }

@@ -133,7 +133,6 @@ pub(crate) enum WarriorAura {
     EnrageTrigger,
     Enrage,
     BloodCrazeDamageTaken,
-    BloodCrazeBloodthirst,
     LastStand,
     ImprovedHamstringTrigger,
     /// Battlegear of Might's 5 piece bonus.
@@ -357,16 +356,11 @@ impl WarriorAgent {
                     auras.push((aura.clone(), WarriorAura::Enrage));
                 }
                 Effect::BloodCraze {
-                    damage_taken_aura,
-                    bloodthirst_aura,
-                    ..
-                } => {
-                    auras.push((
-                        damage_taken_aura.clone(),
-                        WarriorAura::BloodCrazeDamageTaken,
-                    ));
-                    auras.push((bloodthirst_aura.clone(), WarriorAura::BloodCrazeBloodthirst));
-                }
+                    damage_taken_aura, ..
+                } => auras.push((
+                    damage_taken_aura.clone(),
+                    WarriorAura::BloodCrazeDamageTaken,
+                )),
                 Effect::DeepWounds { trigger_aura, .. } => {
                     auras.push((trigger_aura.clone(), WarriorAura::DeepWoundsTrigger))
                 }
@@ -1707,11 +1701,6 @@ impl Agent for WarriorAgent {
             WarriorAura::OverpowerTrigger => {
                 let window = fight.agent.overpower_window.expect("bound");
                 overpower::on_hit(fight, window, spell, result);
-            }
-            WarriorAura::BloodCrazeBloodthirst
-                if fight.spells[spell].class_spell.as_deref() == Some("bloodthirst") =>
-            {
-                blood_craze::on_bloodthirst(fight, result);
             }
             WarriorAura::ImprovedHamstringTrigger
                 if fight.spells[spell].class_spell.as_deref() == Some("hamstring") =>

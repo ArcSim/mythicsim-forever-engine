@@ -184,6 +184,8 @@ func shamanEffects(agent core.Agent, character *core.Character) []map[string]any
 			"melee_crit": shamanDevastation.Effect(dbcenums.A_DUMMY, 0).ValueAt(talents.ElementalDevastation),
 			// Forever's rank lacks the bit: a crit from a spell flagged Proc, as an overload, does not count.
 			"can_proc_from_procs": shamanDevastation.Highest().CanProcFromProcs(),
+			// The ExtraCondition: totems and what they cast never trigger it, Fire Nova included.
+			"excluded_class_spells": []string{"fire_nova"},
 		})
 	}
 	if talents.Flurry > 0 { // talents_enhancement.go applyFlurry: a Go literal 500 ms charge cooldown.
@@ -203,7 +205,7 @@ func shamanEffects(agent core.Agent, character *core.Character) []map[string]any
 			"spirit_regen_rate_casting": shamanImpStormBuff.Highest().Effect(dbcenums.A_MOD_MANA_REGEN_INTERRUPT, 0).Percent(),
 		})
 	}
-	// talents_enhancement.go applyMaelstromWeapon: 2 PPM a point, a Go literal, rolled per hand.
+	// talents_enhancement.go applyMaelstromWeapon: 10 PPM, a Go literal, rolled per hand.
 	if trigger := character.GetAura("Maelstrom Weapon Trigger"); talents.MaelstromWeapon > 0 && trigger != nil && trigger.Dpm != nil {
 		effects = append(effects, map[string]any{
 			"kind": "maelstrom_weapon", "trigger_aura": trigger.Label, "aura": "Maelstrom Weapon",

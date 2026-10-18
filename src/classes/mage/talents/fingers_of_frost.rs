@@ -3,7 +3,9 @@
 //! charges that treat the target as frozen and add Shatter's crit to every Mage spell.
 //! Frostbolt and Frostfire Bolt roll it at launch, as the beta's logs gain the aura at the cast
 //! end (community #776): the next cast takes the bonus and a charge, the bolt's own impact
-//! neither. Cone of Cold and Improved Blizzard's ticks land at once and roll on their hits.
+//! neither. Cone of Cold and Improved Blizzard's ticks land at once and roll on their hits. A
+//! consuming spell that travels spends its charge when it lands (MythicSim patch 139), so an
+//! instant Ice Lance while a Frostbolt flies on the last charge still sees it.
 
 use crate::{
     classes::mage::masks::{is_class, DAMAGING},

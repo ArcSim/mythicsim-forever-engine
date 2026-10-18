@@ -288,8 +288,6 @@
 [7.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (3483.100 --> 3271.600) of 4105 total.
 [7.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 1827.1, RAP: 116.6, SP: 266.5, BaseDamage:407.2, AfterAttackerMods:427.5, AfterResistances:427.5, AfterTargetMods:513.0, AfterOutcome:513.0, AfterPostOutcome:513.0
 [7.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 513.038 damage (SpellSchool: 8). (Threat: 513.038)
-[7.50] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[7.50] [Target 1] Aura faded: {SpellID: 17364}
 [7.76] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [7.76] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
 [7.76] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1827.1, RAP: 116.6, SP: 266.5, BaseDamage:339.5, AfterAttackerMods:339.5, AfterResistances:288.4, AfterTargetMods:288.4, AfterOutcome:576.7, AfterPostOutcome:576.7
@@ -354,8 +352,7 @@
 [9.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
 [9.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (3448.600 --> 3327.600) of 4105 total.
 [9.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[9.00] [Target 1] Aura gained: {SpellID: 17364}
-[9.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
+[9.00] [Target 1] Aura refreshed: {SpellID: 17364}
 [9.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [9.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
 [9.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 1827.1, RAP: 116.6, SP: 266.5, BaseDamage:363.3, AfterAttackerMods:363.3, AfterResistances:308.5, AfterTargetMods:308.5, AfterOutcome:308.5, AfterPostOutcome:308.5
@@ -662,8 +659,6 @@
 [20.00] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (3752.900 --> 3541.400) of 4105 total.
 [20.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:397.3, AfterAttackerMods:417.2, AfterResistances:417.2, AfterTargetMods:500.7, AfterOutcome:751.0, AfterPostOutcome:751.0
 [20.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Crit for 750.989 damage (SpellSchool: 8). (Threat: 750.989)
-[20.00] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[20.00] [Target 1] Aura faded: {SpellID: 17364}
 [20.01] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 2} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [20.01] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 2}
 [20.01] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 2} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:257.1, AfterAttackerMods:257.1, AfterResistances:218.3, AfterTargetMods:218.3, AfterOutcome:436.6, AfterPostOutcome:436.6
@@ -713,10 +708,12 @@
 [21.80] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 4 --> 5
 [21.90] [enhancement-shaman (#1)] Casting {SpellID: 15208} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [21.90] [enhancement-shaman (#1)] Completed cast {SpellID: 15208}
-[21.90] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:368.1, AfterAttackerMods:386.5, AfterResistances:386.5, AfterTargetMods:386.5, AfterOutcome:386.5, AfterPostOutcome:386.5
+[21.90] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:368.1, AfterAttackerMods:386.5, AfterResistances:386.5, AfterTargetMods:463.9, AfterOutcome:463.9, AfterPostOutcome:463.9
 [21.90] [enhancement-shaman (#1)] Aura faded: {SpellID: 408505}
 [21.90] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 5 --> 0
-[21.90] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 386.546 damage (SpellSchool: 8). (Threat: 386.546)
+[21.90] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 463.856 damage (SpellSchool: 8). (Threat: 463.856)
+[21.90] [Target 1] {SpellID: 17364} stacks: 1 --> 0
+[21.90] [Target 1] Aura faded: {SpellID: 17364}
 [22.19] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [22.19] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
 [22.19] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:340.7, AfterAttackerMods:340.7, AfterResistances:289.3, AfterTargetMods:289.3, AfterOutcome:578.7, AfterPostOutcome:578.7
@@ -1073,8 +1070,6 @@
 [33.50] [enhancement-shaman (#1)] Completed cast {SpellID: 10414}
 [33.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:390.8, AfterAttackerMods:410.4, AfterResistances:410.4, AfterTargetMods:492.4, AfterOutcome:492.4, AfterPostOutcome:492.4
 [33.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 492.429 damage (SpellSchool: 8). (Threat: 492.429)
-[33.50] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[33.50] [Target 1] Aura faded: {SpellID: 17364}
 [33.50] [enhancement-shaman (#1)] {SpellID: 16246} stacks: 1 --> 0
 [33.50] [enhancement-shaman (#1)] Aura faded: {SpellID: 16246}
 [33.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (3229.300 --> 3288.300) of 4105 total.
@@ -1096,8 +1091,7 @@
 [35.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
 [35.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (3288.300 --> 3167.300) of 4105 total.
 [35.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[35.00] [Target 1] Aura gained: {SpellID: 17364}
-[35.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
+[35.00] [Target 1] Aura refreshed: {SpellID: 17364}
 [35.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [35.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
 [35.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:321.7, AfterAttackerMods:321.7, AfterResistances:273.2, AfterTargetMods:273.2, AfterOutcome:273.2, AfterPostOutcome:273.2
@@ -1794,8 +1788,6 @@
 [62.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (2364.800 --> 2153.300) of 4105 total.
 [62.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:401.3, AfterAttackerMods:421.3, AfterResistances:421.3, AfterTargetMods:505.6, AfterOutcome:505.6, AfterPostOutcome:505.6
 [62.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 505.581 damage (SpellSchool: 8). (Threat: 505.581)
-[62.50] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[62.50] [Target 1] Aura faded: {SpellID: 17364}
 [62.51] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (2153.300 --> 2212.300) of 4105 total.
 [62.55] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [62.55] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
@@ -1941,8 +1933,7 @@
 [68.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
 [68.00] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (3643.700 --> 3522.700) of 4105 total.
 [68.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[68.00] [Target 1] Aura gained: {SpellID: 17364}
-[68.00] [Target 1] {SpellID: 17364} stacks: 0 --> 1
+[68.00] [Target 1] Aura refreshed: {SpellID: 17364}
 [68.00] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [68.00] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
 [68.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:304.5, AfterAttackerMods:304.5, AfterResistances:258.6, AfterTargetMods:258.6, AfterOutcome:258.6, AfterPostOutcome:258.6
@@ -1980,8 +1971,6 @@
 [69.50] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (3553.500 --> 3342.000) of 4105 total.
 [69.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:401.5, AfterAttackerMods:421.5, AfterResistances:421.5, AfterTargetMods:505.8, AfterOutcome:505.8, AfterPostOutcome:505.8
 [69.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 505.844 damage (SpellSchool: 8). (Threat: 505.844)
-[69.50] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[69.50] [Target 1] Aura faded: {SpellID: 17364}
 [70.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
 [70.08] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [70.08] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
@@ -2072,10 +2061,12 @@
 [72.56] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (3029.800 --> 3088.800) of 4105 total.
 [72.65] [enhancement-shaman (#1)] Casting {SpellID: 15208} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [72.65] [enhancement-shaman (#1)] Completed cast {SpellID: 15208}
-[72.65] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:382.5, AfterAttackerMods:401.7, AfterResistances:401.7, AfterTargetMods:401.7, AfterOutcome:401.7, AfterPostOutcome:401.7
+[72.65] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:382.5, AfterAttackerMods:401.7, AfterResistances:401.7, AfterTargetMods:482.0, AfterOutcome:482.0, AfterPostOutcome:482.0
 [72.65] [enhancement-shaman (#1)] Aura faded: {SpellID: 408505}
 [72.65] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 5 --> 0
-[72.65] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 401.662 damage (SpellSchool: 8). (Threat: 401.662)
+[72.65] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 481.994 damage (SpellSchool: 8). (Threat: 481.994)
+[72.65] [Target 1] {SpellID: 17364} stacks: 1 --> 0
+[72.65] [Target 1] Aura faded: {SpellID: 17364}
 [72.75] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 2} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [72.75] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 2}
 [72.75] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 2} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:254.9, AfterAttackerMods:254.9, AfterResistances:216.5, AfterTargetMods:216.5, AfterOutcome:433.0, AfterPostOutcome:433.0
@@ -2699,8 +2690,6 @@
 [98.00] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (1551.500 --> 1340.000) of 4105 total.
 [98.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:393.4, AfterAttackerMods:413.1, AfterResistances:413.1, AfterTargetMods:495.7, AfterOutcome:743.6, AfterPostOutcome:743.6
 [98.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Crit for 743.618 damage (SpellSchool: 8). (Threat: 743.618)
-[98.00] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[98.00] [Target 1] Aura faded: {SpellID: 17364}
 [98.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 29178}
 [98.36] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [98.36] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
@@ -2842,8 +2831,7 @@
 [102.66] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
 [102.66] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (1637.600 --> 1516.600) of 4105 total.
 [102.66] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[102.66] [Target 1] Aura gained: {SpellID: 17364}
-[102.66] [Target 1] {SpellID: 17364} stacks: 0 --> 1
+[102.66] [Target 1] Aura refreshed: {SpellID: 17364}
 [102.66] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [102.66] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
 [102.66] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 1881.0, RAP: 106.0, SP: 242.3, BaseDamage:363.4, AfterAttackerMods:363.4, AfterResistances:308.6, AfterTargetMods:308.6, AfterOutcome:308.6, AfterPostOutcome:308.6
@@ -3043,8 +3031,6 @@
 [110.16] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (1340.100 --> 1128.600) of 4105 total.
 [110.16] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:400.1, AfterAttackerMods:420.1, AfterResistances:420.1, AfterTargetMods:504.1, AfterOutcome:504.1, AfterPostOutcome:504.1
 [110.16] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 504.103 damage (SpellSchool: 8). (Threat: 504.103)
-[110.16] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[110.16] [Target 1] Aura faded: {SpellID: 17364}
 [110.17] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1128.600 --> 1187.600) of 4105 total.
 [111.16] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [111.16] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
@@ -3084,8 +3070,7 @@
 [111.66] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
 [111.66] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (1277.400 --> 1156.400) of 4105 total.
 [111.66] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[111.66] [Target 1] Aura gained: {SpellID: 17364}
-[111.66] [Target 1] {SpellID: 17364} stacks: 0 --> 1
+[111.66] [Target 1] Aura refreshed: {SpellID: 17364}
 [111.66] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [111.66] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
 [111.66] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 1661.0, RAP: 106.0, SP: 242.3, BaseDamage:321.8, AfterAttackerMods:321.8, AfterResistances:273.3, AfterTargetMods:273.3, AfterOutcome:546.6, AfterPostOutcome:546.6
@@ -3204,8 +3189,6 @@
 [116.16] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (875.000 --> 663.500) of 4105 total.
 [116.16] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 1441.0, RAP: 106.0, SP: 242.3, BaseDamage:391.6, AfterAttackerMods:411.2, AfterResistances:411.2, AfterTargetMods:493.4, AfterOutcome:493.4, AfterPostOutcome:493.4
 [116.16] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 493.433 damage (SpellSchool: 8). (Threat: 493.433)
-[116.16] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[116.16] [Target 1] Aura faded: {SpellID: 17364}
 [116.17] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (663.500 --> 722.500) of 4105 total.
 [116.41] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 2} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [116.41] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 2}
@@ -3297,8 +3280,7 @@
 [119.66] [enhancement-shaman (#1)] Completed cast {SpellID: 17364}
 [119.66] [enhancement-shaman (#1)] Spent 121.000 mana from {SpellID: 17364} (902.100 --> 781.100) of 4105 total.
 [119.66] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[119.66] [Target 1] Aura gained: {SpellID: 17364}
-[119.66] [Target 1] {SpellID: 17364} stacks: 0 --> 1
+[119.66] [Target 1] Aura refreshed: {SpellID: 17364}
 [119.66] [enhancement-shaman (#1)] Casting {SpellID: 17364, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [119.66] [enhancement-shaman (#1)] Completed cast {SpellID: 17364, Tag: 1}
 [119.66] [enhancement-shaman (#1)] [Target 1] {SpellID: 17364, Tag: 1} [DEBUG] MAP: 1441.0, RAP: 106.0, SP: 242.3, BaseDamage:269.0, AfterAttackerMods:269.0, AfterResistances:228.4, AfterTargetMods:228.4, AfterOutcome:456.8, AfterPostOutcome:456.8
@@ -3368,8 +3350,6 @@
 [122.16] [enhancement-shaman (#1)] Spent 211.500 mana from {SpellID: 10414} (929.900 --> 718.400) of 4105 total.
 [122.16] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} [DEBUG] MAP: 1441.0, RAP: 106.0, SP: 242.3, BaseDamage:389.2, AfterAttackerMods:408.6, AfterResistances:408.6, AfterTargetMods:490.4, AfterOutcome:490.4, AfterPostOutcome:490.4
 [122.16] [enhancement-shaman (#1)] [Target 1] {SpellID: 10414} Hit for 490.353 damage (SpellSchool: 8). (Threat: 490.353)
-[122.16] [Target 1] {SpellID: 17364} stacks: 1 --> 0
-[122.16] [Target 1] Aura faded: {SpellID: 17364}
 [122.45] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [122.45] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
 [122.45] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1441.0, RAP: 106.0, SP: 242.3, BaseDamage:311.5, AfterAttackerMods:311.5, AfterResistances:264.6, AfterTargetMods:264.6, AfterOutcome:529.1, AfterPostOutcome:529.1
@@ -3533,3 +3513,5 @@
 [127.25] [Target 1] Aura faded: {SpellID: 11717, Tag: -1}
 [127.25] [Target 1] Aura faded: {SpellID: 9907, Tag: -1}
 [127.25] [Target 1] Aura faded: {SpellID: 11198, Tag: -1}
+[127.25] [Target 1] Aura faded: {SpellID: 17364}
+[127.25] [Target 1] {SpellID: 17364} stacks: 1 --> 0

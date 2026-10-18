@@ -326,6 +326,19 @@ func shamanTotemEffects(sham *shaman.Shaman, character *core.Character) []map[st
 	if aura := sham.FlametongueTotemAura; aura != nil {
 		trigger := spelldata.ProcTrigger(character, spelldata.MustFind(15036), nil)
 		trigger.ProcMask &= core.ProcMaskMeleeMH
+		// Windfury Weapon's main-hand strikes proc it as the main hand's autos do (patch 141): the
+		// trigger hears main hand specials, and its ExtraCondition keeps the autos and 439440.
+		triggerSpells := procTriggerSpells(character, trigger)
+		if buffs.FlametongueTotemHearsWindfuryWeapon && trigger.ProcMask.Matches(core.ProcMaskMeleeMHAuto) {
+			trigger.ProcMask |= core.ProcMaskMeleeMHSpecial
+			triggerSpells = []int{}
+			for _, i := range procTriggerSpells(character, trigger) {
+				spell := character.Spellbook[i]
+				if spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto) || spell.ActionID.SpellID == buffs.WindfuryWeaponMainHandStrikeID {
+					triggerSpells = append(triggerSpells, i)
+				}
+			}
+		}
 		attack := -1
 		for i, spell := range character.Spellbook {
 			if spell.ActionID == (core.ActionID{SpellID: 16389}) {
@@ -338,7 +351,7 @@ func shamanTotemEffects(sham *shaman.Shaman, character *core.Character) []map[st
 			"trigger_aura": buffs.FlametongueTotemTriggerLabel, "attack_spell": attack,
 			"attack_deals_damage": weapon != nil && weapon.SwingSpeed != 0,
 			"attack_damage":       buffs.FlametongueTotemBaseDamage(weapon.SwingSpeed),
-			"trigger_spells":      procTriggerSpells(character, trigger), "trigger_outcome": outcomeNames(trigger.Outcome),
+			"trigger_spells":      triggerSpells, "trigger_outcome": outcomeNames(trigger.Outcome),
 			"disabled_by_weapon": character.GetAura("Flametongue Imbue ItemSlotMainHand") != nil,
 			"duration_ns":        nanos(shamanFlametongueTotem.Highest().Duration()),
 			"party_totem":        character.GetAura("Flametongue Totem") != nil,

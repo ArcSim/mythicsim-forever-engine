@@ -616,7 +616,19 @@ impl MageAgent {
     }
 }
 
+/// The class action of a Fingers of Frost charge spent on a spell's landing (patch 139).
+const FINGERS_OF_FROST_LANDING: u32 = 0;
+
 impl Agent for MageAgent {
+    fn on_class_action(fight: &mut Fight<Self>, tag: u32) {
+        if tag == FINGERS_OF_FROST_LANDING {
+            let aura = fight.agent.fingers_of_frost.as_ref().expect("bound").aura;
+            if fight.aura(aura).active {
+                fight.remove_stack(aura);
+            }
+        }
+    }
+
     type Spell = MageSpell;
     type Aura = MageAura;
 
@@ -913,7 +925,19 @@ impl Agent for MageAgent {
                 }) =>
             {
                 // Go OnCastComplete runs after the damage roll, so the consuming cast keeps the bonus.
-                fight.remove_stack(aura);
+                // A spell that travels spends the charge when it lands (patch 139), so an instant
+                // cast while it flies still sees the last one; the landing's own damage and procs
+                // at that instant come after.
+                let travel = fight.travel_time(spell);
+                if travel <= 0 {
+                    fight.remove_stack(aura);
+                } else {
+                    fight.schedule_class_action(
+                        fight.now + travel,
+                        crate::core::fight::PRIORITY_AUTO,
+                        FINGERS_OF_FROST_LANDING,
+                    );
+                }
             }
             MageAura::Clearcasting => {
                 Self::arcane_concentration(fight).on_cast_complete(fight, spell)

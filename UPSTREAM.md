@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `771c6349a7f15ca331c32d80273b8b9139cb115e`, on community base `efd2a43eb5f0e96e3f2e8a1da9765904648c3ebc` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `1007c66bf8f55b364308f4e303b83e37ded8c66e`, on community base `efd2a43eb5f0e96e3f2e8a1da9765904648c3ebc` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `efd2a43eb5f0e96e3f2e8a1da9765904648c3ebc` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -449,6 +449,22 @@ of patch 138's shapes change again. The ledger reviews the 85 new community comm
 - Warrior: Blood Craze no longer triggers off Bloodthirst (#797).
 
 486 of the 614 Go goldens changed, 242 in DPS, and the preparation goldens of every class follow. Rust
+matches all 612 accepted fixtures with a Go golden, and preparation writes exactly what the exporter
+writes for every one of the 614. The recorded sweeps were not rerun.
+
+The pin moved from `771c6349a` to `1007c66bf` on 2026-10-16, three commits: the fork's patches 139
+to 141 (branch `mythicsim/oct16-evening`), from in-game beta testing on 16 October. The community
+base `efd2a43eb` and client build 70374 did not move, so the ledger has no new commit.
+
+- Mage (patch 139): a Fingers of Frost charge is spent when the consuming spell lands, ahead of the
+  landing's own damage and procs, so an instant Ice Lance while a Frostbolt flies on the last charge
+  still sees it. A bolt that procced at launch still spends none.
+- Shaman (patch 140): Earth Shock takes Stormstrike's bonus without spending a charge; only Lightning
+  Bolt, Chain Lightning and their overloads spend it.
+- Shaman (patch 141): Windfury Weapon's main-hand strike (439440) procs Flametongue Totem as the main
+  hand's autos do; the exported trigger spells list it.
+
+51 of the 614 Go goldens changed, 22 in DPS, and the Shaman preparation goldens with an Enhancement build follow. Rust
 matches all 612 accepted fixtures with a Go golden, and preparation writes exactly what the exporter
 writes for every one of the 614. The recorded sweeps were not rerun.
 

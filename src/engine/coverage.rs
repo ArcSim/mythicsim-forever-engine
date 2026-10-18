@@ -202,6 +202,7 @@ const COMMON_EFFECTS: &[&str] = &[
     "diamond_flask",
     "dragonbreath_chili",
     "dragonfire_potion",
+    "revelation",
     "caustic_smog_potion",
     "elemental_purging_potion",
     "energize_on_use",
@@ -460,6 +461,16 @@ fn common_claims(effect: &Effect) -> Vec<(&'static str, &str)> {
             trigger_aura, pet, ..
         } => vec![("player", trigger_aura), ("pet unit", pet)],
         Effect::ForceReactiveDisk { trigger_aura, .. } => vec![("player", trigger_aura)],
+        Effect::Revelation {
+            trigger_aura,
+            ticks_trigger_aura,
+            aura,
+            ..
+        } => vec![
+            ("player", trigger_aura),
+            ("player", ticks_trigger_aura),
+            ("player", aura),
+        ],
         Effect::StackingOnUse { aura, .. } => vec![("player", aura)],
         Effect::Thunderfury {
             trigger_aura,

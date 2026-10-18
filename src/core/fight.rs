@@ -28,6 +28,7 @@ mod innervate;
 pub(crate) mod item_swap;
 mod on_use_damage;
 pub(crate) mod proc_damage;
+mod revelation;
 pub(crate) use on_use_damage::known as on_use_damage_known;
 mod heal_proc;
 pub(crate) mod healing;
@@ -1768,6 +1769,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) healing_dealt_factor: f64,
     /// Dragonbreath Chili, when the character ate it.
     pub(crate) chili: Option<DragonbreathChili>,
+    /// Enchant Weapon - Revelation, when a weapon carries it.
+    pub(crate) revelation: Option<revelation::Revelation>,
     /// Go `AttackTable.MobTypeBonusStats`' spell damage, which only the Potion of Elemental
     /// Purging gives: its aura and the bonus the player's spells take while it holds, when the
     /// targets are of its mob type.
@@ -3439,6 +3442,18 @@ impl<A: Agent> Fight<A> {
                     AuraBehavior::Crusader
                 } else if side == Side::Player
                     && effects.iter().any(|effect| {
+                        matches!(effect, Effect::Revelation { trigger_aura, ticks_trigger_aura, .. } if *trigger_aura == exported.label || *ticks_trigger_aura == exported.label)
+                    })
+                {
+                    AuraBehavior::RevelationTrigger
+                } else if side == Side::Player
+                    && effects.iter().any(|effect| {
+                        matches!(effect, Effect::Revelation { aura, .. } if *aura == exported.label)
+                    })
+                {
+                    AuraBehavior::RevelationBuff
+                } else if side == Side::Player
+                    && effects.iter().any(|effect| {
                         matches!(effect, Effect::DragonbreathChili { trigger_aura, .. } if *trigger_aura == exported.label)
                     })
                 {
@@ -3792,6 +3807,7 @@ impl<A: Agent> Fight<A> {
             power_infusion: None,
             healing_dealt_factor: 1.0,
             chili: None,
+            revelation: None,
             mob_type_spell_damage: None,
             damage_procs: Vec::new(),
             spell_stat_procs: Vec::new(),
@@ -4241,6 +4257,7 @@ impl<A: Agent> Fight<A> {
                     fight.mob_type_spell_damage = Some((fight.player_aura(aura)?, *spell_damage));
                 }
                 Effect::EmeraldDragonWhelp { .. } => fight.bind_whelp(effect)?,
+                Effect::Revelation { .. } => fight.bind_revelation(effect)?,
                 Effect::SulfurasHandOfRagnaros { .. } => fight.bind_sulfuras(effect)?,
                 Effect::BladeOfHanna { .. } => fight.bind_blade_of_hanna(effect)?,
                 Effect::Thunderfury { .. } => fight.bind_thunderfury(effect)?,

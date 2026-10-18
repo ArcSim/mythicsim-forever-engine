@@ -136,7 +136,7 @@ const HAND_WRITTEN_ITEMS: [i32; 13] = [
     11815, 23570, 23206, 23207, 19324, 17076, 13204, 13286, 871, 6622, 13246, 2801, 5028,
 ];
 #[cfg(test)]
-const HAND_WRITTEN_ENCHANTS: [i32; 7] = [30, 32, 33, 663, 664, 803, 1898];
+const HAND_WRITTEN_ENCHANTS: [i32; 8] = [30, 32, 33, 663, 664, 803, 1898, 8217];
 
 /// The weapons that proc a damage spell of the client's rows: items_weapons.go's table of
 /// `CreateWeaponProcSpell` calls over `SpellDataProcDamageSpell`.
@@ -599,6 +599,10 @@ const WEAPON_ENCHANT_PROCS: [(i32, &str, f64, i32); 2] = [
 fn apply_hand_written_enchant(env: &mut Environment, enchant: i32) -> bool {
     let unit = env.player;
     match enchant {
+        super::revelation::REVELATION_ENCHANT => {
+            super::revelation::apply_revelation(env);
+            true
+        }
         // The scopes add to the ranged weapon's damage.
         30 | 32 | 33 | 663 | 664 => {
             let damage = match enchant {

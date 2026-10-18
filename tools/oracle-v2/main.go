@@ -1463,6 +1463,9 @@ func commonEffects(character *core.Character, target *core.Unit, request *proto.
 	for _, effect := range externalCooldownEffects(character, request, unrepresented) {
 		effects = append(effects, effect)
 	}
+	if effect := revelationEffect(character, unrepresented); effect != nil {
+		effects = append(effects, effect)
+	}
 	return effects
 }
 

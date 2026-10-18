@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `2fe7678a0844a6d19f3e6a4ec1469e542763710b`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `37c2dfbdae9ce927cb2e2be648378cb269db23c1`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -532,6 +532,39 @@ build 70425 did not move, so the ledger has no new commit.
 12 of the 641 Go goldens changed, all Survival hunter builds that lay traps, and the Hunter preparation
 goldens follow. Rust matches all 639 accepted fixtures with a Go golden, and preparation writes exactly
 what the exporter writes for every one of the 641. The recorded sweeps were not rerun.
+
+The pin moved from `2fe7678a0` to `37c2dfbda` on 2026-10-18, the fork's patches 148 to 172 (branch
+`mythicsim/oct19-release`). The community base `b7083fac1` and client build 70425 did not move, so the
+ledger has no new commit.
+
+- Paladin: the Seal of Righteousness hit takes half the judgement dummy's share, times 1.2 on a
+  two-hander, and rank 1 fires 25741 (patches 148, 158). Judgement of Righteousness, Seal and
+  Judgement of Fury, Holy Strike and Holy Shield read their client rows (168, 170). One-Handed Weapon
+  Specialization skips Holy Shock (149) and Champion of the Light is back to 20% a rank (159). The four
+  judgements that deal no damage roll weapon procs, Improved Seals raises Seal of Command's target
+  bonus, which the contract now carries as `target_bonus_coefficient`, and Seal of Light heals at 15
+  procs a minute (169).
+- Mage: Frost Blast is castable, registered as Frostbolt is, and takes Improved Frostbolt and Arctic
+  Reach (153).
+- Warlock: Incinerate's Immolate bonus multiplies the whole hit (155).
+- Shaman: a Windfury Weapon that only an item swap's main hand carries takes the party Windfury
+  Totem's place once the swap puts it on (156).
+- Consumables: a consumable's crit rating with no spell crit of its own counts for spells too (166),
+  and the elixirs' shared +2% crit rider applies once (171). Patch 165's consumables are imported.
+- Hunter: Mortal Shots raises Sniper Shot's crit damage (172).
+- Data: patch 164's hotfix cache, which among others changes Holy Fire and gives Hurricane back its
+  plain proc, so item 2824 leaves the Forever items.
+
+Not modelled yet, so preparation refuses them and the request falls back to Go: the Revelation
+enchant (8217, patch 157) and the three Forever potions with an effect of their own, Dragonfire,
+Caustic Smog and Elemental Purging (167).
+
+501 of the 641 Go goldens changed. 84 moved DPS by 1% or more: 80 paladin builds, two Elemental
+Enhancement shamans, a shaman's item swap and the Hurricane hunter. The rest are the consumable crit
+and the hotfix data, a median move of 0.02%. The Hunter, Mage, Paladin and Priest preparation goldens
+and 9 classic weapon goldens follow. Rust matches all 639 accepted fixtures with a Go golden, and
+preparation writes exactly what the exporter writes for every one of the 641. The recorded sweeps
+were not rerun.
 
 ## Ledger
 

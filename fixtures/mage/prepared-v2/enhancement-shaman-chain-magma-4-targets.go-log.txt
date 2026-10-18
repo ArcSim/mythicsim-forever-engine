@@ -88,11 +88,12 @@
 [3.50] [enhancement-shaman (#1)] Casting {SpellID: 29228} (Cost = 192.700, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [3.50] [enhancement-shaman (#1)] Completed cast {SpellID: 29228}
 [3.50] [enhancement-shaman (#1)] Spent 192.700 mana from {SpellID: 29228} (3549.400 --> 3356.700) of 4105 total.
-[3.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 2484.5, RAP: 116.6, SP: 276.5, BaseDamage:225.2, AfterAttackerMods:259.0, AfterResistances:194.2, AfterTargetMods:213.6, AfterOutcome:213.6, AfterPostOutcome:213.6
+[3.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228} [DEBUG] MAP: 2484.5, RAP: 116.6, SP: 276.5, BaseDamage:225.2, AfterAttackerMods:259.0, AfterResistances:194.2, AfterTargetMods:213.6, AfterOutcome:320.5, AfterPostOutcome:320.5
 [3.50] [enhancement-shaman (#1)] Casting {SpellID: 29228, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [3.50] [enhancement-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
 [3.50] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
-[3.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228} Hit (25% Resist) for 213.637 damage (SpellSchool: 4). (Threat: 213.637)
+[3.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228} Crit (25% Resist) for 320.456 damage (SpellSchool: 4). (Threat: 320.456)
+[3.51] [enhancement-shaman (#1)] Aura gained: {SpellID: 29178}
 [4.92] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [4.92] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
 [4.92] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2484.5, RAP: 116.6, SP: 266.5, BaseDamage:860.5, AfterAttackerMods:860.5, AfterResistances:730.8, AfterTargetMods:730.8, AfterOutcome:422.8, AfterPostOutcome:422.8
@@ -116,8 +117,8 @@
 [5.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (3099.700 --> 3130.500) of 4105 total.
 [5.79] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [5.79] [enhancement-shaman (#1)] Completed cast {SpellID: 10436}
-[5.79] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2484.5, RAP: 116.6, SP: 276.5, BaseDamage:51.7, AfterAttackerMods:59.5, AfterResistances:59.5, AfterTargetMods:65.4, AfterOutcome:65.4, AfterPostOutcome:65.4
-[5.79] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit for 65.402 damage (SpellSchool: 4). (Threat: 65.402)
+[5.79] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2484.5, RAP: 116.6, SP: 276.5, BaseDamage:51.7, AfterAttackerMods:59.5, AfterResistances:59.5, AfterTargetMods:65.4, AfterOutcome:98.1, AfterPostOutcome:98.1
+[5.79] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Crit for 98.103 damage (SpellSchool: 4). (Threat: 98.103)
 [6.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} [DEBUG] MAP: 2484.5, RAP: 116.6, SP: 276.5, BaseDamage:71.7, AfterAttackerMods:82.4, AfterResistances:82.4, AfterTargetMods:90.6, AfterOutcome:90.6, AfterPostOutcome:90.6
 [6.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 90.641 damage (SpellSchool: 4). (Threat: 90.641)
 [6.50] [enhancement-shaman (#1)] No available actions!
@@ -250,6 +251,7 @@
 [13.08] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} [DEBUG] MAP: 2484.5, RAP: 116.6, SP: 276.5, BaseDamage:51.7, AfterAttackerMods:59.5, AfterResistances:29.7, AfterTargetMods:32.7, AfterOutcome:32.7, AfterPostOutcome:32.7
 [13.08] [enhancement-shaman (#1)] [Target 1] {SpellID: 10436} Hit (50% Resist) for 32.701 damage (SpellSchool: 4). (Threat: 32.701)
 [13.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (2520.600 --> 2551.400) of 4105 total.
+[13.51] [enhancement-shaman (#1)] Aura faded: {SpellID: 29178}
 [14.50] [enhancement-shaman (#1)] Casting {ItemID: 12662} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [14.50] [enhancement-shaman (#1)] Completed cast {ItemID: 12662}
 [14.50] [enhancement-shaman (#1)] Gained 1200.000 mana from {ItemID: 12662} (2551.400 --> 3751.400) of 4105 total.
@@ -1106,11 +1108,11 @@
 [71.90] [enhancement-shaman (#1)] Queueing up {SpellID: 10605} to cast at 1m12.000000005s.
 [71.90] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.00] [enhancement-shaman (#1)] Casting {SpellID: 10605} (Cost = 289.800, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
-[72.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
+[72.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:154.3, AfterPostOutcome:154.3
 [72.50] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
 [72.50] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
 [72.50] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:70.1, AfterTargetMods:77.2, AfterOutcome:77.2, AfterPostOutcome:77.2
-[72.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
+[72.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} tick Crit for 154.316 damage (SpellSchool: 4). (Threat: 154.316)
 [72.50] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
 [72.50] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
 [72.50] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} tick Hit (25% Resist) for 77.158 damage (SpellSchool: 4). (Threat: 77.158)
@@ -1231,11 +1233,11 @@
 [80.00] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228, Tag: 1} tick Hit for 87.576 damage (SpellSchool: 4). (Threat: 87.576)
 [80.00] [enhancement-shaman (#1)] Casting {SpellID: 10605} (Cost = 289.800, Cast Time = 2s, GCD = 1.5s, Effective Time = 2s)
 [80.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
-[80.50] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
+[80.50] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:154.3, AfterPostOutcome:154.3
 [80.50] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
 [80.50] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
 [80.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
-[80.50] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
+[80.50] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} tick Crit for 154.316 damage (SpellSchool: 4). (Threat: 154.316)
 [80.50] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
 [80.50] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
 [81.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (1530.600 --> 1561.400) of 4105 total.
@@ -1266,11 +1268,11 @@
 [82.01] [enhancement-shaman (#1)] Gained 123.951 health from {SpellID: 20007} (4210.000 --> 4210.000) of 4210 total.
 [82.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (1327.600 --> 1386.600) of 4105 total.
 [82.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
-[82.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
+[82.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:154.3, AfterPostOutcome:154.3
 [82.50] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:23.4, AfterTargetMods:25.7, AfterOutcome:25.7, AfterPostOutcome:25.7
 [82.50] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
 [82.50] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
-[82.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
+[82.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} tick Crit for 154.316 damage (SpellSchool: 4). (Threat: 154.316)
 [82.50] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} tick Hit (75% Resist) for 25.719 damage (SpellSchool: 4). (Threat: 25.719)
 [82.50] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
 [82.50] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
@@ -1414,11 +1416,11 @@
 [90.01] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 3
 [90.01] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (866.500 --> 925.500) of 4105 total.
 [90.01] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
-[90.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
+[90.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:154.3, AfterPostOutcome:154.3
 [90.50] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
 [90.50] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
 [90.50] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} [DEBUG] MAP: 2478.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
-[90.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
+[90.50] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} tick Crit for 154.316 damage (SpellSchool: 4). (Threat: 154.316)
 [90.50] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
 [90.50] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
 [90.50] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
@@ -1796,11 +1798,11 @@
 [109.59] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 1238931}
 [110.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
 [110.54] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
-[110.54] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
+[110.54] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:154.3, AfterPostOutcome:154.3
 [110.54] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
 [110.54] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
 [110.54] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
-[110.54] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
+[110.54] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} tick Crit for 154.316 damage (SpellSchool: 4). (Threat: 154.316)
 [110.54] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
 [110.54] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
 [111.08] [enhancement-shaman (#1)] No available actions!
@@ -1856,11 +1858,11 @@
 [112.52] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [112.54] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
 [112.54] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
-[112.54] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
+[112.54] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:154.3, AfterPostOutcome:154.3
 [112.54] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} [DEBUG] MAP: 2258.6, RAP: 106.0, SP: 252.3, BaseDamage:81.3, AfterAttackerMods:93.5, AfterResistances:93.5, AfterTargetMods:102.9, AfterOutcome:102.9, AfterPostOutcome:102.9
 [112.54] [enhancement-shaman (#1)] [Target 1] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
 [112.54] [enhancement-shaman (#1)] [Target 2] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
-[112.54] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
+[112.54] [enhancement-shaman (#1)] [Target 3] {SpellID: 10587} tick Crit for 154.316 damage (SpellSchool: 4). (Threat: 154.316)
 [112.54] [enhancement-shaman (#1)] [Target 4] {SpellID: 10587} tick Hit for 102.877 damage (SpellSchool: 4). (Threat: 102.877)
 [112.62] [enhancement-shaman (#1)] No available actions!
 [112.62] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.

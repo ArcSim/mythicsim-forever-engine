@@ -2055,6 +2055,9 @@ pub enum Effect {
         proc_spell_id: i32,
         weapon_percent: f64,
         coefficient: f64,
+        /// The share of the target's extra Holy damage taken a proc adds: the coefficient times
+        /// Improved Seals (MythicSim patch 169).
+        target_bonus_coefficient: f64,
         proc_chance: f64,
         rng_label: String,
         icd_ns: i64,

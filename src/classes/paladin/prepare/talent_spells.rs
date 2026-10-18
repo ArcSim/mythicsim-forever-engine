@@ -84,10 +84,6 @@ pub(super) const LIGHTS_VIGIL_TRIGGERED: [(i32, i32, i32, i32); 3] = [
     (3, 1311597, 1311596, 1311598),
 ];
 
-/// Go `HolyShieldSpellPowerCoefficient`: the per-block damage's spell power share as measured in
-/// game on client 70425 (MythicSim patch 143).
-pub(crate) const HOLY_SHIELD_SPELL_POWER_COEFFICIENT: f64 = 0.07;
-
 impl Paladin {
     /// Go `registerTalentSpells`.
     pub(super) fn register_talent_spells(&mut self, sim: &mut Sim, unit: UnitId) {
@@ -482,8 +478,8 @@ impl Paladin {
                 class_spell_mask: masks::HOLY_SHIELD_PROC,
                 damage_multiplier: 1.0,
                 threat_multiplier: 1.2,
-                // Measured in game on client 70425 (MythicSim patch 143); the rows carry 0.08.
-                bonus_coefficient: HOLY_SHIELD_SPELL_POWER_COEFFICIENT,
+                // Go `HolyShieldSpellPowerFromRow` (MythicSim patch 170): the row's 0.08.
+                bonus_coefficient: rank.effect(dbcenums::A_PROC_TRIGGER_DAMAGE, 0).coeff(),
                 ..SpellConfig::default()
             },
         );

@@ -32,7 +32,7 @@ const SEAL_DURATION: i64 = 30 * SECOND;
 /// The damage spell each Seal of Righteousness rank fires on a hit. They carry no rank
 /// subtext, so no ladder holds them.
 const SEAL_OF_RIGHTEOUSNESS_PROC_IDS: [(i32, i32); 8] = [
-    (1, 25742),
+    (1, 25741),
     (2, 25740),
     (3, 25739),
     (4, 25738),
@@ -86,14 +86,6 @@ fn judgement_config(
         ..SpellConfig::default()
     }
 }
-
-/// Go `JudgementOfRighteousnessSpellPowerCoefficient`, as measured in game on client 70425
-/// (MythicSim patch 143). The seal's per-hit share stays on the dummy's number.
-pub(crate) const JUDGEMENT_OF_RIGHTEOUSNESS_SPELL_POWER_COEFFICIENT: f64 = 0.70;
-/// Go `SealOfFurySpellPowerCoefficient` and `JudgementOfFurySpellPowerCoefficient`, as measured in
-/// game on client 70425 (MythicSim patch 143).
-pub(crate) const SEAL_OF_FURY_SPELL_POWER_COEFFICIENT: f64 = 0.15;
-pub(crate) const JUDGEMENT_OF_FURY_SPELL_POWER_COEFFICIENT: f64 = 0.67;
 
 impl Paladin {
     /// Go `registerSeals`.
@@ -171,8 +163,8 @@ impl Paladin {
         let per_hit = judge_rank.effect_n(2);
 
         let judgement = SpellConfig {
-            // Measured in game on client 70425 (MythicSim patch 143); the rows carry 0.429.
-            bonus_coefficient: JUDGEMENT_OF_RIGHTEOUSNESS_SPELL_POWER_COEFFICIENT,
+            // Go `JudgementOfRighteousnessSpellPowerFromRow` (MythicSim patch 168): the row's 0.429.
+            bonus_coefficient: judge_rank.damage_effect().coeff(),
             ..judgement_config(
                 judge_rank,
                 masks::JUDGEMENT_OF_RIGHTEOUSNESS,
@@ -182,10 +174,13 @@ impl Paladin {
         };
         sim.register_spell(unit, judgement);
 
+        // Go `sealOfRighteousnessHitCoefficient` with `SealOfRighteousnessSpellPowerFixed` on (MythicSim
+        // patch 158): the judgement dummy's share, x1.2 on a two-hander, halved.
         let mut coefficient = per_hit.coeff();
         if self.main_hand_is_two_hand(sim, unit) {
             coefficient *= 1.2;
         }
+        coefficient /= 2.0;
         sim.register_spell(
             unit,
             SpellConfig {
@@ -319,8 +314,9 @@ impl Paladin {
                 action_id: spell_action(judgement_id),
                 spell_school: school::HOLY,
                 defense_type: DefenseType::Melee,
-                proc_mask: ProcMask::EMPTY,
-                flags: SpellFlag::MELEE_METRICS,
+                // Go `debuffJudgementProcMask` and `debuffJudgementFlags` (MythicSim patch 169).
+                proc_mask: ProcMask::MELEE_MH_SPECIAL,
+                flags: SpellFlag::MELEE_METRICS | SpellFlag::PROC,
                 class_spell_mask: masks::JUDGEMENT_OF_LIGHT,
                 damage_multiplier: 1.0,
                 threat_multiplier: 1.0,
@@ -350,6 +346,12 @@ impl Paladin {
             unit,
             &ProcTrigger {
                 name: seal_label("Seal of Light", &label, rank),
+                // Go `SealOfLightFifteenPPM` (MythicSim patch 169): NewLegacyPPMManager(15, melee).
+                dpm: Some(std::rc::Rc::new(sim.new_ppm_manager(
+                    unit,
+                    15.0,
+                    ProcMask::MELEE,
+                ))),
                 action_id: spell_action(rank.id),
                 metrics_action_id: spell_action(rank.id),
                 duration: SEAL_DURATION,
@@ -386,8 +388,9 @@ impl Paladin {
                 action_id: spell_action(judgement_id),
                 spell_school: school::HOLY,
                 defense_type: DefenseType::Melee,
-                proc_mask: ProcMask::EMPTY,
-                flags: SpellFlag::MELEE_METRICS,
+                // Go `debuffJudgementProcMask` and `debuffJudgementFlags` (MythicSim patch 169).
+                proc_mask: ProcMask::MELEE_MH_SPECIAL,
+                flags: SpellFlag::MELEE_METRICS | SpellFlag::PROC,
                 class_spell_mask: masks::JUDGEMENT_OF_WISDOM,
                 damage_multiplier: 1.0,
                 threat_multiplier: 1.0,
@@ -457,8 +460,9 @@ impl Paladin {
                 ..judgement_config(
                     judgement_rank,
                     masks::JUDGEMENT_OF_JUSTICE,
-                    SpellFlag::MELEE_METRICS,
-                    ProcMask::EMPTY,
+                    // Go `debuffJudgementFlags` and `debuffJudgementProcMask` (MythicSim patch 169).
+                    SpellFlag::MELEE_METRICS | SpellFlag::PROC,
+                    ProcMask::MELEE_MH_SPECIAL,
                 )
             },
         );
@@ -504,8 +508,9 @@ impl Paladin {
                 ..judgement_config(
                     judgement_rank,
                     masks::JUDGEMENT_OF_THE_CRUSADER,
-                    SpellFlag::MELEE_METRICS,
-                    ProcMask::EMPTY,
+                    // Go `debuffJudgementFlags` and `debuffJudgementProcMask` (MythicSim patch 169).
+                    SpellFlag::MELEE_METRICS | SpellFlag::PROC,
+                    ProcMask::MELEE_MH_SPECIAL,
                 )
             },
         );
@@ -554,7 +559,8 @@ impl Paladin {
 
         let judgement = SpellConfig {
             // Measured in game on client 70425 (MythicSim patch 143); the rows carry 0.429.
-            bonus_coefficient: JUDGEMENT_OF_FURY_SPELL_POWER_COEFFICIENT,
+            // Go `SealOfFurySpellPowerFromRows` (MythicSim patch 168): the judgement's row.
+            bonus_coefficient: judgement_rank.damage_effect().coeff(),
             ..judgement_config(
                 judgement_rank,
                 masks::JUDGEMENT_OF_FURY,
@@ -593,7 +599,8 @@ impl Paladin {
                 damage_multiplier: 1.0,
                 threat_multiplier: 1.0,
                 // Measured in game on client 70425 (MythicSim patch 143); the rows carry 0.10.
-                bonus_coefficient: SEAL_OF_FURY_SPELL_POWER_COEFFICIENT,
+                // Go `SealOfFurySpellPowerFromRows` (MythicSim patch 168): the proc's row.
+                bonus_coefficient: proc_rank.damage_effect().coeff(),
                 ..SpellConfig::default()
             },
         );

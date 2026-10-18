@@ -267,7 +267,13 @@ impl Paladin {
         let takes_it = move |sim: &Sim, spell: SpellId| {
             let spell = sim.spell(spell);
             !spell.flags.matches(SpellFlag::HELPFUL)
-                && spell.class_spell_mask & (masks::CONSECRATION | masks::RETRIBUTION_AURA) == 0
+                // Go `OneHandedWeaponSpecializationSkipsHolyShock` (MythicSim patch 149).
+                && spell.class_spell_mask
+                    & (masks::CONSECRATION
+                        | masks::RETRIBUTION_AURA
+                        | masks::HOLY_SHOCK
+                        | masks::HOLY_SHOCK_HEAL)
+                    == 0
                 && !retribution_aura.contains(&spell.action_id.spell_id)
         };
         let takes_on = Rc::new(takes_it);

@@ -80,6 +80,11 @@ pub(crate) struct Character {
     pub cooldown_configs: Vec<Message>,
     pub hp_percent_for_defensives: f64,
     pub initial_major_cooldowns: Vec<MajorCooldown>,
+    /// Go `Character.ItemProcBuffs`: the stat buffs of proc items and enchants, in the order
+    /// `AddStatProcBuff` registered them.
+    pub item_proc_buffs: Vec<super::aura_helpers::StatBuffAura>,
+    /// Go `MajorCooldown.BuffAura` of each major cooldown that has one, by its spell.
+    pub cooldown_buff_auras: Vec<(SpellId, super::aura_helpers::StatBuffAura)>,
     pub party_index: i32,
     pub spirit_regen_base: f64,
     pub spirit_regen_per_spirit: f64,
@@ -297,6 +302,8 @@ impl Sim {
             cooldown_configs: Vec::new(),
             hp_percent_for_defensives: 0.0,
             initial_major_cooldowns: Vec::new(),
+            item_proc_buffs: Vec::new(),
+            cooldown_buff_auras: Vec::new(),
             party_index: player_index,
             spirit_regen_base: 0.0,
             spirit_regen_per_spirit: 0.0,

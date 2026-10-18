@@ -172,7 +172,7 @@ fn limits(prepared: &PreparedV2, reachable: &[&Spell]) -> Vec<String> {
             }
         }
         for item in &rotation.priority_list {
-            if let crate::rotation::Action::CastSpell { spell: id, .. } = &item.action {
+            if let crate::rotation::Action::CastSpell { spell: id, .. } = item.action.scheduled() {
                 cast_by_hand.push(id.clone());
             }
         }

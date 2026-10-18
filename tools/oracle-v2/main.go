@@ -377,23 +377,23 @@ type DamageEffect struct {
 }
 
 type Spell struct {
-	ActionID                       *ActionID     `json:"action_id"`
-	Rank                           int32         `json:"rank"`
-	School                         uint8         `json:"school"`
-	DefenseType                    string        `json:"defense_type"`
-	ProcMask                       []string      `json:"proc_mask"`
-	Flags                          []string      `json:"flags"`
-	ClassSpell                     string        `json:"class_spell,omitempty"`
-	MissileSpeed                   float64       `json:"missile_speed"`
-	Cost                           *Cost         `json:"cost"`
-	DefaultCast                    Cast          `json:"default_cast"`
-	CastKind                       string        `json:"cast_kind"`
-	IgnoreHaste                    bool          `json:"ignore_haste"`
-	HasExtraCastCondition          bool          `json:"has_extra_cast_condition"`
-	HasCastRequirement             bool          `json:"has_cast_requirement"`
+	ActionID              *ActionID `json:"action_id"`
+	Rank                  int32     `json:"rank"`
+	School                uint8     `json:"school"`
+	DefenseType           string    `json:"defense_type"`
+	ProcMask              []string  `json:"proc_mask"`
+	Flags                 []string  `json:"flags"`
+	ClassSpell            string    `json:"class_spell,omitempty"`
+	MissileSpeed          float64   `json:"missile_speed"`
+	Cost                  *Cost     `json:"cost"`
+	DefaultCast           Cast      `json:"default_cast"`
+	CastKind              string    `json:"cast_kind"`
+	IgnoreHaste           bool      `json:"ignore_haste"`
+	HasExtraCastCondition bool      `json:"has_extra_cast_condition"`
+	HasCastRequirement    bool      `json:"has_cast_requirement"`
 	// The player auras whose form the cast requirement refuses, absent when Rust cannot
 	// represent the requirement.
-	RequirementAuras *[]string `json:"requirement_auras,omitempty"`
+	RequirementAuras               *[]string     `json:"requirement_auras,omitempty"`
 	MinRange                       float64       `json:"min_range"`
 	MaxRange                       float64       `json:"max_range"`
 	MaxCharges                     int           `json:"max_charges"`
@@ -697,6 +697,8 @@ type Player struct {
 	PrepullActions int `json:"prepull_actions"`
 	// The dot base durations the rotation captured when it was built.
 	RotationDotBaseDurations []RotationDotBaseDuration `json:"rotation_dot_base_durations,omitempty"`
+	// What the rotation's values read that the rest of the export leaves out.
+	RotationReads *RotationReads `json:"rotation_reads,omitempty"`
 	// The health a fight starts with, where it differs from the maximum: health.go resets to the
 	// maximum before the agent's reset, and a form the agent then enters raises the maximum.
 	HealthAtReset *float64 `json:"health_at_reset,omitempty"`
@@ -1287,7 +1289,7 @@ func commonEffects(character *core.Character, target *core.Unit, request *proto.
 		effects = append(effects, map[string]any{
 			"kind": "blade_of_hanna", "trigger_aura": trigger.Label, "stacks_aura": "Improving Form",
 			"buff_aura": "Perfected Form", "damage": perfected.EffectN(1).BasePoints,
-			"strike_spell": spellPosition(character, character.GetSpell(core.ActionID{SpellID: perfected.ID})),
+			"strike_spell":   spellPosition(character, character.GetSpell(core.ActionID{SpellID: perfected.ID})),
 			"trigger_spells": procTriggerSpells(character, core.ProcTrigger{ProcMask: core.ProcMaskMeleeMHAuto}),
 		})
 	}
@@ -1939,10 +1941,11 @@ func prepareSet(request *proto.RaidSimRequest, digest, scenario string, swapped 
 				BonusSpellCritPercent: table.BonusSpellCritPercent, CritMultiplier: table.CritMultiplier,
 				DamageDealtMultiplier: table.DamageDealtMultiplier, DamageTakenMultiplier: table.DamageTakenMultiplier},
 			Spells: spells, MajorCooldowns: mcds, Rotation: rotation,
-			PrepullActions:         privateField(simulation.Environment, "prepullActions").Len(),
+			PrepullActions:           privateField(simulation.Environment, "prepullActions").Len(),
 			RotationDotBaseDurations: rotationDotBaseDurations(request),
-			HealthAtReset:          healthAtReset(request),
-			HpPercentForDefensives: request.Raid.Parties[0].Players[0].GetCooldowns().GetHpPercentForDefensives(),
+			RotationReads:            rotationReads(request, simulation, character),
+			HealthAtReset:            healthAtReset(request),
+			HpPercentForDefensives:   request.Raid.Parties[0].Players[0].GetCooldowns().GetHpPercentForDefensives(),
 		},
 		Effects: effects, Unrepresented: unrepresented,
 	}

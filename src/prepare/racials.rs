@@ -166,6 +166,9 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
                 },
             );
             sim.add_major_cooldown(unit, major_cooldown(blood_fury, cooldown_type::DPS));
+            sim.character_mut(unit)
+                .cooldown_buff_auras
+                .push((blood_fury, blood_fury_aura.clone()));
 
             let shatter_curse_id = ActionId::spell(1299026);
             let shatter_curse_aura = sim.register_aura(

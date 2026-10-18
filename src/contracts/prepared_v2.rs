@@ -857,6 +857,10 @@ pub struct Player {
     /// the rotation, by spell.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub rotation_dot_base_durations: Vec<RotationDotBaseDuration>,
+    /// What the rotation's values read that the rest of the input leaves out, for a rotation
+    /// that holds such a value.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub rotation_reads: Option<RotationReads>,
 }
 
 /// What `APLValueDotBaseDuration` captured for a spell: the dot's `BaseDuration` on the first
@@ -866,6 +870,74 @@ pub struct Player {
 pub struct RotationDotBaseDuration {
     pub spell: ActionId,
     pub base_duration_ns: i64,
+}
+
+/// What the rotation's values read that the rest of the input leaves out.
+#[derive(Clone, Debug, Default, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct RotationReads {
+    /// Go apl_values_consumables.go: the potion and the conjured item the consumables select.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub potion_id: Option<i32>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub conjured_id: Option<i32>,
+    /// Go apl_values_boss.go: the spells the first target knows that a boss value names.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub target_spells: Vec<RotationTargetSpell>,
+    /// Go `APLValueMultipleCdUsages`: the related self buff of each spell it names that has one.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub self_buffs: Vec<RotationSelfBuff>,
+    /// Go `Character.ItemProcBuffs`, which the item stat proc values filter by stat and ICD.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub item_proc_buffs: Vec<RotationItemProcBuff>,
+    /// The major cooldowns whose buff aura moves one of the stats a stat buff cooldown value
+    /// names, as the value finds them while the rotation is built, by the stats.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub cooldown_buffs: Vec<RotationCooldownBuffs>,
+    /// The spells each `castAllStatBuffCooldowns` casts, by its stats.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub cast_cooldowns: Vec<RotationCooldownBuffs>,
+}
+
+/// A `StatBuffAura` of `Character.ItemProcBuffs`: the aura's label, the stats it buffs as Go's
+/// stat indices, and whether it is swapped out.
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct RotationItemProcBuff {
+    pub aura: String,
+    pub stats: Vec<i32>,
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub swapped: bool,
+}
+
+/// The major cooldowns matching stats: their spells and their buff auras' labels.
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct RotationCooldownBuffs {
+    pub stats: Vec<i32>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub spells: Vec<ActionId>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub auras: Vec<String>,
+}
+
+/// A spell the first target knows, which its identical copies share.
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct RotationTargetSpell {
+    pub spell: ActionId,
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub has_cooldown: bool,
+}
+
+/// A spell's `RelatedSelfBuff`, by the aura's label, and whether the spell has a cooldown.
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct RotationSelfBuff {
+    pub spell: ActionId,
+    pub aura: String,
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub has_cooldown: bool,
 }
 
 /// A pet Go enables at each reset, as core/pet.go builds it.

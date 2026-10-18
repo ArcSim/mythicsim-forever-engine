@@ -265,6 +265,8 @@ pub(crate) struct Aura<K> {
     /// Go `Aura.Tag`, which `HasActiveAuraWithTag` matches.
     pub(crate) tag: Option<String>,
     pub(crate) action_id: Option<ActionId>,
+    /// Go `ActionIDForProc`: the proc a trigger aura stands for.
+    pub(crate) proc_action_id: Option<ActionId>,
     /// Go `AuraMetrics.ID`, fixed at registration; a metric split retags `action_id` alone.
     pub(crate) metrics_id: Option<ActionId>,
     pub(crate) duration: i64,
@@ -351,6 +353,7 @@ impl<K> Tracker<K> {
             label: exported.label.clone(),
             tag: exported.tag.clone(),
             action_id: exported.action_id.clone(),
+            proc_action_id: exported.action_id_for_proc.clone(),
             metrics_id: exported
                 .action_id
                 .clone()
@@ -393,6 +396,7 @@ impl<K> Tracker<K> {
                 label: aura.label.clone(),
                 tag: aura.tag.clone(),
                 action_id: aura.action_id.clone(),
+                proc_action_id: aura.proc_action_id.clone(),
                 metrics_id: aura.metrics_id.clone(),
                 duration: aura.duration,
                 max_stacks: aura.max_stacks,
@@ -439,6 +443,15 @@ impl<K> Tracker<K> {
         self.auras
             .iter()
             .position(|aura| aura.action_id.as_ref() == Some(id))
+    }
+
+    /// Go `GetIcdAuraByID`: the first aura with the action, or triggered by it, that has an
+    /// ICD.
+    pub(crate) fn find_icd_by_id(&self, id: &ActionId) -> Option<usize> {
+        self.auras.iter().position(|aura| {
+            aura.icd.is_some()
+                && (aura.action_id.as_ref() == Some(id) || aura.proc_action_id.as_ref() == Some(id))
+        })
     }
 
     fn add_to(&mut self, list: List, aura: usize) {
@@ -1046,6 +1059,33 @@ impl<A: Agent> Fight<A> {
 
     /// Go `APLActionActivateAura.Execute`: an aura whose cooldown is not ready only logs so;
     /// otherwise it activates and its cooldown starts.
+    /// Go `APLActionActivateAuraWithStacks.Execute`: not while its ICD runs, then the aura
+    /// with its stacks.
+    pub(crate) fn activate_aura_with_stacks_action(&mut self, aura: AuraRef, stacks: i32) {
+        let id = self.aura(aura).action_id.clone().unwrap_or_default();
+        if let Some((timer, _)) = self.aura(aura).icd {
+            if self.timers[timer] > self.now {
+                if self.log.is_some() {
+                    let line = format!(
+                        "Could not activate aura {} ({stacks} stacks) because it's not ready",
+                        super::log::action_string(&id)
+                    );
+                    self.unit_log(aura.side, &line);
+                }
+                return;
+            }
+        }
+        if self.log.is_some() {
+            let line = format!(
+                "Activating aura {} ({stacks} stacks)",
+                super::log::action_string(&id)
+            );
+            self.unit_log(aura.side, &line);
+        }
+        self.activate_aura(aura);
+        self.set_stacks(aura, stacks);
+    }
+
     pub(crate) fn activate_aura_action(&mut self, aura: AuraRef) {
         let id = self.aura(aura).action_id.clone().unwrap_or_default();
         let icd = self.aura(aura).icd;

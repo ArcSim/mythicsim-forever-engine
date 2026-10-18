@@ -396,9 +396,6 @@ func itemSwapEffect(request *proto.RaidSimRequest, digest, scenario string, simu
 	sets := itemSwapSets(character)
 	note(len(sets.slots) != 1 || sets.slots[0] != proto.ItemSlot_ItemSlotMainHand,
 		"an item swap of a slot other than the main hand alone is unsupported")
-	for _, action := range request.Raid.Parties[0].Players[0].GetRotation().GetPrepullActions() {
-		note(action.GetAction().GetItemSwap() != nil, "a prepull item swap is unsupported")
-	}
 	equipmentStats := readPrivate(privateField(swap, "equipmentStats"))
 	weaponStats := readPrivate(equipmentStats.FieldByName("weaponSlots")).Interface().(stats.Stats)
 	effect := map[string]any{

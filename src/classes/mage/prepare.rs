@@ -84,6 +84,10 @@ static CLASS_SPELLS: &[ClassSpellName] = &[
         name: "frostbolt",
     },
     ClassSpellName {
+        mask: masks::FROST_BLAST,
+        name: "frost_blast",
+    },
+    ClassSpellName {
         mask: masks::FROST_NOVA,
         name: "frost_nova",
     },
@@ -275,8 +279,9 @@ impl PrepAgent for Mage {
         effects
     }
 
-    /// Go `Mage.EurekaSpells`: the fifteen spells the client's Eureka! rows name for cost and
-    /// damage, and the missile tick on the damage list; no spell is in Tick.
+    /// Go `Mage.EurekaSpells`: the spells the client's Eureka! rows name for cost and damage, and
+    /// the missile tick on the damage list; no spell is in Tick. Frost Blast carries Frostbolt's bit,
+    /// which both masks name (MythicSim patch 153).
     fn eureka_spells(&self) -> Option<crate::prepare::racials::EurekaSpells> {
         let cost = masks::ARCANE_BLAST
             | masks::ARCANE_EXPLOSION
@@ -292,7 +297,8 @@ impl PrepAgent for Mage {
             | masks::FROSTFIRE_BOLT
             | masks::ICE_LANCE
             | masks::PYROBLAST
-            | masks::SCORCH;
+            | masks::SCORCH
+            | masks::FROST_BLAST;
         Some(crate::prepare::racials::EurekaSpells {
             cost,
             damage: cost | masks::ARCANE_MISSILES_TICK,

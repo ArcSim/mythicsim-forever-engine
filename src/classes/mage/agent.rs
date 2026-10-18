@@ -24,6 +24,7 @@ use super::{
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum MageSpell {
     Frostbolt,
+    FrostBlast,
     ArcaneBlast,
     /// Arcane Wrath (client 70425).
     ArcaneWrath,
@@ -227,6 +228,7 @@ impl MageAgent {
                     .map(MageSpell::ManaGem)
             }
             "frostbolt" if spell.damage_effect.is_some() => Some(MageSpell::Frostbolt),
+            "frost_blast" if spell.damage_effect.is_some() => Some(MageSpell::FrostBlast),
             "arcane_blast" if spell.damage_effect.is_some() => Some(MageSpell::ArcaneBlast),
             "arcane_wrath" if spell.damage_effect.is_some() => Some(MageSpell::ArcaneWrath),
             "ice_lance" if spell.damage_effect.is_some() => Some(MageSpell::IceLance),
@@ -667,7 +669,9 @@ impl Agent for MageAgent {
 
     fn apply_effects(fight: &mut Fight<Self>, spell: SpellId, target: Side, behavior: MageSpell) {
         match behavior {
-            MageSpell::Frostbolt => {
+            // Go frost_blast.go's ApplyEffects is Frostbolt's: a chill that rolls Fingers of Frost at
+            // launch, dealt on arrival.
+            MageSpell::Frostbolt | MageSpell::FrostBlast => {
                 let base = fight.roll_damage_effect(spell);
                 let result = fight.calc_damage(spell, target, base);
                 Self::launch_fingers(fight, spell, &result);

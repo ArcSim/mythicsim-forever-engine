@@ -37,7 +37,7 @@ var mageClassSpells = []classSpellName{
 	{mage.MageSpellPyroblastDot, "pyroblast_dot"}, {mage.MageSpellScorch, "scorch"},
 	{mage.MageSpellManaGem, "mana_gem"}, {mage.MageSpellCombustion, "combustion"},
 	{mage.MageSpellImprovedBlizzard, "improved_blizzard"}, {mage.MageSpellFrostfireBolt, "frostfire_bolt"},
-	{mage.MageSpellArcaneWrath, "arcane_wrath"},
+	{mage.MageSpellArcaneWrath, "arcane_wrath"}, {mage.MageSpellFrostBlast, "frost_blast"},
 }
 
 // arcane_charge.go: Arcane Blast's stacks give spell damage from Intellect, a stacking stat aura.

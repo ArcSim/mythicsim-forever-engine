@@ -109,6 +109,7 @@ impl Mage {
         self.register_presence_of_mind_spell(sim, unit);
         self.register_arcane_power_spell(sim, unit);
         self.register_arcane_wrath_spell(sim, unit);
+        self.register_frost_blast_spell(sim, unit);
 
         self.register_blast_wave_spell(sim, unit);
         self.register_pyroblast_spell(sim, unit);
@@ -323,6 +324,30 @@ impl Mage {
                         rank,
                         rank.id,
                         masks::FROSTBOLT,
+                        SpellFlag::APL | SpellFlag::BINARY,
+                    )
+                },
+            );
+        });
+    }
+
+    /// Go `registerFrostBlastSpell` (MythicSim patch 153): a trained Frost spell of client 70425, a
+    /// cast that deals Frost damage and slows the target, every rank registered as Frostbolt's are.
+    fn register_frost_blast_spell(&self, sim: &mut Sim, unit: UnitId) {
+        spell_data().frost_blast.each(|_, rank| {
+            sim.register_spell(
+                unit,
+                SpellConfig {
+                    rank: rank.rank_number(),
+                    missile_speed: f64::from(rank.speed),
+                    cost: flat_cost(rank),
+                    cast: default_cast(rank.gcd(), rank.cast_time()),
+                    bonus_coefficient: rank.damage_effect().coeff(),
+                    max_range: f64::from(rank.max_range),
+                    ..damage_config(
+                        rank,
+                        rank.id,
+                        masks::FROST_BLAST,
                         SpellFlag::APL | SpellFlag::BINARY,
                     )
                 },

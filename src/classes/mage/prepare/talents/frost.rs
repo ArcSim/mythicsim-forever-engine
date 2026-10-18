@@ -56,7 +56,8 @@ impl Mage {
         sim.add_static_mod(
             unit,
             SpellModConfig {
-                class_mask: masks::FROSTBOLT,
+                // 11070's mask is Frostbolt's bit, which Frost Blast carries (MythicSim patch 153).
+                class_mask: masks::FROSTBOLT | masks::FROST_BLAST,
                 time_value: millis(
                     spell_data()
                         .improved_frostbolt
@@ -217,6 +218,11 @@ impl Mage {
             (
                 masks::FROSTBOLT,
                 range_share * f64::from(spell_data().frostbolt.highest().max_range),
+            ),
+            // The range mask holds Frostbolt's bit, which Frost Blast carries (MythicSim patch 153).
+            (
+                masks::FROST_BLAST,
+                range_share * f64::from(spell_data().frost_blast.highest().max_range),
             ),
             (
                 masks::BLIZZARD,

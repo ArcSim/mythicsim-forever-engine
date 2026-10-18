@@ -50,6 +50,7 @@ pub(super) struct SpellData {
     pub flame_throwing: Ladder,
     pub flamestrike_triggered: Ladder,
     pub frost_channeling: Ladder,
+    pub frost_blast: Ladder,
     pub frost_nova: Ladder,
     pub frostbolt: Ladder,
     pub frostfire_bolt: Ladder,
@@ -142,6 +143,7 @@ pub(super) fn spell_data() -> &'static SpellData {
                 1279983, 1279985, 1279987, 1279988, 1279989, 1279990,
             ]),
             frost_channeling: Ladder::talent(11160, 3),
+            frost_blast: Ladder::ranked(&[1326053, 1326054, 1326055]),
             frost_nova: Ladder::ranked(&[122, 865, 6131, 10230]),
             frostbolt: Ladder::ranked(&[
                 116, 205, 837, 7322, 8406, 8407, 8408, 10179, 10180, 10181, 25304,

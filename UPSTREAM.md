@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `37c2dfbdae9ce927cb2e2be648378cb269db23c1`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `24c66dfdf26a6d682d45953993c6b26065d335f7`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -569,6 +569,25 @@ and the hotfix data, a median move of 0.02%. The Hunter, Mage, Paladin and Pries
 and 9 classic weapon goldens follow. 16 new fixtures cover the potions and Revelation in every class
 with a buff, and a warrior that has none. Rust matches all 655 accepted fixtures with a Go golden, and
 preparation writes exactly what the exporter writes for every one of the 657. The recorded sweeps
+were not rerun.
+
+The pin moved from `37c2dfbda` to `24c66dfdf` on 2026-10-19, one commit: the fork's patch 173
+(branch `mythicsim/oct19-release`). The community base `b7083fac1` and client build 70425 did not
+move, so the ledger has no new commit.
+
+- Hunter (patch 173): no Hunter ability scales with spell power. Client 70425 and 70450 give Arcane
+  Shot, Serpent Sting and Volley's tick spells a spell power coefficient of 0, and Bae's in-game tests
+  find only items scaling with it, so Go's `HunterAbilitiesIgnoreSpellPower` (default true) takes
+  none from the three. Their attack power shares, the physical shots and the traps are unchanged.
+  The exporter reads the coefficient from the spells, so the Hunter prepared inputs now carry 0 where
+  they carried .204 to .429, 1.0 over Serpent Sting's duration and .056 a Volley tick, and Rust
+  preparation sets 0 for the three.
+
+38 of the 657 Go goldens changed, all Hunter builds, which carry spell power from the Atiesh auras and
+the party buffs. 28 Beast Mastery and Marksmanship builds lose 1.4% to 2.6% DPS, 5 more that lean on Arcane
+Shot, Serpent Sting or Volley lose 4.3% to 5.1%, and 5 Survival builds that lay traps lose 0.2% to
+0.3%. The Hunter preparation goldens follow. Rust matches all 655 accepted fixtures with a Go golden,
+and preparation writes exactly what the exporter writes for every one of the 657. The recorded sweeps
 were not rerun.
 
 ## Ledger

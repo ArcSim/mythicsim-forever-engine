@@ -69,10 +69,12 @@ pub(super) fn ranged_config(mut config: SpellConfig) -> SpellConfig {
     config
 }
 
-/// Go's per-rank Arcane Shot spell power coefficients: the beta client carries none, so
-/// Classic's stand.
-const ARCANE_SHOT_COEFFICIENTS: [f64; 9] =
-    [0.0, 0.204, 0.3, 0.429, 0.429, 0.429, 0.429, 0.429, 0.429];
+/// The spell power coefficient of Arcane Shot, Serpent Sting and Volley's ticks. Client 70425
+/// and 70450 give them none and Bae's in-game tests find no Hunter ability scaling with spell
+/// power, so Go takes none (`HunterAbilitiesIgnoreSpellPower`, patch 173). Classic's values,
+/// which Go restores with that switch off, were Arcane Shot .204 to .429 by rank, Serpent
+/// Sting 1.0 over its duration and Volley .056 a tick.
+const HUNTER_ABILITY_SPELL_POWER_COEFFICIENT: f64 = 0.0;
 
 /// Go `arcaneShotRAPCoefficient`.
 pub(super) const ARCANE_SHOT_RAP_COEFFICIENT: f64 = 0.11;
@@ -173,7 +175,7 @@ impl Hunter {
                     },
                     ..CastConfig::default()
                 },
-                bonus_coefficient: ARCANE_SHOT_COEFFICIENTS[rank.rank_number() as usize],
+                bonus_coefficient: HUNTER_ABILITY_SPELL_POWER_COEFFICIENT,
                 ..SpellConfig::default()
             }),
         ));
@@ -327,9 +329,6 @@ impl Hunter {
         let tick = rank.periodic_effect();
         let tick_length = tick.period();
         let number_of_ticks = (rank.duration() / tick_length) as i32;
-        // The beta client carries no spell power coefficient on Serpent Sting at all, so
-        // Classic's stands: the full-duration 1.0 split across the ticks.
-        let spell_coeff = 1.0 / f64::from(number_of_ticks);
         self.serpent_sting = Some(sim.register_spell(
             self.unit,
             ranged_config(SpellConfig {
@@ -349,7 +348,7 @@ impl Hunter {
                     },
                     number_of_ticks,
                     tick_length,
-                    bonus_coefficient: spell_coeff,
+                    bonus_coefficient: HUNTER_ABILITY_SPELL_POWER_COEFFICIENT,
                     ..DotConfig::default()
                 },
                 ..SpellConfig::default()
@@ -389,10 +388,10 @@ impl Hunter {
                     },
                     number_of_ticks: 6,
                     tick_length: SECOND,
-                    // The tick spell has no coefficient and the channel's dummy effect carries
-                    // .03, the same placeholder Blizzard and Rain of Fire carry, so Classic's
-                    // .056 a tick stands.
-                    bonus_coefficient: 0.056,
+                    // The tick spells have no coefficient and the channel's dummy effect carries
+                    // .03, the same placeholder Blizzard and Rain of Fire carry; Go takes none
+                    // (patch 173).
+                    bonus_coefficient: HUNTER_ABILITY_SPELL_POWER_COEFFICIENT,
                     ..DotConfig::default()
                 },
                 ..SpellConfig::default()

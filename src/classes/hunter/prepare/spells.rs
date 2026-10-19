@@ -76,8 +76,10 @@ pub(super) fn ranged_config(mut config: SpellConfig) -> SpellConfig {
 /// Sting 1.0 over its duration and Volley .056 a tick.
 const HUNTER_ABILITY_SPELL_POWER_COEFFICIENT: f64 = 0.0;
 
-/// Go `arcaneShotRAPCoefficient`.
-pub(super) const ARCANE_SHOT_RAP_COEFFICIENT: f64 = 0.11;
+/// Go `arcaneShotRAPShare()`: 0.10 of ranged attack power since patch 174, the Hunter
+/// Discord's three dedicated tests (0.10, 0.10, 0.11) taken with the four beta logs' fit
+/// (0.10 to 0.12). Go's `ArcaneShotRAPFromHunterTests` switched off restores the logs-only 0.11.
+pub(super) const ARCANE_SHOT_RAP_COEFFICIENT: f64 = 0.10;
 /// Go `rapPerTick` of Serpent Sting.
 pub(super) const SERPENT_STING_RAP_PER_TICK: f64 = 0.035;
 /// Summon Hawk's attack power share of the dive bomb.

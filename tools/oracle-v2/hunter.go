@@ -130,12 +130,17 @@ func hunterEffects(agent core.Agent, character *core.Character) []map[string]any
 		})
 	}
 	// arcane_shot.go: the rank's flat damage from client data plus a share of ranged attack
-	// power, a Go literal fitted to beta logs, on the ranged hit and crit table after travel.
+	// power on the ranged hit and crit table after travel. The share is a Go literal: 0.10 from
+	// the Hunter Discord's tests (patch 174), or the beta logs' fit of 0.11 with the switch off.
 	if h.ArcaneShot != nil {
+		rapCoefficient := 0.11
+		if hunter.ArcaneShotRAPFromHunterTests {
+			rapCoefficient = 0.10
+		}
 		effects = append(effects, map[string]any{
 			"kind": "arcane_shot", "spell_id": h.ArcaneShot.ActionID.SpellID,
 			"base_damage":     hunterArcaneShot.Highest().DamageEffect().Average(core.CharacterLevel),
-			"rap_coefficient": 0.11,
+			"rap_coefficient": rapCoefficient,
 		})
 	}
 	if h.SniperShot != nil {

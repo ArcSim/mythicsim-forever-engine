@@ -3395,6 +3395,17 @@ pub enum Effect {
         gain_log: String,
         expire_log: String,
     },
+    /// Rockbiter Weapon Proc (patch 181): a landed melee hit of a hand whose weapon carries
+    /// Rockbiter casts the spell, whose flat threat is `threat_per_swing_second` times the main
+    /// hand weapon's swing speed. The hands and the speed are those of the weapons worn.
+    RockbiterThreat {
+        aura: String,
+        spell_id: i32,
+        main_hand: bool,
+        off_hand: bool,
+        threat_per_swing_second: f64,
+        main_hand_swing_speed: f64,
+    },
     /// Rage of the Farseer: a major cooldown whose aura multiplies melee speed.
     RageOfTheFarseer {
         spell_id: i32,
@@ -4606,6 +4617,7 @@ impl Effect {
             Effect::RageOfTheFarseer { .. } => "rage_of_the_farseer",
             Effect::ElementalMastery { .. } => "elemental_mastery",
             Effect::RockbiterWeapon { .. } => "rockbiter_weapon",
+            Effect::RockbiterThreat { .. } => "rockbiter_threat",
             Effect::FrostShock { .. } => "frost_shock",
             Effect::WeaponSync { .. } => "weapon_sync",
             Effect::WindfuryWeapon { .. } => "windfury_weapon",

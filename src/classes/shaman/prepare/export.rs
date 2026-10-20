@@ -281,6 +281,21 @@ impl Shaman {
                 "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
             }));
         }
+        // weapon_imbues.go registerRockbiterThreat (patch 181): the hands whose weapons carry Rockbiter
+        // and the main hand's swing speed, read from the weapons worn now.
+        if let Some(aura) = sim.get_aura(player, "Rockbiter Weapon Threat") {
+            let equipment = &sim.character(player).equipment;
+            let main_hand = &equipment[crate::prepare::items::slot::MAIN_HAND];
+            let off_hand = &equipment[crate::prepare::items::slot::OFF_HAND];
+            effects.push(json!({
+                "kind": "rockbiter_threat", "aura": sim.aura(aura).label,
+                "spell_id": super::imbues::ROCKBITER_THREAT_SPELL_ID,
+                "main_hand": main_hand.temp_enchant == super::imbues::ROCKBITER_ENCHANT_ID,
+                "off_hand": off_hand.temp_enchant == super::imbues::ROCKBITER_ENCHANT_ID,
+                "threat_per_swing_second": 72.0,
+                "main_hand_swing_speed": main_hand.swing_speed,
+            }));
+        }
         if has("rage_of_the_farseer") {
             // talents_enhancement.go applyRageOfTheFarseer
             let row = data.rage_of_the_farseer.highest();

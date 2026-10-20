@@ -229,6 +229,17 @@ func shamanEffects(agent core.Agent, character *core.Character) []map[string]any
 			"expire_log": fmt.Sprintf("Lost %s from fading %s.", bonus.FlatString(), aura.ActionID),
 		})
 	}
+	// weapon_imbues.go registerRockbiterThreat (patch 181): every landed melee hit from a hand whose weapon
+	// carries Rockbiter casts Rockbiter Weapon Proc, whose flat threat is 72 for each second of the main
+	// hand's swing, a Go literal. The hands and the swing speed are the weapons worn now, as the
+	// item swap's export reads them for each set.
+	if aura := character.GetAura("Rockbiter Weapon Threat"); aura != nil {
+		effects = append(effects, map[string]any{
+			"kind": "rockbiter_threat", "aura": aura.Label, "spell_id": int32(20871),
+			"main_hand": character.MainHand().TempEnchant == 3021, "off_hand": character.OffHand().TempEnchant == 3021,
+			"threat_per_swing_second": 72.0, "main_hand_swing_speed": character.MainHand().SwingSpeed,
+		})
+	}
 	if talents.RageOfTheFarseer { // talents_enhancement.go applyRageOfTheFarseer
 		row := shamanFarseer.Highest()
 		effects = append(effects, map[string]any{

@@ -40,6 +40,7 @@ const EFFECTS: &[&str] = &[
     "mana_spring_totem",
     "maelstrom_weapon",
     "rage_of_the_farseer",
+    "rockbiter_threat",
     "rockbiter_weapon",
     "searing_totem",
     "stormstrike",
@@ -54,6 +55,8 @@ const RAGE_OF_THE_FARSEER: i32 = 425336;
 /// Go `registerLightningShieldSpell` registers its cast (client 10432, the highest rank)
 /// without a class mask.
 const LIGHTNING_SHIELD: i32 = 10432;
+/// Go `registerRockbiterThreat` registers Rockbiter Weapon Proc (20871) without a class mask.
+const ROCKBITER_WEAPON_PROC: i32 = 20871;
 
 /// The effect kind whose implementation executes a Shaman spell.
 fn spell_capability(spell: &Spell) -> Option<&'static str> {
@@ -63,6 +66,9 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
     }
     if spell.class_spell.is_none() && id.spell_id == LIGHTNING_SHIELD && id.tag == 0 {
         return Some("lightning_shield");
+    }
+    if spell.class_spell.is_none() && id.spell_id == ROCKBITER_WEAPON_PROC && id.tag == 0 {
+        return Some("rockbiter_threat");
     }
     match spell.class_spell.as_deref()? {
         "lightning_bolt" | "lightning_bolt_overload" => Some("lightning_bolt"),
@@ -102,6 +108,7 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         Effect::RageOfTheFarseer { aura, .. }
         | Effect::ElementalMastery { aura, .. }
         | Effect::RockbiterWeapon { aura, .. }
+        | Effect::RockbiterThreat { aura, .. }
         | Effect::FrostbrandWeapon {
             trigger_aura: aura, ..
         } => vec![("player", aura)],

@@ -298,3 +298,76 @@ fn a_completed_chain_lightning_restarts_the_swing() {
         }
     }
 }
+
+/// The threat figure of a debug damage line.
+fn debug_threat(line: &str) -> f64 {
+    let value = line.split("(Threat: ").nth(1).unwrap();
+    value[..value.find(')').unwrap()].parse().unwrap()
+}
+
+fn rockbiter_threat_effect(value: &mut Value) -> &mut Value {
+    value["effects"]
+        .as_array_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|effect| effect["kind"] == "rockbiter_threat")
+        .expect("a Rockbiter fixture carries the effect")
+}
+
+/// Patch 181 (wowsims/forever f128c3d268): each landed melee hit of a hand whose weapon carries
+/// Rockbiter casts Rockbiter Weapon Proc (20871), 72 threat for every second of the main hand's
+/// swing, multiplied by the shaman's threat multiplier like any other threat.
+#[test]
+fn rockbiter_adds_72_threat_a_second_of_the_main_hand_swing_to_each_hit() {
+    let value = fixture("enhancement-shaman-no-battle-shout");
+    let multiplier = value["player"]["pseudo_stats"]["threat_multiplier"]
+        .as_f64()
+        .unwrap();
+    let logs = first_fight_log(value);
+    let casts = lines_with(&logs, 1, "20871", "(Threat: ");
+    assert!(casts.len() > 10, "{} Rockbiter threat casts", casts.len());
+    for line in casts {
+        assert!(line.contains(" for 0.000 damage"), "{line}");
+        let want = 72.0 * 3.8 * multiplier;
+        assert!(
+            (debug_threat(line) - want).abs() < 1e-3,
+            "{line} is not {want} threat"
+        );
+    }
+}
+
+/// The hand that struck must carry Rockbiter, and the flat threat follows the main hand's speed.
+#[test]
+fn rockbiter_threat_follows_the_hands_that_carry_it_and_the_main_hand_speed() {
+    let mut value = fixture("enhancement-shaman-no-battle-shout");
+    rockbiter_threat_effect(&mut value)["main_hand"] = json!(false);
+    let logs = first_fight_log(value.clone());
+    assert!(lines_with(&logs, 1, "20871", "").is_empty());
+
+    // A faster main hand weapon lowers every cast.
+    let mut value = fixture("enhancement-shaman-no-battle-shout");
+    let multiplier = value["player"]["pseudo_stats"]["threat_multiplier"]
+        .as_f64()
+        .unwrap();
+    rockbiter_threat_effect(&mut value)["main_hand_swing_speed"] = json!(1.5);
+    let logs = first_fight_log(value);
+    let casts = lines_with(&logs, 1, "20871", "(Threat: ");
+    assert!(!casts.is_empty());
+    for line in casts {
+        assert!((debug_threat(line) - 72.0 * 1.5 * multiplier).abs() < 1e-3);
+    }
+}
+
+/// The listener on every landed hit needs the effect that casts the threat spell.
+#[test]
+fn rockbiter_threat_listener_needs_its_effect() {
+    let mut value = fixture("enhancement-shaman-no-battle-shout");
+    value["effects"]
+        .as_array_mut()
+        .unwrap()
+        .retain(|effect| effect["kind"] != "rockbiter_threat");
+    assert!(reasons(value).contains(
+        &"player aura \"Rockbiter Weapon Threat\" listens to combat events without an effect"
+            .into()
+    ));
+}

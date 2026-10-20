@@ -18,6 +18,7 @@ use super::{
         earth_shock, fire_nova, flame_shock, lava_burst,
         lightning_bolt::{self, Overload},
         magma_totem,
+        rockbiter_threat::RockbiterThreat,
         searing_totem::{self, SearingTotem},
         stormstrike::{self, Stormstrike},
         totems::{self, Expirations, StrengthOfEarth},
@@ -72,6 +73,8 @@ pub(crate) enum ShamanSpell {
     },
     RageOfTheFarseer,
     ElementalMastery,
+    /// Rockbiter Weapon Proc (patch 181).
+    RockbiterThreat,
 }
 
 /// Class auras with Rust behavior.
@@ -103,6 +106,8 @@ pub(crate) enum ShamanAura {
     ElementalMastery,
     RageOfTheFarseer,
     RockbiterWeapon,
+    /// The listener that casts Rockbiter Weapon Proc (patch 181).
+    RockbiterThreat,
 }
 
 /// Shaman state that Go keeps in the `Shaman` struct and its closures.
@@ -165,6 +170,11 @@ pub(crate) struct ShamanAgent {
     rockbiter_logs: Option<(String, String)>,
     /// Rockbiter Weapon's stat aura bit, when an item swap switches it.
     rockbiter_stat_bit: Option<u32>,
+    /// Rockbiter Weapon Proc and the hands that carry Rockbiter now (patch 181).
+    rockbiter_threat: Option<RockbiterThreat>,
+    /// Whether each spell's proc mask holds the main hand's or the off hand's melee bits.
+    melee_main_hand: Vec<bool>,
+    melee_off_hand: Vec<bool>,
     /// With an item swap, what each set's weapon gives the imbues and totems, Main then Swap1.
     weapon_values: Option<[WeaponValues; 2]>,
 }
@@ -177,6 +187,8 @@ struct WeaponValues {
     flametongue: Vec<f64>,
     totem_damage: Option<f64>,
     maelstrom: maelstrom_weapon::Chances,
+    /// The hands that carry Rockbiter and the main hand's swing speed (patch 181).
+    rockbiter: Option<(bool, bool, f64)>,
 }
 
 impl WeaponValues {
@@ -199,6 +211,14 @@ impl WeaponValues {
                             *slot = Some(chance.chance);
                         }
                     }
+                }
+                Effect::RockbiterThreat {
+                    main_hand,
+                    off_hand,
+                    main_hand_swing_speed,
+                    ..
+                } => {
+                    values.rockbiter = Some((*main_hand, *off_hand, *main_hand_swing_speed));
                 }
                 _ => {}
             }
@@ -233,6 +253,12 @@ impl ShamanAgent {
             .position(|exported| std::ptr::eq(exported, spell));
         for effect in &prepared.effects {
             match effect {
+                // Go registers Rockbiter Weapon Proc without a class mask.
+                Effect::RockbiterThreat { spell_id, .. }
+                    if spell.class_spell.is_none() && *spell_id == id.spell_id && id.tag == 0 =>
+                {
+                    return Some(ShamanSpell::RockbiterThreat);
+                }
                 Effect::FlametongueTotem { attack_spell, .. }
                     if Some(*attack_spell) == position =>
                 {
@@ -396,6 +422,9 @@ impl ShamanAgent {
                 Effect::RockbiterWeapon { aura, .. } => {
                     vec![(aura.clone(), ShamanAura::RockbiterWeapon)]
                 }
+                Effect::RockbiterThreat { aura, .. } => {
+                    vec![(aura.clone(), ShamanAura::RockbiterThreat)]
+                }
                 Effect::FlametongueWeapon { hands } => hands
                     .iter()
                     .enumerate()
@@ -471,6 +500,24 @@ impl ShamanAgent {
                     .iter()
                     .any(|mask| mask == "ProcMaskMeleeMHAuto" || mask == "ProcMaskMeleeOHAuto")
             })
+            .collect();
+        let holds = |spell: &ExportedSpell, names: [&str; 2]| {
+            spell
+                .proc_mask
+                .iter()
+                .any(|mask| names.contains(&mask.as_str()))
+        };
+        fight.agent.melee_main_hand = prepared
+            .player
+            .spells
+            .iter()
+            .map(|spell| holds(spell, ["ProcMaskMeleeMHAuto", "ProcMaskMeleeMHSpecial"]))
+            .collect();
+        fight.agent.melee_off_hand = prepared
+            .player
+            .spells
+            .iter()
+            .map(|spell| holds(spell, ["ProcMaskMeleeOHAuto", "ProcMaskMeleeOHSpecial"]))
             .collect();
         for effect in &prepared.effects {
             match effect {
@@ -653,6 +700,25 @@ impl ShamanAgent {
                     // power.
                     fight.agent.rockbiter_stat_bit =
                         Fight::<ShamanAgent>::stat_aura_bit(&prepared.effects, aura);
+                }
+                Effect::RockbiterThreat {
+                    spell_id,
+                    main_hand,
+                    off_hand,
+                    threat_per_swing_second,
+                    main_hand_swing_speed,
+                    ..
+                } => {
+                    let spell = find(&fight, *spell_id, 0).ok_or_else(|| {
+                        format!("Rockbiter Weapon Proc {spell_id} is not registered")
+                    })?;
+                    fight.agent.rockbiter_threat = Some(RockbiterThreat {
+                        spell,
+                        main_hand: *main_hand,
+                        off_hand: *off_hand,
+                        threat_per_swing_second: *threat_per_swing_second,
+                        main_hand_swing_speed: *main_hand_swing_speed,
+                    });
                 }
                 Effect::FlametongueWeapon { hands } => {
                     for hand in hands {
@@ -964,6 +1030,13 @@ impl Agent for ShamanAgent {
             totem.attack_damage = damage;
         }
         fight.agent.maelstrom_chances = set.maelstrom.clone();
+        if let (Some(state), Some((main_hand, off_hand, speed))) =
+            (fight.agent.rockbiter_threat.as_mut(), set.rockbiter)
+        {
+            state.main_hand = main_hand;
+            state.off_hand = off_hand;
+            state.main_hand_swing_speed = speed;
+        }
     }
 
     fn apply_effects(fight: &mut Fight<Self>, spell: SpellId, target: Side, behavior: ShamanSpell) {
@@ -1129,6 +1202,13 @@ impl Agent for ShamanAgent {
                 let base = Self::searing_totem(fight).attack_damage;
                 searing_totem::attack(fight, spell, target, base);
             }
+            ShamanSpell::RockbiterThreat => {
+                let state = fight
+                    .agent
+                    .rockbiter_threat
+                    .expect("Rockbiter Weapon Proc is bound");
+                state.apply(fight, spell, target);
+            }
         }
     }
 
@@ -1248,6 +1328,15 @@ impl Agent for ShamanAgent {
                 let state = fight.agent.maelstrom.expect("Maelstrom Weapon is bound");
                 let chance = fight.agent.maelstrom_chances[spell];
                 state.on_spell_hit_dealt(fight, spell, result, chance);
+            }
+            ShamanAura::RockbiterThreat => {
+                let state = fight
+                    .agent
+                    .rockbiter_threat
+                    .expect("Rockbiter Weapon Proc is bound");
+                let main_hand = fight.agent.melee_main_hand[spell];
+                let off_hand = fight.agent.melee_off_hand[spell];
+                state.on_spell_hit_dealt(fight, main_hand, off_hand, result);
             }
             _ => {}
         }

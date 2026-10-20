@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "15b7435f3ab63223e48c129969fd343b8d14e462",
+    "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
@@ -2789,7 +2789,7 @@
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
         "threat_multiplier": 1,
-        "flat_threat_bonus": 173,
+        "flat_threat_bonus": 152.4,
         "pushback_resist": 0,
         "dot": null,
         "damage_effect": null
@@ -2901,7 +2901,7 @@
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
         "threat_multiplier": 1,
-        "flat_threat_bonus": 100,
+        "flat_threat_bonus": 91.8,
         "pushback_resist": 0,
         "dot": null,
         "damage_effect": null
@@ -3376,8 +3376,8 @@
         "crit_multiplier_additive": 0.2,
         "bonus_base_damage": 0,
         "bonus_coefficient": 0,
-        "threat_multiplier": 1,
-        "flat_threat_bonus": 120,
+        "threat_multiplier": 2.25,
+        "flat_threat_bonus": 0,
         "pushback_resist": 0,
         "dot": null,
         "damage_effect": null
@@ -5120,6 +5120,7 @@
       "off_hand_crit_rage": 6.228,
       "off_hand_rage": 6.228,
       "starting_rage": 0,
+      "threat_multiplied": true,
       "threat_per_rage": 5
     },
     {
@@ -5222,8 +5223,10 @@
     {
       "aura": "Sunder Armor (Player)",
       "blocked": true,
+      "flat_threat": 206,
       "kind": "sunder_armor",
-      "spell_id": 11597
+      "spell_id": 11597,
+      "threat_per_attack_power": 0.05
     },
     {
       "kind": "deep_wounds",
@@ -5389,6 +5392,7 @@
       "spell": 44
     },
     {
+      "cleave_threat_split": true,
       "kind": "heroic_strike_queue",
       "queue_delay_ns": 250000000,
       "strikes": [

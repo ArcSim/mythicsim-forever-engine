@@ -1082,6 +1082,9 @@ pub(crate) fn export_state(
     if target_count > 1 {
         prepared["encounter"]["target_count"] = json!(target_count);
     }
+    if options.bool("save_all_values") {
+        prepared["sim"]["save_all_values"] = json!(true);
+    }
     let hp = player_message
         .message("cooldowns")
         .map_or(0.0, |cooldowns| cooldowns.f64("hp_percent_for_defensives"));

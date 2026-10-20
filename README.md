@@ -1,8 +1,8 @@
 # MythicSim Forever Engine
 
 A Rust simulation engine for WoW Forever. [MythicSim](https://mythicsim.com/wow-forever/sim)
-runs its Forever Quick Sims on it, with the Go engine as the fallback for anything Rust
-does not cover yet.
+runs Forever Quick Sims on it, and the Go engine for the rest; [Coverage](#coverage) lists
+which is which.
 
 The engine follows [MythicSim's Go fork](https://github.com/sage3648/mythicsim-forever-engine-go)
 of [wowsims Forever](https://github.com/ElliotWood/Forever) exactly: event order, random
@@ -39,11 +39,22 @@ Rust, or tells the worker to run it in Go and says why.
 
 ## Coverage
 
-Every class and spec MythicSim offers runs in Rust: Druid, Hunter, Mage, Paladin, Priest,
-Rogue, Shaman, Warlock and Warrior, with their talents, gear, buffs, consumables, pets,
-tanking and 2 to 5 targets. A few things still fall back to Go, such as some item swaps,
-some custom rotation syntax and a handful of spells. Best Gear, trinket boards and the
-Build Lab still run in Go.
+MythicSim's Forever Quick Sims run in Rust, for every class and spec it offers: the Druid,
+Hunter, Mage, Paladin, Priest, Rogue, Shaman, Warlock and Warrior damage and tank specs, with
+their talents, gear, buffs, consumables, pets, tanking and 2 to 5 targets.
+
+These still run in Go:
+
+- Quick Sims that ask for stat weights.
+- Best Gear, trinket boards, race boards and the Build Lab.
+- The one fight a Quick Sim's timeline and combat log show. It is replayed in Go, which gives
+  the same fight.
+- Quick Sims the coverage gate refuses, about 5% of them: some item swaps, some custom
+  rotation syntax and a few spells and set bonuses. Each refusal gives a reason code.
+- Quick Sims on MythicSim's second worker, which does not carry the Rust engine yet.
+
+A character Rust preparation does not cover yet is prepared by the Go exporter, and Rust
+still runs the fight. Go also stays the reference every Rust change is compared against.
 
 ## Keeping up with Go
 

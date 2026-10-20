@@ -62,6 +62,9 @@ pub struct SimOptions {
     pub debug_first_iteration: bool,
     /// Go `debug`: log every iteration into one buffer.
     pub debug: bool,
+    /// Go `saveAllValues`: report every iteration's value in each distribution's `allValues`.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub save_all_values: bool,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

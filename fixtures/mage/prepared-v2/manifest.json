@@ -4,7 +4,7 @@
   "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
   "client_build": "1.60.1.70425",
   "exporter": "tools/oracle-v2/main.go",
-  "exporter_sha256": "1c1dc2b7b78972ac6dbd46b2223b262a82249dbfca230453dd2f798e83ec7bce",
+  "exporter_sha256": "695106728569c46ba2e106d5e2480cac645279ea4da7f0740a22b791e571bfa7",
   "generator": "python3 tools/prepared_v2.py capture --output output/prepared-v2-capture",
   "note": "Accepted prepared inputs exported from the pinned Go engine. Capture re-exports into scratch and must match these files exactly.",
   "cases": [
@@ -13720,6 +13720,74 @@
       "go_log": {
         "file": "production-protection-warrior-shield-block-3-targets.go-log.txt",
         "sha256": "783b3a97ab3f3c2fa2e88774f6b6e4e54d956df90fc7f3113e24b455c4c76338"
+      }
+    },
+    {
+      "id": "all-values-frost-mage",
+      "description": "The Frost reference with Go saveAllValues over 40 iterations: every distribution reports each iteration's value, including time to out of mana.",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/all-values-frost-mage.request.json"
+      },
+      "prepared": "all-values-frost-mage.prepared.json",
+      "prepared_sha256": "d76edc0c77a8934514d044ea206697bd3c6f740157666e4030ed1ff815a33132",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "all-values-frost-mage.go-result.json",
+        "sha256": "27295bf60d415cbb5f6d7b1abfccb841dde99ba54e4cff4d0bc546d352e9010a"
+      }
+    },
+    {
+      "id": "all-values-beast-mastery-hunter-labeled",
+      "description": "A Beast Mastery Hunter with its pet, Go saveAllValues and labeled random streams, as stat weights request.",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/all-values-beast-mastery-hunter-labeled.request.json"
+      },
+      "prepared": "all-values-beast-mastery-hunter-labeled.prepared.json",
+      "prepared_sha256": "14c7d789f76e41366582df8e649598032b7c9a227800fb7768f05b8424556b0c",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "all-values-beast-mastery-hunter-labeled.go-result.json",
+        "sha256": "557378e0212c77150440d091c3888f1c9481ac550e7c2c42ffd1b421132d5f67"
+      }
+    },
+    {
+      "id": "all-values-protection-warrior",
+      "description": "A Protection Warrior tanking with Go saveAllValues: threat, damage taken and the target's swings report each iteration's value.",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/all-values-protection-warrior.request.json"
+      },
+      "prepared": "all-values-protection-warrior.prepared.json",
+      "prepared_sha256": "77d0642b99196eb94bb0675b00bfe40a69dcd0f797148a48cba9c77e83fbc0ad",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "all-values-protection-warrior.go-result.json",
+        "sha256": "d4d8e4d663ab082a6b1ff265bcc5d890742e251670e25d3cd548b2016767283b"
+      }
+    },
+    {
+      "id": "all-values-affliction-warlock-labeled",
+      "description": "An Affliction Warlock with its demon, Go saveAllValues and labeled random streams, as stat weights request.",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/all-values-affliction-warlock-labeled.request.json"
+      },
+      "prepared": "all-values-affliction-warlock-labeled.prepared.json",
+      "prepared_sha256": "3b09175d7ee247db5c40c658b7d10d855157c1c606292fd4457b1f258af90852",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "all-values-affliction-warlock-labeled.go-result.json",
+        "sha256": "415c6c8ce7f5c041236bf852fbd5b16a6c47ebed4a37ccdc75a80bf828d0f0c0"
       }
     }
   ]

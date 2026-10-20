@@ -52,6 +52,8 @@ pub(crate) struct Distribution {
     max_seed: i64,
     min_seed: i64,
     hist: BTreeMap<i32, i32>,
+    /// Go `sample`: every iteration's value, kept only under `saveAllValues`.
+    values: Vec<f64>,
 }
 
 impl Default for Distribution {
@@ -64,15 +66,19 @@ impl Default for Distribution {
             max_seed: 0,
             min_seed: 0,
             hist: BTreeMap::new(),
+            values: Vec::new(),
         }
     }
 }
 
 impl Distribution {
-    /// Go `DistributionMetrics.doneIteration`.
-    pub(crate) fn done_iteration(&mut self, duration: i64, seed: i64) {
+    /// Go `DistributionMetrics.doneIteration`; `keep` is Go `SaveAllValues`.
+    pub(crate) fn done_iteration(&mut self, duration: i64, seed: i64, keep: bool) {
         let value = self.total / seconds(duration);
         self.aggregate.add(value);
+        if keep {
+            self.values.push(value);
+        }
         if value > self.max {
             self.max = value;
             self.max_seed = seed;
@@ -96,6 +102,7 @@ impl Distribution {
             max_seed: self.max_seed.to_string(),
             min_seed: self.min_seed.to_string(),
             hist: self.hist.iter().map(|(k, v)| (k.to_string(), *v)).collect(),
+            all_values: self.values.clone(),
             aggregator_data: AggregatorData {
                 n: self.aggregate.n,
                 sum_sq: self.aggregate.sum_sq,
@@ -395,6 +402,8 @@ pub(crate) struct DistributionReport {
     min_seed: String,
     #[serde(skip_serializing_if = "BTreeMap::is_empty")]
     hist: BTreeMap<String, i32>,
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    all_values: Vec<f64>,
     aggregator_data: AggregatorData,
 }
 
@@ -676,19 +685,20 @@ impl<A: Agent> Fight<A> {
             0.0
         };
         let duration = self.duration;
-        self.totals.dps.done_iteration(duration, seed);
-        self.totals.threat.done_iteration(duration, seed);
-        self.totals.tto.done_iteration(duration, seed);
+        let keep = self.config.save_all_values;
+        self.totals.dps.done_iteration(duration, seed, keep);
+        self.totals.threat.done_iteration(duration, seed, keep);
+        self.totals.tto.done_iteration(duration, seed, keep);
         for dtps in &mut self.totals.target_dtps {
-            dtps.done_iteration(duration, seed);
+            dtps.done_iteration(duration, seed, keep);
         }
-        self.totals.player_dtps.done_iteration(duration, seed);
-        self.totals.player_hps.done_iteration(duration, seed);
+        self.totals.player_dtps.done_iteration(duration, seed, keep);
+        self.totals.player_hps.done_iteration(duration, seed, keep);
         for dps in &mut self.totals.target_dps {
-            dps.done_iteration(duration, seed);
+            dps.done_iteration(duration, seed, keep);
         }
         for threat in &mut self.totals.target_threat {
-            threat.done_iteration(duration, seed);
+            threat.done_iteration(duration, seed, keep);
         }
         if self.death.died {
             self.death.iterations_dead += 1;
@@ -699,7 +709,7 @@ impl<A: Agent> Fight<A> {
                 self.death.seeds.sort_unstable();
             }
         }
-        self.totals.zero.done_iteration(duration, seed);
+        self.totals.zero.done_iteration(duration, seed, keep);
         self.totals.oom_seconds += seconds(self.player.oom_time);
         self.pets_metrics_done_iteration(seed);
         self.totals.iterations += 1;

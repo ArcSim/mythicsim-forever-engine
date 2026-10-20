@@ -1203,6 +1203,8 @@ pub(crate) struct Config {
     pub(crate) seed: i64,
     pub(crate) debug_first_iteration: bool,
     pub(crate) debug: bool,
+    /// Go `saveAllValues`: each distribution keeps every iteration's value.
+    pub(crate) save_all_values: bool,
     pub(crate) base_duration: i64,
     pub(crate) duration_variation: i64,
     /// Go `ExecuteProportion_90`, `_45`, `_35`, `_25` and `_20`.
@@ -2049,6 +2051,7 @@ pub(crate) fn unit_config(prepared: &PreparedV2, unit: &UnitSource) -> Result<Co
         seed: prepared.sim.seed,
         debug_first_iteration: prepared.sim.debug_first_iteration,
         debug: prepared.sim.debug,
+        save_all_values: prepared.sim.save_all_values,
         base_duration: prepared.encounter.duration_ns,
         duration_variation: prepared.encounter.duration_variation_ns,
         damage_taken_multiplier: pseudo.damage_taken_multiplier,

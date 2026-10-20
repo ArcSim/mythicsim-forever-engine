@@ -665,10 +665,10 @@ moves; no DPS changes. The community base, the client build and the Go database 
   spell's melee attack power, overwriting whatever a spell mod made of it, as Go does. The exporter writes
   both terms on the `sunder_armor` effect, and 0 for the share when Go's switch is off.
 
-217 of the 660 Go goldens changed, all in threat and, for Rockbiter, the new spell's action: 166 Warrior
+218 of the 664 Go goldens changed, all in threat and, for Rockbiter, the new spell's action: 167 Warrior
 builds (Revenge, Heroic Strike, Cleave, Sunder Armor and rage), 38 Druid builds (37 Bear and one Cat, through
 rage) and 13 Enhancement builds wearing Rockbiter, two of them through an item swap. The Druid, Shaman and
-Warrior preparation goldens follow. Rust matches all 660 accepted fixtures with a Go golden, and
+Warrior preparation goldens follow. Rust matches all 664 accepted fixtures with a Go golden, and
 preparation writes exactly what the exporter writes for every one. The recorded sweeps were not rerun.
 
 ## Ledger

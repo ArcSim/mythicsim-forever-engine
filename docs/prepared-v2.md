@@ -56,7 +56,7 @@ RNG contract and implemented effects. Tests fail if it disagrees with the engine
 
 | Section | Content |
 | --- | --- |
-| `sim` | Iterations, seed, `labeled_rng`, first-iteration debug and `debug`, which logs every fight as the application's averaged timeline requests |
+| `sim` | Iterations, seed, `labeled_rng`, first-iteration debug, `debug`, which logs every fight as the application's averaged timeline requests, and `save_all_values`, Go `saveAllValues`, which reports every iteration's value in each distribution's `allValues` in iteration order, as stat weights and the median-fight timeline need |
 | `encounter` | Base duration, variation and execute proportions, in nanoseconds, and `target_count`, written only for a fight against 2 to 5 targets |
 | `target` | Level, all stats, pseudo stats, every registered aura and whether it has a melee or ranged swing. In a fight against several targets every target past the first is an identical copy, which the exporter checks, so this one target describes them all |
 | `player` | Identity, talents, stats, pseudo stats, reaction time, distance, cast speed, mana, an energy bar when the player has one, attack table, spells, major cooldowns, rotation, the dot base durations its `dotBaseDuration` values captured and, when the rotation reads them, the `rotation_reads` it needs |

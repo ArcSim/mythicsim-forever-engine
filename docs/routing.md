@@ -84,6 +84,11 @@ on, and the decision lists them in `requests`, each with its own status.
 Requests without their own seed all get the same seed, `--seed` or one drawn for the batch
 and recorded as `seed`, so the candidates share their random numbers.
 
+A request with `simOptions.saveAllValues` gets every iteration's value in each distribution's
+`allValues`, in iteration order and bit for bit as Go reports them, so stat weights can
+subtract a stat's runs from the baseline iteration by iteration, as Go's `computeStatWeights`
+does.
+
 ## Determinism and interrupted runs
 
 The same input and seed give the same result under every deployment condition. The engine

@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `24c66dfdf26a6d682d45953993c6b26065d335f7`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `c7c423bd7f9857daf6f081a104fef5215b0509a7`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -589,6 +589,28 @@ Shot, Serpent Sting or Volley lose 4.3% to 5.1%, and 5 Survival builds that lay 
 0.3%. The Hunter preparation goldens follow. Rust matches all 655 accepted fixtures with a Go golden,
 and preparation writes exactly what the exporter writes for every one of the 657. The recorded sweeps
 were not rerun.
+
+The pin moved from `24c66dfdf` to `c7c423bd7` on 2026-10-20, one commit: the fork's patch 174
+(branch `mythicsim/oct19-arcane-rap`). The community base `b7083fac1` and client build 70425 did not
+move, so the ledger has no new commit.
+
+- Hunter (patch 174): Arcane Shot takes 0.10 of ranged attack power instead of 0.11. Three dedicated
+  tests in the Hunter Discord (0.10, 0.10 and 0.11, relayed by Bae) taken with the four beta logs'
+  fit (0.10 to 0.12) give 0.10, which Go's `ArcaneShotRAPFromHunterTests` (default true) applies. The
+  exporter follows the switch and Rust preparation writes 0.10.
+
+5 of the 657 Go goldens changed, the Hunter builds that cast Arcane Shot: three Marksmanship and two
+Survival builds lose 0.5% to 0.7% DPS. The 14 Hunter preparation goldens follow in their Arcane Shot
+effect. Rust matches all 656 accepted fixtures with a Go golden, and preparation writes exactly what
+the exporter writes for every one of the 658. The recorded sweeps were not rerun.
+
+At the same pin, the stat aura combinations gained Intellect. Go's `processDynamicBonus` refreshes
+the cached mana regeneration rates whenever a dynamic change moves MP5, Intellect or Spirit, and the
+refresh picks up a casting rate an aura changed without one (Improved Stormstrike). Rust refreshed
+only when MP5 or spirit regeneration moved, so an Enhancement shaman whose weapon swap adds Intellect
+while the buff is up had different casting mana ticks: 9 of the 19 Enhancement shadow sims on
+2026-10-19. 26 prepared inputs gained the stat, no Go golden moved, and the shadow sim is accepted
+as `enhancement-shaman-item-swap-stormstrike-regen`.
 
 ## Ledger
 

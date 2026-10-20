@@ -754,6 +754,8 @@ type SimOptions struct {
 	DebugFirstIteration bool  `json:"debug_first_iteration"`
 	// Go logs every iteration into one buffer, as the application's averaged timeline uses.
 	Debug bool `json:"debug"`
+	// Go keeps every iteration's value in each distribution's allValues.
+	SaveAllValues bool `json:"save_all_values,omitempty"`
 }
 
 type Reference struct {
@@ -1948,7 +1950,7 @@ func prepareSet(request *proto.RaidSimRequest, digest, scenario string, swapped 
 		RequestSHA256: digest, ScenarioID: scenario,
 		Sim: SimOptions{Iterations: request.SimOptions.Iterations, Seed: request.SimOptions.RandomSeed,
 			LabeledRng: request.SimOptions.UseLabeledRands || request.SimOptions.IsTest, DebugFirstIteration: request.SimOptions.DebugFirstIteration,
-			Debug: request.SimOptions.Debug},
+			Debug: request.SimOptions.Debug, SaveAllValues: request.SimOptions.SaveAllValues},
 		Encounter: Encounter{DurationNs: nanos(simulation.BaseDuration), DurationVariationNs: nanos(simulation.DurationVariation),
 			ExecuteProportion20: simulation.Encounter.ExecuteProportion_20, ExecuteProportion25: simulation.Encounter.ExecuteProportion_25,
 			ExecuteProportion35: simulation.Encounter.ExecuteProportion_35, ExecuteProportion45: simulation.Encounter.ExecuteProportion_45,

@@ -904,10 +904,11 @@ impl<A: Agent> Fight<A> {
         let duration = self.duration;
         let duration_seconds = seconds(duration);
         let hour = 60 * 60 * NS_PER_SECOND;
+        let keep = self.config.save_all_values;
         for pet in &mut self.pets {
             if let Some(tto) = pet.tto.as_mut() {
                 tto.total = seconds(hour) * duration_seconds;
-                tto.done_iteration(duration, seed);
+                tto.done_iteration(duration, seed, keep);
             }
         }
         for side in self.pet_sides() {
@@ -920,6 +921,7 @@ impl<A: Agent> Fight<A> {
         let duration = self.duration;
         let duration_seconds = seconds(duration);
         let time_to_oom = self.time_to_oom(side, f64::INFINITY);
+        let keep = self.config.save_all_values;
         let pet = self.active_pet_mut(side);
         // Go reports no time to out of mana for a unit without a mana bar.
         pet.totals.tto.total = if pet.config.max_mana > 0.0 {
@@ -927,9 +929,9 @@ impl<A: Agent> Fight<A> {
         } else {
             0.0
         };
-        pet.totals.dps.done_iteration(duration, seed);
-        pet.totals.threat.done_iteration(duration, seed);
-        pet.totals.tto.done_iteration(duration, seed);
+        pet.totals.dps.done_iteration(duration, seed, keep);
+        pet.totals.threat.done_iteration(duration, seed, keep);
+        pet.totals.tto.done_iteration(duration, seed, keep);
         pet.totals.oom_seconds += seconds(pet.state.oom_time);
     }
 

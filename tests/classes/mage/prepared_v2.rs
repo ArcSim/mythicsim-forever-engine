@@ -695,3 +695,90 @@ fn refusal_codes_are_unique_and_documented() {
         );
     }
 }
+
+/// Every `allValues` list in a comparable result, by path.
+fn all_values(value: &Value, path: &str, out: &mut Vec<(String, Vec<f64>)>) {
+    match value {
+        Value::Object(map) => {
+            for (key, item) in map {
+                if key == "allValues" {
+                    let values = item.as_array().unwrap().iter();
+                    out.push((path.into(), values.map(|v| v.as_f64().unwrap()).collect()));
+                } else {
+                    all_values(item, &format!("{path}/{key}"), out);
+                }
+            }
+        }
+        Value::Array(items) => {
+            for (index, item) in items.iter().enumerate() {
+                all_values(item, &format!("{path}/{index}"), out);
+            }
+        }
+        _ => {}
+    }
+}
+
+/// Under Go `saveAllValues` every distribution reports each iteration's value in iteration
+/// order, and stat weights subtract them pairwise, so they must match Go bit for bit, not
+/// within the golden tolerance. The cases cover a caster with mana, a pet with labeled random
+/// streams, a tank's threat and damage taken, and a Warlock's demon with labeled streams.
+#[test]
+fn saved_iteration_values_match_go_exactly() {
+    let cases = [
+        "all-values-frost-mage",
+        "all-values-beast-mastery-hunter-labeled",
+        "all-values-protection-warrior",
+        "all-values-affliction-warlock-labeled",
+    ];
+    for case in cases {
+        let read = |name: String| fs::read(family().join(name)).unwrap();
+        let prepared: PreparedV2 =
+            serde_json::from_slice(&read(format!("{case}.prepared.json"))).unwrap();
+        assert!(prepared.sim.save_all_values, "{case}");
+        let iterations = prepared.sim.iterations as usize;
+        let report = forever_engine::simulate_prepared(&prepared).unwrap();
+        let go: Value = serde_json::from_slice(&read(format!("{case}.go-result.json"))).unwrap();
+        let (mut expected, mut actual) = (Vec::new(), Vec::new());
+        all_values(&go, "", &mut expected);
+        all_values(&comparable(&report.result), "", &mut actual);
+        let paths = |lists: &[(String, Vec<f64>)]| -> Vec<String> {
+            lists.iter().map(|(path, _)| path.clone()).collect()
+        };
+        assert_eq!(paths(&expected), paths(&actual), "{case}: distributions");
+        for path in [
+            "/raidMetrics/dps",
+            "/raidMetrics/parties/0/players/0/threat",
+        ] {
+            assert!(
+                paths(&expected).iter().any(|p| p == path),
+                "{case}: Go lacks {path}"
+            );
+        }
+        for ((path, go), (_, rust)) in expected.iter().zip(&actual) {
+            assert_eq!(go.len(), iterations, "{case}{path}");
+            let differs = go
+                .iter()
+                .zip(rust)
+                .position(|(a, b)| a.to_bits() != b.to_bits());
+            if let Some(index) = differs {
+                panic!(
+                    "{case}{path} iteration {index}: Go {}, Rust {}",
+                    go[index], rust[index]
+                );
+            }
+            assert_eq!(go.len(), rust.len(), "{case}{path}");
+        }
+    }
+}
+
+/// Without `saveAllValues` no distribution reports per-iteration values, as in Go.
+#[test]
+fn iteration_values_are_reported_only_on_request() {
+    let path = family().join("all-values-frost-mage.prepared.json");
+    let mut prepared: PreparedV2 = serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
+    prepared.sim.save_all_values = false;
+    let report = forever_engine::simulate_prepared(&prepared).unwrap();
+    let mut found = Vec::new();
+    all_values(&report.result, "", &mut found);
+    assert!(found.is_empty(), "{found:?}");
+}

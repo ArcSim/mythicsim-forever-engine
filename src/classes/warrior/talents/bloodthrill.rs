@@ -1,6 +1,8 @@
 //! Bloodthrill (1289682), from Go sim/warrior/talents_arms.go `registerBloodthrill`: a landed
-//! main hand hit, other than a proc's, on a target bleeding from Rend may open the Overpower
-//! window a spell batch window later, for the window's longer duration.
+//! main hand white swing, Heroic Strike or Cleave, other than a proc's, on a target bleeding
+//! from Rend may open the Overpower window a spell batch window later, for the window's longer
+//! duration. Other main hand specials do not proc it in game (patch 176, upstream's combat
+//! logs).
 
 use crate::core::fight::{Agent, AuraRef, DotId, Fight, SpellId, SpellResult};
 
@@ -14,7 +16,7 @@ pub(crate) struct Bloodthrill {
 }
 
 /// The trigger's OnSpellHitDealt. `main_hand` is whether the spell's proc mask holds a main
-/// hand bit.
+/// hand bit and the spell is a white swing, Heroic Strike or Cleave.
 pub(crate) fn on_hit<A: Agent>(
     fight: &mut Fight<A>,
     params: Bloodthrill,

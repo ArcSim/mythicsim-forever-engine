@@ -13637,6 +13637,27 @@
         "file": "enhancement-shaman-item-swap-stormstrike-regen.go-log.txt",
         "sha256": "862f00cb3bebf25c24a0cd2b33b9496c7bd090b82fde9a42b94f2b61292c6962"
       }
+    },
+    {
+      "id": "survival-hunter-aspect-of-the-beast-over-hawk",
+      "description": "Hunter whose rotation casts Aspect of the Beast while the prepull Aspect of the Hawk is up: the single aura Aspect effect switches Hawk off (MythicSim production sim 91c2d019)",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/survival-hunter-aspect-of-the-beast-over-hawk.request.json"
+      },
+      "prepared": "survival-hunter-aspect-of-the-beast-over-hawk.prepared.json",
+      "prepared_sha256": "7fff6581ed9a24a5bbb77da30dc617c8c79f98ae1e00614d142c1f3b4c6bc433",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "survival-hunter-aspect-of-the-beast-over-hawk.go-result.json",
+        "sha256": "b06c5dcfd8db1aefa21b27497659b248cd59104bac2ccd44a481ecf0e4d76996"
+      },
+      "go_log": {
+        "file": "survival-hunter-aspect-of-the-beast-over-hawk.go-log.txt",
+        "sha256": "cfc298328eabe0b62de22243eb1cd03e9252b12e97b43ed5beb39ed130813ae4"
+      }
     }
   ]
 }

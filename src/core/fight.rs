@@ -1838,8 +1838,9 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) hp_percent_for_defensives: f64,
     /// How each exclusive effect of an aura a rotation asks about reads.
     pub(crate) aura_refresh: Vec<(AuraRef, Vec<exclusive::RefreshReading>)>,
-    /// Single aura categories that a rotation's `auraShouldRefresh` reads and no class
-    /// describes, as (unit, name): the runtime enforces them from the exported memberships.
+    /// Single aura categories that a rotation's `auraShouldRefresh` reads, or a class asks for,
+    /// and no class describes, as (unit, name): the runtime enforces them from the exported
+    /// memberships.
     derived_categories: Vec<(Side, String)>,
 }
 
@@ -4565,6 +4566,16 @@ impl<A: Agent> Fight<A> {
             || intellect(mask) != intellect(mask ^ changed)
         {
             self.update_mana_regen_rates();
+        }
+    }
+
+    /// Enforces a single aura exclusive category of the unit from the exported memberships, as
+    /// Go does for every one: a class whose auras share one, as a Hunter's aspects do, asks for it
+    /// so an aura that takes the category's place switches the active one off.
+    pub(crate) fn enforce_exported_category(&mut self, side: Side, name: &str) {
+        let key = (side, name.to_string());
+        if !self.derived_categories.contains(&key) {
+            self.derived_categories.push(key);
         }
     }
 

@@ -496,6 +496,9 @@ impl HunterAgent {
                         false,
                     )?;
                     fight.agent.aspect = Some(Rc::new(bound));
+                    // Go aspects.go: each aspect's aura holds a single aura "Aspect" effect, so
+                    // casting Aspect of the Beast switches Aspect of the Hawk off and back.
+                    fight.enforce_exported_category(Side::Player, "Aspect");
                 }
                 Effect::AspectOfTheBeast {
                     aura,
@@ -520,6 +523,7 @@ impl HunterAgent {
                         true,
                     )?;
                     fight.agent.beast = Some(Rc::new(bound));
+                    fight.enforce_exported_category(Side::Player, "Aspect");
                 }
                 Effect::RaptorStrike {
                     spell_id,

@@ -13658,6 +13658,69 @@
         "file": "survival-hunter-aspect-of-the-beast-over-hawk.go-log.txt",
         "sha256": "cfc298328eabe0b62de22243eb1cd03e9252b12e97b43ed5beb39ed130813ae4"
       }
+    },
+    {
+      "id": "production-protection-warrior-shield-block",
+      "description": "Production Protection Warrior tanking a level 63 target with the Protection rotation: Shield Block in Defensive Stance with a shield, whose block chance the target's swings read, each block spending a charge, beside Shield Slam, Revenge, Retaliation and the Diamond Flask",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/production-protection-warrior-shield-block.request.json"
+      },
+      "prepared": "production-protection-warrior-shield-block.prepared.json",
+      "prepared_sha256": "c51c5c861e21c62a9f4f066bf454da96dbabf961a35c5f55df017513198f182d",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "production-protection-warrior-shield-block.go-result.json",
+        "sha256": "f9d524762b94a4d0b93e76621a483addf013307909734baefea335b20f0cbad0"
+      },
+      "go_log": {
+        "file": "production-protection-warrior-shield-block.go-log.txt",
+        "sha256": "d635a03f5d9fd393b97ae2ae626ce0f8a59435f5d83cb309149eb34697c72979"
+      }
+    },
+    {
+      "id": "production-fury-protection-warrior-shield-block",
+      "description": "Production Fury Protection Warrior tanking a level 63 target with Shield Block: Bloodthirst, Death Wish, a sequence into Berserker Stance, and Shield Block while in Defensive Stance",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/production-fury-protection-warrior-shield-block.request.json"
+      },
+      "prepared": "production-fury-protection-warrior-shield-block.prepared.json",
+      "prepared_sha256": "4ea24ccaac3106394a56f81e7f4be9d8f9c2af259e656d0842fea07d79cf861d",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "production-fury-protection-warrior-shield-block.go-result.json",
+        "sha256": "386eda9c0cd0204de4b2ddef047b5aa45338a0c4e604279d83c7eab2ed29c841"
+      },
+      "go_log": {
+        "file": "production-fury-protection-warrior-shield-block.go-log.txt",
+        "sha256": "4f612a173715f9f1028b064e048b08d3c0a231934bfd25077d50e1a22a3b5c7a"
+      }
+    },
+    {
+      "id": "production-protection-warrior-shield-block-3-targets",
+      "description": "The production Protection Warrior with Shield Block against three copies of the boss, each swinging at the tank: blocks from any copy spend Shield Block's charges",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/production-protection-warrior-shield-block-3-targets.request.json"
+      },
+      "prepared": "production-protection-warrior-shield-block-3-targets.prepared.json",
+      "prepared_sha256": "11890bd68bc5ef5bc9a158ce8210cbcd270152199d0d85147c4b5ca84d87c292",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "production-protection-warrior-shield-block-3-targets.go-result.json",
+        "sha256": "78c435326c95dfd8ebaada608ff5e7de6d309082f35d96547c66966499bfd0c9"
+      },
+      "go_log": {
+        "file": "production-protection-warrior-shield-block-3-targets.go-log.txt",
+        "sha256": "00afd02f7ac89a8e0bdcf629ac7cf6611de1003a99aaf61fb35b13509169e5e2"
+      }
     }
   ]
 }

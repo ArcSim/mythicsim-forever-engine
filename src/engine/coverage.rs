@@ -1271,6 +1271,7 @@ const HIT_TAKEN_EFFECTS: &[&str] = &[
     "revenge",
     "retaliation",
     "rage_on_avoid",
+    "shield_block",
     "warrior_enrage",
     "blood_craze",
     "riposte",

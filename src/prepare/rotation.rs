@@ -12,9 +12,35 @@ use crate::contracts::request::{Message, Value};
 
 use super::agent::proto_to_action_id;
 use super::env::Environment;
-use super::sim::{SpellId, UnitId};
+use super::sim::{Sim, SpellId, UnitId};
 use super::spell::SpellFlag;
 use super::Refusal;
+
+/// The spell ids the rotation of the request names anywhere, which the exporter's
+/// `rotationSpellIDs` collects: every `spellId` in the rotation's protojson.
+pub(crate) fn rotation_spells(sim: &Sim, unit: UnitId) -> Vec<i64> {
+    fn walk(node: &serde_json::Value, out: &mut Vec<i64>) {
+        match node {
+            serde_json::Value::Object(map) => {
+                for (key, child) in map {
+                    if key == "spellId" {
+                        if let Some(id) = child.as_f64() {
+                            out.push(id as i64);
+                        }
+                    }
+                    walk(child, out);
+                }
+            }
+            serde_json::Value::Array(items) => items.iter().for_each(|child| walk(child, out)),
+            _ => {}
+        }
+    }
+    let mut out = Vec::new();
+    if let Some(rotation) = sim.character(unit).player.message("rotation") {
+        walk(&rotation.to_protojson(), &mut out);
+    }
+    out
+}
 
 /// Go `GetAPLSpell`.
 fn apl_spell(env: &Environment, id: &ActionId) -> Option<SpellId> {

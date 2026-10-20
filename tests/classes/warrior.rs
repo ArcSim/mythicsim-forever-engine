@@ -211,6 +211,75 @@ fn survival_cooldowns_below_a_health_threshold_are_supported() {
     }
 }
 
+/// Shield Block (2565), which the production Protection rotations cast: the cast runs only
+/// through its effect, which also hears the target's swings for the blocks that spend it.
+#[test]
+fn shield_block_requests_are_supported() {
+    for case in [
+        "production-protection-warrior-shield-block",
+        "production-fury-protection-warrior-shield-block",
+        "production-protection-warrior-shield-block-3-targets",
+    ] {
+        let value = warrior_fixture(case);
+        let prepared: PreparedV2 = serde_json::from_value(value.clone()).unwrap();
+        assert_eq!(prepared_coverage(&prepared), Vec::<String>::new(), "{case}");
+        let mut value = value;
+        value["effects"]
+            .as_array_mut()
+            .unwrap()
+            .retain(|effect| effect["kind"] != "shield_block");
+        let reasons = reasons(value);
+        assert!(
+            reasons.contains(&"rotation reaches spell 2565 without a known behavior".into()),
+            "{case}: {reasons:?}"
+        );
+        assert!(
+            reasons.contains(&"player aura \"Shield Block\" reacts to the target's swings".into()),
+            "{case}: {reasons:?}"
+        );
+    }
+}
+
+/// The cast sets Shield Block to its two charges, and only a blocked swing at the same moment
+/// spends one. An aura that fades, as at the end of the fight, drops its last charge after it.
+#[test]
+fn shield_block_spends_a_charge_on_each_block() {
+    let logs = first_fight_log(warrior_fixture(
+        "production-protection-warrior-shield-block",
+    ));
+    let lines: Vec<&str> = logs.lines().collect();
+    assert!(logs.contains("{SpellID: 2565} stacks: 0 --> 2"));
+    let mut spends = 0;
+    for (index, line) in lines.iter().enumerate() {
+        if !line.contains("{SpellID: 2565} stacks: 2 --> 1")
+            && !line.contains("{SpellID: 2565} stacks: 1 --> 0")
+            || (index > 0 && lines[index - 1].ends_with("Aura faded: {SpellID: 2565}"))
+        {
+            continue;
+        }
+        spends += 1;
+        let time = &line[..line.find(']').unwrap() + 1];
+        assert!(
+            lines[..index]
+                .iter()
+                .rev()
+                .take_while(|earlier| earlier.starts_with(time))
+                .any(|earlier| earlier.contains("} Block for ")),
+            "{line}: no block spent it"
+        );
+    }
+    assert!(spends > 1, "no charge was spent");
+}
+
+/// shield_block.go's cast condition needs a shield to block with.
+#[test]
+fn shield_block_needs_a_shield() {
+    let mut value = warrior_fixture("production-protection-warrior-shield-block");
+    assert!(first_fight_log(value.clone()).contains("Casting {SpellID: 2565}"));
+    effect_mut(&mut value, "shield_block")["can_block"] = json!(false);
+    assert!(!first_fight_log(value).contains("Casting {SpellID: 2565}"));
+}
+
 #[test]
 fn revenge_trigger_needs_its_effect() {
     let mut value = protection_json();

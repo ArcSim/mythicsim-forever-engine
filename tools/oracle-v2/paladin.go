@@ -3,12 +3,9 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"reflect"
 	"time"
-
-	"google.golang.org/protobuf/encoding/protojson"
 
 	"github.com/wowsims/forever/sim/core"
 	"github.com/wowsims/forever/sim/core/buffs"
@@ -580,28 +577,7 @@ func paladinTankEffects(p *paladin.Paladin, character *core.Character) []map[str
 var paladinRotationSpells = map[int32]bool{}
 
 func paladinRecordRotation(request *proto.RaidSimRequest) {
-	paladinRotationSpells = map[int32]bool{}
-	data, err := protojson.Marshal(request.Raid.Parties[0].Players[0].GetRotation())
-	fail(err)
-	var tree any
-	fail(json.Unmarshal(data, &tree))
-	var walk func(node any)
-	walk = func(node any) {
-		switch value := node.(type) {
-		case map[string]any:
-			for key, child := range value {
-				if id, ok := child.(float64); ok && key == "spellId" {
-					paladinRotationSpells[int32(id)] = true
-				}
-				walk(child)
-			}
-		case []any:
-			for _, child := range value {
-				walk(child)
-			}
-		}
-	}
-	walk(tree)
+	paladinRotationSpells = rotationSpellIDs(request)
 }
 
 // The Holy Shield ranks the rotation names, whose block chance auras the stat aura combinations

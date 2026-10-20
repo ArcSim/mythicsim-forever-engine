@@ -31,12 +31,13 @@ var dynamicReadStats = []stats.Stat{stats.SpellDamage, stats.AttackPower, stats.
 
 // Stats the Rust runtime reads during a fight that a combination carries only when one changes
 // them: maximum mana, healing power and health, Spirit, which Life Tap and Dark Sacrifice read,
-// the school spell damage stats spell.go SpellSchoolBonusDamage reads, the resistances a spell
+// Intellect, whose change makes unit.go processDynamicBonus run UpdateManaRegenRates and so pick up
+// a casting rate an aura changed without one (Improved Stormstrike's), the school spell damage stats spell.go SpellSchoolBonusDamage reads, the resistances a spell
 // that hits the player rolls against, the physical damage spell.go BonusDamage adds to a
 // physical spell, the armor penetration spell_resistances.go GetArmorDamageModifier takes off the
 // target's armor, the spell piercing it takes off the target's resistance, and the melee and
 // spell hit a weapon an item swap puts in the hand can change.
-var optionalReadStats = []stats.Stat{stats.Mana, stats.HealingPower, stats.Health, stats.Spirit,
+var optionalReadStats = []stats.Stat{stats.Mana, stats.HealingPower, stats.Health, stats.Spirit, stats.Intellect,
 	stats.ArcaneDamage, stats.FireDamage, stats.FrostDamage, stats.HolyDamage, stats.NatureDamage,
 	stats.ShadowDamage, stats.ArcaneResistance, stats.FireResistance, stats.FrostResistance,
 	stats.NatureResistance, stats.ShadowResistance, stats.PhysicalDamage, stats.ArmorPenetration, stats.SpellPiercing,

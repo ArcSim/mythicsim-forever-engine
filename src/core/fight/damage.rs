@@ -210,12 +210,25 @@ impl<A: Agent> Fight<A> {
         }
     }
 
+    /// Go `AttackTable.MobTypeBonusStats[Defender.MobType][SpellDamage]` on the spell's caster's
+    /// table: the player's, while the Potion of Elemental Purging holds against its mob type.
+    fn mob_type_spell_damage(&self, spell: SpellId) -> f64 {
+        match self.mob_type_spell_damage {
+            Some((aura, bonus))
+                if self.spells[spell].caster == Side::Player && self.aura(aura).active =>
+            {
+                bonus
+            }
+            _ => 0.0,
+        }
+    }
+
     /// Go `Spell.BonusDamage` for a magic spell against a target.
     pub(crate) fn bonus_damage(&self, spell: SpellId, target: Side) -> f64 {
         let state = &self.spells[spell];
         let mut bonus = state.bonus_base_damage;
         bonus += self.spell_power(spell)
-            + 0.0
+            + self.mob_type_spell_damage(spell)
             + self.school_value(
                 spell,
                 &self.target_unit(target).state.school_bonus_spell_damage,

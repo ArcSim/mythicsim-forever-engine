@@ -1,5 +1,6 @@
-//! Incinerate (1293813), from Go sim/warlock/incinerate.go: the client damage roll, raised on
-//! a target burning with Immolate, then the magic hit and crit, dealt when it arrives.
+//! Incinerate (1293813), from Go sim/warlock/incinerate.go: the client damage roll, the magic hit
+//! and crit, the whole hit raised on a target burning with Immolate (Go
+//! `IncinerateImmolateBonusOnWholeHit`, MythicSim patch 155), dealt when it arrives.
 
 use crate::core::fight::{Agent, DotId, Fight, Side, SpellId};
 
@@ -10,14 +11,15 @@ pub(crate) fn apply<A: Agent>(
     immolate: Option<DotId>,
     immolate_bonus: f64,
 ) {
-    let mut base = fight.roll_damage_effect(spell);
-    if immolate.is_some_and(|dot| {
+    let base = fight.roll_damage_effect(spell);
+    let immolated = immolate.is_some_and(|dot| {
         fight
             .aura(fight.dots[fight.dot_on(dot, target)].aura)
             .active
-    }) {
-        base *= immolate_bonus;
+    });
+    let mut result = fight.calc_damage(spell, target, base);
+    if immolated {
+        result.damage *= immolate_bonus;
     }
-    let result = fight.calc_damage(spell, target, base);
     fight.deal_damage_after_travel(spell, result);
 }

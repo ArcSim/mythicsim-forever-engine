@@ -11,8 +11,9 @@ use crate::contracts::prepared_v2::ActionId;
 use super::aura_helpers::ProcTrigger;
 use super::common_effects::{GOBLIN_SAPPER_ITEM, SPELL_BATCH_WINDOW};
 use super::consumes::{
-    basic_explosive, consumable_by_id, spell_effect_by_id, Consumable, EFFECT_TYPE_HEAL,
-    EFFECT_TYPE_RESOURCE_GAIN, RESOURCE_ENERGY, RESOURCE_MANA, RESOURCE_RAGE,
+    basic_explosive, consumable_by_id, spell_effect_by_id, Consumable, CAUSTIC_SMOG_POTION,
+    DRAGONFIRE_POTION, EFFECT_TYPE_HEAL, EFFECT_TYPE_RESOURCE_GAIN, ELEMENTAL_PURGING_POTION,
+    RESOURCE_ENERGY, RESOURCE_MANA, RESOURCE_RAGE,
 };
 use super::env::Environment;
 use super::sim::SpellId;
@@ -60,6 +61,9 @@ pub(crate) fn consumable_item_effect(
     let flags = env.sim.spell(spell).flags;
     let consumable = consumable_by_id(item);
     if consumable.id != 0 && flags.matches(SpellFlag::POTION) {
+        if let Some(effect) = forever_potion_effect(env, item, unrepresented) {
+            return Some(effect);
+        }
         if potion_needs_resources(&consumable) {
             return Some(potion_resource_effect(env, &consumable, unrepresented));
         }
@@ -75,6 +79,55 @@ pub(crate) fn consumable_item_effect(
         return Some(basic_explosive_effect(env, spell, unrepresented));
     }
     None
+}
+
+/// tools/oracle-v2 `foreverPotionEffect`: the spell a Forever potion's cast casts, or the aura it
+/// activates, with consumes_forever_potions.go's literals. `None` for every other potion.
+fn forever_potion_effect(
+    env: &Environment,
+    item: i32,
+    unrepresented: &mut Vec<String>,
+) -> Option<Value> {
+    let mut spell_of = |id: i32| {
+        let position = env
+            .sim
+            .get_spell(env.player, &ActionId::spell(id))
+            .and_then(|spell| {
+                env.sim
+                    .unit(env.player)
+                    .spellbook
+                    .iter()
+                    .position(|known| *known == spell)
+            });
+        position.map_or_else(
+            || {
+                unrepresented.push(format!("potion {item} has no spell {id}"));
+                -1
+            },
+            |position| position as i64,
+        )
+    };
+    match item {
+        DRAGONFIRE_POTION => Some(json!({
+            "kind": "dragonfire_potion", "item_id": item, "spell": spell_of(1252554),
+            "direct_damage": 280.0, "tick_damage": 35.0,
+        })),
+        CAUSTIC_SMOG_POTION => Some(json!({
+            "kind": "caustic_smog_potion", "item_id": item, "spell": spell_of(1252543),
+            "tick_damage": 33.0, "tick_variance": 0.1, "rng_label": "Caustic Smog Potion",
+        })),
+        ELEMENTAL_PURGING_POTION => {
+            let label = "Potion of Elemental Purging";
+            if env.sim.get_aura(env.player, label).is_none() {
+                unrepresented.push(format!("potion {item} has no aura"));
+            }
+            Some(json!({
+                "kind": "elemental_purging_potion", "item_id": item, "aura": label,
+                "spell_damage": 105.0, "mob_type": "MobTypeElemental",
+            }))
+        }
+        _ => None,
+    }
 }
 
 fn stone_multiplier(env: &Environment) -> f64 {

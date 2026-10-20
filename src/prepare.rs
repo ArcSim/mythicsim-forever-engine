@@ -58,6 +58,7 @@ pub(crate) mod rage;
 pub(crate) mod resolve_aura;
 pub(crate) mod resolve_proc;
 pub(crate) mod resolve_spell;
+pub(crate) mod revelation;
 pub(crate) mod rotation;
 pub(crate) mod shared_auras;
 pub(crate) mod shared_items;

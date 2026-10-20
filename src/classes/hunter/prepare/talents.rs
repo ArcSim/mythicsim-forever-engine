@@ -424,7 +424,8 @@ impl Hunter {
             return;
         }
         // Client 19485's class mask: Auto Shot, Aimed, Arcane and Multi-Shot, Serpent Sting and
-        // Volley. Not Sniper Shot.
+        // Volley, and since 70450 Sniper Shot (Go `MortalShotsIncludesSniperShot`, MythicSim patch
+        // 172).
         let bonus = spell_data().mortal_shots.fraction_at(rank);
         sim.add_static_mod(
             self.unit,
@@ -442,7 +443,8 @@ impl Hunter {
                     | masks::ARCANE_SHOT
                     | masks::MULTI_SHOT
                     | masks::SERPENT_STING
-                    | masks::VOLLEY,
+                    | masks::VOLLEY
+                    | masks::SNIPER_SHOT,
                 bonus,
             ),
         );

@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `2fe7678a0844a6d19f3e6a4ec1469e542763710b`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `c7c423bd7f9857daf6f081a104fef5215b0509a7`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -532,6 +532,85 @@ build 70425 did not move, so the ledger has no new commit.
 12 of the 641 Go goldens changed, all Survival hunter builds that lay traps, and the Hunter preparation
 goldens follow. Rust matches all 639 accepted fixtures with a Go golden, and preparation writes exactly
 what the exporter writes for every one of the 641. The recorded sweeps were not rerun.
+
+The pin moved from `2fe7678a0` to `37c2dfbda` on 2026-10-18, the fork's patches 148 to 172 (branch
+`mythicsim/oct19-release`). The community base `b7083fac1` and client build 70425 did not move, so the
+ledger has no new commit.
+
+- Paladin: the Seal of Righteousness hit takes half the judgement dummy's share, times 1.2 on a
+  two-hander, and rank 1 fires 25741 (patches 148, 158). Judgement of Righteousness, Seal and
+  Judgement of Fury, Holy Strike and Holy Shield read their client rows (168, 170). One-Handed Weapon
+  Specialization skips Holy Shock (149) and Champion of the Light is back to 20% a rank (159). The four
+  judgements that deal no damage roll weapon procs, Improved Seals raises Seal of Command's target
+  bonus, which the contract now carries as `target_bonus_coefficient`, and Seal of Light heals at 15
+  procs a minute (169).
+- Mage: Frost Blast is castable, registered as Frostbolt is, and takes Improved Frostbolt and Arctic
+  Reach (153).
+- Warlock: Incinerate's Immolate bonus multiplies the whole hit (155).
+- Shaman: a Windfury Weapon that only an item swap's main hand carries takes the party Windfury
+  Totem's place once the swap puts it on (156).
+- Consumables: a consumable's crit rating with no spell crit of its own counts for spells too (166),
+  and the elixirs' shared +2% crit rider applies once (171). Patch 165's consumables are imported.
+- Hunter: Mortal Shots raises Sniper Shot's crit damage (172).
+- Data: patch 164's hotfix cache, which among others changes Holy Fire and gives Hurricane back its
+  plain proc, so item 2824 leaves the Forever items.
+- Enchants (157, 170): Enchant Weapon - Revelation. Its triggers roll 9.8% times one less the
+  player's spell crit on a landed hit, heal or tick that does not crit, of the spells Go's rule
+  admits, and a batch window later activate the class's buff: 100% more crit on the spells its
+  class mask names, until the next cast of one that is no channel or proc, or the end of a channel
+  it names. The exporter and Rust preparation describe it as the `revelation` effect.
+- Potions (167): Dragonfire Potion's Fire hit and burn on every target, Caustic Smog Potion's hit roll
+  and rolled Nature ticks on every target, and Potion of Elemental Purging's 105 spell damage against
+  Elementals, Go's `AttackTable.MobTypeBonusStats`, which the runtime's bonus damage now reads.
+
+501 of the 641 Go goldens changed. 84 moved DPS by 1% or more: 80 paladin builds, two Elemental
+Enhancement shamans, a shaman's item swap and the Hurricane hunter. The rest are the consumable crit
+and the hotfix data, a median move of 0.02%. The Hunter, Mage, Paladin and Priest preparation goldens
+and 9 classic weapon goldens follow. 16 new fixtures cover the potions and Revelation in every class
+with a buff, and a warrior that has none. Rust matches all 655 accepted fixtures with a Go golden, and
+preparation writes exactly what the exporter writes for every one of the 657. The recorded sweeps
+were not rerun.
+
+The pin moved from `37c2dfbda` to `24c66dfdf` on 2026-10-19, one commit: the fork's patch 173
+(branch `mythicsim/oct19-release`). The community base `b7083fac1` and client build 70425 did not
+move, so the ledger has no new commit.
+
+- Hunter (patch 173): no Hunter ability scales with spell power. Client 70425 and 70450 give Arcane
+  Shot, Serpent Sting and Volley's tick spells a spell power coefficient of 0, and Bae's in-game tests
+  find only items scaling with it, so Go's `HunterAbilitiesIgnoreSpellPower` (default true) takes
+  none from the three. Their attack power shares, the physical shots and the traps are unchanged.
+  The exporter reads the coefficient from the spells, so the Hunter prepared inputs now carry 0 where
+  they carried .204 to .429, 1.0 over Serpent Sting's duration and .056 a Volley tick, and Rust
+  preparation sets 0 for the three.
+
+38 of the 657 Go goldens changed, all Hunter builds, which carry spell power from the Atiesh auras and
+the party buffs. 28 Beast Mastery and Marksmanship builds lose 1.4% to 2.6% DPS, 5 more that lean on Arcane
+Shot, Serpent Sting or Volley lose 4.3% to 5.1%, and 5 Survival builds that lay traps lose 0.2% to
+0.3%. The Hunter preparation goldens follow. Rust matches all 655 accepted fixtures with a Go golden,
+and preparation writes exactly what the exporter writes for every one of the 657. The recorded sweeps
+were not rerun.
+
+The pin moved from `24c66dfdf` to `c7c423bd7` on 2026-10-20, one commit: the fork's patch 174
+(branch `mythicsim/oct19-arcane-rap`). The community base `b7083fac1` and client build 70425 did not
+move, so the ledger has no new commit.
+
+- Hunter (patch 174): Arcane Shot takes 0.10 of ranged attack power instead of 0.11. Three dedicated
+  tests in the Hunter Discord (0.10, 0.10 and 0.11, relayed by Bae) taken with the four beta logs'
+  fit (0.10 to 0.12) give 0.10, which Go's `ArcaneShotRAPFromHunterTests` (default true) applies. The
+  exporter follows the switch and Rust preparation writes 0.10.
+
+5 of the 657 Go goldens changed, the Hunter builds that cast Arcane Shot: three Marksmanship and two
+Survival builds lose 0.5% to 0.7% DPS. The 14 Hunter preparation goldens follow in their Arcane Shot
+effect. Rust matches all 656 accepted fixtures with a Go golden, and preparation writes exactly what
+the exporter writes for every one of the 658. The recorded sweeps were not rerun.
+
+At the same pin, the stat aura combinations gained Intellect. Go's `processDynamicBonus` refreshes
+the cached mana regeneration rates whenever a dynamic change moves MP5, Intellect or Spirit, and the
+refresh picks up a casting rate an aura changed without one (Improved Stormstrike). Rust refreshed
+only when MP5 or spirit regeneration moved, so an Enhancement shaman whose weapon swap adds Intellect
+while the buff is up had different casting mana ticks: 9 of the 19 Enhancement shadow sims on
+2026-10-19. 26 prepared inputs gained the stat, no Go golden moved, and the shadow sim is accepted
+as `enhancement-shaman-item-swap-stormstrike-regen`.
 
 ## Ledger
 

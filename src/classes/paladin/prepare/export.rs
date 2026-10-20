@@ -37,7 +37,7 @@ pub(super) const GREATER_BLESSING_OF_LIGHT_CATEGORY: &str = "BlessingOfLight";
 
 /// seal_of_righteousness.go `sealOfRighteousnessProcIDs`: the damage spell each rank fires.
 const SEAL_OF_RIGHTEOUSNESS_PROC_IDS: [(i32, i32); 8] = [
-    (1, 25742),
+    (1, 25741),
     (2, 25740),
     (3, 25739),
     (4, 25738),
@@ -288,6 +288,9 @@ impl Paladin {
                 "weapon_percent": proc_effect.percent()
                     * data.improved_seals.multiplier_at(talents.i32("improved_seals")),
                 "coefficient": proc_effect.coeff(),
+                // Go `SealOfCommandBonusTakesImprovedSeals` (MythicSim patch 169).
+                "target_bonus_coefficient": proc_effect.coeff()
+                    * data.improved_seals.multiplier_at(talents.i32("improved_seals")),
                 "proc_chance": dpm.chance(ProcMask::MELEE_MH_AUTO),
                 "rng_label": "Seal of Command", "icd_ns": SECOND, "deal_delay_ns": deal_delay,
             }));

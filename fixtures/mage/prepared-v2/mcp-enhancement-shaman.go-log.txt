@@ -1129,12 +1129,13 @@
 [40.00] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
 [41.43] [enhancement-shaman (#1)] Casting {SpellID: 15208} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [41.43] [enhancement-shaman (#1)] Completed cast {SpellID: 15208}
-[41.43] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 2180.6, RAP: 74.0, SP: 437.7, BaseDamage:522.5, AfterAttackerMods:548.7, AfterResistances:548.7, AfterTargetMods:724.2, AfterOutcome:724.2, AfterPostOutcome:724.2
+[41.43] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} [DEBUG] MAP: 2180.6, RAP: 74.0, SP: 437.7, BaseDamage:522.5, AfterAttackerMods:548.7, AfterResistances:548.7, AfterTargetMods:724.2, AfterOutcome:1086.4, AfterPostOutcome:1086.4
 [41.43] [enhancement-shaman (#1)] Aura faded: {SpellID: 408505}
 [41.43] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 5 --> 0
-[41.43] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Hit for 724.248 damage (SpellSchool: 8). (Threat: 724.248)
+[41.43] [enhancement-shaman (#1)] [Target 1] {SpellID: 15208} Crit for 1086.373 damage (SpellSchool: 8). (Threat: 1086.373)
 [41.43] [Target 1] {SpellID: 17364} stacks: 1 --> 0
 [41.43] [Target 1] Aura faded: {SpellID: 17364}
+[41.44] [enhancement-shaman (#1)] Aura gained: {SpellID: 29178}
 [41.44] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (5553.800 --> 5612.800) of 6625 total.
 [41.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (5612.800 --> 5643.600) of 6625 total.
 [42.24] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
@@ -1244,11 +1245,11 @@
 [48.93] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.02] [enhancement-shaman (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [49.02] [enhancement-shaman (#1)] Completed cast {OtherID: 3, Tag: 1}
-[49.02] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2180.6, RAP: 74.0, SP: 437.7, BaseDamage:836.4, AfterAttackerMods:836.4, AfterResistances:710.4, AfterTargetMods:718.4, AfterOutcome:718.4, AfterPostOutcome:718.4
-[49.02] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 718.375 damage (SpellSchool: 1). (Threat: 718.375)
+[49.02] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 2180.6, RAP: 74.0, SP: 437.7, BaseDamage:836.4, AfterAttackerMods:836.4, AfterResistances:710.4, AfterTargetMods:718.4, AfterOutcome:1436.8, AfterPostOutcome:1436.8
+[49.02] [enhancement-shaman (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 1436.750 damage (SpellSchool: 1). (Threat: 1436.750)
 [49.02] [enhancement-shaman (#1)] No available actions!
 [49.02] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
-[49.03] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2
+[49.03] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
 [49.03] [enhancement-shaman (#1)] Gained 59.000 mana from {SpellID: 20355} (5264.500 --> 5323.500) of 6625 total.
 [49.12] [enhancement-shaman (#1)] No available actions!
 [49.12] [enhancement-shaman (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -1302,6 +1303,7 @@
 [50.93] [enhancement-shaman (#1)] Completed cast {SpellID: 29228, Tag: 1}
 [50.93] [Target 1] Aura gained: {SpellID: 29228, Tag: 1}
 [50.93] [enhancement-shaman (#1)] [Target 1] {SpellID: 29228} Hit for 331.187 damage (SpellSchool: 4). (Threat: 331.187)
+[51.44] [enhancement-shaman (#1)] Aura faded: {SpellID: 29178}
 [51.50] [enhancement-shaman (#1)] Gained 30.800 mana from {OtherID: 2, Tag: 1} (5161.600 --> 5192.400) of 6625 total.
 [51.96] [Target 1] Aura faded: {SpellID: 10438}
 [51.96] [enhancement-shaman (#1)] Casting {SpellID: 10436} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
@@ -1323,7 +1325,6 @@
 [52.06] [enhancement-shaman (#1)] Queueing up {SpellID: 17364} to cast at 52.433871788s.
 [52.06] [enhancement-shaman (#1)] Pausing rotation for 370.109972ms due to resources / CDs.
 [52.07] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 16257}
-[52.07] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 2 --> 3
 [52.07] [enhancement-shaman (#1)] Aura refreshed: {SpellID: 408505}
 [52.07] [enhancement-shaman (#1)] {SpellID: 408505} stacks: 3 --> 4
 [52.07] [enhancement-shaman (#1)] {SpellID: 16257} stacks: 3 --> 2

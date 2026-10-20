@@ -382,13 +382,14 @@ impl Paladin {
     /// Champion of the Light: increases your spell damage by up to 20/40/60% of your
     /// Intellect.
     fn apply_champion_of_the_light(&mut self, sim: &mut Sim, unit: UnitId) {
-        /// Go `championOfTheLightIntellectShare`.
-        const CHAMPION_OF_THE_LIGHT_INTELLECT_SHARE: f64 = 0.10;
+        /// Go `ChampionOfTheLightIntellectShare` with `ChampionOfTheLightReverted` on (MythicSim patch
+        /// 159): the 17 October hotfix put it back to 20/40/60%.
+        const CHAMPION_OF_THE_LIGHT_INTELLECT_SHARE: f64 = 0.20;
         let points = self.talents.i32("champion_of_the_light");
         if points == 0 {
             return;
         }
-        // The 16 October 2026 beta notes halve it to 10/20/30%; the row still says 20/40/60.
+        // Client 70425's tables carry the notes' 10/20/30; the hotfix is server side.
         let share = CHAMPION_OF_THE_LIGHT_INTELLECT_SHARE * f64::from(points);
         sim.unit_mut(unit)
             .sdm

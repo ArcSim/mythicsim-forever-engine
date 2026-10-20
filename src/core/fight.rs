@@ -28,6 +28,7 @@ mod innervate;
 pub(crate) mod item_swap;
 mod on_use_damage;
 pub(crate) mod proc_damage;
+mod revelation;
 pub(crate) use on_use_damage::known as on_use_damage_known;
 mod heal_proc;
 pub(crate) mod healing;
@@ -424,6 +425,24 @@ pub(crate) enum SpellBehavior<S> {
         aura: Option<usize>,
         /// The potion's resource metrics, by resource, registered lazily.
         metrics: Vec<(ResourceKind, usize)>,
+    },
+    /// Go consumes.go `makePotionActivationSpellInternal` for a Forever potion with a spell of
+    /// its own: the cast casts that spell at the current target.
+    CastsSpell(SpellId),
+    /// Go consumes_forever_potions.go Dragonfire Potion's spell: on every target in unit index
+    /// order, a magic hit and crit of `direct`, whose landing applies the dot, dealt before the
+    /// next target's; each tick deals `tick`.
+    DragonfirePotion {
+        direct: f64,
+        tick: f64,
+    },
+    /// Go consumes_forever_potions.go Caustic Smog Potion's spell: on every target in unit index
+    /// order, a magic hit roll whose landing applies the dot; each tick rolls `tick` within the
+    /// variance under the label.
+    CausticSmogPotion {
+        tick: f64,
+        variance: f64,
+        label: String,
     },
     /// Go consumes.go conjured item: rolled only when the spread exceeds one.
     ConjuredMana {
@@ -1750,6 +1769,12 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) healing_dealt_factor: f64,
     /// Dragonbreath Chili, when the character ate it.
     pub(crate) chili: Option<DragonbreathChili>,
+    /// Enchant Weapon - Revelation, when a weapon carries it.
+    pub(crate) revelation: Option<revelation::Revelation>,
+    /// Go `AttackTable.MobTypeBonusStats`' spell damage, which only the Potion of Elemental
+    /// Purging gives: its aura and the bonus the player's spells take while it holds, when the
+    /// targets are of its mob type.
+    pub(crate) mob_type_spell_damage: Option<(AuraRef, f64)>,
     /// Item damage procs built from client rows, by their aura's position.
     pub(crate) damage_procs: Vec<DamageProc>,
     /// Enchant heal procs, by their position among the heal proc effects.
@@ -1775,6 +1800,9 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) stat_health: Vec<Option<f64>>,
     /// The player's Spirit for each combination, when one changes it.
     pub(crate) stat_spirit: Vec<Option<f64>>,
+    /// The player's Intellect for each combination, when one changes it: Go refreshes the
+    /// cached mana regeneration rates whenever a dynamic change moves it.
+    stat_intellect: Vec<Option<f64>>,
     /// The player's school spell damage stats for each combination, when one changes them.
     pub(crate) stat_school_damage: Vec<Option<[f64; 8]>>,
     /// The player's resistances for each combination that a combination changes, by Go
@@ -1810,8 +1838,9 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) hp_percent_for_defensives: f64,
     /// How each exclusive effect of an aura a rotation asks about reads.
     pub(crate) aura_refresh: Vec<(AuraRef, Vec<exclusive::RefreshReading>)>,
-    /// Single aura categories that a rotation's `auraShouldRefresh` reads and no class
-    /// describes, as (unit, name): the runtime enforces them from the exported memberships.
+    /// Single aura categories that a rotation's `auraShouldRefresh` reads, or a class asks for,
+    /// and no class describes, as (unit, name): the runtime enforces them from the exported
+    /// memberships.
     derived_categories: Vec<(Side, String)>,
 }
 
@@ -2389,6 +2418,16 @@ impl<A: Agent> Fight<A> {
                                 metrics: Vec::new(),
                             })
                         }
+                        Effect::DragonfirePotion { item_id, spell, .. }
+                        | Effect::CausticSmogPotion { item_id, spell, .. }
+                            if *item_id == item =>
+                        {
+                            Some(SpellBehavior::CastsSpell(*spell))
+                        }
+                        Effect::ElementalPurgingPotion { item_id, aura, .. } if *item_id == item => {
+                            activations.push((spells.len(), aura));
+                            Some(SpellBehavior::None)
+                        }
                         Effect::ConjuredMana {
                             item_id,
                             rng_label,
@@ -2565,6 +2604,26 @@ impl<A: Agent> Fight<A> {
                                 .ok()
                                 .map(SpellBehavior::OnUseDamage)
                         }
+                        Effect::DragonfirePotion {
+                            spell,
+                            direct_damage,
+                            tick_damage,
+                            ..
+                        } if *spell == spells.len() => Some(SpellBehavior::DragonfirePotion {
+                            direct: *direct_damage,
+                            tick: *tick_damage,
+                        }),
+                        Effect::CausticSmogPotion {
+                            spell,
+                            tick_damage,
+                            tick_variance,
+                            rng_label,
+                            ..
+                        } if *spell == spells.len() => Some(SpellBehavior::CausticSmogPotion {
+                            tick: *tick_damage,
+                            variance: *tick_variance,
+                            label: rng_label.clone(),
+                        }),
                         // The spell of a weapon's extra attack proc: it grants the attacks.
                         Effect::ExtraAttackProc {
                             spell: Some(spell),
@@ -2971,6 +3030,10 @@ impl<A: Agent> Fight<A> {
         let stat_spirit: Vec<Option<f64>> = stat_combos
             .iter()
             .map(|combo| combo.get("Spirit").copied())
+            .collect();
+        let stat_intellect: Vec<Option<f64>> = stat_combos
+            .iter()
+            .map(|combo| combo.get("Intellect").copied())
             .collect();
         // And each school spell damage and resistance stat only when a combination changes it;
         // the others keep their reset values.
@@ -3387,6 +3450,18 @@ impl<A: Agent> Fight<A> {
                     AuraBehavior::Crusader
                 } else if side == Side::Player
                     && effects.iter().any(|effect| {
+                        matches!(effect, Effect::Revelation { trigger_aura, ticks_trigger_aura, .. } if *trigger_aura == exported.label || *ticks_trigger_aura == exported.label)
+                    })
+                {
+                    AuraBehavior::RevelationTrigger
+                } else if side == Side::Player
+                    && effects.iter().any(|effect| {
+                        matches!(effect, Effect::Revelation { aura, .. } if *aura == exported.label)
+                    })
+                {
+                    AuraBehavior::RevelationBuff
+                } else if side == Side::Player
+                    && effects.iter().any(|effect| {
                         matches!(effect, Effect::DragonbreathChili { trigger_aura, .. } if *trigger_aura == exported.label)
                     })
                 {
@@ -3722,6 +3797,7 @@ impl<A: Agent> Fight<A> {
             stat_combos,
             stat_health,
             stat_spirit,
+            stat_intellect,
             stat_school_damage,
             stat_resistance,
             stat_mask: 0,
@@ -3740,6 +3816,8 @@ impl<A: Agent> Fight<A> {
             power_infusion: None,
             healing_dealt_factor: 1.0,
             chili: None,
+            revelation: None,
+            mob_type_spell_damage: None,
             damage_procs: Vec::new(),
             spell_stat_procs: Vec::new(),
             aura_mods: Vec::new(),
@@ -4179,7 +4257,16 @@ impl<A: Agent> Fight<A> {
                         delay: *delay_ns,
                     });
                 }
+                Effect::ElementalPurgingPotion {
+                    aura,
+                    spell_damage,
+                    mob_type,
+                    ..
+                } if target.mob_type.as_deref() == Some(mob_type.as_str()) => {
+                    fight.mob_type_spell_damage = Some((fight.player_aura(aura)?, *spell_damage));
+                }
                 Effect::EmeraldDragonWhelp { .. } => fight.bind_whelp(effect)?,
+                Effect::Revelation { .. } => fight.bind_revelation(effect)?,
                 Effect::SulfurasHandOfRagnaros { .. } => fight.bind_sulfuras(effect)?,
                 Effect::BladeOfHanna { .. } => fight.bind_blade_of_hanna(effect)?,
                 Effect::Thunderfury { .. } => fight.bind_thunderfury(effect)?,
@@ -4471,10 +4558,24 @@ impl<A: Agent> Fight<A> {
             self.player.mana = self.player.powers.max_mana;
         }
         // Go processDynamicBonus runs UpdateManaRegenRates when MP5, Intellect or Spirit move.
+        // Intellect plays no part in Forever's regeneration, but the refresh it causes picks up
+        // a casting rate an aura changed without one, as Improved Stormstrike's does.
+        let intellect = |mask: u32| self.stat_intellect.get(mask as usize).copied().flatten();
         if self.player.powers.mp5 != mp5
             || self.player.powers.spirit_regen_per_second != spirit_regen
+            || intellect(mask) != intellect(mask ^ changed)
         {
             self.update_mana_regen_rates();
+        }
+    }
+
+    /// Enforces a single aura exclusive category of the unit from the exported memberships, as
+    /// Go does for every one: a class whose auras share one, as a Hunter's aspects do, asks for it
+    /// so an aura that takes the category's place switches the active one off.
+    pub(crate) fn enforce_exported_category(&mut self, side: Side, name: &str) {
+        let key = (side, name.to_string());
+        if !self.derived_categories.contains(&key) {
+            self.derived_categories.push(key);
         }
     }
 

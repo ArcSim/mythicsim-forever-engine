@@ -24,15 +24,16 @@ const DYNAMIC_READ_STATS: [Stat; 6] = [
 ];
 
 /// Stats the Rust runtime reads during a fight that a combination carries only when one changes
-/// them: maximum mana, healing power and health, Spirit, the school spell damage stats, the
-/// resistances a spell that hits the player rolls against, the physical damage a physical
-/// spell adds, the armor penetration taken off the target's armor and the spell piercing taken
-/// off its resistance.
-const OPTIONAL_READ_STATS: [Stat; 20] = [
+/// them: maximum mana, healing power and health, Spirit, Intellect, whose change makes Go refresh
+/// the cached mana regeneration rates, the school spell damage stats, the resistances a spell
+/// that hits the player rolls against, the physical damage a physical spell adds, the armor
+/// penetration taken off the target's armor and the spell piercing taken off its resistance.
+const OPTIONAL_READ_STATS: [Stat; 21] = [
     Stat::Mana,
     Stat::HealingPower,
     Stat::Health,
     Stat::Spirit,
+    Stat::Intellect,
     Stat::ArcaneDamage,
     Stat::FireDamage,
     Stat::FrostDamage,

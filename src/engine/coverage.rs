@@ -201,6 +201,10 @@ const COMMON_EFFECTS: &[&str] = &[
     "crusader",
     "diamond_flask",
     "dragonbreath_chili",
+    "dragonfire_potion",
+    "revelation",
+    "caustic_smog_potion",
+    "elemental_purging_potion",
     "energize_on_use",
     "emerald_dragon_whelp",
     "thunderfury",
@@ -295,6 +299,13 @@ fn common_spell_capability(spell: &Spell, prepared: &PreparedV2) -> Option<&'sta
     prepared.effects.iter().find_map(|effect| match effect {
         Effect::PotionMana { item_id, .. } if *item_id == item => Some("potion_mana"),
         Effect::PotionResource { item_id, .. } if *item_id == item => Some("potion_resource"),
+        Effect::DragonfirePotion { item_id, .. } if *item_id == item => Some("dragonfire_potion"),
+        Effect::CausticSmogPotion { item_id, .. } if *item_id == item => {
+            Some("caustic_smog_potion")
+        }
+        Effect::ElementalPurgingPotion { item_id, .. } if *item_id == item => {
+            Some("elemental_purging_potion")
+        }
         // Class spells Go registers without a class mask, named by their effect's spell.
         Effect::Bloodrage { spell_id, .. } if *spell_id == id.spell_id && id.tag == 0 => {
             Some("bloodrage")
@@ -450,6 +461,16 @@ fn common_claims(effect: &Effect) -> Vec<(&'static str, &str)> {
             trigger_aura, pet, ..
         } => vec![("player", trigger_aura), ("pet unit", pet)],
         Effect::ForceReactiveDisk { trigger_aura, .. } => vec![("player", trigger_aura)],
+        Effect::Revelation {
+            trigger_aura,
+            ticks_trigger_aura,
+            aura,
+            ..
+        } => vec![
+            ("player", trigger_aura),
+            ("player", ticks_trigger_aura),
+            ("player", aura),
+        ],
         Effect::StackingOnUse { aura, .. } => vec![("player", aura)],
         Effect::Thunderfury {
             trigger_aura,
@@ -1091,7 +1112,8 @@ fn followed_stat(stat: &str) -> bool {
 /// Stats a stat aura may change without the runtime reading them: inputs to the stats it
 /// reads, and stats nothing in scope reads.
 const INERT_STATS: &[&str] = &[
-    // Spell crit and maximum mana; mana regeneration reads only spirit and MP5.
+    // Spell crit and maximum mana; mana regeneration reads only spirit and MP5, and the
+    // combinations carry Intellect for the regeneration refresh a change of it causes.
     "Intellect",
     // Spirit regeneration, which the combinations carry; a class that reads Spirit itself
     // refuses a change of it.

@@ -37,9 +37,11 @@ pub(crate) const IMPROVED_BLIZZARD: i64 = 1 << 32;
 pub(crate) const FROSTFIRE_BOLT: i64 = 1 << 33;
 /// Arcane talent of client 70425 (16 October 2026 beta).
 pub(crate) const ARCANE_WRATH: i64 = 1 << 34;
+/// Frost Blast, a trained Frost spell of client 70425 (MythicSim patch 153).
+pub(crate) const FROST_BLAST: i64 = 1 << 35;
 
 /// `MageSpellLast`.
-const LAST: i64 = 1 << 35;
+const LAST: i64 = 1 << 36;
 /// `MageSpellsAll`.
 pub(crate) const ALL: i64 = (LAST << 1) - 1;
 /// `MageSpellsAllDamaging`.
@@ -59,7 +61,8 @@ pub(crate) const ALL_DAMAGING: i64 = ARCANE_BLAST
     | CONE_OF_COLD
     | FROST_NOVA
     | FROSTFIRE_BOLT
-    | ARCANE_WRATH;
+    | ARCANE_WRATH
+    | FROST_BLAST;
 /// `MageSpellInstantCast`.
 pub(crate) const INSTANT_CAST: i64 = ARCANE_MISSILES_CAST
     | ARCANE_MISSILES_TICK

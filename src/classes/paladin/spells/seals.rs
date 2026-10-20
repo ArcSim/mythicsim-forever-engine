@@ -96,6 +96,7 @@ pub(crate) struct Crusader {
 pub(crate) struct CommandProc {
     pub(crate) weapon_percent: f64,
     pub(crate) coefficient: f64,
+    pub(crate) target_bonus_coefficient: f64,
     pub(crate) chance: f64,
     pub(crate) label: String,
     pub(crate) icd: i64,
@@ -236,6 +237,7 @@ pub(crate) fn bind(fight: &mut Fight<PaladinAgent>, effects: &[Effect]) -> Resul
             proc_spell_id,
             weapon_percent,
             coefficient,
+            target_bonus_coefficient,
             proc_chance,
             rng_label,
             icd_ns,
@@ -261,6 +263,7 @@ pub(crate) fn bind(fight: &mut Fight<PaladinAgent>, effects: &[Effect]) -> Resul
             seals.command = Some(CommandProc {
                 weapon_percent: *weapon_percent,
                 coefficient: *coefficient,
+                target_bonus_coefficient: *target_bonus_coefficient,
                 chance: *proc_chance,
                 label: rng_label.clone(),
                 icd: *icd_ns,
@@ -499,7 +502,7 @@ pub(crate) fn command_proc(fight: &mut Fight<PaladinAgent>, spell: SpellId, targ
         * command.weapon_percent;
     let holy = crate::core::fight::school_index(2);
     let target_bonus = fight.target_unit(target).state.school_bonus_spell_damage[holy];
-    base = command.coefficient.mul_add(target_bonus, base);
+    base = command.target_bonus_coefficient.mul_add(target_bonus, base);
     let result = fight.calc_damage_with(
         spell,
         target,

@@ -2055,6 +2055,9 @@ pub enum Effect {
         proc_spell_id: i32,
         weapon_percent: f64,
         coefficient: f64,
+        /// The share of the target's extra Holy damage taken a proc adds: the coefficient times
+        /// Improved Seals (MythicSim patch 169).
+        target_bonus_coefficient: f64,
         proc_chance: f64,
         rng_label: String,
         icd_ns: i64,
@@ -3469,6 +3472,52 @@ pub enum Effect {
         #[serde(default)]
         expire_log: Option<String>,
     },
+    /// common/forever/revelation.go Enchant Weapon - Revelation: the hit and heal trigger hears
+    /// `hit_spells` and the tick trigger `tick_spells`; on a landed one that does not crit and
+    /// deals something each rolls `chance_at_no_crit` times one less the player's spell crit
+    /// under its own label, and the batch window later activates the buff. The buff adds the crit
+    /// to `affected_spells`, the next cast of one of `consuming_spells` spends it and the end of
+    /// a `channel_spells` dot ends it.
+    Revelation {
+        trigger_aura: String,
+        ticks_trigger_aura: String,
+        aura: String,
+        hit_spells: Vec<usize>,
+        tick_spells: Vec<usize>,
+        affected_spells: Vec<usize>,
+        consuming_spells: Vec<usize>,
+        channel_spells: Vec<usize>,
+        bonus_crit_percent: f64,
+        chance_at_no_crit: f64,
+        delay_ns: i64,
+    },
+    /// consumes_forever_potions.go Dragonfire Potion: the cast casts `spell`, a magic hit and
+    /// crit of the literal on every target, and on each it lands on the spell's dot, which ticks
+    /// its literal.
+    DragonfirePotion {
+        item_id: i32,
+        spell: usize,
+        direct_damage: f64,
+        tick_damage: f64,
+    },
+    /// consumes_forever_potions.go Caustic Smog Potion: the cast casts `spell`, a magic hit roll
+    /// on every target, and on each it lands on the spell's dot, whose ticks roll the literal
+    /// within the variance under the label.
+    CausticSmogPotion {
+        item_id: i32,
+        spell: usize,
+        tick_damage: f64,
+        tick_variance: f64,
+        rng_label: String,
+    },
+    /// consumes_forever_potions.go Potion of Elemental Purging: the cast activates the aura, which
+    /// adds the spell damage against targets of the mob type while it holds.
+    ElementalPurgingPotion {
+        item_id: i32,
+        aura: String,
+        spell_damage: f64,
+        mob_type: String,
+    },
     /// Warrior stances.go: the starting stance and each stance's cast and aura.
     WarriorStances {
         default_stance: String,
@@ -4565,6 +4614,10 @@ impl Effect {
             Effect::ExtraAttackProc { .. } => "extra_attack_proc",
             Effect::PlayerDamageTaken { .. } => "player_damage_taken",
             Effect::PotionResource { .. } => "potion_resource",
+            Effect::Revelation { .. } => "revelation",
+            Effect::DragonfirePotion { .. } => "dragonfire_potion",
+            Effect::CausticSmogPotion { .. } => "caustic_smog_potion",
+            Effect::ElementalPurgingPotion { .. } => "elemental_purging_potion",
             Effect::WarriorStances { .. } => "warrior_stances",
             Effect::Bloodthirst { .. } => "bloodthirst",
             Effect::Whirlwind { .. } => "whirlwind",

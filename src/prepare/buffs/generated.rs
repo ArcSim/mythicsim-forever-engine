@@ -1,5 +1,5 @@
 //! Translated by tools/rust_buffs.py from the reference's sim/core/buffs/buffs_auto_gen.go and
-//! debuffs_auto_gen.go at 2fe7678a0844a6d19f3e6a4ec1469e542763710b. Do not edit; run `python3 tools/rust_buffs.py write`.
+//! debuffs_auto_gen.go at c7c423bd7f9857daf6f081a104fef5215b0509a7. Do not edit; run `python3 tools/rust_buffs.py write`.
 
 use crate::contracts::request::Message;
 

@@ -23,6 +23,7 @@ pub(crate) fn common_effects(env: &mut Environment, unrepresented: &mut Vec<Stri
         env,
         unrepresented,
     ));
+    effects.extend(super::revelation::revelation_effect(env, unrepresented));
     effects
 }
 

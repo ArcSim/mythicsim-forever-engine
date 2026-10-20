@@ -1318,6 +1318,8 @@ func commonEffects(character *core.Character, target *core.Unit, request *proto.
 		item := spell.ActionID.ItemID
 		consumable := core.GetConsumableByID(item)
 		switch {
+		case consumable.Id != 0 && spell.Flags.Matches(core.SpellFlagPotion) && foreverPotions[item]:
+			effects = append(effects, foreverPotionEffect(character, item, unrepresented))
 		case consumable.Id != 0 && spell.Flags.Matches(core.SpellFlagPotion) && potionNeedsResources(consumable):
 			effects = append(effects, potionResourceEffect(character, consumable, unrepresented))
 		case consumable.Id != 0 && spell.Flags.Matches(core.SpellFlagPotion): // consumes.go potions
@@ -1459,6 +1461,9 @@ func commonEffects(character *core.Character, target *core.Unit, request *proto.
 	}
 	// buffs/drivers.go: Mana Tide Totem, Innervate and Power Infusion other players cast on the player.
 	for _, effect := range externalCooldownEffects(character, request, unrepresented) {
+		effects = append(effects, effect)
+	}
+	if effect := revelationEffect(character, unrepresented); effect != nil {
 		effects = append(effects, effect)
 	}
 	return effects

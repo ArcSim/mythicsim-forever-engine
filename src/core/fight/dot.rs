@@ -307,6 +307,20 @@ impl<A: Agent> Fight<A> {
                     self.periodic_damage_tick(dot, base);
                 }
             }
+            // Go consumes_forever_potions.go: `CalcAndDealPeriodicDamage` with `OutcomeTick`.
+            SpellBehavior::DragonfirePotion { tick, .. } => {
+                self.periodic_damage_tick_outcome(dot, tick, super::Outcome::Tick);
+            }
+            // Go `tick * (1 + variance*(2*roll - 1))`, which the arm64 build fuses.
+            SpellBehavior::CausticSmogPotion {
+                tick,
+                variance,
+                label,
+            } => {
+                let roll = self.random(&label).mul_add(2.0, -1.0);
+                let damage = tick * variance.mul_add(roll, 1.0);
+                self.periodic_damage_tick_outcome(dot, damage, super::Outcome::Tick);
+            }
             // Go spelldata `PeriodicDamageTick` on the outcome applier the row names.
             SpellBehavior::ProcDamage(params) => self.proc_damage_tick(dot, params),
             // Go sim/warrior/items.go Diamond Flask: the last tick activates the Strength aura.

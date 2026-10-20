@@ -140,6 +140,10 @@ pub(crate) enum AuraBehavior<K> {
     },
     /// Dragonbreath Chili's trigger.
     DragonbreathChili,
+    /// Revelation's hit and heal trigger, or its tick trigger.
+    RevelationTrigger,
+    /// Revelation's class buff.
+    RevelationBuff,
     /// An item proc trigger on landed melee hits that grants extra main hand attacks.
     ExtraAttackProc {
         chance: f64,
@@ -775,6 +779,7 @@ impl<A: Agent> Fight<A> {
         }
         match self.aura(aura).behavior {
             AuraBehavior::Dot(dot) => self.dot_on_gain(dot),
+            AuraBehavior::RevelationBuff => self.revelation_buff_changed(true),
             AuraBehavior::Movement => self.movement_changed(aura.side, true),
             AuraBehavior::Eureka => self.eureka_gain(),
             AuraBehavior::MultiplyAttackAndCastSpeed { attack, cast } => {
@@ -843,7 +848,11 @@ impl<A: Agent> Fight<A> {
     fn on_expire(&mut self, aura: AuraRef) {
         self.multiply_damage_taken_for(aura, true);
         match self.aura(aura).behavior {
-            AuraBehavior::Dot(dot) => self.dot_on_expire(dot),
+            AuraBehavior::Dot(dot) => {
+                self.dot_on_expire(dot);
+                self.revelation_dot_expired(dot);
+            }
+            AuraBehavior::RevelationBuff => self.revelation_buff_changed(false),
             AuraBehavior::Movement => self.movement_changed(aura.side, false),
             AuraBehavior::Eureka => self.eureka_expire(),
             AuraBehavior::MultiplyAttackAndCastSpeed { attack, cast } => {
@@ -1158,6 +1167,7 @@ impl<A: Agent> Fight<A> {
             let aura = AuraRef { side, index };
             match self.aura(aura).behavior {
                 AuraBehavior::Class(kind) => A::on_cast_complete(self, aura, kind, spell),
+                AuraBehavior::RevelationBuff => self.revelation_cast_complete(spell),
                 AuraBehavior::SpellDataStatProc(proc) if self.spell_stat_procs[proc].casts => {
                     self.spell_stat_proc_callback(aura, proc, Some(spell), None)
                 }
@@ -1203,8 +1213,12 @@ impl<A: Agent> Fight<A> {
         for position in 0..snapshot.len {
             let index = self.trackers[side.index()].lists[list].read(snapshot, position);
             let aura = AuraRef { side, index };
-            if let AuraBehavior::Class(kind) = self.aura(aura).behavior {
-                A::on_periodic_damage_dealt(self, aura, kind, spell, result);
+            match self.aura(aura).behavior {
+                AuraBehavior::Class(kind) => {
+                    A::on_periodic_damage_dealt(self, aura, kind, spell, result)
+                }
+                AuraBehavior::RevelationTrigger => self.revelation_callback(aura, spell, result),
+                _ => {}
             }
         }
     }
@@ -1222,6 +1236,7 @@ impl<A: Agent> Fight<A> {
             }
             match self.aura(aura).behavior {
                 AuraBehavior::Class(kind) => A::on_heal_dealt(self, aura, kind, spell, result),
+                AuraBehavior::RevelationTrigger => self.revelation_callback(aura, spell, result),
                 AuraBehavior::SpellDataStatProc(proc) if self.spell_stat_procs[proc].heals => {
                     self.spell_stat_proc_callback(aura, proc, Some(spell), Some(result))
                 }
@@ -1299,6 +1314,9 @@ impl<A: Agent> Fight<A> {
 
                     AuraBehavior::DragonbreathChili if dealt => {
                         self.chili_callback(aura, spell, result)
+                    }
+                    AuraBehavior::RevelationTrigger if dealt => {
+                        self.revelation_callback(aura, spell, result)
                     }
                     AuraBehavior::SpellDataDamageProc(proc)
                         if dealt != self.damage_procs[proc].struck
@@ -1641,6 +1659,7 @@ impl<A: Agent> Fight<A> {
             AuraBehavior::TouchOfTheGrave { drain, .. } => {
                 self.cast(drain, result.target);
             }
+            AuraBehavior::RevelationTrigger => self.revelation_handler(),
             AuraBehavior::Crusader => {
                 let crusader = self.crusader.as_ref().expect("Crusader is bound");
                 // Go Ternary(spell.IsOH(), ohAura, mhAura).

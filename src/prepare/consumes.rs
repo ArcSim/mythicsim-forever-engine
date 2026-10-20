@@ -246,6 +246,28 @@ fn add_mob_type_bonus_stats(env: &mut Environment, mob_type: &'static str, bonus
         }));
 }
 
+/// Go `consumableCritRiderItems` (MythicSim patch 171): the elixirs whose identical +2% crit rider
+/// applies once, however many are taken.
+const CONSUMABLE_CRIT_RIDER_ITEMS: [i32; 5] = [13452, 250337, 250338, 250348, 250351];
+
+/// Go `consumableStats` with `ConsumableCritIsAllCrit` on (MythicSim patch 166): a consumable's crit
+/// rating with no spell crit of its own counts for spells too, at the same percent.
+fn consumable_stats(mut stats: Stats) -> Stats {
+    let melee = stats[Stat::MeleeCritRating];
+    if melee != 0.0 && stats[Stat::SpellCritRating] == 0.0 {
+        stats[Stat::SpellCritRating] = melee
+            / super::character::constants::PHYSICAL_CRIT_RATING_PER_CRIT_PERCENT
+            * super::character::constants::SPELL_CRIT_RATING_PER_CRIT_PERCENT;
+    }
+    stats
+}
+
+/// Go consumes_forever_potions.go: the Merchant's Favor potions whose effect is not a stat buff
+/// (MythicSim patch 167).
+pub(crate) const DRAGONFIRE_POTION: i32 = 250953;
+pub(crate) const CAUSTIC_SMOG_POTION: i32 = 250951;
+pub(crate) const ELEMENTAL_PURGING_POTION: i32 = 250954;
+
 /// Go `applyConsumeEffects`.
 pub(crate) fn apply_consume_effects(
     env: &mut Environment,
@@ -254,9 +276,18 @@ pub(crate) fn apply_consume_effects(
     let unit = env.player;
     let consumables = env.sim.character(unit).consumables.clone();
 
-    let add_consumable_stats = |env: &mut Environment, id: i32| {
-        let stats = consumable_by_id(id).stats;
-        env.sim.add_stats(unit, &stats);
+    // Go `addConsumable`: the crit rider counts once (`ConsumableCritRiderStacks` off), then
+    // `consumableStats`.
+    let mut riders = 0;
+    let mut add_consumable_stats = |env: &mut Environment, id: i32| {
+        let mut stats = consumable_by_id(id).stats;
+        if CONSUMABLE_CRIT_RIDER_ITEMS.contains(&id) {
+            if riders > 0 {
+                stats[Stat::MeleeCritRating] = 0.0;
+            }
+            riders += 1;
+        }
+        env.sim.add_stats(unit, &consumable_stats(stats));
     };
 
     let flask = consumables.i32("flask_id");
@@ -721,6 +752,11 @@ fn make_potion_activation_spell_internal(
         allow_spell_queueing: false,
         timings: Vec::new(),
     };
+    if let Some(related_aura) = forever_potion_effect(env, potion.id) {
+        mcd.cooldown_type = cooldown_type::DPS;
+        env.sim.spell_mut(spell).related_self_buff = related_aura;
+        return Ok(mcd);
+    }
     if potion.buff_duration > 0 {
         // Add stat buff aura if applicable.
         let aura = env.sim.new_temporary_stats_aura(
@@ -770,6 +806,64 @@ fn make_potion_activation_spell_internal(
         );
     }
     Ok(mcd)
+}
+
+/// Go `Character.foreverPotionEffect`: registers what one of the Forever potions does when drunk
+/// and returns the aura to show as its buff, `Some(None)` for a potion without one; `None` for
+/// every other potion.
+fn forever_potion_effect(env: &mut Environment, item_id: i32) -> Option<Option<AuraId>> {
+    let unit = env.player;
+    let damage_spell =
+        |spell_id: i32, spell_school: u8, label: &str, tick_length, ticks| SpellConfig {
+            action_id: ActionId::spell(spell_id),
+            spell_school,
+            defense_type: DefenseType::Magic,
+            proc_mask: ProcMask::EMPTY,
+            flags: SpellFlag::NO_ON_CAST_COMPLETE | SpellFlag::PASSIVE_SPELL,
+            damage_multiplier: 1.0,
+            threat_multiplier: 1.0,
+            dot: super::spell::DotConfig {
+                aura: AuraConfig {
+                    label: label.to_string(),
+                    ..AuraConfig::default()
+                },
+                tick_length,
+                number_of_ticks: ticks,
+                ..super::spell::DotConfig::default()
+            },
+            ..SpellConfig::default()
+        };
+    match item_id {
+        // newDragonfirePotionSpell (1252554): 280 Fire at once, then 35 every 2 sec for 8 sec.
+        DRAGONFIRE_POTION => {
+            let config = damage_spell(1252554, school::FIRE, "Dragonfire Potion", 2 * SECOND, 4);
+            env.sim.get_or_register_spell(unit, config);
+            Some(None)
+        }
+        // newCausticSmogPotionSpell (1252543): 33 Nature every sec for 12 sec.
+        CAUSTIC_SMOG_POTION => {
+            let config = damage_spell(1252543, school::NATURE, "Caustic Smog Potion", SECOND, 12);
+            env.sim.get_or_register_spell(unit, config);
+            Some(None)
+        }
+        // newElementalPurgingAura: 105 spell damage against Elementals for 5 min.
+        ELEMENTAL_PURGING_POTION => {
+            let noop: super::sim::AuraCallback = Rc::new(|_: &mut Sim, _| {});
+            let aura = env.sim.get_or_register_aura(
+                unit,
+                AuraConfig {
+                    label: "Potion of Elemental Purging".to_string(),
+                    action_id: Some(ActionId::item(ELEMENTAL_PURGING_POTION)),
+                    duration: 300 * SECOND,
+                    on_gain: Some(noop.clone()),
+                    on_expire: Some(noop),
+                    ..AuraConfig::default()
+                },
+            );
+            Some(Some(aura))
+        }
+        _ => None,
+    }
 }
 
 /// Go `registerConjuredCD`.

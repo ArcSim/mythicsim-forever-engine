@@ -696,21 +696,19 @@
 [41.00] [frost-mage (#1)] Completed cast {SpellID: 25346}
 [41.00] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:390.5, AfterPostOutcome:390.5
 [41.35] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit for 390.477 damage (SpellSchool: 64). (Threat: 273.334)
-[41.35] [frost-mage (#1)] Aura gained: {SpellID: 44404}
+[41.36] [frost-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6031.100 --> 6090.100) of 6453 total.
 [41.50] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [41.50] [frost-mage (#1)] Completed cast {SpellID: 25346}
 [41.50] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:390.5, AfterPostOutcome:390.5
 [41.85] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit for 390.477 damage (SpellSchool: 64). (Threat: 273.334)
-[41.85] [frost-mage (#1)] Aura refreshed: {SpellID: 44404}
-[41.86] [frost-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6031.100 --> 6090.100) of 6453 total.
 [42.00] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [42.00] [frost-mage (#1)] Completed cast {SpellID: 25346}
-[42.00] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:585.7, AfterPostOutcome:585.7
-[42.35] [frost-mage (#1)] [Target 1] {SpellID: 25346} Crit for 585.716 damage (SpellSchool: 64). (Threat: 410.001)
+[42.00] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:177.5, AfterTargetMods:195.2, AfterOutcome:195.2, AfterPostOutcome:195.2
+[42.35] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit (50% Resist) for 195.239 damage (SpellSchool: 64). (Threat: 136.667)
 [42.50] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [42.50] [frost-mage (#1)] Completed cast {SpellID: 25346}
-[42.50] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:390.5, AfterPostOutcome:390.5
-[42.85] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit for 390.477 damage (SpellSchool: 64). (Threat: 273.334)
+[42.50] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:177.5, AfterTargetMods:195.2, AfterOutcome:195.2, AfterPostOutcome:195.2
+[42.85] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit (50% Resist) for 195.239 damage (SpellSchool: 64). (Threat: 136.667)
 [43.00] [Target 1] Aura faded: {SpellID: 25345}
 [43.00] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [43.00] [frost-mage (#1)] Completed cast {SpellID: 25346}
@@ -720,695 +718,826 @@
 [43.00] [frost-mage (#1)] Completed cast {OtherID: 20}
 [43.00] [frost-mage (#1)] Aura gained: {OtherID: 20}
 [43.00] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
-[43.00] [frost-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[43.00] [frost-mage (#1)] Completed cast {SpellID: 25345}
-[43.00] [Target 1] Aura gained: {SpellID: 25345}
-[43.00] [frost-mage (#1)] Aura faded: {SpellID: 44404}
+[43.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[43.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[43.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[43.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[43.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[43.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[43.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[43.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[43.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[43.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[43.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[43.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
 [43.35] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit for 390.477 damage (SpellSchool: 64). (Threat: 273.334)
-[43.50] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[43.50] [frost-mage (#1)] Completed cast {SpellID: 25346}
-[43.50] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:266.2, AfterTargetMods:292.9, AfterOutcome:292.9, AfterPostOutcome:292.9
-[43.85] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit (25% Resist) for 292.858 damage (SpellSchool: 64). (Threat: 205.001)
-[43.86] [frost-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6154.650 --> 6213.650) of 6453 total.
-[44.00] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[44.00] [frost-mage (#1)] Completed cast {SpellID: 25346}
-[44.00] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:390.5, AfterPostOutcome:390.5
-[44.35] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit for 390.477 damage (SpellSchool: 64). (Threat: 273.334)
-[44.36] [frost-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6213.650 --> 6272.650) of 6453 total.
-[44.50] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[44.50] [frost-mage (#1)] Completed cast {SpellID: 25346}
-[44.50] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:390.5, AfterPostOutcome:390.5
-[44.85] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit for 390.477 damage (SpellSchool: 64). (Threat: 273.334)
-[45.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6272.650 --> 6370.950) of 6453 total.
+[43.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[43.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[43.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[43.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[43.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[43.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[43.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[43.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[43.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[43.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[43.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[43.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[43.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[43.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[43.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[43.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[43.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[43.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[44.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[44.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[44.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[44.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[44.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[44.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[44.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[44.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[44.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[44.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[44.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[44.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[44.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[44.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[44.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[44.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[44.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[44.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[44.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[44.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[44.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[44.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[44.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[44.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[44.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[44.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[44.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[44.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[44.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[44.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[45.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6154.650 --> 6252.950) of 6453 total.
 [45.00] [frost-mage (#1)] Aura faded: {OtherID: 20}
 [45.00] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 0
-[45.00] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[45.00] [frost-mage (#1)] Completed cast {SpellID: 25346}
-[45.00] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:390.5, AfterPostOutcome:390.5
-[45.35] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit for 390.477 damage (SpellSchool: 64). (Threat: 273.334)
-[45.36] [frost-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6370.950 --> 6429.950) of 6453 total.
-[45.50] [Target 1] Aura faded: {SpellID: 25345}
-[45.50] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[45.50] [frost-mage (#1)] Completed cast {SpellID: 25346}
-[45.50] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:390.5, AfterPostOutcome:390.5
-[45.50] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[45.50] [frost-mage (#1)] Completed cast {OtherID: 20}
-[45.50] [frost-mage (#1)] Aura gained: {OtherID: 20}
-[45.50] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
-[45.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[45.00] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[45.00] [frost-mage (#1)] Completed cast {OtherID: 20}
+[45.00] [frost-mage (#1)] Aura gained: {OtherID: 20}
+[45.00] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
+[45.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[45.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[45.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[45.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[45.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[45.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[45.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[45.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[45.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[45.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[45.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[45.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[45.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
+[45.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[45.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[45.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [45.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [45.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[45.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[45.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [45.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [45.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[45.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[45.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [45.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [45.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[45.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[45.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [45.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [45.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[45.85] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit for 390.477 damage (SpellSchool: 64). (Threat: 273.334)
-[45.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[45.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [45.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [45.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[46.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[46.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [46.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [46.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[46.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[46.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [46.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [46.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[46.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[46.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [46.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [46.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[46.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[46.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [46.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [46.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[46.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[46.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [46.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [46.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[46.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[46.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [46.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [46.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[46.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[46.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [46.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [46.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[46.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[46.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [46.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [46.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[46.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[46.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [46.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [46.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[46.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[46.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [46.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [46.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[47.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6429.950 --> 6453.000) of 6453 total.
-[47.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[47.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6252.950 --> 6351.250) of 6453 total.
+[47.00] [frost-mage (#1)] Aura faded: {OtherID: 20}
+[47.00] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 0
+[47.00] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[47.00] [frost-mage (#1)] Completed cast {OtherID: 20}
+[47.00] [frost-mage (#1)] Aura gained: {OtherID: 20}
+[47.00] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
+[47.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [47.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [47.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[47.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[47.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [47.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [47.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[47.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[47.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [47.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [47.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[47.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[47.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [47.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [47.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[47.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[47.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [47.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [47.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[47.50] [frost-mage (#1)] Aura faded: {OtherID: 20}
-[47.50] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 0
-[47.50] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[47.50] [frost-mage (#1)] Completed cast {OtherID: 20}
-[47.50] [frost-mage (#1)] Aura gained: {OtherID: 20}
-[47.50] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
-[47.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[47.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [47.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [47.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[47.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[47.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [47.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [47.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[47.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[47.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [47.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [47.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[47.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[47.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [47.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [47.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[47.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[47.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [47.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [47.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[48.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[48.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [48.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [48.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[48.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[48.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [48.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [48.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[48.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[48.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [48.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [48.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[48.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[48.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [48.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [48.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[48.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[48.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [48.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [48.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[48.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[48.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [48.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [48.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[48.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[48.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [48.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [48.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[48.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[48.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [48.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [48.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[48.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[48.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [48.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [48.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[48.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[48.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [48.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [48.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[49.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6453.000 --> 6453.000) of 6453 total.
-[49.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[49.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6351.250 --> 6449.550) of 6453 total.
+[49.00] [frost-mage (#1)] Aura faded: {OtherID: 20}
+[49.00] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 0
+[49.00] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[49.00] [frost-mage (#1)] Completed cast {OtherID: 20}
+[49.00] [frost-mage (#1)] Aura gained: {OtherID: 20}
+[49.00] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
+[49.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [49.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[49.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[49.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [49.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[49.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[49.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [49.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[49.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[49.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [49.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[49.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[49.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [49.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[49.50] [frost-mage (#1)] Aura faded: {OtherID: 20}
-[49.50] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 0
-[49.50] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[49.50] [frost-mage (#1)] Completed cast {OtherID: 20}
-[49.50] [frost-mage (#1)] Aura gained: {OtherID: 20}
-[49.50] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
-[49.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[49.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [49.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[49.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[49.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [49.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[49.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[49.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [49.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[49.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[49.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [49.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[49.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[49.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [49.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [49.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[50.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[50.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [50.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[50.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[50.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [50.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[50.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[50.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [50.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[50.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[50.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [50.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[50.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[50.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [50.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[50.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[50.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [50.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[50.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[50.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [50.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[50.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[50.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [50.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[50.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[50.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [50.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[50.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
+[50.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 42.000000001s.
 [50.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [50.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[51.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6453.000 --> 6453.000) of 6453 total.
-[51.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
-[51.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[51.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[51.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
-[51.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[51.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[51.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
-[51.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[51.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[51.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
-[51.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[51.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[51.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 44.500000001s.
-[51.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[51.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[51.50] [frost-mage (#1)] Aura faded: {OtherID: 20}
-[51.50] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 0
-[51.50] [frost-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
+[51.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6449.550 --> 6453.000) of 6453 total.
+[51.00] [frost-mage (#1)] Aura faded: {OtherID: 20}
+[51.00] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 0
+[51.00] [frost-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
 [52.75] [frost-mage (#1)] Aura faded: {SpellID: 12579}
 [53.00] [frost-mage (#1)] {SpellID: 12579} stacks: 2 --> 0
 [53.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6453.000 --> 6453.000) of 6453 total.
-[54.00] [frost-mage (#1)] Completed cast {SpellID: 25304}
-[54.00] [frost-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6453.000 --> 6163.000) of 6453 total.
-[54.00] [frost-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 498.0, BaseDamage:868.4, AfterAttackerMods:920.5, AfterResistances:964.3, AfterTargetMods:1060.7, AfterOutcome:1060.7, AfterPostOutcome:1060.7
-[54.00] [frost-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[54.25] [frost-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1060.721 damage (SpellSchool: 16). (Threat: 1060.721)
-[54.25] [frost-mage (#1)] Aura gained: {SpellID: 12536}
-[54.25] [frost-mage (#1)] Aura gained: {SpellID: 12579}
-[54.25] [frost-mage (#1)] {SpellID: 12579} stacks: 0 --> 1
-[54.26] [frost-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6163.000 --> 6222.000) of 6453 total.
-[55.00] [frost-mage (#1)] Gained 64.550 mana from {OtherID: 2, Tag: 1} (6222.000 --> 6286.550) of 6453 total.
-[56.50] [frost-mage (#1)] Completed cast {SpellID: 25304}
-[56.50] [frost-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 498.0, BaseDamage:871.7, AfterAttackerMods:924.0, AfterResistances:968.0, AfterTargetMods:1064.8, AfterOutcome:2129.7, AfterPostOutcome:2129.7
-[56.50] [frost-mage (#1)] Aura faded: {SpellID: 12536}
-[56.50] [frost-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[56.75] [frost-mage (#1)] [Target 1] {SpellID: 25304} Crit for 2129.654 damage (SpellSchool: 16). (Threat: 2129.654)
-[56.75] [frost-mage (#1)] Aura refreshed: {SpellID: 12579}
-[56.75] [frost-mage (#1)] {SpellID: 12579} stacks: 1 --> 2
-[56.76] [frost-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6286.550 --> 6345.550) of 6453 total.
-[57.00] [frost-mage (#1)] Gained 64.550 mana from {OtherID: 2, Tag: 1} (6345.550 --> 6410.100) of 6453 total.
-[59.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6410.100 --> 6453.000) of 6453 total.
-[59.00] [frost-mage (#1)] Completed cast {SpellID: 25304}
-[59.00] [frost-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6453.000 --> 6163.000) of 6453 total.
-[59.00] [frost-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 498.0, BaseDamage:876.2, AfterAttackerMods:928.8, AfterResistances:973.1, AfterTargetMods:1070.4, AfterOutcome:1070.4, AfterPostOutcome:1070.4
-[59.00] [frost-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
-[59.25] [frost-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1070.359 damage (SpellSchool: 16). (Threat: 1070.359)
-[59.25] [frost-mage (#1)] Aura refreshed: {SpellID: 12579}
-[59.25] [frost-mage (#1)] {SpellID: 12579} stacks: 2 --> 3
-[61.00] [frost-mage (#1)] Gained 64.550 mana from {OtherID: 2, Tag: 1} (6163.000 --> 6227.550) of 6453 total.
-[61.50] [frost-mage (#1)] Completed cast {SpellID: 25304}
-[61.50] [frost-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6227.550 --> 5937.550) of 6453 total.
-[61.50] [frost-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 498.0, BaseDamage:875.3, AfterAttackerMods:927.9, AfterResistances:972.0, AfterTargetMods:1069.2, AfterOutcome:1069.2, AfterPostOutcome:1069.2
-[61.50] [frost-mage (#1)] Aura gained: {SpellID: 400669}
-[61.50] [frost-mage (#1)] {SpellID: 400669} stacks: 0 --> 2
-[61.50] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[61.50] [frost-mage (#1)] Completed cast {OtherID: 20}
-[61.50] [frost-mage (#1)] Aura gained: {OtherID: 20}
-[61.50] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
-[61.50] [frost-mage (#1)] Casting {SpellID: 1240047} (Cost = 160.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[61.50] [frost-mage (#1)] Completed cast {SpellID: 1240047}
-[61.50] [frost-mage (#1)] Spent 160.000 mana from {SpellID: 1240047} (5937.550 --> 5777.550) of 6453 total.
-[61.50] [frost-mage (#1)] [Target 1] {SpellID: 1240047} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 498.0, BaseDamage:186.7, AfterAttackerMods:197.9, AfterResistances:207.3, AfterTargetMods:228.1, AfterOutcome:456.2, AfterPostOutcome:456.2
-[61.50] [frost-mage (#1)] {SpellID: 400669} stacks: 2 --> 1
-[61.68] [frost-mage (#1)] [Target 1] {SpellID: 1240047} Crit for 1368.451 damage (SpellSchool: 16). (Threat: 456.150)
-[61.68] [frost-mage (#1)] Aura refreshed: {SpellID: 12579}
-[61.68] [frost-mage (#1)] {SpellID: 12579} stacks: 3 --> 4
-[61.75] [frost-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1069.244 damage (SpellSchool: 16). (Threat: 1069.244)
-[61.75] [frost-mage (#1)] Aura refreshed: {SpellID: 12579}
-[61.75] [frost-mage (#1)] {SpellID: 12579} stacks: 4 --> 5
-[61.76] [frost-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5777.550 --> 5836.550) of 6453 total.
-[63.00] [frost-mage (#1)] Gained 64.550 mana from {OtherID: 2, Tag: 1} (5836.550 --> 5901.100) of 6453 total.
-[63.00] [frost-mage (#1)] Casting {SpellID: 1240047} (Cost = 160.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
-[63.00] [frost-mage (#1)] Completed cast {SpellID: 1240047}
-[63.00] [frost-mage (#1)] Spent 160.000 mana from {SpellID: 1240047} (5901.100 --> 5741.100) of 6453 total.
-[63.00] [frost-mage (#1)] [Target 1] {SpellID: 1240047} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 498.0, BaseDamage:208.8, AfterAttackerMods:221.3, AfterResistances:231.9, AfterTargetMods:255.1, AfterOutcome:255.1, AfterPostOutcome:255.1
-[63.00] [frost-mage (#1)] {SpellID: 400669} stacks: 1 --> 0
-[63.00] [frost-mage (#1)] Aura faded: {SpellID: 400669}
-[63.18] [frost-mage (#1)] [Target 1] {SpellID: 1240047} Hit for 765.212 damage (SpellSchool: 16). (Threat: 255.071)
-[63.18] [frost-mage (#1)] Aura refreshed: {SpellID: 12579}
-[63.19] [frost-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5741.100 --> 5800.100) of 6453 total.
-[64.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[53.50] [frost-mage (#1)] Completed cast {SpellID: 25304}
+[53.50] [frost-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6453.000 --> 6163.000) of 6453 total.
+[53.50] [frost-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 498.0, BaseDamage:886.5, AfterAttackerMods:939.7, AfterResistances:984.5, AfterTargetMods:1082.9, AfterOutcome:1082.9, AfterPostOutcome:1082.9
+[53.50] [frost-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
+[53.75] [frost-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1082.896 damage (SpellSchool: 16). (Threat: 1082.896)
+[53.75] [frost-mage (#1)] Aura gained: {SpellID: 44404}
+[53.75] [frost-mage (#1)] Aura gained: {SpellID: 12579}
+[53.75] [frost-mage (#1)] {SpellID: 12579} stacks: 0 --> 1
+[55.00] [frost-mage (#1)] Gained 64.550 mana from {OtherID: 2, Tag: 1} (6163.000 --> 6227.550) of 6453 total.
+[56.00] [frost-mage (#1)] Completed cast {SpellID: 25304}
+[56.00] [frost-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6227.550 --> 5937.550) of 6453 total.
+[56.00] [frost-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 498.0, BaseDamage:873.9, AfterAttackerMods:926.3, AfterResistances:970.4, AfterTargetMods:1067.5, AfterOutcome:2135.0, AfterPostOutcome:2135.0
+[56.00] [frost-mage (#1)] Casting {SpellID: 25345} (Cost = 0.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[56.00] [frost-mage (#1)] Completed cast {SpellID: 25345}
+[56.00] [Target 1] Aura gained: {SpellID: 25345}
+[56.00] [frost-mage (#1)] Aura faded: {SpellID: 44404}
+[56.25] [frost-mage (#1)] [Target 1] {SpellID: 25304} Crit for 2134.970 damage (SpellSchool: 16). (Threat: 2134.970)
+[56.25] [frost-mage (#1)] Aura refreshed: {SpellID: 12579}
+[56.25] [frost-mage (#1)] {SpellID: 12579} stacks: 1 --> 2
+[56.50] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[56.50] [frost-mage (#1)] Completed cast {SpellID: 25346}
+[56.50] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:390.5, AfterPostOutcome:390.5
+[56.85] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit for 390.477 damage (SpellSchool: 64). (Threat: 273.334)
+[57.00] [frost-mage (#1)] Gained 64.550 mana from {OtherID: 2, Tag: 1} (5937.550 --> 6002.100) of 6453 total.
+[57.00] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[57.00] [frost-mage (#1)] Completed cast {SpellID: 25346}
+[57.00] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:390.5, AfterPostOutcome:390.5
+[57.35] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit for 390.477 damage (SpellSchool: 64). (Threat: 273.334)
+[57.36] [frost-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (6002.100 --> 6061.100) of 6453 total.
+[57.50] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[57.50] [frost-mage (#1)] Completed cast {SpellID: 25346}
+[57.50] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:585.7, AfterPostOutcome:585.7
+[57.85] [frost-mage (#1)] [Target 1] {SpellID: 25346} Crit for 585.716 damage (SpellSchool: 64). (Threat: 410.001)
+[58.00] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[58.00] [frost-mage (#1)] Completed cast {SpellID: 25346}
+[58.00] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:355.0, AfterTargetMods:390.5, AfterOutcome:585.7, AfterPostOutcome:585.7
+[58.35] [frost-mage (#1)] [Target 1] {SpellID: 25346} Crit for 585.716 damage (SpellSchool: 64). (Threat: 410.001)
+[58.50] [Target 1] Aura faded: {SpellID: 25345}
+[58.50] [frost-mage (#1)] Casting {SpellID: 25346} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[58.50] [frost-mage (#1)] Completed cast {SpellID: 25346}
+[58.50] [frost-mage (#1)] [Target 1] {SpellID: 25346} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 454.0, BaseDamage:338.8, AfterAttackerMods:338.8, AfterResistances:266.2, AfterTargetMods:292.9, AfterOutcome:292.9, AfterPostOutcome:292.9
+[58.50] [frost-mage (#1)] Casting {SpellID: 25304} (Cost = 290.000, Cast Time = 2.5s, GCD = 1.5s, Effective Time = 2.5s)
+[58.85] [frost-mage (#1)] [Target 1] {SpellID: 25346} Hit (25% Resist) for 292.858 damage (SpellSchool: 64). (Threat: 205.001)
+[59.00] [frost-mage (#1)] Gained 64.550 mana from {OtherID: 2, Tag: 1} (6061.100 --> 6125.650) of 6453 total.
+[61.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6125.650 --> 6223.950) of 6453 total.
+[61.00] [frost-mage (#1)] Completed cast {SpellID: 25304}
+[61.00] [frost-mage (#1)] Spent 290.000 mana from {SpellID: 25304} (6223.950 --> 5933.950) of 6453 total.
+[61.00] [frost-mage (#1)] [Target 1] {SpellID: 25304} [DEBUG] MAP: 10.0, RAP: 0.0, SP: 498.0, BaseDamage:863.6, AfterAttackerMods:915.4, AfterResistances:959.0, AfterTargetMods:1054.9, AfterOutcome:1054.9, AfterPostOutcome:1054.9
+[61.00] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[61.00] [frost-mage (#1)] Completed cast {OtherID: 20}
+[61.00] [frost-mage (#1)] Aura gained: {OtherID: 20}
+[61.00] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
+[61.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[61.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[61.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[61.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[61.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[61.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[61.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[61.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[61.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[61.25] [frost-mage (#1)] [Target 1] {SpellID: 25304} Hit for 1054.934 damage (SpellSchool: 16). (Threat: 1054.934)
+[61.25] [frost-mage (#1)] Aura refreshed: {SpellID: 12579}
+[61.25] [frost-mage (#1)] {SpellID: 12579} stacks: 2 --> 3
+[61.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[61.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[61.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[61.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[61.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[61.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[61.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[61.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[61.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[61.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[61.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[61.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[61.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[61.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[61.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[61.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[61.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[61.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[61.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[61.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[61.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[62.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[62.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[62.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[62.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[62.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[62.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[62.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[62.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[62.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[62.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[62.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[62.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[62.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[62.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[62.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[62.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[62.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[62.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[62.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[62.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[62.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[62.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[62.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[62.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[62.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[62.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[62.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[62.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[62.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[62.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[63.00] [frost-mage (#1)] Gained 64.550 mana from {OtherID: 2, Tag: 1} (5933.950 --> 5998.500) of 6453 total.
+[63.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[63.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[63.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[63.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[63.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[63.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[63.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[63.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[63.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[63.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[63.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[63.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[63.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[63.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[63.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[63.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[63.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[63.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[63.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[63.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[63.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[63.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[63.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[63.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[63.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[63.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[63.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[63.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[63.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[63.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[64.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[64.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[64.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[64.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[64.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[64.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[64.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[64.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[64.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
+[64.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[64.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
+[64.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [64.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [64.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[64.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[64.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [64.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [64.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[64.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[64.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [64.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [64.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[64.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[64.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [64.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [64.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[64.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[64.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [64.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [64.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[65.00] [frost-mage (#1)] Gained 64.550 mana from {OtherID: 2, Tag: 1} (5800.100 --> 5864.650) of 6453 total.
-[65.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[65.00] [frost-mage (#1)] Gained 64.550 mana from {OtherID: 2, Tag: 1} (5998.500 --> 6063.050) of 6453 total.
+[65.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [65.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [65.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[65.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[65.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [65.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [65.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[65.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[65.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [65.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [65.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[65.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[65.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [65.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [65.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[65.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[65.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [65.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [65.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[65.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[65.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [65.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [65.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[65.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[65.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [65.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [65.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[65.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[65.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [65.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [65.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[65.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[65.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [65.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [65.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[65.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[65.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [65.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [65.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[66.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[66.00] [frost-mage (#1)] Aura faded: {OtherID: 20}
+[66.00] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 0
+[66.00] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[66.00] [frost-mage (#1)] Completed cast {OtherID: 20}
+[66.00] [frost-mage (#1)] Aura gained: {OtherID: 20}
+[66.00] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
+[66.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [66.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [66.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[66.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[66.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [66.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [66.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[66.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[66.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [66.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [66.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[66.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[66.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [66.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [66.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[66.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[66.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [66.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [66.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[66.50] [frost-mage (#1)] Aura faded: {OtherID: 20}
-[66.50] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 0
-[66.50] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[66.50] [frost-mage (#1)] Completed cast {OtherID: 20}
-[66.50] [frost-mage (#1)] Aura gained: {OtherID: 20}
-[66.50] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
-[66.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[66.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [66.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [66.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[66.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[66.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [66.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [66.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[66.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[66.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [66.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [66.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[66.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[66.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [66.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [66.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[66.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[66.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [66.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [66.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[67.00] [frost-mage (#1)] Gained 64.550 mana from {OtherID: 2, Tag: 1} (5864.650 --> 5929.200) of 6453 total.
-[67.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[67.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6063.050 --> 6161.350) of 6453 total.
+[67.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [67.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [67.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[67.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[67.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [67.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [67.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[67.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[67.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [67.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [67.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[67.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[67.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [67.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [67.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[67.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[67.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [67.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [67.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[67.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[67.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [67.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [67.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[67.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[67.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [67.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [67.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[67.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[67.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [67.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [67.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[67.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[67.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [67.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [67.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[67.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[67.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [67.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [67.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[68.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[68.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [68.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [68.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[68.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[68.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [68.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [68.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[68.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[68.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [68.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [68.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[68.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[68.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [68.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [68.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[68.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[68.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [68.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [68.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[68.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[68.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [68.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [68.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[68.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[68.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [68.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [68.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[68.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[68.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [68.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [68.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[68.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[68.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [68.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [68.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[68.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[68.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [68.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [68.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[69.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (5929.200 --> 6027.500) of 6453 total.
-[69.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[69.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6161.350 --> 6259.650) of 6453 total.
+[69.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [69.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [69.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[69.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[69.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [69.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [69.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[69.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[69.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [69.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [69.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[69.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[69.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [69.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [69.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[69.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[69.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [69.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [69.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[69.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[69.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [69.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [69.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[69.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[69.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [69.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [69.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[69.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[69.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [69.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [69.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[69.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[69.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [69.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [69.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[69.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[69.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [69.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [69.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[70.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[70.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [70.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[70.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[70.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [70.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[70.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[70.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [70.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[70.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[70.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [70.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[70.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[70.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [70.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[70.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[70.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [70.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[70.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[70.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [70.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[70.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[70.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [70.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[70.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[70.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [70.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[70.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[70.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [70.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [70.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[71.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6027.500 --> 6125.800) of 6453 total.
-[71.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[71.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6259.650 --> 6357.950) of 6453 total.
+[71.00] [frost-mage (#1)] Aura faded: {OtherID: 20}
+[71.00] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 0
+[71.00] [frost-mage (#1)] [DEBUG] Moving to 40.0 yards
+[71.00] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[71.00] [frost-mage (#1)] Completed cast {OtherID: 20}
+[71.00] [frost-mage (#1)] Aura gained: {OtherID: 20}
+[71.00] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
+[71.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [71.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[71.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[71.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [71.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[71.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[71.20] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 8
+[71.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [71.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[71.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[71.30] [frost-mage (#1)] {OtherID: 20} stacks: 8 --> 9
+[71.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [71.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[71.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[71.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [71.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[71.50] [frost-mage (#1)] Aura faded: {OtherID: 20}
-[71.50] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 0
-[71.50] [frost-mage (#1)] [DEBUG] Moving to 40.0 yards
-[71.50] [frost-mage (#1)] Casting {OtherID: 20} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[71.50] [frost-mage (#1)] Completed cast {OtherID: 20}
-[71.50] [frost-mage (#1)] Aura gained: {OtherID: 20}
-[71.50] [frost-mage (#1)] {OtherID: 20} stacks: 0 --> 7
-[71.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[71.50] [frost-mage (#1)] {OtherID: 20} stacks: 9 --> 10
+[71.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [71.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[71.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[71.60] [frost-mage (#1)] {OtherID: 20} stacks: 10 --> 11
+[71.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [71.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[71.70] [frost-mage (#1)] {OtherID: 20} stacks: 7 --> 8
-[71.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[71.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [71.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[71.80] [frost-mage (#1)] {OtherID: 20} stacks: 8 --> 9
-[71.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[71.80] [frost-mage (#1)] {OtherID: 20} stacks: 11 --> 12
+[71.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [71.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[71.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[71.90] [frost-mage (#1)] {OtherID: 20} stacks: 12 --> 13
+[71.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [71.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [71.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[72.00] [frost-mage (#1)] {OtherID: 20} stacks: 9 --> 10
-[72.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[72.00] [frost-mage (#1)] {OtherID: 20} stacks: 13 --> 14
+[72.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [72.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[72.10] [frost-mage (#1)] {OtherID: 20} stacks: 10 --> 11
-[72.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[72.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [72.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[72.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[72.20] [frost-mage (#1)] {OtherID: 20} stacks: 14 --> 15
+[72.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [72.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[72.30] [frost-mage (#1)] {OtherID: 20} stacks: 11 --> 12
-[72.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[72.30] [frost-mage (#1)] {OtherID: 20} stacks: 15 --> 16
+[72.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [72.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[72.40] [frost-mage (#1)] {OtherID: 20} stacks: 12 --> 13
-[72.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[72.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [72.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[72.50] [frost-mage (#1)] {OtherID: 20} stacks: 13 --> 14
-[72.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[72.50] [frost-mage (#1)] {OtherID: 20} stacks: 16 --> 17
+[72.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [72.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[72.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[72.60] [frost-mage (#1)] {OtherID: 20} stacks: 17 --> 18
+[72.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [72.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[72.70] [frost-mage (#1)] {OtherID: 20} stacks: 14 --> 15
-[72.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[72.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [72.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[72.80] [frost-mage (#1)] {OtherID: 20} stacks: 15 --> 16
-[72.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[72.80] [frost-mage (#1)] {OtherID: 20} stacks: 18 --> 19
+[72.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [72.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[72.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[72.90] [frost-mage (#1)] {OtherID: 20} stacks: 19 --> 20
+[72.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [72.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [72.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[73.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6125.800 --> 6224.100) of 6453 total.
-[73.00] [frost-mage (#1)] {OtherID: 20} stacks: 16 --> 17
-[73.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[73.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6357.950 --> 6453.000) of 6453 total.
+[73.00] [frost-mage (#1)] {OtherID: 20} stacks: 20 --> 21
+[73.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [73.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[73.10] [frost-mage (#1)] {OtherID: 20} stacks: 17 --> 18
-[73.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[73.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [73.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[73.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[73.20] [frost-mage (#1)] {OtherID: 20} stacks: 21 --> 22
+[73.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [73.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[73.30] [frost-mage (#1)] {OtherID: 20} stacks: 18 --> 19
-[73.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[73.30] [frost-mage (#1)] {OtherID: 20} stacks: 22 --> 23
+[73.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [73.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[73.40] [frost-mage (#1)] {OtherID: 20} stacks: 19 --> 20
-[73.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[73.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [73.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[73.50] [frost-mage (#1)] {OtherID: 20} stacks: 20 --> 21
-[73.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[73.50] [frost-mage (#1)] {OtherID: 20} stacks: 23 --> 24
+[73.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [73.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[73.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[73.60] [frost-mage (#1)] {OtherID: 20} stacks: 24 --> 25
+[73.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [73.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[73.70] [frost-mage (#1)] {OtherID: 20} stacks: 21 --> 22
-[73.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[73.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [73.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[73.80] [frost-mage (#1)] {OtherID: 20} stacks: 22 --> 23
-[73.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[73.80] [frost-mage (#1)] {OtherID: 20} stacks: 25 --> 26
+[73.80] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [73.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.80] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[73.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[73.90] [frost-mage (#1)] {OtherID: 20} stacks: 26 --> 27
+[73.90] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [73.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [73.90] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[74.00] [frost-mage (#1)] {OtherID: 20} stacks: 23 --> 24
-[74.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[74.00] [frost-mage (#1)] {OtherID: 20} stacks: 27 --> 28
+[74.00] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [74.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [74.00] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[74.10] [frost-mage (#1)] {OtherID: 20} stacks: 24 --> 25
-[74.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[74.10] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [74.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [74.10] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[74.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[74.20] [frost-mage (#1)] {OtherID: 20} stacks: 28 --> 29
+[74.20] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m1.000000001s.
 [74.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [74.20] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[74.30] [frost-mage (#1)] {OtherID: 20} stacks: 25 --> 26
-[74.30] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[74.30] [frost-mage (#1)] {OtherID: 20} stacks: 29 --> 30
+[74.30] [frost-mage (#1)] No available actions!
 [74.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.30] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[74.40] [frost-mage (#1)] {OtherID: 20} stacks: 26 --> 27
-[74.40] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[74.40] [frost-mage (#1)] No available actions!
 [74.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.40] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[74.50] [frost-mage (#1)] {OtherID: 20} stacks: 27 --> 28
-[74.50] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[74.50] [frost-mage (#1)] {OtherID: 20} stacks: 30 --> 31
+[74.50] [frost-mage (#1)] No available actions!
 [74.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.50] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[74.60] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[74.60] [frost-mage (#1)] {OtherID: 20} stacks: 31 --> 32
+[74.60] [frost-mage (#1)] No available actions!
 [74.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.60] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[74.70] [frost-mage (#1)] {OtherID: 20} stacks: 28 --> 29
-[74.70] [frost-mage (#1)] Queueing up {SpellID: 25304} to cast at 1m4.500000001s.
+[74.70] [frost-mage (#1)] No available actions!
 [74.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[74.70] [frost-mage (#1)] {SpellID: 25304} failed to cast: casting/channeling while moving not allowed!
-[74.80] [frost-mage (#1)] {OtherID: 20} stacks: 29 --> 30
+[74.80] [frost-mage (#1)] {OtherID: 20} stacks: 32 --> 33
 [74.80] [frost-mage (#1)] No available actions!
 [74.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[74.90] [frost-mage (#1)] {OtherID: 20} stacks: 33 --> 34
 [74.90] [frost-mage (#1)] No available actions!
 [74.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6224.100 --> 6322.400) of 6453 total.
-[75.00] [frost-mage (#1)] {OtherID: 20} stacks: 30 --> 31
+[75.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6453.000 --> 6453.000) of 6453 total.
+[75.00] [frost-mage (#1)] {OtherID: 20} stacks: 34 --> 35
 [75.00] [frost-mage (#1)] No available actions!
 [75.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.10] [frost-mage (#1)] {OtherID: 20} stacks: 31 --> 32
 [75.10] [frost-mage (#1)] No available actions!
 [75.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[75.20] [frost-mage (#1)] {OtherID: 20} stacks: 35 --> 36
 [75.20] [frost-mage (#1)] No available actions!
 [75.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.30] [frost-mage (#1)] {OtherID: 20} stacks: 32 --> 33
+[75.30] [frost-mage (#1)] {OtherID: 20} stacks: 36 --> 37
 [75.30] [frost-mage (#1)] No available actions!
 [75.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.40] [frost-mage (#1)] {OtherID: 20} stacks: 33 --> 34
 [75.40] [frost-mage (#1)] No available actions!
 [75.40] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.50] [frost-mage (#1)] {OtherID: 20} stacks: 34 --> 35
+[75.50] [frost-mage (#1)] {OtherID: 20} stacks: 37 --> 38
 [75.50] [frost-mage (#1)] No available actions!
 [75.50] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
+[75.60] [frost-mage (#1)] {OtherID: 20} stacks: 38 --> 39
 [75.60] [frost-mage (#1)] No available actions!
 [75.60] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.70] [frost-mage (#1)] {OtherID: 20} stacks: 35 --> 36
 [75.70] [frost-mage (#1)] No available actions!
 [75.70] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[75.80] [frost-mage (#1)] {OtherID: 20} stacks: 36 --> 37
+[75.71] [frost-mage (#1)] {OtherID: 20} stacks: 39 --> 40
+[75.71] [frost-mage (#1)] Aura faded: {OtherID: 20}
+[75.71] [frost-mage (#1)] {OtherID: 20} stacks: 40 --> 0
 [75.80] [frost-mage (#1)] No available actions!
 [75.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [75.90] [frost-mage (#1)] No available actions!
 [75.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.00] [frost-mage (#1)] {OtherID: 20} stacks: 37 --> 38
 [76.00] [frost-mage (#1)] No available actions!
 [76.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.10] [frost-mage (#1)] {OtherID: 20} stacks: 38 --> 39
 [76.10] [frost-mage (#1)] No available actions!
 [76.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [76.20] [frost-mage (#1)] No available actions!
 [76.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[76.21] [frost-mage (#1)] {OtherID: 20} stacks: 39 --> 40
-[76.21] [frost-mage (#1)] Aura faded: {OtherID: 20}
-[76.21] [frost-mage (#1)] {OtherID: 20} stacks: 40 --> 0
+[76.25] [frost-mage (#1)] Aura faded: {SpellID: 12579}
+[76.30] [frost-mage (#1)] {SpellID: 12579} stacks: 3 --> 0
 [76.30] [frost-mage (#1)] No available actions!
 [76.30] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [76.40] [frost-mage (#1)] No available actions!
@@ -1423,7 +1552,7 @@
 [76.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [76.90] [frost-mage (#1)] No available actions!
 [76.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[77.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6322.400 --> 6420.700) of 6453 total.
+[77.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6453.000 --> 6453.000) of 6453 total.
 [77.00] [frost-mage (#1)] No available actions!
 [77.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [77.10] [frost-mage (#1)] No available actions!
@@ -1448,8 +1577,6 @@
 [78.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [78.10] [frost-mage (#1)] No available actions!
 [78.10] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[78.18] [frost-mage (#1)] Aura faded: {SpellID: 12579}
-[78.20] [frost-mage (#1)] {SpellID: 12579} stacks: 5 --> 0
 [78.20] [frost-mage (#1)] No available actions!
 [78.20] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [78.30] [frost-mage (#1)] No available actions!
@@ -1466,7 +1593,7 @@
 [78.80] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [78.90] [frost-mage (#1)] No available actions!
 [78.90] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
-[79.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6420.700 --> 6453.000) of 6453 total.
+[79.00] [frost-mage (#1)] Gained 98.300 mana from {OtherID: 2, Tag: 2} (6453.000 --> 6453.000) of 6453 total.
 [79.00] [frost-mage (#1)] No available actions!
 [79.00] [frost-mage (#1)] Pausing rotation for 100ms due to resources / CDs.
 [79.10] [frost-mage (#1)] No available actions!

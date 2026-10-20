@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "c7c423bd7f9857daf6f081a104fef5215b0509a7",
+    "engine_revision": "15b7435f3ab63223e48c129969fd343b8d14e462",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
@@ -3366,7 +3366,7 @@
         "ParryRating": 0,
         "PhysicalCritPercent": 33.8091,
         "PhysicalDamage": 0,
-        "PhysicalHitPercent": 0,
+        "PhysicalHitPercent": 2,
         "RangedAttackPower": 75,
         "RangedCritPercent": 0,
         "RangedHitPercent": 0,
@@ -3969,8 +3969,8 @@
         }
       ],
       "summon_log": [
-        "Pet stats: {\"Strength\": 136.000,\"Agility\": 100.000,\"Stamina\": 274.000,\"Intellect\": 50.000,\"Spirit\": 80.000,\"AttackPower\": 252.000,\"RangedAttackPower\": 75.000,\"Armor\": 200.000,\"Health\": 2734.592,\"MP5\": 25.000,\"PhysicalCritPercent\": 33.809,\"SpellCritPercent\": 10.000,}",
-        "Pet inherited stats: {\"PhysicalCritPercent\": 23.809,}"
+        "Pet stats: {\"Strength\": 136.000,\"Agility\": 100.000,\"Stamina\": 274.000,\"Intellect\": 50.000,\"Spirit\": 80.000,\"AttackPower\": 252.000,\"RangedAttackPower\": 75.000,\"Armor\": 200.000,\"Health\": 2734.592,\"MP5\": 25.000,\"PhysicalHitPercent\": 2.000,\"PhysicalCritPercent\": 33.809,\"SpellCritPercent\": 10.000,}",
+        "Pet inherited stats: {\"PhysicalHitPercent\": 2.000,\"PhysicalCritPercent\": 23.809,}"
       ],
       "dismiss_log": "{\"Strength\": 136.000,\"Agility\": 100.000,\"Stamina\": 274.000,\"Intellect\": 50.000,\"Spirit\": 80.000,\"AttackPower\": 252.000,\"Armor\": 200.000,\"Health\": 2734.592,\"PhysicalCritPercent\": 10.000,\"SpellCritPercent\": 10.000,}",
       "dynamic_stats": true,
@@ -3982,8 +3982,18 @@
       "movement_speed": 8,
       "inheritance": [
         {
+          "owner": "PhysicalHitPercent",
+          "pet": "PhysicalHitPercent",
+          "coefficient": 1
+        },
+        {
           "owner": "PhysicalCritPercent",
           "pet": "PhysicalCritPercent",
+          "coefficient": 1
+        },
+        {
+          "owner": "RangedHitPercent",
+          "pet": "PhysicalHitPercent",
           "coefficient": 1
         },
         {
@@ -3999,6 +4009,7 @@
         "Intellect": 50,
         "MP5": 25,
         "PhysicalCritPercent": 33.8091,
+        "PhysicalHitPercent": 2,
         "RangedAttackPower": 75,
         "SpellCritPercent": 10,
         "Spirit": 80,
@@ -4089,7 +4100,8 @@
         }
       ],
       "inherited_stats": {
-        "PhysicalCritPercent": 23.8091
+        "PhysicalCritPercent": 23.8091,
+        "PhysicalHitPercent": 2
       },
       "dismiss_stats": [
         {

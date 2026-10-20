@@ -884,18 +884,21 @@ fn furious_howl_needs_its_effect() {
     assert!(reasons(value).contains(&"the pet's ability at 1 has no behavior".to_string()));
 }
 
-/// Go pet.go makeStatInheritance (fork patches 136 and 138): the pet's crit is its master's
+/// Go pet.go makeStatInheritance (fork patches 136, 138 and 178): the pet's crit is its master's
 /// physical crit plus the higher of the Auto Shot's ranged-only crit and the swing's melee-only
-/// crit, held as an offset the owner moves, and it inherits its master's Expertise. Its disable
-/// callback only clears the offset, so it exports no disable stats.
+/// crit, held as an offset the owner moves; its hit is its master's melee plus ranged hit; and it
+/// inherits its master's Expertise. Its disable callback only clears the offset, so it exports no
+/// disable stats.
 #[test]
-fn the_pet_inherits_its_masters_crit_and_expertise() {
+fn the_pet_inherits_its_masters_crit_hit_and_expertise() {
     let value = fixture("production-beast-mastery-hunter");
     let pet = &value["pets"][0];
     assert_eq!(
         pet["inheritance"],
         json!([
+            {"owner": "PhysicalHitPercent", "pet": "PhysicalHitPercent", "coefficient": 1},
             {"owner": "PhysicalCritPercent", "pet": "PhysicalCritPercent", "coefficient": 1},
+            {"owner": "RangedHitPercent", "pet": "PhysicalHitPercent", "coefficient": 1},
             {"owner": "ExpertisePercent", "pet": "ExpertisePercent", "coefficient": 1},
         ])
     );

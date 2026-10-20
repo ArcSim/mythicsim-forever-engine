@@ -17,6 +17,7 @@ use crate::prepare::stats::Stat;
 use super::helpers::{action_id_string, last_stand_share, spell_action};
 use super::shouts::SHOUT_EXPIRATION_THRESHOLD;
 use super::spell_data::spell_data;
+use super::spells::SUNDER_THREAT_PER_ATTACK_POWER;
 use super::stances::STANCE_EFFECT_CATEGORY;
 use super::Warrior;
 
@@ -282,8 +283,12 @@ impl Warrior {
             });
         if let Some(sunder) = sunder_label {
             let blocked = blocked_for_good(sim, sunder);
+            // Patch 185: each cast sets the flat threat to the client's value plus a share of the
+            // spell's melee attack power.
             effects.push(json!({"kind": "sunder_armor", "spell_id": sunder_row.id,
-                "aura": sim.aura(sunder).label, "blocked": blocked}));
+                "aura": sim.aura(sunder).label, "blocked": blocked,
+                "flat_threat": sunder_row.find_effect(dbcenums::E_THREAT, 0, 0).average(level),
+                "threat_per_attack_power": SUNDER_THREAT_PER_ATTACK_POWER}));
             // The armor category the stacks bid in, with the target's armor at each stack
             // count, read from separate reset simulations.
             if !blocked && sim.aura(sunder).exclusive_effects.len() == 1 {
@@ -540,7 +545,9 @@ impl Warrior {
         }
         effects.push(json!({"kind": "heroic_strike_queue",
             "queue_delay_ns": i64::from(self.inputs.queue_delay) * crate::prepare::sim::MILLISECOND,
-            "strikes": strikes}));
+            "strikes": strikes,
+            // Patch 184: a Cleave that lands on several targets splits its flat threat.
+            "cleave_threat_split": true}));
         // overpower.go: a dodge opens the Overpower window.
         effects.push(
             json!({"kind": "overpower_window", "trigger_aura": "Overpower - Trigger",

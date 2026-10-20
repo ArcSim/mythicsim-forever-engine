@@ -3604,6 +3604,11 @@ pub enum Effect {
         spell_id: i32,
         aura: String,
         blocked: bool,
+        /// The client's flat threat, which patch 185 sets the spell's to at each cast with
+        /// `threat_per_attack_power` of the spell's melee attack power added.
+        flat_threat: f64,
+        /// 0 keeps the spell's registered flat threat.
+        threat_per_attack_power: f64,
     },
     /// Deep Wounds: a physical crit casts a bleed that carries what it still owed.
     DeepWounds {
@@ -3638,6 +3643,8 @@ pub enum Effect {
     HeroicStrikeQueue {
         queue_delay_ns: i64,
         strikes: Vec<QueuedStrike>,
+        /// Patch 184: a Cleave that lands on several targets splits its flat threat between them.
+        cleave_threat_split: bool,
     },
     /// The warrior's own Battle Shout: its aura and the value it bids for the shout category.
     BattleShout {

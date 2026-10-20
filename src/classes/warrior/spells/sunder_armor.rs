@@ -10,6 +10,11 @@ pub(crate) struct SunderArmor {
     pub(crate) aura: AuraRef,
     /// The target's major armor category.
     pub(crate) category: usize,
+    /// The client's flat threat, and the share of the spell's melee attack power the cast adds
+    /// to it (patch 185, upstream's in-game captures). A share of 0 keeps the registered flat
+    /// threat.
+    pub(crate) flat_threat: f64,
+    pub(crate) threat_per_attack_power: f64,
 }
 
 /// Go `CanApplySunderAura`.
@@ -24,6 +29,13 @@ pub(crate) fn apply<A: Agent>(
     target: Side,
     params: SunderArmor,
 ) {
+    if params.threat_per_attack_power != 0.0 {
+        // Go's arm64 build fuses this multiply and add. The cast overwrites the flat threat, as
+        // Go does, whatever a spell mod had made of it.
+        fight.spells[spell].flat_threat_bonus = params
+            .threat_per_attack_power
+            .mul_add(fight.melee_attack_power(), params.flat_threat);
+    }
     let outcome = PhysicalOutcome::MeleeSpecialHit { count: true };
     let result = fight.calc_physical_outcome(spell, target, outcome);
     if result.landed() {

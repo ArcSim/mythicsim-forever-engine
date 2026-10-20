@@ -1374,3 +1374,171 @@ fn switching_off_the_hit_suppression_lowers_the_misses() {
     suppressed["melee"]["hit_suppression"] = json!(0.01);
     assert_ne!(first_fight_log(off), first_fight_log(suppressed));
 }
+
+/// The damage figure of a debug damage line.
+fn debug_damage(line: &str) -> f64 {
+    let value = line.split(" for ").nth(1).unwrap();
+    value[..value.find(' ').unwrap()].parse().unwrap()
+}
+
+/// The threat figure of a debug damage line.
+fn debug_threat(line: &str) -> f64 {
+    let value = line.split("(Threat: ").nth(1).unwrap();
+    value[..value.find(')').unwrap()].parse().unwrap()
+}
+
+fn threat_multiplier(value: &Value) -> f64 {
+    value["player"]["pseudo_stats"]["threat_multiplier"]
+        .as_f64()
+        .unwrap()
+}
+
+fn landed_lines<'a>(logs: &'a str, target: u32, spell: &str) -> Vec<&'a str> {
+    lines_with(logs, target, spell)
+        .into_iter()
+        .filter(|line| line.contains(" damage (SpellSchool"))
+        .collect()
+}
+
+/// Patch 183 (wowsims/forever 913a5bcf69): Revenge is 2.25 times its damage and no flat bonus.
+/// Patch 184: Heroic Strike adds 2.54 a spell level (152.4 at Rank 9), none with attack power.
+#[test]
+fn revenge_and_heroic_strike_threat_follow_the_captures() {
+    let value = warrior_fixture("production-protection-warrior");
+    let multiplier = threat_multiplier(&value);
+    let logs = first_fight_log(value);
+    let revenge = landed_lines(&logs, 1, "25288}");
+    assert!(revenge.len() > 5, "{} Revenge hits", revenge.len());
+    for line in revenge {
+        let want = 2.25 * debug_damage(line) * multiplier;
+        assert!(
+            (debug_threat(line) - want).abs() < 2e-3,
+            "{line} is not {want} threat"
+        );
+    }
+    let strikes = landed_lines(&logs, 1, "25286}");
+    assert!(strikes.len() > 5, "{} Heroic Strikes", strikes.len());
+    for line in strikes {
+        let want = (debug_damage(line) + 152.4) * multiplier;
+        assert!(
+            (debug_threat(line) - want).abs() < 2e-3,
+            "{line} is not {want} threat"
+        );
+    }
+}
+
+/// Patch 184: Cleave adds 1.53 a spell level (91.8 at Rank 5) on one target.
+#[test]
+fn cleave_threat_adds_a_flat_share_on_one_target() {
+    let value = warrior_fixture("warrior-cleave");
+    let multiplier = threat_multiplier(&value);
+    let logs = first_fight_log(value);
+    let cleaves = landed_lines(&logs, 1, "20569}");
+    assert!(!cleaves.is_empty());
+    for line in cleaves {
+        let want = (debug_damage(line) + 91.8) * multiplier;
+        assert!(
+            (debug_threat(line) - want).abs() < 2e-3,
+            "{line} is not {want} threat"
+        );
+    }
+}
+
+/// Patch 184: a Cleave that lands on two targets splits its flat threat between them, and with
+/// the split off each target takes the whole.
+#[test]
+fn cleave_splits_its_flat_threat_between_the_targets_it_lands_on() {
+    let flat_over_hits = |split: bool, flat: f64| {
+        let mut value = warrior_fixture("arms-warrior-3-targets-flame-wrath");
+        effect_mut(&mut value, "heroic_strike_queue")["cleave_threat_split"] = json!(split);
+        let logs = first_fight_log(value);
+        // The first cast's two hits, on the first two targets, at one time.
+        let first = landed_lines(&logs, 1, "20569}")[0];
+        let second = landed_lines(&logs, 2, "20569}")[0];
+        let stamp = |line: &str| line[..line.find(']').unwrap()].to_string();
+        assert_eq!(stamp(first), stamp(second));
+        // Each threat over its damage plus its flat share is the same threat multiplier.
+        let scale = |line: &str| debug_threat(line) / (debug_damage(line) + flat);
+        (scale(first), scale(second))
+    };
+    let (a, b) = flat_over_hits(true, 91.8 / 2.0);
+    assert!((a - b).abs() < 1e-5, "split: {a} and {b}");
+    let (a, b) = flat_over_hits(false, 91.8);
+    assert!((a - b).abs() < 1e-5, "unsplit: {a} and {b}");
+    // The shares do not agree with the other split.
+    let (a, b) = flat_over_hits(true, 91.8);
+    assert!((a - b).abs() > 1e-4, "{a} and {b}");
+}
+
+/// Patch 185: Sunder Armor's flat threat is the client's 206 plus 0.05 of the spell's melee
+/// attack power at the cast.
+#[test]
+fn sunder_armor_threat_adds_a_share_of_the_attack_power() {
+    let run = |share: f64| {
+        let mut value = warrior_fixture("protection-warrior-own-sunder");
+        effect_mut(&mut value, "sunder_armor")["threat_per_attack_power"] = json!(share);
+        let logs = first_fight_log(value);
+        let casts = landed_lines(&logs, 1, "11597}");
+        assert!(!casts.is_empty());
+        debug_threat(casts[0])
+    };
+    let multiplier = threat_multiplier(&warrior_fixture("protection-warrior-own-sunder"));
+    let flat = run(0.0);
+    assert!((flat - 206.0 * multiplier).abs() < 2e-3, "{flat}");
+    let with_attack_power = run(0.05);
+    let attack_power = (with_attack_power / multiplier - 206.0) / 0.05;
+    assert!(
+        (100.0..10_000.0).contains(&attack_power),
+        "{with_attack_power} threat is {attack_power} attack power"
+    );
+}
+
+/// The rage gain spell's threat on each target, of a fight with the threat multiplier applied
+/// or not.
+fn rage_gain_threat(name: &str, multiplied: bool) -> Vec<f64> {
+    let mut value = warrior_fixture(name);
+    value["sim"]["iterations"] = json!(20);
+    effect_mut(&mut value, "rage_bar")["threat_multiplied"] = json!(multiplied);
+    let targets = value["encounter"]["target_count"].as_u64().unwrap_or(1) as usize;
+    let prepared: PreparedV2 = serde_json::from_value(value).unwrap();
+    let report = forever_engine::simulate_prepared(&prepared).unwrap();
+    let player = &report.result["raidMetrics"]["parties"][0]["players"][0];
+    let action = player["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|action| action["id"]["otherId"] == "OtherActionRageGain")
+        .expect("a tank gains rage");
+    action["targets"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .take(targets)
+        .map(|target| target["threat"].as_f64().unwrap_or(0.0))
+        .collect()
+}
+
+/// Patch 182 (wowsims/forever 913a5bcf69): rage gained is 5 threat times the warrior's threat
+/// multiplier (Defensive Stance and Defiance) at the gain, split between the targets in combat.
+#[test]
+fn rage_gain_threat_takes_the_threat_multiplier_and_splits_between_the_targets() {
+    let on = rage_gain_threat("production-protection-warrior", true)[0];
+    let off = rage_gain_threat("production-protection-warrior", false)[0];
+    let ratio = on / off;
+    assert!(
+        (1.29..1.5).contains(&ratio),
+        "one target: x{ratio} of the unmultiplied"
+    );
+
+    let on = rage_gain_threat("production-protection-warrior-3-targets", true);
+    let off = rage_gain_threat("production-protection-warrior-3-targets", false);
+    assert_eq!((on.len(), off.len()), (3, 3));
+    for target in 0..3 {
+        assert!((on[target] - on[0]).abs() < 1e-6 && (off[target] - off[0]).abs() < 1e-6);
+    }
+    let ratio = on[0] / off[0];
+    assert!(
+        (0.43..0.5).contains(&ratio),
+        "three targets: x{ratio} of the unsplit"
+    );
+}

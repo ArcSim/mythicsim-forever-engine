@@ -14,6 +14,8 @@ pub(crate) struct Strike {
     pub(crate) queue_aura: AuraRef,
     pub(crate) base_damage: f64,
     pub(crate) cleave: bool,
+    /// Patch 184: a Cleave that lands on several targets splits its flat threat between them.
+    pub(crate) threat_split: bool,
 }
 
 /// The queue state Go keeps in the `Warrior` struct and the queue closures.
@@ -218,6 +220,17 @@ pub(crate) fn cleave_results<A: Agent>(
         let base = params.base_damage + fight.mh_weapon_damage(attack_power);
         results.push(fight.calc_physical_damage(spell, hit, base, outcome));
     }
+    // Patch 184: with several hits landed, each takes its share of the flat threat. Go divides
+    // the flat bonus, recomputes each result's threat and restores the bonus.
+    let landed = results.iter().filter(|result| result.landed()).count();
+    if params.threat_split && landed > 1 {
+        let flat = fight.spells[spell].flat_threat_bonus;
+        fight.spells[spell].flat_threat_bonus = flat / landed as f64;
+        for result in &mut results {
+            result.threat = fight.threat_of(spell, result);
+        }
+        fight.spells[spell].flat_threat_bonus = flat;
+    }
     results
 }
 
@@ -288,6 +301,7 @@ mod tests {
                 },
                 base_damage: 0.0,
                 cleave: true,
+                threat_split: false,
             }],
             ..Queue::default()
         };
@@ -321,6 +335,7 @@ mod tests {
                 },
                 base_damage: 0.0,
                 cleave: true,
+                threat_split: false,
             }],
             ..Queue::default()
         };

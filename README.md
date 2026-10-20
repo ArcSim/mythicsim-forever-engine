@@ -1,10 +1,13 @@
 # MythicSim Forever Engine
 
-A community Rust simulation engine for WoW Forever. 
+A Rust simulation engine for WoW Forever. [MythicSim](https://mythicsim.com/wow-forever/sim)
+runs its Forever Quick Sims on it, with the Go engine as the fallback for anything Rust
+does not cover yet.
 
-**Status: experimental.** All 29 production builds run in Rust and give the same
-result as the pinned comparison go engine. Production still uses Go. Routing real jobs to Rust,
-with Go as the fallback, is the next step.
+The engine follows [MythicSim's Go fork](https://github.com/sage3648/mythicsim-forever-engine-go)
+of [wowsims Forever](https://github.com/ElliotWood/Forever) exactly: event order, random
+numbers and float math match, so a sim gives the same result and the same combat log in
+either engine. Rust is 1.3x to 2x faster.
 
 ## Quick start
 
@@ -24,79 +27,31 @@ the engine.
 
 ## How it works
 
-1. Rust prepares the character from the application's request: the gear, stats, auras,
-   spells and rotation, as the [prepared v2](docs/prepared-v2.md) state the pinned Go
-   exporter in `tools/oracle-v2` writes ([Rust preparation](docs/rust-preparation.md)).
-   A request it does not cover yet is refused with a code, and the Go exporter prepares it.
-2. The Rust coverage gate reads the file. It refuses any input that it cannot
-   simulate exactly, and gives the reasons.
-3. Rust runs the fight. Event order, random numbers and float math follow Go, so the
-   result and the combat log are the same.
+1. Rust prepares the character from the application's request: gear, stats, auras,
+   spells and rotation ([prepared v2](docs/prepared-v2.md),
+   [Rust preparation](docs/rust-preparation.md)).
+2. A coverage gate checks the prepared input and refuses anything Rust cannot simulate
+   exactly, with a reason for each refusal.
+3. Rust runs the fight.
 
-[`tools/route.py`](docs/routing.md) does all three for the application worker: it runs a
-request in Rust, or reports a fallback to Go with each refusal's stable code, or a fault.
+[`tools/route.py`](docs/routing.md) is what the MythicSim worker calls. It runs a request in
+Rust, or tells the worker to run it in Go and says why.
 
-## What works
+## Coverage
 
-| Class | Production builds |
-| --- | --- |
-| Mage | Arcane, Fire, Frost, Frostfire |
-| Druid | Balance, Feral (cat), Feral (bear) |
-| Hunter | Beast Mastery, Marksmanship, Survival |
-| Paladin | Retribution, Shockadin, Protection, Retribution/Protection, Holy/Protection |
-| Priest | Shadow, Smite |
-| Rogue | Assassination, Combat, Subtlety |
-| Shaman | Elemental, Enhancement |
-| Warlock | Affliction, Demonology, Destruction |
-| Warrior | Arms, Fury, Fury/Protection, Protection |
+Every class and spec MythicSim offers runs in Rust: Druid, Hunter, Mage, Paladin, Priest,
+Rogue, Shaman, Warlock and Warrior, with their talents, gear, buffs, consumables, pets,
+tanking and 2 to 5 targets. A few things still fall back to Go, such as some item swaps,
+some custom rotation syntax and a handful of spells. Best Gear, trinket boards and the
+Build Lab still run in Go.
 
-Many variants of these builds work too, for example other races, gear, talents,
-buffs, presets, trinkets, pets and tanking.
+## Keeping up with Go
 
-Builds of every class also work against 2 to 5 copies of the boss, the application's Advanced targets setting, with the AoE lines the application adds:
-each target keeps its own auras, dots, debuffs and metrics, and area hits, cleaves and
-multidots reach every target as in Go. Paladin, Druid and Warrior tank builds work there too, with every
-copy of the boss swinging at the tank on its own timer; tanks of other classes still fall back to Go.
-
-## Evidence
-
-- 584 accepted prepared v2 fixtures, 582 of them with Go results, checked by `cargo test`.
-  Rust prepares every one of their requests itself, and each prepared state equals the Go
-  exporter's exactly.
-- 7,922 production variants (race boards, builder starters, gear, buffs, talents,
-  class options and presets) and 3,724 random variants compared with Go. None
-  differ. Rust refuses 174 of them. The 2 that crashed the Go engine before
-  `74127c6c8` now match
-  ([record](validation/2026-10-06-reference-pin-74127c6c8-sweeps.json)).
-- At `cd7d44aec` every recorded sweep ran again, 9,076 variants in 107 records: 9,052 match
-  Go, Rust refuses 24 and none differ
-  ([record](validation/2026-10-07-reference-pin-cd7d44aec-sweeps.json)).
-- At `2d93e423e` the recorded sweeps ran again, 8,120 of the 9,076 variants: all match Go,
-  the 24 tank builds refused before among them; 956 Warlock multi-target variants were not
-  compared ([record](validation/2026-10-07-reference-pin-2d93e423e-sweeps.json)).
-- At `041dec8ef` the recorded sweeps ran again with 17 more records, 14,341 variants in 124
-  records: 14,278 match Go, Rust refuses 63 and none differ
-  ([record](validation/2026-10-12-reference-pin-041dec8ef-sweeps.json)).
-- At `d2409ccd0` the recorded sweeps ran again, the same 14,341 variants in 124 records:
-  14,278 match Go, Rust refuses 63 and none differ
-  ([record](validation/2026-10-13-reference-pin-d2409ccd0-sweeps.json)).
-- Against 2 to 5 targets, 267 reference builds of every class, 1,955 Mage and Warlock
-  census variants, 272 tank fixture requests and 2,492 random variants match Go, the area
-  hits, cleaves, multidots and every copy of the boss swinging at a tank included.
-- The latest full rerun covered 24,173 inputs in 121 records, with no mismatches.
-- [Shadow sims](docs/shadow-sims.md) compare Rust with Go on real MythicSim traffic,
-  without users seeing them.
-  [docs/validation-summary.md](docs/validation-summary.md) lists every record.
-- Rust is faster on all 27 benchmarked production builds: 1.30x to 1.98x, with a
-  median of 1.47x at 10,000 iterations
-  ([snapshot](benchmarks/2026-10-04-production-builds.json)).
-- Earlier timings came from the MythicSim prototype. See the
-  [fair comparison](docs/forever-rust-fair-comparison-2026-10-03.md) and the
-  [prototype report](docs/forever-rust-prototype-2026-10-03.md).
-
-The reference is Go revision `c7c423bd7f9857daf6f081a104fef5215b0509a7`. A match
-proves the same behavior as that Go engine. It does not prove the live game.
-[UPSTREAM.md](UPSTREAM.md) explains how community fixes are reviewed and ported.
+Each Go engine release moves the reference pin, currently Go revision
+`c7c423bd7f9857daf6f081a104fef5215b0509a7`, and Rust follows the changes. A match means the
+same behavior as that Go engine, not proof of the live game. [UPSTREAM.md](UPSTREAM.md) has
+the steps, and [docs/validation-summary.md](docs/validation-summary.md) lists the comparison
+records.
 
 ## Repository layout
 
@@ -104,24 +59,20 @@ proves the same behavior as that Go engine. It does not prove the live game.
 | --- | --- |
 | `src/core`, `src/mechanics` | Shared fight runtime and combat rules |
 | `src/classes/<class>` | Class spells and talents, with specs under `specs/` |
+| `src/prepare` | Preparing a character from a request |
 | `src/engine` | Coverage gate and orchestration |
 | `src/contracts` | Input and output types |
 | `tests/classes` | Tests, one folder per class |
 | `fixtures` | Prepared inputs and Go results |
-| `tools` | Exporter, comparison and validation tools |
-| `validation`, `benchmarks` | Comparison and timing records |
+| `tools` | Exporter, routing, comparison and validation tools |
 
 The [contributor code map](docs/contributor-guide.md) shows where each mechanic lives.
 
 ## Contribute
 
-Start with the pinned [contributor board](https://github.com/sage3648/mythicsim-forever-engine/issues/25).
-It lists open work in order, grouped by milestone. Comment on an issue to claim it
-before you start. Items marked `good first issue` are a good start.
-
-Read [CONTRIBUTING.md](CONTRIBUTING.md) for the checks to run. Every mechanics
-change needs a fixture or test that shows it matches Go. The [roadmap](ROADMAP.md)
-shows the larger plan.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for the checks to run. A mechanics change needs a
+fixture or test that shows it matches Go. Open work is on the
+[contributor board](https://github.com/sage3648/mythicsim-forever-engine/issues/25).
 
 ## License and acknowledgments
 

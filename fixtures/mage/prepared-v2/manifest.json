@@ -4,7 +4,7 @@
   "engine_revision": "15b7435f3ab63223e48c129969fd343b8d14e462",
   "client_build": "1.60.1.70425",
   "exporter": "tools/oracle-v2/main.go",
-  "exporter_sha256": "2946841edf0a1dcd153bf00dceaeb45dc89fb236355fd02ae8583ea363c47280",
+  "exporter_sha256": "a59482556fcd89c1371f20d78a5aa3e7dc19f1be82fc3aa38ec5b39563629604",
   "generator": "python3 tools/prepared_v2.py capture --output output/prepared-v2-capture",
   "note": "Accepted prepared inputs exported from the pinned Go engine. Capture re-exports into scratch and must match these files exactly.",
   "cases": [
@@ -13729,14 +13729,14 @@
         "path": "fixtures/mage/prepared-v2/all-values-frost-mage.request.json"
       },
       "prepared": "all-values-frost-mage.prepared.json",
-      "prepared_sha256": "3bc3bc6ea7f2e123e2cfa922936b400ce09b8fe732da10c196408d8bb9842c8e",
+      "prepared_sha256": "13823150385e9d26b56d9df697a37ab9c3ecebe9b8b6598d77afde17f7a3661e",
       "expected_coverage": {
         "supported": true,
         "reasons": []
       },
       "go_result": {
         "file": "all-values-frost-mage.go-result.json",
-        "sha256": "8425de6fd3398f37815400eb990b68c5c2536168339ee59c93147431c8f379b4"
+        "sha256": "27295bf60d415cbb5f6d7b1abfccb841dde99ba54e4cff4d0bc546d352e9010a"
       }
     },
     {
@@ -13746,14 +13746,14 @@
         "path": "fixtures/mage/prepared-v2/all-values-beast-mastery-hunter-labeled.request.json"
       },
       "prepared": "all-values-beast-mastery-hunter-labeled.prepared.json",
-      "prepared_sha256": "6d547d9d2f2b2f0d995bf05e546d5fbfd9ad7a6afe1648c2b0b526a06eb18d80",
+      "prepared_sha256": "cd57262af8e6f266aec709d099572534497ee3c3c9800090b251483a8c7b554e",
       "expected_coverage": {
         "supported": true,
         "reasons": []
       },
       "go_result": {
         "file": "all-values-beast-mastery-hunter-labeled.go-result.json",
-        "sha256": "f911cab9723207f039afbcb30ac6c2c99c51d1915d2baf40328168c7ad467d65"
+        "sha256": "557378e0212c77150440d091c3888f1c9481ac550e7c2c42ffd1b421132d5f67"
       }
     },
     {
@@ -13763,7 +13763,7 @@
         "path": "fixtures/mage/prepared-v2/all-values-protection-warrior.request.json"
       },
       "prepared": "all-values-protection-warrior.prepared.json",
-      "prepared_sha256": "17c07b1099ed578b2862f255f331843b0cba11d9a000936329320e0a2bd8ec0c",
+      "prepared_sha256": "9d74db6658a29bf5f03d3913472cace9635e748512518576691de52f7e3d05dc",
       "expected_coverage": {
         "supported": true,
         "reasons": []
@@ -13780,14 +13780,14 @@
         "path": "fixtures/mage/prepared-v2/all-values-affliction-warlock-labeled.request.json"
       },
       "prepared": "all-values-affliction-warlock-labeled.prepared.json",
-      "prepared_sha256": "1756be34652e3500bfba02e3a0c72e1fbb546b1ce81e6b8804e3ddff42f23245",
+      "prepared_sha256": "e2161646ced8cb8337d3cabd1a6e3c1af87cd2df543a51eb1b04ca61d0322686",
       "expected_coverage": {
         "supported": true,
         "reasons": []
       },
       "go_result": {
         "file": "all-values-affliction-warlock-labeled.go-result.json",
-        "sha256": "bb007a2bd627cf2a638d59204b40b19aa4ce286f06e252b7f15b3da431305e21"
+        "sha256": "415c6c8ce7f5c041236bf852fbd5b16a6c47ebed4a37ccdc75a80bf828d0f0c0"
       }
     }
   ]

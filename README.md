@@ -48,7 +48,7 @@ Build Lab still run in Go.
 ## Keeping up with Go
 
 Each Go engine release moves the reference pin, currently Go revision
-`c7c423bd7f9857daf6f081a104fef5215b0509a7`, and Rust follows the changes. A match means the
+`15b7435f3ab63223e48c129969fd343b8d14e462`, and Rust follows the changes. A match means the
 same behavior as that Go engine, not proof of the live game. [UPSTREAM.md](UPSTREAM.md) has
 the steps, and [docs/validation-summary.md](docs/validation-summary.md) lists the comparison
 records.

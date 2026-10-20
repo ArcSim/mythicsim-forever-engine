@@ -112,6 +112,9 @@ pub(crate) struct WarlockAgent {
     immolate_dot: Option<DotId>,
     corruption_dot: Option<DotId>,
     pub(crate) bane_of_agony: Option<BaneOfAgony>,
+    /// Go agony.go `wholeTickAmp`: the Amplify Curse factor each target's Bane of Agony snapshot
+    /// spent, indexed by the target's dot (patch 177).
+    pub(crate) agony_whole_tick_amp: Vec<f64>,
     siphon_life: Option<SiphonLife>,
     bane_of_doom_dot: Option<DotId>,
     drain_life: Option<DrainLife>,

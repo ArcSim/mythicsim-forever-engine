@@ -135,7 +135,9 @@ pub(crate) struct HunterPetState {
 /// Expertise" (patch 138): the pet takes PhysicalCritPercent plus the higher of the Auto Shot's
 /// ranged-only crit and the main-hand swing's melee-only crit, and the owner's ExpertisePercent.
 /// The max is not linear, so `offset` holds the offset on the pet and each update moves it to
-/// what the owner's current stats and spell mods give.
+/// what the owner's current stats and spell mods give. Go `PetsInheritHit` (patch 178, Hunter
+/// Pet Scaling 415429): the pet also takes the owner's melee plus ranged hit, the higher of the
+/// two since ranged hit only adds, which is linear.
 fn stat_inheritance(owner: UnitId, offset: StateSlot) -> impl Fn(&mut Sim, &Stats) -> Stats {
     move |sim: &mut Sim, owner_stats: &Stats| {
         let now = pet_crit_offset_now(sim, owner);
@@ -144,6 +146,8 @@ fn stat_inheritance(owner: UnitId, offset: StateSlot) -> impl Fn(&mut Sim, &Stat
         let mut inherited = Stats::default();
         inherited[Stat::PhysicalCritPercent] = owner_stats[Stat::PhysicalCritPercent] + change;
         inherited[Stat::ExpertisePercent] = owner_stats[Stat::ExpertisePercent];
+        inherited[Stat::PhysicalHitPercent] =
+            owner_stats[Stat::PhysicalHitPercent] + owner_stats[Stat::RangedHitPercent];
         inherited
     }
 }

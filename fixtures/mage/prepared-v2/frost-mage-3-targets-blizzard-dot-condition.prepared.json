@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "c7c423bd7f9857daf6f081a104fef5215b0509a7",
+    "engine_revision": "15b7435f3ab63223e48c129969fd343b8d14e462",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
@@ -6006,7 +6006,7 @@
       "bolt_chance": 0.1,
       "cost_percent_add": -1,
       "kind": "missile_barrage",
-      "missile_chance": 0.05,
+      "missile_chance": 0,
       "rng_label": "Missile Barrage",
       "tick_length_delta_ns": -500000000,
       "trigger_aura": "Missile Barrage Trigger"

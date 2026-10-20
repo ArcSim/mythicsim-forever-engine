@@ -176,6 +176,9 @@ pub(crate) struct WarriorAgent {
     empty_mask: Vec<bool>,
     /// Whether each spell's proc mask holds a main hand bit.
     main_hand_mask: Vec<bool>,
+    /// Go sim/warrior/talents_arms.go `BloodthrillWhiteSwingsOnly` (patch 176): the spells that can
+    /// proc Bloodthrill, main hand white swings other than Retaliation's, Heroic Strike and Cleave.
+    bloodthrill_swing: Vec<bool>,
     /// Whether each spell's proc mask holds an off hand bit.
     off_hand_mask: Vec<bool>,
     /// Go `struck` in `registerDeepWounds`: the crit that casts the bleed came from the off hand
@@ -435,6 +438,20 @@ impl WarriorAgent {
                     .proc_mask
                     .iter()
                     .any(|mask| mask == "ProcMaskMeleeMHAuto" || mask == "ProcMaskMeleeMHSpecial")
+            })
+            .collect();
+        fight.agent.bloodthrill_swing = prepared
+            .player
+            .spells
+            .iter()
+            .map(|spell| {
+                let class = spell.class_spell.as_deref();
+                let white = spell
+                    .proc_mask
+                    .iter()
+                    .any(|mask| mask == "ProcMaskMeleeMHAuto")
+                    && !matches!(class, Some("retaliation" | "retaliation_hit"));
+                white || matches!(class, Some("heroic_strike" | "cleave"))
             })
             .collect();
         fight.agent.off_hand_mask = prepared
@@ -1736,7 +1753,10 @@ impl Agent for WarriorAgent {
             }
             WarriorAura::BloodthrillTrigger => {
                 let params = fight.agent.bloodthrill.expect("Bloodthrill is bound");
-                let main_hand = fight.agent.main_hand_mask[spell];
+                // Go: the trigger's ProcMaskMeleeMH, narrowed to white swings, Heroic Strike and Cleave
+                // (patch 176, from upstream's combat logs).
+                let main_hand =
+                    fight.agent.main_hand_mask[spell] && fight.agent.bloodthrill_swing[spell];
                 bloodthrill::on_hit(fight, params, spell, main_hand, result);
             }
             WarriorAura::WeaponmasterSword => {

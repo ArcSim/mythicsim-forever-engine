@@ -1112,7 +1112,8 @@ fn followed_stat(stat: &str) -> bool {
 /// Stats a stat aura may change without the runtime reading them: inputs to the stats it
 /// reads, and stats nothing in scope reads.
 const INERT_STATS: &[&str] = &[
-    // Spell crit and maximum mana; mana regeneration reads only spirit and MP5.
+    // Spell crit and maximum mana; mana regeneration reads only spirit and MP5, and the
+    // combinations carry Intellect for the regeneration refresh a change of it causes.
     "Intellect",
     // Spirit regeneration, which the combinations carry; a class that reads Spirit itself
     // refuses a change of it.

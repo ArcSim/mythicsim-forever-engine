@@ -1800,6 +1800,9 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) stat_health: Vec<Option<f64>>,
     /// The player's Spirit for each combination, when one changes it.
     pub(crate) stat_spirit: Vec<Option<f64>>,
+    /// The player's Intellect for each combination, when one changes it: Go refreshes the
+    /// cached mana regeneration rates whenever a dynamic change moves it.
+    stat_intellect: Vec<Option<f64>>,
     /// The player's school spell damage stats for each combination, when one changes them.
     pub(crate) stat_school_damage: Vec<Option<[f64; 8]>>,
     /// The player's resistances for each combination that a combination changes, by Go
@@ -3027,6 +3030,10 @@ impl<A: Agent> Fight<A> {
             .iter()
             .map(|combo| combo.get("Spirit").copied())
             .collect();
+        let stat_intellect: Vec<Option<f64>> = stat_combos
+            .iter()
+            .map(|combo| combo.get("Intellect").copied())
+            .collect();
         // And each school spell damage and resistance stat only when a combination changes it;
         // the others keep their reset values.
         let by_school = |names: &[(usize, &str)], base: [f64; 8]| -> Vec<Option<[f64; 8]>> {
@@ -3789,6 +3796,7 @@ impl<A: Agent> Fight<A> {
             stat_combos,
             stat_health,
             stat_spirit,
+            stat_intellect,
             stat_school_damage,
             stat_resistance,
             stat_mask: 0,
@@ -4549,8 +4557,12 @@ impl<A: Agent> Fight<A> {
             self.player.mana = self.player.powers.max_mana;
         }
         // Go processDynamicBonus runs UpdateManaRegenRates when MP5, Intellect or Spirit move.
+        // Intellect plays no part in Forever's regeneration, but the refresh it causes picks up
+        // a casting rate an aura changed without one, as Improved Stormstrike's does.
+        let intellect = |mask: u32| self.stat_intellect.get(mask as usize).copied().flatten();
         if self.player.powers.mp5 != mp5
             || self.player.powers.spirit_regen_per_second != spirit_regen
+            || intellect(mask) != intellect(mask ^ changed)
         {
             self.update_mana_regen_rates();
         }

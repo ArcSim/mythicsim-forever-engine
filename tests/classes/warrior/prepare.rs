@@ -192,3 +192,45 @@ fn frost_oil_registers_a_proc_for_its_hand() {
         1
     );
 }
+
+/// Patches 182 to 185 (wowsims/forever's in-game threat captures): Revenge is 2.25 times its
+/// damage with no flat bonus, Heroic Strike adds 2.54 and Cleave 1.53 a spell level, Sunder Armor
+/// adds 0.05 of the attack power to the client's 206 at each cast, a Cleave on several targets
+/// splits its flat threat, and rage gained counts the threat multiplier.
+#[test]
+fn threat_follows_the_in_game_captures() {
+    let request = data("protection.request.json");
+    let prepared = forever_engine::prepare_json(&request, "protection").unwrap();
+    let spell = |class: &str| {
+        prepared["player"]["spells"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|spell| spell["class_spell"] == class && spell["action_id"]["tag"].is_null())
+            .unwrap_or_else(|| panic!("no {class}"))
+    };
+    let near = |got: &Value, want: f64| {
+        assert!(
+            (got.as_f64().unwrap() - want).abs() < 1e-9,
+            "{got} is not {want}"
+        );
+    };
+    near(&spell("revenge")["threat_multiplier"], 2.25);
+    near(&spell("revenge")["flat_threat_bonus"], 0.0);
+    near(&spell("heroic_strike")["flat_threat_bonus"], 2.54 * 60.0);
+    near(&spell("cleave")["flat_threat_bonus"], 1.53 * 60.0);
+    near(&spell("sunder_armor")["flat_threat_bonus"], 206.0);
+
+    let effect = |kind: &str| {
+        prepared["effects"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|effect| effect["kind"] == kind)
+            .unwrap_or_else(|| panic!("no {kind}"))
+    };
+    near(&effect("sunder_armor")["flat_threat"], 206.0);
+    near(&effect("sunder_armor")["threat_per_attack_power"], 0.05);
+    assert_eq!(effect("heroic_strike_queue")["cleave_threat_split"], true);
+    assert_eq!(effect("rage_bar")["threat_multiplied"], true);
+}

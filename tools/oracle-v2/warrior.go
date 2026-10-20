@@ -194,6 +194,9 @@ func rageBarEffect(character *core.Character, baseRageMultiplier float64) map[st
 		"main_hand_rage": mainHand, "off_hand_rage": offHand,
 		"main_hand_crit_rage": mainHandCrit, "off_hand_crit_rage": offHandCrit,
 		"threat_per_rage": float64(core.ThreatPerRageGained),
+		// Patch 182: the threat of each gain takes the unit's threat multiplier at the gain and is split between
+		// the targets in combat.
+		"threat_multiplied": core.RageGainThreatMultiplied,
 	}
 }
 
@@ -321,6 +324,10 @@ func warriorEffects(agent core.Agent, character *core.Character) []map[string]an
 		effects = append(effects, map[string]any{
 			"kind": "sunder_armor", "spell_id": warriorSunderArmor.Highest().ID, "aura": sunder.Label,
 			"blocked": blocked,
+			// Patch 185: each cast sets the spell's flat threat to the client's value plus a share of the spell's
+			// melee attack power; 0 keeps the registered value.
+			"flat_threat":             warriorSunderArmor.Highest().FindEffect(dbcenums.E_THREAT, 0, 0).Average(core.CharacterLevel),
+			"threat_per_attack_power": core.TernaryFloat64(warrior.SunderArmorThreatFromAttackPower, 0.05, 0),
 		})
 		// The armor category the stacks bid in, with the target's armor at each stack count,
 		// read from separate reset simulations, as the raid's ramp reads its own.
@@ -538,6 +545,8 @@ func warriorEffects(agent core.Agent, character *core.Character) []map[string]an
 	effects = append(effects, map[string]any{
 		"kind": "heroic_strike_queue", "queue_delay_ns": nanos(time.Millisecond * time.Duration(war.QueueDelay)),
 		"strikes": strikes,
+		// Patch 184: a Cleave that lands on several targets splits its flat threat between them.
+		"cleave_threat_split": warrior.HeroicStrikeCleaveThreatPerLevel,
 	})
 	// overpower.go: a dodge opens the Overpower window.
 	effects = append(effects, map[string]any{"kind": "overpower_window", "trigger_aura": "Overpower - Trigger", "aura": war.OverpowerAura.Label})

@@ -12,7 +12,7 @@ use crate::prepare::dbcenums;
 use crate::prepare::item_swap::{ManagerChance, ManagerMask, SwapCallback, WEAPON_SLOTS};
 use crate::prepare::items::slot;
 use crate::prepare::shared_items::current_proc_mask_for;
-use crate::prepare::sim::{Sim, UnitId, MILLISECOND, NEVER_EXPIRES};
+use crate::prepare::sim::{AuraConfig, EventCallbacks, Sim, UnitId, MILLISECOND, NEVER_EXPIRES};
 use crate::prepare::spell::{school, DefenseType, ProcMask, SpellConfig, SpellFlag};
 use crate::prepare::stats::{Stat, Stats};
 
@@ -23,7 +23,9 @@ use super::{flags, masks, Shaman};
 const FROSTBRAND_ENCHANT_ID: i32 = 2;
 const FLAMETONGUE_ENCHANT_ID: i32 = 5;
 const WINDFURY_ENCHANT_ID: i32 = 283;
-const ROCKBITER_ENCHANT_ID: i32 = 3021;
+pub(super) const ROCKBITER_ENCHANT_ID: i32 = 3021;
+/// Rockbiter Weapon Proc, which no row triggers and the store does not carry (patch 181).
+pub(super) const ROCKBITER_THREAT_SPELL_ID: i32 = 20871;
 
 impl Shaman {
     /// Go `getWindfuryFixedProcChance`.
@@ -398,6 +400,8 @@ impl Shaman {
             return;
         }
 
+        self.register_rockbiter_threat(sim, unit);
+
         let data = spell_data();
         let imbue = data.rockbiter_weapon_triggered.highest();
         let attack_power = imbue
@@ -444,5 +448,37 @@ impl Shaman {
         // The item swap's reset runs this with the pull's weapons, so the aura starts each fight
         // as they say.
         sim.register_item_swap_callback(unit, &WEAPON_SLOTS, SwapCallback::Rockbiter { aura });
+    }
+
+    /// Go `registerRockbiterThreat` (patch 181, ported from wowsims/forever f128c3d268): Rockbiter
+    /// Weapon (Passive) casts Rockbiter Weapon Proc (20871) off every landed white swing and melee
+    /// ability of a weapon carrying Rockbiter, and its script effect adds 72 threat for every second
+    /// of the main hand's swing. The spell's flat threat is set at each cast, so only its
+    /// registration is prepared; the hit listener acts at run time.
+    fn register_rockbiter_threat(&self, sim: &mut Sim, unit: UnitId) {
+        sim.register_spell(
+            unit,
+            SpellConfig {
+                action_id: spell_action(ROCKBITER_THREAT_SPELL_ID),
+                spell_school: school::PHYSICAL,
+                proc_mask: ProcMask::EMPTY,
+                flags: SpellFlag::NO_ON_CAST_COMPLETE | SpellFlag::PASSIVE_SPELL,
+                damage_multiplier: 1.0,
+                threat_multiplier: 1.0,
+                ..SpellConfig::default()
+            },
+        );
+        let aura = sim.register_aura(
+            unit,
+            AuraConfig {
+                label: "Rockbiter Weapon Threat".to_string(),
+                events: EventCallbacks {
+                    on_spell_hit_dealt: true,
+                    ..EventCallbacks::default()
+                },
+                ..AuraConfig::default()
+            },
+        );
+        sim.make_permanent(aura);
     }
 }

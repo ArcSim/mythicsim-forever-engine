@@ -119,5 +119,8 @@ pub(crate) fn rage_bar_effect(
         "main_hand_rage": main_hand, "off_hand_rage": off_hand,
         "main_hand_crit_rage": main_hand_crit, "off_hand_crit_rage": off_hand_crit,
         "threat_per_rage": THREAT_PER_RAGE_GAINED,
+        // Patch 182: the threat of a gain takes the unit's threat multiplier at the gain and is split
+        // between the targets in combat.
+        "threat_multiplied": true,
     })
 }

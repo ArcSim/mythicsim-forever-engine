@@ -940,7 +940,13 @@ impl WarriorAgent {
                 Effect::Recklessness { aura, .. } => {
                     fight.agent.recklessness = Some(fight.player_aura(aura)?)
                 }
-                Effect::SunderArmor { blocked, aura, .. } => {
+                Effect::SunderArmor {
+                    blocked,
+                    aura,
+                    flat_threat,
+                    threat_per_attack_power,
+                    ..
+                } => {
                     fight.agent.sunder_blocked = *blocked;
                     let index = fight.trackers[Side::Target.index()].find(aura);
                     let category = fight.armor_category.as_ref().map(|(category, _)| *category);
@@ -954,7 +960,12 @@ impl WarriorAgent {
                             .iter()
                             .any(|member| member.aura == aura);
                         if member {
-                            fight.agent.sunder = Some(SunderArmor { aura, category });
+                            fight.agent.sunder = Some(SunderArmor {
+                                aura,
+                                category,
+                                flat_threat: *flat_threat,
+                                threat_per_attack_power: *threat_per_attack_power,
+                            });
                         }
                     }
                 }
@@ -1020,6 +1031,7 @@ impl WarriorAgent {
                 Effect::HeroicStrikeQueue {
                     queue_delay_ns,
                     strikes,
+                    cleave_threat_split,
                 } => {
                     let mut queue = Queue::default();
                     for strike in strikes {
@@ -1028,6 +1040,7 @@ impl WarriorAgent {
                             queue_aura: fight.player_aura(&strike.queue_aura)?,
                             base_damage: strike.base_damage,
                             cleave: strike.cleave,
+                            threat_split: *cleave_threat_split,
                         });
                         queue.queued.push(false);
                     }

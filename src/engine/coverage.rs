@@ -777,6 +777,11 @@ const SWAP_EFFECT_FIELDS: &[(&str, &[&str])] = &[
     ("flametongue_weapon", &["hands/base_damage"]),
     ("flametongue_totem", &["attack_damage"]),
     ("maelstrom_weapon", &["chances"]),
+    // Patch 181: the hands that carry Rockbiter and the main hand's speed, as the weapons worn say.
+    (
+        "rockbiter_threat",
+        &["main_hand", "off_hand", "main_hand_swing_speed"],
+    ),
 ];
 
 /// The racial weapon specializations, whose aura also takes its crit back off the ranged auto

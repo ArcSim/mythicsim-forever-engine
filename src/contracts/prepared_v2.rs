@@ -3398,6 +3398,17 @@ pub enum Effect {
         gain_log: String,
         expire_log: String,
     },
+    /// Rockbiter Weapon Proc (patch 181): a landed melee hit of a hand whose weapon carries
+    /// Rockbiter casts the spell, whose flat threat is `threat_per_swing_second` times the main
+    /// hand weapon's swing speed. The hands and the speed are those of the weapons worn.
+    RockbiterThreat {
+        aura: String,
+        spell_id: i32,
+        main_hand: bool,
+        off_hand: bool,
+        threat_per_swing_second: f64,
+        main_hand_swing_speed: f64,
+    },
     /// Rage of the Farseer: a major cooldown whose aura multiplies melee speed.
     RageOfTheFarseer {
         spell_id: i32,
@@ -3450,6 +3461,9 @@ pub enum Effect {
         main_hand_crit_rage: f64,
         off_hand_crit_rage: f64,
         threat_per_rage: f64,
+        /// Patch 182: the threat of a gain is `threat_per_rage` times the unit's threat multiplier at
+        /// the gain, split between the targets in combat. Off, `threat_per_rage` on each target.
+        threat_multiplied: bool,
     },
     /// Go `AttachMultiplicativePseudoStatBuff` on the player's damage taken multiplier, for
     /// auras that are not up from the reset: the gain multiplies, the expiry divides.
@@ -3593,6 +3607,11 @@ pub enum Effect {
         spell_id: i32,
         aura: String,
         blocked: bool,
+        /// The client's flat threat, which patch 185 sets the spell's to at each cast with
+        /// `threat_per_attack_power` of the spell's melee attack power added.
+        flat_threat: f64,
+        /// 0 keeps the spell's registered flat threat.
+        threat_per_attack_power: f64,
     },
     /// Deep Wounds: a physical crit casts a bleed that carries what it still owed.
     DeepWounds {
@@ -3627,6 +3646,8 @@ pub enum Effect {
     HeroicStrikeQueue {
         queue_delay_ns: i64,
         strikes: Vec<QueuedStrike>,
+        /// Patch 184: a Cleave that lands on several targets splits its flat threat between them.
+        cleave_threat_split: bool,
     },
     /// The warrior's own Battle Shout: its aura and the value it bids for the shout category.
     BattleShout {
@@ -4609,6 +4630,7 @@ impl Effect {
             Effect::RageOfTheFarseer { .. } => "rage_of_the_farseer",
             Effect::ElementalMastery { .. } => "elemental_mastery",
             Effect::RockbiterWeapon { .. } => "rockbiter_weapon",
+            Effect::RockbiterThreat { .. } => "rockbiter_threat",
             Effect::FrostShock { .. } => "frost_shock",
             Effect::WeaponSync { .. } => "weapon_sync",
             Effect::WindfuryWeapon { .. } => "windfury_weapon",

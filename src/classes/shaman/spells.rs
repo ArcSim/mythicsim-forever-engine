@@ -7,6 +7,7 @@ pub(crate) mod flame_shock;
 pub(crate) mod lava_burst;
 pub(crate) mod lightning_bolt;
 pub(crate) mod magma_totem;
+pub(crate) mod rockbiter_threat;
 pub(crate) mod searing_totem;
 pub(crate) mod stormstrike;
 pub(crate) mod totems;

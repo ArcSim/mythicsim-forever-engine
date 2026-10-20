@@ -22,6 +22,12 @@ pub(crate) struct RageBar {
     pub(crate) main_hand_crit_rage: f64,
     pub(crate) off_hand_crit_rage: f64,
     pub(crate) threat_per_rage: f64,
+    /// Go `RageGainThreatMultiplied` (patch 182): a gain counts `threat_per_rage` times the
+    /// player's threat multiplier at the gain, split between the targets at the end of the fight.
+    pub(crate) threat_multiplied: bool,
+    /// Go `rageBar.rageGainThreat`: this fight's threat of the gains of each source, before the
+    /// split, by resource metrics.
+    pub(crate) gain_threat: Vec<f64>,
     pub(crate) damage_taken_metrics: usize,
     pub(crate) refund_metrics: usize,
     /// Go `rageBar.damageTakenRageMultiplier`, reset each fight.
@@ -60,6 +66,7 @@ impl<A: Agent> Fight<A> {
         if let Some(bar) = self.rage.as_mut() {
             bar.current = bar.starting;
             bar.damage_taken_multiplier = 1.0;
+            bar.gain_threat.fill(0.0);
         }
     }
 
@@ -88,6 +95,17 @@ impl<A: Agent> Fight<A> {
         resource.events += 1;
         resource.gain += amount;
         resource.actual_gain += new - old;
+        let gain = new - old;
+        let threat_multiplier = self.player.threat_multiplier;
+        let bar = self.rage.as_mut().expect("the player has a rage bar");
+        if gain > 0.0 && bar.threat_multiplied {
+            if bar.gain_threat.len() <= metrics {
+                bar.gain_threat.resize(metrics + 1, 0.0);
+            }
+            // Go's arm64 build fuses the multiply by the threat multiplier into the sum.
+            let total = &mut bar.gain_threat[metrics];
+            *total = (gain * bar.threat_per_rage).mul_add(threat_multiplier, *total);
+        }
         if self.log.is_some() {
             let line = format!(
                 "Gained {amount:.3} rage from {} ({old:.3} --> {new:.3}) of {max:.0} total.",
@@ -193,6 +211,7 @@ impl<A: Agent> Fight<A> {
             return;
         };
         let (gain_spell, threat_per_rage) = (bar.gain_spell, bar.threat_per_rage);
+        let threat_multiplied = bar.threat_multiplied;
         let Some(gain_spell) = gain_spell else {
             return;
         };
@@ -219,12 +238,27 @@ impl<A: Agent> Fight<A> {
             }
             let events = self.resources[index].events - self.resources[index].previous_events;
             self.spells[gain_spell].metrics[0].casts += events;
-            // Go ApplyAOEThreatIgnoreMultipliers on every target, whose sum the arm64 build
-            // fuses.
+            // Go ApplyAOEThreatIgnoreMultipliers on every target. Patch 182 applies the threat
+            // of the gains, taken with the multiplier at each, split between the targets; before
+            // it, each rage was `threat_per_rage` on each target, a sum the arm64 build fuses.
+            let split = if threat_multiplied {
+                let total = self
+                    .rage_bar()
+                    .gain_threat
+                    .get(index)
+                    .copied()
+                    .unwrap_or(0.0);
+                Some(total / self.targets.len() as f64)
+            } else {
+                None
+            };
             for position in 0..self.targets.len() {
                 let slot = Side::target(position).index();
                 let threat = &mut self.spells[gain_spell].metrics[slot].total_threat;
-                *threat = actual.mul_add(threat_per_rage, *threat);
+                *threat = match split {
+                    Some(share) => *threat + share,
+                    None => actual.mul_add(threat_per_rage, *threat),
+                };
             }
         }
     }

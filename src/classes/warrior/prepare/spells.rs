@@ -21,6 +21,16 @@ use super::masks;
 use super::spell_data::spell_data;
 use super::Warrior;
 
+/// Go `heroicStrikeThreatPerLevel`: patch 184, upstream's in-game captures.
+const HEROIC_STRIKE_THREAT_PER_LEVEL: f64 = 2.54;
+/// Go `cleaveThreatPerLevel`.
+const CLEAVE_THREAT_PER_LEVEL: f64 = 1.53;
+/// Go `revengeThreatMultiplier`: patch 183.
+const REVENGE_THREAT_MULTIPLIER: f64 = 2.25;
+/// Go `sunderThreatPerAttackPower`: patch 185, a share of the spell's melee attack power that
+/// the cast adds to the client's flat threat.
+pub(super) const SUNDER_THREAT_PER_ATTACK_POWER: f64 = 0.05;
+
 impl Warrior {
     /// Go `registerRecklessness`.
     pub(super) fn register_recklessness(&self, sim: &mut Sim, unit: UnitId) {
@@ -465,7 +475,9 @@ impl Warrior {
                 },
                 damage_multiplier: 1.0,
                 threat_multiplier: 1.0,
-                flat_threat_bonus: 173.0,
+                // Not in the client table (no E_THREAT effect). Patch 184: 2.54 a spell level
+                // (152.4 at Rank 9).
+                flat_threat_bonus: HEROIC_STRIKE_THREAT_PER_LEVEL * f64::from(rank.spell_level),
                 ..SpellConfig::default()
             },
         );
@@ -495,7 +507,9 @@ impl Warrior {
                 },
                 damage_multiplier: 1.0,
                 threat_multiplier: 1.0,
-                flat_threat_bonus: 100.0,
+                // Not in the client table (no E_THREAT effect). Patch 184: 1.53 a spell level
+                // (91.8 at Rank 5), split between the targets the cleave lands on at run time.
+                flat_threat_bonus: CLEAVE_THREAT_PER_LEVEL * f64::from(rank.spell_level),
                 ..SpellConfig::default()
             },
         );
@@ -756,8 +770,9 @@ impl Warrior {
                 cast: cast_config(rank.gcd(), true, cd),
                 cost: rage_cost_with_refund(rank),
                 damage_multiplier: 1.0,
-                threat_multiplier: 1.0,
-                flat_threat_bonus: 120.0,
+                // Patch 183: 2.25 times its damage with no flat bonus (it was damage x1 plus 120).
+                threat_multiplier: REVENGE_THREAT_MULTIPLIER,
+                flat_threat_bonus: 0.0,
                 has_extra_cast_condition: true,
                 related_self_buff: Some(aura),
                 ..SpellConfig::default()

@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `15b7435f3ab63223e48c129969fd343b8d14e462`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `b5c0b8bb29ab19cd31454cc3e4e27c070f807f78`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -641,6 +641,35 @@ Bloodthrill, Affliction through Amplify Curse, Beast Mastery, Survival and Marks
 through pet hit, and the builds wearing a caster weapon. The Druid, Hunter, Mage and Rogue preparation
 goldens follow. Rust matches all 657 accepted fixtures with a Go golden, and preparation writes exactly
 what the exporter writes for every one. The recorded sweeps were not rerun.
+
+The pin moved from `15b7435f3` to `b5c0b8bb2` on 2026-10-20, the fork's patches 181 to 185 (branch
+`mythicsim/oct20-threat`), the threat `wowsims/forever` measured in game that the fork lacked. Only threat
+moves; no DPS changes. The community base, the client build and the Go database do not move.
+
+- Shaman (patch 181): a Rockbiter Weapon (Passive) casts Rockbiter Weapon Proc (20871) off every landed
+  white swing and melee ability of a weapon that carries Rockbiter. Its flat threat is 72 for each second of
+  the main hand's swing, a Go literal, and takes the shaman's threat multiplier, Spirit Weapons included.
+  Go registers the spell and a permanent listener inside `RegisterRockbiterImbue`, after its early return.
+  The exporter writes a `rockbiter_threat` effect with the hands whose weapons carry Rockbiter and the main
+  hand's swing speed, read from the weapons worn, so an item swap's second set carries its own; Rust casts
+  the spell from the listener and sets the flat threat at each cast.
+- Core (patch 182): each rage gained counts 5 threat times the unit's threat multiplier at the gain, kept by
+  source, and at the end of the fight each source's sum is split between the targets in combat. The exporter
+  writes `threat_multiplied` on the rage bar from Go's `RageGainThreatMultiplied`; the sum takes the multiply
+  and add as one fused step, as Go's arm64 build does.
+- Warrior (patch 183): Revenge's threat multiplier is 2.25 and its flat bonus none (it was 1 and 120).
+- Warrior (patch 184): Heroic Strike's flat threat is 2.54 and Cleave's 1.53 for each spell level of the rank
+  (152.4 and 91.8), and a Cleave that lands on several targets divides its flat threat between them, then
+  recomputes each hit's threat. The exporter writes `cleave_threat_split` from Go's switch.
+- Warrior (patch 185): each Sunder Armor cast sets its flat threat to the client's 206 plus 0.05 of the
+  spell's melee attack power, overwriting whatever a spell mod made of it, as Go does. The exporter writes
+  both terms on the `sunder_armor` effect, and 0 for the share when Go's switch is off.
+
+218 of the 664 Go goldens changed, all in threat and, for Rockbiter, the new spell's action: 167 Warrior
+builds (Revenge, Heroic Strike, Cleave, Sunder Armor and rage), 38 Druid builds (37 Bear and one Cat, through
+rage) and 13 Enhancement builds wearing Rockbiter, two of them through an item swap. The Druid, Shaman and
+Warrior preparation goldens follow. Rust matches all 664 accepted fixtures with a Go golden, and
+preparation writes exactly what the exporter writes for every one. The recorded sweeps were not rerun.
 
 ## Ledger
 

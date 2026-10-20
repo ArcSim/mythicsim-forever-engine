@@ -2245,6 +2245,7 @@ impl<A: Agent> Fight<A> {
                 main_hand_crit_rage,
                 off_hand_crit_rage,
                 threat_per_rage,
+                threat_multiplied,
                 ..
             } => Some(rage::RageBar {
                 max: max_rage.max(100.0),
@@ -2255,6 +2256,8 @@ impl<A: Agent> Fight<A> {
                 main_hand_crit_rage: *main_hand_crit_rage,
                 off_hand_crit_rage: *off_hand_crit_rage,
                 threat_per_rage: *threat_per_rage,
+                threat_multiplied: *threat_multiplied,
+                gain_threat: Vec::new(),
                 damage_taken_metrics: 0,
                 refund_metrics: 0,
                 damage_taken_multiplier: 1.0,

@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "15b7435f3ab63223e48c129969fd343b8d14e462",
+    "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
@@ -1455,6 +1455,20 @@
             "position": 1
           }
         ]
+      },
+      {
+        "label": "Rockbiter Weapon Threat",
+        "action_id": null,
+        "duration_ns": 9223372036854775807,
+        "max_stacks": 0,
+        "active": true,
+        "stacks": 0,
+        "callbacks": [
+          "on_reset",
+          "on_spell_hit_dealt"
+        ],
+        "icd": null,
+        "exclusive_effects": 0
       },
       {
         "label": "Rockbiter Weapon",
@@ -5250,6 +5264,57 @@
       },
       {
         "action_id": {
+          "spell_id": 20871
+        },
+        "rank": 0,
+        "school": 1,
+        "defense_type": "DefenseTypeNone",
+        "proc_mask": [
+          "ProcMaskEmpty"
+        ],
+        "flags": [
+          "SpellFlagNoOnCastComplete",
+          "SpellFlagPassiveSpell"
+        ],
+        "missile_speed": 0,
+        "cost": null,
+        "default_cast": {
+          "cost": 0,
+          "gcd_ns": 0,
+          "gcd_min_ns": 0,
+          "cast_time_ns": 0,
+          "non_empty": false
+        },
+        "cast_kind": "autos_or_procs",
+        "ignore_haste": false,
+        "has_extra_cast_condition": false,
+        "has_cast_requirement": false,
+        "min_range": 0,
+        "max_range": 0,
+        "max_charges": 0,
+        "cd": null,
+        "shared_cd": null,
+        "bonus_hit_percent": 0,
+        "bonus_crit_percent": 5,
+        "bonus_spell_damage": 0,
+        "bonus_expertise_percent": 0,
+        "cast_time_multiplier": 1,
+        "cd_multiplier": 1,
+        "damage_multiplier": 1,
+        "damage_multiplier_additive": 1,
+        "direct_damage_multiplier_additive": 0,
+        "crit_multiplier_pct": 1,
+        "crit_multiplier_additive": 0,
+        "bonus_base_damage": 0,
+        "bonus_coefficient": 0,
+        "threat_multiplier": 1,
+        "flat_threat_bonus": 0,
+        "pushback_resist": 0,
+        "dot": null,
+        "damage_effect": null
+      },
+      {
+        "action_id": {
           "other_id": "OtherActionMove"
         },
         "rank": 0,
@@ -5908,7 +5973,7 @@
       "contested": true,
       "dummy_aura": "Windfury Dummy Aura (self)",
       "duration_ns": 300000000000,
-      "extra_spell": 67,
+      "extra_spell": 68,
       "kind": "windfury_totem_self",
       "period_ns": 5000000000,
       "proc_aura": "Windfury Totem Proc (Self)",
@@ -5916,10 +5981,10 @@
       "proc_gain_log": "Gained {\"AttackPower\": 246.000,} from {SpellID: 10610}.",
       "spell_id": 10614,
       "spend_spells": [
-        64,
         65,
         66,
-        67
+        67,
+        68
       ],
       "totem_aura": "Windfury Totem (Self)",
       "tracking_aura": "Windfury Party Weapon Buff Tracking Aura",
@@ -5928,15 +5993,15 @@
       "trigger_spells": [
         3,
         4,
-        64,
-        66,
-        67
+        65,
+        67,
+        68
       ],
       "white_spells": [
-        64,
         65,
         66,
-        67
+        67,
+        68
       ]
     },
     {
@@ -5964,9 +6029,9 @@
         "Crush"
       ],
       "trigger_spells": [
-        64,
-        66,
-        67
+        65,
+        67,
+        68
       ]
     },
     {
@@ -6022,10 +6087,6 @@
           "chance": 0.6333333333333333
         },
         {
-          "spell": 64,
-          "chance": 0.6333333333333333
-        },
-        {
           "spell": 65,
           "chance": 0.6333333333333333
         },
@@ -6035,6 +6096,10 @@
         },
         {
           "spell": 67,
+          "chance": 0.6333333333333333
+        },
+        {
+          "spell": 68,
           "chance": 0.6333333333333333
         }
       ],
@@ -6048,6 +6113,15 @@
       "expire_log": "Lost {\"AttackPower\": 783.600,} from fading {SpellID: 16313}.",
       "gain_log": "Gained {\"AttackPower\": 783.600,} from {SpellID: 16313}.",
       "kind": "rockbiter_weapon"
+    },
+    {
+      "aura": "Rockbiter Weapon Threat",
+      "kind": "rockbiter_threat",
+      "main_hand": true,
+      "main_hand_swing_speed": 3.8,
+      "off_hand": false,
+      "spell_id": 20871,
+      "threat_per_swing_second": 72
     },
     {
       "aura": "Rage of the Farseer",
@@ -6166,15 +6240,15 @@
           "chance": 0.06333333333333332
         },
         {
-          "spell": 64,
-          "chance": 0.06333333333333332
-        },
-        {
-          "spell": 66,
+          "spell": 65,
           "chance": 0.06333333333333332
         },
         {
           "spell": 67,
+          "chance": 0.06333333333333332
+        },
+        {
+          "spell": 68,
           "chance": 0.06333333333333332
         }
       ],
@@ -6203,14 +6277,14 @@
       "trigger_spells": [
         3,
         4,
-        64,
         65,
         66,
-        67
+        67,
+        68
       ]
     },
     {
-      "extra_attack_spell": 66,
+      "extra_attack_spell": 67,
       "kind": "windfury_totem",
       "period_ns": 5000000000,
       "proc_aura": "Windfury Totem (External)",
@@ -6223,10 +6297,10 @@
       ],
       "spend_require_damage": true,
       "spend_spells": [
-        64,
         65,
         66,
-        67
+        67,
+        68
       ],
       "totem_aura": "Windfury Totem",
       "trigger_aura": "Windfury Totem Trigger",
@@ -6242,9 +6316,9 @@
       "trigger_spells": [
         3,
         4,
-        64,
-        66,
-        67
+        65,
+        67,
+        68
       ]
     },
     {

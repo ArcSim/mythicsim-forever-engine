@@ -7,10 +7,11 @@ use crate::prepare::character::constants::CHARACTER_LEVEL;
 use crate::prepare::dbcenums;
 use crate::prepare::env::Environment;
 use crate::prepare::export::action_id;
+use crate::prepare::rotation::rotation_spells;
 use crate::prepare::sim::{Sim, UnitId, NEVER_EXPIRES};
 use crate::prepare::spelldata::Spell as Row;
 
-use super::export::{heal_modifiers, rotation_spells, GREATER_BLESSING_OF_LIGHT_CATEGORY};
+use super::export::{heal_modifiers, GREATER_BLESSING_OF_LIGHT_CATEGORY};
 use super::spell_data::spell_data;
 use super::talent_spells::HOLY_SHOCK_RANKS;
 use super::util::{spell_action, tagged_action};

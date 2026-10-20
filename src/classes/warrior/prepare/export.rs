@@ -8,6 +8,7 @@ use crate::prepare::character::constants::CHARACTER_LEVEL;
 use crate::prepare::common_effects::{exclusive_category_effect, SPELL_BATCH_WINDOW};
 use crate::prepare::dbcenums;
 use crate::prepare::env::Environment;
+use crate::prepare::rotation::rotation_spells;
 use crate::prepare::sim::{AuraId, Sim, UnitId, NEVER_EXPIRES, SECOND};
 use crate::prepare::spell::{DefenseType, ProcMask};
 use crate::prepare::spelldata::Spell as Row;
@@ -27,6 +28,12 @@ fn stance_name(stance: &str) -> &'static str {
         "WarriorStanceBerserker" => "berserker",
         _ => "none",
     }
+}
+
+/// Whether the rotation names Shield Block, which the exporter's `warriorEffects` records as
+/// `warriorRotationShieldBlock`.
+pub(super) fn rotation_names_shield_block(sim: &Sim, unit: UnitId) -> bool {
+    rotation_spells(sim, unit).contains(&i64::from(spell_data().shield_block.highest().id))
 }
 
 /// The exporter's `damageRoll`: a client damage row's roll.
@@ -640,6 +647,17 @@ impl Warrior {
                 "aura": sim.aura(aura).label, "autocast": !self.dps_spec, "health_percent": 0.4,
                 "can_block": sim.unit(unit).pseudo_stats.can_block}),
             );
+        }
+        // shield_block.go: in Defensive Stance with a shield, an aura of block chance whose
+        // stacks the player's blocks spend. Only the rotation casts it.
+        if let Some(aura) = sim.get_aura(unit, "Shield Block") {
+            if rotation_names_shield_block(sim, unit) {
+                effects.push(
+                    json!({"kind": "shield_block", "spell_id": data.shield_block.highest().id,
+                    "aura": sim.aura(aura).label,
+                    "can_block": sim.unit(unit).pseudo_stats.can_block}),
+                );
+            }
         }
         // retaliation.go
         if let Some(aura) = sim.get_aura(unit, "Retaliation") {

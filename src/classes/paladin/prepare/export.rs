@@ -12,6 +12,7 @@ use crate::prepare::character::constants::CHARACTER_LEVEL;
 use crate::prepare::dbcenums;
 use crate::prepare::env::Environment;
 use crate::prepare::export::action_id;
+use crate::prepare::rotation::rotation_spells;
 use crate::prepare::sim::{Sim, SpellId, UnitId, MILLISECOND, SECOND};
 use crate::prepare::spell::{school, ProcMask, SpellFlag};
 use crate::prepare::spelldata::{must_find, Ladder, Spell as Row};
@@ -116,32 +117,6 @@ fn spell_positions(sim: &Sim, unit: UnitId, mut keep: impl FnMut(SpellId) -> boo
 /// Go `spellsMatching`.
 fn spells_matching(sim: &Sim, unit: UnitId, mask: i64) -> Vec<usize> {
     spell_positions(sim, unit, |spell| sim.spell(spell).matches(mask))
-}
-
-/// The spell ids the rotation of the request names anywhere, which paladinRecordRotation
-/// collects: every `spellId` in the rotation's protojson.
-pub(super) fn rotation_spells(sim: &Sim, unit: UnitId) -> Vec<i64> {
-    fn walk(node: &Value, out: &mut Vec<i64>) {
-        match node {
-            Value::Object(map) => {
-                for (key, child) in map {
-                    if key == "spellId" {
-                        if let Some(id) = child.as_f64() {
-                            out.push(id as i64);
-                        }
-                    }
-                    walk(child, out);
-                }
-            }
-            Value::Array(items) => items.iter().for_each(|child| walk(child, out)),
-            _ => {}
-        }
-    }
-    let mut out = Vec::new();
-    if let Some(rotation) = sim.character(unit).player.message("rotation") {
-        walk(&rotation.to_protojson(), &mut out);
-    }
-    out
 }
 
 /// Go `exclusiveCategoryEffect`: the members of a single aura exclusive category on a unit.

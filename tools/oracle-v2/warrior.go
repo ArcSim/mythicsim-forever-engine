@@ -95,6 +95,7 @@ var (
 	warriorRend                       = spelldata.Ranked(772, 6546, 6547, 6548, 11572, 11573, 11574)
 	warriorSlam                       = spelldata.Ranked(1240193, 1464, 8820, 11604, 11605)
 	warriorShieldWall                 = spelldata.Ranked(871)
+	warriorShieldBlock                = spelldata.Ranked(2565)
 	warriorLastStand                  = spelldata.Ranked(12975)
 	warriorLastStandTriggered         = spelldata.Ranked(12976)
 	warriorSpearingStrike             = spelldata.Ranked(1310222)
@@ -199,6 +200,7 @@ func rageBarEffect(character *core.Character, baseRageMultiplier float64) map[st
 func warriorEffects(agent core.Agent, character *core.Character) []map[string]any {
 	war := agent.(warrior.WarriorAgent).GetWarrior()
 	talents := war.Talents
+	warriorRotationShieldBlock = rotationSpellIDs(exportRequest)[warriorShieldBlock.Highest().ID]
 	effects := []map[string]any{rageBarEffect(character, 1)} // warrior.go NewWarrior: BaseRageMultiplier 1.
 
 	// stances.go: the stance the warrior starts in and each stance's cast and aura.
@@ -620,6 +622,12 @@ func warriorTankEffects(war *warrior.Warrior, character *core.Character, target 
 			"aura": aura.Label, "autocast": war.Spec != proto.Spec_SpecDpsWarrior, "health_percent": 0.4,
 			"can_block": war.PseudoStats.CanBlock})
 	}
+	// shield_block.go: in Defensive Stance with a shield, an aura of block chance whose stacks
+	// the player's blocks spend. Only the rotation casts it.
+	if aura := character.GetAura("Shield Block"); aura != nil && warriorRotationShieldBlock {
+		effects = append(effects, map[string]any{"kind": "shield_block", "spell_id": warriorShieldBlock.Highest().ID,
+			"aura": aura.Label, "can_block": war.PseudoStats.CanBlock})
+	}
 	// retaliation.go: charges that strike back at each landed melee hit taken that dealt damage.
 	if aura := character.GetAura("Retaliation"); aura != nil {
 		row, hit := warriorRetaliation.Highest(), warriorRetaliationTriggered.Highest()
@@ -742,12 +750,21 @@ func warriorUnrepresented(agent core.Agent, _ *core.Character) []string {
 	return unrepresented
 }
 
+// Whether the rotation of the request being exported names Shield Block, which warriorEffects
+// records so the stat aura hook adds its aura only when the rotation can cast it.
+var warriorRotationShieldBlock bool
+
 // Warrior auras whose gain and expiry change stats through AddStatsDynamic: recklessness.go's
 // crit.
 func warriorStatAuras(_ core.Agent, _ *core.Character) []string {
 	// talents_protection.go Last Stand: the maximum health it adds, a share of the maximum
 	// health in each combination when it activates.
-	return []string{"Recklessness", "Berserker Stance", "Battle Shout (Player)", "Last Stand"}
+	labels := []string{"Recklessness", "Berserker Stance", "Battle Shout (Player)", "Last Stand"}
+	// shield_block.go: the block chance the target's swings read.
+	if warriorRotationShieldBlock {
+		labels = append(labels, "Shield Block")
+	}
+	return labels
 }
 
 // spell_result.go calcHealingInternal's multipliers for a heal of the character on a unit, at

@@ -2659,6 +2659,14 @@ pub enum Effect {
         health_percent: f64,
         can_block: bool,
     },
+    /// Warrior shield_block.go: a cast in Defensive Stance with a shield whose aura adds block
+    /// chance, through `stat_auras`, at its maximum stacks; each block the player makes spends a
+    /// stack.
+    ShieldBlock {
+        spell_id: i32,
+        aura: String,
+        can_block: bool,
+    },
     /// The Dwarf racial Stoneform: a survival cooldown whose aura multiplies the player's
     /// damage taken of the named schools, the physical one, which the target's swings read.
     /// Go autocasts it only below a nonzero defensive health threshold; configured timings
@@ -4530,6 +4538,7 @@ impl Effect {
             Effect::ShatterCurse { .. } => "shatter_curse",
             Effect::Stoneform { .. } => "stoneform",
             Effect::ShieldWall { .. } => "shield_wall",
+            Effect::ShieldBlock { .. } => "shield_block",
             Effect::LastStand { .. } => "last_stand",
             Effect::ReadLeyLine { .. } => "read_ley_line",
             Effect::PresenceOfMind { .. } => "presence_of_mind",

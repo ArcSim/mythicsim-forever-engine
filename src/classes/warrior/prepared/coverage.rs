@@ -44,6 +44,7 @@ const EFFECTS: &[&str] = &[
     "rend",
     "retaliation",
     "revenge",
+    "shield_block",
     "shield_slam",
     "shield_wall",
     "last_stand",
@@ -95,6 +96,7 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "sweeping_strikes" => Some("sweeping_strikes"),
         "battle_stance" | "berserker_stance" | "defensive_stance" => Some("warrior_stances"),
         "shield_wall" => Some("shield_wall"),
+        "shield_block" => Some("shield_block"),
         "last_stand" => Some("last_stand"),
         _ => None,
     }
@@ -122,6 +124,7 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         Effect::Retaliation { aura, .. }
         | Effect::WarriorCharge { aura, .. }
         | Effect::ShieldWall { aura, .. }
+        | Effect::ShieldBlock { aura, .. }
         | Effect::LastStand { aura, .. }
         | Effect::SweepingStrikes { aura, .. } => {
             vec![("player", aura)]

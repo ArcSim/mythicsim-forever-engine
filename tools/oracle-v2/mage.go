@@ -152,14 +152,19 @@ func mageEffects(agent core.Agent, character *core.Character) []map[string]any {
 			"aura": "Clearcasting", "aura_duration_ns": nanos(clearcastingTrigger.Highest().Duration()),
 		})
 	}
-	// talents_arcane.go registerMissileBarrage: the client rows; a missile procs at a quarter of Arcane
-	// Blast's chance, Arcane Wrath and the bolts at half (client 70425).
+	// talents_arcane.go registerMissileBarrage: the client rows; Arcane Wrath, Frost Blast and the bolts
+	// proc at half of Arcane Blast's chance. MissileBarrageHotfixedProcs (patch 175, the 19 October in-game
+	// tooltip) takes the missiles out; off, they proc at a quarter (client 70425).
 	if talents.MissileBarrage > 0 {
 		buff := missileBarrageBuff.Highest()
 		arcaneBlastChance := missileBarrage.Effect(dbcenums.A_PROC_TRIGGER_SPELL, 0).ValueAt(talents.MissileBarrage) / 100
+		missileChance := arcaneBlastChance / 4
+		if mage.MissileBarrageHotfixedProcs {
+			missileChance = 0
+		}
 		effects = append(effects, map[string]any{
 			"kind": "missile_barrage", "trigger_aura": "Missile Barrage Trigger", "aura": "Missile Barrage",
-			"arcane_blast_chance": arcaneBlastChance, "missile_chance": arcaneBlastChance / 4,
+			"arcane_blast_chance": arcaneBlastChance, "missile_chance": missileChance,
 			"bolt_chance": arcaneBlastChance / 2, "rng_label": "Missile Barrage",
 			"cost_percent_add":     buff.Effect(dbcenums.A_ADD_PCT_MODIFIER, int32(dbcenums.SPELLMOD_COST)).Average(core.CharacterLevel) / 100,
 			"tick_length_delta_ns": nanos(time.Duration(buff.Effect(dbcenums.A_ADD_FLAT_MODIFIER, int32(dbcenums.SPELLMOD_ACTIVATION_TIME)).Average(core.CharacterLevel)) * time.Millisecond),

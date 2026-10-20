@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `c7c423bd7f9857daf6f081a104fef5215b0509a7`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `15b7435f3ab63223e48c129969fd343b8d14e462`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -611,6 +611,36 @@ only when MP5 or spirit regeneration moved, so an Enhancement shaman whose weapo
 while the buff is up had different casting mana ticks: 9 of the 19 Enhancement shadow sims on
 2026-10-19. 26 prepared inputs gained the stat, no Go golden moved, and the shadow sim is accepted
 as `enhancement-shaman-item-swap-stormstrike-regen`.
+
+The pin moved from `c7c423bd7` to `15b7435f3` on 2026-10-20, the fork's patches 175 to 180 (branches
+`mythicsim/oct20-missile-barrage` and `mythicsim/oct20-upstream-port`). Patch 175 follows a Missile
+Barrage tooltip; 176 to 180 come from the fork's first audit of `wowsims/forever` itself (MythicSim
+`docs/forever-upstream-audit-2026-10-20.md`), since ElliotWood/Forever, the community repository the
+ledger tracks, has returned 404 since about 19 October. The community base and client build 70425 did
+not move, so the ledger has no new commit.
+
+- Mage (patch 175): Missile Barrage procs from Frost Blast at the bolts' half of Arcane Blast's chance,
+  and Arcane Missiles' own missiles no longer proc it (the 19 October in-game tooltip, a server hotfix
+  client 70450 does not carry). The exporter writes `missile_chance` 0 while Go's
+  `MissileBarrageHotfixedProcs` holds, and a missile chance of 0 draws no roll, as Go's mask leaves the
+  missiles out.
+- Warrior (patch 176): Bloodthrill procs from main hand white swings other than Retaliation's, Heroic
+  Strike and Cleave only (upstream's combat logs); Rust narrows the trigger's main hand mask the same way.
+- Warlock (patch 177): Amplify Curse raises Bane of Agony's whole tick, the ramping base and the spell
+  power share; the factor the snapshot spends is kept per target and multiplies each tick's damage
+  after the calculation, as Go does.
+- Hunter (patch 178): the pet inherits its master's melee plus ranged hit, two linear terms
+  (`PhysicalHitPercent` and `RangedHitPercent` onto the pet's `PhysicalHitPercent`).
+- Druid (patch 179): Howling Idol takes 1291059's 500 ms off Shifting Power, read from the row.
+- Data (patch 180): 158 caster weapons take upstream's rows, reduced melee damage and built-in spell
+  power and healing, which `tools/rust_data.py import` brings in with the Go database (digest in
+  `release/manifest.json`).
+
+145 of the 657 Go goldens changed: Arcane, Fire and Frost builds through Missile Barrage, Arms through
+Bloodthrill, Affliction through Amplify Curse, Beast Mastery, Survival and Marksmanship pet builds
+through pet hit, and the builds wearing a caster weapon. The Druid, Hunter, Mage and Rogue preparation
+goldens follow. Rust matches all 657 accepted fixtures with a Go golden, and preparation writes exactly
+what the exporter writes for every one. The recorded sweeps were not rerun.
 
 ## Ledger
 

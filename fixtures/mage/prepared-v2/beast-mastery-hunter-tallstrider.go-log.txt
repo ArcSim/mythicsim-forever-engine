@@ -18,8 +18,8 @@
 [0.00] [hunter (#1)] Aura gained: {SpellID: 25918, Tag: -1}
 [0.00] [hunter (#1) - Tallstrider] Aura gained: {SpellID: 10494, Tag: -1}
 [0.00] [hunter (#1) - Tallstrider] Aura gained: {SpellID: 20905, Tag: -1}
-[0.00] [hunter (#1) - Tallstrider] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2929.920,"MP5": 25.000,"PhysicalCritPercent": 32.032,"SpellCritPercent": 10.000,}
-[0.00] [hunter (#1) - Tallstrider] Pet inherited stats: {"PhysicalCritPercent": 22.032,}
+[0.00] [hunter (#1) - Tallstrider] Pet stats: {"Strength": 136.000,"Agility": 100.000,"Stamina": 274.000,"Intellect": 50.000,"Spirit": 80.000,"AttackPower": 252.000,"RangedAttackPower": 75.000,"Armor": 200.000,"Health": 2929.920,"MP5": 25.000,"PhysicalHitPercent": 4.000,"PhysicalCritPercent": 32.032,"SpellCritPercent": 10.000,}
+[0.00] [hunter (#1) - Tallstrider] Pet inherited stats: {"PhysicalHitPercent": 4.000,"PhysicalCritPercent": 22.032,}
 [0.00] [hunter (#1) - Tallstrider] Pet summoned
 [-10.00] [hunter (#1)] Casting {SpellID: 25296} (Cost = 120.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [-10.00] [hunter (#1)] Completed cast {SpellID: 25296}
@@ -83,7 +83,7 @@
 [0.90] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [0.90] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
 [0.90] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.3, AfterAttackerMods:119.4, AfterResistances:101.4, AfterTargetMods:101.4, AfterOutcome:0.0, AfterPostOutcome:0.0
-[0.90] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[0.90] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
 [1.00] [hunter (#1) - Tallstrider] Aura faded: {OtherID: 20}
 [1.00] [hunter (#1) - Tallstrider] {OtherID: 20} stacks: 4 --> 0
 [1.00] [hunter (#1) - Tallstrider] Pausing rotation for 1.5s due to resources / CDs.
@@ -423,7 +423,7 @@
 [14.10] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [14.10] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
 [14.10] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:44.6, AfterAttackerMods:98.1, AfterResistances:83.3, AfterTargetMods:83.3, AfterOutcome:0.0, AfterPostOutcome:0.0
-[14.10] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[14.10] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
 [14.20] [hunter (#1)] No available actions!
 [14.20] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [14.20] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
@@ -976,8 +976,8 @@
 [36.92] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [36.98] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [36.98] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[36.98] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.0, AfterAttackerMods:79.2, AfterResistances:67.3, AfterTargetMods:67.3, AfterOutcome:0.0, AfterPostOutcome:0.0
-[36.98] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
+[36.98] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.0, AfterAttackerMods:79.2, AfterResistances:67.3, AfterTargetMods:67.3, AfterOutcome:42.0, AfterPostOutcome:42.0
+[36.98] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Glance for 41.965 damage (SpellSchool: 1). (Threat: 41.965)
 [37.02] [hunter (#1)] No available actions!
 [37.02] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [37.08] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
@@ -996,20 +996,20 @@
 [37.62] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [37.64] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [37.64] [hunter (#1)] Completed cast {OtherID: 4}
-[37.64] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:536.9, AfterAttackerMods:547.7, AfterResistances:465.1, AfterTargetMods:465.1, AfterOutcome:465.1, AfterPostOutcome:465.1
+[37.64] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:535.3, AfterAttackerMods:546.0, AfterResistances:463.7, AfterTargetMods:463.7, AfterOutcome:463.7, AfterPostOutcome:463.7
 [37.72] [hunter (#1)] No available actions!
 [37.72] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [37.82] [hunter (#1)] No available actions!
 [37.82] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [37.90] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [37.90] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[37.90] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:47.8, AfterAttackerMods:70.1, AfterResistances:59.5, AfterTargetMods:59.5, AfterOutcome:37.9, AfterPostOutcome:37.9
-[37.90] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Glance for 37.917 damage (SpellSchool: 1). (Threat: 37.917)
+[37.90] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.2, AfterAttackerMods:66.3, AfterResistances:56.3, AfterTargetMods:56.3, AfterOutcome:39.4, AfterPostOutcome:39.4
+[37.90] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Glance for 39.386 damage (SpellSchool: 1). (Threat: 39.386)
 [37.92] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [37.92] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [37.92] [hunter (#1)] No available actions!
 [37.92] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
-[37.94] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 465.118 damage (SpellSchool: 1). (Threat: 465.118)
+[37.94] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 463.698 damage (SpellSchool: 1). (Threat: 463.698)
 [38.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2840.310 --> 2893.110) of 3465 total.
 [38.00] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
 [38.02] [hunter (#1)] No available actions!
@@ -1035,8 +1035,8 @@
 [38.82] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [38.82] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [38.82] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[38.82] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:45.0, AfterAttackerMods:65.9, AfterResistances:56.0, AfterTargetMods:56.0, AfterOutcome:41.6, AfterPostOutcome:41.6
-[38.82] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Glance for 41.598 damage (SpellSchool: 1). (Threat: 41.598)
+[38.82] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:47.3, AfterAttackerMods:69.4, AfterResistances:58.9, AfterTargetMods:58.9, AfterOutcome:58.9, AfterPostOutcome:58.9
+[38.82] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Hit for 58.948 damage (SpellSchool: 1). (Threat: 58.948)
 [38.92] [hunter (#1)] No available actions!
 [38.92] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [38.92] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
@@ -1181,7 +1181,7 @@
 [44.73] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [44.73] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
 [44.73] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:50.9, AfterAttackerMods:74.7, AfterResistances:63.4, AfterTargetMods:63.4, AfterOutcome:0.0, AfterPostOutcome:0.0
-[44.73] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[44.73] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
 [44.83] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
 [44.96] [hunter (#1)] [Target 1] {SpellID: 25295} Hit for 0.000 damage (SpellSchool: 8). (Threat: 0.000)
 [44.96] [Target 1] Aura faded: {SpellID: 25295}
@@ -1566,9 +1566,8 @@
 [60.90] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [61.07] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [61.07] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[61.07] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.4, AfterAttackerMods:71.0, AfterResistances:60.3, AfterTargetMods:60.3, AfterOutcome:120.6, AfterPostOutcome:120.6
-[61.07] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Crit for 120.642 damage (SpellSchool: 1). (Threat: 120.642)
-[61.08] [hunter (#1) - Tallstrider] Aura refreshed: {SpellID: 19615}
+[61.07] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.4, AfterAttackerMods:71.0, AfterResistances:60.3, AfterTargetMods:60.3, AfterOutcome:60.3, AfterPostOutcome:60.3
+[61.07] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Hit for 60.321 damage (SpellSchool: 1). (Threat: 60.321)
 [61.12] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [61.12] [hunter (#1)] Completed cast {OtherID: 4}
 [61.12] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:563.2, AfterAttackerMods:574.5, AfterResistances:487.9, AfterTargetMods:487.9, AfterOutcome:487.9, AfterPostOutcome:487.9
@@ -1693,9 +1692,8 @@
 [64.64] [hunter (#1)] [Target 1] {SpellID: 2643} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:503.3, AfterAttackerMods:513.4, AfterResistances:436.0, AfterTargetMods:436.0, AfterOutcome:436.0, AfterPostOutcome:436.0
 [64.76] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [64.76] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[64.76] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:47.9, AfterAttackerMods:70.2, AfterResistances:59.7, AfterTargetMods:59.7, AfterOutcome:119.3, AfterPostOutcome:119.3
-[64.76] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Crit for 119.302 damage (SpellSchool: 1). (Threat: 119.302)
-[64.77] [hunter (#1) - Tallstrider] Aura refreshed: {SpellID: 19615}
+[64.76] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:47.9, AfterAttackerMods:70.2, AfterResistances:59.7, AfterTargetMods:59.7, AfterOutcome:59.7, AfterPostOutcome:59.7
+[64.76] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Hit for 59.651 damage (SpellSchool: 1). (Threat: 59.651)
 [64.86] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
 [65.04] [hunter (#1)] [Target 1] {SpellID: 2643} Hit for 436.039 damage (SpellSchool: 1). (Threat: 436.039)
 [65.05] [hunter (#1)] Gained 59.000 mana from {SpellID: 20355} (2043.020 --> 2102.020) of 3465 total.
@@ -1865,7 +1863,7 @@
 [71.82] [hunter (#1) - Tallstrider] Completed cast {SpellID: 17261}
 [71.82] [hunter (#1) - Tallstrider] Spent 35.000 focus from {SpellID: 17261} (100.000 --> 65.000) of 100 total.
 [71.82] [hunter (#1) - Tallstrider] [Target 1] {SpellID: 17261} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:85.8, AfterAttackerMods:125.8, AfterResistances:106.8, AfterTargetMods:106.8, AfterOutcome:0.0, AfterPostOutcome:0.0
-[71.82] [hunter (#1) - Tallstrider] [Target 1] {SpellID: 17261} Miss (SpellSchool: 1). (Threat: 0.000)
+[71.82] [hunter (#1) - Tallstrider] [Target 1] {SpellID: 17261} Dodge (SpellSchool: 1). (Threat: 0.000)
 [71.84] [hunter (#1) - Tallstrider] Gained 3.000 focus from {OtherID: 6} (65.000 --> 68.000) of 100 total.
 [72.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2047.030 --> 2099.830) of 3465 total.
 [72.09] [hunter (#1) - Tallstrider] Gained 3.000 focus from {OtherID: 6} (68.000 --> 71.000) of 100 total.
@@ -1963,7 +1961,7 @@
 [75.84] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [75.84] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
 [75.84] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:43.9, AfterAttackerMods:64.4, AfterResistances:54.7, AfterTargetMods:54.7, AfterOutcome:0.0, AfterPostOutcome:0.0
-[75.84] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[75.84] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
 [75.94] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
 [76.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (1870.230 --> 1923.030) of 3465 total.
 [76.04] [hunter (#1)] No available actions!
@@ -2182,7 +2180,7 @@
 [84.14] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [84.14] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
 [84.14] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:52.9, AfterAttackerMods:77.6, AfterResistances:65.9, AfterTargetMods:65.9, AfterOutcome:0.0, AfterPostOutcome:0.0
-[84.14] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[84.14] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
 [84.24] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
 [84.34] [hunter (#1) - Tallstrider] Gained 3.000 focus from {OtherID: 6} (92.000 --> 95.000) of 100 total.
 [84.59] [hunter (#1) - Tallstrider] Gained 3.000 focus from {OtherID: 6} (95.000 --> 98.000) of 100 total.
@@ -2522,15 +2520,16 @@
 [97.64] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 1} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
 [97.88] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [97.88] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[97.88] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:53.8, AfterAttackerMods:78.8, AfterResistances:66.9, AfterTargetMods:66.9, AfterOutcome:37.7, AfterPostOutcome:37.7
-[97.88] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Glance for 37.748 damage (SpellSchool: 1). (Threat: 37.748)
+[97.88] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:53.8, AfterAttackerMods:78.8, AfterResistances:66.9, AfterTargetMods:66.9, AfterOutcome:133.9, AfterPostOutcome:133.9
+[97.88] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Crit for 133.883 damage (SpellSchool: 1). (Threat: 133.883)
+[97.89] [hunter (#1) - Tallstrider] Aura refreshed: {SpellID: 19615}
 [97.98] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
 [98.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2992.970 --> 3045.770) of 3465 total.
 [98.48] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
 [98.80] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [98.80] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[98.80] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:47.4, AfterAttackerMods:69.5, AfterResistances:59.0, AfterTargetMods:59.0, AfterOutcome:59.0, AfterPostOutcome:59.0
-[98.80] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Hit for 59.037 damage (SpellSchool: 1). (Threat: 59.037)
+[98.80] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.1, AfterAttackerMods:72.0, AfterResistances:61.1, AfterTargetMods:61.1, AfterOutcome:44.8, AfterPostOutcome:44.8
+[98.80] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Glance for 44.831 damage (SpellSchool: 1). (Threat: 44.831)
 [98.90] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
 [99.14] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:37.8, AfterAttackerMods:44.3, AfterResistances:44.3, AfterTargetMods:44.3, AfterOutcome:44.3, AfterPostOutcome:44.3
 [99.14] [hunter (#1)] [Target 1] {SpellID: 1293527, Tag: 2} tick Hit for 44.339 damage (SpellSchool: 1). (Threat: 44.339)
@@ -2801,7 +2800,7 @@
 [109.88] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [109.88] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
 [109.88] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:49.2, AfterAttackerMods:72.1, AfterResistances:61.2, AfterTargetMods:61.2, AfterOutcome:0.0, AfterPostOutcome:0.0
-[109.88] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[109.88] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
 [109.94] [hunter (#1)] No available actions!
 [109.94] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [109.98] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
@@ -3074,9 +3073,8 @@
 [120.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (2413.990 --> 2466.790) of 3465 total.
 [120.03] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [120.03] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[120.03] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.6, AfterAttackerMods:71.3, AfterResistances:60.6, AfterTargetMods:60.6, AfterOutcome:121.1, AfterPostOutcome:121.1
-[120.03] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Crit for 121.144 damage (SpellSchool: 1). (Threat: 121.144)
-[120.04] [hunter (#1) - Tallstrider] Aura refreshed: {SpellID: 19615}
+[120.03] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:48.6, AfterAttackerMods:71.3, AfterResistances:60.6, AfterTargetMods:60.6, AfterOutcome:60.6, AfterPostOutcome:60.6
+[120.03] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Hit for 60.572 damage (SpellSchool: 1). (Threat: 60.572)
 [120.08] [hunter (#1)] [Target 1] {SpellID: 25295} Hit for 0.000 damage (SpellSchool: 8). (Threat: 0.000)
 [120.08] [Target 1] Aura faded: {SpellID: 25295}
 [120.08] [Target 1] Aura gained: {SpellID: 25295}
@@ -3147,8 +3145,9 @@
 [123.59] [hunter (#1) - Tallstrider] Gained 3.000 focus from {OtherID: 6} (71.000 --> 74.000) of 100 total.
 [123.72] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [123.72] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[123.72] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.5, AfterAttackerMods:113.4, AfterResistances:96.3, AfterTargetMods:96.3, AfterOutcome:65.6, AfterPostOutcome:65.6
-[123.72] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Glance for 65.569 damage (SpellSchool: 1). (Threat: 65.569)
+[123.72] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.5, AfterAttackerMods:113.4, AfterResistances:96.3, AfterTargetMods:96.3, AfterOutcome:192.6, AfterPostOutcome:192.6
+[123.72] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Crit for 192.576 damage (SpellSchool: 1). (Threat: 192.576)
+[123.73] [hunter (#1) - Tallstrider] Aura refreshed: {SpellID: 19615}
 [123.82] [hunter (#1) - Tallstrider] Pausing rotation for 676.923077ms due to resources / CDs.
 [123.84] [hunter (#1) - Tallstrider] Gained 3.000 focus from {OtherID: 6} (74.000 --> 77.000) of 100 total.
 [124.00] [hunter (#1)] Gained 52.800 mana from {OtherID: 2, Tag: 1} (1917.590 --> 1970.390) of 3465 total.
@@ -3165,21 +3164,22 @@
 [124.50] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
 [124.53] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [124.53] [hunter (#1)] Completed cast {OtherID: 4}
-[124.53] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:565.6, AfterAttackerMods:576.9, AfterResistances:489.9, AfterTargetMods:489.9, AfterOutcome:489.9, AfterPostOutcome:489.9
+[124.53] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:569.7, AfterAttackerMods:581.0, AfterResistances:493.5, AfterTargetMods:493.5, AfterOutcome:1105.4, AfterPostOutcome:1105.4
 [124.58] [hunter (#1)] No available actions!
 [124.58] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [124.59] [hunter (#1) - Tallstrider] Gained 3.000 focus from {OtherID: 6} (83.000 --> 86.000) of 100 total.
 [124.64] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [124.64] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[124.64] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:54.1, AfterAttackerMods:118.9, AfterResistances:101.0, AfterTargetMods:101.0, AfterOutcome:55.7, AfterPostOutcome:55.7
-[124.64] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Glance for 55.702 damage (SpellSchool: 1). (Threat: 55.702)
+[124.64] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:52.6, AfterAttackerMods:115.8, AfterResistances:98.3, AfterTargetMods:98.3, AfterOutcome:98.3, AfterPostOutcome:98.3
+[124.64] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Hit for 98.319 damage (SpellSchool: 1). (Threat: 98.319)
 [124.68] [hunter (#1)] No available actions!
 [124.68] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [124.74] [hunter (#1) - Tallstrider] Pausing rotation for 500ms due to resources / CDs.
 [124.78] [hunter (#1)] No available actions!
 [124.78] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [124.79] [hunter (#1)] Aura faded: {SpellID: 6150}
-[124.83] [hunter (#1)] [Target 1] {OtherID: 4} Hit for 489.932 damage (SpellSchool: 1). (Threat: 489.932)
+[124.83] [hunter (#1)] [Target 1] {OtherID: 4} Crit for 1105.383 damage (SpellSchool: 1). (Threat: 1105.383)
+[124.83] [hunter (#1)] Aura gained: {SpellID: 6150}
 [124.84] [hunter (#1) - Tallstrider] Gained 3.000 focus from {OtherID: 6} (86.000 --> 89.000) of 100 total.
 [124.88] [hunter (#1)] No available actions!
 [124.88] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
@@ -3202,8 +3202,8 @@
 [125.48] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [125.57] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [125.57] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[125.57] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.4, AfterAttackerMods:113.1, AfterResistances:96.1, AfterTargetMods:96.1, AfterOutcome:0.0, AfterPostOutcome:0.0
-[125.57] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Miss (SpellSchool: 1). (Threat: 0.000)
+[125.57] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:51.7, AfterAttackerMods:113.6, AfterResistances:96.5, AfterTargetMods:96.5, AfterOutcome:66.7, AfterPostOutcome:66.7
+[125.57] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Glance for 66.670 damage (SpellSchool: 1). (Threat: 66.670)
 [125.58] [hunter (#1)] No available actions!
 [125.58] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [125.59] [hunter (#1) - Tallstrider] Gained 3.000 focus from {OtherID: 6} (95.000 --> 98.000) of 100 total.
@@ -3233,8 +3233,8 @@
 [126.48] [hunter (#1)] Pausing rotation for 100ms due to resources / CDs.
 [126.49] [hunter (#1) - Tallstrider] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [126.49] [hunter (#1) - Tallstrider] Completed cast {OtherID: 3, Tag: 1}
-[126.49] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:47.4, AfterAttackerMods:104.3, AfterResistances:88.5, AfterTargetMods:88.5, AfterOutcome:0.0, AfterPostOutcome:0.0
-[126.49] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Dodge (SpellSchool: 1). (Threat: 0.000)
+[126.49] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 252.0, RAP: 75.0, SP: 0.0, BaseDamage:46.0, AfterAttackerMods:101.2, AfterResistances:86.0, AfterTargetMods:86.0, AfterOutcome:49.3, AfterPostOutcome:49.3
+[126.49] [hunter (#1) - Tallstrider] [Target 1] {OtherID: 3, Tag: 1} Glance for 49.273 damage (SpellSchool: 1). (Threat: 49.273)
 [126.54] [hunter (#1)] Casting {OtherID: 4} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [126.54] [hunter (#1)] Completed cast {OtherID: 4}
 [126.54] [hunter (#1)] [Target 1] {OtherID: 4} [DEBUG] MAP: 1582.0, RAP: 1736.0, SP: 185.0, BaseDamage:573.5, AfterAttackerMods:585.0, AfterResistances:496.8, AfterTargetMods:496.8, AfterOutcome:496.8, AfterPostOutcome:496.8
@@ -3278,6 +3278,7 @@
 [127.25] [hunter (#1)] Aura faded: {SpellID: 25898, Tag: -1}
 [127.25] [hunter (#1)] Aura faded: {SpellID: 25916, Tag: -1}
 [127.25] [hunter (#1)] Aura faded: {SpellID: 25918, Tag: -1}
+[127.25] [hunter (#1)] Aura faded: {SpellID: 6150}
 [127.25] [hunter (#1)] Aura faded: {SpellID: 25296}
 [127.25] [Target 1] Aura faded: {SpellID: 14325, Tag: -1}
 [127.25] [Target 1] Aura faded: {SpellID: 20355, Tag: -1}

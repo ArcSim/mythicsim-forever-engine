@@ -194,6 +194,9 @@ func rageBarEffect(character *core.Character, baseRageMultiplier float64) map[st
 		"main_hand_rage": mainHand, "off_hand_rage": offHand,
 		"main_hand_crit_rage": mainHandCrit, "off_hand_crit_rage": offHandCrit,
 		"threat_per_rage": float64(core.ThreatPerRageGained),
+		// Patch 182: the threat of each gain takes the unit's threat multiplier at the gain and is split between
+		// the targets in combat.
+		"threat_multiplied": core.RageGainThreatMultiplied,
 	}
 }
 

@@ -3458,6 +3458,9 @@ pub enum Effect {
         main_hand_crit_rage: f64,
         off_hand_crit_rage: f64,
         threat_per_rage: f64,
+        /// Patch 182: the threat of a gain is `threat_per_rage` times the unit's threat multiplier at
+        /// the gain, split between the targets in combat. Off, `threat_per_rage` on each target.
+        threat_multiplied: bool,
     },
     /// Go `AttachMultiplicativePseudoStatBuff` on the player's damage taken multiplier, for
     /// auras that are not up from the reset: the gain multiplies, the expiry divides.

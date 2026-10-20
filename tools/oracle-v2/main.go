@@ -234,6 +234,33 @@ var (
 	classNotes    *[]string
 )
 
+// The spell ids the rotation of a request names anywhere: every spellId in its protojson.
+func rotationSpellIDs(request *proto.RaidSimRequest) map[int32]bool {
+	spells := map[int32]bool{}
+	data, err := protojson.Marshal(request.Raid.Parties[0].Players[0].GetRotation())
+	fail(err)
+	var tree any
+	fail(json.Unmarshal(data, &tree))
+	var walk func(node any)
+	walk = func(node any) {
+		switch value := node.(type) {
+		case map[string]any:
+			for key, child := range value {
+				if id, ok := child.(float64); ok && key == "spellId" {
+					spells[int32(id)] = true
+				}
+				walk(child)
+			}
+		case []any:
+			for _, child := range value {
+				walk(child)
+			}
+		}
+	}
+	walk(tree)
+	return spells
+}
+
 // The character's maximum mana when the environment finalized, which buffs/drivers.go
 // innervateManaThreshold reads.
 var maxManaAtFinalize float64

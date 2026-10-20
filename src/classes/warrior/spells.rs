@@ -17,6 +17,7 @@ pub(crate) mod overpower;
 pub(crate) mod rend;
 pub(crate) mod retaliation;
 pub(crate) mod revenge;
+pub(crate) mod shield_block;
 pub(crate) mod shield_slam;
 pub(crate) mod shield_wall;
 pub(crate) mod slam;

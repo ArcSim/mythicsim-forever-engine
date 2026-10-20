@@ -437,9 +437,10 @@ impl PrepAgent for Warrior {
         Vec::new()
     }
 
-    /// The Warrior auras whose gain and expiry change stats through `AddStatsDynamic`.
-    fn stat_auras(&self, _sim: &Sim, _unit: UnitId) -> Vec<String> {
-        [
+    /// The Warrior auras whose gain and expiry change stats through `AddStatsDynamic`, and
+    /// Shield Block's block chance when the rotation names it.
+    fn stat_auras(&self, sim: &Sim, unit: UnitId) -> Vec<String> {
+        let mut labels: Vec<String> = [
             "Recklessness",
             "Berserker Stance",
             "Battle Shout (Player)",
@@ -447,7 +448,11 @@ impl PrepAgent for Warrior {
         ]
         .iter()
         .map(|label| label.to_string())
-        .collect()
+        .collect();
+        if export::rotation_names_shield_block(sim, unit) {
+            labels.push("Shield Block".to_string());
+        }
+        labels
     }
 
     fn eureka_spells(&self) -> Option<crate::prepare::racials::EurekaSpells> {

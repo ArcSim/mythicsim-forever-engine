@@ -26,6 +26,7 @@ use super::{
         rend::{self, Rend},
         retaliation::{self, Retaliation},
         revenge::{self, Revenge},
+        shield_block::ShieldBlock,
         shield_slam,
         shield_wall::ShieldWall,
         slam,
@@ -74,6 +75,8 @@ pub(crate) enum WarriorSpell {
     ShieldWall,
     /// talents_protection.go: Last Stand's survival cooldown.
     LastStand,
+    /// shield_block.go: the cast and its aura.
+    ShieldBlock,
     DeepWounds,
     /// Heroic Strike or Cleave, by strike index.
     Strike(usize),
@@ -134,6 +137,8 @@ pub(crate) enum WarriorAura {
     Enrage,
     BloodCrazeDamageTaken,
     LastStand,
+    /// shield_block.go: block chance whose stacks blocks spend.
+    ShieldBlock,
     ImprovedHamstringTrigger,
     /// Battlegear of Might's 5 piece bonus.
     MightRage,
@@ -207,6 +212,7 @@ pub(crate) struct WarriorAgent {
     sweeping_copy: f64,
     might_rage: Option<MightRage>,
     shield_wall: Option<ShieldWall>,
+    shield_block: Option<ShieldBlock>,
     pub(crate) last_stand: Option<LastStand>,
     avoid_rage: Vec<AvoidRage>,
     enrage: Option<Enrage>,
@@ -306,6 +312,7 @@ impl WarriorAgent {
             }
             "shield_wall" if has("shield_wall") => Some(WarriorSpell::ShieldWall),
             "last_stand" if has("last_stand") => Some(WarriorSpell::LastStand),
+            "shield_block" if has("shield_block") => Some(WarriorSpell::ShieldBlock),
             "shield_wall" if has("warrior_stances") => {
                 Some(WarriorSpell::StanceLocked(StanceLock::Defensive))
             }
@@ -394,6 +401,9 @@ impl WarriorAgent {
                 Effect::WarriorCharge { aura, .. } => auras.push((aura.clone(), WarriorAura::Dash)),
                 Effect::LastStand { aura, .. } => {
                     auras.push((aura.clone(), WarriorAura::LastStand))
+                }
+                Effect::ShieldBlock { aura, .. } => {
+                    auras.push((aura.clone(), WarriorAura::ShieldBlock))
                 }
                 Effect::HeroicStrikeQueue { strikes, .. } => {
                     for (index, strike) in strikes.iter().enumerate() {
@@ -633,6 +643,12 @@ impl WarriorAgent {
                         health_percent: *health_percent,
                         can_block: *can_block,
                     })
+                }
+                Effect::ShieldBlock {
+                    aura, can_block, ..
+                } => {
+                    let bound = ShieldBlock::bind(&fight, &prepared.effects, aura, *can_block)?;
+                    fight.agent.shield_block = Some(bound);
                 }
                 Effect::Retaliation {
                     aura,
@@ -1084,6 +1100,10 @@ impl WarriorAgent {
                 let params = fight.agent.avoid_rage[index];
                 rage_on_avoid::on_hit_taken(fight, params, result);
             }
+            WarriorAura::ShieldBlock => {
+                let params = fight.agent.shield_block.expect("Shield Block is bound");
+                params.on_hit_taken(fight, result);
+            }
             WarriorAura::EnrageTrigger => {
                 let params = fight.agent.enrage.expect("Enrage is bound");
                 enrage::on_hit_taken(fight, params, result);
@@ -1275,6 +1295,10 @@ impl Agent for WarriorAgent {
                 let aura = fight.agent.last_stand.expect("Last Stand is bound").aura;
                 fight.activate_aura(aura);
             }
+            WarriorSpell::ShieldBlock => {
+                let params = fight.agent.shield_block.expect("Shield Block is bound");
+                params.apply(fight);
+            }
             WarriorSpell::StanceLocked(_) | WarriorSpell::BloodCraze => {
                 panic!("the gate keeps {behavior:?} from being cast")
             }
@@ -1310,6 +1334,14 @@ impl Agent for WarriorAgent {
                         .agent
                         .shield_wall
                         .is_some_and(|shield_wall| shield_wall.can_block)
+            }
+            // shield_block.go: a shield and Defensive Stance.
+            WarriorSpell::ShieldBlock => {
+                fight
+                    .agent
+                    .shield_block
+                    .is_some_and(|shield_block| shield_block.can_block)
+                    && stance == Stance::Defensive
             }
             // stances.go: a stance cast needs another stance.
             WarriorSpell::Stance(index) => fight.agent.stances[index].stance != stance,
@@ -1370,6 +1402,7 @@ impl Agent for WarriorAgent {
             | WarriorSpell::Hamstring
             | WarriorSpell::StanceLocked(_)
             | WarriorSpell::ShieldWall
+            | WarriorSpell::ShieldBlock
             | WarriorSpell::Stance(_)
             | WarriorSpell::Charge
             | WarriorSpell::Rend
@@ -1578,6 +1611,11 @@ impl Agent for WarriorAgent {
                 let last_stand = fight.agent.last_stand.expect("Last Stand is bound");
                 fight.agent.last_stand = Some(last_stand.on_gain(fight));
             }
+            WarriorAura::ShieldBlock => fight
+                .agent
+                .shield_block
+                .expect("Shield Block is bound")
+                .toggle(fight, true),
             WarriorAura::Flurry => flurry::on_gain(fight, fight.agent.flurry.expect("bound")),
             WarriorAura::DeathWish => {
                 death_wish::on_gain(fight, fight.agent.death_wish.expect("bound"))
@@ -1608,6 +1646,11 @@ impl Agent for WarriorAgent {
                 .last_stand
                 .expect("Last Stand is bound")
                 .on_expire(fight),
+            WarriorAura::ShieldBlock => fight
+                .agent
+                .shield_block
+                .expect("Shield Block is bound")
+                .toggle(fight, false),
             WarriorAura::Flurry => flurry::on_expire(fight, fight.agent.flurry.expect("bound")),
             WarriorAura::DeathWish => {
                 death_wish::on_expire(fight, fight.agent.death_wish.expect("bound"))

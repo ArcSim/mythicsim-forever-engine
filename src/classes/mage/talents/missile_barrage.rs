@@ -1,7 +1,8 @@
 //! Missile Barrage (44404), from Go sim/mage/talents_arcane.go `registerMissileBarrage`.
-//! Arcane Blast landing (20/40% at 1/2 points), an Arcane Missiles missile hitting (a quarter
-//! of it), or Arcane Wrath, Frostbolt, Fireball or Frostfire Bolt landing (half of it) can
-//! make the next Arcane Missiles free and fire its missiles twice as often. The client row
+//! Arcane Blast landing (20/40% at 1/2 points), or Arcane Wrath, Frostbolt, Frost Blast,
+//! Fireball or Frostfire Bolt landing (half of it) can make the next Arcane Missiles free and
+//! fire its missiles twice as often. The missiles proc nothing since patch 175 (the 19 October
+//! in-game tooltip), and a missile chance of 0 draws no roll, as Go's mask leaves them out. The client row
 //! (400588) procs on a landed harmful spell, so a miss cannot and a bolt procs when it
 //! arrives; the chances and the buff's modifiers come from the rows.
 
@@ -77,8 +78,10 @@ impl MissileBarrage {
         }
         let chance = match fight.spells[spell].class_spell.as_deref() {
             Some("arcane_blast") => self.arcane_blast_chance,
-            Some("arcane_missiles_tick") => self.missile_chance,
-            Some("arcane_wrath" | "fireball" | "frostbolt" | "frostfire_bolt") => self.bolt_chance,
+            Some("arcane_missiles_tick") if self.missile_chance > 0.0 => self.missile_chance,
+            Some("arcane_wrath" | "fireball" | "frostbolt" | "frost_blast" | "frostfire_bolt") => {
+                self.bolt_chance
+            }
             _ => return,
         };
         if fight.proc(chance, &self.label) {

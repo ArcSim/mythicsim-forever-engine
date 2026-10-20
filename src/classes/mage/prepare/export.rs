@@ -116,8 +116,9 @@ pub(super) fn effects(talents: &Message, sim: &Sim, unit: UnitId) -> Vec<Value> 
             "aura_duration_ns": nanos(data.arcane_concentration_triggered.highest().duration()),
         }));
     }
-    // talents_arcane.go registerMissileBarrage: the client rows; a missile procs at a quarter of
-    // Arcane Blast's chance, Arcane Wrath and the bolts at half (client 70425).
+    // talents_arcane.go registerMissileBarrage: the client rows; Arcane Wrath, Frost Blast and the
+    // bolts proc at half of Arcane Blast's chance, and the missiles no longer proc it (patch 175,
+    // the 19 October in-game tooltip; client 70425 gave them a quarter).
     let missile_barrage = talents.i32("missile_barrage");
     if missile_barrage > 0 {
         let buff = data.missile_barrage_triggered.highest();
@@ -130,7 +131,7 @@ pub(super) fn effects(talents: &Message, sim: &Sim, unit: UnitId) -> Vec<Value> 
             "kind": "missile_barrage", "trigger_aura": "Missile Barrage Trigger",
             "aura": "Missile Barrage",
             "arcane_blast_chance": arcane_blast_chance,
-            "missile_chance": arcane_blast_chance / 4.0,
+            "missile_chance": 0.0,
             "bolt_chance": arcane_blast_chance / 2.0,
             "rng_label": "Missile Barrage",
             "cost_percent_add": buff

@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `b2ab28c5200e3d741b7edf987ae4bdf7453492ff`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `62b7445d1c812b257110e51a5b1e8db93b987972`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -701,6 +701,23 @@ refreshing it) and `tank-frost-mage-ice-barrier` (the target's swings break the 
 stays). Rust matches all 666 accepted fixtures with a Go golden, and preparation writes exactly what the
 exporter writes for every one. The recorded sweeps were not rerun; their Mage requests carry pre-hotfix
 strings and need the same remap first.
+
+The pin moved from `b2ab28c52` to `62b7445d1` on 2026-10-21, the fork's release merge (branch
+`mythicsim/oct21-release`) of patch 186 onto patches 187 to 189. Patch 186 is code only: the community
+base, the client build and the Go database do not move (the `db.json` digest stays).
+
+- Core, Warrior and Druid (patch 186, `QueuedSwingConsumedBeforeDamage`, default true): a queued Heroic
+  Strike, Cleave or Maul calculates its hit, drops its queue, then deals its damage, so an extra attack
+  its own hit procs at once (Windfury Totem, Windfury Weapon, Sword Specialization) is a white swing,
+  not a second strike from the one queue paying the rage again. No random draw moves. An extra attack a
+  yellow ability procs still takes a queued strike. The switch is not exported: Rust follows the default
+  and the exporter, like Go's other default switches, does not write it.
+
+131 of the 666 Go goldens changed, all in DPS, threat and rage through the queued strike: 97 Warrior
+builds (39 DPS, 58 Protection) and 34 Feral Bear builds, 118 of them with their first-fight log. No
+preparation golden moved. Rust matches all 666 accepted fixtures with a Go golden, and preparation
+writes exactly what the exporter writes for every case. The frozen Frost kernel fixtures keep their values (pre-hotfix
+talents, as at `b2ab28c52`) and take the new revision. The recorded sweeps were not rerun.
 
 ## Ledger
 

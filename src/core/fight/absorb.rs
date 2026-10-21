@@ -153,11 +153,28 @@ impl<A: Agent> Fight<A> {
     pub(crate) fn apply_item_absorb(&mut self, index: usize) {
         let shield = self.item_absorbs[index];
         let amount = self.effect_roll(shield.average, shield.variance);
-        self.activate_aura(shield.aura);
+        self.activate_absorb(index, amount);
+    }
+
+    /// A class shield's place in `item_absorbs`, after the items' shields: the aura and the school
+    /// bits it takes, its strength set by `activate_absorb`.
+    pub(crate) fn push_class_absorb(&mut self, aura: AuraRef, schools: u8) -> usize {
+        self.item_absorbs
+            .push(ItemAbsorb::new(aura, schools, 0.0, 0.0));
+        self.item_absorbs.len() - 1
+    }
+
+    /// Go `DamageAbsorptionAura.Activate` with the strength its calculator answers: the aura,
+    /// then the strength, and the stacks as whole points. A class shield, such as the Mage's Ice
+    /// Barrier, sits in `item_absorbs` after the items' shields, as its damage taken modifier
+    /// follows theirs in Go (talents register after item effects).
+    pub(crate) fn activate_absorb(&mut self, index: usize, amount: f64) {
+        let aura = self.item_absorbs[index].aura;
+        self.activate_aura(aura);
         self.item_absorbs[index].strength = amount;
         let stacks = (amount as i32).max(1);
-        self.aura_mut(shield.aura).max_stacks = stacks;
-        self.set_stacks(shield.aura, stacks);
+        self.aura_mut(aura).max_stacks = stacks;
+        self.set_stacks(aura, stacks);
     }
 
     /// The shields' damage taken modifiers on a hit of the school bits, in registration order.

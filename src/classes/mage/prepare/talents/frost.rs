@@ -3,12 +3,18 @@
 use std::rc::Rc;
 
 use crate::contracts::prepared_v2::ActionId;
+use crate::prepare::aura_helpers::AbsorptionAuraConfig;
 use crate::prepare::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger};
+use crate::prepare::character::constants::CHARACTER_LEVEL;
 use crate::prepare::dbcenums;
+use crate::prepare::resolve_aura::aura_config;
+use crate::prepare::resolve_spell::{flags, spell_config};
+use crate::prepare::sim::AuraId;
 use crate::prepare::sim::{AuraConfig, EventCallbacks, Sim, UnitId};
+use crate::prepare::spell::SpellFlag;
 use crate::prepare::spell::{school, ProcMask};
 use crate::prepare::spell_mod::{SpellModConfig, SpellModType};
-use crate::prepare::stats::SchoolIndex;
+use crate::prepare::stats::{SchoolIndex, Stat};
 
 use super::super::masks;
 use super::super::spell_data::spell_data;
@@ -27,11 +33,10 @@ impl Mage {
         self.register_ice_shards(sim, unit);
         self.register_improved_frost_nova(sim, unit);
 
-        // Tier 3
-        self.register_piercing_ice(sim, unit);
+        // Tier 3 (Piercing Ice left the tree in hotfix push 112753, the fork's patch 186)
         self.register_frost_channeling(sim, unit);
-        // Ice Lance: ice_lance.go
         // Improved Blizzard: blizzard.go
+        // Ice Lance: ice_lance.go
 
         // Tier 4: Ice Block models nothing in Go either.
         self.register_arctic_reach(sim, unit);
@@ -45,7 +50,61 @@ impl Mage {
         // Tier 6
         self.register_winter_chill(sim, unit);
 
-        // Tier 7: Ice Barrier models nothing in Go either.
+        // Tier 7
+        self.register_ice_barrier(sim, unit);
+    }
+
+    /// Go `registerIceBarrier` and ice_barrier.go `registerIceBarrierSpell` (the fork's patch
+    /// 187): Frigid Power, then the shield, each with Piercing Ice's old Frost damage shape, then
+    /// the highest rank as an APL spell.
+    fn register_ice_barrier(&self, sim: &mut Sim, unit: UnitId) {
+        if !self.talents.bool("ice_barrier") {
+            return;
+        }
+        let data = spell_data();
+        let rank = data.ice_barrier.highest();
+        let frigid_rank = data.ice_barrier_triggered.by_id(1326891);
+        let pct = |row: &'static crate::data::spells::Spell, misc: i32| {
+            row.effect(dbcenums::A_ADD_PCT_MODIFIER, misc)
+                .average(CHARACTER_LEVEL)
+                / 100.0
+        };
+
+        let frigid_power = sim.register_aura(unit, aura_config(frigid_rank, &[]));
+        attach_frost_damage_bonus(
+            sim,
+            frigid_power,
+            pct(frigid_rank, dbcenums::SPELLMOD_DAMAGE),
+            pct(frigid_rank, dbcenums::SPELLMOD_DOT),
+        );
+
+        let warding = 1.0
+            + data
+                .frost_warding
+                .effect_at(3)
+                .fraction_at(self.talents.i32("frost_warding"));
+        let base = rank.effect_n(1).average(CHARACTER_LEVEL);
+        let shield = sim.new_damage_absorption_aura(
+            unit,
+            AbsorptionAuraConfig {
+                aura: aura_config(rank, &[]),
+                shield_strength_calculator: Some(Rc::new(move |sim: &Sim, unit| {
+                    warding * frost_spell_power(sim, unit).mul_add(0.1, base)
+                })),
+                ..AbsorptionAuraConfig::default()
+            },
+        );
+        attach_frost_damage_bonus(
+            sim,
+            shield.aura,
+            pct(rank, dbcenums::SPELLMOD_DAMAGE),
+            pct(rank, dbcenums::SPELLMOD_DOT),
+        );
+
+        let mut config = spell_config(sim, unit, rank, &[flags(SpellFlag::APL)]);
+        config.class_spell_mask = masks::ICE_BARRIER;
+        config.related_self_buff = Some(shield.aura);
+        sim.register_spell(unit, config);
     }
 
     fn register_improved_frostbolt(&self, sim: &mut Sim, unit: UnitId) {
@@ -118,51 +177,6 @@ impl Mage {
                         .value_at(rank),
                 ),
                 kind: SpellModType::CooldownFlat,
-                ..SpellModConfig::default()
-            },
-        );
-    }
-
-    /// Effect 0 (SPELLMOD_DAMAGE) raises Frost spell hits, Blizzard's too. Effect 1
-    /// (SPELLMOD_DOT) names Blizzard and Frostfire Bolt but has no rank curve in the client, so
-    /// Frostfire Bolt's DoT gets its base 2% at every rank.
-    fn register_piercing_ice(&self, sim: &mut Sim, unit: UnitId) {
-        let rank = self.talents.i32("piercing_ice");
-        if rank == 0 {
-            return;
-        }
-        let data = &spell_data().piercing_ice;
-        let hit = data
-            .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_DAMAGE)
-            .fraction_at(rank);
-        let dot = data
-            .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_DOT)
-            .fraction_at(rank);
-        sim.add_static_mod(
-            unit,
-            SpellModConfig {
-                class_mask: masks::ALL & !masks::FROSTFIRE_BOLT,
-                school: school::FROST,
-                float_value: hit,
-                kind: SpellModType::DamageDoneFlat,
-                ..SpellModConfig::default()
-            },
-        );
-        sim.add_static_mod(
-            unit,
-            SpellModConfig {
-                class_mask: masks::FROSTFIRE_BOLT,
-                float_value: dot,
-                kind: SpellModType::DamageDoneFlat,
-                ..SpellModConfig::default()
-            },
-        );
-        sim.add_static_mod(
-            unit,
-            SpellModConfig {
-                class_mask: masks::FROSTFIRE_BOLT,
-                float_value: hit - dot,
-                kind: SpellModType::DirectDamageDoneFlat,
                 ..SpellModConfig::default()
             },
         );
@@ -391,4 +405,43 @@ impl Mage {
             },
         );
     }
+}
+
+/// ice_barrier.go `attachFrostDamageBonus`, Piercing Ice's shape before patch 186: `hit` on every
+/// Frost spell but Frostfire Bolt, `dot` on all of Frostfire Bolt and the rest of `hit` on its
+/// direct damage alone.
+fn attach_frost_damage_bonus(sim: &mut Sim, aura: AuraId, hit: f64, dot: f64) {
+    sim.attach_spell_mod(
+        aura,
+        SpellModConfig {
+            class_mask: masks::ALL & !masks::FROSTFIRE_BOLT,
+            school: school::FROST,
+            float_value: hit,
+            kind: SpellModType::DamageDoneFlat,
+            ..SpellModConfig::default()
+        },
+    );
+    sim.attach_spell_mod(
+        aura,
+        SpellModConfig {
+            class_mask: masks::FROSTFIRE_BOLT,
+            float_value: dot,
+            kind: SpellModType::DamageDoneFlat,
+            ..SpellModConfig::default()
+        },
+    );
+    sim.attach_spell_mod(
+        aura,
+        SpellModConfig {
+            class_mask: masks::FROSTFIRE_BOLT,
+            float_value: hit - dot,
+            kind: SpellModType::DirectDamageDoneFlat,
+            ..SpellModConfig::default()
+        },
+    );
+}
+
+/// ice_barrier.go `frostSpellPower` ($SPFR): the general spell damage plus the Frost one.
+fn frost_spell_power(sim: &Sim, unit: UnitId) -> f64 {
+    sim.stat(unit, Stat::SpellDamage) + sim.stat(unit, Stat::FrostDamage)
 }

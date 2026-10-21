@@ -1,6 +1,6 @@
 //! MythicSim's healer sims, which Rust runs alone (no Go counterpart): a healer casts every heal
 //! on a player who needs it, and each heal counts in full, so its healing per second is what it
-//! can put out with its mana. A class binds the [`Effect::Heals`] its preparation exports and
+//! can put out with its mana. A class binds the [`Effect::Heals`](crate::contracts::prepared_v2::Effect::Heals) its preparation exports and
 //! hands each cast and tick here.
 //!
 //! A direct heal rolls the client row and adds the spell's coefficient on healing power, then

@@ -91,6 +91,9 @@ var (
 	shatter             = spelldata.Talent(11170, 3)
 	wintersChill        = spelldata.Talent(11180, 5)
 	wintersChillTrigger = spelldata.Ranked(12579)
+	iceBarrierLadder    = spelldata.Ranked(11426, 13031, 13032, 13033)
+	iceBarrierTriggered = spelldata.Ranked(11189, 1326891)
+	frostWarding        = spelldata.Talent(11189, 2)
 	evocationLadder     = spelldata.Ranked(12051)
 	agateTriggered      = spelldata.Ranked(5405)
 	jadeTriggered       = spelldata.Ranked(10052)
@@ -196,6 +199,22 @@ func mageEffects(agent core.Agent, character *core.Character) []map[string]any {
 	}
 	if talents.ColdSnap { // cold_snap.go
 		effects = append(effects, map[string]any{"kind": "cold_snap", "spell_id": spelldata.Ranked(12472).Highest().ID})
+	}
+	// ice_barrier.go (the fork's patch 187): the shield's absorb, read when it is cast, and the Frost
+	// damage both auras attach in Piercing Ice's old shape.
+	if talents.IceBarrier {
+		rank := iceBarrierLadder.Highest()
+		frigid := iceBarrierTriggered.ByID(1326891)
+		pct := func(row *spelldata.Spell, misc dbcenums.SpellModOp) float64 {
+			return row.Effect(dbcenums.A_ADD_PCT_MODIFIER, int32(misc)).Average(core.CharacterLevel) / 100
+		}
+		effects = append(effects, map[string]any{
+			"kind": "ice_barrier", "spell_id": rank.ID, "aura": "Ice Barrier", "frigid_power_aura": frigid.Name,
+			"absorb_base": rank.EffectN(1).Average(core.CharacterLevel),
+			"warding":     1 + frostWarding.EffectAt(3).FractionAt(talents.FrostWarding),
+			"hit":         pct(rank, dbcenums.SPELLMOD_DAMAGE), "dot": pct(rank, dbcenums.SPELLMOD_DOT),
+			"frigid_hit": pct(frigid, dbcenums.SPELLMOD_DAMAGE), "frigid_dot": pct(frigid, dbcenums.SPELLMOD_DOT),
+		})
 	}
 	// evocation.go
 	evocation := evocationLadder.Highest()

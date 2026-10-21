@@ -14,8 +14,34 @@ use crate::prepare::sim::{Sim, UnitId};
 use crate::prepare::stats::Stat;
 use crate::prepare::Refusal;
 
-/// Go mage.TalentTreeSizes.
-const TALENT_TREE_SIZES: [usize; 3] = [19, 17, 19];
+/// Go mage.TalentTreeSizes: Frost has 18 talents since client hotfix push 112753, which removed
+/// Piercing Ice (the fork's patch 186).
+const TALENT_TREE_SIZES: [usize; 3] = [19, 17, 18];
+
+/// Go `checkTalentsString` (the fork's patch 188): a string with more than three trees, or a tree
+/// longer than the tree, such as a 19 digit Frost string from before the hotfix, is refused.
+fn check_talents_string(talents: &str) -> Result<(), String> {
+    let trees: Vec<&str> = talents.split('-').collect();
+    if trees.len() > TALENT_TREE_SIZES.len() {
+        return Err(format!(
+            "mage talents {talents:?}: {} trees, a mage has {}",
+            trees.len(),
+            TALENT_TREE_SIZES.len()
+        ));
+    }
+    for (i, tree) in trees.iter().enumerate() {
+        // Go len counts bytes.
+        if tree.len() > TALENT_TREE_SIZES[i] {
+            return Err(format!(
+                "mage talents {talents:?}: tree {} has {} talents, the string gives {}",
+                i + 1,
+                TALENT_TREE_SIZES[i],
+                tree.len()
+            ));
+        }
+    }
+    Ok(())
+}
 
 /// tools/oracle-v2/mage.go `mageClassSpells`.
 static CLASS_SPELLS: &[ClassSpellName] = &[
@@ -183,12 +209,26 @@ pub(crate) fn new_mage(
             )
         })?;
     let default_mage_armor = class_options.enum_name("default_mage_armor");
+    check_talents_string(player.str("talents_string"))
+        .map_err(|err| Refusal::new("talents", err))?;
     let talents = fill_talents(
         "proto.MageTalents",
         player.str("talents_string"),
         TALENT_TREE_SIZES,
     )
     .map_err(|err| Refusal::new("talents", err))?;
+    // Go NewMage: Elemental Precision above its three ranks (a pre-hotfix 4/5 or 5/5) panics.
+    let max_ranks = spell_data::spell_data().elemental_precision.len();
+    let elemental_precision = talents.i32("elemental_precision");
+    if elemental_precision > max_ranks {
+        return Err(Refusal::new(
+            "talents",
+            format!(
+                "mage talents {:?}: Elemental Precision has {max_ranks} ranks, the string gives {elemental_precision}",
+                player.str("talents_string")
+            ),
+        ));
+    }
     sim.enable_mana_bar(unit);
     let crit_per_agi = sim.crit_per_agi_max_level(unit);
     sim.unit_mut(unit).sdm.add_stat_dependency(

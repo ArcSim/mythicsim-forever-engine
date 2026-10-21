@@ -1,6 +1,6 @@
 {
  "case": "frost-three-targets",
- "request_sha256": "0e39ec1e7586158cb8547edc0a77785386f071c3ca18e80705e8bdbd810414b7",
+ "request_sha256": "04136133cea5cedb3411374c9008ac48da1790371463e55e31f45b490d417353",
  "sections": {
   "effects": [
    [
@@ -26,6 +26,10 @@
    [
     "cold_snap",
     "e4061ed0b812c33bd1cae5d46223243119126b69e404ba90fa526d8f4a60f41d"
+   ],
+   [
+    "ice_barrier",
+    "730f24a038646e950fa2856c221e4780b5bc1054768754bdf89feb84962ce99e"
    ],
    [
     "evocation",
@@ -104,7 +108,7 @@
    ],
    [
     "Arcane Concentration",
-    "62f60b47e45ca95b644af55d03c270515a625fd16bd4da89f29211113705ff50"
+    "64a67645dee7773005db8e3d2f3faf5906710603b2e6d96117ac39ec215b746b"
    ],
    [
     "Missile Barrage",
@@ -129,6 +133,14 @@
    [
     "Winters Chill Talent",
     "a1143e0ccbae599d841ccea1ae7afa0c5a197df34ad2ce9d07e486cc9d85db2d"
+   ],
+   [
+    "Frigid Power",
+    "086195d2edf20d51e3d29fcd13c5a787e227be6842bdc2ee6c763b1d4a73701c"
+   ],
+   [
+    "Ice Barrier",
+    "0780b3ad19c6fedf9c1d17e0101e7b664a356750744deb241efe6334a4b19865"
    ],
    [
     "Arcane Brilliance (External)",
@@ -186,11 +198,15 @@
    ]
   ],
   "player.mana": "113fc270b46912599dcd9f1165940d3c571799523a3fc5a4681f60ac5ab11444",
-  "player.pseudo_stats": "548e6adb0dfb920d1a14bd13d101ac4ed4b198654c9f175e3a7989c2317e1513",
+  "player.pseudo_stats": "ac169096c7e7d7243b4306f0d47fe935189f67e737e84123d82530f127571c6d",
   "player.spells": [
    [
     "{\"other_id\": \"OtherActionManaGain\"}",
     "162525ce50e2c1fdfb133896acf35d224c6c22325cbd6ed1412d0f385d07e743"
+   ],
+   [
+    "{\"spell_id\": 13033}",
+    "a7542a8b7092989b8c86e1ece4646f9522c59241146d91e6b89109d41c629f90"
    ],
    [
     "{\"spell_id\": 10202}",
@@ -262,75 +278,75 @@
    ],
    [
     "{\"spell_id\": 1279949}",
-    "ca9dc38988c4ad1ab47c202267974864c5605d58d9dd67a745dffe554b3d57c7"
+    "8130b5a6e462deb39185a50f16f223d21c9dc55a79a72529a2338e70d021cdc9"
    ],
    [
     "{\"spell_id\": 10187}",
-    "ed70a8073fced4cf07198b195076be99075ecd59e56aa68344ff55c62ff03bb5"
+    "7e8659fed023caeca6231efbf391bddc8f2170b131663d63789cdb3461ee883c"
    ],
    [
     "{\"spell_id\": 10161}",
-    "a2bb498114852095f7b88cf5f099d7b09ff62f1ec59897c4618e6935394f49dd"
+    "4acf863088151306360c77a2a8364fdbb1c3ec6dcdb5b57866d69cf7e6f8a54a"
    ],
    [
     "{\"spell_id\": 116}",
-    "4c5fe6ce404c3ecee55074d9b80d19fea73ed9009e5faf85b82967810559d8a0"
+    "26b0f9e2a46db4c30c6d8fcfd3503a5ca65a96360850ccd99d027bc2ab678f62"
    ],
    [
     "{\"spell_id\": 205}",
-    "c2e2cb460f481a219e51e40263dc27eef6a7e0375d69d62313b7947b6a017c09"
+    "f0fc7248511a2472706818823e59dfbd05e7adbb72187ac0a4ae5faddcbc2641"
    ],
    [
     "{\"spell_id\": 837}",
-    "7fa01fbb1087157d3a08dcf79097a99a93e27f3012442102bff3b92e25b55579"
+    "863aea518cc7b1cbfd210b091e311f3d757db2d1c7124957ebf28d6743531744"
    ],
    [
     "{\"spell_id\": 7322}",
-    "49ca8a66675577eaeaa4a81af40916bd8b4ea68e790312f692712826a626dbbd"
+    "c5664765a9a54b8fee51bf762d5e7f443bceb172a96805e448f45330993a5932"
    ],
    [
     "{\"spell_id\": 8406}",
-    "832e0ba607dcd693d80b2796820db6af2edc4586db86bacfb5cd2acda973bab6"
+    "61d3d3fd2170c87258d04279b35123577356667dfe0f0265fca220ee6983a31a"
    ],
    [
     "{\"spell_id\": 8407}",
-    "b4cfdc8300cebdb76abab4f65d09beaa0537feb52957083face44d06cef7b5a7"
+    "ce70296b936245488d192736afca64605d6efa17168df6cd7554295bb341b496"
    ],
    [
     "{\"spell_id\": 8408}",
-    "8888a674b0898dc2593f799b09a3394ee49fad5f993b0fd073e0daaf9f33e131"
+    "367cacb277b93ab75451cfd631859887330c30add7f2ee883d3ba9046d295954"
    ],
    [
     "{\"spell_id\": 10179}",
-    "6605dddb72dc206f3d07a4b8fc49c3768c55d3d6750f9b821a7283de57bad4b5"
+    "44db07468b85bfcce9f2ef7a54949f715fdc924e29823d29e85c0c20c2fa1919"
    ],
    [
     "{\"spell_id\": 10180}",
-    "7ec0533a9ada9ff77a9ab33782754cf292d67b7b1ae6962c0d0d637d13a1da83"
+    "6c9f4339fda1e7990cea196b1d0b899a0f1bebbf8166a493104983fa8e806754"
    ],
    [
     "{\"spell_id\": 10181}",
-    "1a66cd1a69ec4217d68ec7c155087d9dbbc46290114f55999d418388fcb130b3"
+    "5dc303111b0a91bb1b0d9298786a4051aed266ea0e2807c1f3a99de9aade7bb7"
    ],
    [
     "{\"spell_id\": 25304}",
-    "673e46c1e0420a844428938b67ae94f2b778f5545fbcf4897bea0187f60eed43"
+    "a44166e3b87d16a722275ba66f1d4b531b15d5e96c4c3ee60451968f80bbbc93"
    ],
    [
     "{\"spell_id\": 401502}",
-    "4f527d0337c2b5f6fd4ad65aabf3aa847690240dd08aabde52e3d8c88b4532bf"
+    "ec9940fc81c025279ec9fab6ecf499e74e5be5f06bc52295cc4e5dbb31af7c11"
    ],
    [
     "{\"spell_id\": 1237312}",
-    "05f5d39348c36d5451f9414d43d2a93c6d792046cc11f3ce6441952a956c31cb"
+    "14b53c2b81b16158bf664c4517f7e904404f538c9e8b386b44bacf342557d269"
    ],
    [
     "{\"spell_id\": 1237313}",
-    "1c503eca09e041e8c6574de95aca176d42be8b23b268dffdf5503f150f6c0a31"
+    "676a56f614aeacbb48a8ef1f78be46436b3bfd22d192fc91ab42ac6ed22f1451"
    ],
    [
     "{\"spell_id\": 12051}",
-    "fa81eb428a4781725cb567637702131d724dcaea0ef1d70d519554b7e9272abf"
+    "27bf98f5e2bf0aec15d1ec3dfaec7e08ccf7fd54f8993d72372492eef517dbf7"
    ],
    [
     "{\"spell_id\": 133}",
@@ -382,31 +398,31 @@
    ],
    [
     "{\"spell_id\": 10199}",
-    "6b3b1ff1e05bd62e5d98622a2579e691cac819b7f31ae79d1abe0f8b2a0b8f3e"
+    "4140bc3d387dc2be0644568dd4da4081e518c729f02bc70b4a888a7fc1abd111"
    ],
    [
     "{\"spell_id\": 10230}",
-    "ff68a695af45639dd01107807ec85d72e9650085008c510ce7cd098952df0327"
+    "ea40f15834352ff602e1e6f2ba742e9a5271a11959424d4084b389bf72714f29"
    ],
    [
     "{\"spell_id\": 1240047}",
-    "c63c5c81d1f437009788bf47e83970269e51a8b921ddcf902ff9f95f1cbb34ac"
+    "bb176da4ef41b36b1ba371d5b2fd0c98cb494e08bb73bf55cb1077b7cb59d243"
    ],
    [
     "{\"item_id\": 5514}",
-    "ac88d371db6a891b04056f77b761734a8e1e7c190953bc9a7f052c6bd19f9cfa"
+    "22511f9d5b176a409bc4bcbb24231df5be57f0ee660776eeabc97527fa62969c"
    ],
    [
     "{\"item_id\": 5513}",
-    "72e01d05f25bd051a17f131b66b38bab21b90711b63c01804712414c41edf441"
+    "0b7fed6ff91de118b3f4c9449d3145bcc505af70311403919468f2c3f51e2dd4"
    ],
    [
     "{\"item_id\": 8007}",
-    "0f62a80ad5e5861e921dca5268fdafd067072dbb2711f3c6efc541da0e213432"
+    "31d7dbc133cb390591ec7d1df1ca0b2f0983542771a377b285f2acb182bcef19"
    ],
    [
     "{\"item_id\": 8008}",
-    "fd48eae4a11f10c48e76f2ef12adf9427c300269fdc28a0bfb6bd252c7e445e3"
+    "5d27fba4c8b9563b729f5a5009729d910a13e664ed8ee65388aa5f714a5a9817"
    ],
    [
     "{\"spell_id\": 2948}",
@@ -442,19 +458,19 @@
    ],
    [
     "{\"spell_id\": 1326053}",
-    "97d63df553b5116c6daf9a6f79201ed777f13d2307159804feb99751849bb6d9"
+    "ab24b9eb4a0ab50bed9bd1413ba6a2b3ca6dd4c216270db886f2a7544c377d9d"
    ],
    [
     "{\"spell_id\": 1326054}",
-    "e2fb14416d2eae0eb5985a5a2189d49f1bf73193b56f107df8cfc765f5bda0a3"
+    "3ff009bcde1d2afd3cd6910a13e12c8f937fe60e3e3fd513feaac54ffedbfcc6"
    ],
    [
     "{\"spell_id\": 1326055}",
-    "1a498835b818c734e5a4b30257c4b4675bf4a901ec849ceae40e909e1b159764"
+    "4f8ece1c27eaaf65e5ba56a6e545b2d5930dab77b8dba770124f6d12928bfaa6"
    ],
    [
     "{\"spell_id\": 12472}",
-    "bcd626f34626e844d5fd6bfe9f71ad2ea40287b468c425ba07c85e1002456209"
+    "d1b80c441849c488f399ccbc1ac01f1c029dc29330fdbaa134b3748dfa8b88f3"
    ],
    [
     "{\"other_id\": \"OtherActionMove\"}",
@@ -462,7 +478,7 @@
    ]
   ],
   "player.stats": "436bb68f14c5c65c670f288b6f07d63ee83b319f87e5cffc588783e4de6d5eca",
-  "player.talents": "c7c19c87fe79ae212ca3ee6ed7a7f477e760ddf2864a0330edf79aff785bf18f",
+  "player.talents": "3ef93d4a7e49605d9e332dcd472de6a38d7d4b029af493031abdda93d3bd9add",
   "target.auras": [
    [
     "ArcaneMissiles-1-3",

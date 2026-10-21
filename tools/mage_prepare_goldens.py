@@ -30,18 +30,18 @@ OUT = ROOT / "tests" / "classes" / "mage" / "prepare"
 
 # name, fixture whose request is the base, talents string, armor (None keeps the fixture's)
 CASES = [
-    ("arcane", "arcane-blast", "0551205003100301531-230500001-005", None),
-    ("arcane-frost-armor", "arcane-blast", "0551205003100301531-230500001-005", "MageArmorFrostArmor"),
-    ("fire", "fire-ignite", "2300205-03552020130135031-005", None),
-    ("fire-three-targets", "fire-mage-3-targets-dot-target-index", "05012050030000-13550000130135031-004", None),
-    ("frost", "reference-fingers-of-frost", "05002000030000-03-0555000301001301251", None),
-    ("frost-three-targets", "frost-mage-3-targets-area-lines", "05012050030000-03-0555000301001301251", None),
-    ("frostfire-two-targets", "frostfire-mage-2-targets-multidot", "-1355000013013403-00550003210013002", None),
-    ("every-talent-at-max", "arcane-blast", "2552225223122311531-23552333132135131-2555323331321331251", None),
-    ("every-talent-at-one", "arcane-blast", "1111111111111111111-11111111111111111-1111111111111111111", "MageArmorMoltenArmor"),
-    ("mixed-build", "arcane-blast", "233011202212010002-20001021102022010-1415222321300231111", "MageArmorNone"),
-    ("mixed-build-two", "arcane-blast", "025020410101000153-23142032102111020-0225211100121101020", "MageArmorFrostArmor"),
-    ("mixed-build-three", "arcane-blast", "1321100123010301111-01201030111102021-0204100011010000121", "MageArmorMageArmor"),
+    ("arcane", "arcane-blast", "0551205003100301531-230500001-003", None),
+    ("arcane-frost-armor", "arcane-blast", "0551205003100301531-230500001-003", "MageArmorFrostArmor"),
+    ("fire", "fire-ignite", "2300205-03552020130135031-003", None),
+    ("fire-three-targets", "fire-mage-3-targets-dot-target-index", "05012050030000-13550000130135031-003", None),
+    ("frost", "reference-fingers-of-frost", "05002000030000-03-053500000101301251", None),
+    ("frost-three-targets", "frost-mage-3-targets-area-lines", "05012050030000-03-053500000101301251", None),
+    ("frostfire-two-targets", "frostfire-mage-2-targets-multidot", "-1355000013013403-0035000201013002", None),
+    ("every-talent-at-max", "arcane-blast", "2552225223122311531-23552333132135131-253532333121331251", None),
+    ("every-talent-at-one", "arcane-blast", "1111111111111111111-11111111111111111-111111111111111111", "MageArmorMoltenArmor"),
+    ("mixed-build", "arcane-blast", "233011202212010002-20001021102022010-141522223100231111", "MageArmorNone"),
+    ("mixed-build-two", "arcane-blast", "025020410101000153-23142032102111020-02252110102110102", "MageArmorFrostArmor"),
+    ("mixed-build-three", "arcane-blast", "1321100123010301111-01201030111102021-020410010110000121", "MageArmorMageArmor"),
 ]
 
 

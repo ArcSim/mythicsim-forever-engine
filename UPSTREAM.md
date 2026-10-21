@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `b5c0b8bb29ab19cd31454cc3e4e27c070f807f78`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `62b7445d1c812b257110e51a5b1e8db93b987972`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -670,6 +670,54 @@ builds (Revenge, Heroic Strike, Cleave, Sunder Armor and rage), 38 Druid builds 
 rage) and 13 Enhancement builds wearing Rockbiter, two of them through an item swap. The Druid, Shaman and
 Warrior preparation goldens follow. Rust matches all 664 accepted fixtures with a Go golden, and
 preparation writes exactly what the exporter writes for every one. The recorded sweeps were not rerun.
+
+The pin moved from `b5c0b8bb2` to `b2ab28c52` on 2026-10-21, the fork's patches 187 to 189 (branch
+`mythicsim/oct21-mage-hotfix`): the beta's hotfix push 112753 on client build 70450 (20 October), as
+`wowsims/forever` #594 carries it. The community base and the client build do not move; the Go database's
+mage rows do, so the game data is re-imported (`spells.jsonl`, `spell-extras.json`, `proto-schema.json`)
+and the release manifest takes the new `db.json` digest.
+
+- Data (patch 187): Elemental Precision is three ranks of 2/4/6% hit (it was five of 1%), Piercing Ice is
+  gone from the Frost tree, Frost Channeling and Improved Blizzard move into its row, and `MageTalents`
+  renumbers `frost_channeling` to `ice_barrier` as fields 44 to 54, so the Frost tree has 18 talents.
+  Ice Barrier's ranks gain +3% Frost damage on Piercing Ice's SPELLMOD_DAMAGE mask and +3% on its
+  SPELLMOD_DOT mask, Frigid Power (1326891) carries the same two for 1 min, and Frost Warding's new
+  effect 3 raises the absorb by 10/20%.
+- Mage (patch 188): Ice Barrier is a rotation spell (the GCD, category 471's 30 sec cooldown). Its cast
+  activates the shield, `warding x (819 + 0.1 x Frost spell power)` at level 60 with the multiply and add
+  fused as Go's arm64 build does, then Frigid Power; each aura attaches Piercing Ice's old three Frost
+  damage modifiers. The exporter writes an `ice_barrier` effect; Rust binds both auras' modifiers and
+  places the shield in `Fight::item_absorbs` after the items' shields, as Go registers talents after item
+  effects, so the target's swings and the Goblin Sapper's hit on the mage take from it.
+- Mage (patch 189): a mage talent string with more than three trees, a tree longer than the tree (a
+  pre-hotfix 19 digit Frost string asks for field 55) or Elemental Precision above 3 panics in Go; Rust
+  refuses it under `talents`, so the request falls back to Go's error.
+
+The 104 Mage fixture requests had their talents remapped field by field to the new tree (Piercing Ice's
+digit dropped, Elemental Precision capped at 3), as the 70425 move did, and so did the Mage preparation
+golden cases. 101 of the 664 Go goldens changed, all of them Mage and all in DPS; no other class moved.
+Two cases are accepted at the pin: `frost-mage-ice-barrier` (the reference casting Ice Barrier pre-pull and
+refreshing it) and `tank-frost-mage-ice-barrier` (the target's swings break the shield, Frigid Power
+stays). Rust matches all 666 accepted fixtures with a Go golden, and preparation writes exactly what the
+exporter writes for every one. The recorded sweeps were not rerun; their Mage requests carry pre-hotfix
+strings and need the same remap first.
+
+The pin moved from `b2ab28c52` to `62b7445d1` on 2026-10-21, the fork's release merge (branch
+`mythicsim/oct21-release`) of patch 186 onto patches 187 to 189. Patch 186 is code only: the community
+base, the client build and the Go database do not move (the `db.json` digest stays).
+
+- Core, Warrior and Druid (patch 186, `QueuedSwingConsumedBeforeDamage`, default true): a queued Heroic
+  Strike, Cleave or Maul calculates its hit, drops its queue, then deals its damage, so an extra attack
+  its own hit procs at once (Windfury Totem, Windfury Weapon, Sword Specialization) is a white swing,
+  not a second strike from the one queue paying the rage again. No random draw moves. An extra attack a
+  yellow ability procs still takes a queued strike. The switch is not exported: Rust follows the default
+  and the exporter, like Go's other default switches, does not write it.
+
+131 of the 666 Go goldens changed, all in DPS, threat and rage through the queued strike: 97 Warrior
+builds (39 DPS, 58 Protection) and 34 Feral Bear builds, 118 of them with their first-fight log. No
+preparation golden moved. Rust matches all 666 accepted fixtures with a Go golden, and preparation
+writes exactly what the exporter writes for every case. The frozen Frost kernel fixtures keep their values (pre-hotfix
+talents, as at `b2ab28c52`) and take the new revision. The recorded sweeps were not rerun.
 
 ## Ledger
 

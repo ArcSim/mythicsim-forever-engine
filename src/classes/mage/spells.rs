@@ -12,6 +12,7 @@ pub(crate) mod evocation;
 pub(crate) mod fire_blast;
 pub(crate) mod flamestrike;
 pub(crate) mod frostbolt;
+pub(crate) mod ice_barrier;
 pub(crate) mod ice_lance;
 pub(crate) mod mana_gems;
 pub(crate) mod presence_of_mind;

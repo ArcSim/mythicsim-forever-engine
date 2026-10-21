@@ -61,7 +61,7 @@ still runs the fight. Go also stays the reference every Rust change is compared 
 ## Keeping up with Go
 
 Each Go engine release moves the reference pin, currently Go revision
-`b5c0b8bb29ab19cd31454cc3e4e27c070f807f78`, and Rust follows the changes. A match means the
+`62b7445d1c812b257110e51a5b1e8db93b987972`, and Rust follows the changes. A match means the
 same behavior as that Go engine, not proof of the live game. [UPSTREAM.md](UPSTREAM.md) has
 the steps, and [docs/validation-summary.md](docs/validation-summary.md) lists the comparison
 records.

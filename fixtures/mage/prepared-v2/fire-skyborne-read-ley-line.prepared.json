@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
+    "engine_revision": "62b7445d1c812b257110e51a5b1e8db93b987972",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "be43b89dd0aed94a6b5a12210bc48feb08954908d28e4b020c54ace219e54298",
+  "request_sha256": "59f19f52609739a2079342e685bf8aa0206304409264bd9b52d914735eaaf096",
   "scenario_id": "fire-skyborne-read-ley-line",
   "sim": {
     "iterations": 3000,
@@ -746,8 +746,8 @@
       },
       "school_bonus_hit_chance": {
         "arcane": 3,
-        "fire": 5,
-        "frost": 5,
+        "fire": 6,
+        "frost": 6,
         "holy": 0,
         "nature": 0,
         "none": 0,
@@ -1237,7 +1237,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "2300205-03552020130135031-005",
+    "talents_string": "2300205-03552020130135031-003",
     "talents": {
       "arcane_concentration": 5,
       "arcane_focus": 3,
@@ -1245,7 +1245,7 @@
       "burning_soul": 2,
       "combustion": 1,
       "critical_mass": 5,
-      "elemental_precision": 5,
+      "elemental_precision": 3,
       "fire_power": 3,
       "flame_throwing": 2,
       "heating_up": 1,

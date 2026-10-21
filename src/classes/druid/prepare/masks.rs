@@ -41,6 +41,9 @@ pub(crate) const SWIFTMEND: i64 = 1 << 35;
 pub(crate) const CENARION_WARD: i64 = 1 << 36;
 pub(crate) const REVIVE: i64 = 1 << 37;
 const LAST: i64 = 1 << 38;
+/// MythicSim's healer sims (Rust only): Wild Growth, which Go never registered. Past Go's bits,
+/// so no mask of Go's names it.
+pub(crate) const WILD_GROWTH: i64 = 1 << 40;
 /// Go `DruidSpellsAll`.
 pub(crate) const ALL: i64 = (LAST << 1) - 1;
 

@@ -25,6 +25,10 @@ pub(crate) const CONTINGENCY_PLAN: i64 = 1 << 20;
 pub(crate) const DARK_SACRIFICE: i64 = 1 << 21;
 pub(crate) const DIVINE_GRACE: i64 = 1 << 22;
 
+/// MythicSim's healer sims (Rust only): every heal rank the healer registers. Past Go's bits, so
+/// no mask of Go's names it.
+pub(crate) const HEAL: i64 = 1 << 30;
+
 /// `PriestSpellLast`.
 const LAST: i64 = 1 << 23;
 /// `PriestSpellsAll`.

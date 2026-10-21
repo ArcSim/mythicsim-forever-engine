@@ -48,6 +48,8 @@ const EFFECTS: &[&str] = &[
     "weapon_sync",
     "windfury_totem_self",
     "windfury_weapon",
+    // MythicSim's healer sims (Rust only, checked against the client rows, not Go).
+    "heals",
 ];
 
 /// Go `applyRageOfTheFarseer` registers its cast (client 425336) without a class mask.
@@ -60,6 +62,9 @@ const ROCKBITER_WEAPON_PROC: i32 = 20871;
 
 /// The effect kind whose implementation executes a Shaman spell.
 fn spell_capability(spell: &Spell) -> Option<&'static str> {
+    if spell.class_spell.as_deref() == Some("heal") {
+        return Some("heals");
+    }
     let id = spell.action_id.clone().unwrap_or_default();
     if spell.class_spell.is_none() && id.spell_id == RAGE_OF_THE_FARSEER && id.tag == 0 {
         return Some("rage_of_the_farseer");

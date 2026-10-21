@@ -257,6 +257,8 @@ pub(crate) struct ActionReport {
     #[serde(skip_serializing_if = "is_zero_f")]
     pub(crate) crit_healing: f64,
     #[serde(skip_serializing_if = "is_zero_f")]
+    pub(crate) shielding: f64,
+    #[serde(skip_serializing_if = "is_zero_f")]
     pub(crate) cast_time_ms: f64,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(crate) hit_range: Option<DamageRangeReport>,
@@ -613,6 +615,7 @@ impl<A: Agent> Fight<A> {
             totals.ranges[3].merge(&metrics.crit_tick_range);
             totals.healing += metrics.total_healing;
             totals.crit_healing += metrics.total_crit_healing;
+            totals.shielding += metrics.total_shielding;
             if !passive {
                 totals.cast_time += metrics.total_cast_time;
             }
@@ -620,7 +623,8 @@ impl<A: Agent> Fight<A> {
                 // Go adds damage on any unit to that unit's damage taken; the player is no
                 // opponent of its own, so its healing goes to healing done.
                 self.totals.player_dtps.total += metrics.total_damage;
-                self.totals.player_hps.total += metrics.total_healing;
+                // Go metrics_aggregator: hps.Total += TotalHealing + TotalShielding.
+                self.totals.player_hps.total += metrics.total_healing + metrics.total_shielding;
             }
             if target != Side::Player.index() {
                 let position = if target == Side::Target.index() {

@@ -201,13 +201,23 @@ fn a_shield_proc_rate_is_refused() {
     assert_eq!(refusal_code(&value), "unrepresented");
 }
 
-/// The exporter cannot prepare a Restoration shaman, which has no auto attacks for Windfury
-/// Totem's extra attack, so neither does Rust.
+/// A Restoration shaman, which the Go exporter could not prepare (it has no auto attacks for
+/// Windfury Totem's extra attack), prepares in Rust with its heals and without Windfury Totem,
+/// which a healer never casts. Rust alone sims it (`tests/healers.rs`).
 #[test]
-fn a_restoration_shaman_is_refused() {
+fn a_restoration_shaman_is_prepared_with_its_heals() {
     let mut value = request("elemental");
     let player = &mut value["raid"]["parties"][0]["players"][0];
     player.as_object_mut().unwrap().remove("elementalShaman");
     player["restorationShaman"] = serde_json::json!({"options": {"classOptions": {}}});
-    assert_eq!(refusal_code(&value), "unrepresented");
+    let prepared = forever_engine::prepare_json(&serde_json::to_vec(&value).unwrap(), "x")
+        .expect("a Restoration shaman is prepared");
+    let heals = prepared["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|effect| effect["kind"] == "heals")
+        .expect("the heals are exported");
+    // Every rank of Healing Wave, Lesser Healing Wave, Chain Heal and Healing Stream Totem.
+    assert_eq!(heals["heals"].as_array().unwrap().len(), 10 + 6 + 3 + 5);
 }

@@ -288,6 +288,11 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
     let data = spell_data();
     let mut effects: Vec<Value> = Vec::new();
 
+    // MythicSim's healer sims (Rust only): the healer's heals.
+    if priest.healer {
+        effects.push(crate::prepare::heals::heals_effect(env, &priest.heals));
+    }
+
     // mind_blast.go: a direct hit on the rank's own row.
     effects.push(json!({"kind": "mind_blast"}));
     // shadow_word_death.go: Early Demise adds crit inside the 20% execute phase.

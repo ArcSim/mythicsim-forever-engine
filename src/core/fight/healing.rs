@@ -38,6 +38,52 @@ impl<A: Agent> Fight<A> {
         healing: Healing,
         bonus_healing_taken: f64,
     ) -> SpellResult {
+        self.calc_and_deal_healing_scaled(
+            spell,
+            target,
+            base_healing,
+            healing,
+            bonus_healing_taken,
+            1.0,
+        )
+    }
+
+    /// [`Self::calc_and_deal_healing`] with the heal, healing power share included, scaled
+    /// by `scale`: a chain heal's later jumps. A scale of one changes nothing.
+    pub(crate) fn calc_and_deal_healing_scaled(
+        &mut self,
+        spell: SpellId,
+        target: Side,
+        base_healing: f64,
+        healing: Healing,
+        bonus_healing_taken: f64,
+        scale: f64,
+    ) -> SpellResult {
+        self.calc_and_deal_healing_with(
+            spell,
+            target,
+            base_healing,
+            healing,
+            bonus_healing_taken,
+            scale,
+            None,
+        )
+    }
+
+    /// [`Self::calc_and_deal_healing_scaled`] with the caster's multiplier given, for a heal
+    /// whose amount already holds the caster's healing multipliers (Swiftmend's consumed heal
+    /// over time), which then takes only the spell's own.
+    #[allow(clippy::too_many_arguments)]
+    pub(crate) fn calc_and_deal_healing_with(
+        &mut self,
+        spell: SpellId,
+        target: Side,
+        base_healing: f64,
+        healing: Healing,
+        bonus_healing_taken: f64,
+        scale: f64,
+        caster_multiplier: Option<f64>,
+    ) -> SpellResult {
         let state = &self.spells[spell];
         let caster = state.caster;
         let healing_power = self.unit(caster).powers.healing_power + bonus_healing_taken;
@@ -46,8 +92,13 @@ impl<A: Agent> Fight<A> {
             // Go fuses `baseHealing += spell.BonusCoefficient * spell.HealingPower(target)`.
             base = state.bonus_coefficient.mul_add(healing_power, base);
         }
+        if scale != 1.0 {
+            base *= scale;
+        }
         let multiplier = if state.flags.ignore_attacker_modifiers {
             1.0
+        } else if let Some(multiplier) = caster_multiplier {
+            multiplier
         } else {
             state.damage_multiplier
                 * state.damage_multiplier_additive

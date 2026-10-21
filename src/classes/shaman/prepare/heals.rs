@@ -1,0 +1,107 @@
+//! The Restoration Shaman's heals and heal talents, which Rust alone sims (see
+//! `prepare::heals`): every rank of Healing Wave, Lesser Healing Wave, Chain Heal and Healing
+//! Stream Totem, and the talent's Riptide, from the client rows of build 1.60.1.70425.
+//!
+//! Chain Heal lands on three players, each jump at half of the one before, as its row states.
+//! Healing Stream Totem heals the party of five every two seconds while it stands. Riptide's
+//! bonus to a Chain Heal on its target and Nature's Swiftness on a heal are not modelled yet.
+
+use crate::prepare::heals::{
+    apply_heal_talent, register_heal, register_totem_heal, talent_rank, HealShape,
+};
+use crate::prepare::sim::{Sim, UnitId};
+use crate::prepare::spelldata::store::must_find;
+
+use super::masks;
+use super::Shaman;
+
+const HEALING_WAVE: &[i32] = &[331, 332, 547, 913, 939, 959, 8005, 10395, 10396, 25357];
+const LESSER_HEALING_WAVE: &[i32] = &[8004, 8008, 8010, 10466, 10467, 10468];
+const CHAIN_HEAL: &[i32] = &[1064, 10622, 10623];
+/// Riptide, a Forever talent: a heal and a heal over time on one player.
+const RIPTIDE: &[i32] = &[408521, 1239242, 1239243];
+/// Healing Stream Totem's totems and the heal each one's aura ticks, by rank.
+const HEALING_STREAM: &[(i32, i32)] = &[
+    (5394, 5672),
+    (6375, 6371),
+    (6377, 6372),
+    (10462, 10460),
+    (10463, 10461),
+];
+const PARTY: u32 = 5;
+
+/// The heal talents, as (talent, client row, ranks): Improved Healing Wave's cast time, Tidal
+/// Focus's cost, Tidal Mastery's crit, Healing Way, Purification's direct and Riptide periodic
+/// healing, Restorative Totems' Healing Stream ticks and Totemic Focus's totem cost.
+const HEAL_TALENTS: &[(&str, i32, i32)] = &[
+    ("improved_healing_wave", 16182, 5),
+    ("tidal_focus", 16179, 5),
+    ("tidal_mastery", 16194, 5),
+    ("healing_way", 29206, 3),
+    ("purification", 16178, 5),
+    ("restorative_totems", 16187, 5),
+    ("totemic_focus", 16173, 5),
+];
+
+impl Shaman {
+    /// Registers every heal rank the shaman knows.
+    pub(super) fn register_heals(&mut self, sim: &mut Sim, unit: UnitId) {
+        let mut ranks = Vec::new();
+        for &id in HEALING_WAVE.iter().chain(LESSER_HEALING_WAVE) {
+            ranks.push(register_heal(
+                sim,
+                unit,
+                must_find(id),
+                masks::HEAL,
+                HealShape::SINGLE,
+                None,
+            ));
+        }
+        for &id in CHAIN_HEAL {
+            let row = must_find(id);
+            let heal = row.heal_effect();
+            let shape = HealShape {
+                targets: u32::try_from(heal.chain_targets.max(1)).unwrap_or(1),
+                jump_multiplier: f64::from(heal.chain_amp),
+            };
+            ranks.push(register_heal(sim, unit, row, masks::HEAL, shape, None));
+        }
+        if self.has_talent("riptide") {
+            let timer = sim.new_timer(unit);
+            for &id in RIPTIDE {
+                ranks.push(register_heal(
+                    sim,
+                    unit,
+                    must_find(id),
+                    masks::HEAL,
+                    HealShape::SINGLE,
+                    Some(timer),
+                ));
+            }
+        }
+        for &(totem, heal) in HEALING_STREAM {
+            ranks.push(register_totem_heal(
+                sim,
+                unit,
+                must_find(totem),
+                must_find(heal),
+                masks::HEAL,
+                HealShape::party(PARTY),
+            ));
+        }
+        self.heals = ranks;
+    }
+
+    /// Applies the heal talents the shaman took.
+    pub(super) fn apply_heal_talents(&self, sim: &mut Sim, unit: UnitId) {
+        for &(name, spell_id, max_ranks) in HEAL_TALENTS {
+            apply_heal_talent(
+                sim,
+                unit,
+                spell_id,
+                max_ranks,
+                talent_rank(&self.talents, name),
+            );
+        }
+    }
+}

@@ -27,6 +27,9 @@ pub(crate) const SHAMANISTIC_RAGE: i64 = 1 << 22;
 pub(crate) const BASIC_TOTEM: i64 = 1 << 23;
 pub(crate) const SHIELD_SELF_PROC: i64 = 1 << 24;
 pub(crate) const LAVA_BURST: i64 = 1 << 25;
+/// MythicSim's healer sims (Rust only): every heal rank a Restoration shaman registers. Past
+/// Go's bits, so no mask of Go's names it.
+pub(crate) const HEAL: i64 = 1 << 40;
 
 pub(crate) const FLAME_SHOCK: i64 = FLAME_SHOCK_DIRECT | FLAME_SHOCK_DOT;
 pub(crate) const FIRE: i64 = FLAME_SHOCK | FIRE_NOVA | LAVA_BURST;

@@ -12,6 +12,7 @@ mod bear;
 mod export;
 mod feral;
 pub(crate) mod forms;
+pub(crate) mod heals;
 pub(crate) mod items;
 pub(crate) mod masks;
 mod restoration;
@@ -42,10 +43,33 @@ pub(crate) enum Spec {
     Balance,
     FeralCat,
     FeralBear,
+    /// MythicSim's healer sims (Rust only): the druid heals in caster form.
+    Restoration,
 }
 
 /// tools/oracle-v2/druid.go `druidClassSpells`.
 static CLASS_SPELLS: &[ClassSpellName] = &[
+    // MythicSim's healer sims (Rust only): the Restoration druid's heals and Swiftmend.
+    ClassSpellName {
+        mask: masks::HEALING_TOUCH,
+        name: "heal",
+    },
+    ClassSpellName {
+        mask: masks::REJUVENATION,
+        name: "heal",
+    },
+    ClassSpellName {
+        mask: masks::REGROWTH,
+        name: "heal",
+    },
+    ClassSpellName {
+        mask: masks::WILD_GROWTH,
+        name: "heal",
+    },
+    ClassSpellName {
+        mask: masks::SWIFTMEND,
+        name: "swiftmend",
+    },
     ClassSpellName {
         mask: masks::ENTANGLING_ROOTS,
         name: "entangling_roots",
@@ -252,6 +276,8 @@ pub(crate) struct Druid {
     pub(super) demoralizing_roar_auras: Vec<Option<AuraId>>,
     pub(super) barkskin: Option<SpellId>,
     pub(super) options: SpecOptions,
+    /// A Restoration druid's heals, for the export.
+    pub(super) heals: Vec<crate::prepare::heals::HealRank>,
 }
 
 /// The spec options the construction reads.
@@ -276,6 +302,7 @@ pub(crate) fn new_druid(
         "balance_druid" => Spec::Balance,
         "feral_cat_druid" => Spec::FeralCat,
         "feral_bear_druid" => Spec::FeralBear,
+        "restoration_druid" => Spec::Restoration,
         other => {
             return Err(Refusal::new(
                 "spec",
@@ -339,6 +366,7 @@ pub(crate) fn new_druid(
         Spec::Balance => MOONKIN,
         Spec::FeralCat => CAT,
         Spec::FeralBear => BEAR,
+        Spec::Restoration => HUMANOID,
     };
     let mut druid = Druid {
         unit,
@@ -387,6 +415,7 @@ pub(crate) fn new_druid(
         demoralizing_roar_auras: Vec::new(),
         barkskin: None,
         options: SpecOptions::default(),
+        heals: Vec::new(),
     };
 
     match spec {
@@ -461,6 +490,8 @@ pub(crate) fn new_druid(
             druid.register_bear_form_aura(sim);
             druid.register_cat_form_aura(sim);
         }
+        // Caster form: the healer never shifts, and has no auto attacks.
+        Spec::Restoration => {}
     }
     Ok(Box::new(druid))
 }
@@ -498,8 +529,9 @@ impl Druid {
 impl PrepAgent for Druid {
     fn add_party_buffs(&self, sim: &Sim, party_buffs: &mut Message) {
         match self.spec {
-            // BalanceDruid does not override AddPartyBuffs: Druid's does.
-            Spec::Balance => {
+            // BalanceDruid does not override AddPartyBuffs: Druid's does. A Restoration druid
+            // in caster form adds nothing.
+            Spec::Balance | Spec::Restoration => {
                 if self.st.in_form(sim, BEAR | CAT) && self.tal.leader_of_the_pack {
                     party_buffs.set_bool("leader_of_the_pack", true);
                 } else if self.st.in_form(sim, MOONKIN) && self.tal.moonkin_form {
@@ -520,6 +552,9 @@ impl PrepAgent for Druid {
         self.register_balance_talents(sim);
         self.register_feral_combat_talents(sim);
         self.register_restoration_talents(sim);
+        if self.spec == Spec::Restoration {
+            self.apply_heal_talents(sim);
+        }
     }
 
     /// druid.go Initialize's item swap callback: in Cat or Bear Form the paw takes the weapon
@@ -538,13 +573,14 @@ impl PrepAgent for Druid {
             Spec::Balance => self.register_balance_spells(sim),
             Spec::FeralCat => self.register_feral_cat_spells(sim),
             Spec::FeralBear => self.register_feral_tank_spells(sim),
+            Spec::Restoration => self.register_heals(sim),
         }
     }
 
     fn reset(&mut self, sim: &mut Sim, unit: UnitId) {
         self.st.set_form(sim, self.st.starting_form);
         match self.spec {
-            Spec::Balance => {}
+            Spec::Balance | Spec::Restoration => {}
             Spec::FeralCat => {
                 self.st.clear_form(sim, unit);
                 if let Some(aura) = self.cat_form_aura {

@@ -16,4 +16,5 @@ pub(crate) mod rake;
 pub(crate) mod rip;
 pub(crate) mod shifting_power;
 pub(crate) mod starfire;
+pub(crate) mod swiftmend;
 pub(crate) mod wrath;

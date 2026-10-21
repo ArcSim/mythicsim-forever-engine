@@ -3,6 +3,7 @@
 //! description (tools/oracle-v2/shaman.go).
 
 mod export;
+mod heals;
 mod imbues;
 pub(crate) mod items;
 pub(crate) mod masks;
@@ -29,6 +30,11 @@ const TALENT_TREE_SIZES: [usize; 3] = [16, 18, 16];
 
 /// tools/oracle-v2/shaman.go `shamanClassSpells`.
 static CLASS_SPELLS: &[ClassSpellName] = &[
+    // MythicSim's healer sims (Rust only): the Restoration shaman's heals.
+    ClassSpellName {
+        mask: masks::HEAL,
+        name: "heal",
+    },
     ClassSpellName {
         mask: masks::FLAME_SHOCK_DIRECT,
         name: "flame_shock_direct",
@@ -184,6 +190,8 @@ pub(crate) struct Shaman {
     magma_totem: Option<SpellId>,
     /// Go `FlametongueTotemAura`.
     flametongue_totem_aura: Option<AuraId>,
+    /// A Restoration shaman's heals, for the export.
+    heals: Vec<crate::prepare::heals::HealRank>,
 }
 
 /// Go `Character.WeaponFromMainHand`.
@@ -296,6 +304,7 @@ pub(crate) fn new_shaman(
         flame_shock: None,
         magma_totem: None,
         flametongue_totem_aura: None,
+        heals: Vec::new(),
     };
 
     match spec {
@@ -387,6 +396,9 @@ impl PrepAgent for Shaman {
         self.register_elemental_talents(sim, unit);
         self.register_enhancement_talents(sim, unit);
         self.register_restoration_talents(sim, unit);
+        if self.spec == Spec::Restoration {
+            self.apply_heal_talents(sim, unit);
+        }
     }
 
     /// Go `Shaman.Initialize` and the specs' own: the spells, then the imbues of an Enhancement
@@ -399,7 +411,12 @@ impl PrepAgent for Shaman {
         self.register_searing_totem_spell(sim, unit);
         self.register_flametongue_totem_spell(sim, unit);
         self.register_fire_nova_spell(sim, unit);
-        self.register_windfury_totem_spell(sim, unit);
+        // A Restoration shaman has no weapon swing for Windfury Totem's attack, and heals.
+        if self.spec == Spec::Restoration {
+            self.register_heals(sim, unit);
+        } else {
+            self.register_windfury_totem_spell(sim, unit);
+        }
         self.register_strength_of_earth_totem_spell(sim, unit);
         self.register_grace_of_air_totem_spell(sim, unit);
         self.register_mana_spring_totem_spell(sim, unit);

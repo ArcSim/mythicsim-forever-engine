@@ -2,6 +2,7 @@
 //! Priest description (tools/oracle-v2/priest.go).
 
 mod export;
+mod heals;
 pub(crate) mod items;
 pub(crate) mod masks;
 mod shadowfiend;
@@ -112,6 +113,10 @@ static CLASS_SPELLS: &[ClassSpellName] = &[
         mask: masks::DIVINE_GRACE,
         name: "divine_grace",
     },
+    ClassSpellName {
+        mask: masks::HEAL,
+        name: "heal",
+    },
 ];
 
 /// Go `Priest`: the talents, the class options and what the registrations keep.
@@ -137,6 +142,9 @@ pub(crate) struct Priest {
     holy_fire: Vec<SpellId>,
     /// Every Shadow Word: Pain rank the priest knows, which Power in Light also reads.
     shadow_word_pain: Vec<SpellId>,
+    /// A `healer_priest`: the heals and heal talents of MythicSim's healer sims (Rust only).
+    healer: bool,
+    heals: Vec<crate::prepare::heals::HealRank>,
 }
 
 /// Go `NewPriest` and `NewHealerPriest`: the spec decides where the class options are read.
@@ -206,6 +214,8 @@ pub(crate) fn new_priest(
         shadow_weaving_aura: None,
         holy_fire: Vec::new(),
         shadow_word_pain: Vec::new(),
+        healer: player.message("healer_priest").is_some(),
+        heals: Vec::new(),
     }))
 }
 
@@ -219,11 +229,17 @@ impl PrepAgent for Priest {
 
     fn apply_talents(&mut self, sim: &mut Sim, unit: UnitId) {
         self.apply_priest_talents(sim, unit);
+        if self.healer {
+            self.apply_heal_talents(sim, unit);
+        }
     }
 
-    /// Go `Priest.Initialize`.
+    /// Go `Priest.Initialize`, and the healer's heals.
     fn initialize(&mut self, sim: &mut Sim, unit: UnitId) {
         self.register_spells(sim, unit);
+        if self.healer {
+            self.register_heals(sim, unit);
+        }
     }
 
     /// Go `Shadowfiend.Initialize`.

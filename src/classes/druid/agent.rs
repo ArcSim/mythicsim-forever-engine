@@ -5,7 +5,7 @@ use std::rc::Rc;
 
 use crate::{
     contracts::prepared_v2::{Effect, PreparedV2, Spell as ExportedSpell, Weapon},
-    core::fight::{Agent, AuraRef, DotId, Fight, Side, SpellId, SpellResult},
+    core::fight::{heals::HealBook, Agent, AuraRef, DotId, Fight, Side, SpellId, SpellResult},
 };
 
 use super::{
@@ -24,7 +24,7 @@ use super::{
         rake::{self, Rake},
         rip::{self, Rip},
         shifting_power::{self, ShiftingPower},
-        starfire, wrath,
+        starfire, swiftmend, wrath,
     },
     talents::{
         berserk::{self, Berserk},
@@ -70,6 +70,10 @@ pub(crate) enum DruidSpell {
     FrenziedRegeneration,
     /// A survival cooldown Go never casts without a health threshold: only its cast checks run.
     Survival,
+    /// A heal of MythicSim's healer sims (`core::fight::heals`).
+    Heal,
+    /// Swiftmend, which consumes a Rejuvenation or Regrowth on the player.
+    Swiftmend,
 }
 
 /// Class auras with Rust behavior.
@@ -129,6 +133,9 @@ impl FormWeapons {
 
 /// Druid state that Go keeps in the `Druid` struct and its closures.
 pub(crate) struct DruidAgent {
+    /// The Restoration druid's heals, and the ranks Swiftmend consumes, Rejuvenation first.
+    heals: Option<Rc<HealBook>>,
+    swiftmend_hots: Vec<usize>,
     /// With an item swap, each set's weapon in caster form and paw, Main then Swap1.
     form_weapons: Option<[FormWeapons; 2]>,
     moonkin_form: Option<AuraRef>,
@@ -181,6 +188,8 @@ pub(crate) struct DruidAgent {
 impl Default for DruidAgent {
     fn default() -> Self {
         DruidAgent {
+            heals: None,
+            swiftmend_hots: Vec::new(),
             moonkin_form: None,
             moonfire_dot: None,
             insect_swarm_debuff: None,
@@ -354,6 +363,8 @@ impl DruidAgent {
             return Some(DruidSpell::Survival);
         }
         match spell.class_spell.as_deref()? {
+            "heal" => Some(DruidSpell::Heal),
+            "swiftmend" => Some(DruidSpell::Swiftmend),
             "moonkin_form" => Some(DruidSpell::MoonkinForm),
             "starfire" if spell.damage_effect.is_some() => Some(DruidSpell::Starfire),
             "wrath" if spell.damage_effect.is_some() => Some(DruidSpell::Wrath),
@@ -436,6 +447,19 @@ impl DruidAgent {
         };
         for effect in &prepared.effects {
             match effect {
+                Effect::Heals {
+                    heals,
+                    player,
+                    bonus_healing_taken,
+                } => {
+                    let book = HealBook::bind(&fight, heals, *player, *bonus_healing_taken)?;
+                    let rank_of = |id: &i32| heals.iter().position(|heal| heal.spell_id == *id);
+                    fight.agent.swiftmend_hots = swiftmend::CONSUMES
+                        .iter()
+                        .flat_map(|ids| ids.iter().rev().filter_map(rank_of))
+                        .collect();
+                    fight.agent.heals = Some(Rc::new(book));
+                }
                 Effect::DruidForms {
                     starting_form,
                     spells,
@@ -1079,6 +1103,18 @@ impl Agent for DruidAgent {
 
     fn apply_effects(fight: &mut Fight<Self>, spell: SpellId, target: Side, behavior: DruidSpell) {
         match behavior {
+            DruidSpell::Heal => {
+                let book = fight.agent.heals.clone().expect("the heals are bound");
+                let rank = book
+                    .rank_of(spell)
+                    .expect("a heal is one of the bound ranks");
+                book.cast(fight, rank);
+            }
+            DruidSpell::Swiftmend => {
+                let book = fight.agent.heals.clone().expect("the heals are bound");
+                let ranks = fight.agent.swiftmend_hots.clone();
+                swiftmend::cast(fight, &book, &ranks, spell);
+            }
             DruidSpell::MoonkinForm => {
                 let aura = fight.agent.moonkin_form.expect("Moonkin Form is bound");
                 fight.activate_aura(aura);
@@ -1169,6 +1205,11 @@ impl Agent for DruidAgent {
 
     fn extra_cast_condition(fight: &Fight<Self>, _spell: SpellId, behavior: DruidSpell) -> bool {
         match behavior {
+            DruidSpell::Swiftmend => fight
+                .agent
+                .heals
+                .as_ref()
+                .is_some_and(|book| book.hot_up(fight, &fight.agent.swiftmend_hots).is_some()),
             DruidSpell::Innervate => Self::innervate(fight).can_cast(fight),
             DruidSpell::Prowl => Self::prowl(fight).can_cast(fight),
             DruidSpell::Builder(builder) => Self::builders(fight).can_cast(fight, builder),
@@ -1344,6 +1385,10 @@ impl Agent for DruidAgent {
 
     fn on_dot_tick(fight: &mut Fight<Self>, dot: DotId, behavior: DruidSpell) {
         match behavior {
+            DruidSpell::Heal => {
+                let book = fight.agent.heals.clone().expect("the heals are bound");
+                book.tick(fight, dot);
+            }
             DruidSpell::MoonfireDot | DruidSpell::InsectSwarm => fight.snapshot_dot_tick(dot),
             DruidSpell::Hurricane => {
                 let state = fight.agent.hurricane.expect("Hurricane is bound");

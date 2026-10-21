@@ -39,6 +39,8 @@ const EFFECTS: &[&str] = &[
     "shadow_word_pain",
     "shadowform",
     "smite",
+    // MythicSim's healer sims (Rust only, checked against the client rows, not Go).
+    "heals",
 ];
 
 /// Go registers Inner Focus (talents_discipline.go) and Dark Sacrifice (dark_sacrifice.go)
@@ -75,6 +77,7 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "smite" if spell.damage_effect.is_some() => Some("smite"),
         "holy_fire" if spell.damage_effect.is_some() && spell.dot.is_some() => Some("holy_fire"),
         "penance" if spell.dot.as_ref().is_some_and(|dot| dot.channeled) => Some("penance"),
+        "heal" => Some("heals"),
         _ => None,
     }
 }

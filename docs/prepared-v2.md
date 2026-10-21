@@ -171,6 +171,7 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `holy_shield` | sim/paladin/holy_shield.go | Every rank: its block chance aura, charges and the Holy damage each block casts, and whether the paladin carries a shield; the block chance auras of the ranks the rotation names join `stat_auras` |
 | `illumination` | sim/paladin/talents_holy.go | A heal crit's chance, keyed by the trigger's name, to return the talent's share of the heal's base cost a batch window later, with its mana metrics |
 | `paladin_heals` | sim/paladin/holy_light.go, flash_of_light.go, holy_shock.go | Every Holy Light, Flash of Light and Holy Shock heal rank's roll, which draws only with a variance, the Libram of Light's Flash of Light bonus, Greater Blessing of Light's bonuses, and the paladin's healing modifiers, bonus healing taken and blessing on itself and on the target. A plain cast heals the current target, as Go does; the core heal adds the coefficient on healing power, which `stat_auras` carries when a combination changes it, rolls the healing crit on spell crit, counts crit healing, gives the player its health and fires the caster's heal listeners; a Holy Light or Flash of Light with a cast time restarts the melee swing after it ends |
+| `heals` | none: MythicSim's healer sims, Rust only (`core::fight::heals`, `prepare::heals`) | Every heal rank a Priest, Restoration Shaman or Restoration Druid healer registers from its client row: the direct heal's roll, the players it lands on and a chain heal's falloff, a heal over time's tick, a shield's absorb, and the player's healing modifiers and bonus healing taken. Every heal lands on the player and counts in full; a direct heal adds its coefficient on healing power and rolls the healing crit, a heal over time snapshots its tick and periodic multipliers when it goes up and, cast again while it runs, still counts the ticks left of the one running, as it would on another player, and a shield counts its absorb as shielding, which healing per second includes. Swiftmend consumes a Rejuvenation or Regrowth and heals all of its ticks |
 | `lay_on_hands` | sim/paladin/lay_on_hands.go | Each Lay on Hands rank the rotation names and the mana it restores: the cast spends all the paladin's mana, restores the rank's mana when it heals the paladin, and heals for the paladin's live maximum health through the core heal; a target with a mana bar is unsupported |
 | `stat_proc` | sim/common/forever/item_sets_classic.go | A set bonus proc: each spell's chance from its proc manager, the trigger's name that keys the roll, and the temporary stats aura it activates a batch window later, with its log lines. A weapon proc whose aura is the row's parsed effects, Sword of Zeal's and Argent Avenger's, has no log lines and its aura joins `stat_auras`. Bonereaver's Edge's handler also adds a stack of its stacking aura after it activates it (`add_stack`) |
 | `divine_favor` | sim/paladin/divine_favor.go | The major cooldown, its aura's crit and the spells it names, whose cast spends it |
@@ -1116,3 +1117,11 @@ fused bonus coefficient rounds differently from a separate multiply and add
 Rust: the player's `hps` is all its healing over the fight. The
 [Holy Paladin sweep](../validation/2026-10-21-holy-paladin-sweep.json) compares 120 randomized variants
 of the first two.
+
+## Healer fixtures
+
+The Priest, Restoration Shaman and Restoration Druid healers have no Go golden: Go has none of
+their heals. `tests/healers.rs` runs each request in `fixtures/healers` and checks first-fight log
+lines worked out by hand from the client rows (each rank's amount at level 60, its coefficient on
+the healing power the line states and the talents' client modifiers at their ranks), and keeps
+each fight's healing by spell in a Rust golden so a change that moves it shows.

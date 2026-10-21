@@ -169,18 +169,25 @@ fn every_druid_case_prepares_as_go_does() {
     );
 }
 
-/// A Druid spec the engine does not prepare is refused with a stable code, never approximated.
+/// A Restoration druid prepares in caster form with its heals, which Rust alone sims (the
+/// healer sims in `tests/healers.rs`).
 #[test]
-fn a_restoration_druid_is_refused() {
+fn a_restoration_druid_is_prepared_with_its_heals() {
     let request = fs::read(directory().join("cat.request.json")).unwrap();
     let mut value: Value = serde_json::from_slice(&request).unwrap();
     let player = &mut value["raid"]["parties"][0]["players"][0];
     player.as_object_mut().unwrap().remove("feralCatDruid");
     player["restorationDruid"] = serde_json::json!({"options": {"classOptions": {}}});
-    match forever_engine::prepare_json(&serde_json::to_vec(&value).unwrap(), "x") {
-        Err(forever_engine::PrepareError::Refused(refusal)) => assert_eq!(refusal.code, "spec"),
-        other => panic!("expected a refusal, got {other:?}"),
-    }
+    let prepared = forever_engine::prepare_json(&serde_json::to_vec(&value).unwrap(), "x")
+        .expect("a Restoration druid is prepared");
+    let heals = prepared["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|effect| effect["kind"] == "heals")
+        .expect("the heals are exported");
+    // Every rank of Healing Touch, Rejuvenation and Regrowth.
+    assert_eq!(heals["heals"].as_array().unwrap().len(), 11 + 11 + 9);
 }
 
 /// A bear tanking the target is prepared with the target's swing at it; the fixture harness

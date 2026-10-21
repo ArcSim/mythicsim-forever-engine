@@ -962,8 +962,9 @@ Go on every field ([record](../validation/2026-10-03-report-compatibility.json))
 ## Results and comparison
 
 `sim` writes the engine identity and a `result` in Go's `RaidSimResult` JSON shape:
-raid, party and unit distributions (DPS, threat, time to out of mana, and the healing,
-damage taken and TMI that stay zero in scope), action, aura and resource metrics for
+raid, party and unit distributions (DPS, threat, time to out of mana, healing, which is
+the heals the player casts or receives counted in full, and the damage taken and TMI of a
+tank), action, aura and resource metrics for
 the player and the target, iteration durations and the debug log. Zero values are
 omitted as protojson omits them. Each action's metrics on a target also carry the count,
 total, smallest and largest of its landed hits, crits, ticks and crit ticks (`hitRange`,
@@ -1104,3 +1105,15 @@ that read `rotation_reads` (`apl-warrior-selected-consumables`, `apl-warrior-cd-
 `apl-warrior-item-stat-procs`, `apl-warrior-cast-all-stat-buff-cooldowns`,
 `apl-warrior-prepull-stat-buffs`), the dot increases through the expected tick
 (`apl-shadow-dot-increase`, `apl-feral-dot-increase`) and `apl-shadow-change-target`.
+
+## Holy Paladin heal fixtures
+
+Three requests cover a Holy Paladin healing, each with Go goldens and a first-fight log: Holy Light,
+Flash of Light and Holy Shock cast on the player with Divine Favor, Illumination and Infusion of Light
+(`holy-paladin-healing`), Greater Blessing of Light on the healed player over 300 seconds until out of
+mana (`holy-paladin-blessing-of-light-oom`), and a fight whose first Holy Shock crit lands where Go's
+fused bonus coefficient rounds differently from a separate multiply and add
+(`holy-paladin-fused-bonus-healing`). Go counts every heal in full, with no overhealing, and so does
+Rust: the player's `hps` is all its healing over the fight. The
+[Holy Paladin sweep](../validation/2026-10-21-holy-paladin-sweep.json) compares 120 randomized variants
+of the first two.

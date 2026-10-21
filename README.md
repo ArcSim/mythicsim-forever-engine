@@ -41,7 +41,9 @@ Rust, or tells the worker to run it in Go and says why.
 
 MythicSim's Forever Quick Sims run in Rust, for every class and spec it offers: the Druid,
 Hunter, Mage, Paladin, Priest, Rogue, Shaman, Warlock and Warrior damage and tank specs, with
-their talents, gear, buffs, consumables, pets, tanking and 2 to 5 targets.
+their talents, gear, buffs, consumables, pets, tanking and 2 to 5 targets. Holy Paladin heal
+sims match Go too: heals cast on the player and counted in full, as Go counts them, so the
+healing per second is what the healer can put out with its mana.
 
 These still run in Go:
 

@@ -43,7 +43,8 @@ impl<A: Agent> Fight<A> {
         let healing_power = self.unit(caster).powers.healing_power + bonus_healing_taken;
         let mut base = base_healing;
         if state.bonus_coefficient > 0.0 {
-            base += state.bonus_coefficient * healing_power;
+            // Go fuses `baseHealing += spell.BonusCoefficient * spell.HealingPower(target)`.
+            base = state.bonus_coefficient.mul_add(healing_power, base);
         }
         let multiplier = if state.flags.ignore_attacker_modifiers {
             1.0
@@ -152,7 +153,8 @@ impl<A: Agent> Fight<A> {
         let state = &self.spells[spell];
         let mut base = base;
         if state.bonus_coefficient > 0.0 {
-            base += state.bonus_coefficient * healing.healing_power;
+            // Go fuses `baseHealing += spell.BonusCoefficient * spell.HealingPower(target)`.
+            base = state.bonus_coefficient.mul_add(healing.healing_power, base);
         }
         let caster = if state.flags.ignore_attacker_modifiers {
             1.0

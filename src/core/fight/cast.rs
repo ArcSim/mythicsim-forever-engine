@@ -127,7 +127,7 @@ impl<A: Agent> Fight<A> {
     /// make it pass, and what could (the range, then the class's word for its own condition).
     pub(crate) fn extra_condition_proof(&self, spell: SpellId) -> Option<(i64, u8)> {
         let state = &self.spells[spell];
-        let distance = self.unit_config(state.caster).distance;
+        let distance = self.distance_now(state.caster);
         if (state.min_range != 0.0 && distance < state.min_range)
             || (state.max_range != 0.0 && distance > state.max_range)
         {
@@ -144,7 +144,7 @@ impl<A: Agent> Fight<A> {
     pub(crate) fn extra_cast_condition(&mut self, spell: SpellId) -> bool {
         // Go RegisterSpell wraps the condition with the range check, which runs first.
         let state = &self.spells[spell];
-        let distance = self.unit_config(state.caster).distance;
+        let distance = self.distance_now(state.caster);
         if (state.min_range != 0.0 && distance < state.min_range)
             || (state.max_range != 0.0 && distance > state.max_range)
         {

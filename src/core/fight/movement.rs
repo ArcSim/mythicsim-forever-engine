@@ -211,6 +211,19 @@ impl<A: Agent> Fight<A> {
         }
     }
 
+    /// Go `Unit.DistanceNow` (fork patch 192): where the unit is at this moment, along its move
+    /// if it is moving, without `update_position`'s side effects. In the rotation it equals the
+    /// distance the rotation has just brought up to date.
+    pub(crate) fn distance_now(&self, side: Side) -> f64 {
+        if self.unit(side).moving {
+            if let Some(movement) = self.unit(side).movement {
+                return movement.src_position
+                    + (self.now - movement.start) as f64 * movement.speed / NS_PER_SECOND as f64;
+            }
+        }
+        self.unit_config(side).distance
+    }
+
     /// Go `Unit.FinalizeMovement`.
     pub(crate) fn finalize_movement(&mut self, side: Side) {
         if !self.unit(side).moving {

@@ -807,18 +807,26 @@ fn a_prepull_charge_runs_to_the_target() {
     assert!(has_line(&logs, "0.00", "Casting {OtherID: 3, Tag: 1}"));
 }
 
-/// Go reads a unit's position only when the rotation runs or a move starts, so a Charge cast
-/// while the first move is still running checks the range the move started from and fails
-/// silently. The warrior stays out of melee range and never swings.
+/// Fork patch 192: a spell's range check reads where a moving unit is. The warrior walks out to 25
+/// yards from -6 s and casts its prepull Charge at -3 s, 21 yards out, inside Charge's 8 to 25
+/// yards: it charges in and swings. Before the patch the range check read the 0 yards the walk
+/// started from, the Charge failed silently and the warrior never swung.
 #[test]
-fn charge_cast_while_moving_checks_the_old_range() {
+fn charge_cast_while_moving_checks_the_current_range() {
     let logs = first_fight_log(warrior_fixture(
         "production-warrior-prepull-charge-while-moving",
     ));
     assert!(logs.contains("[DEBUG] Moving to 25.0 yards"));
-    assert!(!logs.contains("Casting {SpellID: 11578}"));
-    assert!(!logs.contains("Movement speed changed"));
-    assert!(!logs.contains("Casting {OtherID: 3"));
+    assert!(
+        has_line(&logs, "-3.00", "Casting {SpellID: 11578}"),
+        "{logs}"
+    );
+    assert!(has_line(
+        &logs,
+        "-3.00",
+        "[DEBUG] Movement speed changed from 7.00 (0.00%) to 21.00 (200.00%)"
+    ));
+    assert!(logs.contains("Casting {OtherID: 3"), "{logs}");
 }
 
 /// A second move starts from the position the first has reached and replaces it, without

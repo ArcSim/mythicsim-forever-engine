@@ -32,6 +32,7 @@ mod revelation;
 pub(crate) use on_use_damage::known as on_use_damage_known;
 mod heal_proc;
 pub(crate) mod healing;
+pub(crate) mod heals;
 mod log;
 pub(crate) mod melee;
 pub(crate) mod metrics;
@@ -750,6 +751,8 @@ pub(crate) struct SpellMetrics {
     pub(crate) total_cast_time: i64,
     pub(crate) total_healing: f64,
     pub(crate) total_crit_healing: f64,
+    /// Go `TotalShielding`: the absorb shields the spell put on the unit.
+    pub(crate) total_shielding: f64,
     /// The spread of each kind of landed damage event (patch 92).
     pub(crate) hit_range: DamageRange,
     pub(crate) crit_range: DamageRange,

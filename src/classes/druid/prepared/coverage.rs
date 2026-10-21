@@ -54,11 +54,14 @@ const EFFECTS: &[&str] = &[
     "swipe",
     "unending_life_refund",
     "wrath",
+    // MythicSim's healer sims (Rust only, checked against the client rows, not Go).
+    "heals",
 ];
 
 /// The effect kind whose implementation executes a Druid spell.
 fn spell_capability(spell: &Spell) -> Option<&'static str> {
     match spell.class_spell.as_deref()? {
+        "heal" | "swiftmend" => Some("heals"),
         "moonkin_form" => Some("moonkin_form"),
         "starfire" if spell.damage_effect.is_some() => Some("starfire"),
         "wrath" if spell.damage_effect.is_some() => Some("wrath"),
@@ -170,6 +173,8 @@ fn limits(prepared: &PreparedV2, reachable: &[&Spell]) -> Vec<String> {
                 // may leave and return; Moonkin Form keeps its form for the fight.
                 let (current, leaves): (&str, bool) = match starting_form.as_slice() {
                     [form] if form == "moonkin" => ("moonkin", false),
+                    // A Restoration druid heals in caster form and never shifts.
+                    [form] if form == "humanoid" => ("humanoid", false),
                     [form] if form == "cat" && cat => ("cat", true),
                     [form] if form == "bear" && bear => ("bear", true),
                     _ => {

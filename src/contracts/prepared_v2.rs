@@ -1290,6 +1290,32 @@ pub struct HealModifiers {
     pub healing_power: f64,
 }
 
+/// One heal rank a healer casts on the player, in MythicSim's healer sims (Rust only, no Go
+/// counterpart): every heal lands on a player who needs it and counts in full. A rank can heal
+/// at once, over time, both (Regrowth) or shield; the spell carries its cost, cast, crit bonus,
+/// multipliers and the direct or shield's healing power coefficient, and its dot the ticks, tick
+/// period and each tick's coefficient.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct HealSpell {
+    pub spell_id: i32,
+    /// The direct heal's client roll at the caster level, none for a heal over time or a shield.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub direct: Option<DamageEffect>,
+    /// How many players the direct heal lands on, each with its own roll and crit: one, a party
+    /// heal's party, or a chain heal's jumps.
+    pub targets: u32,
+    /// Each further player's share of the heal before it: a chain heal's falloff, one for a
+    /// party heal.
+    pub jump_multiplier: f64,
+    /// A heal over time's client amount per tick at the caster level.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tick: Option<f64>,
+    /// A shield's client absorb at the caster level, counted as shielding when it goes up.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub absorb: Option<f64>,
+}
+
 /// A client damage row's roll: spelldata `Effect.Roll` draws between the bounds unless the
 /// row has no variance, when it gives the average.
 #[derive(Clone, Copy, Debug, Deserialize, Serialize)]
@@ -2132,6 +2158,13 @@ pub enum Effect {
         blessing_flash_of_light: f64,
         player: PaladinHealUnit,
         target: PaladinHealUnit,
+    },
+    /// MythicSim's healer sims (Rust only): every heal rank a class registers for the player,
+    /// and the player's healing modifiers at reset with its bonus healing taken.
+    Heals {
+        heals: Vec<HealSpell>,
+        player: HealModifiers,
+        bonus_healing_taken: f64,
     },
     /// Paladin lay_on_hands.go: each rank the rotation names drains the paladin's mana,
     /// restores mana to the paladin when it heals the paladin, and heals for the paladin's
@@ -4510,6 +4543,7 @@ impl Effect {
             Effect::SealOfFury { .. } => "seal_of_fury",
             Effect::HolyLightHaste { .. } => "holy_light_haste",
             Effect::PaladinHeals { .. } => "paladin_heals",
+            Effect::Heals { .. } => "heals",
             Effect::LayOnHands { .. } => "lay_on_hands",
             Effect::EyeForAnEye { .. } => "eye_for_an_eye",
             Effect::PursuitOfJustice { .. } => "pursuit_of_justice",

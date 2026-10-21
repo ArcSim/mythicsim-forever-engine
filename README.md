@@ -4,10 +4,13 @@ A Rust simulation engine for WoW Forever. [MythicSim](https://mythicsim.com/wow-
 runs Forever Quick Sims on it, and the Go engine for the rest; [Coverage](#coverage) lists
 which is which.
 
-The engine follows [MythicSim's Go fork](https://github.com/sage3648/mythicsim-forever-engine-go)
-of [wowsims Forever](https://github.com/ElliotWood/Forever) exactly: event order, random
-numbers and float math match, so a sim gives the same result and the same combat log in
-either engine. Rust is 1.3x to 2x faster.
+The engine began as an exact port of [MythicSim's Go fork](https://github.com/sage3648/mythicsim-forever-engine-go)
+of [wowsims Forever](https://github.com/ElliotWood/Forever): event order, random numbers and
+float math match, so a sim the Go engine covers gives the same result and the same combat log
+in either engine. Rust is 1.3x to 2x faster. Since October 2026 new Forever work happens here
+only: the Go fork no longer takes patches and its frozen goldens guard what it covered, and
+mechanics Go never had, starting with the healer sims, are built and checked in Rust alone
+(see [Rust-only mechanics](#rust-only-mechanics)).
 
 ## Quick start
 
@@ -56,15 +59,26 @@ These still run in Go:
 - Quick Sims on MythicSim's second worker, which does not carry the Rust engine yet.
 
 A character Rust preparation does not cover yet is prepared by the Go exporter, and Rust
-still runs the fight. Go also stays the reference every Rust change is compared against.
+still runs the fight.
 
-## Keeping up with Go
+## The Go reference
 
-Each Go engine release moves the reference pin, currently Go revision
-`62b7445d1c812b257110e51a5b1e8db93b987972`, and Rust follows the changes. A match means the
-same behavior as that Go engine, not proof of the live game. [UPSTREAM.md](UPSTREAM.md) has
-the steps, and [docs/validation-summary.md](docs/validation-summary.md) lists the comparison
-records.
+The reference pin stays at Go revision `62b7445d1c812b257110e51a5b1e8db93b987972`, the last
+Go release. Every accepted fixture keeps its Go golden, so a change to a mechanic Go covers
+still has to match it or explain why it no longer should. A match means the same behavior as
+that Go engine, not proof of the live game. [UPSTREAM.md](UPSTREAM.md) records how the pin
+moved while Go led, and [docs/validation-summary.md](docs/validation-summary.md) lists the
+comparison records.
+
+## Rust-only mechanics
+
+Mechanics the Go engine never had have no Go golden. They are checked against the game's own
+numbers instead: the client spell rows, Wowhead Forever tooltips and logs, with focused tests
+that pin the expected heal, cost or timing from those numbers. A request that reaches one runs
+in Rust or is refused; it never falls back to Go, which would skip the spells it does not know.
+The healer sims are the first: every Holy Paladin, Priest, Restoration Shaman and Restoration
+Druid heal lands on a player who needs it and counts in full, so healing per second is what the
+healer can put out with its mana.
 
 ## Repository layout
 

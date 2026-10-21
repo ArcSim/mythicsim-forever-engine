@@ -5,7 +5,7 @@ use std::rc::Rc;
 
 use crate::{
     contracts::prepared_v2::{Effect, PreparedV2, Spell as ExportedSpell},
-    core::fight::{Agent, AuraRef, DotId, Fight, Side, SpellId, SpellResult},
+    core::fight::{heals::HealBook, Agent, AuraRef, DotId, Fight, Side, SpellId, SpellResult},
 };
 
 use super::{
@@ -32,6 +32,8 @@ pub(crate) enum PriestSpell {
     Smite,
     HolyFire,
     Penance,
+    /// A heal of MythicSim's healer sims (`core::fight::heals`).
+    Heal,
 }
 
 /// Class auras with Rust behavior.
@@ -64,6 +66,8 @@ pub(crate) struct PriestAgent {
     searing_light: Option<Rc<searing_light::SearingLight>>,
     /// Holy Nova's heal spell and base by damage spell, and the healing modifiers.
     holy_nova: Option<Rc<HolyNova>>,
+    /// The healer's heals.
+    heals: Option<Rc<HealBook>>,
     power_infusion: Option<Rc<power_infusion::PowerInfusion>>,
     shadowfiend: Option<Rc<shadowfiend::Shadowfiend>>,
 }
@@ -202,6 +206,7 @@ impl PriestAgent {
             "penance" if spell.dot.as_ref().is_some_and(|dot| dot.channeled) => {
                 Some(PriestSpell::Penance)
             }
+            "heal" => Some(PriestSpell::Heal),
             _ => None,
         }
     }
@@ -307,6 +312,14 @@ impl PriestAgent {
                 {
                     let bound = power_infusion::bind(&mut fight, aura)?;
                     fight.agent.power_infusion = Some(Rc::new(bound));
+                }
+                Effect::Heals {
+                    heals,
+                    player,
+                    bonus_healing_taken,
+                } => {
+                    let book = HealBook::bind(&fight, heals, *player, *bonus_healing_taken)?;
+                    fight.agent.heals = Some(Rc::new(book));
                 }
                 Effect::ShadowWordDeath { early_demise_crit } => {
                     fight.agent.early_demise_crit = *early_demise_crit;
@@ -505,6 +518,13 @@ impl Agent for PriestAgent {
 
     fn apply_effects(fight: &mut Fight<Self>, spell: SpellId, target: Side, behavior: PriestSpell) {
         match behavior {
+            PriestSpell::Heal => {
+                let book = fight.agent.heals.clone().expect("the heals are bound");
+                let rank = book
+                    .rank_of(spell)
+                    .expect("a heal is one of the bound ranks");
+                book.cast(fight, rank);
+            }
             PriestSpell::MindBlast | PriestSpell::Smite => direct::apply(fight, spell, target),
             // talents_holy.go: Go `CalcAndDealAoeDamageWithVariance`, which rolls, resolves and
             // deals the hit on each target in unit index order before the heal is cast on the
@@ -586,6 +606,10 @@ impl Agent for PriestAgent {
 
     fn on_dot_tick(fight: &mut Fight<Self>, dot: DotId, behavior: PriestSpell) {
         match behavior {
+            PriestSpell::Heal => {
+                let book = fight.agent.heals.clone().expect("the heals are bound");
+                book.tick(fight, dot);
+            }
             PriestSpell::MindFlay if fight.agent.mind_flay_ramp != 0.0 => {
                 // Improved Mind Flay: each tick deals the step more than the one before.
                 let mut result = fight.snapshot_dot_tick_calc(dot);

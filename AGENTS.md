@@ -1,7 +1,10 @@
 # Working in this repository
 
-- This experimental Rust engine is separate from the MythicSim app and Go engine.
-  Read README.md and ROADMAP.md before changing scope.
+- This Rust engine is separate from the MythicSim app and Go engine. Read README.md
+  and ROADMAP.md before changing scope.
+- New Forever work happens here only: do not patch the Go fork or port upstream
+  wowsims commits. Keep every accepted Go golden passing, and check Rust-only
+  mechanics against the client rows and tooltips (README, Rust-only mechanics).
 - Follow docs/contributor-guide.md for module ownership. Keep class spells and
   talents in their class domain, spec behavior in that class's specs domain, and
   reusable primitives in core/mechanics. Shared code must not import classes.

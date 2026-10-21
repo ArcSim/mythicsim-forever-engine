@@ -136,7 +136,9 @@ access to the application repository. Captures never replace accepted snapshots.
 3. Add a focused regression that fails with the old behavior. Use fixed seeds for
    random outcomes and cover relevant timing and resource boundaries.
 4. Compare against Go where the same mechanic is supported. Explain intentional
-   differences instead of forcing agreement with a known bug.
+   differences instead of forcing agreement with a known bug. A mechanic Go never had
+   (a Rust-only mechanic, see the README) has no Go golden: cite the client rows or
+   tooltips its numbers come from, and pin them in a test.
 
 Do not regenerate expected outputs merely to make a change pass. Fixture updates
 must explain the reference revision, generating command and reason.

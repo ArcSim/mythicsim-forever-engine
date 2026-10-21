@@ -6,7 +6,10 @@ use std::rc::Rc;
 use crate::{
     contracts::prepared_v2::{Effect, PreparedV2, Spell as ExportedSpell},
     core::{
-        fight::{Agent, AuraRef, DotId, Fight, Side, SpellId, SpellResult, PRIORITY_AUTO},
+        fight::{
+            heals::HealBook, Agent, AuraRef, DotId, Fight, Side, SpellId, SpellResult,
+            PRIORITY_AUTO,
+        },
         queue::Handle,
     },
 };
@@ -75,6 +78,8 @@ pub(crate) enum ShamanSpell {
     ElementalMastery,
     /// Rockbiter Weapon Proc (patch 181).
     RockbiterThreat,
+    /// A heal of MythicSim's healer sims (`core::fight::heals`).
+    Heal,
 }
 
 /// Class auras with Rust behavior.
@@ -113,6 +118,8 @@ pub(crate) enum ShamanAura {
 /// Shaman state that Go keeps in the `Shaman` struct and its closures.
 #[derive(Default)]
 pub(crate) struct ShamanAgent {
+    /// A Restoration shaman's heals.
+    heals: Option<Rc<HealBook>>,
     /// The overloads of each Lightning Bolt and Chain Lightning rank, by spellbook position:
     /// Lightning Bolt has one, and Chain Lightning one for each target it can hit, in hit order.
     overloads: Vec<Vec<SpellId>>,
@@ -297,6 +304,7 @@ impl ShamanAgent {
                 if *attack_spell_id == id.spell_id && id.tag == 0)
         });
         match spell.class_spell.as_deref()? {
+            "heal" => Some(ShamanSpell::Heal),
             "lightning_bolt" if damage && has("lightning_bolt") => Some(ShamanSpell::LightningBolt),
             "lightning_bolt_overload" if has("lightning_bolt") => {
                 Some(ShamanSpell::LightningBoltOverload)
@@ -521,6 +529,14 @@ impl ShamanAgent {
             .collect();
         for effect in &prepared.effects {
             match effect {
+                Effect::Heals {
+                    heals,
+                    player,
+                    bonus_healing_taken,
+                } => {
+                    let book = HealBook::bind(&fight, heals, *player, *bonus_healing_taken)?;
+                    fight.agent.heals = Some(Rc::new(book));
+                }
                 Effect::LightningBolt {
                     overload_chance,
                     overload_tag,
@@ -1041,6 +1057,13 @@ impl Agent for ShamanAgent {
 
     fn apply_effects(fight: &mut Fight<Self>, spell: SpellId, target: Side, behavior: ShamanSpell) {
         match behavior {
+            ShamanSpell::Heal => {
+                let book = fight.agent.heals.clone().expect("the heals are bound");
+                let rank = book
+                    .rank_of(spell)
+                    .expect("a heal is one of the bound ranks");
+                book.cast(fight, rank);
+            }
             ShamanSpell::LightningBolt | ShamanSpell::LightningBoltOverload => {
                 lightning_bolt::apply(fight, spell, target)
             }
@@ -1431,6 +1454,10 @@ impl Agent for ShamanAgent {
 
     fn on_dot_tick(fight: &mut Fight<Self>, dot: DotId, behavior: ShamanSpell) {
         match behavior {
+            ShamanSpell::Heal => {
+                let book = fight.agent.heals.clone().expect("the heals are bound");
+                book.tick(fight, dot);
+            }
             // Go CalcPeriodicAoeDamage and DealBatchedPeriodicDamage.
             ShamanSpell::MagmaTotem => {
                 let (base, _) = fight.agent.magma.expect("Magma Totem is bound");

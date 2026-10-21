@@ -198,6 +198,11 @@ impl Druid {
         let unit = env.player;
         let mut effects: Vec<Value> = Vec::new();
 
+        // MythicSim's healer sims (Rust only): the Restoration druid's heals.
+        if !self.heals.is_empty() {
+            effects.push(crate::prepare::heals::heals_effect(env, &self.heals));
+        }
+
         // druid.go RegisterSpell: the forms each spell may be cast in. forms.go: the form the
         // druid starts each fight in.
         let mut forms = Vec::new();

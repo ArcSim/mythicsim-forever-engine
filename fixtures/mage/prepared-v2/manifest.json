@@ -13789,6 +13789,69 @@
         "file": "all-values-affliction-warlock-labeled.go-result.json",
         "sha256": "415c6c8ce7f5c041236bf852fbd5b16a6c47ebed4a37ccdc75a80bf828d0f0c0"
       }
+    },
+    {
+      "id": "holy-paladin-healing",
+      "description": "A Holy Paladin healing itself on the heal rotation: Holy Light, Flash of Light and Holy Shock with Divine Favor, Illumination and Infusion of Light, healing counted in full as the healer sim reports it.",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/holy-paladin-healing.request.json"
+      },
+      "prepared": "holy-paladin-healing.prepared.json",
+      "prepared_sha256": "ab18dffad3c7af731ce6c0b0f5442f8681ad9a1f77885cb92597684d01379b1f",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "holy-paladin-healing.go-result.json",
+        "sha256": "65714e870c238818a2113f20073401cf05cb1d736c711ab78b645ce484a9f479"
+      },
+      "go_log": {
+        "file": "holy-paladin-healing.go-log.txt",
+        "sha256": "64b14590a5255eb0d1a273a63b00e9d4461949d3a4e66d5573e04053b4ec2ef4"
+      }
+    },
+    {
+      "id": "holy-paladin-blessing-of-light-oom",
+      "description": "A Holy Paladin with Greater Blessing of Light on the healed player and the deeper Holy talents, healing over 300 seconds until out of mana, with the Holy Shock crits whose bonus coefficient Go fuses.",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/holy-paladin-blessing-of-light-oom.request.json"
+      },
+      "prepared": "holy-paladin-blessing-of-light-oom.prepared.json",
+      "prepared_sha256": "b2061b45c6d2c001aa41d5d090ae3619edcf6d3c8080fba6e6982772f397b5b4",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "holy-paladin-blessing-of-light-oom.go-result.json",
+        "sha256": "83320ab2b4fef98e4ef06c944a8981ae3cc1a3cfa809d314b39f894285655f00"
+      },
+      "go_log": {
+        "file": "holy-paladin-blessing-of-light-oom.go-log.txt",
+        "sha256": "2ca8c4c0b6277d0a583bb71c0ce8ce268dbf2d595874eddfa86476c607c6bade"
+      }
+    },
+    {
+      "id": "holy-paladin-fused-bonus-healing",
+      "description": "A Holy Paladin whose first Divine Favor Holy Shock crit lands where Go's fused bonus coefficient (spell_result.go calcHealing) rounds differently from a separate multiply and add, from the Holy Paladin sweep.",
+      "request": {
+        "path": "fixtures/mage/prepared-v2/holy-paladin-fused-bonus-healing.request.json"
+      },
+      "prepared": "holy-paladin-fused-bonus-healing.prepared.json",
+      "prepared_sha256": "d26c676f8946e1e20a34beb809b004b77756eb62d207852053fa3d384864fc2d",
+      "expected_coverage": {
+        "supported": true,
+        "reasons": []
+      },
+      "go_result": {
+        "file": "holy-paladin-fused-bonus-healing.go-result.json",
+        "sha256": "135c54ebb0f33babf52c8d65ed298433d911c1a54cac705b88db68a58805f176"
+      },
+      "go_log": {
+        "file": "holy-paladin-fused-bonus-healing.go-log.txt",
+        "sha256": "8506f025eb120f98aa87d7bc4c906ca84b944373c194c454f6e8a5da396bfdd8"
+      }
     }
   ]
 }

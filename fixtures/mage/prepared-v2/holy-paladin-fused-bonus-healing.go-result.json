@@ -1,0 +1,3074 @@
+{
+  "avgIterationDuration": 30.154248979515,
+  "encounterMetrics": {
+    "targets": [
+      {
+        "actions": {
+          "{\"otherId\": \"OtherActionAttack\", \"tag\": 1}": {
+            "isMelee": true,
+            "spellSchool": 1,
+            "targets": [
+              {},
+              {
+                "unitIndex": 1
+              }
+            ]
+          },
+          "{\"otherId\": \"OtherActionAttack\", \"tag\": 2}": {
+            "isMelee": true,
+            "spellSchool": 1,
+            "targets": [
+              {},
+              {
+                "unitIndex": 1
+              }
+            ]
+          },
+          "{\"otherId\": \"OtherActionMove\"}": {
+            "isMelee": true,
+            "targets": [
+              {},
+              {
+                "unitIndex": 1
+              }
+            ]
+          }
+        },
+        "auras": {
+          "{\"otherId\": \"OtherActionMove\"}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 1310905}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 1310909}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 1311593}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 1311597}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 20184}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 20185}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 20186}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 20188}": {
+            "aggregatorData": {
+              "n": 200
+            },
+            "effects": [
+              {
+                "category": "Judgement of the Crusader"
+              }
+            ]
+          },
+          "{\"spellId\": 20300}": {
+            "aggregatorData": {
+              "n": 200
+            },
+            "effects": [
+              {
+                "category": "Judgement of the Crusader"
+              }
+            ]
+          },
+          "{\"spellId\": 20301}": {
+            "aggregatorData": {
+              "n": 200
+            },
+            "effects": [
+              {
+                "category": "Judgement of the Crusader"
+              }
+            ]
+          },
+          "{\"spellId\": 20302}": {
+            "aggregatorData": {
+              "n": 200
+            },
+            "effects": [
+              {
+                "category": "Judgement of the Crusader"
+              }
+            ]
+          },
+          "{\"spellId\": 20303}": {
+            "aggregatorData": {
+              "n": 200
+            },
+            "effects": [
+              {
+                "category": "Judgement of the Crusader"
+              }
+            ]
+          },
+          "{\"spellId\": 20344}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 20345}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 20346}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 20354}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 20355, \"tag\": -1}": {
+            "aggregatorData": {
+              "n": 200,
+              "sumSq": 197124.79907567994
+            },
+            "procsAvg": 1,
+            "uptimeSecondsAvg": 30.154248979514993,
+            "uptimeSecondsStdev": 8.737577688342391
+          },
+          "{\"spellId\": 20355}": {
+            "aggregatorData": {
+              "n": 200
+            }
+          },
+          "{\"spellId\": 21183}": {
+            "aggregatorData": {
+              "n": 200
+            },
+            "effects": [
+              {
+                "category": "Judgement of the Crusader"
+              }
+            ]
+          }
+        },
+        "dps": {
+          "aggregatorData": {
+            "n": 200
+          },
+          "hist": {
+            "0": 200
+          },
+          "minSeed": "51422806"
+        },
+        "dtps": {
+          "aggregatorData": {
+            "n": 200
+          },
+          "hist": {
+            "0": 200
+          },
+          "minSeed": "51422806"
+        },
+        "hps": {
+          "aggregatorData": {
+            "n": 200
+          },
+          "hist": {
+            "0": 200
+          },
+          "minSeed": "51422806"
+        },
+        "name": "Target 1",
+        "threat": {
+          "aggregatorData": {
+            "n": 200
+          },
+          "hist": {
+            "0": 200
+          },
+          "minSeed": "51422806"
+        },
+        "tmi": {
+          "aggregatorData": {
+            "n": 200
+          },
+          "hist": {
+            "0": 200
+          },
+          "minSeed": "51422806"
+        },
+        "tto": {
+          "aggregatorData": {
+            "n": 200
+          },
+          "hist": {
+            "0": 200
+          },
+          "minSeed": "51422806"
+        }
+      }
+    ]
+  },
+  "firstIterationDuration": 36.500487024,
+  "iterationsDone": 200,
+  "raidMetrics": {
+    "dps": {
+      "aggregatorData": {
+        "n": 200
+      },
+      "hist": {
+        "0": 200
+      },
+      "minSeed": "51422806"
+    },
+    "hps": {
+      "aggregatorData": {
+        "n": 200,
+        "sumSq": 90691090.27838846
+      },
+      "avg": 670.9898352456744,
+      "hist": {
+        "530": 1,
+        "540": 1,
+        "550": 1,
+        "560": 2,
+        "570": 6,
+        "580": 1,
+        "590": 4,
+        "600": 4,
+        "610": 12,
+        "620": 12,
+        "630": 11,
+        "640": 12,
+        "650": 17,
+        "660": 12,
+        "670": 14,
+        "680": 8,
+        "690": 10,
+        "700": 13,
+        "710": 15,
+        "720": 10,
+        "730": 11,
+        "740": 1,
+        "750": 6,
+        "760": 4,
+        "770": 6,
+        "780": 3,
+        "790": 1,
+        "810": 1,
+        "860": 1
+      },
+      "max": 861.8900218847604,
+      "maxSeed": "51422803",
+      "min": 530.8012711707787,
+      "minSeed": "51422665",
+      "stdev": 56.81630390059723
+    },
+    "parties": [
+      {
+        "dps": {
+          "aggregatorData": {
+            "n": 200
+          },
+          "hist": {
+            "0": 200
+          },
+          "minSeed": "51422806"
+        },
+        "hps": {
+          "aggregatorData": {
+            "n": 200,
+            "sumSq": 90691090.27838846
+          },
+          "avg": 670.9898352456744,
+          "hist": {
+            "530": 1,
+            "540": 1,
+            "550": 1,
+            "560": 2,
+            "570": 6,
+            "580": 1,
+            "590": 4,
+            "600": 4,
+            "610": 12,
+            "620": 12,
+            "630": 11,
+            "640": 12,
+            "650": 17,
+            "660": 12,
+            "670": 14,
+            "680": 8,
+            "690": 10,
+            "700": 13,
+            "710": 15,
+            "720": 10,
+            "730": 11,
+            "740": 1,
+            "750": 6,
+            "760": 4,
+            "770": 6,
+            "780": 3,
+            "790": 1,
+            "810": 1,
+            "860": 1
+          },
+          "max": 861.8900218847604,
+          "maxSeed": "51422803",
+          "min": 530.8012711707787,
+          "minSeed": "51422665",
+          "stdev": 56.81630390059723
+        },
+        "players": [
+          {
+            "actions": {
+              "{\"itemId\": 13444}": {
+                "targets": [
+                  {
+                    "casts": 200
+                  },
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"itemId\": 272439}": {
+                "targets": [
+                  {
+                    "casts": 200
+                  },
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"otherId\": \"OtherActionAttack\", \"tag\": 1}": {
+                "isMelee": true,
+                "spellSchool": 1,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"otherId\": \"OtherActionAttack\", \"tag\": 25584}": {
+                "isMelee": true,
+                "spellSchool": 1,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"otherId\": \"OtherActionAttack\", \"tag\": 2}": {
+                "isMelee": true,
+                "spellSchool": 1,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"otherId\": \"OtherActionManaGain\"}": {
+                "targets": [
+                  {
+                    "casts": 861,
+                    "threat": 256767.5
+                  },
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"otherId\": \"OtherActionMove\"}": {
+                "isMelee": true,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1026}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10290}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10291}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10292}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10293}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10298, \"tag\": 2}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10298}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10299, \"tag\": 2}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10299}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10300, \"tag\": 2}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10300}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10301, \"tag\": 2}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10301}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10310}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10312}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10313}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10314}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10318}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10328}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10329}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1032}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10332}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 10333}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1042}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1260198}": {
+                "isPassive": true,
+                "spellSchool": 32,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1310911}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1310914}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311590}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311592}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311595}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311598}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311605}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311606}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311647}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311649}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311650}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311654}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311655}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1311656}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 1866}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19746}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19750}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19876}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19888}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19891}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19895}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19896}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19897}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19898}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19899}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19900}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19939}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19940}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19941}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19942}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 19943}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "castTimeMs": 484500,
+                    "casts": 252,
+                    "critHealing": 21051.159550700006,
+                    "crits": 32,
+                    "healing": 117684.75232792336,
+                    "hits": 220,
+                    "threat": 117684.75232792336,
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20116}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20162}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20163}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20164}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20165}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20166}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20167}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20168}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20183}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20184}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20185}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20186}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20187}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20188}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20216}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "casts": 200,
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20231}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20271}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20280}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20281}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20282}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20283}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20284}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20285}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20286}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20287}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20288}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20289}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20290}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20291}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20292}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20293}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20300}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20301}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20302}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20303}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20305}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20306}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20307}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20308}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20333}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20334}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20340}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20344}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20345}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20346}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20347}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20348}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20349}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20350}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20351}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20354}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20355}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20356}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20357}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20411}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20412}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20413}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20414}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20415}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20416}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20417}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20418}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20419}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20421}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20422}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20423}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20473}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20922}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20923}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20924}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20929}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 20930}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 21082}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 21084}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 21183}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 24239}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 24274}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 24275}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 2495}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25292}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "castTimeMs": 4810000,
+                    "casts": 1820,
+                    "critHealing": 851597.3807193507,
+                    "crits": 316,
+                    "healing": 3554754.5343100037,
+                    "hits": 1504,
+                    "threat": 3554754.5343100037,
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25713}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25735}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25736}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25737}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25738}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25739}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25740}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25741}": {
+                "isMelee": true,
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25780}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25903}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "castTimeMs": 940500,
+                    "casts": 627,
+                    "critHealing": 211671.72749999972,
+                    "crits": 313,
+                    "healing": 353237.0575,
+                    "hits": 314,
+                    "threat": 353237.0575,
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25913}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 25914}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 26573}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 2800}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 2812}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 3472}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 407632}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 465}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 5569}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 5614}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 5615}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 633}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 635}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 639}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 643}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 647}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 678}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 679}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 680}": {
+                "isMelee": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 7294, \"tag\": 2}": {
+                "isPassive": true,
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 7294}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              },
+              "{\"spellId\": 879}": {
+                "spellSchool": 2,
+                "targets": [
+                  {},
+                  {
+                    "unitIndex": 1
+                  }
+                ]
+              }
+            },
+            "auras": {
+              "{\"itemId\": 272439}": {
+                "aggregatorData": {
+                  "n": 200,
+                  "sumSq": 45000
+                },
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 15
+              },
+              "{\"otherId\": \"OtherActionMove\"}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 10290}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "DevotionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 10291}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "DevotionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 10292}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "DevotionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 10293}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "DevotionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 10298}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "RetributionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 10299}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "RetributionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 10300}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "RetributionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 10301}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "RetributionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 1032}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "DevotionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 10610, \"tag\": -1}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "WindfuryTotemAttackPowerAdd"
+                  }
+                ]
+              },
+              "{\"spellId\": 1311649, \"tag\": 1}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 1311649}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 1311656, \"tag\": 1}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 1311656}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 19746}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "ConcentrationAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 19876}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "ResistanceShadowShadowResistanceAdd"
+                  },
+                  {
+                    "category": "ShadowResistanceAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 19888}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "ResistanceFrostFrostResistanceAdd"
+                  },
+                  {
+                    "category": "FrostResistanceAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 19891}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "ResistanceFireFireResistanceAdd"
+                  },
+                  {
+                    "category": "FireResistanceAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 19895}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "ResistanceShadowShadowResistanceAdd"
+                  },
+                  {
+                    "category": "ShadowResistanceAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 19896}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "ResistanceShadowShadowResistanceAdd"
+                  },
+                  {
+                    "category": "ShadowResistanceAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 19897}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "ResistanceFrostFrostResistanceAdd"
+                  },
+                  {
+                    "category": "FrostResistanceAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 19898}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "ResistanceFrostFrostResistanceAdd"
+                  },
+                  {
+                    "category": "FrostResistanceAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 19899}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "ResistanceFireFireResistanceAdd"
+                  },
+                  {
+                    "category": "FireResistanceAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 19900}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "ResistanceFireFireResistanceAdd"
+                  },
+                  {
+                    "category": "FireResistanceAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 20116}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 20162}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20163, \"tag\": 1}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 20163}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20164}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20165}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20166}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20216}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "procsAvg": 1
+              },
+              "{\"spellId\": 20287}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20288}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20289}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20290}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20291}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20292}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20293}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20305}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20306}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20307}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20308}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20347}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20348}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20349}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20356}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20357}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20419, \"tag\": 1}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 20419}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20421, \"tag\": 1}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 20421}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20422, \"tag\": 1}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 20422}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20423, \"tag\": 1}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 20423}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 20922}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 20923}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 20924}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 21082}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 21084}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "PaladinSeal"
+                  }
+                ]
+              },
+              "{\"spellId\": 21850, \"tag\": -1}": {
+                "aggregatorData": {
+                  "n": 200,
+                  "sumSq": 197124.79907567994
+                },
+                "effects": [
+                  {
+                    "category": "ResistanceFireFireResistanceAdd",
+                    "uptimeSecondsAvg": 30.154248979515
+                  },
+                  {
+                    "category": "ResistanceNatureNatureResistanceAdd",
+                    "uptimeSecondsAvg": 30.154248979515
+                  },
+                  {
+                    "category": "ResistanceFrostFrostResistanceAdd",
+                    "uptimeSecondsAvg": 30.154248979515
+                  },
+                  {
+                    "category": "ResistanceShadowShadowResistanceAdd",
+                    "uptimeSecondsAvg": 30.154248979515
+                  },
+                  {
+                    "category": "ResistanceArcaneArcaneResistanceAdd",
+                    "uptimeSecondsAvg": 30.154248979515
+                  }
+                ],
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 30.154248979514993,
+                "uptimeSecondsStdev": 8.737577688342391
+              },
+              "{\"spellId\": 23028, \"tag\": -1}": {
+                "aggregatorData": {
+                  "n": 200,
+                  "sumSq": 197124.79907567994
+                },
+                "effects": [
+                  {
+                    "category": "StatBuffIntellectAdd",
+                    "uptimeSecondsAvg": 30.154248979515
+                  }
+                ],
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 30.154248979514993,
+                "uptimeSecondsStdev": 8.737577688342391
+              },
+              "{\"spellId\": 24907, \"tag\": -1}": {
+                "aggregatorData": {
+                  "n": 200,
+                  "sumSq": 197124.79907567994
+                },
+                "effects": [
+                  {
+                    "category": "MoonkinAura",
+                    "uptimeSecondsAvg": 30.154248979515
+                  }
+                ],
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 30.154248979514993,
+                "uptimeSecondsStdev": 8.737577688342391
+              },
+              "{\"spellId\": 24932, \"tag\": -1}": {
+                "aggregatorData": {
+                  "n": 200,
+                  "sumSq": 197124.79907567994
+                },
+                "effects": [
+                  {
+                    "category": "LeaderOfThePack",
+                    "uptimeSecondsAvg": 30.154248979515
+                  }
+                ],
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 30.154248979514993,
+                "uptimeSecondsStdev": 8.737577688342391
+              },
+              "{\"spellId\": 25289, \"tag\": -1}": {
+                "aggregatorData": {
+                  "n": 200,
+                  "sumSq": 197124.79907567994
+                },
+                "effects": [
+                  {
+                    "category": "BattleShout",
+                    "uptimeSecondsAvg": 30.154248979515
+                  }
+                ],
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 30.154248979514993,
+                "uptimeSecondsStdev": 8.737577688342391
+              },
+              "{\"spellId\": 25580, \"tag\": -1}": {
+                "aggregatorData": {
+                  "n": 200,
+                  "sumSq": 197124.79907567994
+                },
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 30.154248979514993,
+                "uptimeSecondsStdev": 8.737577688342391
+              },
+              "{\"spellId\": 25587, \"tag\": -1}": {
+                "aggregatorData": {
+                  "n": 200,
+                  "sumSq": 197124.79907567994
+                },
+                "effects": [
+                  {
+                    "category": "FlametongueTotem",
+                    "uptimeSecondsAvg": 30.154248979515
+                  },
+                  {
+                    "category": "WindfuryTotem",
+                    "uptimeSecondsAvg": 30.154248979515
+                  }
+                ],
+                "procsAvg": 6.525,
+                "uptimeSecondsAvg": 30.154248979514993,
+                "uptimeSecondsStdev": 8.737577688342391
+              },
+              "{\"spellId\": 25771}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 25780}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 25898, \"tag\": -1}": {
+                "aggregatorData": {
+                  "n": 200,
+                  "sumSq": 197124.79907567994
+                },
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 30.154248979514993,
+                "uptimeSecondsStdev": 8.737577688342391
+              },
+              "{\"spellId\": 25918, \"tag\": -1}": {
+                "aggregatorData": {
+                  "n": 200,
+                  "sumSq": 197124.79907567994
+                },
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 30.154248979514993,
+                "uptimeSecondsStdev": 8.737577688342391
+              },
+              "{\"spellId\": 26573}": {
+                "aggregatorData": {
+                  "n": 200
+                }
+              },
+              "{\"spellId\": 27681, \"tag\": -1}": {
+                "aggregatorData": {
+                  "n": 200,
+                  "sumSq": 197124.79907567994
+                },
+                "effects": [
+                  {
+                    "category": "StatBuffSpiritAdd",
+                    "uptimeSecondsAvg": 30.154248979515
+                  }
+                ],
+                "procsAvg": 1,
+                "uptimeSecondsAvg": 30.154248979514993,
+                "uptimeSecondsStdev": 8.737577688342391
+              },
+              "{\"spellId\": 465}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "DevotionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 643}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "DevotionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              },
+              "{\"spellId\": 7294}": {
+                "aggregatorData": {
+                  "n": 200
+                },
+                "effects": [
+                  {
+                    "category": "RetributionAura"
+                  },
+                  {
+                    "category": "PaladinAura"
+                  }
+                ]
+              }
+            },
+            "dps": {
+              "aggregatorData": {
+                "n": 200
+              },
+              "hist": {
+                "0": 200
+              },
+              "minSeed": "51422806"
+            },
+            "dtps": {
+              "aggregatorData": {
+                "n": 200
+              },
+              "hist": {
+                "0": 200
+              },
+              "minSeed": "51422806"
+            },
+            "hps": {
+              "aggregatorData": {
+                "n": 200,
+                "sumSq": 90691090.27838846
+              },
+              "avg": 670.9898352456744,
+              "hist": {
+                "530": 1,
+                "540": 1,
+                "550": 1,
+                "560": 2,
+                "570": 6,
+                "580": 1,
+                "590": 4,
+                "600": 4,
+                "610": 12,
+                "620": 12,
+                "630": 11,
+                "640": 12,
+                "650": 17,
+                "660": 12,
+                "670": 14,
+                "680": 8,
+                "690": 10,
+                "700": 13,
+                "710": 15,
+                "720": 10,
+                "730": 11,
+                "740": 1,
+                "750": 6,
+                "760": 4,
+                "770": 6,
+                "780": 3,
+                "790": 1,
+                "810": 1,
+                "860": 1
+              },
+              "max": 861.8900218847604,
+              "maxSeed": "51422803",
+              "min": 530.8012711707787,
+              "minSeed": "51422665",
+              "stdev": 56.81630390059723
+            },
+            "name": "holy-paladin-fused-bonus-healing",
+            "resources": {
+              "{\"itemId\": 13444}": {
+                "actualGain": 360000,
+                "events": 200,
+                "gain": 360000,
+                "type": "ResourceTypeMana"
+              },
+              "{\"otherId\": \"OtherActionManaRegen\", \"tag\": 1}": {
+                "actualGain": 81413.13999999787,
+                "events": 2917,
+                "gain": 82196.13999999787,
+                "type": "ResourceTypeMana"
+              },
+              "{\"spellId\": 19943}": {
+                "actualGain": -35280,
+                "events": 252,
+                "gain": -35280,
+                "type": "ResourceTypeMana"
+              },
+              "{\"spellId\": 19943} #2": {
+                "events": 252,
+                "gain": 117684.7523279234,
+                "type": "ResourceTypeHealth"
+              },
+              "{\"spellId\": 20210}": {
+                "actualGain": 153535,
+                "events": 661,
+                "gain": 157382.5,
+                "type": "ResourceTypeMana"
+              },
+              "{\"spellId\": 20216}": {
+                "actualGain": -12000,
+                "events": 200,
+                "gain": -12000,
+                "type": "ResourceTypeMana"
+              },
+              "{\"spellId\": 25292}": {
+                "actualGain": -1141140,
+                "events": 1820,
+                "gain": -1141140,
+                "type": "ResourceTypeMana"
+              },
+              "{\"spellId\": 25292} #2": {
+                "events": 1820,
+                "gain": 3554754.5343100014,
+                "type": "ResourceTypeHealth"
+              },
+              "{\"spellId\": 25903}": {
+                "actualGain": -203775,
+                "events": 627,
+                "gain": -203775,
+                "type": "ResourceTypeMana"
+              },
+              "{\"spellId\": 25903} #2": {
+                "events": 627,
+                "gain": 353237.0574999977,
+                "type": "ResourceTypeHealth"
+              }
+            },
+            "threat": {
+              "aggregatorData": {
+                "n": 200,
+                "sumSq": 462875.05674447824
+              },
+              "avg": 45.96140194840051,
+              "hist": {
+                "100": 2,
+                "20": 3,
+                "30": 44,
+                "40": 61,
+                "50": 44,
+                "60": 28,
+                "70": 14,
+                "80": 4
+              },
+              "max": 101.61375646251179,
+              "maxSeed": "51422803",
+              "min": 22.916637095466612,
+              "minSeed": "51422665",
+              "stdev": 14.210025146352033
+            },
+            "tmi": {
+              "aggregatorData": {
+                "n": 200
+              },
+              "hist": {
+                "0": 200
+              },
+              "minSeed": "51422806"
+            },
+            "tto": {
+              "aggregatorData": {
+                "n": 200,
+                "sumSq": 2818335.6018661247
+              },
+              "avg": 65.29186125183999,
+              "hist": {
+                "100": 3,
+                "110": 3,
+                "120": 1,
+                "140": 2,
+                "1420": 1,
+                "180": 1,
+                "300": 1,
+                "40": 23,
+                "50": 103,
+                "60": 36,
+                "70": 15,
+                "80": 7,
+                "90": 4
+              },
+              "max": 1418.665234019,
+              "maxSeed": "51422618",
+              "min": 42.14236769,
+              "minSeed": "51422708",
+              "stdev": 99.13955246823086
+            },
+            "unitIndex": 1
+          }
+        ]
+      }
+    ]
+  }
+}

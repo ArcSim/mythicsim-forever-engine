@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
+    "engine_revision": "b2ab28c5200e3d741b7edf987ae4bdf7453492ff",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "fb55c55bdb7d09d24930a4cd675fa4ed975f8b9be75a35b54822be5ac6da2baf",
+  "request_sha256": "c36be263598157a80b25d54603aeb1ebd105d654bd0959e616ca39f47ec0a375",
   "scenario_id": "arcane-arcane-explosion",
   "sim": {
     "iterations": 1000,
@@ -746,8 +746,8 @@
       },
       "school_bonus_hit_chance": {
         "arcane": 5,
-        "fire": 5,
-        "frost": 5,
+        "fire": 6,
+        "frost": 6,
         "holy": 0,
         "nature": 0,
         "none": 0,
@@ -1223,7 +1223,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "0551205003100301531-230500001-005",
+    "talents_string": "0551205003100301531-230500001-003",
     "talents": {
       "arcane_blast": 1,
       "arcane_concentration": 5,
@@ -1234,7 +1234,7 @@
       "arcane_mind": 5,
       "arcane_power": 1,
       "arcane_subtlety": 2,
-      "elemental_precision": 5,
+      "elemental_precision": 3,
       "ignite": 5,
       "improved_channeling": 5,
       "improved_fire_blast": 2,

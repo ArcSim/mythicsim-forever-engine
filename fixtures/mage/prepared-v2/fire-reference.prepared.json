@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
+    "engine_revision": "b2ab28c5200e3d741b7edf987ae4bdf7453492ff",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "880bc04de621551baac17779fa4a41dd607a562a81cbdc9a8a47a62ae599df6e",
+  "request_sha256": "5a7006565afa9ce2ccfa889f73681cf552edb033c3efaf4aa2e56a07f1916455",
   "scenario_id": "fire-reference",
   "sim": {
     "iterations": 3000,
@@ -746,8 +746,8 @@
       },
       "school_bonus_hit_chance": {
         "arcane": 3,
-        "fire": 5,
-        "frost": 5,
+        "fire": 6,
+        "frost": 6,
         "holy": 0,
         "nature": 0,
         "none": 0,
@@ -1237,7 +1237,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "2300205-03552020130135031-005",
+    "talents_string": "2300205-03552020130135031-003",
     "talents": {
       "arcane_concentration": 5,
       "arcane_focus": 3,
@@ -1245,7 +1245,7 @@
       "burning_soul": 2,
       "combustion": 1,
       "critical_mass": 5,
-      "elemental_precision": 5,
+      "elemental_precision": 3,
       "fire_power": 3,
       "flame_throwing": 2,
       "heating_up": 1,

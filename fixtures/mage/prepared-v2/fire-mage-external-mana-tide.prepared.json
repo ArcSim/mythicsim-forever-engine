@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
+    "engine_revision": "b2ab28c5200e3d741b7edf987ae4bdf7453492ff",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "5854fba332a63a0c0899b9a643a9005a7d5f0e27c51e80b01d0e504e2cbe3180",
+  "request_sha256": "a1a01691b91d7c0cb8178c516443e567993035af52d729a0af1d6c1061cc4afd",
   "scenario_id": "fire-mage-external-mana-tide",
   "sim": {
     "iterations": 3000,
@@ -746,8 +746,8 @@
       },
       "school_bonus_hit_chance": {
         "arcane": 5,
-        "fire": 4,
-        "frost": 4,
+        "fire": 6,
+        "frost": 6,
         "holy": 0,
         "nature": 0,
         "none": 0,
@@ -1294,7 +1294,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "05012050030000-13550000130135031-004",
+    "talents_string": "05012050030000-13550000130135031-003",
     "talents": {
       "arcane_concentration": 5,
       "arcane_focus": 5,
@@ -1302,7 +1302,7 @@
       "arcane_subtlety": 2,
       "combustion": 1,
       "critical_mass": 5,
-      "elemental_precision": 4,
+      "elemental_precision": 3,
       "fire_power": 3,
       "heating_up": 1,
       "ignite": 5,

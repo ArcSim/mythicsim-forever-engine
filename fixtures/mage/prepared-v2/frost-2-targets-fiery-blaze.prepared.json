@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
+    "engine_revision": "b2ab28c5200e3d741b7edf987ae4bdf7453492ff",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "a9cac97c1034f54c40742f83c3d1ec29f0f1ee545c22ff0d460daeb98f3e4086",
+  "request_sha256": "ee5691c350c5ee002c7e1feea765fb14042a34c77522b9c67c686c130f767843",
   "scenario_id": "frost-2-targets-fiery-blaze",
   "sim": {
     "iterations": 3000,
@@ -715,8 +715,8 @@
       },
       "school_bonus_hit_chance": {
         "arcane": 5,
-        "fire": 5,
-        "frost": 5,
+        "fire": 6,
+        "frost": 6,
         "holy": 0,
         "nature": 0,
         "none": 0,
@@ -790,7 +790,7 @@
           "on_spell_hit_dealt"
         ],
         "icd": {
-          "timer": "timer-11",
+          "timer": "timer-12",
           "duration_ns": 1000000000
         },
         "exclusive_effects": 0
@@ -884,6 +884,38 @@
         "callbacks": [
           "on_reset",
           "on_spell_hit_dealt"
+        ],
+        "icd": null,
+        "exclusive_effects": 0
+      },
+      {
+        "label": "Frigid Power",
+        "action_id": {
+          "spell_id": 1326891
+        },
+        "duration_ns": 60000000000,
+        "max_stacks": 0,
+        "active": false,
+        "stacks": 0,
+        "callbacks": [
+          "on_gain",
+          "on_expire"
+        ],
+        "icd": null,
+        "exclusive_effects": 0
+      },
+      {
+        "label": "Ice Barrier",
+        "action_id": {
+          "spell_id": 13033
+        },
+        "duration_ns": 60000000000,
+        "max_stacks": 0,
+        "active": false,
+        "stacks": 0,
+        "callbacks": [
+          "on_gain",
+          "on_expire"
         ],
         "icd": null,
         "exclusive_effects": 0
@@ -1186,14 +1218,14 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "05012050030000-03-0555000301001301251",
+    "talents_string": "05012050030000-03-053500000101301251",
     "talents": {
       "arcane_concentration": 5,
       "arcane_focus": 5,
       "arcane_impact": 3,
       "arcane_subtlety": 2,
       "cold_snap": 1,
-      "elemental_precision": 5,
+      "elemental_precision": 3,
       "fingers_of_frost": 2,
       "ice_barrier": 1,
       "ice_block": 1,
@@ -1202,7 +1234,6 @@
       "improved_frostbolt": 5,
       "incineration": 3,
       "missile_barrage": 1,
-      "piercing_ice": 3,
       "shatter": 3,
       "winters_chill": 5
     },
@@ -1384,6 +1415,67 @@
       },
       {
         "action_id": {
+          "spell_id": 13033
+        },
+        "rank": 4,
+        "school": 16,
+        "defense_type": "DefenseTypeMagic",
+        "proc_mask": [],
+        "flags": [
+          "SpellFlagHelpful",
+          "SpellFlagAPL",
+          "SpellFlagPushback"
+        ],
+        "class_spell": "ice_barrier",
+        "missile_speed": 0,
+        "cost": {
+          "resource": "mana",
+          "base_cost": 480,
+          "flat_modifier": 0,
+          "percent_modifier": 1,
+          "additive_percent_modifier": 1
+        },
+        "default_cast": {
+          "cost": 480,
+          "gcd_ns": 1500000000,
+          "gcd_min_ns": 0,
+          "cast_time_ns": 0,
+          "non_empty": false
+        },
+        "cast_kind": "full",
+        "ignore_haste": false,
+        "has_extra_cast_condition": false,
+        "has_cast_requirement": true,
+        "requirement_auras": [],
+        "min_range": 0,
+        "max_range": 0,
+        "max_charges": 0,
+        "cd": {
+          "timer": "timer-1",
+          "duration_ns": 30000000000
+        },
+        "shared_cd": null,
+        "bonus_hit_percent": 0,
+        "bonus_crit_percent": 0,
+        "bonus_spell_damage": 0,
+        "bonus_expertise_percent": 0,
+        "cast_time_multiplier": 1,
+        "cd_multiplier": 1,
+        "damage_multiplier": 0,
+        "damage_multiplier_additive": 0,
+        "direct_damage_multiplier_additive": 0,
+        "crit_multiplier_pct": 1,
+        "crit_multiplier_additive": 1,
+        "bonus_base_damage": 0,
+        "bonus_coefficient": 0,
+        "threat_multiplier": 0,
+        "flat_threat_bonus": 0,
+        "pushback_resist": 0,
+        "dot": null,
+        "damage_effect": null
+      },
+      {
+        "action_id": {
           "item_id": 13444
         },
         "rank": 0,
@@ -1415,11 +1507,11 @@
         "max_range": 0,
         "max_charges": 0,
         "cd": {
-          "timer": "timer-1",
+          "timer": "timer-2",
           "duration_ns": 120000000000
         },
         "shared_cd": {
-          "timer": "timer-2",
+          "timer": "timer-3",
           "duration_ns": 120000000000
         },
         "bonus_hit_percent": 0,
@@ -1472,11 +1564,11 @@
         "max_range": 0,
         "max_charges": 0,
         "cd": {
-          "timer": "timer-3",
+          "timer": "timer-4",
           "duration_ns": 120000000000
         },
         "shared_cd": {
-          "timer": "timer-4",
+          "timer": "timer-5",
           "duration_ns": 120000000000
         },
         "bonus_hit_percent": 0,
@@ -2598,7 +2690,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -2656,7 +2748,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 0,
-        "damage_multiplier_additive": 0.06,
+        "damage_multiplier_additive": 0,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -2719,7 +2811,7 @@
         "max_range": 10,
         "max_charges": 0,
         "cd": {
-          "timer": "timer-5",
+          "timer": "timer-6",
           "duration_ns": 10000000000
         },
         "shared_cd": null,
@@ -2730,7 +2822,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -2791,7 +2883,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -2852,7 +2944,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -2913,7 +3005,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -2974,7 +3066,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -3035,7 +3127,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -3096,7 +3188,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -3157,7 +3249,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -3218,7 +3310,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -3279,7 +3371,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -3340,7 +3432,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -3401,7 +3493,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -3462,8 +3554,8 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.02,
-        "direct_damage_multiplier_additive": 0.04,
+        "damage_multiplier_additive": 1,
+        "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
         "bonus_base_damage": 0,
@@ -3536,8 +3628,8 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.02,
-        "direct_damage_multiplier_additive": 0.04,
+        "damage_multiplier_additive": 1,
+        "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
         "bonus_base_damage": 0,
@@ -3610,8 +3702,8 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.02,
-        "direct_damage_multiplier_additive": 0.04,
+        "damage_multiplier_additive": 1,
+        "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
         "bonus_base_damage": 0,
@@ -3670,7 +3762,7 @@
         "max_range": 0,
         "max_charges": 0,
         "cd": {
-          "timer": "timer-6",
+          "timer": "timer-7",
           "duration_ns": 480000000000
         },
         "shared_cd": null,
@@ -4619,7 +4711,7 @@
         "max_range": 20,
         "max_charges": 0,
         "cd": {
-          "timer": "timer-7",
+          "timer": "timer-8",
           "duration_ns": 8000000000
         },
         "shared_cd": null,
@@ -4683,7 +4775,7 @@
         "max_range": 10,
         "max_charges": 0,
         "cd": {
-          "timer": "timer-8",
+          "timer": "timer-9",
           "duration_ns": 25000000000
         },
         "shared_cd": null,
@@ -4694,7 +4786,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -4755,7 +4847,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -4802,7 +4894,7 @@
         "max_range": 0,
         "max_charges": 0,
         "cd": {
-          "timer": "timer-9",
+          "timer": "timer-10",
           "duration_ns": 120000000000
         },
         "shared_cd": null,
@@ -4857,7 +4949,7 @@
         "max_range": 0,
         "max_charges": 0,
         "cd": {
-          "timer": "timer-9",
+          "timer": "timer-10",
           "duration_ns": 120000000000
         },
         "shared_cd": null,
@@ -4912,7 +5004,7 @@
         "max_range": 0,
         "max_charges": 0,
         "cd": {
-          "timer": "timer-9",
+          "timer": "timer-10",
           "duration_ns": 120000000000
         },
         "shared_cd": null,
@@ -4967,7 +5059,7 @@
         "max_range": 0,
         "max_charges": 0,
         "cd": {
-          "timer": "timer-9",
+          "timer": "timer-10",
           "duration_ns": 120000000000
         },
         "shared_cd": null,
@@ -5529,7 +5621,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -5587,7 +5679,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -5645,7 +5737,7 @@
         "cast_time_multiplier": 1,
         "cd_multiplier": 1,
         "damage_multiplier": 1,
-        "damage_multiplier_additive": 1.06,
+        "damage_multiplier_additive": 1,
         "direct_damage_multiplier_additive": 0,
         "crit_multiplier_pct": 1,
         "crit_multiplier_additive": 1,
@@ -5688,7 +5780,7 @@
         "max_range": 0,
         "max_charges": 0,
         "cd": {
-          "timer": "timer-10",
+          "timer": "timer-11",
           "duration_ns": 600000000000
         },
         "shared_cd": null,
@@ -6150,6 +6242,18 @@
     {
       "kind": "cold_snap",
       "spell_id": 12472
+    },
+    {
+      "absorb_base": 819,
+      "aura": "Ice Barrier",
+      "dot": 0.03,
+      "frigid_dot": 0.03,
+      "frigid_hit": 0.03,
+      "frigid_power_aura": "Frigid Power",
+      "hit": 0.03,
+      "kind": "ice_barrier",
+      "spell_id": 13033,
+      "warding": 1
     },
     {
       "channel_aura": "Evocation",

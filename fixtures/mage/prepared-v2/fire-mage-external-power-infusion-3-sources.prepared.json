@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
+    "engine_revision": "b2ab28c5200e3d741b7edf987ae4bdf7453492ff",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "0843fd774c0a1b99bbd66703f81900d1ca528d704db5a89614f8d7cc517335ec",
+  "request_sha256": "292ecf825ee0909acd1984b9d2f7e56d7ecb67d580561178179bbfd26d8f9013",
   "scenario_id": "fire-mage-external-power-infusion-3-sources",
   "sim": {
     "iterations": 3000,
@@ -746,8 +746,8 @@
       },
       "school_bonus_hit_chance": {
         "arcane": 5,
-        "fire": 4,
-        "frost": 4,
+        "fire": 6,
+        "frost": 6,
         "holy": 0,
         "nature": 0,
         "none": 0,
@@ -1300,7 +1300,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "05012050030000-13550000130135031-004",
+    "talents_string": "05012050030000-13550000130135031-003",
     "talents": {
       "arcane_concentration": 5,
       "arcane_focus": 5,
@@ -1308,7 +1308,7 @@
       "arcane_subtlety": 2,
       "combustion": 1,
       "critical_mass": 5,
-      "elemental_precision": 4,
+      "elemental_precision": 3,
       "fire_power": 3,
       "heating_up": 1,
       "ignite": 5,

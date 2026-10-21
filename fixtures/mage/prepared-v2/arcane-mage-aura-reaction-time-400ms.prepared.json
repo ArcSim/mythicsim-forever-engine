@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
+    "engine_revision": "b2ab28c5200e3d741b7edf987ae4bdf7453492ff",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "2d63a504db31351f2c7db94f8cb20eadd5f6da9a83b1404040c8ad73e59eb7be",
+  "request_sha256": "fca8442dd9b1bf4a914b7029f39c50349df19319c71633a4e60772b0e54866b4",
   "scenario_id": "arcane-mage-aura-reaction-time-400ms",
   "sim": {
     "iterations": 3000,
@@ -714,8 +714,8 @@
       },
       "school_bonus_hit_chance": {
         "arcane": 5,
-        "fire": 5,
-        "frost": 5,
+        "fire": 6,
+        "frost": 6,
         "holy": 0,
         "nature": 0,
         "none": 0,
@@ -1173,7 +1173,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "0551205003100301531-000000000-005",
+    "talents_string": "0551205003100301531-000000000-003",
     "talents": {
       "arcane_blast": 1,
       "arcane_concentration": 5,
@@ -1184,7 +1184,7 @@
       "arcane_mind": 5,
       "arcane_power": 1,
       "arcane_subtlety": 2,
-      "elemental_precision": 5,
+      "elemental_precision": 3,
       "improved_channeling": 5,
       "missile_barrage": 1,
       "presence_of_mind": 1

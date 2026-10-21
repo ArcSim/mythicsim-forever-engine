@@ -2,7 +2,7 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "62b7445d1c812b257110e51a5b1e8db93b987972",
+    "engine_revision": "a667dce8492bd9fb94269a9f864289cb74006775",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
@@ -1784,7 +1784,7 @@
         "ignore_haste": true,
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
-        "min_range": 8,
+        "min_range": 10.5,
         "max_range": 35,
         "max_charges": 0,
         "cd": {
@@ -1845,7 +1845,7 @@
         "ignore_haste": true,
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
-        "min_range": 8,
+        "min_range": 10.5,
         "max_range": 35,
         "max_charges": 0,
         "cd": {
@@ -1906,7 +1906,7 @@
         "ignore_haste": true,
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
-        "min_range": 8,
+        "min_range": 10.5,
         "max_range": 35,
         "max_charges": 0,
         "cd": {
@@ -2158,7 +2158,7 @@
         "ignore_haste": true,
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
-        "min_range": 8,
+        "min_range": 10.5,
         "max_range": 35,
         "max_charges": 0,
         "cd": null,
@@ -3001,7 +3001,7 @@
         "ignore_haste": false,
         "has_extra_cast_condition": true,
         "has_cast_requirement": false,
-        "min_range": 8,
+        "min_range": 10.5,
         "max_range": 35,
         "max_charges": 0,
         "cd": null,
@@ -3295,7 +3295,7 @@
       "swing_speed": 3,
       "normalized_swing_speed": 2.8,
       "school": 0,
-      "min_range": 8,
+      "min_range": 10.5,
       "max_range": 35
     },
     "base_miss_chance": 0.08,

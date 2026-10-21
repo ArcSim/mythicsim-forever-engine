@@ -4,7 +4,7 @@
 
 | Source | Role | Baseline |
 | --- | --- | --- |
-| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `62b7445d1c812b257110e51a5b1e8db93b987972`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
+| [MythicSim Go engine](https://github.com/sage3648/mythicsim-forever-engine-go) | Fixtures and live reference | `a667dce8492bd9fb94269a9f864289cb74006775`, on community base `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` |
 | [Community Forever engine](https://github.com/ElliotWood/Forever) | Changes to review for applicability | Adopted base `f4b776b4f41d5c7799b8141697a2c9e67c89d426`; reviewed through `b7083fac1ec8cc88bfbba0518dba3e0b5e71f8e1` (2026-10-16) |
 
 Go is a reference implementation, not proof of live-game correctness. Forever can
@@ -718,6 +718,39 @@ builds (39 DPS, 58 Protection) and 34 Feral Bear builds, 118 of them with their 
 preparation golden moved. Rust matches all 666 accepted fixtures with a Go golden, and preparation
 writes exactly what the exporter writes for every case. The frozen Frost kernel fixtures keep their values (pre-hotfix
 talents, as at `b2ab28c52`) and take the new revision. The recorded sweeps were not rerun.
+
+The pin moved from `62b7445d1` to `a667dce84` on 2026-10-21, the fork's branch
+`mythicsim/oct21-hunter-weave`: patches 190 to 192, from Bae's report on the Survival weave (MythicSim
+Discord, 21 October, sim 4541dcea) and Arc's PR #40 on the Go fork. Code only: the community base, the
+client build and the Go database do not move.
+
+- Core (patch 190, Arc's commit 85ee7569b, `RangedMinimumFromTargetCenter`): the ranged minimum is 10.5
+  yards from the target's center, not the client's 8 yards, which count between hitboxes (his Warcraft
+  Logs positions: the last Auto Shots of a step-in at 10.53 and 10.75 yards). Bows, guns, crossbows,
+  thrown weapons and the Hunter's shots read it; Rust preparation writes it (`MIN_RANGED_RANGE`).
+- Core (patch 191, `MeleeSwingReadsCurrentPosition`): a melee swing of a moving unit brings its position
+  up to date first and does not happen past melee range. A rotation that casts on the GCD as it steps
+  out is not checked until the GCD ends, so a swing due on the way out used to land from up to 12 yards
+  and restart Auto Shot.
+- Core (patch 192, `CastRangeReadsCurrentPosition`): a spell's range check reads the position along the
+  move (`distance_now`), so a spell queued at the end of the GCD cannot fire from where the rotation's
+  last check saw the unit. A queued Multi-Shot shot from 10.25 yards on the way in, and a prepull Charge
+  or Strider Kick during a walk read the yards the walk started from.
+
+14 of the 669 Go goldens changed, all fixtures that move. The Hunter weaves and moves: Survival
+weaving 609.58 to 598.42 DPS, Survival with a kick while walking 620.27 to 609.66, Aspect of the Beast
+over Hawk 925.84 to 924.48, Beast Mastery moving to 8 yards 355.08 to 337.51 and Marksmanship moving to
+10 yards 542.53 to 394.10 (both now walk into the 10.5 yard deadzone, by the fixtures' design). Three
+production Warrior prepull Charges during a walk out (`production-warrior-prepull-charge-late`,
+`-charge-while-moving`, `apl-warrior-moving-distance`) go from about 5 DPS to 817 to 826: the Charge used to
+read the 0 yards the walk started from, was refused, and left the warrior standing at 25 yards for the
+whole fight. The Arms, Protection, Feral Cat and Assassination moves change by under 1%, and Frost
+moving against two targets only in its log. Two cases are accepted with their Go goldens and logs:
+`survival-hunter-kick-step-out-swing` (patch 191) and `survival-hunter-weave-bae-queued-shot` (Bae's
+weave at seed 8, all three patches). 15 Hunter preparation goldens moved with the shots' and the ranged
+weapon's minimum. Rust matches all 671 accepted fixtures with a Go golden, and preparation writes
+exactly what the exporter writes for every case. The frozen Frost kernel fixtures keep their values and
+take the new revision. The recorded sweeps were not rerun.
 
 ## Ledger
 

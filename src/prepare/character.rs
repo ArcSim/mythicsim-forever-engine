@@ -31,7 +31,10 @@ pub(crate) mod constants {
     pub const DEFENSE_RATING_PER_AVOIDANCE_PERCENT: f64 =
         DEFENSE_RATING_PER_DEFENSE_LEVEL / MISS_DODGE_PARRY_BLOCK_CRIT_CHANCE_PER_DEFENSE;
     pub const MAX_MELEE_RANGE: f64 = 5.0;
-    pub const MIN_RANGED_RANGE: f64 = 8.0;
+    /// Go `MinRangedRange`, from the target's center like every distance here: the client's
+    /// 8 yards count from the hitbox edges, and logged shots stop about 10.5 yards from a mob's
+    /// center (fork patch 190, Arc's logs).
+    pub const MIN_RANGED_RANGE: f64 = 10.5;
     pub const DEFAULT_ATTACK_POWER_PER_DPS: f64 = 14.0;
 }
 

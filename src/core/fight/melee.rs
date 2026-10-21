@@ -634,6 +634,19 @@ impl<A: Agent> Fight<A> {
         if hand != Hand::Enemy && now < self.autos_of_mut(side).attack(hand).swing_at {
             return self.autos_of_mut(side).attack(hand).swing_at;
         }
+        // Fork patch 191: a moving unit's position is brought up to date only when its rotation
+        // runs, and a rotation that casts on the GCD as it walks away is not checked again until
+        // the GCD ends. A melee swing that comes due during the walk reads where the unit is now:
+        // past melee range the update stops both hands and the swing does not happen.
+        if matches!(hand, Hand::Main | Hand::Off)
+            && self.autos_of_mut(side).attack(hand).enabled
+            && self.unit(side).moving
+        {
+            self.update_position(side, false);
+            if !self.autos_of_mut(side).attack(hand).enabled {
+                return NEVER_EXPIRES;
+            }
+        }
         // A ranged auto cannot fire while moving. The hidden retry timer looks again every
         // 500ms. Casts never hold it.
         if hand == Hand::Ranged && self.unit(side).moving {

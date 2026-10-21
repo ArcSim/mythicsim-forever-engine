@@ -800,23 +800,72 @@ fn strider_kick_without_its_speed_aura_leaves_the_speed_alone() {
     assert!(!logs.contains("Movement speed changed"), "{logs}");
 }
 
-/// Fork patch 121: a speed change in the middle of a move runs the rest of it to the same
-/// destination. The hunter runs out to 20 yards from 5, and a kick a second in speeds it up 30%
-/// for the last 8 yards: 5 + 7 = 12 yards at -3.00, the rest at 9.1 yards a second. Re-planning
-/// to the length of the move, 7 yards, ended the run at -2.67 on its way to the wrong place.
+/// Fork patch 192: the fixture's prepull kick at -3 s comes a second into a walk from 5 yards out
+/// to 20, 12 yards from the target. The kick's range check reads where the hunter is, so it is
+/// refused and the walk keeps its 7 yards a second to the end, 15 / 7 seconds after it began. It
+/// used to read the 5 yards the walk started from and kick from 12.
 #[test]
-fn a_speed_change_mid_move_keeps_the_destination() {
+fn a_kick_from_beyond_melee_range_mid_walk_is_refused() {
     let logs = first_fight_log(fixture("survival-hunter-strider-kick-while-moving"));
     assert!(has_line(&logs, "-4.00", "[DEBUG] Moving to 20.0 yards"));
-    assert!(has_line(&logs, "-3.00", "{OtherID: 20} stacks: 5 --> 12"));
-    assert!(has_line(
-        &logs,
-        "-3.00",
-        "[DEBUG] Movement speed changed from 7.00 (0.00%) to 9.10 (30.00%)"
-    ));
-    // 8 yards at 9.1 a second take 0.879 seconds.
-    assert!(has_line(&logs, "-2.12", "{OtherID: 20} stacks: 12 --> 20"));
-    assert!(has_line(&logs, "-2.12", "Aura faded: {OtherID: 20}"));
+    assert!(
+        !logs.contains("Casting {SpellID: 1317257}")
+            || at(logs
+                .lines()
+                .find(|line| line.contains("Casting {SpellID: 1317257}"))
+                .unwrap())
+                >= 0.0,
+        "{logs}"
+    );
+    assert!(
+        !has_line(&logs, "-3.00", "Movement speed changed"),
+        "{logs}"
+    );
+    assert!(
+        has_line(&logs, "-1.86", "{OtherID: 20} stacks: 5 --> 20"),
+        "{logs}"
+    );
+    assert!(
+        has_line(&logs, "-1.86", "Aura faded: {OtherID: 20}"),
+        "{logs}"
+    );
+}
+
+/// Fork patch 121: a speed change in the middle of a move runs the rest of it to the same
+/// destination. The fixture's prepull is changed to walk out to 20 yards at -6 s and back in to
+/// the target at -3.5 s, and to kick at -1.2 s, 3.9 yards out: the rest of the walk takes 3.9 /
+/// 9.1 seconds and ends at the target at -0.77 s.
+#[test]
+fn a_speed_change_mid_move_keeps_the_destination() {
+    let mut value = fixture("survival-hunter-strider-kick-while-moving");
+    value["player"]["rotation"]["prepullActions"] = json!([
+        {"action": {"castSpell": {"spellId": {"spellId": 25296}}}, "doAtValue": {"const": {"val": "-10s"}}},
+        {"action": {"move": {"rangeFromTarget": {"const": {"val": "20"}}}}, "doAtValue": {"const": {"val": "-6s"}}},
+        {"action": {"move": {"rangeFromTarget": {"const": {"val": "0"}}}}, "doAtValue": {"const": {"val": "-3.5s"}}},
+        {"action": {"castSpell": {"spellId": {"spellId": 1317257}}}, "doAtValue": {"const": {"val": "-1.2s"}}}
+    ]);
+    value["player"]["prepull_actions"] = json!(4);
+    let logs = first_fight_log(value);
+    assert!(
+        has_line(&logs, "-3.50", "[DEBUG] Moving to 0.0 yards"),
+        "{logs}"
+    );
+    assert!(
+        has_line(&logs, "-1.20", "Casting {SpellID: 1317257}"),
+        "{logs}"
+    );
+    assert!(
+        has_line(
+            &logs,
+            "-1.20",
+            "[DEBUG] Movement speed changed from 7.00 (0.00%) to 9.10 (30.00%)"
+        ),
+        "{logs}"
+    );
+    assert!(
+        has_line(&logs, "-0.77", "Aura faded: {OtherID: 20}"),
+        "{logs}"
+    );
 }
 
 /// Fork patch 119: the Wolf casts Furious Howl for 60 focus whenever its aura is down, giving
@@ -903,4 +952,140 @@ fn the_pet_inherits_its_masters_crit_hit_and_expertise() {
         ])
     );
     assert_eq!(pet["disable_stats"], Value::Null);
+}
+
+/// The player's distance from the target over a first-fight log, from its moves ("Moving to"),
+/// their ends (the Movement aura fading) and its speed changes, in log time (two decimals).
+struct Track {
+    /// From each point on: the time, the distance then, the yards a second toward the
+    /// destination (0 standing), the destination.
+    segments: Vec<(f64, f64, f64, f64)>,
+}
+
+impl Track {
+    fn of(logs: &str, player: &str, start: f64) -> Track {
+        let mut segments = vec![(f64::NEG_INFINITY, start, 0.0, start)];
+        let mut speed = 7.0;
+        for line in unit_lines(logs, player) {
+            let time = at(line);
+            let now = Track::at_time(&segments, time);
+            let (_, _, rate, destination) = *segments.last().unwrap();
+            if let Some(rest) = line.split("[DEBUG] Moving to ").nth(1) {
+                let to: f64 = rest.split(' ').next().unwrap().parse().unwrap();
+                segments.push((time, now, speed, to));
+            } else if let Some(rest) = line.split("[DEBUG] Movement speed changed from ").nth(1) {
+                speed = rest
+                    .split(" to ")
+                    .nth(1)
+                    .unwrap()
+                    .split(' ')
+                    .next()
+                    .unwrap()
+                    .parse()
+                    .unwrap();
+                if rate != 0.0 {
+                    segments.push((time, now, speed, destination));
+                }
+            } else if line.contains("Aura faded: {OtherID: 20}") {
+                segments.push((time, destination, 0.0, destination));
+            }
+        }
+        Track { segments }
+    }
+
+    fn at_time(segments: &[(f64, f64, f64, f64)], time: f64) -> f64 {
+        let &(from, distance, rate, destination) = segments
+            .iter()
+            .rev()
+            .find(|segment| segment.0 <= time)
+            .unwrap_or(&segments[0]);
+        let covered = rate * (time - from);
+        if destination >= distance {
+            (distance + covered).min(destination)
+        } else {
+            (distance - covered).max(destination)
+        }
+    }
+
+    fn distance(&self, time: f64) -> f64 {
+        Track::at_time(&self.segments, time)
+    }
+}
+
+/// Every melee hit of the hunter lands within 5 yards and every shot from beyond 10.5 yards, to
+/// the precision of the log's times. Returns the hits and the shots checked.
+fn assert_ranges_hold(logs: &str, player: &str, start: f64) -> (usize, usize) {
+    const MELEE: [&str; 4] = [
+        "Completed cast {OtherID: 3,",
+        "Completed cast {SpellID: 14266, Tag: 1}",
+        "Completed cast {SpellID: 14271}",
+        "Completed cast {SpellID: 1317257}",
+    ];
+    const SHOTS: [&str; 4] = [
+        "Completed cast {OtherID: 4}",
+        "Completed cast {SpellID: 14287}",
+        "Completed cast {SpellID: 2643}",
+        "Completed cast {SpellID: 25295}",
+    ];
+    // A hundredth of a second at the 9.1 yards a second of Strider Kick.
+    const SLACK: f64 = 0.1;
+    let track = Track::of(logs, player, start);
+    let (mut hits, mut shots) = (0, 0);
+    for line in unit_lines(logs, player) {
+        let time = at(line);
+        if time < 0.0 {
+            continue;
+        }
+        let distance = track.distance(time);
+        if MELEE.iter().any(|needle| line.contains(needle)) {
+            hits += 1;
+            assert!(distance <= 5.0 + SLACK, "{line} from {distance:.2} yards");
+        }
+        if SHOTS.iter().any(|needle| line.contains(needle)) {
+            shots += 1;
+            assert!(distance >= 10.5 - SLACK, "{line} from {distance:.2} yards");
+        }
+    }
+    (hits, shots)
+}
+
+/// Fork patch 191: a hunter at 5 yards kicks with 0.3 s left on its swing timer and steps out to
+/// 12 yards in the same check. The kick's GCD holds the rotation, so nothing brings the position
+/// up to date during the walk; the swing that comes due 2.7 yards out reads where the hunter is
+/// and does not land. It used to land from 7.7 yards.
+#[test]
+fn a_swing_due_on_the_way_out_of_melee_does_not_land() {
+    let logs = first_fight_log(fixture("survival-hunter-kick-step-out-swing"));
+    let player = "Custom Hunter (#1)";
+    assert!(logs.contains("[DEBUG] Moving to 12.0 yards"), "{logs}");
+    let (hits, _) = assert_ranges_hold(&logs, player, 5.0);
+    assert!(hits > 0, "{logs}");
+}
+
+/// Fork patches 190 to 192 on Bae's Survival weave (MythicSim Discord, 21 October, sim 4541dcea
+/// at seed 8): no swing lands on the way out (a white hit from 11.5 yards at 3.71 s before 191),
+/// no shot goes off inside 10.5 yards (from 8 yards before 190), and a Multi-Shot queued at 16.27
+/// s, 10.95 yards out, cannot fire at 16.32 s from 10.25 yards (before 192).
+#[test]
+fn the_survival_weave_keeps_melee_and_shot_ranges() {
+    let logs = first_fight_log(fixture("survival-hunter-weave-bae-queued-shot"));
+    let player = "Custom Hunter (#1)";
+    assert!(
+        has_line(&logs, "16.27", "Queueing up {SpellID: 2643}"),
+        "{logs}"
+    );
+    assert!(
+        has_line(
+            &logs,
+            "16.32",
+            "{SpellID: 2643} failed to cast: extra spell condition"
+        ),
+        "{logs}"
+    );
+    assert!(
+        !has_line(&logs, "16.32", "Completed cast {SpellID: 2643}"),
+        "{logs}"
+    );
+    let (hits, shots) = assert_ranges_hold(&logs, player, 12.0);
+    assert!(hits > 20 && shots > 20, "{hits} hits, {shots} shots");
 }

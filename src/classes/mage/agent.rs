@@ -11,8 +11,8 @@ use crate::{
 use super::{
     spells::{
         arcane_blast, arcane_missiles, arcane_power, arcane_wrath, area_hit, blizzard, cold_snap,
-        combustion, evocation, fire_blast, flamestrike, ice_lance, mana_gems, presence_of_mind,
-        scorch,
+        combustion, evocation, fire_blast, flamestrike, ice_barrier, ice_lance, mana_gems,
+        presence_of_mind, scorch,
     },
     talents::{
         arcane_concentration, fingers_of_frost, fire_power, heating_up, ignite, master_of_elements,
@@ -41,6 +41,8 @@ pub(crate) enum MageSpell {
     ArcaneMissiles,
     ArcaneMissile,
     ColdSnap,
+    /// Ice Barrier (the fork's patch 187).
+    IceBarrier,
     Evocation,
     /// A mana gem by its index in Go's order, smallest first.
     ManaGem(usize),
@@ -78,6 +80,10 @@ pub(crate) enum MageAura {
     /// Heating Up's trigger on every Fire Blast cast.
     HeatingUpFireBlast,
     Combustion,
+    /// Ice Barrier's shield.
+    IceBarrier,
+    /// Frigid Power, which every Ice Barrier cast applies.
+    FrigidPower,
 }
 
 /// Mage state that Go keeps in the `Mage` struct and its closures.
@@ -89,6 +95,7 @@ pub(crate) struct MageAgent {
     missile_barrage: Option<Rc<missile_barrage::MissileBarrage>>,
     arcane_charges: Option<Rc<arcane_blast::ArcaneCharges>>,
     arcane_power: Option<Rc<arcane_power::ArcanePower>>,
+    ice_barrier: Option<Rc<ice_barrier::IceBarrier>>,
     presence_of_mind: Option<Rc<presence_of_mind::PresenceOfMind>>,
     improved_scorch: Option<Rc<scorch::ImprovedScorch>>,
     master_of_elements: Option<Rc<master_of_elements::MasterOfElements>>,
@@ -154,6 +161,15 @@ fn class_auras(prepared: &PreparedV2) -> Vec<(String, MageAura)> {
                 auras.push((aura.clone(), MageAura::ArcanePower));
                 continue;
             }
+            Effect::IceBarrier {
+                aura,
+                frigid_power_aura,
+                ..
+            } => {
+                auras.push((aura.clone(), MageAura::IceBarrier));
+                auras.push((frigid_power_aura.clone(), MageAura::FrigidPower));
+                continue;
+            }
             Effect::Ignite { trigger_aura, .. } => {
                 auras.push((trigger_aura.clone(), MageAura::IgniteTrigger));
                 continue;
@@ -205,6 +221,7 @@ impl MageAgent {
     pub(crate) fn spell(spell: &ExportedSpell, gems: &[i32]) -> Option<MageSpell> {
         match spell.class_spell.as_deref()? {
             "cold_snap" => Some(MageSpell::ColdSnap),
+            "ice_barrier" => Some(MageSpell::IceBarrier),
             "arcane_power" => Some(MageSpell::ArcanePower),
             "combustion" => Some(MageSpell::Combustion),
             "ignite" if spell.dot.is_some() => Some(MageSpell::Ignite),
@@ -464,6 +481,28 @@ impl MageAgent {
                     let bound = arcane_power::bind(&mut fight, aura, *damage, *cost_percent_add)?;
                     fight.agent.arcane_power = Some(Rc::new(bound));
                 }
+                Effect::IceBarrier {
+                    aura,
+                    frigid_power_aura,
+                    absorb_base,
+                    warding,
+                    hit,
+                    dot,
+                    frigid_hit,
+                    frigid_dot,
+                    ..
+                } => {
+                    let bound = ice_barrier::bind(
+                        &mut fight,
+                        aura,
+                        frigid_power_aura,
+                        *absorb_base,
+                        *warding,
+                        (*hit, *dot),
+                        (*frigid_hit, *frigid_dot),
+                    )?;
+                    fight.agent.ice_barrier = Some(Rc::new(bound));
+                }
                 Effect::PresenceOfMind {
                     spell_id,
                     aura,
@@ -600,6 +639,14 @@ impl MageAgent {
             .expect("Arcane Power is bound")
     }
 
+    fn ice_barrier(fight: &Fight<Self>) -> Rc<ice_barrier::IceBarrier> {
+        fight
+            .agent
+            .ice_barrier
+            .clone()
+            .expect("Ice Barrier is bound")
+    }
+
     fn ignite(fight: &Fight<Self>) -> Rc<ignite::Ignite> {
         fight.agent.ignite.clone().expect("Ignite is bound")
     }
@@ -726,6 +773,7 @@ impl Agent for MageAgent {
                 arcane_wrath::apply(fight, spell, target, wrath);
             }
             MageSpell::ColdSnap => cold_snap::apply(fight),
+            MageSpell::IceBarrier => Self::ice_barrier(fight).apply(fight),
             MageSpell::Evocation => evocation::apply(fight, spell),
             MageSpell::ManaGem(gem) => {
                 let mana = fight.agent.gems.mana[gem];
@@ -822,8 +870,11 @@ impl Agent for MageAgent {
         }
     }
 
-    fn on_gain(fight: &mut Fight<Self>, _aura: AuraRef, kind: MageAura) {
+    fn on_gain(fight: &mut Fight<Self>, aura: AuraRef, kind: MageAura) {
         match kind {
+            MageAura::IceBarrier | MageAura::FrigidPower => {
+                Self::ice_barrier(fight).on_gain(fight, aura)
+            }
             MageAura::WintersChill => Self::winters_chill(fight).on_gain(fight),
             MageAura::FingersOfFrost => {
                 Self::with_fingers(fight, |state, fight| state.on_gain(fight))
@@ -844,8 +895,11 @@ impl Agent for MageAgent {
         }
     }
 
-    fn on_expire(fight: &mut Fight<Self>, _aura: AuraRef, kind: MageAura) {
+    fn on_expire(fight: &mut Fight<Self>, aura: AuraRef, kind: MageAura) {
         match kind {
+            MageAura::IceBarrier | MageAura::FrigidPower => {
+                Self::ice_barrier(fight).on_expire(fight, aura)
+            }
             MageAura::WintersChill => Self::winters_chill(fight).on_expire(fight),
             MageAura::FingersOfFrost => {
                 Self::with_fingers(fight, |state, fight| state.on_expire(fight))

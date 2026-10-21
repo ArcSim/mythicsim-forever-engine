@@ -2,6 +2,9 @@
 //! tagged queue cast arms the strike's queue aura after a realism delay; the next main hand
 //! swing then casts the strike in its place on the weapon special table, provided it can
 //! still be paid for. The dual wield miss penalty the strike lifts never applies to that table.
+//! The strike drops the queue before it deals its damage, so an extra attack its own hit procs
+//! at once (Windfury, Sword Specialization) is a white swing and not a second strike that pays
+//! the rage again (Go `QueuedSwingConsumedBeforeDamage`).
 
 use crate::core::fight::{
     melee::PhysicalOutcome, Agent, AuraRef, Fight, Side, SpellId, SpellResult, TimerId,
@@ -31,7 +34,7 @@ pub(crate) struct Queue {
     /// The `results` slice of Go's `registerCleave`, which every cast of Cleave shares, as
     /// pool objects: a cast that begins while another deals its results overwrites the ones
     /// that cast has yet to deal, as Weaponmaster's extra attack replaced by a queued Cleave
-    /// does.
+    /// did before the strike dropped its queue ahead of its damage.
     pub(crate) cleave_slice: Vec<usize>,
     /// Go's cache of Cleave's result objects, which lives as long as the simulation does.
     pub(crate) pool: ResultPool,
@@ -234,8 +237,14 @@ pub(crate) fn cleave_results<A: Agent>(
     results
 }
 
-/// Heroic Strike's `ApplyEffects`: it refunds a miss.
-pub(crate) fn strike<A: Agent>(fight: &mut Fight<A>, spell: SpellId, target: Side, params: Strike) {
+/// Heroic Strike's `ApplyEffects` up to its deal: the hit, and the refund of a miss. The caller
+/// drops the queue and then deals the hit, as Go does with `QueuedSwingConsumedBeforeDamage`.
+pub(crate) fn strike<A: Agent>(
+    fight: &mut Fight<A>,
+    spell: SpellId,
+    target: Side,
+    params: Strike,
+) -> SpellResult {
     let outcome = PhysicalOutcome::MeleeWeaponSpecialHitAndCrit { count: true };
     let attack_power = fight.melee_attack_power();
     let base = params.base_damage + fight.mh_weapon_damage(attack_power);
@@ -243,7 +252,7 @@ pub(crate) fn strike<A: Agent>(fight: &mut Fight<A>, spell: SpellId, target: Sid
     if !result.landed() {
         fight.issue_refund(spell);
     }
-    fight.deal_damage(spell, result, false);
+    result
 }
 
 #[cfg(test)]

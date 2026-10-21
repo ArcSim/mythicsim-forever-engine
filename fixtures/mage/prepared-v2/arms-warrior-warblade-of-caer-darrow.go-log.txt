@@ -2133,6 +2133,7 @@
 [102.39] [arms-warrior (#1)] Completed cast {SpellID: 25286}
 [102.39] [arms-warrior (#1)] Spent 12.000 rage from {SpellID: 25286} (25.000 --> 13.000) of 100 total.
 [102.39] [arms-warrior (#1)] [Target 1] {SpellID: 25286} [DEBUG] MAP: 1432.0, RAP: 96.0, SP: 0.0, BaseDamage:689.7, AfterAttackerMods:710.4, AfterResistances:603.4, AfterTargetMods:611.4, AfterOutcome:1345.0, AfterPostOutcome:1345.0
+[102.39] [arms-warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
 [102.39] [arms-warrior (#1)] [Target 1] {SpellID: 25286} Crit for 1345.003 damage (SpellSchool: 1). (Threat: 1197.922)
 [102.39] [arms-warrior (#1)] Casting {SpellID: 1298499} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [102.39] [arms-warrior (#1)] Completed cast {SpellID: 1298499}
@@ -2142,7 +2143,6 @@
 [102.39] [arms-warrior (#1)] Completed cast {SpellID: 412609}
 [102.39] [arms-warrior (#1)] [Target 1] {SpellID: 412609} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
 [102.39] [Target 1] Aura refreshed: {SpellID: 412609}
-[102.39] [arms-warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
 [102.39] [arms-warrior (#1)] Casting {SpellID: 25286, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [102.39] [arms-warrior (#1)] Completed cast {SpellID: 25286, Tag: 1}
 [102.39] [arms-warrior (#1)] Pausing rotation for 800.000003ms due to resources / CDs.
@@ -2182,6 +2182,7 @@
 [105.69] [arms-warrior (#1)] Completed cast {SpellID: 25286}
 [105.69] [arms-warrior (#1)] Spent 12.000 rage from {SpellID: 25286} (14.000 --> 2.000) of 100 total.
 [105.69] [arms-warrior (#1)] [Target 1] {SpellID: 25286} [DEBUG] MAP: 1432.0, RAP: 96.0, SP: 0.0, BaseDamage:700.1, AfterAttackerMods:721.1, AfterResistances:612.4, AfterTargetMods:620.4, AfterOutcome:1364.9, AfterPostOutcome:1364.9
+[105.69] [arms-warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
 [105.69] [arms-warrior (#1)] [Target 1] {SpellID: 25286} Crit for 1364.926 damage (SpellSchool: 1). (Threat: 1213.861)
 [105.69] [arms-warrior (#1)] Casting {SpellID: 1298499} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [105.69] [arms-warrior (#1)] Completed cast {SpellID: 1298499}
@@ -2193,7 +2194,6 @@
 [105.69] [Target 1] Aura refreshed: {SpellID: 412609}
 [105.69] [arms-warrior (#1)] Aura gained: {SpellID: 10610, Tag: -1}
 [105.69] [arms-warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
-[105.69] [arms-warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
 [105.69] [arms-warrior (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [105.69] [arms-warrior (#1)] Completed cast {OtherID: 3, Tag: 25584}
 [105.69] [arms-warrior (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 1678.0, RAP: 96.0, SP: 0.0, BaseDamage:559.2, AfterAttackerMods:575.9, AfterResistances:489.1, AfterTargetMods:497.1, AfterOutcome:339.8, AfterPostOutcome:339.8
@@ -2516,9 +2516,9 @@
 [118.89] [arms-warrior (#1)] Gained 9.600 rage from {OtherID: 8} (2.000 --> 11.600) of 100 total.
 [118.89] [arms-warrior (#1)] No available actions!
 [118.89] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
+[118.89] [arms-warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
 [118.89] [arms-warrior (#1)] [Target 1] {SpellID: 25286} Dodge (SpellSchool: 1). (Threat: 0.000)
 [118.89] [arms-warrior (#1)] Aura refreshed: {SpellID: 1282733}
-[118.89] [arms-warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
 [118.99] [arms-warrior (#1)] No available actions!
 [118.99] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [119.09] [arms-warrior (#1)] [Target 1] {SpellID: 412609} [DEBUG] MAP: 1432.0, RAP: 96.0, SP: 0.0, BaseDamage:212.9, AfterAttackerMods:212.9, AfterResistances:212.9, AfterTargetMods:220.9, AfterOutcome:220.9, AfterPostOutcome:220.9
@@ -2627,59 +2627,46 @@
 [122.19] [arms-warrior (#1)] Completed cast {SpellID: 25286}
 [122.19] [arms-warrior (#1)] Spent 12.000 rage from {SpellID: 25286} (27.268 --> 15.268) of 100 total.
 [122.19] [arms-warrior (#1)] [Target 1] {SpellID: 25286} [DEBUG] MAP: 1810.0, RAP: 96.0, SP: 0.0, BaseDamage:756.1, AfterAttackerMods:778.8, AfterResistances:661.4, AfterTargetMods:669.4, AfterOutcome:669.4, AfterPostOutcome:669.4
+[122.19] [arms-warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
 [122.19] [arms-warrior (#1)] [Target 1] {SpellID: 25286} Hit for 669.392 damage (SpellSchool: 1). (Threat: 657.434)
 [122.19] [arms-warrior (#1)] Casting {SpellID: 1298499} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [122.19] [arms-warrior (#1)] Completed cast {SpellID: 1298499}
 [122.19] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} [DEBUG] MAP: 1810.0, RAP: 96.0, SP: 0.0, BaseDamage:27.7, AfterAttackerMods:27.7, AfterResistances:13.9, AfterTargetMods:13.9, AfterOutcome:27.7, AfterPostOutcome:27.7
 [122.19] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} Crit (50% Resist) for 27.720 damage (SpellSchool: 16). (Threat: 22.176)
-[122.19] [arms-warrior (#1)] Casting {SpellID: 25286} (Cost = 12.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[122.19] [arms-warrior (#1)] Completed cast {SpellID: 25286}
-[122.19] [arms-warrior (#1)] Spent 12.000 rage from {SpellID: 25286} (15.268 --> 3.268) of 100 total.
-[122.19] [arms-warrior (#1)] [Target 1] {SpellID: 25286} [DEBUG] MAP: 1810.0, RAP: 96.0, SP: 0.0, BaseDamage:781.2, AfterAttackerMods:804.6, AfterResistances:683.3, AfterTargetMods:691.3, AfterOutcome:691.3, AfterPostOutcome:691.3
-[122.19] [arms-warrior (#1)] [Target 1] {SpellID: 25286} Hit for 691.332 damage (SpellSchool: 1). (Threat: 674.985)
+[122.19] [arms-warrior (#1)] Casting {OtherID: 3, Tag: 1290261} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[122.19] [arms-warrior (#1)] Completed cast {OtherID: 3, Tag: 1290261}
+[122.19] [arms-warrior (#1)] [Target 1] {OtherID: 3, Tag: 1290261} [DEBUG] MAP: 1810.0, RAP: 96.0, SP: 0.0, BaseDamage:624.2, AfterAttackerMods:642.9, AfterResistances:546.0, AfterTargetMods:554.0, AfterOutcome:1108.0, AfterPostOutcome:1108.0
+[122.19] [arms-warrior (#1)] [Target 1] {OtherID: 3, Tag: 1290261} Crit for 1107.986 damage (SpellSchool: 1). (Threat: 886.389)
+[122.19] [arms-warrior (#1)] Gained 26.268 rage from {OtherID: 3, Tag: 1290261} (15.268 --> 41.536) of 100 total.
+[122.19] [arms-warrior (#1)] Casting {SpellID: 25286, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[122.19] [arms-warrior (#1)] Completed cast {SpellID: 25286, Tag: 1}
+[122.19] [arms-warrior (#1)] Pausing rotation for 900ms due to resources / CDs.
 [122.19] [arms-warrior (#1)] Casting {SpellID: 1298499} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [122.19] [arms-warrior (#1)] Completed cast {SpellID: 1298499}
 [122.19] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} [DEBUG] MAP: 1810.0, RAP: 96.0, SP: 0.0, BaseDamage:27.7, AfterAttackerMods:27.7, AfterResistances:27.7, AfterTargetMods:27.7, AfterOutcome:27.7, AfterPostOutcome:27.7
 [122.19] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} Hit for 27.720 damage (SpellSchool: 16). (Threat: 22.176)
+[122.19] [arms-warrior (#1)] Casting {SpellID: 412609} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[122.19] [arms-warrior (#1)] Completed cast {SpellID: 412609}
+[122.19] [arms-warrior (#1)] [Target 1] {SpellID: 412609} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
+[122.19] [Target 1] Aura refreshed: {SpellID: 412609}
 [122.19] [arms-warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
 [122.19] [arms-warrior (#1)] Aura faded: {SpellID: 10610, Tag: -1}
-[122.19] [arms-warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
-[122.19] [arms-warrior (#1)] No available actions!
-[122.19] [arms-warrior (#1)] Pausing rotation for 900ms due to resources / CDs.
+[122.20] [arms-warrior (#1)] Gained 1.000 rage from {SpellID: 12964} (41.536 --> 42.536) of 100 total.
 [122.29] [arms-warrior (#1)] No available actions!
 [122.29] [arms-warrior (#1)] Pausing rotation for 800ms due to resources / CDs.
-[123.00] [arms-warrior (#1)] Gained 1.000 rage from {SpellID: 12296} (3.268 --> 4.268) of 100 total.
-[123.09] [arms-warrior (#1)] No available actions!
-[123.09] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.19] [arms-warrior (#1)] No available actions!
-[123.19] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.29] [arms-warrior (#1)] No available actions!
-[123.29] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.39] [arms-warrior (#1)] No available actions!
-[123.39] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.49] [arms-warrior (#1)] No available actions!
-[123.49] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.59] [arms-warrior (#1)] No available actions!
-[123.59] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.69] [arms-warrior (#1)] No available actions!
-[123.69] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.79] [arms-warrior (#1)] No available actions!
-[123.79] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
+[122.44] [arms-warrior (#1)] Aura gained: {SpellID: 25286, Tag: 1}
+[123.00] [arms-warrior (#1)] Gained 1.000 rage from {SpellID: 12296} (42.536 --> 43.536) of 100 total.
+[123.09] [arms-warrior (#1)] Casting {SpellID: 20662} (Cost = 15.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
+[123.09] [arms-warrior (#1)] Completed cast {SpellID: 20662}
+[123.09] [arms-warrior (#1)] Spent 15.000 rage from {SpellID: 20662} (43.536 --> 28.536) of 100 total.
+[123.09] [arms-warrior (#1)] Spent 28.536 rage from {SpellID: 20662} (28.536 --> 0.000) of 100 total.
+[123.09] [arms-warrior (#1)] [Target 1] {SpellID: 20662} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:1028.0, AfterAttackerMods:1058.9, AfterResistances:899.3, AfterTargetMods:907.3, AfterOutcome:907.3, AfterPostOutcome:907.3
+[123.09] [arms-warrior (#1)] [Target 1] {SpellID: 20662} Hit for 907.297 damage (SpellSchool: 1). (Threat: 907.297)
+[123.09] [arms-warrior (#1)] Casting {SpellID: 1298499} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[123.09] [arms-warrior (#1)] Completed cast {SpellID: 1298499}
+[123.09] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:27.7, AfterAttackerMods:27.7, AfterResistances:27.7, AfterTargetMods:27.7, AfterOutcome:55.4, AfterPostOutcome:55.4
+[123.09] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} Crit for 55.440 damage (SpellSchool: 16). (Threat: 44.352)
 [123.89] [arms-warrior (#1)] Aura faded: {SpellID: 1282733}
-[123.89] [arms-warrior (#1)] No available actions!
-[123.89] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[123.99] [arms-warrior (#1)] No available actions!
-[123.99] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.09] [arms-warrior (#1)] No available actions!
-[124.09] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.19] [arms-warrior (#1)] No available actions!
-[124.19] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.29] [arms-warrior (#1)] No available actions!
-[124.29] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.39] [arms-warrior (#1)] No available actions!
-[124.39] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
-[124.49] [arms-warrior (#1)] No available actions!
-[124.49] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [124.59] [arms-warrior (#1)] No available actions!
 [124.59] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [124.69] [arms-warrior (#1)] No available actions!
@@ -2691,8 +2678,8 @@
 [124.99] [arms-warrior (#1)] No available actions!
 [124.99] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [125.00] [arms-warrior (#1)] Aura refreshed: {SpellID: 25587, Tag: -1}
-[125.09] [arms-warrior (#1)] [Target 1] {SpellID: 412609} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:133.1, AfterAttackerMods:133.1, AfterResistances:133.1, AfterTargetMods:141.1, AfterOutcome:141.1, AfterPostOutcome:141.1
-[125.09] [arms-warrior (#1)] [Target 1] {SpellID: 412609} tick Hit for 141.146 damage (SpellSchool: 1). (Threat: 112.917)
+[125.09] [arms-warrior (#1)] [Target 1] {SpellID: 412609} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:126.6, AfterAttackerMods:126.6, AfterResistances:126.6, AfterTargetMods:134.6, AfterOutcome:134.6, AfterPostOutcome:134.6
+[125.09] [arms-warrior (#1)] [Target 1] {SpellID: 412609} tick Hit for 134.559 damage (SpellSchool: 1). (Threat: 107.647)
 [125.09] [arms-warrior (#1)] No available actions!
 [125.09] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [125.19] [arms-warrior (#1)] No available actions!
@@ -2703,31 +2690,24 @@
 [125.39] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
 [125.49] [arms-warrior (#1)] No available actions!
 [125.49] [arms-warrior (#1)] Pausing rotation for 100ms due to resources / CDs.
+[125.49] [arms-warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
 [125.49] [arms-warrior (#1)] Casting {OtherID: 3, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [125.49] [arms-warrior (#1)] Completed cast {OtherID: 3, Tag: 1}
-[125.49] [arms-warrior (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:539.6, AfterAttackerMods:555.8, AfterResistances:472.0, AfterTargetMods:480.0, AfterOutcome:480.0, AfterPostOutcome:480.0
-[125.49] [arms-warrior (#1)] [Target 1] {OtherID: 3, Tag: 1} Hit for 480.048 damage (SpellSchool: 1). (Threat: 384.038)
-[125.49] [arms-warrior (#1)] Gained 14.850 rage from {OtherID: 3, Tag: 1} (4.268 --> 19.118) of 100 total.
+[125.49] [arms-warrior (#1)] [Target 1] {OtherID: 3, Tag: 1} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:561.1, AfterAttackerMods:578.0, AfterResistances:490.9, AfterTargetMods:498.9, AfterOutcome:997.7, AfterPostOutcome:997.7
+[125.49] [arms-warrior (#1)] [Target 1] {OtherID: 3, Tag: 1} Crit for 997.725 damage (SpellSchool: 1). (Threat: 798.180)
+[125.49] [arms-warrior (#1)] Gained 26.268 rage from {OtherID: 3, Tag: 1} (0.000 --> 26.268) of 100 total.
 [125.49] [arms-warrior (#1)] Casting {SpellID: 20662} (Cost = 15.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [125.49] [arms-warrior (#1)] Completed cast {SpellID: 20662}
-[125.49] [arms-warrior (#1)] Spent 15.000 rage from {SpellID: 20662} (19.118 --> 4.118) of 100 total.
-[125.49] [arms-warrior (#1)] Spent 4.118 rage from {SpellID: 20662} (4.118 --> 0.000) of 100 total.
-[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 20662} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:661.8, AfterAttackerMods:681.6, AfterResistances:578.9, AfterTargetMods:586.9, AfterOutcome:1291.2, AfterPostOutcome:1291.2
-[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 20662} Crit for 1291.170 damage (SpellSchool: 1). (Threat: 1291.170)
+[125.49] [arms-warrior (#1)] Spent 15.000 rage from {SpellID: 20662} (26.268 --> 11.268) of 100 total.
+[125.49] [arms-warrior (#1)] Spent 11.268 rage from {SpellID: 20662} (11.268 --> 0.000) of 100 total.
+[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 20662} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:769.0, AfterAttackerMods:792.1, AfterResistances:672.7, AfterTargetMods:680.7, AfterOutcome:680.7, AfterPostOutcome:680.7
+[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 20662} Hit for 680.714 damage (SpellSchool: 1). (Threat: 680.714)
 [125.49] [arms-warrior (#1)] Casting {SpellID: 1298499} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [125.49] [arms-warrior (#1)] Completed cast {SpellID: 1298499}
-[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:27.7, AfterAttackerMods:27.7, AfterResistances:20.8, AfterTargetMods:20.8, AfterOutcome:20.8, AfterPostOutcome:20.8
-[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} Hit (25% Resist) for 20.790 damage (SpellSchool: 16). (Threat: 16.632)
-[125.49] [arms-warrior (#1)] Casting {SpellID: 412609} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[125.49] [arms-warrior (#1)] Completed cast {SpellID: 412609}
-[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 412609} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
-[125.49] [Target 1] Aura refreshed: {SpellID: 412609}
-[125.49] [arms-warrior (#1)] Casting {SpellID: 1298499} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[125.49] [arms-warrior (#1)] Completed cast {SpellID: 1298499}
-[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:27.7, AfterAttackerMods:27.7, AfterResistances:27.7, AfterTargetMods:27.7, AfterOutcome:55.4, AfterPostOutcome:55.4
-[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} Crit for 55.440 damage (SpellSchool: 16). (Threat: 44.352)
+[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:27.7, AfterAttackerMods:27.7, AfterResistances:27.7, AfterTargetMods:27.7, AfterOutcome:27.7, AfterPostOutcome:27.7
+[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} Hit for 27.720 damage (SpellSchool: 16). (Threat: 22.176)
 [125.49] [arms-warrior (#1)] Aura gained: {SpellID: 10610, Tag: -1}
-[125.49] [arms-warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 1
+[125.49] [arms-warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 2
 [125.49] [arms-warrior (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [125.49] [arms-warrior (#1)] Completed cast {OtherID: 3, Tag: 25584}
 [125.49] [arms-warrior (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 1810.0, RAP: 96.0, SP: 0.0, BaseDamage:634.3, AfterAttackerMods:653.3, AfterResistances:554.9, AfterTargetMods:562.9, AfterOutcome:1125.8, AfterPostOutcome:1125.8
@@ -2741,31 +2721,61 @@
 [125.49] [arms-warrior (#1)] Completed cast {SpellID: 412609}
 [125.49] [arms-warrior (#1)] [Target 1] {SpellID: 412609} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
 [125.49] [Target 1] Aura refreshed: {SpellID: 412609}
-[125.49] [arms-warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
-[125.49] [arms-warrior (#1)] Aura faded: {SpellID: 10610, Tag: -1}
-[125.50] [arms-warrior (#1)] Gained 1.000 rage from {SpellID: 12964} (26.268 --> 27.268) of 100 total.
-[125.59] [arms-warrior (#1)] Casting {SpellID: 25286, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
-[125.59] [arms-warrior (#1)] Completed cast {SpellID: 25286, Tag: 1}
+[125.49] [arms-warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 2 --> 1
+[125.49] [arms-warrior (#1)] Casting {SpellID: 25286, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[125.49] [arms-warrior (#1)] Completed cast {SpellID: 25286, Tag: 1}
+[125.49] [arms-warrior (#1)] Casting {SpellID: 1298499} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[125.49] [arms-warrior (#1)] Completed cast {SpellID: 1298499}
+[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} [DEBUG] MAP: 1810.0, RAP: 96.0, SP: 0.0, BaseDamage:27.7, AfterAttackerMods:27.7, AfterResistances:27.7, AfterTargetMods:27.7, AfterOutcome:27.7, AfterPostOutcome:27.7
+[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} Hit for 27.720 damage (SpellSchool: 16). (Threat: 22.176)
+[125.49] [arms-warrior (#1)] Casting {SpellID: 412609} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[125.49] [arms-warrior (#1)] Completed cast {SpellID: 412609}
+[125.49] [arms-warrior (#1)] [Target 1] {SpellID: 412609} Hit for 0.000 damage (SpellSchool: 1). (Threat: 0.000)
+[125.49] [Target 1] Aura refreshed: {SpellID: 412609}
+[125.59] [arms-warrior (#1)] No available actions!
 [125.59] [arms-warrior (#1)] Pausing rotation for 1.4s due to resources / CDs.
-[125.84] [arms-warrior (#1)] Aura gained: {SpellID: 25286, Tag: 1}
-[126.00] [arms-warrior (#1)] Gained 1.000 rage from {SpellID: 12296} (27.268 --> 28.268) of 100 total.
+[125.74] [arms-warrior (#1)] Aura gained: {SpellID: 25286, Tag: 1}
+[126.00] [arms-warrior (#1)] Gained 1.000 rage from {SpellID: 12296} (26.268 --> 27.268) of 100 total.
 [126.10] [arms-warrior (#1)] No available actions!
 [126.10] [arms-warrior (#1)] Pausing rotation for 886ms due to resources / CDs.
+[126.49] [arms-warrior (#1)] Aura faded: {SpellID: 10610, Tag: -1}
+[126.99] [arms-warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
 [126.99] [arms-warrior (#1)] Casting {SpellID: 20662} (Cost = 15.000, Cast Time = 0s, GCD = 1.5s, Effective Time = 1.5s)
 [126.99] [arms-warrior (#1)] Completed cast {SpellID: 20662}
-[126.99] [arms-warrior (#1)] Spent 15.000 rage from {SpellID: 20662} (28.268 --> 13.268) of 100 total.
-[126.99] [arms-warrior (#1)] Spent 13.268 rage from {SpellID: 20662} (13.268 --> 0.000) of 100 total.
-[126.99] [arms-warrior (#1)] [Target 1] {SpellID: 20662} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:799.0, AfterAttackerMods:823.0, AfterResistances:699.0, AfterTargetMods:707.0, AfterOutcome:707.0, AfterPostOutcome:707.0
-[126.99] [arms-warrior (#1)] [Target 1] {SpellID: 20662} Hit for 706.957 damage (SpellSchool: 1). (Threat: 706.957)
+[126.99] [arms-warrior (#1)] Spent 15.000 rage from {SpellID: 20662} (27.268 --> 12.268) of 100 total.
+[126.99] [arms-warrior (#1)] Spent 12.268 rage from {SpellID: 20662} (12.268 --> 0.000) of 100 total.
+[126.99] [arms-warrior (#1)] [Target 1] {SpellID: 20662} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:784.0, AfterAttackerMods:807.5, AfterResistances:685.8, AfterTargetMods:693.8, AfterOutcome:693.8, AfterPostOutcome:693.8
+[126.99] [arms-warrior (#1)] [Target 1] {SpellID: 20662} Hit for 693.836 damage (SpellSchool: 1). (Threat: 693.836)
 [126.99] [arms-warrior (#1)] Casting {SpellID: 1298499} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
 [126.99] [arms-warrior (#1)] Completed cast {SpellID: 1298499}
 [126.99] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} [DEBUG] MAP: 1564.0, RAP: 96.0, SP: 0.0, BaseDamage:27.7, AfterAttackerMods:27.7, AfterResistances:27.7, AfterTargetMods:27.7, AfterOutcome:27.7, AfterPostOutcome:27.7
 [126.99] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} Hit for 27.720 damage (SpellSchool: 16). (Threat: 22.176)
+[126.99] [arms-warrior (#1)] Aura gained: {SpellID: 10610, Tag: -1}
+[126.99] [arms-warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 0 --> 2
+[126.99] [arms-warrior (#1)] Aura faded: {SpellID: 25286, Tag: 1}
+[126.99] [arms-warrior (#1)] Casting {OtherID: 3, Tag: 25584} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[126.99] [arms-warrior (#1)] Completed cast {OtherID: 3, Tag: 25584}
+[126.99] [arms-warrior (#1)] [Target 1] {OtherID: 3, Tag: 25584} [DEBUG] MAP: 1810.0, RAP: 96.0, SP: 0.0, BaseDamage:604.0, AfterAttackerMods:622.1, AfterResistances:528.4, AfterTargetMods:536.4, AfterOutcome:321.8, AfterPostOutcome:321.8
+[126.99] [arms-warrior (#1)] [Target 1] {OtherID: 3, Tag: 25584} Glance for 321.807 damage (SpellSchool: 1). (Threat: 257.446)
+[126.99] [arms-warrior (#1)] Gained 14.850 rage from {OtherID: 3, Tag: 25584} (0.000 --> 14.850) of 100 total.
+[126.99] [arms-warrior (#1)] Casting {SpellID: 1298499} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[126.99] [arms-warrior (#1)] Completed cast {SpellID: 1298499}
+[126.99] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} [DEBUG] MAP: 1810.0, RAP: 96.0, SP: 0.0, BaseDamage:27.7, AfterAttackerMods:27.7, AfterResistances:27.7, AfterTargetMods:27.7, AfterOutcome:27.7, AfterPostOutcome:27.7
+[126.99] [arms-warrior (#1)] [Target 1] {SpellID: 1298499} Hit for 27.720 damage (SpellSchool: 16). (Threat: 22.176)
+[126.99] [arms-warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 2 --> 1
+[126.99] [arms-warrior (#1)] Casting {SpellID: 25286, Tag: 1} (Cost = 0.000, Cast Time = 0s, GCD = 0s, Effective Time = 0s)
+[126.99] [arms-warrior (#1)] Completed cast {SpellID: 25286, Tag: 1}
+[127.00] [arms-warrior (#1)] Gained 1.000 rage from {SpellID: 12964} (14.850 --> 15.850) of 100 total.
+[127.09] [arms-warrior (#1)] No available actions!
+[127.09] [arms-warrior (#1)] Pausing rotation for 1.4s due to resources / CDs.
+[127.24] [arms-warrior (#1)] Aura gained: {SpellID: 25286, Tag: 1}
 [127.25] [arms-warrior (#1)] Aura faded: {SpellID: 12963, Tag: 2}
 [127.25] [arms-warrior (#1)] Aura faded: {SpellID: 1290261, Tag: 3}
 [127.25] [arms-warrior (#1)] Aura faded: {SpellID: 25289, Tag: -1}
 [127.25] [arms-warrior (#1)] Aura faded: {SpellID: 24932, Tag: -1}
 [127.25] [arms-warrior (#1)] Aura faded: {SpellID: 25362, Tag: -1}
+[127.25] [arms-warrior (#1)] Aura faded: {SpellID: 10610, Tag: -1}
+[127.25] [arms-warrior (#1)] {SpellID: 10610, Tag: -1} stacks: 1 --> 0
 [127.25] [arms-warrior (#1)] Aura faded: {SpellID: 25580, Tag: -1}
 [127.25] [arms-warrior (#1)] Aura faded: {SpellID: 25587, Tag: -1}
 [127.25] [arms-warrior (#1)] Aura faded: {SpellID: 21850, Tag: -1}

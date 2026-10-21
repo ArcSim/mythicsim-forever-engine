@@ -135,6 +135,33 @@ fn production_feral_bear_druid_is_supported() {
     assert!(check_prepared(&parse(bear())).is_ok());
 }
 
+/// A queued Maul replaces one main hand swing and is gone: a Windfury Totem extra attack its own
+/// hit procs is a white swing, so each queue is spent by one Maul and one rage cost (Ambiwar,
+/// MythicSim Discord #bugs, 21 October 2026). The first fight had five queues spent twice before.
+#[test]
+fn a_queued_maul_is_spent_once() {
+    let logs = first_fight_log(bear());
+    let (gained, faded) = (
+        "Aura gained: {SpellID: 9881, Tag: 1}",
+        "Aura faded: {SpellID: 9881, Tag: 1}",
+    );
+    let mut queues = Vec::new();
+    let mut open = None;
+    for line in logs.lines() {
+        if line.contains(gained) {
+            open = Some(0);
+        } else if line.contains(faded) {
+            queues.extend(open.take());
+        } else if let Some(casts) = open.as_mut() {
+            if line.contains("Casting {SpellID: 9881} ") {
+                *casts += 1;
+            }
+        }
+    }
+    assert!(queues.contains(&1));
+    assert!(queues.iter().all(|&casts| casts <= 1), "{queues:?}");
+}
+
 #[test]
 fn a_bear_rotation_may_leave_bear_form_and_shift_back() {
     // Innervate clears the form; the bear casts Bear Form again once out of it.

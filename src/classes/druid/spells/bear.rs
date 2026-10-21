@@ -196,11 +196,13 @@ impl Maul {
             base,
             PhysicalOutcome::MeleeWeaponSpecialHitAndCrit { count: true },
         );
+        // Go QueuedSwingConsumedBeforeDamage: Maul drops its queue before it deals its damage, so
+        // a Windfury extra attack its hit procs is a white swing, not a second Maul.
+        fight.deactivate_aura(self.queue_aura);
         fight.deal_damage(spell, result, false);
         if !result.landed() {
             fight.issue_refund(spell);
         }
-        fight.deactivate_aura(self.queue_aura);
     }
 }
 

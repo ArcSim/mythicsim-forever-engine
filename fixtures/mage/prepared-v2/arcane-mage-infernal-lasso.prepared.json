@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
+    "engine_revision": "62b7445d1c812b257110e51a5b1e8db93b987972",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "78cc7ea948497a8b11454f2cb873e5c52e0f20db5748e415d5a9c3aed5cf1df0",
+  "request_sha256": "cf35b02affa8d0c8ea613dc759a94caae2312879f4a1db34e3d00de2b986223d",
   "scenario_id": "arcane-mage-infernal-lasso",
   "sim": {
     "iterations": 1000,
@@ -762,8 +762,8 @@
       },
       "school_bonus_hit_chance": {
         "arcane": 5,
-        "fire": 5,
-        "frost": 5,
+        "fire": 6,
+        "frost": 6,
         "holy": 0,
         "nature": 0,
         "none": 0,
@@ -1239,7 +1239,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "0551205003100301531-230500001-005",
+    "talents_string": "0551205003100301531-230500001-003",
     "talents": {
       "arcane_blast": 1,
       "arcane_concentration": 5,
@@ -1250,7 +1250,7 @@
       "arcane_mind": 5,
       "arcane_power": 1,
       "arcane_subtlety": 2,
-      "elemental_precision": 5,
+      "elemental_precision": 3,
       "ignite": 5,
       "improved_channeling": 5,
       "improved_fire_blast": 2,

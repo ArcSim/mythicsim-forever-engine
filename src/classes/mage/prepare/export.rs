@@ -183,6 +183,26 @@ pub(super) fn effects(talents: &Message, sim: &Sim, unit: UnitId) -> Vec<Value> 
     if talents.bool("cold_snap") {
         effects.push(json!({"kind": "cold_snap", "spell_id": data.cold_snap.highest().id}));
     }
+    // ice_barrier.go (the fork's patch 187): the shield's absorb, read when it is cast, and the
+    // Frost damage both auras attach in Piercing Ice's old shape.
+    if talents.bool("ice_barrier") {
+        let rank = data.ice_barrier.highest();
+        let frigid = data.ice_barrier_triggered.by_id(1326891);
+        let pct = |row: &Row, misc: i32| {
+            row.effect(dbcenums::A_ADD_PCT_MODIFIER, misc)
+                .average(CHARACTER_LEVEL)
+                / 100.0
+        };
+        effects.push(json!({
+            "kind": "ice_barrier", "spell_id": rank.id, "aura": "Ice Barrier",
+            "frigid_power_aura": frigid.name,
+            "absorb_base": rank.effect_n(1).average(CHARACTER_LEVEL),
+            "warding": 1.0 + data.frost_warding.effect_at(3).fraction_at(talents.i32("frost_warding")),
+            "hit": pct(rank, dbcenums::SPELLMOD_DAMAGE), "dot": pct(rank, dbcenums::SPELLMOD_DOT),
+            "frigid_hit": pct(frigid, dbcenums::SPELLMOD_DAMAGE),
+            "frigid_dot": pct(frigid, dbcenums::SPELLMOD_DOT),
+        }));
+    }
     // evocation.go
     let evocation = data.evocation.highest();
     effects.push(json!({

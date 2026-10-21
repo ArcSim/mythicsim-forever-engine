@@ -40,6 +40,7 @@ const EFFECTS: &[&str] = &[
     "frostbolt",
     "frostfire_bolt",
     "heating_up",
+    "ice_barrier",
     "ice_lance",
     "ignite",
     "mana_gems",
@@ -69,6 +70,7 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "ice_lance" => Some("ice_lance"),
         "arcane_missiles_cast" => Some("arcane_missiles"),
         "cold_snap" => Some("cold_snap"),
+        "ice_barrier" => Some("ice_barrier"),
         "evocation" => Some("evocation"),
         "mana_gem" => Some("mana_gems"),
         "arcane_explosion" => Some("arcane_explosion"),
@@ -115,6 +117,11 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         } => {
             vec![("player", regen_aura), ("player", channel_aura)]
         }
+        Effect::IceBarrier {
+            aura,
+            frigid_power_aura,
+            ..
+        } => vec![("player", aura), ("player", frigid_power_aura)],
         Effect::Ignite { trigger_aura, .. } | Effect::MasterOfElements { trigger_aura, .. } => {
             vec![("player", trigger_aura)]
         }

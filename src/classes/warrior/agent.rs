@@ -1082,6 +1082,14 @@ impl WarriorAgent {
 }
 
 impl WarriorAgent {
+    /// heroic_strike_cleave.go `consumeQueuedSwing`: drop the queue the strike fired from.
+    fn consume_queue(fight: &mut Fight<Self>) {
+        if let Some(current) = fight.agent.queue.current {
+            let aura = fight.agent.queue.strikes[current].queue_aura;
+            fight.deactivate_aura(aura);
+        }
+    }
+
     /// Go `registerCleave`'s `ApplyEffects` from `results = results[:0]` on: each hit's result
     /// object takes its place in the slice every cast of Cleave shares, and the deal loop reads
     /// the slice's element when its turn comes, so a cast that starts during a deal replaces
@@ -1208,16 +1216,17 @@ impl Agent for WarriorAgent {
                 deep_wounds::apply(fight, spell, target, params, off_hand);
             }
             WarriorSpell::Strike(index) => {
+                // Go QueuedSwingConsumedBeforeDamage: the queue is dropped before the strike's
+                // damage, so an extra attack its hit procs at once is a white swing.
                 let params = fight.agent.queue.strikes[index];
                 if params.cleave {
                     let results = heroic_strike::cleave_results(fight, spell, target, params);
+                    Self::consume_queue(fight);
                     Self::deal_cleave(fight, spell, results);
                 } else {
-                    heroic_strike::strike(fight, spell, target, params);
-                }
-                if let Some(current) = fight.agent.queue.current {
-                    let aura = fight.agent.queue.strikes[current].queue_aura;
-                    fight.deactivate_aura(aura);
+                    let result = heroic_strike::strike(fight, spell, target, params);
+                    Self::consume_queue(fight);
+                    fight.deal_damage(spell, result, false);
                 }
             }
             WarriorSpell::QueueStrike(index) => {

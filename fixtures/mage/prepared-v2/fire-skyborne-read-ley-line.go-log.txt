@@ -774,10 +774,13 @@
 [126.06] [fire-mage (#1)] [Target 1] {SpellID: 25306} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:15.0, AfterAttackerMods:15.0, AfterResistances:15.7, AfterTargetMods:17.3, AfterOutcome:17.3, AfterPostOutcome:17.3
 [126.06] [fire-mage (#1)] [Target 1] {SpellID: 25306} tick Hit for 17.286 damage (SpellSchool: 4). (Threat: 13.829)
 [126.68] [fire-mage (#1)] Completed cast {SpellID: 10207}
-[126.68] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:387.7, AfterAttackerMods:387.7, AfterResistances:406.2, AfterTargetMods:446.8, AfterOutcome:0.0, AfterPostOutcome:0.0
-[126.68] [fire-mage (#1)] [Target 1] {SpellID: 10207} Miss (SpellSchool: 4). (Threat: 0.000)
+[126.68] [fire-mage (#1)] [Target 1] {SpellID: 10207} [DEBUG] MAP: -10.0, RAP: 0.0, SP: 493.0, BaseDamage:387.7, AfterAttackerMods:387.7, AfterResistances:406.2, AfterTargetMods:446.8, AfterOutcome:446.8, AfterPostOutcome:446.8
+[126.68] [fire-mage (#1)] [Target 1] {SpellID: 10207} Hit for 446.819 damage (SpellSchool: 4). (Threat: 357.455)
+[126.68] [fire-mage (#1)] Aura gained: {SpellID: 22959}
+[126.68] [fire-mage (#1)] {SpellID: 22959} stacks: 0 --> 1
 [126.68] [fire-mage (#1)] Aura faded: {SpellID: 12536}
 [126.68] [fire-mage (#1)] Casting {SpellID: 10207} (Cost = 150.000, Cast Time = 1.456s, GCD = 1.456s, Effective Time = 1.456s)
+[126.69] [fire-mage (#1)] Gained 59.000 mana from {SpellID: 20355} (5233.317 --> 5292.317) of 6513 total.
 [127.25] [fire-mage (#1)] Aura faded: {SpellID: 400625}
 [127.25] [fire-mage (#1)] {SpellID: 400625} stacks: 1 --> 0
 [127.25] [fire-mage (#1)] Aura faded: {SpellID: 10494, Tag: -1}
@@ -788,5 +791,7 @@
 [127.25] [fire-mage (#1)] Aura faded: {SpellID: 25898, Tag: -1}
 [127.25] [fire-mage (#1)] Aura faded: {SpellID: 25918, Tag: -1}
 [127.25] [fire-mage (#1)] Aura faded: {SpellID: 22783}
+[127.25] [fire-mage (#1)] Aura faded: {SpellID: 22959}
+[127.25] [fire-mage (#1)] {SpellID: 22959} stacks: 1 --> 0
 [127.25] [Target 1] Aura faded: {SpellID: 20355, Tag: -1}
 [127.25] [Target 1] Aura faded: {SpellID: 1311680, Tag: -1}

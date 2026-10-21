@@ -689,26 +689,75 @@ fn demoralizing_shout_needs_its_effect() {
         .contains(&"rotation reaches spell 11556 without a known behavior".to_string()));
 }
 
-/// An extra attack that a landed hit casts at once, replaced by a queued Cleave, starts a
-/// Cleave while another still deals its hits. Go's Cleave shares one slice of results between
-/// its casts, so the first cast then deals the second's last hit again in place of its own,
-/// whose result is never dealt.
+/// The casts of a queued strike between each arming of its queue aura and its fade, and the
+/// rage they spend, from a first-fight log.
+fn strikes_per_queue(logs: &str, strike: &str) -> Vec<(usize, f64)> {
+    let gained = format!("Aura gained: {{SpellID: {strike}, Tag: 1}}");
+    let faded = format!("Aura faded: {{SpellID: {strike}, Tag: 1}}");
+    let cast = format!("Casting {{SpellID: {strike}}} ");
+    let spent = format!(" rage from {{SpellID: {strike}}} ");
+    let mut queues = Vec::new();
+    let mut open: Option<(usize, f64)> = None;
+    for line in logs.lines() {
+        if line.contains(&gained) {
+            open = Some((0, 0.0));
+        } else if line.contains(&faded) {
+            queues.extend(open.take());
+        } else if let Some((casts, rage)) = open.as_mut() {
+            if line.contains(&cast) {
+                *casts += 1;
+            } else if line.contains(&spent) {
+                let amount = line
+                    .split("Spent ")
+                    .nth(1)
+                    .unwrap()
+                    .split(' ')
+                    .next()
+                    .unwrap();
+                *rage += amount.parse::<f64>().unwrap();
+            }
+        }
+    }
+    queues
+}
+
+/// A queued Heroic Strike or Cleave replaces one main hand swing and is gone. An extra attack
+/// its own hit procs at once (Windfury Totem here, Sword Specialization alike) is a white swing,
+/// so each queue is spent by one strike and one rage cost (Ambiwar, MythicSim Discord #bugs,
+/// 21 October 2026). Each fixture's first fight, before the fix, had a queue spent twice.
 #[test]
-fn a_cleave_cast_again_while_it_deals_deals_the_later_hit_twice() {
-    for name in [
-        "production-arms-warrior-2-targets",
-        "production-warrior-5-targets",
+fn a_queued_strike_is_spent_once_and_its_extra_attack_is_a_white_swing() {
+    for (name, strike, cost) in [
+        ("fury-warrior-battlegear-of-might-sapper", "25286", 12.0),
+        ("warrior-heroic-strike", "25286", 13.0),
+        ("production-fury-protection-warrior", "25286", 15.0),
+        ("production-arms-warrior-2-targets", "20569", 20.0),
+        ("production-warrior-5-targets", "20569", 17.0),
     ] {
         let logs = first_fight_log(warrior_fixture(name));
-        let lines: Vec<&str> = logs.lines().collect();
-        let dealt_twice = lines.iter().enumerate().any(|(index, line)| {
-            line.contains("{SpellID: 20569} ")
-                && line.contains(" for ")
-                && !line.contains("[DEBUG]")
-                && lines[index.saturating_sub(40)..index].contains(line)
-        });
-        assert!(dealt_twice, "{name}");
+        let queues = strikes_per_queue(&logs, strike);
+        assert!(queues.iter().any(|&(casts, _)| casts == 1), "{name}");
+        for (casts, rage) in queues {
+            assert!(casts <= 1, "{name}: one queue cast {strike} {casts} times");
+            assert!(
+                rage <= cost,
+                "{name}: one queue spent {rage} rage on {strike}"
+            );
+        }
     }
+    // The strike's hit still procs Windfury Totem (at 43.43 in this fight, where the old order
+    // cast Heroic Strike twice): the extra attack is the plain swing of Windfury's own row.
+    let logs = first_fight_log(warrior_fixture("fury-warrior-battlegear-of-might-sapper"));
+    let lines: Vec<&str> = logs.lines().collect();
+    let white_after_strike = lines.windows(8).any(|window| {
+        window[0].contains("[Target 1] {SpellID: 25286} ")
+            && window[0].contains(" for ")
+            && window[1].contains("Aura gained: {SpellID: 10610, Tag: -1}")
+            && window[2..]
+                .iter()
+                .any(|line| line.contains("Casting {OtherID: 3, Tag: 25584}"))
+    });
+    assert!(white_after_strike);
 }
 
 /// The lines of a first-fight log at one timestamp.

@@ -63,7 +63,7 @@ still runs the fight.
 
 ## The Go reference
 
-The reference pin stays at Go revision `b5c0b8bb29ab19cd31454cc3e4e27c070f807f78`, the last
+The reference pin stays at Go revision `62b7445d1c812b257110e51a5b1e8db93b987972`, the last
 Go release. Every accepted fixture keeps its Go golden, so a change to a mechanic Go covers
 still has to match it or explain why it no longer should. A match means the same behavior as
 that Go engine, not proof of the live game. [UPSTREAM.md](UPSTREAM.md) records how the pin

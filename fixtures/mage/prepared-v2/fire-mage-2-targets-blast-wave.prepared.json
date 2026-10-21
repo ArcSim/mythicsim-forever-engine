@@ -2,11 +2,11 @@
   "schema_version": 2,
   "contract": "forever-prepared",
   "reference": {
-    "engine_revision": "b5c0b8bb29ab19cd31454cc3e4e27c070f807f78",
+    "engine_revision": "62b7445d1c812b257110e51a5b1e8db93b987972",
     "client_build": "1.60.1.70425",
     "exporter": "tools/oracle-v2"
   },
-  "request_sha256": "daeb6fed9fabe6d9235fccced580e9ceb56e8bbe542b8f7cefba7ed3e3e14c2a",
+  "request_sha256": "a56fc63d22e1a19b8a5090d2765610694feb2042860b22e356d4eddac66b7cc1",
   "scenario_id": "fire-mage-2-targets-blast-wave",
   "sim": {
     "iterations": 3000,
@@ -747,8 +747,8 @@
       },
       "school_bonus_hit_chance": {
         "arcane": 5,
-        "fire": 4,
-        "frost": 4,
+        "fire": 6,
+        "frost": 6,
         "holy": 0,
         "nature": 0,
         "none": 0,
@@ -1269,7 +1269,7 @@
     "professions": [
       "Engineering"
     ],
-    "talents_string": "05012050030000-13550000130135131-004",
+    "talents_string": "05012050030000-13550000130135131-003",
     "talents": {
       "arcane_concentration": 5,
       "arcane_focus": 5,
@@ -1278,7 +1278,7 @@
       "blast_wave": 1,
       "combustion": 1,
       "critical_mass": 5,
-      "elemental_precision": 4,
+      "elemental_precision": 3,
       "fire_power": 3,
       "heating_up": 1,
       "ignite": 5,

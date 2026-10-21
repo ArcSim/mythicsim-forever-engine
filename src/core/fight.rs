@@ -2001,7 +2001,7 @@ const RESISTANCE_STATS: [(usize, &str); 5] = [
     (6, "NatureResistance"),
     (7, "ShadowResistance"),
 ];
-const SCHOOL_INDEX_FROST: usize = 4;
+pub(crate) const SCHOOL_INDEX_FROST: usize = 4;
 
 /// Go `SpellSchool` to `SchoolIndex`, in Go's switch order.
 pub(crate) fn school_index(school: u8) -> usize {

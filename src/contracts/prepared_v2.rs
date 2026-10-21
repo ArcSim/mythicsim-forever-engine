@@ -2841,6 +2841,22 @@ pub enum Effect {
     ColdSnap {
         spell_id: i32,
     },
+    /// Ice Barrier (the fork's patch 187, client hotfix push 112753): the shield, which absorbs
+    /// `warding x (absorb_base + 0.1 x Frost spell power)` as cast and raises Frost damage while it
+    /// holds, and Frigid Power, which raises it again for its full duration.
+    IceBarrier {
+        spell_id: i32,
+        aura: String,
+        frigid_power_aura: String,
+        absorb_base: f64,
+        warding: f64,
+        /// The shield's SPELLMOD_DAMAGE and SPELLMOD_DOT shares.
+        hit: f64,
+        dot: f64,
+        /// Frigid Power's.
+        frigid_hit: f64,
+        frigid_dot: f64,
+    },
     Evocation {
         spell_id: i32,
         regen_aura: String,
@@ -4603,6 +4619,7 @@ impl Effect {
             Effect::IceLance { .. } => "ice_lance",
             Effect::ArcaneMissiles { .. } => "arcane_missiles",
             Effect::ColdSnap { .. } => "cold_snap",
+            Effect::IceBarrier { .. } => "ice_barrier",
             Effect::Evocation { .. } => "evocation",
             Effect::ManaGems { .. } => "mana_gems",
             Effect::MageArmor { .. } => "mage_armor",

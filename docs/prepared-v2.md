@@ -111,6 +111,7 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `arcane_wrath` | sim/mage/arcane_wrath.go | The share of maximum mana the hit adds as spell damage, at the damage effect's coefficient (client 70425) |
 | `fire_power` | sim/mage/talents_fire.go | The damage a Fire effect of the mage on the target adds to its Fire spells, Ignite aside, and how many count (client 70425): a damage done by caster handler on every attack table |
 | `cold_snap` | sim/mage/cold_snap.go | Spell ID |
+| `ice_barrier` | sim/mage/ice_barrier.go | Spell ID, shield and Frigid Power aura labels, the absorb base and Frost Warding factor, both auras' SPELLMOD_DAMAGE and SPELLMOD_DOT shares |
 | `evocation` | sim/mage/evocation.go | Regen multiplier from client data, aura labels; the regeneration aura adds the multiplier and forces full regeneration through `AddSpiritRegenMultiplier` and `SetForceFullSpiritRegen`, which also move the baseline an Innervate's bonus mana is credited against while one is up |
 | `mana_gems` | sim/mage/mana_gems.go | Gem mana from client data, use order |
 | `mage_armor` | sim/mage/armors.go | Aura label; regeneration already in pseudo stats |

@@ -1751,7 +1751,7 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) pet_agent_auras: Vec<Vec<ActionId>>,
     /// The labels of those pets, in the same order.
     pub(crate) pet_agent_labels: Vec<String>,
-    /// Go `APLRotation.curValidations` while [`Self::rotation_checks`] builds the rotation's
+    /// Go `APLRotation.curValidations` while [`Self::presentation`] builds the rotation's
     /// lines again to collect Go's validation messages; `None` the rest of the time.
     pub(crate) checks: std::cell::RefCell<Option<Vec<rotation_checks::Check>>>,
     /// The rotation as the application shows it, with Go's validation messages of each

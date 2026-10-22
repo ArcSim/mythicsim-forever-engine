@@ -379,3 +379,77 @@ fn the_shadowfiend_out_at_the_fights_end_logs_its_stats_without_its_party_auras(
         .unwrap();
     assert!(lines[fade + 1].ends_with("Pet dismissed"), "{lines:?}");
 }
+
+/// Shadow Word: Pain's resisted ticks and Mind Blast's resisted hits in a report, with the
+/// player's damage per second.
+fn shadow_resists(value: Value) -> (u64, u64, u64, f64) {
+    let report = simulate_prepared(&parse(value)).unwrap();
+    let player = &report.result["raidMetrics"]["parties"][0]["players"][0];
+    let target = |spell: u64| {
+        &player["actions"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|action| action["id"]["spellId"] == spell)
+            .unwrap()["targets"][0]
+    };
+    let count = |value: &Value, key: &str| value[key].as_u64().unwrap_or(0);
+    let pain = target(10894);
+    let blast = target(10947);
+    (
+        count(pain, "resistedTicks") + count(pain, "resistedCritTicks"),
+        count(pain, "ticks") + count(pain, "critTicks"),
+        count(blast, "resistedHits") + count(blast, "resistedCrits"),
+        player["dps"]["avg"].as_f64().unwrap(),
+    )
+}
+
+/// Forever's beta logs (foreverlogs.gg, October 2026) show no partial resists from a target's
+/// level: about 1,000 Shadow Word: Pain, Corruption, Serpent Sting and other dot ticks and about
+/// 100 direct Wrath, Shadow Bolt, Mind Blast and Arcane Shot hits on Razorfen Kraul and Scarlet
+/// Monastery bosses, which miss level 30 casters' Shadow Bolts a third of the time, landed whole.
+/// Rust only: the reference partially resists them by 2% a level on average.
+#[test]
+fn a_targets_level_adds_no_partial_resists_in_forever() {
+    let mut reference = production();
+    reference["sim"]["iterations"] = json!(100);
+    assert!(reference["target"].get("no_level_partial_resist").is_none());
+    let mut forever = reference.clone();
+    forever["target"]["no_level_partial_resist"] = json!(true);
+
+    let (go_ticks, ticks, go_hits, go_dps) = shadow_resists(reference);
+    assert!(
+        go_ticks > ticks / 20,
+        "{go_ticks} of {ticks} ticks resisted"
+    );
+    assert!(go_hits > 0);
+    let (forever_ticks, _, forever_hits, forever_dps) = shadow_resists(forever.clone());
+    assert_eq!((forever_ticks, forever_hits), (0, 0));
+    assert!(
+        forever_dps > go_dps * 1.02,
+        "{forever_dps} against {go_dps}"
+    );
+
+    // Resistance past the caster's Spell Piercing still partially resists.
+    forever["target"]["stats"]["ShadowResistance"] = json!(150);
+    let (resisted, ticks, _, _) = shadow_resists(forever);
+    assert!(
+        resisted > ticks / 20,
+        "{resisted} of {ticks} ticks resisted"
+    );
+}
+
+/// Forever preparation marks the target; the reference's (`Rules::GoReference`) does not.
+#[test]
+fn forever_preparation_drops_the_level_partial_resist() {
+    let request = fs::read(
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-shadow-priest.request.json"),
+    )
+    .unwrap();
+    let forever = forever_engine::prepare_json(&request, "x").unwrap();
+    assert_eq!(forever["target"]["no_level_partial_resist"], json!(true));
+    let go = forever_engine::prepare_json_with(&request, "x", forever_engine::Rules::GoReference)
+        .unwrap();
+    assert!(go["target"].get("no_level_partial_resist").is_none());
+}

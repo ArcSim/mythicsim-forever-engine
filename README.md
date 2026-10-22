@@ -88,6 +88,13 @@ the Go goldens and exporter uses. The departures:
   17/8 of its master's ranged hit as spell hit (Lightning Breath and the other magic pet hits),
   and a Warlock's demon takes 8/17 of its master's spell hit as melee hit, where the reference
   gives a Hunter pet no spell hit and a demon the whole spell hit.
+- Level partial resists, from Forever's beta logs on foreverlogs.gg (23 October 2026): a target
+  above the caster's level partially resists nothing, dot ticks and direct hits alike, so only
+  resistance past the caster's Spell Piercing does. About 1,000 dot ticks and 100 direct
+  non-binary hits on Razorfen Kraul and Scarlet Monastery bosses, which miss level 30 casters'
+  Shadow Bolts a third of the time, all landed whole. The reference's level 63 boss partially
+  resists 18% of them, 6% of the damage on average. The prepared target carries
+  `no_level_partial_resist`.
 
 ## Repository layout
 

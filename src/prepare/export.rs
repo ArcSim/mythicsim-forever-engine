@@ -10,7 +10,7 @@ use crate::contracts::request::Message;
 
 use super::attack::Weapon;
 use super::env::Environment;
-use super::sim::{AuraId, Cooldown, Sim, TimerId, UnitId};
+use super::sim::{AuraId, Cooldown, Rules, Sim, TimerId, UnitId};
 use super::spell::SpellFlag;
 use super::stats::{PseudoStats, Stat, Stats, SCHOOL_LEN};
 use super::weapon_skill::{self as skill, TableUnits};
@@ -1093,6 +1093,11 @@ pub(crate) fn export_state(
     }
     if !env.rotation_dot_base_durations.is_empty() {
         prepared["player"]["rotation_dot_base_durations"] = json!(env.rotation_dot_base_durations);
+    }
+    // Forever's beta logs show no partial resists from the target's level (README, Rust-only
+    // mechanics); the reference keeps them.
+    if env.rules == Rules::Forever {
+        prepared["target"]["no_level_partial_resist"] = json!(true);
     }
     if let Some(reads) = &env.rotation_reads {
         prepared["player"]["rotation_reads"] = json!(reads);

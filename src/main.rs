@@ -1,7 +1,7 @@
 use forever_engine::{
-    contracts::prepared_v2::PreparedV2, prepare_json, prepared_refusals, simulate,
+    contracts::prepared_v2::PreparedV2, prepare_json_with, prepared_refusals, simulate,
     simulate_prepared, simulate_prepared_gated, validate_prepared, Gated, PrepareError,
-    PreparedError, Refusal, Request, SOURCE_REVISION,
+    PreparedError, Refusal, Request, Rules, SOURCE_REVISION,
 };
 use serde::Deserialize;
 use std::{
@@ -94,9 +94,13 @@ const EXIT_NOT_PREPARED: i32 = 5;
 ///
 /// A panic inside preparation is reported the same way, with the code `prepare_fault`, so a
 /// defect in Rust preparation sends the request to Go rather than failing it.
-fn prepare_request(request: &[u8], scenario: &str) -> Result<serde_json::Value, Failure> {
-    let prepared =
-        std::panic::catch_unwind(|| prepare_json(request, scenario)).unwrap_or_else(|panic| {
+fn prepare_request(
+    request: &[u8],
+    scenario: &str,
+    rules: Rules,
+) -> Result<serde_json::Value, Failure> {
+    let prepared = std::panic::catch_unwind(|| prepare_json_with(request, scenario, rules))
+        .unwrap_or_else(|panic| {
             let reason = panic
                 .downcast_ref::<String>()
                 .cloned()
@@ -161,7 +165,7 @@ fn run() -> Result<(), Failure> {
         return Ok(());
     }
     if args.is_empty() || args == ["--help"] {
-        println!("forever-engine sim --infile REQUEST.json|PREPARED_V2.json [--outfile RESULT.json] [--trace] [--gate]\nforever-engine sim --request RAID_SIM_REQUEST.json [--scenario ID] [--outfile RESULT.json] [--gate]\nforever-engine prepare --request RAID_SIM_REQUEST.json [--scenario ID] [--outfile PREPARED_V2.json]\nforever-engine bench --infile REQUEST.json|PREPARED_V2.json [--outfile RESULT.json] [--warmups 3] [--samples 7]\nforever-engine check --infile PREPARED_V2.json\nforever-engine version");
+        println!("forever-engine sim --infile REQUEST.json|PREPARED_V2.json [--outfile RESULT.json] [--trace] [--gate]\nforever-engine sim --request RAID_SIM_REQUEST.json [--scenario ID] [--outfile RESULT.json] [--gate] [--go-rules]\nforever-engine prepare --request RAID_SIM_REQUEST.json [--scenario ID] [--outfile PREPARED_V2.json] [--go-rules]\nforever-engine bench --infile REQUEST.json|PREPARED_V2.json [--outfile RESULT.json] [--warmups 3] [--samples 7]\nforever-engine check --infile PREPARED_V2.json\nforever-engine version");
         return Ok(());
     }
     if args.len() == 3 && args[0] == "check" && args[1] == "--infile" {
@@ -182,6 +186,8 @@ fn run() -> Result<(), Failure> {
     let mut outfile = None;
     let mut trace = false;
     let mut gate = false;
+    // Prepare with the Go reference's rules where Rust departs from it, as the exporter does.
+    let mut go_rules = false;
     let mut warmups = 3u32;
     let mut samples = 7u32;
     let mut index = 1;
@@ -205,6 +211,7 @@ fn run() -> Result<(), Failure> {
             }
             "--trace" if !trace => trace = true,
             "--gate" if args[0] == "sim" && !gate => gate = true,
+            "--go-rules" if args[0] != "bench" && !go_rules => go_rules = true,
             "--warmups" | "--samples" if args[0] == "bench" => {
                 let flag = &args[index];
                 index += 1;
@@ -223,13 +230,23 @@ fn run() -> Result<(), Failure> {
         }
         index += 1;
     }
+    let rules = if go_rules {
+        Rules::GoReference
+    } else {
+        Rules::Forever
+    };
+    if go_rules && request_file.is_none() {
+        return Err("--go-rules requires --request".into());
+    }
     if args[0] == "prepare" {
         let request = request_file.ok_or("prepare requires --request")?;
         if infile.is_some() || trace || gate {
-            return Err("prepare takes only --request, --scenario and --outfile".into());
+            return Err(
+                "prepare takes only --request, --scenario, --outfile and --go-rules".into(),
+            );
         }
         let input = fs::read(request).map_err(|err| err.to_string())?;
-        let prepared = prepare_request(&input, scenario.as_deref().unwrap_or("rust"))?;
+        let prepared = prepare_request(&input, scenario.as_deref().unwrap_or("rust"), rules)?;
         let output = serde_json::to_string_pretty(&prepared).map_err(|err| err.to_string())?;
         if let Some(path) = outfile {
             write_atomically(&path, &(output + "\n"))?;
@@ -247,7 +264,7 @@ fn run() -> Result<(), Failure> {
                 return Err("--request replaces --infile and is for sim and prepare".into());
             }
             let input = fs::read(request).map_err(|err| err.to_string())?;
-            let prepared = prepare_request(&input, scenario.as_deref().unwrap_or("rust"))?;
+            let prepared = prepare_request(&input, scenario.as_deref().unwrap_or("rust"), rules)?;
             Some(serde_json::to_vec(&prepared).map_err(|err| err.to_string())?)
         }
         None => None,

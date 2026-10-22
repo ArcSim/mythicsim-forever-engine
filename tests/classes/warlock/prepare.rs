@@ -138,6 +138,8 @@ fn differences(golden: &Golden, prepared: &Value) -> Vec<String> {
     out
 }
 
+/// Every case prepared with the reference's rules (`Rules::GoReference`), where Rust departs
+/// from it on purpose, gives what the Go exporter wrote.
 #[test]
 fn every_warlock_case_prepares_as_go_does() {
     let mut cases = 0;
@@ -153,7 +155,8 @@ fn every_warlock_case_prepares_as_go_does() {
         let golden: Golden = serde_json::from_slice(&fs::read(entry.path()).unwrap()).unwrap();
         assert_eq!(golden.case, case);
         let request = fs::read(directory().join(format!("{case}.request.json"))).unwrap();
-        match forever_engine::prepare_json(&request, case) {
+        let rules = forever_engine::Rules::GoReference;
+        match forever_engine::prepare_json_with(&request, case, rules) {
             Ok(prepared) => {
                 let diffs = differences(&golden, &prepared);
                 if !diffs.is_empty() {
@@ -184,4 +187,47 @@ fn a_warlock_without_class_options_is_refused() {
         }
         other => panic!("expected a refusal, got {other:?}"),
     }
+}
+
+/// Forever's demon hit, from its developers' tracker (22 October 2026): "Warlocks will give spell
+/// hit equal to their spell hit, and melee hit equal to 8/17ths of their spell hit." Rust only:
+/// the reference gives a demon its master's whole spell hit as melee hit.
+#[test]
+fn a_demons_melee_hit_is_eight_seventeenths_of_its_masters_spell_hit() {
+    let request = fs::read(
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-demonology-warlock.request.json"),
+    )
+    .unwrap();
+    let forever = forever_engine::prepare_json(&request, "x").unwrap();
+    let go = forever_engine::prepare_json_with(&request, "x", forever_engine::Rules::GoReference)
+        .unwrap();
+    let spell_hit = forever["player"]["stats"]["SpellHitPercent"]
+        .as_f64()
+        .unwrap();
+    assert!(spell_hit > 0.0, "the production build carries spell hit");
+    let stat = |prepared: &Value, name: &str| prepared["pets"][0]["stats"][name].as_f64().unwrap();
+    assert_eq!(
+        forever["pets"][0]["label"],
+        "demonology-warlock (#1) - Succubus"
+    );
+    assert_eq!(
+        stat(&forever, "SpellHitPercent"),
+        stat(&go, "SpellHitPercent")
+    );
+    assert_eq!(stat(&go, "PhysicalHitPercent"), spell_hit);
+    assert_eq!(
+        stat(&forever, "PhysicalHitPercent"),
+        spell_hit * (8.0 / 17.0)
+    );
+    let melee_term = |prepared: &Value| {
+        prepared["pets"][0]["inheritance"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|term| term["pet"] == "PhysicalHitPercent")
+            .map(|term| term["coefficient"].as_f64().unwrap())
+    };
+    assert_eq!(melee_term(&forever), Some(8.0 / 17.0));
+    assert_eq!(melee_term(&go), Some(1.0));
 }

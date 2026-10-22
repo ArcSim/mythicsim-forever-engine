@@ -62,8 +62,9 @@ def compare(request, engine, exporter, folder):
     go_file, rust_file = folder / "go.json", folder / "rust.json"
     go = subprocess.run([exporter, "prepare", "--infile", request, "--outfile", go_file, "--scenario", "compare"],
                         capture_output=True, text=True)
-    rust = subprocess.run([engine, "prepare", "--request", request, "--outfile", rust_file, "--scenario", "compare"],
-                          capture_output=True, text=True)
+    # The Go reference's rules where Rust departs from it on purpose (the README's Rust-only mechanics).
+    rust = subprocess.run([engine, "prepare", "--request", request, "--outfile", rust_file, "--scenario", "compare",
+                           "--go-rules"], capture_output=True, text=True)
     if rust.returncode == NOT_PREPARED:
         refusal = json.loads(rust.stdout)["refusal"]
         return {"status": "refused", "code": refusal["code"], "reason": refusal["reason"]}

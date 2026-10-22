@@ -8,8 +8,8 @@ use crate::prepare::character::constants::{CHARACTER_LEVEL, MAX_MELEE_RANGE};
 use crate::prepare::parse_effects::{parse_effects, ParseOptions};
 use crate::prepare::pet::PetConfig;
 use crate::prepare::sim::{
-    school_array_index, AuraConfig, AuraId, Cooldown, Sim, SpellId, StateSlot, UnitId, UnitType,
-    NEVER_EXPIRES, SECOND,
+    school_array_index, AuraConfig, AuraId, Cooldown, Rules, Sim, SpellId, StateSlot, UnitId,
+    UnitType, NEVER_EXPIRES, SECOND,
 };
 use crate::prepare::spell::{
     school, Cast, CastConfig, CostOptions, DefenseType, DotConfig, ProcMask, SpellConfig, SpellFlag,
@@ -119,6 +119,11 @@ fn pet_attack_speed(name: &str) -> f64 {
     }
 }
 
+/// A pet's spell hit for each point of its hunter's ranged hit: the 17% spell hit cap over the 8%
+/// ranged hit cap. Forever's developers on their tracker (22 October 2026): "Hunters give melee hit
+/// equal to their ranged hit, and their spell hit to their pet equal to 17/8ths of their ranged hit."
+pub(crate) const PET_SPELL_HIT_PER_RANGED_HIT: f64 = 17.0 / 8.0;
+
 /// What Go's `HunterPet` adds to its `core.Pet`.
 #[derive(Clone)]
 pub(crate) struct HunterPetState {
@@ -137,7 +142,8 @@ pub(crate) struct HunterPetState {
 /// The max is not linear, so `offset` holds the offset on the pet and each update moves it to
 /// what the owner's current stats and spell mods give. Go `PetsInheritHit` (patch 178, Hunter
 /// Pet Scaling 415429): the pet also takes the owner's melee plus ranged hit, the higher of the
-/// two since ranged hit only adds, which is linear.
+/// two since ranged hit only adds, which is linear. Spell hit is Rust only: Forever gives the pet
+/// [`PET_SPELL_HIT_PER_RANGED_HIT`] of that, which Go never did.
 fn stat_inheritance(owner: UnitId, offset: StateSlot) -> impl Fn(&mut Sim, &Stats) -> Stats {
     move |sim: &mut Sim, owner_stats: &Stats| {
         let now = pet_crit_offset_now(sim, owner);
@@ -148,6 +154,13 @@ fn stat_inheritance(owner: UnitId, offset: StateSlot) -> impl Fn(&mut Sim, &Stat
         inherited[Stat::ExpertisePercent] = owner_stats[Stat::ExpertisePercent];
         inherited[Stat::PhysicalHitPercent] =
             owner_stats[Stat::PhysicalHitPercent] + owner_stats[Stat::RangedHitPercent];
+        if sim.rules == Rules::Forever {
+            // Each term on its own, so the sum is the terms' sum bit for bit, as the dynamic
+            // inheritance replays it.
+            inherited[Stat::SpellHitPercent] = owner_stats[Stat::PhysicalHitPercent]
+                * PET_SPELL_HIT_PER_RANGED_HIT
+                + owner_stats[Stat::RangedHitPercent] * PET_SPELL_HIT_PER_RANGED_HIT;
+        }
         inherited
     }
 }

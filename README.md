@@ -80,6 +80,15 @@ The healer sims are the first: every Holy Paladin, Priest, Restoration Shaman an
 Druid heal lands on a player who needs it and counts in full, so healing per second is what the
 healer can put out with its mana.
 
+Where Rust departs from a mechanic the Go reference has, preparation follows Forever by default
+and the reference with `Rules::GoReference` (`prepare --go-rules`), which every comparison with
+the Go goldens and exporter uses. The departures:
+
+- Pet hit, from Forever's developers on their tracker (22 October 2026): a Hunter's pet takes
+  17/8 of its master's ranged hit as spell hit (Lightning Breath and the other magic pet hits),
+  and a Warlock's demon takes 8/17 of its master's spell hit as melee hit, where the reference
+  gives a Hunter pet no spell hit and a demon the whole spell hit.
+
 ## Repository layout
 
 | Path | Contents |

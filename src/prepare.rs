@@ -117,16 +117,29 @@ impl std::fmt::Display for PrepareError {
     }
 }
 
-/// Prepares a request as JSON, the document tools/oracle-v2 writes.
+pub use sim::Rules;
+
+/// Prepares a request as JSON, the document tools/oracle-v2 writes, with Forever's rules.
 pub fn prepare_json(request: &[u8], scenario: &str) -> Result<serde_json::Value, PrepareError> {
+    prepare_json_with(request, scenario, Rules::Forever)
+}
+
+/// Prepares a request as JSON with the given rules: [`Rules::GoReference`] gives exactly what the
+/// pinned exporter writes, for the comparisons with Go.
+pub fn prepare_json_with(
+    request: &[u8],
+    scenario: &str,
+    rules: Rules,
+) -> Result<serde_json::Value, PrepareError> {
     let request = Request::from_json(request).map_err(PrepareError::Invalid)?;
     let options = request.message().message("sim_options");
     if options.is_none_or(|options| options.i32("iterations") <= 0) {
         return Err(PrepareError::Invalid("missing iterations".to_string()));
     }
     let digest = request.sha256();
-    let mut env = env::Environment::new(request.message(), crate::classes::prepare_agent)
-        .map_err(PrepareError::Refused)?;
+    let mut env =
+        env::Environment::with_rules(request.message(), crate::classes::prepare_agent, rules)
+            .map_err(PrepareError::Refused)?;
     export::export(&mut env, &digest, scenario).map_err(PrepareError::Refused)
 }
 

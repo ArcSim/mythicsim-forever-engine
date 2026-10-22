@@ -28,7 +28,9 @@ pub use engine::prepared::{
     CLIENT_BUILD, REFUSAL_CODES,
 };
 pub use engine::simulate;
-pub use prepare::{prepare, prepare_json, PrepareError, Refusal as PrepareRefusal};
+pub use prepare::{
+    prepare, prepare_json, prepare_json_with, PrepareError, Refusal as PrepareRefusal, Rules,
+};
 
 /// Prepared v2 effect kinds this engine executes. The release manifest must agree.
 pub fn implemented_prepared_effects() -> &'static [&'static str] {

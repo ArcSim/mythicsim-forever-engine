@@ -6,7 +6,7 @@ use std::rc::Rc;
 
 use crate::prepare::attack::{AutoAttackOptions, Weapon};
 use crate::prepare::pet::PetConfig;
-use crate::prepare::sim::{Cooldown, Sim, SpellId, UnitId, MILLISECOND, SECOND};
+use crate::prepare::sim::{Cooldown, Rules, Sim, SpellId, UnitId, MILLISECOND, SECOND};
 use crate::prepare::spell::{
     school, Cast, CastConfig, CostOptions, DefenseType, ProcMask, SpellConfig, GCD_DEFAULT, GCD_MIN,
 };
@@ -20,6 +20,11 @@ use super::Warlock;
 /// warlock through the client's hidden Warlock Pet Scaling aura (416189).
 const PET_SPELL_DAMAGE_FRACTION: f64 = 0.10;
 const PET_ATTACK_POWER_FRACTION: f64 = 0.17;
+
+/// A demon's melee hit for each point of its warlock's spell hit: the 8% melee hit cap over the
+/// 17% spell hit cap. Forever's developers on their tracker (22 October 2026): "Warlocks will give
+/// spell hit equal to their spell hit, and melee hit equal to 8/17ths of their spell hit."
+pub(crate) const DEMON_MELEE_HIT_PER_SPELL_HIT: f64 = 8.0 / 17.0;
 
 /// Go `proto.WarlockOptions_Summon` of the four demons the warlock registers.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -86,10 +91,15 @@ impl Summon {
 }
 
 /// Go `petStatInheritance`: linear in the owner's stats, which the dynamic inheritance needs.
-fn pet_stat_inheritance(_sim: &mut Sim, owner: &Stats) -> Stats {
+/// Melee hit is Rust only: Go gives the demon its master's whole spell hit as melee hit, Forever
+/// scales it to the melee cap ([`DEMON_MELEE_HIT_PER_SPELL_HIT`]).
+fn pet_stat_inheritance(sim: &mut Sim, owner: &Stats) -> Stats {
     let mut inherited = Stats::default();
     inherited[Stat::SpellHitPercent] = owner[Stat::SpellHitPercent];
-    inherited[Stat::PhysicalHitPercent] = owner[Stat::SpellHitPercent];
+    inherited[Stat::PhysicalHitPercent] = match sim.rules {
+        Rules::Forever => owner[Stat::SpellHitPercent] * DEMON_MELEE_HIT_PER_SPELL_HIT,
+        Rules::GoReference => owner[Stat::SpellHitPercent],
+    };
     inherited[Stat::SpellCritPercent] = owner[Stat::SpellCritPercent];
     inherited[Stat::PhysicalCritPercent] = owner[Stat::SpellCritPercent];
     inherited[Stat::SpellDamage] = owner[Stat::SpellDamage] * PET_SPELL_DAMAGE_FRACTION;

@@ -138,6 +138,8 @@ fn differences(golden: &Golden, prepared: &Value) -> Vec<String> {
     out
 }
 
+/// Every case prepared with the reference's rules (`Rules::GoReference`), where Rust departs
+/// from it on purpose, gives what the Go exporter wrote.
 #[test]
 fn every_priest_case_prepares_as_go_does() {
     let mut cases = 0;
@@ -153,7 +155,8 @@ fn every_priest_case_prepares_as_go_does() {
         let golden: Golden = serde_json::from_slice(&fs::read(entry.path()).unwrap()).unwrap();
         assert_eq!(golden.case, case);
         let request = fs::read(directory().join(format!("{case}.request.json"))).unwrap();
-        match forever_engine::prepare_json(&request, case) {
+        let rules = forever_engine::Rules::GoReference;
+        match forever_engine::prepare_json_with(&request, case, rules) {
             Ok(prepared) => {
                 let diffs = differences(&golden, &prepared);
                 if !diffs.is_empty() {

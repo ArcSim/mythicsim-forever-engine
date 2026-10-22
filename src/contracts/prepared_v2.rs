@@ -2508,9 +2508,12 @@ pub enum Effect {
         ranks: Vec<FireballRank>,
     },
     /// Improved Mind Flay (client 70425): each Mind Flay tick deals `ramp_per_tick` more than the
-    /// one before, a step added per tick.
+    /// one before. Compounding (Rust only) multiplies each tick by it over the tick before, as the
+    /// tooltip reads; without it the step is added per tick, as the Go reference has it.
     ImprovedMindFlay {
         ramp_per_tick: f64,
+        #[serde(default, skip_serializing_if = "is_false")]
+        compounding: bool,
     },
     /// Dark Inspiration (client 70425): Mind Blast's cast and a full Mind Flay channel's last tick
     /// activate `aura`, a stat aura.

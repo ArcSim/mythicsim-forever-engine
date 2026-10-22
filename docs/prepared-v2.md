@@ -287,7 +287,7 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `mind_blast`, `shadow_word_death` | sim/priest/mind_blast.go, shadow_word_death.go | Damage rolls on every rank; Early Demise's crit inside the 20% execute phase |
 | `shadow_word_pain`, `devouring_plague`, `mind_flay` | sim/priest/shadow_word_pain.go, devouring_plague.go, talents_shadow.go | Each rank's dot base and Periodic Can Crit; the hit rolls once without a hit count; Devouring Plague heals for its ticks under a tagged action; Mind Flay is a binary channel |
 | `shadowform` | sim/priest/talents_shadow.go | Damage, cost and crit damage modifiers with the spells each names; its form refuses the spells whose `requirement_auras` name it |
-| `improved_mind_flay` | sim/priest/talents_shadow.go | The step each Mind Flay tick deals more than the one before (client 70425) |
+| `improved_mind_flay` | sim/priest/talents_shadow.go | The step each Mind Flay tick deals more than the one before (client 70425); `compounding` (Rust only) multiplies it tick over tick instead of adding it |
 | `dark_inspiration` | sim/priest/talents_shadow.go | The Spirit stat aura and its triggers: Mind Blast's cast and a full Mind Flay channel's last tick (client 70425) |
 | `inner_focus` | sim/priest/talents_discipline.go | Cost cut, crit and its spells, the spells that spend it; the crit does not reach dot ticks (community #793); the cooldown restarts when it ends |
 | `shadow_weaving` | sim/priest/talents_shadow.go | The resolved proc trigger, its spells, and the debuff each target keeps, whose stacks raise this priest's Shadow damage on it (community #777) |

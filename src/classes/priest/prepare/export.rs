@@ -16,7 +16,7 @@ use crate::prepare::env::Environment;
 use crate::prepare::export::action_id;
 use crate::prepare::export_items::{callback_names, outcome_names};
 use crate::prepare::pet::apply_dependencies;
-use crate::prepare::sim::{Sim, SpellId};
+use crate::prepare::sim::{Rules, Sim, SpellId};
 use crate::prepare::spell::{school, SpellFlag};
 use crate::prepare::spelldata::{Ladder, Spell as Row};
 use crate::prepare::stats::{Stat, Stats};
@@ -344,12 +344,19 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
         // talents_shadow.go registerMindFlaySpell: a binary hit roll, then a channel
         effects.push(json!({"kind": "mind_flay", "ranks": dot_ranks(&data.mind_flay)}));
         // Improved Mind Flay (client 70425): each tick deals its share more than the one before.
+        // The tooltip, "Each instance of damage of Mind Flay deals 20% more damage than its
+        // previous instance of damage", compounds tick over tick (1, 1.2, 1.44 at two points);
+        // the Go reference adds the step per tick (1, 1.2, 1.4). Compounding is Rust only.
         let ramp = talents.i32("improved_mind_flay");
         if ramp > 0 {
-            effects.push(json!({
+            let mut effect = json!({
                 "kind": "improved_mind_flay",
                 "ramp_per_tick": data.improved_mind_flay.fraction_at(ramp),
-            }));
+            });
+            if sim.rules == Rules::Forever {
+                effect["compounding"] = json!(true);
+            }
+            effects.push(effect);
         }
     }
     if talents.i32("dark_inspiration") > 0 {

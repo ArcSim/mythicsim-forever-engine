@@ -1098,6 +1098,9 @@ pub(crate) fn export_state(
     // mechanics); the reference keeps them.
     if env.rules == Rules::Forever {
         prepared["target"]["no_level_partial_resist"] = json!(true);
+        // The client's mana regeneration interrupt aura acts at once (README, Rust-only
+        // mechanics); the reference's cached tick waits for another refresh.
+        prepared["player"]["casting_regen_at_once"] = json!(true);
     }
     if let Some(reads) = &env.rotation_reads {
         prepared["player"]["rotation_reads"] = json!(reads);

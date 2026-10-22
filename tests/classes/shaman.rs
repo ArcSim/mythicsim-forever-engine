@@ -371,3 +371,35 @@ fn rockbiter_threat_listener_needs_its_effect() {
             .into()
     ));
 }
+
+/// Improved Stormstrike's mana gained while casting and the damage per second, over a short run.
+fn stormstrike_regen(mut value: Value, forever: bool) -> (Option<f64>, f64) {
+    value["sim"]["iterations"] = json!(200);
+    if forever {
+        value["player"]["casting_regen_at_once"] = json!(true);
+    }
+    let prepared: PreparedV2 = serde_json::from_value(value).unwrap();
+    let report = forever_engine::simulate_prepared(&prepared).unwrap();
+    let player = &report.result["raidMetrics"]["parties"][0]["players"][0];
+    let gain = player["resources"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|row| row["id"] == json!({ "spellId": 1238931 }))
+        .map(|row| row["actualGain"].as_f64().unwrap());
+    (gain, player["dps"]["avg"].as_f64().unwrap())
+}
+
+/// The reference raises Improved Stormstrike's casting regeneration without refreshing the
+/// cached mana tick, so the buff acts only through a later refresh. In the client the mana
+/// regeneration interrupt aura acts at once: under Forever's rule the mana it gives an
+/// Enhancement Shaman, short of mana in the production fight, lands in its own row.
+#[test]
+fn improved_stormstrike_mana_acts_at_once_in_forever() {
+    let enhancement = fixture("production-enhancement-shaman");
+    let (go_gain, go_dps) = stormstrike_regen(enhancement.clone(), false);
+    assert_eq!(go_gain, None);
+    let (gain, dps) = stormstrike_regen(enhancement, true);
+    assert!(gain.expect("an Improved Stormstrike row") > 0.0);
+    assert!(dps > go_dps, "{dps} against {go_dps}");
+}

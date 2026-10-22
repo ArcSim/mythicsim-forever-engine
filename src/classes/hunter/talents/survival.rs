@@ -94,17 +94,4 @@ impl SurvivalProc {
             fight.activate_aura(self.aura);
         }
     }
-
-    /// Resourcefulness's gain and expiry on the casting regeneration rate.
-    pub(crate) fn resourcefulness_changed<A: Agent>(
-        fight: &mut Fight<A>,
-        regen: f64,
-        gained: bool,
-    ) {
-        if gained {
-            fight.player.spirit_regen_rate_casting += regen;
-        } else {
-            fight.player.spirit_regen_rate_casting -= regen;
-        }
-    }
 }

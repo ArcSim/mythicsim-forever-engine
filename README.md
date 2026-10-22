@@ -88,6 +88,11 @@ the Go goldens and exporter uses. The departures:
   17/8 of its master's ranged hit as spell hit (Lightning Breath and the other magic pet hits),
   and a Warlock's demon takes 8/17 of its master's spell hit as melee hit, where the reference
   gives a Hunter pet no spell hit and a demon the whole spell hit.
+- Improved Mind Flay, from its Forever tooltip ("Each instance of damage of Mind Flay deals 20%
+  more damage than its previous instance of damage"): each tick deals the step more than the tick
+  before it, compounding (1, 1.2 and 1.44 times the tick at two points), where the reference adds
+  the step per tick (1, 1.2 and 1.4). The talent is a dummy aura run by a server-side script, so
+  the client data has no stacking rule of its own.
 - Level partial resists, from Forever's beta logs on foreverlogs.gg (23 October 2026): a target
   above the caster's level partially resists nothing, dot ticks and direct hits alike, so only
   resistance past the caster's Spell Piercing does. About 1,000 dot ticks and 100 direct

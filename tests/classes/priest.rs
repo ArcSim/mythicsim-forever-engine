@@ -380,6 +380,60 @@ fn the_shadowfiend_out_at_the_fights_end_logs_its_stats_without_its_party_auras(
     assert!(lines[fade + 1].ends_with("Pet dismissed"), "{lines:?}");
 }
 
+/// Mind Flay's target metrics on the production Shadow Priest request, prepared with `rules`.
+fn production_mind_flay(rules: forever_engine::Rules) -> (Value, Value) {
+    let request = fs::read(
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-shadow-priest.request.json"),
+    )
+    .unwrap();
+    let mut prepared = forever_engine::prepare_json_with(&request, "x", rules).unwrap();
+    prepared["sim"]["iterations"] = json!(20);
+    let effect = prepared["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|effect| effect["kind"] == "improved_mind_flay")
+        .unwrap()
+        .clone();
+    let report = simulate_prepared(&parse(prepared)).unwrap();
+    let player = &report.result["raidMetrics"]["parties"][0]["players"][0];
+    let mind_flay = player["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|action| action["id"]["spellId"] == 18807)
+        .unwrap();
+    (effect, mind_flay["targets"][0].clone())
+}
+
+/// Improved Mind Flay compounds, as its Forever tooltip reads: "Each instance of damage of Mind
+/// Flay deals 20% more damage than its previous instance of damage", so at two points a channel's
+/// ticks deal 1, 1.2 and 1.44 times its tick. Rust only: the reference adds the step per tick (1,
+/// 1.2 and 1.4). The rolls are the same under both rules, so the strongest tick, a third tick,
+/// is 1.44 / 1.4 of the reference's and the first ticks are unchanged.
+#[test]
+fn improved_mind_flay_compounds_tick_over_tick() {
+    let (forever, forever_flay) = production_mind_flay(forever_engine::Rules::Forever);
+    let (go, go_flay) = production_mind_flay(forever_engine::Rules::GoReference);
+    assert_eq!(forever["ramp_per_tick"], 0.2);
+    assert_eq!(forever["compounding"], true);
+    assert_eq!(go["ramp_per_tick"], 0.2);
+    assert!(go.get("compounding").is_none(), "{go}");
+    for field in ["casts", "ticks", "critTicks", "misses"] {
+        assert_eq!(forever_flay[field], go_flay[field], "{field}");
+    }
+    let range = |flay: &Value, range: &str, end: &str| flay[range][end].as_f64().unwrap();
+    for name in ["tickRange", "critTickRange"] {
+        let ratio = range(&forever_flay, name, "max") / range(&go_flay, name, "max");
+        assert!((ratio - 1.44 / 1.4).abs() < 1e-12, "{name}: {ratio}");
+        assert_eq!(
+            range(&forever_flay, name, "min"),
+            range(&go_flay, name, "min")
+        );
+    }
+}
+
 /// Shadow Word: Pain's resisted ticks and Mind Blast's resisted hits in a report, with the
 /// player's damage per second.
 fn shadow_resists(value: Value) -> (u64, u64, u64, f64) {

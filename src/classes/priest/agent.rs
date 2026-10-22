@@ -55,6 +55,8 @@ pub(crate) struct PriestAgent {
     early_demise_crit: f64,
     /// Improved Mind Flay's step a tick (client 70425).
     mind_flay_ramp: f64,
+    /// Whether the step compounds tick over tick (Forever's tooltip) or adds (the Go reference).
+    mind_flay_ramp_compounds: bool,
     /// Dark Inspiration's Spirit aura (client 70425).
     dark_inspiration: Option<AuraRef>,
     /// Devouring Plague ranks by spell, with their health metrics.
@@ -395,8 +397,12 @@ impl PriestAgent {
                     )?;
                     fight.agent.shadowform = Some(Rc::new(bound));
                 }
-                Effect::ImprovedMindFlay { ramp_per_tick } => {
+                Effect::ImprovedMindFlay {
+                    ramp_per_tick,
+                    compounding,
+                } => {
                     fight.agent.mind_flay_ramp = *ramp_per_tick;
+                    fight.agent.mind_flay_ramp_compounds = *compounding;
                 }
                 Effect::DarkInspiration { aura, .. } => {
                     fight.agent.dark_inspiration = Some(fight.player_aura(aura)?);
@@ -613,8 +619,13 @@ impl Agent for PriestAgent {
             PriestSpell::MindFlay if fight.agent.mind_flay_ramp != 0.0 => {
                 // Improved Mind Flay: each tick deals the step more than the one before.
                 let mut result = fight.snapshot_dot_tick_calc(dot);
-                let ticks = f64::from(fight.dots[dot].tick_count() - 1);
-                result.damage *= fight.agent.mind_flay_ramp.mul_add(ticks, 1.0);
+                let ticks = fight.dots[dot].tick_count() - 1;
+                let ramp = fight.agent.mind_flay_ramp;
+                result.damage *= if fight.agent.mind_flay_ramp_compounds {
+                    (1.0 + ramp).powi(ticks)
+                } else {
+                    ramp.mul_add(f64::from(ticks), 1.0)
+                };
                 let spell = fight.dots[dot].spell;
                 fight.deal_damage(spell, result, true);
             }

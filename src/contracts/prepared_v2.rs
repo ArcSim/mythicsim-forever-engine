@@ -302,6 +302,11 @@ pub struct Target {
     pub auto_swing_ranged: bool,
     /// Registered actions the target reports with zero metrics, since it never acts.
     pub metrics_actions: Vec<MetricsAction>,
+    /// Forever's rule: being above the caster's level gives the target no partial resists, so
+    /// only resistance past the caster's Spell Piercing does. False is the Go reference, whose
+    /// target partially resists non-binary spells and dot ticks by 2% a level on average.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub no_level_partial_resist: bool,
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]

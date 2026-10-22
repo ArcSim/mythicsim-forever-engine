@@ -336,11 +336,18 @@ impl<A: Agent> Fight<A> {
             resistance[state.school_index]
         };
         let config = self.unit_config(state.caster);
+        // Forever: the target's level adds no partial resist, so only its resistance counts.
+        // Binary spells take none from level either way.
+        let target_level = if config.level_partial_resist {
+            config.target_level
+        } else {
+            config.target_level.min(config.player_level)
+        };
         resist_coefficient(
             resistance,
             self.unit(state.caster).powers.spell_piercing,
             config.player_level,
-            config.target_level,
+            target_level,
             binary,
         )
     }

@@ -1223,6 +1223,9 @@ pub(crate) struct Config {
     pub(crate) player_index: i32,
     pub(crate) player_level: i32,
     pub(crate) target_level: i32,
+    /// Whether the target's level above the caster's adds partial resists (the Go reference) or
+    /// not (Forever).
+    pub(crate) level_partial_resist: bool,
     pub(crate) reaction: i64,
     pub(crate) channel_clip_delay: i64,
     pub(crate) distance: f64,
@@ -2072,6 +2075,7 @@ pub(crate) fn unit_config(prepared: &PreparedV2, unit: &UnitSource) -> Result<Co
         player_index: prepared.player.index,
         player_level: unit.level,
         target_level: target.level,
+        level_partial_resist: !target.no_level_partial_resist,
         reaction: unit.reaction_ns,
         channel_clip_delay: unit.channel_clip_delay_ns,
         distance: unit.distance,

@@ -93,6 +93,13 @@ the Go goldens and exporter uses. The departures:
   before it, compounding (1, 1.2 and 1.44 times the tick at two points), where the reference adds
   the step per tick (1, 1.2 and 1.4). The talent is a dummy aura run by a server-side script, so
   the client data has no stacking rule of its own.
+- Level partial resists, from Forever's beta logs on foreverlogs.gg (23 October 2026): a target
+  above the caster's level partially resists nothing, dot ticks and direct hits alike, so only
+  resistance past the caster's Spell Piercing does. About 1,000 dot ticks and 100 direct
+  non-binary hits on Razorfen Kraul and Scarlet Monastery bosses, which miss level 30 casters'
+  Shadow Bolts a third of the time, all landed whole. The reference's level 63 boss partially
+  resists 18% of them, 6% of the damage on average. The prepared target carries
+  `no_level_partial_resist`.
 
 ## Repository layout
 

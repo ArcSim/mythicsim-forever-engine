@@ -222,6 +222,8 @@ def run_rust_step(prepared, output, bundle, timeout, decision, gated, request_fi
     else:
         command = [bundle / "bin" / ENGINE, "sim", "--request", request_file, "--scenario", "route",
                    "--outfile", report_file]
+    # The rotation the application shows and Go's notes on its lines, as the Go CLI adds them.
+    command.append("--rotation-stats")
     timings = decision["timings_ms"]
     if gated:
         accept = (0, GATE_REFUSED, GATE_REJECTED) + ((NOT_PREPARED,) if request_file else ())

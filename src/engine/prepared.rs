@@ -299,6 +299,27 @@ pub struct PreparedReport {
     pub request_sha256: String,
     pub elapsed_ns: u64,
     pub result: serde_json::Value,
+    /// The rotation as MythicSim's Go CLI adapter presents it, kept out of the result unless
+    /// [`PreparedReport::add_rotation_stats`] adds it.
+    #[serde(skip)]
+    presentation: Option<crate::core::fight::rotation_checks::Presentation>,
+}
+
+impl PreparedReport {
+    /// Add `effectiveRotation`, `rotationStats` and `rotationPresentationVersion` to the
+    /// player's metrics, as MythicSim's Go CLI adapter does for the application: the rotation
+    /// that can run and Go's validation messages of each of its lines. Go's plain CLI, whose
+    /// results the goldens are, writes none of them. False when the result has no player.
+    pub fn add_rotation_stats(&mut self) -> bool {
+        let (Some(presentation), Some(serde_json::Value::Object(player))) = (
+            self.presentation.as_ref(),
+            self.result.pointer_mut("/raidMetrics/parties/0/players/0"),
+        ) else {
+            return false;
+        };
+        presentation.add_to(player);
+        true
+    }
 }
 
 /// Validate, gate and simulate a prepared v2 input.
@@ -333,6 +354,7 @@ pub fn simulate_gated(prepared: &PreparedV2) -> Result<Gated, PreparedError> {
 fn run(prepared: &PreparedV2) -> Result<PreparedReport, PreparedError> {
     let report = classes::run_prepared(prepared).map_err(PreparedError::Invalid)?;
     let elapsed_ns = report.elapsed_ns;
+    let presentation = report.presentation.clone();
     Ok(PreparedReport {
         engine: format!("forever-rust-{}", env!("CARGO_PKG_VERSION")),
         schema_version: SCHEMA_VERSION,
@@ -343,5 +365,6 @@ fn run(prepared: &PreparedV2) -> Result<PreparedReport, PreparedError> {
         elapsed_ns,
         result: serde_json::to_value(&report)
             .map_err(|err| PreparedError::Invalid(err.to_string()))?,
+        presentation,
     })
 }

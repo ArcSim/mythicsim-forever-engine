@@ -485,6 +485,10 @@ pub(crate) struct FightReport {
     iterations_done: u32,
     #[serde(skip)]
     pub(crate) elapsed_ns: u64,
+    /// The rotation as MythicSim's Go CLI adapter presents it, which `sim --rotation-stats`
+    /// adds to the player's metrics.
+    #[serde(skip)]
+    pub(crate) presentation: Option<super::rotation_checks::Presentation>,
 }
 
 impl<A: Agent> Fight<A> {
@@ -956,6 +960,7 @@ impl<A: Agent> Fight<A> {
             avg_iteration_duration: seconds(total_duration) / n,
             iterations_done: self.totals.iterations,
             elapsed_ns,
+            presentation: self.presentation.clone(),
         }
     }
 }

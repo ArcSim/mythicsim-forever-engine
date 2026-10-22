@@ -686,9 +686,11 @@ pub enum Action {
     /// builds no value.
     WaitUntil(Option<Value>),
     /// Go `APLActionSchedule`: the inner action, ready at each of the times in turn. No times
-    /// when one fails to parse, which builds no action.
+    /// when one fails to parse, which builds no action; `invalid_timings` are those, as Go's
+    /// validation message quotes them.
     Schedule {
         timings: Option<Vec<i64>>,
+        invalid_timings: Vec<String>,
         inner: Box<Item>,
     },
     /// Go `APLActionResetSequence`: starts the sequence of the name over.
@@ -894,6 +896,22 @@ thread_local! {
     static VARIABLES: std::cell::RefCell<Vec<(String, Json)>> = const { std::cell::RefCell::new(Vec::new()) };
     /// The variables being resolved, which a variable that names itself would never finish.
     static RESOLVING: std::cell::RefCell<Vec<String>> = const { std::cell::RefCell::new(Vec::new()) };
+    /// Set while compilation reads a name as Go reads it without `GetAPLAura` or
+    /// `GetAPLSpell`, which give no validation message of a missing aura or spell.
+    static UNREPORTED: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+}
+
+/// Run `f` as a lookup Go makes without a validation message.
+fn unreported<T>(f: impl FnOnce() -> T) -> T {
+    let outer = UNREPORTED.with(|flag| flag.replace(true));
+    let out = f();
+    UNREPORTED.with(|flag| flag.set(outer));
+    out
+}
+
+/// Whether the lookups now are ones Go makes without a validation message.
+pub(crate) fn lookups_unreported() -> bool {
+    UNREPORTED.with(std::cell::Cell::get)
 }
 
 /// Go `valueVariables`: the list of a rotation or a group, each a name and a value.
@@ -1448,8 +1466,15 @@ fn parse_schedule(config: &Json, position: usize) -> Result<Action, String> {
         .split(',')
         .map(|timing| parse_go_duration(timing.trim()))
         .collect::<Option<Vec<i64>>>();
+    let invalid_timings = text
+        .split(',')
+        .map(str::trim)
+        .filter(|timing| parse_go_duration(timing).is_none())
+        .map(str::to_string)
+        .collect();
     Ok(Action::Schedule {
         timings,
+        invalid_timings,
         inner: Box::new(inner),
     })
 }
@@ -3781,7 +3806,8 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
                 Some(Unit::Player) => aura(id),
                 None => None,
             };
-            let found = find(&tagged(1)).or_else(|| find(&tagged(0)))?;
+            // Go reads the aura with `GetAuraByID`, which reports nothing of a missing one.
+            let found = unreported(|| find(&tagged(1)).or_else(|| find(&tagged(0))))?;
             Compiled::AuraIsActiveAfterReaction(found.aura)
         }
         // Go finds the sequence when the rotation is finalized; one of no action reads as done
@@ -3861,8 +3887,9 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
             None => Compiled::Const(parse_const("0").expect("int constant")),
         },
         Value::Compare { op, lhs, rhs } => {
-            let lhs = compile_value(lhs, lookup)?;
-            let rhs = compile_value(rhs, lookup)?;
+            // Go builds both operands before it looks at either, so each reports what it lacks.
+            let (lhs, rhs) = (compile_value(lhs, lookup), compile_value(rhs, lookup));
+            let (lhs, rhs) = (lhs?, rhs?);
             let to = lhs.value_type().max(rhs.value_type());
             // Go `newValueCompare` warns that booleans only compare for equality and gives
             // no value, so the comparison drops out of its parent.
@@ -3876,8 +3903,8 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
             }
         }
         Value::Math { op, lhs, rhs } => {
-            let lhs = compile_value(lhs, lookup)?;
-            let rhs = compile_value(rhs, lookup)?;
+            let (lhs, rhs) = (compile_value(lhs, lookup), compile_value(rhs, lookup));
+            let (lhs, rhs) = (lhs?, rhs?);
             let (lhs, rhs) = match op {
                 MathOp::Add | MathOp::Sub => {
                     let to = lhs.value_type().max(rhs.value_type());

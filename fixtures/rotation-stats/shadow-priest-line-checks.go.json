@@ -1,0 +1,469 @@
+{
+ "effectiveRotation": {
+  "prepullActions": [
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "spellId": 15473
+      }
+     }
+    },
+    "doAtValue": {
+     "const": {
+      "val": "-3s"
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 9,
+       "spellId": 10947
+      }
+     }
+    },
+    "doAtValue": {
+     "const": {
+      "val": "-1.5s"
+     }
+    }
+   }
+  ],
+  "priorityList": [
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 9,
+       "spellId": 10947
+      }
+     },
+     "condition": {
+      "spellIsKnown": {
+       "spellId": {
+        "spellId": 1259823
+       }
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 9,
+       "spellId": 10947
+      }
+     },
+     "condition": {
+      "and": {
+       "vals": [
+        {
+         "cmp": {
+          "lhs": {
+           "currentTime": {}
+          },
+          "op": "OpGe",
+          "rhs": {
+           "const": {
+            "val": "1s"
+           }
+          }
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 9,
+       "spellId": 10947
+      }
+     },
+     "condition": {
+      "auraIsActive": {
+       "auraId": {
+        "spellId": 15258,
+        "tag": 3
+       },
+       "sourceUnit": {
+        "type": "CurrentTarget"
+       }
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "autocastOtherCooldowns": {}
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 8,
+       "spellId": 10894
+      }
+     },
+     "condition": {
+      "and": {
+       "vals": [
+        {
+         "not": {
+          "val": {
+           "dotIsActive": {
+            "spellId": {
+             "rank": 8,
+             "spellId": 10894
+            }
+           }
+          }
+         }
+        },
+        {
+         "cmp": {
+          "lhs": {
+           "remainingTime": {}
+          },
+          "op": "OpGe",
+          "rhs": {
+           "const": {
+            "val": "6"
+           }
+          }
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 6,
+       "spellId": 19280
+      }
+     },
+     "condition": {
+      "and": {
+       "vals": [
+        {
+         "cmp": {
+          "lhs": {
+           "remainingTime": {}
+          },
+          "op": "OpGe",
+          "rhs": {
+           "const": {
+            "val": "12"
+           }
+          }
+         }
+        },
+        {
+         "and": {
+          "vals": [
+           {
+            "cmp": {
+             "lhs": {
+              "spellFullCooldown": {
+               "spellId": {
+                "rank": 6,
+                "spellId": 19280
+               }
+              }
+             },
+             "op": "OpGt",
+             "rhs": {
+              "const": {
+               "val": "20s"
+              }
+             }
+            }
+           },
+           {
+            "cmp": {
+             "lhs": {
+              "spellNumCharges": {
+               "spellId": {
+                "rank": 6,
+                "spellId": 19280
+               }
+              }
+             },
+             "op": "OpEq",
+             "rhs": {
+              "const": {
+               "val": "0"
+              }
+             }
+            }
+           },
+           {
+            "cmp": {
+             "lhs": {
+              "spellTimeToCharge": {
+               "spellId": {
+                "rank": 6,
+                "spellId": 19280
+               }
+              }
+             },
+             "op": "OpLe",
+             "rhs": {
+              "const": {
+               "val": "0s"
+              }
+             }
+            }
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "condition": {
+      "and": {
+       "vals": [
+        {
+         "spellIsReady": {
+          "spellId": {
+           "rank": 9,
+           "spellId": 10947
+          }
+         }
+        },
+        {
+         "cmp": {
+          "lhs": {
+           "auraNumStacks": {
+            "auraId": {
+             "spellId": 15258
+            }
+           }
+          },
+          "op": "OpGe",
+          "rhs": {
+           "const": {
+            "val": "5"
+           }
+          }
+         }
+        }
+       ]
+      }
+     },
+     "strictSequence": {
+      "actions": [
+       {
+        "castSpell": {
+         "spellId": {
+          "spellId": 14751
+         }
+        }
+       },
+       {
+        "castSpell": {
+         "spellId": {
+          "rank": 9,
+          "spellId": 10947
+         }
+        }
+       }
+      ]
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 9,
+       "spellId": 10947
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 4,
+       "spellId": 1309636
+      }
+     },
+     "condition": {
+      "cmp": {
+       "lhs": {
+        "min": {
+         "vals": [
+          {
+           "spellTimeToReady": {
+            "spellId": {
+             "rank": 9,
+             "spellId": 10947
+            }
+           }
+          },
+          {
+           "dotRemainingTime": {
+            "spellId": {
+             "rank": 8,
+             "spellId": 10894
+            }
+           }
+          }
+         ]
+        }
+       },
+       "op": "OpGt",
+       "rhs": {
+        "spellGcdHastedDuration": {
+         "spellId": {
+          "rank": 4,
+          "spellId": 1309636
+         }
+        }
+       }
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "channelSpell": {
+      "allowRecast": true,
+      "interruptIf": {
+       "and": {
+        "vals": [
+         {
+          "cmp": {
+           "lhs": {
+            "spellTimeToReady": {
+             "spellId": {
+              "rank": 9,
+              "spellId": 10947
+             }
+            }
+           },
+           "op": "OpLe",
+           "rhs": {
+            "inputDelay": {}
+           }
+          }
+         },
+         {
+          "cmp": {
+           "lhs": {
+            "dotTimeToNextTick": {
+             "spellId": {
+              "rank": 6,
+              "spellId": 18807
+             }
+            }
+           },
+           "op": "OpLe",
+           "rhs": {
+            "channelClipDelay": {}
+           }
+          }
+         },
+         {
+          "gcdIsReady": {}
+         }
+        ]
+       }
+      },
+      "spellId": {
+       "rank": 6,
+       "spellId": 18807
+      }
+     }
+    }
+   }
+  ],
+  "type": "TypeAPL"
+ },
+ "rotationPresentationVersion": 1,
+ "rotationStats": {
+  "prepullActions": [
+   {},
+   {}
+  ],
+  "priorityList": [
+   {
+    "validations": [
+     {
+      "logLevel": "Warning",
+      "validation": "shadow-priest (#1) does not know spell {SpellID: 1259823}"
+     }
+    ]
+   },
+   {
+    "validations": [
+     {
+      "ignoredCheck": true,
+      "logLevel": "Warning",
+      "validation": "No aura found on shadow-priest (#1) for: {SpellID: 15258}"
+     },
+     {
+      "auraHint": true,
+      "validation": "{SpellID: 15258} is on the target, not on you: set \"Check aura or resource on\" to Current enemy target."
+     }
+    ]
+   },
+   {
+    "validations": [
+     {
+      "logLevel": "Warning",
+      "missingAura": true,
+      "validation": "No aura found on Target 1 for: {SpellID: 15258, Tag: 3}"
+     },
+     {
+      "auraHint": true,
+      "validation": "{SpellID: 15258} on the target has tag 0: set the aura's Tag to 0."
+     }
+    ]
+   },
+   {
+    "validations": [
+     {
+      "validation": "Autocast Other Cooldowns will cast the following spells: {ItemID: 13444}, {ItemID: 12662}, {SpellID: 1277328}"
+     }
+    ]
+   },
+   {},
+   {},
+   {
+    "validations": [
+     {
+      "logLevel": "Warning",
+      "missingAura": true,
+      "validation": "No aura found on shadow-priest (#1) for: {SpellID: 15258}"
+     },
+     {
+      "auraHint": true,
+      "validation": "{SpellID: 15258} is on the target, not on you: set \"Check aura or resource on\" to Current enemy target."
+     }
+    ]
+   },
+   {},
+   {},
+   {}
+  ]
+ }
+}

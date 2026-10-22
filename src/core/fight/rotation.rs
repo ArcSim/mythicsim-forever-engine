@@ -19,7 +19,9 @@ use std::{ops::Range, rc::Rc};
 
 mod lowered;
 
+use super::log::action_string;
 use super::reads;
+use super::rotation_checks::Level;
 use lowered::Cond;
 
 pub(crate) type Compiled = crate::rotation::Compiled<AuraRef>;
@@ -299,10 +301,14 @@ impl<A: Agent> Fight<A> {
     fn rotation_aura(&self, side: Side, id: &ActionId) -> Option<FoundAura<AuraRef>> {
         let source = if side.is_target() { Side::Target } else { side };
         let tracker = &self.trackers[source.index()];
-        tracker.find_by_id(id).map(|index| FoundAura {
+        let found = tracker.find_by_id(id).map(|index| FoundAura {
             aura: AuraRef { side, index },
             max_stacks: tracker.auras[index].max_stacks,
-        })
+        });
+        if found.is_none() {
+            self.no_aura_found(side, id);
+        }
+        found
     }
 
     /// Go `GetAPLDot`: the spell's area or self-only dot, the caster's `AOEDot`, which every
@@ -327,26 +333,38 @@ impl<A: Agent> Fight<A> {
             Unit::Target(position) => Side::target(position),
         };
         let source = if side.is_target() { Side::Target } else { side };
-        self.trackers[source.index()]
+        let found = self.trackers[source.index()]
             .find_icd_by_id(id)
-            .map(|index| AuraRef { side, index })
+            .map(|index| AuraRef { side, index });
+        if found.is_none() {
+            self.no_aura_found(side, id);
+        }
+        found
     }
 
     /// Go `GetAPLMultidotSpell` and `Spell.CurDot`: the spell whose dot a multidot action or
     /// value reads, its own on a target or its related dot spell's. An area or self-only dot
     /// is the caster's `AOEDot`, which `CurDot` does not return.
     fn multidot_dot(&self, id: &ActionId) -> Option<SpellId> {
-        self.apl_spell(id).and_then(|spell| {
-            match self.spells[spell]
-                .dot
-                .filter(|&dot| self.dots[dot].side.is_target())
-            {
-                Some(_) => Some(spell),
-                None => self.spells[spell]
-                    .related_dot_spell
-                    .filter(|&related| self.spells.get(related).is_some_and(|s| s.dot.is_some())),
-            }
-        })
+        let spell = self.apl_spell(id)?;
+        let dot = match self.spells[spell]
+            .dot
+            .filter(|&dot| self.dots[dot].side.is_target())
+        {
+            Some(_) => Some(spell),
+            None => self.spells[spell]
+                .related_dot_spell
+                .filter(|&related| self.spells.get(related).is_some_and(|s| s.dot.is_some())),
+        };
+        if dot.is_none() {
+            self.check(Level::Warning, || {
+                format!(
+                    "Spell {} does not have an associated DoT",
+                    action_string(id)
+                )
+            });
+        }
+        dot
     }
 
     /// Go `Spell.RelatedSelfBuff` of a spell the rotation reads it of: the player's aura of the
@@ -369,7 +387,7 @@ impl<A: Agent> Fight<A> {
     }
 
     /// The spells the input names for a `castAllStatBuffCooldowns` of the stats.
-    fn cast_all_spells(&self, stats: &[i32]) -> Vec<SpellId> {
+    pub(super) fn cast_all_spells(&self, stats: &[i32]) -> Vec<SpellId> {
         let Some(reads) = self.rotation_reads.as_ref() else {
             return Vec::new();
         };
@@ -571,6 +589,21 @@ impl<A: Agent> Fight<A> {
     /// Go `GetAPLSpell`: the first APL-flagged spell with the action ID, otherwise the first
     /// registered one. The potion action names the first combat potion.
     pub(crate) fn apl_spell(&self, id: &ActionId) -> Option<SpellId> {
+        let spell = self.find_apl_spell(id);
+        if spell.is_none() {
+            self.check(Level::Warning, || {
+                format!(
+                    "{} does not know spell {}",
+                    self.config.player_label,
+                    action_string(id)
+                )
+            });
+        }
+        spell
+    }
+
+    /// [`Self::apl_spell`] without its validation message.
+    fn find_apl_spell(&self, id: &ActionId) -> Option<SpellId> {
         if id.other_id == "OtherActionPotion" {
             return self.spells.iter().position(|s| s.flags.combat_potion);
         }
@@ -614,51 +647,15 @@ impl<A: Agent> Fight<A> {
         rotation: &Rotation,
         base: usize,
     ) -> (Vec<(i64, PrepullAct)>, Vec<Item>, Vec<PrepullList>) {
-        let find = |side: Side, id: &ActionId| self.rotation_aura(side, id);
-        let aura = |id: &ActionId| find(Side::Player, id);
-        let target_aura = |position: usize, id: &ActionId| find(Side::target(position), id);
-        let spell = |id: &ActionId| self.apl_spell(id);
-        let dot = |id: &ActionId, unit: Unit| self.rotation_dot(id, unit);
-        let dot_base_duration = |id: &ActionId| {
-            self.dot_base_durations
-                .iter()
-                .find(|(spell, _)| spell == id)
-                .map(|(_, duration)| *duration)
-        };
-        let pet_aura_known = |pet: usize, id: &ActionId| {
-            self.pet_agent_auras
-                .get(pet)
-                .is_some_and(|auras| auras.contains(id))
-        };
-        let icd_aura = |unit: Unit, id: &ActionId| self.rotation_icd_aura(unit, id);
-        let lookup = Lookup {
-            aura: &aura,
-            target_aura: &target_aura,
-            targets: self.targets.len(),
-            spell: &spell,
-            dot: &dot,
-            dot_base_duration: &dot_base_duration,
-            pet_aura_known: &pet_aura_known,
-            item_swap: self.item_swap.is_some(),
-            bars: self.rotation_bars(),
-            icd_aura: &icd_aura,
-            multidot: &|id: &ActionId| self.multidot_dot(id).is_some(),
-            assigned_curse: self
-                .assigned_curse
-                .as_ref()
-                .map(|(name, id)| (name.as_str(), id)),
-            tanked: self.tanked(),
-            reads: self.rotation_reads.as_ref(),
-            exact_spell: &|id: &ActionId| {
-                self.spells
-                    .iter()
-                    .position(|spell| spell.caster == Side::Player && &spell.id == id)
-            },
-            self_buff: &|spell: usize| self.self_buff(spell),
-            item_procs: &|procs: &crate::rotation::StatProcs| self.item_procs(procs),
-            aura_by_label: &|label: &str| self.player_aura_by_label(label),
-            expected_tick: &|id: &ActionId| self.expected_tick_spell(id),
-        };
+        self.with_lookup(|lookup| self.compile_prepull_with(rotation, base, lookup))
+    }
+
+    fn compile_prepull_with(
+        &self,
+        rotation: &Rotation,
+        base: usize,
+        lookup: &Lookup<AuraRef>,
+    ) -> (Vec<(i64, PrepullAct)>, Vec<Item>, Vec<PrepullList>) {
         let mut channels = Vec::new();
         let mut lists = Vec::new();
         let mut prepull: Vec<(i64, PrepullAct)> = rotation
@@ -667,118 +664,10 @@ impl<A: Agent> Fight<A> {
             // Go newAPLAction: a constant false condition drops the action; any other
             // condition is never evaluated before the prepull cast.
             .filter(|prepull| {
-                compile_condition(prepull.condition.as_ref(), &lookup) != CompiledCondition::Pruned
+                compile_condition(prepull.condition.as_ref(), lookup) != CompiledCondition::Pruned
             })
-            .filter_map(|prepull| match &prepull.action {
-                // Go newActionCastSpell: a target that names no unit drops the action. The runtime
-                // casts a prepull action on the first target, which the gate checks.
-                ParsedAction::CastSpell { spell: id, target } => target
-                    .resolve(self.targets.len())
-                    .and_then(|_| self.apl_cast_spell(id))
-                    .map(|spell| (prepull.do_at_ns, PrepullAct::Cast(spell))),
-                ParsedAction::CastAtPlayer(id) => self
-                    .apl_cast_spell(id)
-                    .map(|spell| (prepull.do_at_ns, PrepullAct::CastAtPlayer(spell))),
-                // Go `newActionChannelSpell`: a cast without an interrupt condition, otherwise a
-                // channel whose condition the rotation reads once it runs.
-                ParsedAction::ChannelSpell {
-                    spell: id,
-                    target,
-                    interrupt_if,
-                    allow_recast,
-                } => {
-                    target.resolve(self.targets.len())?;
-                    match crate::rotation::compile_bool_value(interrupt_if.as_ref(), &lookup) {
-                        None => self
-                            .apl_cast_spell(id)
-                            .map(|spell| (prepull.do_at_ns, PrepullAct::Cast(spell))),
-                        Some(interrupt) => {
-                            let spell = self
-                                .apl_spell(id)
-                                .filter(|&spell| self.spells[spell].flags.channeled)?;
-                            channels.push(Item::new(
-                                None,
-                                Act::Channel {
-                                    spell,
-                                    interrupt: Rc::new(interrupt),
-                                    allow_recast: *allow_recast,
-                                },
-                            ));
-                            let item = base + channels.len() - 1;
-                            Some((prepull.do_at_ns, PrepullAct::Channel(spell, item)))
-                        }
-                    }
-                }
-                ParsedAction::CastAllStatBuffCooldowns(stats) => {
-                    lists.push(PrepullList::Spells(self.cast_all_spells(stats)));
-                    Some((
-                        prepull.do_at_ns,
-                        PrepullAct::CastAllStatBuffCooldowns(lists.len() - 1),
-                    ))
-                }
-                // Go `newActionActivateAllStatBuffProcAuras`: the proc buffs of the stats in the
-                // set; none without one, or for Swap1 without an item swap.
-                ParsedAction::ActivateAllStatBuffProcAuras { stats, swap1 } => {
-                    if *swap1 && self.item_swap.is_none() {
-                        return None;
-                    }
-                    let auras: Vec<AuraRef> = self
-                        .item_procs(&crate::rotation::StatProcs {
-                            stats: stats.clone(),
-                            min_icd: 0,
-                        })
-                        .into_iter()
-                        .filter(|(_, swapped)| swapped == swap1)
-                        .map(|(aura, _)| aura)
-                        .collect();
-                    if auras.is_empty() {
-                        return None;
-                    }
-                    lists.push(PrepullList::Auras(auras));
-                    Some((
-                        prepull.do_at_ns,
-                        PrepullAct::ActivateAllStatBuffProcAuras(*swap1, lists.len() - 1),
-                    ))
-                }
-                // Go `newActionItemSwap`: no action without an item swap.
-                ParsedAction::ItemSwap(to_swapped) => self
-                    .item_swap
-                    .as_ref()
-                    .map(|_| (prepull.do_at_ns, PrepullAct::ItemSwap(*to_swapped))),
-                // Go GetAPLAura on the player: an unknown aura drops the action.
-                ParsedAction::ActivateAura(id) => find(Side::Player, id)
-                    .map(|found| (prepull.do_at_ns, PrepullAct::ActivateAura(found.aura))),
-                ParsedAction::CancelAura(id) => find(Side::Player, id)
-                    .map(|found| (prepull.do_at_ns, PrepullAct::CancelAura(found.aura))),
-                // Go `newActionActivateAuraWithStacks`: no action for an aura that does not
-                // stack.
-                ParsedAction::ActivateAuraWithStacks { id, stacks } => find(Side::Player, id)
-                    .filter(|found| found.max_stacks != 0)
-                    .map(|found| {
-                        let stacks = (*stacks).min(found.max_stacks);
-                        (
-                            prepull.do_at_ns,
-                            PrepullAct::ActivateAuraWithStacks(found.aura, stacks),
-                        )
-                    }),
-                // Go `newActionChangeTarget`: no action for a unit Go finds nothing for; the gate
-                // admits only the first target.
-                ParsedAction::ChangeTarget(unit) => unit
-                    .resolve(self.targets.len())
-                    .map(|_| (prepull.do_at_ns, PrepullAct::ChangeTarget)),
-                // Go `GetAPLICDAura` on the player.
-                ParsedAction::TriggerIcd(id) => self
-                    .rotation_icd_aura(Unit::Player, id)
-                    .map(|aura| (prepull.do_at_ns, PrepullAct::TriggerIcd(aura))),
-                // The parser reads a constant range or duration in a prepull action.
-                ParsedAction::Move(Value::Const(range)) => {
-                    Some((prepull.do_at_ns, PrepullAct::Move(range.float)))
-                }
-                ParsedAction::MoveDuration(Value::Const(duration)) => Some((
-                    prepull.do_at_ns,
-                    PrepullAct::MoveDuration(duration.duration_ns),
-                )),
-                _ => None,
+            .filter_map(|prepull| {
+                self.prepull_act(prepull, lookup, base, &mut channels, &mut lists)
             })
             .collect();
         // apl.go: with a swap the prepull leaves on another set, the swap back to Main a
@@ -795,9 +684,168 @@ impl<A: Agent> Fight<A> {
         (prepull, channels, lists)
     }
 
-    /// Go `newAPLRotation` for the supported subset: the items of the priority list, then the
-    /// items of each instance of a group, and where each instance's items are.
-    pub(crate) fn compile_rotation(&self, rotation: &Rotation) -> Result<Compilation, String> {
+    /// Go `newAPLAction` of a prepull action, without its condition: the action at its time,
+    /// or `None` where Go builds none. A channel's interrupt item joins `channels`, numbered
+    /// from `base`, and a list of spells or auras joins `lists`.
+    pub(super) fn prepull_act(
+        &self,
+        prepull: &crate::rotation::Prepull,
+        lookup: &Lookup<AuraRef>,
+        base: usize,
+        channels: &mut Vec<Item>,
+        lists: &mut Vec<PrepullList>,
+    ) -> Option<(i64, PrepullAct)> {
+        let find = |side: Side, id: &ActionId| self.rotation_aura(side, id);
+        match &prepull.action {
+            // Go newActionCastSpell: a target that names no unit drops the action. The runtime
+            // casts a prepull action on the first target, which the gate checks.
+            ParsedAction::CastSpell { spell: id, target } => {
+                let spell = self.apl_cast_spell(id)?;
+                target.resolve(self.targets.len())?;
+                Some((prepull.do_at_ns, PrepullAct::Cast(spell)))
+            }
+            ParsedAction::CastAtPlayer(id) => self
+                .apl_cast_spell(id)
+                .map(|spell| (prepull.do_at_ns, PrepullAct::CastAtPlayer(spell))),
+            // Go `newActionChannelSpell`: a cast without an interrupt condition, otherwise a
+            // channel whose condition the rotation reads once it runs.
+            ParsedAction::ChannelSpell {
+                spell: id,
+                target,
+                interrupt_if,
+                allow_recast,
+            } => {
+                // Go builds the interrupt condition, then looks the spell up, then the target.
+                match crate::rotation::compile_bool_value(interrupt_if.as_ref(), lookup) {
+                    None => {
+                        let spell = self.apl_cast_spell(id)?;
+                        target.resolve(self.targets.len())?;
+                        Some((prepull.do_at_ns, PrepullAct::Cast(spell)))
+                    }
+                    Some(interrupt) => {
+                        let spell = self
+                            .apl_spell(id)
+                            .filter(|&spell| self.spells[spell].flags.channeled)?;
+                        target.resolve(self.targets.len())?;
+                        channels.push(Item::new(
+                            None,
+                            Act::Channel {
+                                spell,
+                                interrupt: Rc::new(interrupt),
+                                allow_recast: *allow_recast,
+                            },
+                        ));
+                        let item = base + channels.len() - 1;
+                        Some((prepull.do_at_ns, PrepullAct::Channel(spell, item)))
+                    }
+                }
+            }
+            ParsedAction::CastAllStatBuffCooldowns(stats) => {
+                lists.push(PrepullList::Spells(self.cast_all_spells(stats)));
+                Some((
+                    prepull.do_at_ns,
+                    PrepullAct::CastAllStatBuffCooldowns(lists.len() - 1),
+                ))
+            }
+            // Go `newActionActivateAllStatBuffProcAuras`: the proc buffs of the stats in the
+            // set; none without one, or for Swap1 without an item swap.
+            ParsedAction::ActivateAllStatBuffProcAuras { stats, swap1 } => {
+                if *swap1 && self.item_swap.is_none() {
+                    self.check(Level::Warning, || {
+                        "No swap set configured in Settings.".into()
+                    });
+                    return None;
+                }
+                let auras: Vec<AuraRef> = self
+                    .item_procs(&crate::rotation::StatProcs {
+                        stats: stats.clone(),
+                        min_icd: 0,
+                    })
+                    .into_iter()
+                    .filter(|(_, swapped)| swapped == swap1)
+                    .map(|(aura, _)| aura)
+                    .collect();
+                if auras.is_empty() {
+                    self.check(Level::Warning, || {
+                        "There are no proc items buffing the specified stat type(s) for the specified item set.".into()
+                    });
+                    return None;
+                }
+                self.check(Level::Information, || {
+                    let ids: Vec<String> = auras
+                        .iter()
+                        .filter_map(|&aura| self.aura(aura).action_id.as_ref().map(action_string))
+                        .collect();
+                    format!(
+                        "Activate All Stat Buff Proc Auras ({}) for swap set: {} will activate the following Auras: {}",
+                        super::rotation_checks::stat_names(stats),
+                        if *swap1 { "Swap1" } else { "Main" },
+                        ids.join(", ")
+                    )
+                });
+                lists.push(PrepullList::Auras(auras));
+                Some((
+                    prepull.do_at_ns,
+                    PrepullAct::ActivateAllStatBuffProcAuras(*swap1, lists.len() - 1),
+                ))
+            }
+            // Go `newActionItemSwap`: no action without an item swap.
+            ParsedAction::ItemSwap(to_swapped) => {
+                if self.item_swap.is_none() && *to_swapped {
+                    self.check(Level::Warning, || {
+                        "No swap set configured in Settings.".into()
+                    });
+                }
+                self.item_swap
+                    .as_ref()
+                    .map(|_| (prepull.do_at_ns, PrepullAct::ItemSwap(*to_swapped)))
+            }
+            // Go GetAPLAura on the player: an unknown aura drops the action.
+            ParsedAction::ActivateAura(id) => find(Side::Player, id)
+                .map(|found| (prepull.do_at_ns, PrepullAct::ActivateAura(found.aura))),
+            ParsedAction::CancelAura(id) => find(Side::Player, id)
+                .map(|found| (prepull.do_at_ns, PrepullAct::CancelAura(found.aura))),
+            // Go `newActionActivateAuraWithStacks`: no action for an aura that does not
+            // stack.
+            ParsedAction::ActivateAuraWithStacks { id, stacks } => find(Side::Player, id)
+                .filter(|found| {
+                    if found.max_stacks == 0 {
+                        self.check(Level::Warning, || {
+                            format!("{} is not a stackable aura", action_string(id))
+                        });
+                    }
+                    found.max_stacks != 0
+                })
+                .map(|found| {
+                    let stacks = (*stacks).min(found.max_stacks);
+                    (
+                        prepull.do_at_ns,
+                        PrepullAct::ActivateAuraWithStacks(found.aura, stacks),
+                    )
+                }),
+            // Go `newActionChangeTarget`: no action for a unit Go finds nothing for; the gate
+            // admits only the first target.
+            ParsedAction::ChangeTarget(unit) => unit
+                .resolve(self.targets.len())
+                .map(|_| (prepull.do_at_ns, PrepullAct::ChangeTarget)),
+            // Go `GetAPLICDAura` on the player.
+            ParsedAction::TriggerIcd(id) => self
+                .rotation_icd_aura(Unit::Player, id)
+                .map(|aura| (prepull.do_at_ns, PrepullAct::TriggerIcd(aura))),
+            // The parser reads a constant range or duration in a prepull action.
+            ParsedAction::Move(Value::Const(range)) => {
+                Some((prepull.do_at_ns, PrepullAct::Move(range.float)))
+            }
+            ParsedAction::MoveDuration(Value::Const(duration)) => Some((
+                prepull.do_at_ns,
+                PrepullAct::MoveDuration(duration.duration_ns),
+            )),
+            _ => None,
+        }
+    }
+
+    /// The names a rotation uses, resolved as Go does on the casting player, for `f`.
+    pub(super) fn with_lookup<T>(&self, f: impl FnOnce(&Lookup<AuraRef>) -> T) -> T {
         let aura = |id: &ActionId| self.rotation_aura(Side::Player, id);
         let target_aura =
             |position: usize, id: &ActionId| self.rotation_aura(Side::target(position), id);
@@ -809,11 +857,7 @@ impl<A: Agent> Fight<A> {
                 .find(|(spell, _)| spell == id)
                 .map(|(_, duration)| *duration)
         };
-        let pet_aura_known = |pet: usize, id: &ActionId| {
-            self.pet_agent_auras
-                .get(pet)
-                .is_some_and(|auras| auras.contains(id))
-        };
+        let pet_aura_known = |pet: usize, id: &ActionId| self.pet_aura_known(pet, id);
         let icd_aura = |unit: Unit, id: &ActionId| self.rotation_icd_aura(unit, id);
         let lookup = Lookup {
             aura: &aura,
@@ -833,20 +877,30 @@ impl<A: Agent> Fight<A> {
                 .map(|(name, id)| (name.as_str(), id)),
             tanked: self.tanked(),
             reads: self.rotation_reads.as_ref(),
-            exact_spell: &|id: &ActionId| {
-                self.spells
-                    .iter()
-                    .position(|spell| spell.caster == Side::Player && &spell.id == id)
-            },
+            exact_spell: &|id: &ActionId| self.exact_spell(id),
             self_buff: &|spell: usize| self.self_buff(spell),
             item_procs: &|procs: &crate::rotation::StatProcs| self.item_procs(procs),
             aura_by_label: &|label: &str| self.player_aura_by_label(label),
             expected_tick: &|id: &ActionId| self.expected_tick_spell(id),
         };
+        f(&lookup)
+    }
+
+    /// Go `newAPLRotation` for the supported subset: the items of the priority list, then the
+    /// items of each instance of a group, and where each instance's items are.
+    pub(crate) fn compile_rotation(&self, rotation: &Rotation) -> Result<Compilation, String> {
+        self.with_lookup(|lookup| self.compile_rotation_with(rotation, lookup))
+    }
+
+    fn compile_rotation_with(
+        &self,
+        rotation: &Rotation,
+        lookup: &Lookup<AuraRef>,
+    ) -> Result<Compilation, String> {
         // A reference whose condition is a constant false is pruned, and takes no part in
         // binding the groups.
         let live = |index: usize| {
-            compile_condition(rotation.priority_list[index].condition.as_ref(), &lookup)
+            compile_condition(rotation.priority_list[index].condition.as_ref(), lookup)
                 != CompiledCondition::Pruned
         };
         let (rotation, binding) = bind(rotation, &live)?;
@@ -856,13 +910,13 @@ impl<A: Agent> Fight<A> {
         for (index, item) in rotation.priority_list.iter().enumerate() {
             let Some(action) = self.compile_action(
                 &item.action,
-                &lookup,
+                lookup,
                 binding.instance(Reference::Top(index)),
                 &mut inner,
             ) else {
                 continue;
             };
-            let condition = match compile_condition(item.condition.as_ref(), &lookup) {
+            let condition = match compile_condition(item.condition.as_ref(), lookup) {
                 // A constant false condition prunes the action; its spells already left
                 // the major cooldowns in Go's export.
                 CompiledCondition::Pruned => continue,
@@ -882,7 +936,7 @@ impl<A: Agent> Fight<A> {
                 };
                 let Some(action) = self.compile_action(
                     &item.action,
-                    &lookup,
+                    lookup,
                     binding.instance(reference),
                     &mut inner,
                 ) else {
@@ -890,7 +944,7 @@ impl<A: Agent> Fight<A> {
                 };
                 // Go `newAPLActionWithGroupVars` builds the condition and keeps a constant
                 // whatever it holds.
-                let condition = compile_bool_value(item.condition.as_ref(), &lookup)
+                let condition = compile_bool_value(item.condition.as_ref(), lookup)
                     .map(|condition| Rc::new(Cond::lower(&condition)));
                 items.push(Item::new(condition, action));
             }
@@ -934,17 +988,29 @@ impl<A: Agent> Fight<A> {
         })
     }
 
+    /// Go's multidot actions: the encounter's targets cap the dot count.
+    fn max_dots(&self, max_dots: i32) -> i32 {
+        let targets = self.targets.len() as i32;
+        if targets < max_dots {
+            self.check(Level::Warning, || {
+                format!("Encounter only has {targets} targets. Using that for Max Dots instead of {max_dots}")
+            });
+        }
+        max_dots.min(targets)
+    }
+
     /// Go `newActionCastSpell` of a sequence's step: the spell the step casts, none for an
     /// unknown spell or a target that names no unit. The runtime casts a step on the first
     /// target, which the gate checks.
     fn step_spell(&self, step: &Step) -> Option<SpellId> {
+        let spell = self.apl_cast_spell(&step.spell)?;
         step.target.resolve(self.targets.len())?;
-        self.apl_cast_spell(&step.spell)
+        Some(spell)
     }
 
     /// Go's action constructors: the action a parsed one builds, or `None` where Go builds none.
     /// A reference runs the instance it is bound to.
-    fn compile_action(
+    pub(super) fn compile_action(
         &self,
         action: &ParsedAction,
         lookup: &Lookup<AuraRef>,
@@ -973,10 +1039,10 @@ impl<A: Agent> Fight<A> {
             // Go newActionStrictSequence runs every step or none: a step the character
             // lacks drops the whole action (ElliotWood/Forever#625).
             ParsedAction::StrictSequence(steps) => {
-                let spells = steps
-                    .iter()
-                    .map(|step| self.step_spell(step))
-                    .collect::<Option<Vec<SpellId>>>()?;
+                // Go builds every step before it looks for a missing one.
+                let spells: Vec<Option<SpellId>> =
+                    steps.iter().map(|step| self.step_spell(step)).collect();
+                let spells = spells.into_iter().collect::<Option<Vec<SpellId>>>()?;
                 if spells.is_empty() {
                     return None;
                 }
@@ -1009,6 +1075,7 @@ impl<A: Agent> Fight<A> {
             // times; no action without either.
             ParsedAction::Schedule {
                 timings,
+                invalid_timings,
                 inner: item,
             } => {
                 let condition = match compile_condition(item.condition.as_ref(), lookup) {
@@ -1017,6 +1084,11 @@ impl<A: Agent> Fight<A> {
                     CompiledCondition::When(condition) => Some(Rc::new(Cond::lower(&condition))),
                 };
                 let action = self.compile_action(&item.action, lookup, None, inner)?;
+                for timing in invalid_timings {
+                    self.check(Level::Warning, || {
+                        format!("Invalid duration value '{timing}'")
+                    });
+                }
                 let timings: Rc<[i64]> = Rc::from(timings.as_ref()?.as_slice());
                 inner.push(Item::new(condition, action));
                 Act::Schedule {
@@ -1033,15 +1105,16 @@ impl<A: Agent> Fight<A> {
             } => {
                 let dot_spell = multidot_dot(spell)?;
                 let cast = self.apl_cast_spell(spell)?;
+                let overlap = Rc::new(
+                    compile_duration_value(max_overlap.as_ref(), lookup).unwrap_or_else(|| {
+                        Compiled::Const(crate::rotation::parse_const("0ms").expect("0ms"))
+                    }),
+                );
                 Act::StrictMultidot {
                     spell: cast,
                     dot_spell,
-                    max_dots: (*max_dots).min(self.targets.len() as i32),
-                    overlap: Rc::new(
-                        compile_duration_value(max_overlap.as_ref(), lookup).unwrap_or_else(|| {
-                            Compiled::Const(crate::rotation::parse_const("0ms").expect("0ms"))
-                        }),
-                    ),
+                    max_dots: self.max_dots(*max_dots),
+                    overlap,
                     ready: Vec::new(),
                     next: 0,
                 }
@@ -1079,6 +1152,9 @@ impl<A: Agent> Fight<A> {
             // Go `newActionResetSequence`: no action without a name.
             ParsedAction::ResetSequence(name) => {
                 if name.is_empty() {
+                    self.check(Level::Warning, || {
+                        "Reset Sequence must provide a sequence name".into()
+                    });
                     return None;
                 }
                 Act::ResetSequence {
@@ -1094,23 +1170,25 @@ impl<A: Agent> Fight<A> {
                 target,
                 interrupt_if,
                 allow_recast,
-            } => match (
-                compile_bool_value(interrupt_if.as_ref(), lookup),
-                target.resolve(self.targets.len()),
-            ) {
-                (None, Some(Unit::Target(position))) => {
-                    Act::Cast(self.apl_cast_spell(spell)?, Side::target(position))
+            } => match compile_bool_value(interrupt_if.as_ref(), lookup) {
+                None => {
+                    let spell = self.apl_cast_spell(spell)?;
+                    match target.resolve(self.targets.len())? {
+                        Unit::Target(position) => Act::Cast(spell, Side::target(position)),
+                        Unit::Player => Act::Cast(spell, Side::Player),
+                    }
                 }
-                (None, Some(Unit::Player)) => Act::Cast(self.apl_cast_spell(spell)?, Side::Player),
-                (Some(interrupt), Some(_)) => match self.apl_spell(spell) {
-                    Some(spell) if self.spells[spell].flags.channeled => Act::Channel {
+                Some(interrupt) => {
+                    let spell = self
+                        .apl_spell(spell)
+                        .filter(|&spell| self.spells[spell].flags.channeled)?;
+                    target.resolve(self.targets.len())?;
+                    Act::Channel {
                         spell,
                         interrupt: Rc::new(interrupt),
                         allow_recast: *allow_recast,
-                    },
-                    _ => return None,
-                },
-                (_, None) => return None,
+                    }
+                }
             },
             // Go GetAPLMultidotSpell: an unknown spell or one without a dot drops the
             // action; the encounter's one target caps the dot count.
@@ -1119,12 +1197,14 @@ impl<A: Agent> Fight<A> {
                 max_dots,
                 max_overlap,
             } => {
-                let (spell, dot_spell) = self.apl_spell(spell).zip(multidot_dot(spell))?;
+                let dot_spell = multidot_dot(spell)?;
+                let spell = self.apl_spell(spell)?;
+                let overlap = compile_duration_value(max_overlap.as_ref(), lookup).map(Rc::new);
                 Act::Multidot {
                     spell,
                     dot_spell,
-                    max_dots: (*max_dots).min(self.targets.len() as i32),
-                    overlap: compile_duration_value(max_overlap.as_ref(), lookup).map(Rc::new),
+                    max_dots: self.max_dots(*max_dots),
+                    overlap,
                 }
             }
             // Go `newActionMove` and `newActionMoveDuration` always build the action. A value
@@ -1143,6 +1223,11 @@ impl<A: Agent> Fight<A> {
             }
             // Go `newActionItemSwap`: no action without an item swap.
             ParsedAction::ItemSwap(to_swapped) => {
+                if self.item_swap.is_none() && *to_swapped {
+                    self.check(Level::Warning, || {
+                        "No swap set configured in Settings.".into()
+                    });
+                }
                 self.item_swap.as_ref()?;
                 Act::ItemSwap(*to_swapped)
             }

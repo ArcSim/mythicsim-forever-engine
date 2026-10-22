@@ -25,7 +25,7 @@ The command prints one JSON decision and writes it to `NEW_FOLDER/decision.json`
 
 | `status` | Meaning | Exit status | What the worker does |
 | --- | --- | --- | --- |
-| `rust` | Rust ran the request. `result` names `NEW_FOLDER/result.json`, its `RaidSimResult` in the JSON Go prints; `identity` is the engine that made it | 0 | Serve the Rust result |
+| `rust` | Rust ran the request. `result` names `NEW_FOLDER/result.json`, its `RaidSimResult` in the JSON Go prints, with the rotation line checks MythicSim's Go CLI adds (`sim --rotation-stats`, see [prepared v2](prepared-v2.md)); `identity` is the engine that made it | 0 | Serve the Rust result |
 | `fallback` | The gate refused the input. `refusals` lists each reason with its stable code, and `codes` the distinct codes. No result is written | 0 | Run the request in Go and count the fallback by its codes |
 | `fault` | A step failed. `stage` is `request`, `prepare`, `check` or `rust`, and `error` says what failed; the gate runs in the same process as the simulation, and a `check` fault is an invalid prepared input or an unreadable refusal | 2 | Record a fault; the user can still be served by Go, but a fault is never counted as a fallback |
 

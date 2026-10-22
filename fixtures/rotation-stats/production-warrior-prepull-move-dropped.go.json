@@ -1,0 +1,504 @@
+{
+ "effectiveRotation": {
+  "prepullActions": [
+   {
+    "action": {
+     "move": {
+      "rangeFromTarget": {
+       "const": {
+        "val": "25"
+       }
+      }
+     }
+    },
+    "doAtValue": {
+     "const": {
+      "val": "2s"
+     }
+    }
+   },
+   {
+    "action": {
+     "condition": {
+      "const": {
+       "val": "false"
+      }
+     },
+     "move": {
+      "rangeFromTarget": {
+       "const": {
+        "val": "25"
+       }
+      }
+     }
+    },
+    "doAtValue": {
+     "const": {
+      "val": "-3s"
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "spellId": 2687
+      }
+     }
+    },
+    "doAtValue": {
+     "const": {
+      "val": "-10s"
+     }
+    }
+   }
+  ],
+  "priorityList": [
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 5,
+       "spellId": 11597
+      }
+     },
+     "condition": {
+      "and": {
+       "vals": [
+        {
+         "cmp": {
+          "lhs": {
+           "auraNumStacks": {
+            "auraId": {
+             "rank": 5,
+             "spellId": 11597
+            },
+            "sourceUnit": {
+             "type": "CurrentTarget"
+            }
+           }
+          },
+          "op": "OpLt",
+          "rhs": {
+           "const": {
+            "val": "1"
+           }
+          }
+         }
+        },
+        {
+         "not": {
+          "val": {
+           "auraIsActive": {
+            "auraId": {
+             "rank": 5,
+             "spellId": 11198,
+             "tag": -1
+            },
+            "sourceUnit": {
+             "type": "CurrentTarget"
+            }
+           }
+          }
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "spellId": 12328
+      }
+     },
+     "condition": {
+      "or": {
+       "vals": [
+        {
+         "cmp": {
+          "lhs": {
+           "remainingTime": {}
+          },
+          "op": "OpLe",
+          "rhs": {
+           "const": {
+            "val": "30s"
+           }
+          }
+         }
+        },
+        {
+         "cmp": {
+          "lhs": {
+           "remainingTime": {}
+          },
+          "op": "OpGe",
+          "rhs": {
+           "const": {
+            "val": "211.5s"
+           }
+          }
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "otherId": "OtherActionPotion"
+      }
+     },
+     "condition": {
+      "or": {
+       "vals": [
+        {
+         "cmp": {
+          "lhs": {
+           "remainingTime": {}
+          },
+          "op": "OpLe",
+          "rhs": {
+           "const": {
+            "val": "20s"
+           }
+          }
+         }
+        },
+        {
+         "cmp": {
+          "lhs": {
+           "remainingTime": {}
+          },
+          "op": "OpGe",
+          "rhs": {
+           "const": {
+            "val": "140s"
+           }
+          }
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "autocastOtherCooldowns": {},
+     "condition": {
+      "or": {
+       "vals": [
+        {
+         "cmp": {
+          "lhs": {
+           "remainingTime": {}
+          },
+          "op": "OpLe",
+          "rhs": {
+           "const": {
+            "val": "30s"
+           }
+          }
+         }
+        },
+        {
+         "cmp": {
+          "lhs": {
+           "remainingTime": {}
+          },
+          "op": "OpGe",
+          "rhs": {
+           "const": {
+            "val": "140s"
+           }
+          }
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "spellId": 1680,
+       "tag": 1
+      }
+     },
+     "condition": {
+      "cmp": {
+       "lhs": {
+        "numberTargets": {}
+       },
+       "op": "OpGt",
+       "rhs": {
+        "const": {
+         "val": "1"
+        }
+       }
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 5,
+       "spellId": 20662
+      }
+     },
+     "condition": {
+      "isExecutePhase": {
+       "threshold": "E20"
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 4,
+       "spellId": 23894
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "spellId": 1680,
+       "tag": 1
+      }
+     },
+     "condition": {
+      "cmp": {
+       "lhs": {
+        "spellTimeToReady": {
+         "spellId": {
+          "rank": 4,
+          "spellId": 23894
+         }
+        }
+       },
+       "op": "OpGt",
+       "rhs": {
+        "const": {
+         "val": "1.5s"
+        }
+       }
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 5,
+       "spellId": 20569,
+       "tag": 1
+      }
+     },
+     "condition": {
+      "and": {
+       "vals": [
+        {
+         "cmp": {
+          "lhs": {
+           "numberTargets": {}
+          },
+          "op": "OpGt",
+          "rhs": {
+           "const": {
+            "val": "1"
+           }
+          }
+         }
+        },
+        {
+         "or": {
+          "vals": [
+           {
+            "cmp": {
+             "lhs": {
+              "currentRage": {}
+             },
+             "op": "OpGe",
+             "rhs": {
+              "const": {
+               "val": "40"
+              }
+             }
+            }
+           },
+           {
+            "isExecutePhase": {
+             "threshold": "E20"
+            }
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 3,
+       "spellId": 7373
+      }
+     },
+     "condition": {
+      "and": {
+       "vals": [
+        {
+         "cmp": {
+          "lhs": {
+           "spellTimeToReady": {
+            "spellId": {
+             "rank": 4,
+             "spellId": 23894
+            }
+           }
+          },
+          "op": "OpGt",
+          "rhs": {
+           "const": {
+            "val": "1.5s"
+           }
+          }
+         }
+        },
+        {
+         "cmp": {
+          "lhs": {
+           "spellTimeToReady": {
+            "spellId": {
+             "spellId": 1680,
+             "tag": 1
+            }
+           }
+          },
+          "op": "OpGt",
+          "rhs": {
+           "const": {
+            "val": "1.5s"
+           }
+          }
+         }
+        },
+        {
+         "cmp": {
+          "lhs": {
+           "currentRage": {}
+          },
+          "op": "OpGt",
+          "rhs": {
+           "const": {
+            "val": "70"
+           }
+          }
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "spellId": 2687
+      }
+     },
+     "condition": {
+      "cmp": {
+       "lhs": {
+        "currentRage": {}
+       },
+       "op": "OpLt",
+       "rhs": {
+        "const": {
+         "val": "90"
+        }
+       }
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "spellId": 2458
+      }
+     },
+     "condition": {
+      "not": {
+       "val": {
+        "auraIsActive": {
+         "auraId": {
+          "spellId": 2458
+         }
+        }
+       }
+      }
+     }
+    }
+   }
+  ],
+  "type": "TypeAPL"
+ },
+ "rotationPresentationVersion": 1,
+ "rotationStats": {
+  "prepullActions": [
+   {
+    "validations": [
+     {
+      "logLevel": "Warning",
+      "validation": "Invalid time for 'Do At', ignoring this Prepull Action"
+     }
+    ]
+   },
+   {},
+   {}
+  ],
+  "priorityList": [
+   {},
+   {},
+   {},
+   {
+    "validations": [
+     {
+      "validation": "Autocast Other Cooldowns will cast the following spells: {ItemID: 10646}, {SpellID: 1719}, {SpellID: 871}, {SpellID: 20230}, {SpellID: 18499}"
+     }
+    ]
+   },
+   {},
+   {},
+   {},
+   {},
+   {},
+   {},
+   {},
+   {}
+  ]
+ }
+}

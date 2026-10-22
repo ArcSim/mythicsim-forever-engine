@@ -42,6 +42,7 @@ mod power_infusion;
 mod racial;
 pub(crate) mod rage;
 mod rotation;
+pub(crate) mod rotation_checks;
 mod spell_mod;
 mod sulfuras;
 mod thunderfury;
@@ -1748,6 +1749,14 @@ pub(crate) struct Fight<A: Agent> {
     /// The auras of each of the player's pets, in Go registration order, for the rotation's
     /// pet source units.
     pub(crate) pet_agent_auras: Vec<Vec<ActionId>>,
+    /// The labels of those pets, in the same order.
+    pub(crate) pet_agent_labels: Vec<String>,
+    /// Go `APLRotation.curValidations` while [`Self::rotation_checks`] builds the rotation's
+    /// lines again to collect Go's validation messages; `None` the rest of the time.
+    pub(crate) checks: std::cell::RefCell<Option<Vec<rotation_checks::Check>>>,
+    /// The rotation as the application shows it, with Go's validation messages of each
+    /// line, built with the rotation.
+    pub(crate) presentation: Option<rotation_checks::Presentation>,
     mana_regen_casting: usize,
     mana_regen_not_casting: usize,
     mana_gain_spell: Option<SpellId>,
@@ -3845,6 +3854,9 @@ impl<A: Agent> Fight<A> {
             active_pets: Vec::new(),
             pet_trackers: Vec::new(),
             pet_agent_auras: pet::pet_agent_auras(prepared),
+            pet_agent_labels: pet::pet_agent_labels(prepared),
+            checks: std::cell::RefCell::new(None),
+            presentation: None,
             heartbeat_offset: 0,
             totals: metrics::Totals {
                 target_dtps: vec![
@@ -4196,6 +4208,7 @@ impl<A: Agent> Fight<A> {
         fight.rotation.extend(channels);
         fight.prepull = prepull;
         fight.prepull_lists = lists;
+        fight.presentation = Some(fight.presentation(&parsed, &player.rotation));
         for effect in effects {
             if let Effect::SunderArmorRamp {
                 aura,

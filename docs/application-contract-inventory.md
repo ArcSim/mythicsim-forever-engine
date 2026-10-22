@@ -58,7 +58,8 @@ resource flows are totals; aura `uptimeSecondsAvg` and `procsAvg` are already me
 Enemy action entries must be separated from self effects. Channel cast and damage
 tick identities are distinct. Preserve proto omitted-zero behavior and enum names.
 
-The current Go observation omits `effectiveRotation` and `rotationStats`. API
+Go's plain CLI omits `effectiveRotation` and `rotationStats`; MythicSim's Go CLI adds them,
+and so does Rust with `sim --rotation-stats`, which `tools/route.py` passes. API
 fallback behavior remains part of the contract. Do not report an unvalidated
 rotation as validated by filling an empty success object.
 

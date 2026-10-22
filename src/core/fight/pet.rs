@@ -1063,3 +1063,23 @@ pub(crate) fn pet_agent_auras(prepared: &PreparedV2) -> Vec<Vec<ActionId>> {
     pets.sort_by_key(|(index, _)| *index);
     pets.into_iter().map(|(_, auras)| auras).collect()
 }
+
+/// The labels of the pets [`pet_agent_auras`] lists, in its order: Go `Unit.Label`, which a
+/// rotation's validation messages name a pet by.
+pub(crate) fn pet_agent_labels(prepared: &PreparedV2) -> Vec<String> {
+    let mut pets: Vec<(i32, String)> = prepared
+        .pets
+        .iter()
+        .map(|pet| (pet.index, pet.label.clone()))
+        .collect();
+    for effect in &prepared.effects {
+        if let Effect::InertPet {
+            unit_index, label, ..
+        } = effect
+        {
+            pets.push((*unit_index, label.clone()));
+        }
+    }
+    pets.sort_by_key(|(index, _)| *index);
+    pets.into_iter().map(|(_, label)| label).collect()
+}

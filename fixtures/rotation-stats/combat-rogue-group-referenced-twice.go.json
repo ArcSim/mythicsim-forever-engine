@@ -1,0 +1,337 @@
+{
+ "effectiveRotation": {
+  "groups": [
+   {
+    "actions": [
+     {
+      "action": {
+       "autocastOtherCooldowns": {},
+       "condition": {
+        "auraIsActive": {
+         "auraId": {
+          "rank": 2,
+          "spellId": 6774
+         }
+        }
+       }
+      }
+     }
+    ],
+    "name": "g"
+   }
+  ],
+  "priorityList": [
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "rank": 2,
+       "spellId": 6774
+      }
+     },
+     "condition": {
+      "or": {
+       "vals": [
+        {
+         "and": {
+          "vals": [
+           {
+            "cmp": {
+             "lhs": {
+              "currentComboPoints": {}
+             },
+             "op": "OpGe",
+             "rhs": {
+              "const": {
+               "val": "1"
+              }
+             }
+            }
+           },
+           {
+            "not": {
+             "val": {
+              "auraIsActive": {
+               "auraId": {
+                "rank": 2,
+                "spellId": 6774
+               }
+              }
+             }
+            }
+           },
+           {
+            "cmp": {
+             "lhs": {
+              "remainingTime": {}
+             },
+             "op": "OpGe",
+             "rhs": {
+              "const": {
+               "val": "6"
+              }
+             }
+            }
+           }
+          ]
+         }
+        },
+        {
+         "and": {
+          "vals": [
+           {
+            "cmp": {
+             "lhs": {
+              "currentComboPoints": {}
+             },
+             "op": "OpGe",
+             "rhs": {
+              "const": {
+               "val": "5"
+              }
+             }
+            }
+           },
+           {
+            "cmp": {
+             "lhs": {
+              "auraRemainingTime": {
+               "auraId": {
+                "rank": 2,
+                "spellId": 6774
+               }
+              }
+             },
+             "op": "OpLt",
+             "rhs": {
+              "const": {
+               "val": "3"
+              }
+             }
+            }
+           },
+           {
+            "cmp": {
+             "lhs": {
+              "remainingTime": {}
+             },
+             "op": "OpGt",
+             "rhs": {
+              "const": {
+               "val": "9"
+              }
+             }
+            }
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "spellId": 13750
+      }
+     },
+     "condition": {
+      "and": {
+       "vals": [
+        {
+         "cmp": {
+          "lhs": {
+           "currentEnergy": {}
+          },
+          "op": "OpLt",
+          "rhs": {
+           "const": {
+            "val": "59"
+           }
+          }
+         }
+        },
+        {
+         "cmp": {
+          "lhs": {
+           "timeToNextEnergyTick": {}
+          },
+          "op": "OpLt",
+          "rhs": {
+           "const": {
+            "val": "1"
+           }
+          }
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "condition": {
+      "cmp": {
+       "lhs": {
+        "remainingTime": {}
+       },
+       "op": "OpLt",
+       "rhs": {
+        "const": {
+         "val": "40s"
+        }
+       }
+      }
+     },
+     "groupReference": {
+      "groupName": "g"
+     }
+    }
+   },
+   {
+    "action": {
+     "autocastOtherCooldowns": {},
+     "condition": {
+      "auraIsActive": {
+       "auraId": {
+        "rank": 2,
+        "spellId": 6774
+       }
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "groupReference": {
+      "groupName": "g"
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "spellId": 31016
+      }
+     },
+     "condition": {
+      "and": {
+       "vals": [
+        {
+         "cmp": {
+          "lhs": {
+           "currentComboPoints": {}
+          },
+          "op": "OpGe",
+          "rhs": {
+           "const": {
+            "val": "5"
+           }
+          }
+         }
+        },
+        {
+         "or": {
+          "vals": [
+           {
+            "auraIsActive": {
+             "auraId": {
+              "rank": 2,
+              "spellId": 6774
+             }
+            }
+           },
+           {
+            "cmp": {
+             "lhs": {
+              "currentEnergy": {}
+             },
+             "op": "OpGe",
+             "rhs": {
+              "const": {
+               "val": "79"
+              }
+             }
+            }
+           },
+           {
+            "cmp": {
+             "lhs": {
+              "remainingTime": {}
+             },
+             "op": "OpLt",
+             "rhs": {
+              "const": {
+               "val": "6"
+              }
+             }
+            }
+           }
+          ]
+         }
+        }
+       ]
+      }
+     }
+    }
+   },
+   {
+    "action": {
+     "castSpell": {
+      "spellId": {
+       "spellId": 25300
+      }
+     }
+    }
+   }
+  ],
+  "type": "TypeAPL"
+ },
+ "rotationPresentationVersion": 1,
+ "rotationStats": {
+  "groups": [
+   {
+    "actions": [
+     {
+      "validations": [
+       {
+        "validation": "Autocast Other Cooldowns will cast the following spells: {SpellID: 13877}, {ItemID: 7676}, {ItemID: 10646}"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "actions": [
+     {
+      "validations": [
+       {
+        "validation": "Autocast Other Cooldowns will cast the following spells: {SpellID: 13877}, {ItemID: 7676}, {ItemID: 10646}"
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "priorityList": [
+   {},
+   {},
+   {},
+   {
+    "validations": [
+     {
+      "validation": "Autocast Other Cooldowns will cast the following spells: {SpellID: 13877}, {ItemID: 7676}, {ItemID: 10646}"
+     }
+    ]
+   },
+   {},
+   {},
+   {}
+  ]
+ }
+}

@@ -432,6 +432,21 @@ report and exits with status 3. An input that fails validation exits with status
 its reason on standard error; every other error exits with status 1, as without `--gate`.
 Without `--gate`, a refusal is still an error with status 1.
 
+`sim --rotation-stats` adds to the player's metrics what MythicSim's Go CLI adds for the
+application's rotation card: `effectiveRotation`, the rotation without the lines that cannot run
+(a spell the character lacks, a hidden line, an Autocast Other Cooldowns with nothing to cast)
+and without the condition terms the engine drops; `rotationStats`, Go's validation messages of
+each of its lines, a missing aura's warning marked `missingAura` (the check reads it as absent)
+or `ignoredCheck` (the check is dropped) and followed by an `auraHint` naming where the aura is;
+and `rotationPresentationVersion` 1. Rust gives Go's messages of the lines it builds: unknown
+spells, missing auras, a multidot capped at the encounter's targets, a spell without a dot, an
+invalid prepull time or schedule, an unstackable aura, item swaps without a swap set, sequences
+and groups not found, and what the cooldown actions will cast. It leaves out Go's "No unit found
+matching reference", which prints the reference as protobuf text, and the messages Go files by
+value UUID, which no line shows. Go's plain CLI, whose results the goldens are, writes none of
+these fields, so they are left out without the flag. `tools/route.py` asks for them;
+[fixtures/rotation-stats](../fixtures/rotation-stats/README.md) holds the Go goldens.
+
 A code names the kind of refusal and stays the same however the input varies, so a
 worker can count fallbacks by it; the text says what this input lacks. An invalid input
 is an error, never a refusal. `REFUSAL_CODES` in

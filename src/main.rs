@@ -165,7 +165,7 @@ fn run() -> Result<(), Failure> {
         return Ok(());
     }
     if args.is_empty() || args == ["--help"] {
-        println!("forever-engine sim --infile REQUEST.json|PREPARED_V2.json [--outfile RESULT.json] [--trace] [--gate]\nforever-engine sim --request RAID_SIM_REQUEST.json [--scenario ID] [--outfile RESULT.json] [--gate] [--go-rules]\nforever-engine prepare --request RAID_SIM_REQUEST.json [--scenario ID] [--outfile PREPARED_V2.json] [--go-rules]\nforever-engine bench --infile REQUEST.json|PREPARED_V2.json [--outfile RESULT.json] [--warmups 3] [--samples 7]\nforever-engine check --infile PREPARED_V2.json\nforever-engine version");
+        println!("forever-engine sim --infile REQUEST.json|PREPARED_V2.json [--outfile RESULT.json] [--trace] [--gate] [--rotation-stats]\nforever-engine sim --request RAID_SIM_REQUEST.json [--scenario ID] [--outfile RESULT.json] [--gate] [--rotation-stats] [--go-rules]\nforever-engine prepare --request RAID_SIM_REQUEST.json [--scenario ID] [--outfile PREPARED_V2.json] [--go-rules]\nforever-engine bench --infile REQUEST.json|PREPARED_V2.json [--outfile RESULT.json] [--warmups 3] [--samples 7]\nforever-engine check --infile PREPARED_V2.json\nforever-engine version");
         return Ok(());
     }
     if args.len() == 3 && args[0] == "check" && args[1] == "--infile" {
@@ -186,6 +186,9 @@ fn run() -> Result<(), Failure> {
     let mut outfile = None;
     let mut trace = false;
     let mut gate = false;
+    // Add the rotation the application shows and Go's validation messages of its lines, as
+    // MythicSim's Go CLI adapter does.
+    let mut rotation_stats = false;
     // Prepare with the Go reference's rules where Rust departs from it, as the exporter does.
     let mut go_rules = false;
     let mut warmups = 3u32;
@@ -211,6 +214,7 @@ fn run() -> Result<(), Failure> {
             }
             "--trace" if !trace => trace = true,
             "--gate" if args[0] == "sim" && !gate => gate = true,
+            "--rotation-stats" if args[0] == "sim" && !rotation_stats => rotation_stats = true,
             "--go-rules" if args[0] != "bench" && !go_rules => go_rules = true,
             "--warmups" | "--samples" if args[0] == "bench" => {
                 let flag = &args[index];
@@ -280,7 +284,7 @@ fn run() -> Result<(), Failure> {
                     .into(),
             );
         }
-        let report = if gate {
+        let mut report = if gate {
             validate_prepared(&prepared).map_err(|err| Failure {
                 status: EXIT_REJECTED,
                 message: Some(PreparedError::Invalid(err).to_string()),
@@ -298,6 +302,9 @@ fn run() -> Result<(), Failure> {
         } else {
             simulate_prepared(&prepared).map_err(|err| err.to_string())?
         };
+        if rotation_stats {
+            report.add_rotation_stats();
+        }
         let output = if args[0] == "bench" {
             if warmups > 20 || !(1..=100).contains(&samples) {
                 return Err("bench requires 0 to 20 warmups and 1 to 100 samples".into());
@@ -329,8 +336,8 @@ fn run() -> Result<(), Failure> {
         }
         return Ok(());
     }
-    if gate {
-        return Err("--gate requires a prepared v2 input".into());
+    if gate || rotation_stats {
+        return Err("--gate and --rotation-stats require a prepared v2 input".into());
     }
     let request: Request =
         serde_json::from_slice(&input).map_err(|err| format!("request rejected: {err}"))?;

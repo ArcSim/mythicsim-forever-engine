@@ -27,6 +27,8 @@ step = {"prepare": "prepare", "check": "check", "sim": "rust"}[command]
 if rust_prepare and command == "prepare":
     step = "rust_prepare"
 gated = command == "sim" and "--gate" in sys.argv
+if command == "sim" and "--rotation-stats" in sys.argv:
+    (Path(__file__).parent / "rotation-stats.log").write_text("asked")
 with (Path(__file__).parent / "calls.log").open("a") as calls:
     calls.write(command + (" --request" if rust_prepare else "") + (" --gate" if gated else "") + "\\n")
 if mode.get("hang") == step:
@@ -145,6 +147,10 @@ class RouteTest(BundleTest):
         self.assertEqual(json.loads(Path(decision["result"]).read_text()), RESULT)
         self.assertEqual(set(decision["timings_ms"]), {"rust"})
         self.assertEqual(self.calls(), ["sim --request --gate"])
+
+    def test_a_rust_run_asks_for_the_rotation_the_application_shows(self):
+        self.decide(rust_prepares=True)
+        self.assertEqual((self.bundle / "bin" / "rotation-stats.log").read_text(), "asked")
 
     def test_a_request_rust_prepares_can_still_fall_back_at_the_gate(self):
         decision = self.decide(rust_prepares=True, refusals=REFUSALS)

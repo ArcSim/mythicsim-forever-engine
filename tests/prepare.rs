@@ -121,8 +121,9 @@ fn differences(go: &Value, rust: &Value, path: &str, out: &mut Vec<String>, limi
     }
 }
 
-/// Every fixture Rust prepares must give the prepared state the Go exporter wrote; the rest
-/// must be refused, never prepared wrongly. Set PREPARE_REPORT to print every case.
+/// Every fixture Rust prepares with the reference's rules must give the prepared state the Go
+/// exporter wrote; the rest must be refused, never prepared wrongly. Set PREPARE_REPORT to
+/// print every case.
 #[test]
 fn rust_preparation_matches_go_or_refuses() {
     let report = std::env::var("PREPARE_REPORT").is_ok();
@@ -131,7 +132,8 @@ fn rust_preparation_matches_go_or_refuses() {
     let mut mismatched = Vec::new();
     let cases = manifest().cases;
     for case in &cases {
-        match forever_engine::prepare_json(&request_bytes(case), &case.id) {
+        let rules = forever_engine::Rules::GoReference;
+        match forever_engine::prepare_json_with(&request_bytes(case), &case.id, rules) {
             Ok(rust) => {
                 let go = prepared(case);
                 let mut diffs = Vec::new();

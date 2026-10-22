@@ -435,6 +435,20 @@ pub(crate) struct Sim {
     pub state_slots: Vec<f64>,
     /// The times effects' callbacks keep between calls (see [`TimeSlot`]).
     pub time_slots: Vec<Duration>,
+    /// The rules preparation follows where Rust departs from the Go reference.
+    pub rules: Rules,
+}
+
+/// Which rules preparation follows where Rust departs from the Go reference on purpose: Forever's
+/// own, which production prepares with, or the reference's, which the Go goldens and exporter
+/// comparisons check. The departures are listed in the README's Rust-only mechanics.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
+pub enum Rules {
+    /// Forever as its developers state it.
+    #[default]
+    Forever,
+    /// The Go reference at the pinned revision.
+    GoReference,
 }
 
 /// A value an effect's callbacks keep between calls. Go keeps it in the closure; here it lives
@@ -465,6 +479,7 @@ impl Sim {
             first_pet_index: 5,
             state_slots: Vec::new(),
             time_slots: Vec::new(),
+            rules: Rules::Forever,
         }
     }
 

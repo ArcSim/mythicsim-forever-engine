@@ -8,7 +8,7 @@ use super::attack::{new_attack_table, AttackTable};
 use super::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger};
 use super::character::constants::CHARACTER_LEVEL;
 use super::sim::{
-    AuraConfig, BuildPhase, EnvState, EventCallbacks, Sim, UnitId, UnitType, NEVER_EXPIRES,
+    AuraConfig, BuildPhase, EnvState, EventCallbacks, Rules, Sim, UnitId, UnitType, NEVER_EXPIRES,
 };
 use super::stats::Stat;
 use super::Refusal;
@@ -53,6 +53,8 @@ pub(crate) struct Environment {
     pub rotation_reads: Option<crate::contracts::prepared_v2::RotationReads>,
     /// The factory that built the agent, for a separate simulation of the same request.
     pub factory: AgentFactory,
+    /// The rules it was prepared with, for a separate simulation of the same request.
+    pub rules: Rules,
     /// Every attacker's table against every defender, by unit index.
     pub attack_tables: Vec<Vec<AttackTable>>,
     /// The party buffs the drivers read: the request's with what the agent adds.
@@ -140,9 +142,19 @@ fn new_encounter(sim: &mut Sim, options: &Message) -> Result<Encounter, Refusal>
 }
 
 impl Environment {
-    /// Go `NewSim` followed by `Reset`.
+    /// Go `NewSim` followed by `Reset`, with Forever's rules.
     pub(crate) fn new(request: &Message, factory: AgentFactory) -> Result<Environment, Refusal> {
+        Environment::with_rules(request, factory, Rules::Forever)
+    }
+
+    /// Go `NewSim` followed by `Reset`, with the given rules.
+    pub(crate) fn with_rules(
+        request: &Message,
+        factory: AgentFactory,
+        rules: Rules,
+    ) -> Result<Environment, Refusal> {
         let mut sim = Sim::new();
+        sim.rules = rules;
         let raid = request
             .message("raid")
             .ok_or_else(|| Refusal::new("request", "a request without a raid".to_string()))?;
@@ -208,6 +220,7 @@ impl Environment {
             party_buffs: Message::empty("proto.PartyBuffs"),
             external_activations: Vec::new(),
             factory,
+            rules,
         };
         if let Some(debuffs) = raid.message("debuffs") {
             // The agent's constructor may have changed the raid's debuffs.
@@ -251,7 +264,7 @@ impl Environment {
     pub(crate) fn fresh(&self) -> Environment {
         self.pristine
             .get_or_init(|| {
-                Environment::new(&self.request, self.factory)
+                Environment::with_rules(&self.request, self.factory, self.rules)
                     .expect("the request prepared once already")
             })
             .clone()

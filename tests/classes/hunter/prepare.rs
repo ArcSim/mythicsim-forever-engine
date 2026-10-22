@@ -150,6 +150,8 @@ fn differences(golden: &Golden, prepared: &Value) -> Vec<String> {
     out
 }
 
+/// Every case prepared with the reference's rules (`Rules::GoReference`), where Rust departs
+/// from it on purpose, gives what the Go exporter wrote.
 #[test]
 fn every_hunter_case_prepares_as_go_does() {
     let mut cases = 0;
@@ -165,7 +167,8 @@ fn every_hunter_case_prepares_as_go_does() {
         let golden: Golden = serde_json::from_slice(&fs::read(entry.path()).unwrap()).unwrap();
         assert_eq!(golden.case, case);
         let request = fs::read(directory().join(format!("{case}.request.json"))).unwrap();
-        match forever_engine::prepare_json(&request, case) {
+        let rules = forever_engine::Rules::GoReference;
+        match forever_engine::prepare_json_with(&request, case, rules) {
             Ok(prepared) => {
                 let diffs = differences(&golden, &prepared);
                 if !diffs.is_empty() {
@@ -241,4 +244,53 @@ fn a_gorilla_against_two_targets_is_refused() {
         }
         other => panic!("expected a refusal, got {other:?}"),
     }
+}
+
+/// Forever's pet hit, from its developers' tracker (22 October 2026): "Hunters give melee hit
+/// equal to their ranged hit, and their spell hit to their pet equal to 17/8ths of their ranged
+/// hit." The pet's melee hit is already the owner's melee plus ranged hit (Go patch 178); the
+/// spell hit is Rust only, so the reference's rules leave the pet none.
+#[test]
+fn a_pets_spell_hit_is_seventeen_eighths_of_its_masters_ranged_hit() {
+    let request = fs::read(
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-beast-mastery-hunter.request.json"),
+    )
+    .unwrap();
+    let forever = forever_engine::prepare_json(&request, "x").unwrap();
+    let go = forever_engine::prepare_json_with(&request, "x", forever_engine::Rules::GoReference)
+        .unwrap();
+    let owner = &forever["player"]["stats"];
+    let melee = owner["PhysicalHitPercent"].as_f64().unwrap();
+    let ranged = owner["RangedHitPercent"].as_f64().unwrap();
+    assert!(melee + ranged > 0.0, "the production build carries hit");
+    let stat = |prepared: &Value, name: &str| prepared["pets"][0]["stats"][name].as_f64().unwrap();
+    assert_eq!(
+        stat(&forever, "PhysicalHitPercent"),
+        stat(&go, "PhysicalHitPercent")
+    );
+    assert_eq!(
+        stat(&forever, "SpellHitPercent") - stat(&go, "SpellHitPercent"),
+        melee * 2.125 + ranged * 2.125
+    );
+    let spell_terms = |prepared: &Value| -> Vec<(String, f64)> {
+        prepared["pets"][0]["inheritance"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|term| term["pet"] == "SpellHitPercent")
+            .map(|term| {
+                let owner = term["owner"].as_str().unwrap().to_string();
+                (owner, term["coefficient"].as_f64().unwrap())
+            })
+            .collect()
+    };
+    assert_eq!(
+        spell_terms(&forever),
+        [
+            ("PhysicalHitPercent".to_string(), 2.125),
+            ("RangedHitPercent".to_string(), 2.125)
+        ]
+    );
+    assert!(spell_terms(&go).is_empty());
 }

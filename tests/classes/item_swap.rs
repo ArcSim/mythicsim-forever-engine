@@ -169,12 +169,155 @@ fn a_specialization_crit_must_follow_its_modifiers() {
     )));
 }
 
-/// A swap only of the main hand is followed: another slot in the swap set is refused.
+/// Beside a Warrior's off hand, a swap only of the main hand is followed: another slot in the
+/// swap set is refused.
 #[test]
 fn a_swap_of_another_slot_is_refused() {
-    let mut value = fixture("mcp-arms-warrior");
+    let mut value = fixture("mcp-retribution-paladin");
     item_swap(&mut value)["slots"] = json!(["ItemSlotMainHand", "ItemSlotOffHand"]);
     assert!(refusals(value)
         .iter()
         .any(|refusal| refusal.starts_with("item_swap_unsupported: an item swap of slots")));
+}
+
+/// The Warrior off hand swap family: requests the Go exporter refuses, with the pinned Go
+/// engine's DPS for every iteration.
+fn warrior_request(name: &str) -> Value {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join(format!("fixtures/warrior/item-swap/{name}.request.json"));
+    serde_json::from_slice(&fs::read(path).unwrap()).unwrap()
+}
+
+fn warrior_prepared(request: &Value, name: &str) -> PreparedV2 {
+    let bytes = serde_json::to_vec(request).unwrap();
+    let prepared =
+        forever_engine::prepare_json_with(&bytes, name, forever_engine::Rules::GoReference)
+            .unwrap_or_else(|err| panic!("{name}: {err}"));
+    serde_json::from_value(prepared).unwrap()
+}
+
+const WARRIOR_SWAPS: [&str; 3] = [
+    "arms-two-hander-to-shield",
+    "arms-slow-two-hander-for-mortal-strike",
+    "fury-protection-shield-block-off",
+];
+
+/// A two-hander for a one-hander and shield, and back, gives Go's DPS in every iteration: the
+/// main hand's attack, Two-Handed Weapon Specialization, the shield's stats, and the shield
+/// casts and Shield Block falling without the shield.
+#[test]
+fn warrior_swaps_match_go_every_iteration() {
+    for name in WARRIOR_SWAPS {
+        let prepared = warrior_prepared(&warrior_request(name), name);
+        assert_eq!(prepared_coverage(&prepared), Vec::<String>::new(), "{name}");
+        let report = forever_engine::simulate_prepared(&prepared).unwrap();
+        let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join(format!("fixtures/warrior/item-swap/{name}.go-dps.json"));
+        let go: Value = serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
+        let values = |value: &Value| -> Vec<u64> {
+            value
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|v| v.as_f64().unwrap().to_bits())
+                .collect()
+        };
+        assert_eq!(
+            values(&report.result["raidMetrics"]["dps"]["allValues"]),
+            values(&go["allValues"]),
+            "{name}"
+        );
+    }
+}
+
+/// The swap set holds both hands, and a callback registered for both runs once.
+#[test]
+fn an_off_hand_swap_exports_both_hands_and_each_callback_once() {
+    let name = "arms-two-hander-to-shield";
+    let prepared = serde_json::to_value(warrior_prepared(&warrior_request(name), name)).unwrap();
+    let effect = prepared["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|effect| effect["kind"] == "item_swap")
+        .unwrap();
+    assert_eq!(
+        effect["slots"],
+        json!(["ItemSlotMainHand", "ItemSlotOffHand"])
+    );
+    let callbacks: Vec<String> = effect["callbacks"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|callback| {
+            let mut callback = callback.clone();
+            callback.as_object_mut().unwrap().remove("slot");
+            callback.to_string()
+        })
+        .collect();
+    for (index, callback) in callbacks.iter().enumerate() {
+        assert!(
+            !callbacks[..index].contains(callback),
+            "exported twice: {callback}"
+        );
+    }
+}
+
+/// Mortal Strike lands between the swap to the slow two-hander and the swap back, which waits
+/// for its cooldown.
+#[test]
+fn mortal_strike_hits_with_the_swapped_two_hander() {
+    let name = "arms-slow-two-hander-for-mortal-strike";
+    let mut request = warrior_request(name);
+    request["simOptions"]["iterations"] = json!(1);
+    request["simOptions"]["debugFirstIteration"] = json!(true);
+    let prepared = warrior_prepared(&request, name);
+    let logs = forever_engine::simulate_prepared(&prepared).unwrap().result["logs"]
+        .as_str()
+        .unwrap()
+        .to_string();
+    let lines: Vec<&str> = logs.lines().collect();
+    let to_swap = lines
+        .iter()
+        .position(|line| line.contains("Item Swap to set Swap1"))
+        .expect("a swap to the slow two-hander");
+    let back = to_swap
+        + lines[to_swap..]
+            .iter()
+            .position(|line| line.contains("Item Swap to set Main"))
+            .expect("a swap back");
+    assert!(lines[to_swap..back]
+        .iter()
+        .any(|line| line.contains("{SpellID: 21553}") && line.contains("Casting")));
+}
+
+/// The target's swings read the player's block from tables the reset's shield built, so an
+/// off hand swap of a tanking Warrior is refused.
+#[test]
+fn an_off_hand_swap_while_tanking_is_refused() {
+    let name = "fury-protection-shield-block-off";
+    let mut request = warrior_request(name);
+    request["raid"]["tanks"] = json!([{"index": 0, "type": "Player"}]);
+    let prepared = serde_json::to_value(warrior_prepared(&request, name)).unwrap();
+    assert!(refusals(prepared).contains(
+        &"item_swap_unsupported: an off hand swap while the target swings at the player is \
+          unsupported"
+            .to_string()
+    ));
+}
+
+/// A swap set that dual wields is not followed.
+#[test]
+fn an_off_hand_weapon_swap_is_refused() {
+    let name = "arms-two-hander-to-shield";
+    let mut request = warrior_request(name);
+    request["raid"]["parties"][0]["players"][0]["itemSwap"]["items"][15] = json!({"id": 12940});
+    let bytes = serde_json::to_vec(&request).unwrap();
+    let err = forever_engine::prepare_json_with(&bytes, name, forever_engine::Rules::GoReference)
+        .unwrap_err();
+    assert!(
+        err.to_string()
+            .contains("an item swap of an off hand weapon is unsupported"),
+        "{err}"
+    );
 }

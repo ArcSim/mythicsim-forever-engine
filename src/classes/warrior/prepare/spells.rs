@@ -118,7 +118,7 @@ impl Warrior {
                 ..SpellConfig::default()
             },
         );
-        // deactivateWithoutShield: an item swap callback, and item swapping is refused.
+        deactivate_without_shield(sim, unit, aura);
         add_cooldown(sim, unit, spell, cooldown_type::SURVIVAL);
     }
 
@@ -827,6 +827,7 @@ impl Warrior {
                 ..SpellConfig::default()
             },
         );
+        deactivate_without_shield(sim, unit, aura);
     }
 
     /// Go `registerShieldBash`.
@@ -957,5 +958,14 @@ fn register_dash_aura(
             })),
             ..AuraConfig::default()
         },
+    );
+}
+
+/// Go `deactivateWithoutShield`: the aura falls at an off hand swap that leaves no shield.
+fn deactivate_without_shield(sim: &mut Sim, unit: UnitId, aura: crate::prepare::sim::AuraId) {
+    sim.register_item_swap_callback(
+        unit,
+        &[crate::prepare::items::slot::OFF_HAND],
+        crate::prepare::item_swap::SwapCallback::WithoutShield { aura },
     );
 }

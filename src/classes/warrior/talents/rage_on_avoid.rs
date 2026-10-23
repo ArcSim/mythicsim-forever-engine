@@ -12,7 +12,9 @@ pub(crate) struct AvoidRage {
     pub(crate) aura: AuraRef,
     /// The outcome bits the trigger hears.
     pub(crate) outcomes: u16,
-    /// Go `ExtraCondition`: the warrior can block, which nothing changes in a fight.
+    /// The trigger needs a shield.
+    pub(crate) needs_block: bool,
+    /// Go `ExtraCondition`: the warrior can block, which only an off hand swap changes.
     pub(crate) allowed: bool,
     pub(crate) chance: f64,
     pub(crate) rage: f64,

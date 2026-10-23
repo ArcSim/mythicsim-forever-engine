@@ -97,6 +97,8 @@ pub(crate) enum SwapCallback {
     },
     /// druid.go Initialize: the paw is rebuilt from the weapon in the hand.
     DruidPaw,
+    /// shield_block.go deactivateWithoutShield: the aura falls once no shield is worn.
+    WithoutShield { aura: AuraId },
 }
 
 /// Go `ItemSwap`.
@@ -369,6 +371,14 @@ pub(crate) fn weapon_from_main_hand(sim: &Sim, unit: UnitId) -> Weapon {
     }
 }
 
+/// Go `Character.WeaponFromOffHand`.
+pub(crate) fn weapon_from_off_hand(sim: &Sim, unit: UnitId) -> Weapon {
+    match sim.oh_weapon(unit) {
+        Some(item) => Weapon::from_item(item, sim.unit(unit).pseudo_stats.bonus_oh_dps),
+        None => Weapon::default(),
+    }
+}
+
 /// The set auras and states a swap leaves, for the export.
 pub(crate) fn swap_labels() -> Value {
     json!({"main_aura": MAIN_LABEL, "swapped_aura": SWAPPED_LABEL})
@@ -470,6 +480,17 @@ impl super::env::Environment {
             let weapon = weapon_from_main_hand(&self.sim, unit);
             self.sim.unit_mut(unit).auto_attacks.mh = weapon;
         }
+        // The off hand's attack follows the dual wield the swap leaves, and a shield blocks.
+        if slot == slot::OFF_HAND && self.sim.unit(unit).auto_attacks.auto_swing_melee {
+            let weapon = weapon_from_off_hand(&self.sim, unit);
+            let dual_wielding = weapon.swing_speed != 0.0;
+            let shield = self.sim.character(unit).equipment[slot::OFF_HAND].weapon_type
+                == "WeaponTypeShield";
+            let unit_state = self.sim.unit_mut(unit);
+            unit_state.auto_attacks.oh = weapon;
+            unit_state.auto_attacks.is_dual_wielding = dual_wielding;
+            unit_state.pseudo_stats.can_block = shield;
+        }
     }
 
     /// One callback, for the set now worn.
@@ -567,6 +588,11 @@ impl super::env::Environment {
                 }
             }
             SwapCallback::Deactivate { aura } => sim.deactivate(*aura),
+            SwapCallback::WithoutShield { aura } => {
+                if !sim.unit(unit).pseudo_stats.can_block {
+                    sim.deactivate(*aura);
+                }
+            }
             SwapCallback::ImbueAura { aura, enchant_id } => {
                 let on = equipment[slot::MAIN_HAND].temp_enchant == *enchant_id
                     || equipment[slot::OFF_HAND].temp_enchant == *enchant_id;
@@ -757,9 +783,16 @@ fn export_callbacks(env: &Environment) -> Result<Vec<Value>, Refusal> {
     let (main, swapped) = (swap.set(false), swap.set(true));
     let label = |aura: &AuraId| sim.aura(*aura).label.clone();
     let mut out = Vec::new();
+    // A callback registered for both hands runs for each, to the same end: it is exported once.
+    let mut seen: Vec<String> = Vec::new();
     for &slot_index in &swap.slots {
         let slot = slot_name(slot_index);
         for callback in &swap.callbacks[slot_index] {
+            let key = format!("{callback:?}");
+            if seen.contains(&key) {
+                continue;
+            }
+            seen.push(key);
             let both = |state: &dyn Fn(&Equipment) -> String| (state(&main), state(&swapped));
             match callback {
                 SwapCallback::DruidPaw => {}
@@ -840,6 +873,13 @@ fn export_callbacks(env: &Environment) -> Result<Vec<Value>, Refusal> {
                 }
                 SwapCallback::Deactivate { aura } => {
                     out.push(json!({"slot": slot, "kind": "aura", "aura": label(aura), "main": "off", "swapped": "off"}));
+                }
+                SwapCallback::WithoutShield { aura } => {
+                    let (m, s) = both(&|e| {
+                        let shield = e[slot::OFF_HAND].weapon_type == "WeaponTypeShield";
+                        aura_state(shield, "keep", "off")
+                    });
+                    out.push(json!({"slot": slot, "kind": "aura", "aura": label(aura), "main": m, "swapped": s}));
                 }
                 SwapCallback::ImbueAura { aura, enchant_id } => {
                     let (m, s) = both(&|e| {
@@ -977,10 +1017,26 @@ pub(crate) fn item_swap_effect(
         return Ok(None);
     };
     let refuse = |reason: &str| Err(Refusal::new("item_swap", reason.to_string()));
-    if swap.slots != [slot::MAIN_HAND] {
-        return refuse("an item swap of a slot other than the main hand alone is unsupported");
-    }
     let class = env.sim.character(unit).class.as_str();
+    if swap.slots != [slot::MAIN_HAND] {
+        if swap.slots != [slot::MAIN_HAND, slot::OFF_HAND] || class != "ClassWarrior" {
+            return refuse("an item swap of a slot other than the main hand alone is unsupported");
+        }
+        // A Warrior's two-hander for a one-hander and shield, or the other way: neither set
+        // swings an off hand, so the swap changes the main hand's attack and what a shield gives.
+        let dual_wields = |swapped: bool| {
+            let equipment = swap.set(swapped);
+            let off_hand = &equipment[slot::OFF_HAND];
+            !off_hand.is_empty()
+                && !matches!(
+                    off_hand.weapon_type.as_str(),
+                    "WeaponTypeShield" | "WeaponTypeOffHand"
+                )
+        };
+        if dual_wields(false) || dual_wields(true) {
+            return refuse("an item swap of an off hand weapon is unsupported");
+        }
+    }
     if !ITEM_SWAP_CLASSES.contains(&class) {
         return Err(Refusal::new(
             "item_swap",
@@ -1020,7 +1076,8 @@ pub(crate) fn item_swap_effect(
     json_diff("", main, &swapped_state, &mut swapped);
     let flat = super::common_effects::flat_string;
     let mut effect = json!({
-        "kind": "item_swap", "slots": ["ItemSlotMainHand"],
+        "kind": "item_swap",
+        "slots": swap.slots.iter().map(|&slot| slot_name(slot)).collect::<Vec<_>>(),
         "main_aura": MAIN_LABEL, "swapped_aura": SWAPPED_LABEL,
         "to_swapped_log": format!("Item Swap - Stats Change: {}", flat(&weapon_stats)),
         "to_main_log": format!("Item Swap - Stats Change: {}", flat(&weapon_stats.invert())),

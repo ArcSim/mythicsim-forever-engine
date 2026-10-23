@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "source": "Requests built from the production Arms and Fury/Protection Warrior fixtures with an item swap set and rotation lines that swap; each Go golden is the pinned Go engine's DPS for every iteration (forever-go-oracle-v2 sim at a667dce8492bd9fb94269a9f864289cb74006775, 300 iterations, seed 42).",
+  "note": "The Go exporter refuses an off hand swap, so these have no prepared golden: Rust prepares them under Rules::GoReference and must give Go's DPS for every iteration.",
+  "cases": [
+    {
+      "id": "arms-two-hander-to-shield",
+      "description": "Arms with Blackblade of Shahram swapping to Dal'Rend's Sacred Charge and Skullflame Shield from 30 to 60 seconds: Two-Handed Weapon Specialization, the shield's stats and its Shield Wall condition follow the swap."
+    },
+    {
+      "id": "arms-slow-two-hander-for-mortal-strike",
+      "description": "Arms swapping to Arcanite Reaper when Mortal Strike is 1.5 seconds from ready and back once it is on cooldown: Mortal Strike hits with the slower weapon in the hand."
+    },
+    {
+      "id": "fury-protection-shield-block-off",
+      "description": "Fury/Protection with Shield Block in the rotation and no tanking, swapping its shield and one-hander for Blackblade of Shahram from 30 to 60 seconds: Shield Block falls if it is up and cannot be cast without the shield."
+    }
+  ]
+}

@@ -189,6 +189,9 @@ pub(crate) struct WarriorAgent {
     /// With an item swap, Weaponmaster's sword mask for each set, Main then Swap1: the hands
     /// holding a sword, which its proc's condition reads.
     sword_masks: Option<[Vec<bool>; 2]>,
+    /// With an item swap of the off hand, whether each set holds a shield, Main then Swap1:
+    /// Shield Slam, Shield Block, Shield Wall and the rage on a block read it.
+    shields: Option<[bool; 2]>,
     /// Go `WarriorInputs.DefaultStance`, which every reset restores.
     default_stance: Stance,
     stances: Vec<StanceCast>,
@@ -720,6 +723,7 @@ impl WarriorAgent {
                         fight.agent.avoid_rage.push(AvoidRage {
                             aura: fight.player_aura(&trigger.aura)?,
                             outcomes: rage_on_avoid::outcome_bits(&trigger.outcomes),
+                            needs_block: trigger.needs_block,
                             allowed: !trigger.needs_block || *can_block,
                             chance: trigger.chance,
                             rage: trigger.rage,
@@ -1077,6 +1081,26 @@ impl WarriorAgent {
                 });
             }
         }
+        // An off hand swap puts a shield on or takes it off: what each set says.
+        let can_block = |effects: &[Effect]| {
+            effects.iter().find_map(|effect| match effect {
+                Effect::ShieldWall { can_block, .. }
+                | Effect::ShieldBlock { can_block, .. }
+                | Effect::ShieldSlam { can_block, .. }
+                | Effect::RageOnAvoid { can_block, .. } => Some(*can_block),
+                _ => None,
+            })
+        };
+        if let (Some(main), Some(swapped)) = (
+            can_block(&prepared.effects),
+            fight
+                .item_swap_worn_effects()
+                .and_then(|effects| can_block(&effects)),
+        ) {
+            if main != swapped {
+                fight.agent.shields = Some([main, swapped]);
+            }
+        }
         Ok(fight)
     }
 }
@@ -1162,6 +1186,22 @@ impl Agent for WarriorAgent {
     fn on_item_swap(fight: &mut Fight<Self>, worn: bool) {
         if let Some(masks) = &fight.agent.sword_masks {
             fight.agent.sword_mask = masks[usize::from(worn)].clone();
+        }
+        if let Some(shields) = fight.agent.shields {
+            let can_block = shields[usize::from(worn)];
+            let agent = &mut fight.agent;
+            agent.can_block = can_block;
+            if let Some(shield_wall) = agent.shield_wall.as_mut() {
+                shield_wall.can_block = can_block;
+            }
+            if let Some(shield_block) = agent.shield_block.as_mut() {
+                shield_block.can_block = can_block;
+            }
+            for trigger in &mut agent.avoid_rage {
+                trigger.allowed = !trigger.needs_block || can_block;
+            }
+            // The shield casts' conditions read it.
+            fight.changed(crate::core::fight::reads::CLASS);
         }
     }
     const CACHE_ROTATION: bool = true;

@@ -456,7 +456,7 @@ is an error, never a refusal. `REFUSAL_CODES` in
 | --- | --- |
 | `exporter_unrepresented` | The exporter could not describe part of the request |
 | `rotation_unsupported` | The rotation uses an action, value or field the parser rejects |
-| `item_swap_unsupported` | An item swap changes something Rust does not follow when the weapon changes: a slot other than the main hand, a value of the swapped state no runtime part takes, an aura it switches whose gain and expiry the runtime does not run, or a class whose swap has not been checked |
+| `item_swap_unsupported` | An item swap changes something Rust does not follow when the weapon changes: a slot other than the main hand (beside a Warrior's off hand that never swings, while the target does not swing at the player), a value of the swapped state no runtime part takes, an aura it switches whose gain and expiry the runtime does not run, or a class whose swap has not been checked |
 | `class_unsupported` | The player's class has no Rust gate |
 | `level_unsupported` | The player is not level 60 or the target not level 60 to 63 |
 | `target_count_invalid` | The target count is neither one nor 2 to 5 |
@@ -480,7 +480,7 @@ The exporter marks as unrepresented: more than one player, targets that are not 
 copies or more than five of them, health fights,
 tanks, presims, healing models, pets that may act without a class pet effect, main hand swings a
 class other than the Warrior can replace while in range, ranged attack speed listeners, a target that swings at a
-unit, an item swap of any slot but the main hand alone, a prepull item swap, an item swap callback the exporter
+unit, an item swap of any slot but the main hand alone (Rust preparation adds a Warrior's off hand without dual wield), a prepull item swap, an item swap callback the exporter
 cannot describe, execute phase callbacks, target AI, caster
 damage callbacks, dynamic damage-taken modifiers a class effect does not describe, mob type
 bonuses, costs other than mana, energy and rage,

@@ -39,6 +39,16 @@ the main hand by a Paladin, Warrior, Shaman or Druid prepares as the exporter de
 ([prepared-v2.md](prepared-v2.md), `item_swap`): the swap set, every callback Go registers for the
 slot, and the prepared state with the swap set worn.
 
+A Warrior's swap of both hands where neither set swings an off hand (a two-hander for a one-hander
+and shield, or back) prepares in Rust though the exporter refuses it. The off hand follows Go's
+`swapItem`: its weapon, dual wield and whether the Warrior can block, and Shield Block and Shield
+Wall fall without a shield (`deactivateWithoutShield`). A callback registered for both hands is
+exported once, since running it twice changes nothing. The gate follows the shield casts' and the
+rage on a block's `can_block` and Two-Handed Weapon Specialization's damage, and refuses such a
+swap while the target swings at the player, whose block tables the reset's shield built.
+[fixtures/warrior/item-swap](../fixtures/warrior/item-swap/manifest.json) holds Go's DPS for every
+iteration of three such requests.
+
 ## Commands
 
 ```sh

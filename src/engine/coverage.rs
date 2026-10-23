@@ -772,6 +772,11 @@ const SWAP_EFFECT_FIELDS: &[(&str, &[&str])] = &[
         ],
     ),
     ("weaponmaster_sword", &["sword_hands"]),
+    // A Warrior's shield, which an off hand swap puts on or takes off.
+    ("shield_wall", &["can_block"]),
+    ("shield_block", &["can_block"]),
+    ("shield_slam", &["can_block"]),
+    ("rage_on_avoid", &["can_block"]),
     ("cat_form", &["main_hand", "cat_weapon"]),
     ("bear_form", &["main_hand", "bear_weapon"]),
     ("flametongue_weapon", &["hands/base_damage"]),
@@ -812,8 +817,18 @@ fn item_swap_limits(
     };
     let mut reasons = Vec::new();
     let player = &prepared.player;
-    if slots.as_slice() != ["ItemSlotMainHand"] {
+    // A Warrior's off hand swaps beside the main hand when neither set swings it: the swapped
+    // state's off hand and dual wield must then read as the reset's, which the changes check.
+    let off_hand = slots.as_slice() == ["ItemSlotMainHand", "ItemSlotOffHand"]
+        && prepared.player.class == "ClassWarrior"
+        && !prepared.melee.dual_wielding;
+    if slots.as_slice() != ["ItemSlotMainHand"] && !off_hand {
         reasons.push(format!("an item swap of slots {slots:?} is unsupported"));
+    }
+    // The target's swings read the player's block from tables the reset's shield built.
+    if off_hand && prepared.enemy.is_some() {
+        reasons
+            .push("an off hand swap while the target swings at the player is unsupported".into());
     }
     if !["ClassPaladin", "ClassWarrior", "ClassShaman", "ClassDruid"]
         .contains(&prepared.player.class.as_str())
@@ -845,6 +860,8 @@ fn item_swap_limits(
     // The crit modifiers the swap switches, in callback order: the runtime adds and takes away
     // their crit as Go's callbacks do.
     let mut crit_mods: Vec<(&[usize], f64, bool, bool)> = Vec::new();
+    // The damage modifiers it switches, as Two-Handed Weapon Specialization's for a one-hander.
+    let mut damage_mods: Vec<(&[usize], f64, bool, bool)> = Vec::new();
     for callback in callbacks {
         let (label, toggles) = match callback {
             SwapCallback::Aura {
@@ -886,6 +903,8 @@ fn item_swap_limits(
                 if let SwapCallback::SpellMod { main, swapped, .. } = callback {
                     if modifier.kind == "bonus_crit_percent" {
                         crit_mods.push((&modifier.spells, modifier.value, *main, *swapped));
+                    } else {
+                        damage_mods.push((&modifier.spells, modifier.value, *main, *swapped));
                     }
                 }
                 continue;
@@ -961,6 +980,7 @@ fn item_swap_limits(
             &targets,
             &item_spells,
             &crit_mods,
+            &damage_mods,
             aura_effects,
         ) {
             reasons.push(reason);
@@ -1016,6 +1036,7 @@ fn swap_change_limit(
     switched: &[&str],
     item_spells: &[usize],
     crit_mods: &[(&[usize], f64, bool, bool)],
+    damage_mods: &[(&[usize], f64, bool, bool)],
     aura_effects: &[crate::contracts::prepared_v2::SwapAuraEffect],
 ) -> Option<String> {
     let parts: Vec<&str> = change.path.split('/').skip(1).collect();
@@ -1073,6 +1094,30 @@ fn swap_change_limit(
                 .value
                 .as_f64()
                 .is_some_and(|value| value.to_bits() == crit.to_bits())
+            {
+                None
+            } else {
+                refuse()
+            }
+        }
+        // A spell's damage multiplier as the damage modifiers the swap switches leave it.
+        ["player", "spells", index, "damage_multiplier"] => {
+            let index: usize = index.parse().ok()?;
+            let mut multiplier = prepared.player.spells.get(index)?.damage_multiplier;
+            for (spells, value, main, swapped) in damage_mods {
+                if !spells.contains(&index) || main == swapped {
+                    continue;
+                }
+                if *swapped {
+                    multiplier *= 1.0 + value;
+                } else {
+                    multiplier /= 1.0 + value;
+                }
+            }
+            if change
+                .value
+                .as_f64()
+                .is_some_and(|value| value.to_bits() == multiplier.to_bits())
             {
                 None
             } else {

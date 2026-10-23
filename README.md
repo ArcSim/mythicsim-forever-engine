@@ -100,6 +100,13 @@ the Go goldens and exporter uses. The departures:
   Shadow Bolts a third of the time, all landed whole. The reference's level 63 boss partially
   resists 18% of them, 6% of the damage on average. The prepared target carries
   `no_level_partial_resist`.
+- Casting regeneration auras, from the client's mana regeneration interrupt aura (type 134),
+  which acts as it is applied: Resourcefulness, Rapid Recuperation and Improved Stormstrike let
+  more spirit regeneration continue while casting from the moment they are up. The reference
+  raises the rate without refreshing its cached mana tick, so the buff acts only once a change of
+  MP5, Spirit or Intellect refreshes it, which on a Survival Hunter is almost never. Each one's
+  mana lands in a resource row of its own, named after the aura, as Innervate's does. The
+  prepared player carries `casting_regen_at_once`.
 
 ## Repository layout
 

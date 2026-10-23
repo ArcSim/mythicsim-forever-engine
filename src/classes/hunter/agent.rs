@@ -7,8 +7,8 @@ use crate::{
     contracts::prepared_v2::{Effect, PreparedV2, Spell as ExportedSpell},
     core::{
         fight::{
-            action_string, melee::Hand, Agent, AuraRef, DotId, Fight, Outcome, Side, SpellId,
-            SpellResult,
+            action_string, casting_regen::CastingRegen, melee::Hand, Agent, AuraRef, DotId, Fight,
+            Outcome, Side, SpellId, SpellResult,
         },
         time::{go_string, NS_PER_MILLISECOND},
     },
@@ -118,13 +118,13 @@ pub(crate) struct HunterAgent {
     /// The Wolf's Furious Howl.
     pub(crate) furious_howl: Option<FuriousHowl>,
     /// Resourcefulness's trigger and its regeneration.
-    resourcefulness: Option<(SurvivalProc, f64)>,
+    resourcefulness: Option<(SurvivalProc, CastingRegen)>,
     /// The spells Resourcefulness's trigger hears, by spellbook position.
     resourcefulness_spells: Rc<Vec<bool>>,
     /// Expose Prey's trigger and whether the target carries Hunter's Mark.
     expose_prey: Option<(SurvivalProc, bool)>,
     /// Rapid Recuperation's trigger and its regeneration.
-    rapid_recuperation: Option<(SurvivalProc, f64)>,
+    rapid_recuperation: Option<(SurvivalProc, CastingRegen)>,
     immolation_trap: Option<melee::ImmolationTrap>,
     explosive_trap: Option<ExplosiveTrap>,
     volley: Option<Volley>,
@@ -652,7 +652,8 @@ impl HunterAgent {
                     for &spell in spells {
                         hears[spell] = true;
                     }
-                    fight.agent.resourcefulness = Some((bound, *regen));
+                    let regen = CastingRegen::bind(&mut fight, bound.aura, *regen)?;
+                    fight.agent.resourcefulness = Some((bound, regen));
                     fight.agent.resourcefulness_spells = Rc::new(hears);
                 }
                 Effect::ExposePrey {
@@ -670,7 +671,8 @@ impl HunterAgent {
                     regen,
                 } => {
                     let bound = SurvivalProc::bind(&fight, trigger_aura, aura, 1.0)?;
-                    fight.agent.rapid_recuperation = Some((bound, *regen));
+                    let regen = CastingRegen::bind(&mut fight, bound.aura, *regen)?;
+                    fight.agent.rapid_recuperation = Some((bound, regen));
                 }
                 Effect::RapidFire {
                     aura,
@@ -1034,14 +1036,14 @@ impl Agent for HunterAgent {
                     .agent
                     .resourcefulness
                     .expect("Resourcefulness is bound");
-                SurvivalProc::resourcefulness_changed(fight, regen, true);
+                regen.changed(fight, true);
             }
             HunterAura::RapidRecuperation => {
                 let (_, regen) = fight
                     .agent
                     .rapid_recuperation
                     .expect("Rapid Recuperation is bound");
-                SurvivalProc::resourcefulness_changed(fight, regen, true);
+                regen.changed(fight, true);
             }
             HunterAura::FrenzyTrigger
             | HunterAura::ResourcefulnessTrigger
@@ -1084,14 +1086,14 @@ impl Agent for HunterAgent {
                     .agent
                     .resourcefulness
                     .expect("Resourcefulness is bound");
-                SurvivalProc::resourcefulness_changed(fight, regen, false);
+                regen.changed(fight, false);
             }
             HunterAura::RapidRecuperation => {
                 let (_, regen) = fight
                     .agent
                     .rapid_recuperation
                     .expect("Rapid Recuperation is bound");
-                SurvivalProc::resourcefulness_changed(fight, regen, false);
+                regen.changed(fight, false);
             }
             HunterAura::FrenzyTrigger
             | HunterAura::ResourcefulnessTrigger

@@ -890,7 +890,7 @@ impl ShamanAgent {
                     ..
                 } => {
                     fight.agent.improved_stormstrike = Some(improved_stormstrike::bind(
-                        &fight,
+                        &mut fight,
                         trigger_aura,
                         aura,
                         *proc_chance,

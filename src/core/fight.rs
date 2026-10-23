@@ -14,6 +14,7 @@ mod absorb;
 mod aura;
 mod blade_of_hanna;
 mod cast;
+pub(crate) mod casting_regen;
 mod cleave;
 mod damage;
 pub(crate) mod damage_taken;
@@ -993,6 +994,8 @@ pub(crate) struct Player {
     /// Go `spiritRegenAttribution`: the regeneration source whose bonus mana ticks credit to
     /// its own metrics.
     pub(crate) spirit_attribution: Option<SpiritAttribution>,
+    /// The active casting regeneration auras a casting mana tick credits, under Forever's rule.
+    pub(crate) casting_regen_sources: Vec<casting_regen::CastingRegenSource>,
     pub(crate) gcd: i64,
     pub(crate) rotation_timer: i64,
     pub(crate) hardcast: Hardcast,
@@ -1044,6 +1047,7 @@ impl Player {
             waiting_for_mana: 0.0,
             waiting_for_mana_start: 0,
             spirit_attribution: None,
+            casting_regen_sources: Vec::new(),
             gcd: STARTING_CD_TIME,
             rotation_timer: STARTING_CD_TIME,
             hardcast: Hardcast::idle(STARTING_CD_TIME),
@@ -1853,6 +1857,8 @@ pub(crate) struct Fight<A: Agent> {
     health_at_reset: Option<f64>,
     /// Go `HpPercentForDefensives`, below which survival major cooldowns fire.
     pub(crate) hp_percent_for_defensives: f64,
+    /// Forever's rule for casting regeneration auras (see [`casting_regen`]).
+    pub(crate) casting_regen_at_once: bool,
     /// How each exclusive effect of an aura a rotation asks about reads.
     pub(crate) aura_refresh: Vec<(AuraRef, Vec<exclusive::RefreshReading>)>,
     /// Single aura categories that a rotation's `auraShouldRefresh` reads, or a class asks for,
@@ -3883,6 +3889,7 @@ impl<A: Agent> Fight<A> {
             movement_categories: Vec::new(),
             health_at_reset: player.health_at_reset,
             hp_percent_for_defensives: player.hp_percent_for_defensives,
+            casting_regen_at_once: player.casting_regen_at_once,
             aura_refresh: Vec::new(),
             derived_categories: Vec::new(),
         };
@@ -5136,6 +5143,7 @@ impl<A: Agent> Fight<A> {
             player.force_full_spirit_regen = initial.force_full_spirit_regen;
             player.five_second_rule_refresh = 0;
             player.spirit_attribution = None;
+            player.casting_regen_sources.clear();
             self.reset_auto_attacks();
             // An aura an item swap switches that changed the armor ignore factor undid it as it
             // faded at the end of the last fight; the reset's activation is in the prepared value.

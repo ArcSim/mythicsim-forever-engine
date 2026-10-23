@@ -1,41 +1,45 @@
 //! Improved Stormstrike (talent 1223031), from Go sim/shaman/talents_enhancement.go
 //! `applyImprovedStormstrike`: a completed Stormstrike may grant, one spell batch window later,
 //! a buff that raises casting spirit regeneration. Go changes the pseudo stat without
-//! refreshing the cached regeneration rates, so the buff only acts through a later refresh.
+//! refreshing the cached regeneration rates, so the buff only acts through a later refresh;
+//! under Forever's rule it acts at once (see [`CastingRegen`]).
 //! Its cooldown reset listens to hits the player takes, which never happen in scope.
 
-use crate::core::fight::{Agent, AuraRef, Fight, SpellId, SpellResult};
+use crate::core::fight::{
+    casting_regen::CastingRegen, Agent, AuraRef, Fight, SpellId, SpellResult,
+};
 
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct ImprovedStormstrike {
     pub(crate) trigger: AuraRef,
     pub(crate) aura: AuraRef,
     proc_chance: f64,
-    regen_rate: f64,
+    regen: CastingRegen,
 }
 
 pub(crate) fn bind<A: Agent>(
-    fight: &Fight<A>,
+    fight: &mut Fight<A>,
     trigger: &str,
     aura: &str,
     proc_chance: f64,
     regen_rate: f64,
 ) -> Result<ImprovedStormstrike, String> {
+    let aura = fight.player_aura(aura)?;
     Ok(ImprovedStormstrike {
         trigger: fight.player_aura(trigger)?,
-        aura: fight.player_aura(aura)?,
+        aura,
         proc_chance,
-        regen_rate,
+        regen: CastingRegen::bind(fight, aura, regen_rate)?,
     })
 }
 
 impl ImprovedStormstrike {
     pub(crate) fn on_gain<A: Agent>(&self, fight: &mut Fight<A>) {
-        fight.player.spirit_regen_rate_casting += self.regen_rate;
+        self.regen.changed(fight, true);
     }
 
     pub(crate) fn on_expire<A: Agent>(&self, fight: &mut Fight<A>) {
-        fight.player.spirit_regen_rate_casting -= self.regen_rate;
+        self.regen.changed(fight, false);
     }
 
     /// The trigger's OnCastComplete for a Stormstrike cast.

@@ -1329,6 +1329,10 @@ impl<A: Agent> Fight<A> {
                 source_metrics.actual_gain += bonus_actual;
             }
         }
+        if casting {
+            let actual = self.player.mana - before;
+            self.credit_casting_regen(regen, actual, metrics);
+        }
     }
 
     /// Go `StartSpiritRegenAttribution`, before the source applies its own effect.

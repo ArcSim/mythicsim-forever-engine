@@ -1089,3 +1089,89 @@ fn the_survival_weave_keeps_melee_and_shot_ranges() {
     let (hits, shots) = assert_ranges_hold(&logs, player, 12.0);
     assert!(hits > 20 && shots > 20, "{hits} hits, {shots} shots");
 }
+
+/// The player's mana metrics, by action id, and its damage per second, over a short run.
+fn mana_rows(mut value: Value, forever: bool) -> (Vec<(Value, f64, f64)>, f64) {
+    value["sim"]["iterations"] = json!(200);
+    if forever {
+        value["player"]["casting_regen_at_once"] = json!(true);
+    }
+    let report = simulate_prepared(&parse(value)).unwrap();
+    let player = &report.result["raidMetrics"]["parties"][0]["players"][0];
+    let rows = player["resources"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|row| row["type"] == "ResourceTypeMana")
+        .map(|row| {
+            let amount = |key: &str| row[key].as_f64().unwrap_or(0.0);
+            (row["id"].clone(), amount("gain"), amount("actualGain"))
+        })
+        .collect();
+    (rows, player["dps"]["avg"].as_f64().unwrap())
+}
+
+fn row(rows: &[(Value, f64, f64)], id: Value) -> Option<(f64, f64)> {
+    rows.iter()
+        .find(|(row, _, _)| *row == id)
+        .map(|&(_, gain, actual)| (gain, actual))
+}
+
+/// Bae (23 October 2026): Resourcefulness is up most of a Survival fight and raises the time to
+/// OOM, but neither regeneration row moves. The reference adds its casting regeneration without
+/// refreshing the cached mana tick, so only Resourcefulness's cost cut ever acted. In the client
+/// the mana regeneration interrupt aura acts at once: under Forever's rule the tick follows the
+/// buff, and the mana it adds lands in a row of its own, as Innervate's does.
+#[test]
+fn resourcefulness_mana_lands_in_a_row_of_its_own() {
+    let resourcefulness = json!({ "spellId": 1242688 });
+    let casting = json!({ "otherId": "OtherActionManaRegen", "tag": 1 });
+    let survival = fixture("production-survival-hunter");
+    assert!(survival["player"].get("casting_regen_at_once").is_none());
+
+    let (go, go_dps) = mana_rows(survival.clone(), false);
+    assert_eq!(row(&go, resourcefulness.clone()), None);
+    let (forever, forever_dps) = mana_rows(survival, true);
+    let (gain, actual) = row(&forever, resourcefulness).expect("a Resourcefulness row");
+    // Judgement of Wisdom keeps this Hunter near full, so the rotation is the same and the
+    // casting row keeps the regeneration the reference gave it; the fuller bar caps more of it.
+    assert_eq!(forever_dps, go_dps);
+    let (go_casting, go_actual) = row(&go, casting.clone()).unwrap();
+    let (forever_casting, forever_actual) = row(&forever, casting).unwrap();
+    assert!(
+        (forever_casting - go_casting).abs() < go_casting * 1e-9,
+        "{forever_casting} against {go_casting}"
+    );
+    assert!(forever_actual <= go_actual && forever_actual + actual > go_actual);
+    // 50% of spirit regeneration while casting, up nearly all fight.
+    assert!(gain > 1000.0 * 200.0, "{gain}");
+    assert!(actual > 0.0 && actual < gain, "{actual} of {gain}");
+}
+
+/// Rapid Recuperation takes the same rule: a Marksmanship Hunter short of mana gains damage.
+#[test]
+fn rapid_recuperation_mana_acts_at_once_in_forever() {
+    let marksmanship = fixture("marksmanship-hunter-rapid-recuperation");
+    let (go, go_dps) = mana_rows(marksmanship.clone(), false);
+    let recuperation = json!({ "spellId": 1242512 });
+    assert_eq!(row(&go, recuperation.clone()), None);
+    let (forever, forever_dps) = mana_rows(marksmanship, true);
+    let (gain, actual) = row(&forever, recuperation).expect("a Rapid Recuperation row");
+    assert!(gain > 0.0 && actual > gain * 0.9, "{actual} of {gain}");
+    assert!(forever_dps > go_dps, "{forever_dps} against {go_dps}");
+}
+
+/// Forever preparation writes the rule; the reference's rules leave it out.
+#[test]
+fn only_forever_preparation_refreshes_casting_regen_at_once() {
+    let request = fs::read(
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-survival-hunter.request.json"),
+    )
+    .unwrap();
+    let forever = forever_engine::prepare_json(&request, "x").unwrap();
+    let go = forever_engine::prepare_json_with(&request, "x", forever_engine::Rules::GoReference)
+        .unwrap();
+    assert_eq!(forever["player"]["casting_regen_at_once"], json!(true));
+    assert!(go["player"].get("casting_regen_at_once").is_none());
+}

@@ -859,6 +859,12 @@ pub struct Player {
     /// fall to it, and never fire on their own at zero.
     #[serde(default, skip_serializing_if = "is_zero_f64")]
     pub hp_percent_for_defensives: f64,
+    /// Forever's rule: an aura that lets more spirit regeneration continue while casting
+    /// (Resourcefulness, Rapid Recuperation, Improved Stormstrike) refreshes the mana tick as it
+    /// changes, and its mana lands in metrics of its own. False is the Go reference, whose cached
+    /// tick ignores the change until something else refreshes it.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub casting_regen_at_once: bool,
     /// Every prepull action Go registered: the rotation's, and any a class or item adds.
     pub prepull_actions: usize,
     /// The dot base durations the rotation's `dotBaseDuration` values captured when Go built

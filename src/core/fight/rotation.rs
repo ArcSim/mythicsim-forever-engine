@@ -565,9 +565,8 @@ impl<A: Agent> Fight<A> {
         let exceeds = base_duration >= remaining - duration;
         if align_cd_end {
             if max_uses == 1 {
-                return full_at_end
-                    || (active_at_end && active_and_should_cast && !exceeds)
-                    || (!active_at_end && active_and_should_cast);
+                // Go's `active at end and not exceeding, or not active at end`.
+                return full_at_end || (active_and_should_cast && !(active_at_end && exceeds));
             }
             return full_at_end || active_and_should_cast || will_lose_uses || cast_and_can_again;
         }

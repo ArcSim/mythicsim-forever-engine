@@ -1904,6 +1904,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) move_waits_for_queued_cast: bool,
     /// Forever's rule that a move whose end time has come reads as arrived.
     pub(crate) move_arrives_at_destination: bool,
+    /// Forever's rule that a damage bonus applied after the calculation raises threat too.
+    pub(crate) threat_follows_damage_bonus: bool,
     /// A healer sim's burst healing window under Forever's rules (see [`burst`]).
     pub(crate) burst: Option<burst::BurstWindow>,
     /// How each exclusive effect of an aura a rotation asks about reads.
@@ -4028,6 +4030,7 @@ impl<A: Agent> Fight<A> {
             casting_regen_at_once: player.casting_regen_at_once,
             move_waits_for_queued_cast: player.move_waits_for_queued_cast,
             move_arrives_at_destination: player.move_arrives_at_destination,
+            threat_follows_damage_bonus: player.threat_follows_damage_bonus,
             burst: player.burst_window.map(burst::BurstWindow::new),
             aura_refresh: Vec::new(),
             derived_categories: Vec::new(),

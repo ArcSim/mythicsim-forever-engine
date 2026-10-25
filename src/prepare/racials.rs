@@ -270,7 +270,8 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
                 AuraConfig {
                     label: "Energized".to_string(),
                     action_id: Some(ActionId::spell(1270842)),
-                    duration: 15 * SECOND,
+                    // Client 1.60.1.70532: Energized (1270842) lasts 30 seconds; 70245 had 15.
+                    duration: 30 * SECOND,
                     on_gain: Some(Rc::new(|sim: &mut Sim, aura: AuraId| {
                         let unit = sim.aura(aura).unit;
                         if sim.has_mana_bar(unit) {

@@ -76,13 +76,14 @@ pub(crate) fn apply(fight: &mut Fight<WarlockAgent>, spell: SpellId, target: Sid
 pub(crate) fn tick(fight: &mut Fight<WarlockAgent>, dot: DotId) {
     let agony = state(fight);
     let mut result = fight.snapshot_dot_tick_calc(dot);
-    result.damage *= fight
+    let amp = fight
         .agent
         .agony_whole_tick_amp
         .get(dot)
         .copied()
         .unwrap_or(1.0);
     let spell = fight.dots[dot].spell;
+    fight.scale_damage(spell, &mut result, amp);
     fight.deal_damage(spell, result, true);
     if fight.dots[dot].tick_count() % agony.ramp_every_ticks == 0 {
         fight.dots[dot].snapshot_base += agony.ramp_step;

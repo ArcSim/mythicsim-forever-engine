@@ -885,6 +885,12 @@ pub struct Player {
     /// Hunter who stepped in out of melee range for the rest of the fight.
     #[serde(default, skip_serializing_if = "is_false")]
     pub move_arrives_at_destination: bool,
+    /// Forever's rule: a damage bonus applied after the damage is calculated (Improved Mind
+    /// Flay's ramp, Ice Lance on a frozen target, Soul Siphon, Amplify Curse, Incinerate on an
+    /// Immolated target) raises the hit's threat with its damage. False is the Go reference,
+    /// which kept the threat of the damage before the bonus.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub threat_follows_damage_bonus: bool,
     /// MythicSim's healer sims under Forever's rules: each heal's share that real healers
     /// overheal, measured on foreverlogs.gg (`prepare::overheal`). Only the rest counts as
     /// healing; the share counts as overhealing. Empty is the Go reference, which counts every

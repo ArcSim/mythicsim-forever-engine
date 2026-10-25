@@ -3137,7 +3137,10 @@ pub enum Effect {
     /// hit or heal) or Zandalarian Hero Charm (all its stacks at once, one fewer each cast). The
     /// window going up brings the stats aura up, at its most stacks when they `decay`, and its
     /// end takes the stats aura down. Each heard event of a `trigger_spells` spell rolls
-    /// `proc_chance`, and a spell batch window later the stacks move.
+    /// `proc_chance`, and a spell batch window later the stacks move. A trigger on a proc rate,
+    /// as Badge of the Swarmguard's, rolls its manager's chance for each spell in `chances` in
+    /// place of `proc_chance`, under the trigger's `rng_label`, and with `require_damage` a hit
+    /// that dealt no damage is not heard.
     StackingCdOnUse {
         item_id: i32,
         stat_aura: String,
@@ -3147,6 +3150,12 @@ pub enum Effect {
         callbacks: Vec<String>,
         landed_only: bool,
         proc_chance: f64,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        chances: Option<Vec<SpellChance>>,
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        require_damage: bool,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        rng_label: Option<String>,
     },
     /// MythicSim's healer sims under Forever's rules: an item use whose aura, while up, shields
     /// the player each direct heal lands on for `share` of the healing it did, as Scarab

@@ -4162,6 +4162,9 @@ impl<A: Agent> Fight<A> {
                     callbacks,
                     landed_only,
                     proc_chance,
+                    chances: manager,
+                    require_damage,
+                    rng_label,
                     ..
                 } => {
                     let mut chances = vec![None; fight.spells.len()];
@@ -4170,6 +4173,21 @@ impl<A: Agent> Fight<A> {
                             format!("stacking trinket spell {spell} outside the spellbook")
                         })?;
                         *slot = Some(*proc_chance);
+                    }
+                    // A rate's manager: each heard spell rolls its own chance, and a spell its
+                    // masks miss never stacks.
+                    if let Some(manager) = manager {
+                        let heard = chances.clone();
+                        chances = vec![None; fight.spells.len()];
+                        for entry in manager {
+                            if heard.get(entry.spell).copied().flatten().is_none() {
+                                return Err(format!(
+                                    "stacking trinket chance for spell {} it does not hear",
+                                    entry.spell
+                                ));
+                            }
+                            chances[entry.spell] = Some(entry.chance);
+                        }
                     }
                     let heard = |name: &str| callbacks.iter().any(|callback| callback == name);
                     if callbacks.iter().any(|callback| {
@@ -4183,7 +4201,6 @@ impl<A: Agent> Fight<A> {
                         return Err(format!("stacking trinket aura {stat_aura} has no stacks"));
                     }
                     fight.stacking_cds.push(healer_gear::StackingCd {
-                        label: window_aura.clone(),
                         stat_aura: stat,
                         decay: *decay,
                         chances,
@@ -4191,6 +4208,8 @@ impl<A: Agent> Fight<A> {
                         heals: heard("on_heal_dealt"),
                         casts: heard("on_cast_complete"),
                         landed_only: *landed_only,
+                        require_damage: *require_damage,
+                        rng_label: rng_label.clone().unwrap_or_else(|| window_aura.clone()),
                     });
                 }
                 Effect::ShieldOnHeal { item_id, share, .. } => {

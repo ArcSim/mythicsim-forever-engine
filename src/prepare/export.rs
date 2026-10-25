@@ -1109,6 +1109,9 @@ pub(crate) fn export_state(
         // A move whose end time has come has arrived (README, Rust-only mechanics); the
         // reference can read the walk a hair short of the destination at that instant.
         prepared["player"]["move_arrives_at_destination"] = json!(true);
+        // A rotation with a move keeps looking through the global cooldown (README, Rust-only
+        // mechanics); the reference's idle rotation sleeps until the global cooldown ends.
+        prepared["player"]["rotation_with_moves_looks_through_gcd"] = json!(true);
         // A healer sim counts only the share of each heal real healers do not overheal
         // (README, Rust-only mechanics); the reference counts every heal in full.
         let overheal = super::overheal::export(&player_message, &prepared["player"]["spells"]);

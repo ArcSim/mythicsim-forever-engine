@@ -885,6 +885,13 @@ pub struct Player {
     /// Hunter who stepped in out of melee range for the rest of the fight.
     #[serde(default, skip_serializing_if = "is_false")]
     pub move_arrives_at_destination: bool,
+    /// Forever's rule: a rotation with a Move anywhere in it keeps looking through the global
+    /// cooldown, so a walk starts when its condition turns true, as moving needs no global
+    /// cooldown, and goes on from a queued instant as it goes off. False is the Go reference,
+    /// whose idle rotation sleeps until the global cooldown ends, and a walk timed to a swing
+    /// timer or waiting on a queued instant starts late.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub rotation_with_moves_looks_through_gcd: bool,
     /// MythicSim's healer sims under Forever's rules: each heal's share that real healers
     /// overheal, measured on foreverlogs.gg (`prepare::overheal`). Only the rest counts as
     /// healing; the share counts as overhealing. Empty is the Go reference, which counts every

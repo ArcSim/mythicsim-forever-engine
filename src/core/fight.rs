@@ -1904,6 +1904,9 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) move_waits_for_queued_cast: bool,
     /// Forever's rule that a move whose end time has come reads as arrived.
     pub(crate) move_arrives_at_destination: bool,
+    /// Forever's rule that a rotation with a Move keeps looking through the global cooldown:
+    /// set only while the rule is on and the rotation holds a Move.
+    pub(crate) rotation_with_moves_looks_through_gcd: bool,
     /// A healer sim's burst healing window under Forever's rules (see [`burst`]).
     pub(crate) burst: Option<burst::BurstWindow>,
     /// How each exclusive effect of an aura a rotation asks about reads.
@@ -4028,6 +4031,7 @@ impl<A: Agent> Fight<A> {
             casting_regen_at_once: player.casting_regen_at_once,
             move_waits_for_queued_cast: player.move_waits_for_queued_cast,
             move_arrives_at_destination: player.move_arrives_at_destination,
+            rotation_with_moves_looks_through_gcd: player.rotation_with_moves_looks_through_gcd,
             burst: player.burst_window.map(burst::BurstWindow::new),
             aura_refresh: Vec::new(),
             derived_categories: Vec::new(),
@@ -4476,6 +4480,8 @@ impl<A: Agent> Fight<A> {
             .collect();
         fight.bind_item_swap(prepared)?;
         let compilation = fight.compile_rotation(&parsed)?;
+        // The rotation is fixed for the fight, so whether it moves is settled once here.
+        fight.rotation_with_moves_looks_through_gcd &= compilation.has_move();
         fight.rotation = compilation.items;
         fight.priority_len = compilation.priority;
         fight.group_ranges = compilation.groups;
@@ -5681,13 +5687,20 @@ impl<A: Agent> Fight<A> {
                     let (spell, target) = (queued.spell, queued.target);
                     // A strict sequence's hook unhooks itself, casts, then advances it.
                     let hooks = std::mem::take(&mut self.apl.queue_hooks);
-                    self.cast(spell, target);
+                    let cast = self.cast(spell, target);
                     for item in hooks {
                         self.advance_sequence(item);
                     }
                     // A move the rotation held for this spell goes now, not at the end of the
-                    // global cooldown the spell started (Forever's rule, `move_ready`).
-                    if std::mem::take(&mut self.apl.move_held_for_queue) {
+                    // global cooldown the spell started (Forever's rule, `move_ready`). A
+                    // rotation with a move goes on from a queued instant that went off, as it
+                    // does after one it casts itself (Forever's rule, README, Rust-only
+                    // mechanics); one that failed would only queue it again for this instant.
+                    if std::mem::take(&mut self.apl.move_held_for_queue)
+                        || (cast
+                            && self.rotation_with_moves_looks_through_gcd
+                            && self.player.hardcast.expires <= self.now)
+                    {
                         self.set_rotation_timer(self.now);
                     }
                 }

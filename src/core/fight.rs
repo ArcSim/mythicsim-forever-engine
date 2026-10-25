@@ -1867,6 +1867,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) casting_regen_at_once: bool,
     /// Forever's rule that a rotation's move waits for a queued spell to fire.
     pub(crate) move_waits_for_queued_cast: bool,
+    /// Forever's rule that a melee swing leaves the Auto Shot timer alone.
+    pub(crate) melee_keeps_auto_shot_timer: bool,
     /// Forever's rule that a move whose end time has come reads as arrived.
     pub(crate) move_arrives_at_destination: bool,
     /// A healer sim's burst healing window under Forever's rules (see [`burst`]).
@@ -3911,6 +3913,7 @@ impl<A: Agent> Fight<A> {
             hp_percent_for_defensives: player.hp_percent_for_defensives,
             casting_regen_at_once: player.casting_regen_at_once,
             move_waits_for_queued_cast: player.move_waits_for_queued_cast,
+            melee_keeps_auto_shot_timer: player.melee_keeps_auto_shot_timer,
             move_arrives_at_destination: player.move_arrives_at_destination,
             burst: player.burst_window.map(burst::BurstWindow::new),
             aura_refresh: Vec::new(),

@@ -1104,6 +1104,9 @@ pub(crate) fn export_state(
         // A player does not walk off before the spell they queued fires (README, Rust-only
         // mechanics); the reference's move starts at once.
         prepared["player"]["move_waits_for_queued_cast"] = json!(true);
+        // A melee swing does not restart the Auto Shot timer (README, Rust-only mechanics); the
+        // reference restarts it on every swing.
+        prepared["player"]["melee_keeps_auto_shot_timer"] = json!(true);
         // A move whose end time has come has arrived (README, Rust-only mechanics); the
         // reference can read the walk a hair short of the destination at that instant.
         prepared["player"]["move_arrives_at_destination"] = json!(true);

@@ -417,6 +417,7 @@ impl<A: Agent> Fight<A> {
         }
         metrics.total_healing += amount;
         metrics.total_threat += threat;
+        self.note_burst(amount);
         let health = self.self_health_metrics_of(spell);
         self.gain_health(amount, health);
         if self.log.is_some() && !self.spells[spell].flags.no_logs {
@@ -438,6 +439,7 @@ impl<A: Agent> Fight<A> {
         let metrics = &mut self.spells[spell].metrics[target];
         metrics.hits += 1;
         metrics.total_shielding += amount;
+        self.note_burst(amount);
         if self.log.is_some() && !self.spells[spell].flags.no_logs {
             let line = format!(
                 "[{}] {} Shield for {amount:.3}.",

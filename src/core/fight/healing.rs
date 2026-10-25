@@ -153,6 +153,7 @@ impl<A: Agent> Fight<A> {
         metrics.total_healing += amount;
         metrics.total_threat += result.threat;
         if target == Side::Player {
+            self.note_burst(amount);
             let health = match self.spells[spell].self_health_metrics {
                 Some(index) => index,
                 None => {
@@ -262,6 +263,7 @@ impl<A: Agent> Fight<A> {
         }
         metrics.total_healing += amount;
         metrics.total_threat += threat;
+        self.note_burst(amount);
         let health = match self.spells[spell].self_health_metrics {
             Some(index) => index,
             None => {
@@ -381,6 +383,7 @@ impl<A: Agent> Fight<A> {
         let metrics = &mut self.spells[spell].metrics[target];
         metrics.total_healing += amount;
         metrics.total_threat += threat;
+        self.note_burst(amount);
         let health = match self.spells[spell].self_health_metrics {
             Some(index) => index,
             None => {
@@ -453,6 +456,16 @@ impl<A: Agent> Fight<A> {
         let overhealing = amount * fraction;
         self.spells[spell].metrics[target].total_overhealing += overhealing;
         (amount - overhealing, overhealing)
+    }
+}
+
+impl<A: Agent> Fight<A> {
+    /// Healing landed on the player, for a healer sim's burst window.
+    pub(crate) fn note_burst(&mut self, amount: f64) {
+        let now = self.now;
+        if let Some(burst) = &mut self.burst {
+            burst.add(now, amount);
+        }
     }
 }
 

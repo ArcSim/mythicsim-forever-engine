@@ -124,6 +124,8 @@ pub(crate) struct Totals {
     pub(crate) player_dtps: Distribution,
     /// Go `UnitMetrics.hps` of the player: its healing on units that are not opponents.
     pub(crate) player_hps: Distribution,
+    /// A healer sim's best burst window each fight, over its length ([`super::burst`]).
+    pub(crate) burst_hps: Distribution,
     /// Each target's damage and threat from its swings at the player, by position.
     pub(crate) target_dps: Vec<Distribution>,
     pub(crate) target_threat: Vec<Distribution>,
@@ -422,6 +424,9 @@ pub(crate) struct UnitReport {
     dtps: DistributionReport,
     tmi: DistributionReport,
     hps: DistributionReport,
+    /// MythicSim's healer sims: healing per second over the best burst window of each fight.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    burst_hps: Option<DistributionReport>,
     tto: DistributionReport,
     #[serde(skip_serializing_if = "is_zero_f")]
     seconds_oom_avg: f64,
@@ -705,6 +710,12 @@ impl<A: Agent> Fight<A> {
         }
         self.totals.player_dtps.done_iteration(duration, seed, keep);
         self.totals.player_hps.done_iteration(duration, seed, keep);
+        if let Some(burst) = &self.burst {
+            self.totals.burst_hps.total = burst.best;
+            self.totals
+                .burst_hps
+                .done_iteration(burst.length, seed, keep);
+        }
         for dps in &mut self.totals.target_dps {
             dps.done_iteration(duration, seed, keep);
         }
@@ -778,6 +789,7 @@ impl<A: Agent> Fight<A> {
                         dtps: zero.clone(),
                         tmi: zero.clone(),
                         hps: zero.clone(),
+                        burst_hps: None,
                         tto: pet
                             .tto
                             .as_ref()
@@ -838,6 +850,7 @@ impl<A: Agent> Fight<A> {
                     dtps: zero.clone(),
                     tmi: zero.clone(),
                     hps: zero.clone(),
+                    burst_hps: None,
                     tto: pet.totals.tto.report(),
                     seconds_oom_avg: pet.totals.oom_seconds / n,
                     chance_of_death: 0.0,
@@ -917,6 +930,7 @@ impl<A: Agent> Fight<A> {
             dtps: self.totals.player_dtps.report(),
             tmi: zero.clone(),
             hps: self.totals.player_hps.report(),
+            burst_hps: self.burst.as_ref().map(|_| self.totals.burst_hps.report()),
             tto: self.totals.tto.report(),
             seconds_oom_avg: self.totals.oom_seconds / n,
             chance_of_death: f64::from(self.death.iterations_dead) / n,

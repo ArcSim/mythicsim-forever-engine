@@ -1113,6 +1113,11 @@ pub(crate) fn export_state(
         if !overheal.is_empty() {
             prepared["player"]["overheal"] = Value::Array(overheal);
         }
+        // A healer sim reports its burst healing beside its healing per second (README,
+        // Rust-only mechanics); the reference reports none.
+        if super::overheal::is_healer(&player_message) {
+            prepared["player"]["burst_window"] = super::burst_hps::export();
+        }
     }
     if let Some(reads) = &env.rotation_reads {
         prepared["player"]["rotation_reads"] = json!(reads);

@@ -70,6 +70,13 @@ const ESTIMATED: &[(&str, f64)] = &[
 /// Holy Shock heal runs under the Go reference's 25903.
 const CLASS_SPELLS: &[(&str, &str)] = &[("holy_shock_heal", "Holy Shock")];
 
+/// Whether the player's spec is one of MythicSim's healer sims.
+pub(crate) fn is_healer(player: &Message) -> bool {
+    player
+        .oneof("spec")
+        .is_some_and(|(spec, _)| HEALER_SPECS.contains(&spec))
+}
+
 /// The overhealing share of a heal by its client name, when the table names it.
 pub(crate) fn share(name: &str) -> Option<f64> {
     MEASURED
@@ -82,10 +89,7 @@ pub(crate) fn share(name: &str) -> Option<f64> {
 /// The player's `overheal` entries: one for each heal of a healer sim's spellbook whose client
 /// name, or class spell, the table holds, none for any other spec.
 pub(crate) fn export(player: &Message, spells: &Value) -> Vec<Value> {
-    let healer = player
-        .oneof("spec")
-        .is_some_and(|(spec, _)| HEALER_SPECS.contains(&spec));
-    if !healer {
+    if !is_healer(player) {
         return Vec::new();
     }
     let mut entries: Vec<Value> = Vec::new();

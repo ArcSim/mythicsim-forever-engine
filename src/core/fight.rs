@@ -13,6 +13,7 @@
 mod absorb;
 mod aura;
 mod blade_of_hanna;
+pub(crate) mod burst;
 mod cast;
 pub(crate) mod casting_regen;
 mod cleave;
@@ -1868,6 +1869,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) move_waits_for_queued_cast: bool,
     /// Forever's rule that a move whose end time has come reads as arrived.
     pub(crate) move_arrives_at_destination: bool,
+    /// A healer sim's burst healing window under Forever's rules (see [`burst`]).
+    pub(crate) burst: Option<burst::BurstWindow>,
     /// How each exclusive effect of an aura a rotation asks about reads.
     pub(crate) aura_refresh: Vec<(AuraRef, Vec<exclusive::RefreshReading>)>,
     /// Single aura categories that a rotation's `auraShouldRefresh` reads, or a class asks for,
@@ -3909,6 +3912,7 @@ impl<A: Agent> Fight<A> {
             casting_regen_at_once: player.casting_regen_at_once,
             move_waits_for_queued_cast: player.move_waits_for_queued_cast,
             move_arrives_at_destination: player.move_arrives_at_destination,
+            burst: player.burst_window.map(burst::BurstWindow::new),
             aura_refresh: Vec::new(),
             derived_categories: Vec::new(),
         };
@@ -5054,6 +5058,9 @@ impl<A: Agent> Fight<A> {
             self.duration += (roll * variation as f64) as i64 - self.config.duration_variation;
         }
         self.queue.clear();
+        if let Some(burst) = &mut self.burst {
+            burst.reset();
+        }
         // Casts still in flight at the end of the last fight never land.
         self.free_travel_batches = (0..self.travel_batches.len()).collect();
         for batch in &mut self.travel_batches {

@@ -173,7 +173,11 @@ impl<A: Agent> Fight<A> {
             return;
         };
         let old = self.unit_config(side).distance;
-        let new = if last && movement.move_distance != 0.0 {
+        // Forever's rule: a move whose end is now has arrived, even before its end action runs,
+        // so the rotation woken at that instant reads the destination, not the walk rounded to
+        // the millisecond a hair short of it.
+        let arrived = last || (self.move_arrives_at_destination && self.now >= movement.end);
+        let new = if arrived && movement.move_distance != 0.0 {
             movement.src_position + movement.move_distance
         } else {
             movement.src_position
@@ -217,6 +221,12 @@ impl<A: Agent> Fight<A> {
     pub(crate) fn distance_now(&self, side: Side) -> f64 {
         if self.unit(side).moving {
             if let Some(movement) = self.unit(side).movement {
+                if self.move_arrives_at_destination
+                    && self.now >= movement.end
+                    && movement.move_distance != 0.0
+                {
+                    return movement.src_position + movement.move_distance;
+                }
                 return movement.src_position
                     + (self.now - movement.start) as f64 * movement.speed / NS_PER_SECOND as f64;
             }

@@ -1101,6 +1101,12 @@ pub(crate) fn export_state(
         // The client's mana regeneration interrupt aura acts at once (README, Rust-only
         // mechanics); the reference's cached tick waits for another refresh.
         prepared["player"]["casting_regen_at_once"] = json!(true);
+        // A player does not walk off before the spell they queued fires (README, Rust-only
+        // mechanics); the reference's move starts at once.
+        prepared["player"]["move_waits_for_queued_cast"] = json!(true);
+        // A move whose end time has come has arrived (README, Rust-only mechanics); the
+        // reference can read the walk a hair short of the destination at that instant.
+        prepared["player"]["move_arrives_at_destination"] = json!(true);
     }
     if let Some(reads) = &env.rotation_reads {
         prepared["player"]["rotation_reads"] = json!(reads);

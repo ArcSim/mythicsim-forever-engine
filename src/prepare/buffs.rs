@@ -10,6 +10,8 @@ pub(crate) mod pet_buffs;
 pub(crate) mod support;
 mod windfury_effect;
 
+use std::sync::OnceLock;
+
 use crate::contracts::prepared_v2::ActionId;
 use crate::contracts::request::Message;
 use crate::data::spells::{Effect, Spell};
@@ -18,7 +20,7 @@ use super::dbcenums;
 use super::env::Environment;
 use super::parse_effects::{dry_run, parse_effects, ParseOptions};
 use super::sim::{
-    AuraConfig, AuraId, BuildPhase, Duration, Sim, UnitId, MILLISECOND, NEVER_EXPIRES,
+    AuraConfig, AuraId, BuildPhase, Duration, Rules, Sim, UnitId, MILLISECOND, NEVER_EXPIRES,
 };
 use super::spelldata::{must_find, Ladder};
 use super::Refusal;
@@ -290,10 +292,50 @@ impl Meta {
                 ..Default::default()
             },
         );
-        parse_effects(sim, None, aura, self.row(), options);
+        let row = match sim.rules {
+            Rules::Forever => forever_row(self.row()),
+            Rules::GoReference => self.row(),
+        };
+        parse_effects(sim, None, aura, row, options);
         support::join_shared_category(sim, aura, self.shared_category, is_player);
         aura
     }
+}
+
+/// Forever's rule (README, Rust-only mechanics): the ranks of Trueshot Aura and Hunter's Mark
+/// the buffs use at their Classic top amounts, where the client rows give a top rank less than
+/// the rank before it (Trueshot Aura's ranks 3 to 5 give 50, 75 and 50, Hunter's Mark's ranks 2
+/// to 4 give 59, 98 and 71). Each entry is the spell, the aura of the effect whose amount
+/// changes, which keeps its stat, and the amount.
+const FOREVER_TOP_RANKS: [(i32, i32, f64); 2] = [
+    (20905, dbcenums::A_MOD_RANGED_ATTACK_POWER, 100.0),
+    (14325, dbcenums::A_RANGED_ATTACK_POWER_ATTACKER_BONUS, 110.0),
+];
+
+/// The row a buff parses under Forever's rules: the client's, or a top rank of
+/// [`FOREVER_TOP_RANKS`] at its Classic amount.
+fn forever_row(row: &'static Spell) -> &'static Spell {
+    static ROWS: OnceLock<Vec<&'static Spell>> = OnceLock::new();
+    let rows = ROWS.get_or_init(|| {
+        FOREVER_TOP_RANKS
+            .iter()
+            .map(|&(spell, aura, amount)| {
+                let mut rank = must_find(spell).clone();
+                let mut effects = rank.effects.iter_mut().filter(|e| e.aura == aura);
+                let effect = effects.next().expect("the rank has the effect");
+                assert!(
+                    effects.next().is_none(),
+                    "spell {spell} has one such effect"
+                );
+                effect.base_points = amount;
+                &*Box::leak(Box::new(rank))
+            })
+            .collect()
+    });
+    rows.iter()
+        .copied()
+        .find(|rank| rank.id == row.id)
+        .unwrap_or(row)
 }
 
 /// Go `amount`: the caster's amount at the character level.

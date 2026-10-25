@@ -136,6 +136,14 @@ the Go goldens and exporter uses. The departures:
   mage who uses a gem cannot use a rune for 2 minutes, and the reverse. The reference gives the
   gems a category 30 timer of their own, which no Forever item has, so a gem and a rune went back
   to back. Forever preparation puts the gems on the category 1153 timer.
+- Trueshot Aura and Hunter's Mark, from the client rows (1.60.1.70425): Trueshot Aura's ranks
+  give 30, 40, 50, 75 and 50 ranged attack power (1299346, 1299348, 19506, 20905, 20906) and
+  Hunter's Mark's 26, 59, 98 and 71 to attackers of the marked target (1130, 14323, 14324,
+  14325), so each top rank gives less than the rank before it, as the report at
+  https://github.com/wowsims/forever/issues/671 documents. The rows read as halved and are not
+  expected to last to launch, so Forever preparation gives the ranks the buffs use, Trueshot Aura
+  20905 and Hunter's Mark 14325, their Classic top amounts, 100 and 110, each on its own stat.
+  The reference keeps the rows' 75 and 71.
 - A queued spell holds a rotation's move, from MythicSim's Discord (25 October 2026, Bae and
   MuRRRkn on the Survival weave): a player who has pressed a shot or strike in the spell queue
   window does not walk off before it fires. The reference starts the move at once, so a shot

@@ -294,3 +294,42 @@ fn a_pets_spell_hit_is_seventeen_eighths_of_its_masters_ranged_hit() {
     );
     assert!(spell_terms(&go).is_empty());
 }
+
+/// Forever's rule: Trueshot Aura (20905) and Hunter's Mark (14325) at their Classic top amounts,
+/// 100 ranged attack power and 110 for attackers of the marked target, where the client rows,
+/// whose top ranks fall below the ranks before them, give 75 and 71. The reference keeps the rows.
+#[test]
+fn trueshot_aura_and_hunters_mark_top_ranks_are_100_and_110_in_forever() {
+    let request = fs::read(
+        PathBuf::from(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-survival-hunter.request.json"),
+    )
+    .unwrap();
+    let prepared = |trueshot: bool, rules| {
+        let mut value: Value = serde_json::from_slice(&request).unwrap();
+        value["raid"]["parties"][0]["buffs"]["trueshotAura"] = serde_json::json!(trueshot);
+        assert_eq!(value["raid"]["debuffs"]["huntersMark"], true);
+        forever_engine::prepare_json_with(&serde_json::to_vec(&value).unwrap(), "x", rules).unwrap()
+    };
+    for (rules, trueshot, mark) in [
+        (forever_engine::Rules::Forever, 100.0, 110.0),
+        (forever_engine::Rules::GoReference, 75.0, 71.0),
+    ] {
+        let with = prepared(true, rules);
+        let without = prepared(false, rules);
+        let ranged_ap = |prepared: &Value| {
+            prepared["player"]["stats"]["RangedAttackPower"]
+                .as_f64()
+                .unwrap()
+        };
+        assert_eq!(
+            ranged_ap(&with) - ranged_ap(&without),
+            trueshot,
+            "{rules:?}"
+        );
+        assert_eq!(
+            with["melee"]["ranged_state"]["defender_bonus_ranged_attack_power"], mark,
+            "{rules:?}"
+        );
+    }
+}

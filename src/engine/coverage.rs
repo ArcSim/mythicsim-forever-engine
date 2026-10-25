@@ -209,6 +209,7 @@ const COMMON_EFFECTS: &[&str] = &[
     "emerald_dragon_whelp",
     "thunderfury",
     "force_reactive_disk",
+    "stacking_cd_on_use",
     "stacking_on_use",
     "sulfuras_hand_of_ragnaros",
     "blade_of_hanna",
@@ -247,6 +248,7 @@ const COMMON_EFFECTS: &[&str] = &[
     "spell_data_stat_proc",
     "spell_data_heal_proc",
     "second_wind",
+    "shield_on_heal",
     "absorb_on_use",
     "spell_data_absorb_proc",
     "heal_on_use",
@@ -344,6 +346,12 @@ fn common_spell_capability(spell: &Spell, prepared: &PreparedV2) -> Option<&'sta
         }
         Effect::SpellModAuraOnUse { item_id, .. } if *item_id == item && id.tag == 0 => {
             Some("spell_mod_aura_on_use")
+        }
+        Effect::StackingCdOnUse { item_id, .. } if *item_id == item && id.tag == 0 => {
+            Some("stacking_cd_on_use")
+        }
+        Effect::ShieldOnHeal { item_id, .. } if *item_id == item && id.tag == 0 => {
+            Some("shield_on_heal")
         }
         // A damage on-use item whose outcome appliers the runtime knows.
         Effect::DamageOnUse {
@@ -514,6 +522,12 @@ fn common_claims(effect: &Effect) -> Vec<(&'static str, &str)> {
             vec![("player", aura)]
         }
         Effect::ManaOnCast { trigger_aura, .. } => vec![("player", trigger_aura)],
+        Effect::StackingCdOnUse {
+            stat_aura,
+            window_aura,
+            ..
+        } => vec![("player", window_aura), ("player", stat_aura)],
+        Effect::ShieldOnHeal { aura, .. } => vec![("player", aura)],
         Effect::WindfuryTotem {
             trigger_aura,
             proc_aura,

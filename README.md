@@ -189,7 +189,14 @@ the Go goldens and exporter uses. The departures:
   chance at 200 mana) and The Furious Storm (The Elements 5, The Five Thunders 4: a cast's 4%
   chance at 65 spell power for 10 seconds), which the reference registers. Totem of Life's 80 is
   added to Lesser Healing Wave's roll, as the reference adds Libram of Light's to Flash of Light.
-  The prepared effects are `mana_on_cast`, `spell_mod_aura_on_use` and the heals' shapes; a sim
+  The healer trinkets on use: Talisman of Ascendance, which the reference registers, stacks
+  Ascendance on each landed heal; Zandalarian Hero Charm, which it does not, starts at twelve
+  stacks of 17 spell damage and 34 healing (its tooltip; the row is a dummy) and loses one each
+  spell cast; Scarab Brooch shields the player each direct heal lands on for 15% of the healing
+  it did, counted on the item; Natural Alignment Crystal gives heals and their ticks 20% and
+  spells 20% more cost. A stacking trinket whose stacks only melee or ranged hits move, as Badge
+  of the Swarmguard, is worn without effect. The prepared effects are `mana_on_cast`,
+  `spell_mod_aura_on_use`, `stacking_cd_on_use`, `shield_on_heal` and the heals' shapes; a sim
   that is not a healer's keeps the reference's gear (`tests/healer_gear.rs`).
 
 ## Repository layout

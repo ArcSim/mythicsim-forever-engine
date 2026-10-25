@@ -29,15 +29,20 @@ use crate::contracts::prepared_v2::ActionId;
 use crate::data::spells::ClassFlags;
 use crate::data::tables::tables;
 
-use super::aura_helpers::{CallbackMask, ProcTrigger};
+use super::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger, StackingStatAura};
+use super::character::{cooldown_type, MajorCooldown};
 use super::consumable_effects::proc_trigger_spells;
 use super::consumable_effects::{action_id_string, flat_string};
 use super::dbcenums;
 use super::env::Environment;
+use super::forever_items::Registration;
 use super::parse_effects::{parse_effects, ParseOptions};
+use super::shared_on_use::StackingStatBonusCd;
 use super::shared_on_use::{self, OnUseKind};
+use super::sim::{AuraConfig, NEVER_EXPIRES, SECOND};
 use super::sim::{AuraId, Rules, Sim, SpellId, UnitId};
 use super::spell::{ProcMask, Resource};
+use super::spell::{SpellConfig, SpellFlag};
 use super::spelldata::store::must_find;
 use super::spelldata::Spell as Row;
 use super::stats::{Stat, Stats};
@@ -357,9 +362,116 @@ fn apply_items(env: &mut Environment) {
             // Nature (Nimble Healing Touch, 24542): on use, 15 sec of their rows' cast time
             // and cost mods.
             19958 | 19955 => shared_on_use::apply(env, OnUseKind::Aura, item.id),
+            19950 => zandalarian_hero_charm(env),
+            21625 => scarab_brooch(env),
             _ => {}
         }
     }
+}
+
+/// An item's on-use spell on its effect's cooldowns, a major cooldown, with the aura it brings
+/// up as its buff.
+fn on_use_item(env: &mut Environment, item: i32, buff: AuraId) {
+    let unit = env.player;
+    let Some(effect) = shared_on_use::on_use_effects_for(item).into_iter().next() else {
+        return;
+    };
+    let cast = shared_on_use::on_use_cast(&mut env.sim, unit, &effect);
+    let spell = env.sim.register_spell(
+        unit,
+        SpellConfig {
+            action_id: ActionId::item(item),
+            flags: SpellFlag::NO_ON_CAST_COMPLETE,
+            cast,
+            related_self_buff: Some(buff),
+            ..SpellConfig::default()
+        },
+    );
+    env.sim.add_major_cooldown(
+        unit,
+        MajorCooldown {
+            spell,
+            priority: 0,
+            cooldown_type: cooldown_type::DPS,
+            allow_spell_queueing: false,
+            timings: Vec::new(),
+        },
+    );
+}
+
+/// Zandalarian Hero Charm: on use, Unstable Power (24658) for 20 sec, up to 204 spell damage and
+/// 408 healing, 17 and 34 less with each spell cast: twelve stacks that decay a cast at a time.
+/// The client row holds the amounts in its tooltip and a dummy, so they are the tooltip's.
+const UNSTABLE_POWER: &str = "Unstable Power";
+const UNSTABLE_POWER_WINDOW: &str = "Unstable Power Window";
+
+fn zandalarian_hero_charm(env: &mut Environment) {
+    let unit = env.player;
+    let stat = env.sim.make_stacking_aura(
+        unit,
+        StackingStatAura {
+            aura: AuraConfig {
+                label: UNSTABLE_POWER.to_string(),
+                action_id: Some(ActionId::spell(24658)),
+                duration: NEVER_EXPIRES,
+                max_stacks: 12,
+                ..AuraConfig::default()
+            },
+            bonus_per_stack: Stats::from_pairs(&[
+                (Stat::SpellDamage, 17.0),
+                (Stat::HealingPower, 34.0),
+            ]),
+        },
+    );
+    let window = env.sim.register_aura(
+        unit,
+        AuraConfig {
+            label: UNSTABLE_POWER_WINDOW.to_string(),
+            action_id: Some(ActionId::item(19950)),
+            duration: 20 * SECOND,
+            ..AuraConfig::default()
+        },
+    );
+    env.sim
+        .attach_proc_trigger(window, &spell_cast_trigger("Unstable Power"));
+    on_use_item(env, 19950, stat.aura);
+}
+
+/// The casts of the spells a damage or healing spell cast reaches.
+fn spell_cast_trigger(name: &str) -> ProcTrigger {
+    ProcTrigger {
+        name: name.to_string(),
+        callback: CallbackMask::ON_CAST_COMPLETE,
+        proc_mask: ProcMask::SPELL_DAMAGE | ProcMask::SPELL_HEALING,
+        ..ProcTrigger::default()
+    }
+}
+
+/// Scarab Brooch: on use, Persistent Shield (26467) for 30 sec: each magical heal shields its
+/// target for 15% of the healing it did.
+const PERSISTENT_SHIELD: &str = "Persistent Shield";
+
+fn scarab_brooch(env: &mut Environment) {
+    let unit = env.player;
+    let aura = env.sim.register_aura(
+        unit,
+        AuraConfig {
+            label: PERSISTENT_SHIELD.to_string(),
+            action_id: Some(ActionId::spell(26467)),
+            duration: must_find(26467).duration(),
+            ..AuraConfig::default()
+        },
+    );
+    env.sim.attach_proc_trigger(
+        aura,
+        &ProcTrigger {
+            name: PERSISTENT_SHIELD.to_string(),
+            callback: CallbackMask::ON_HEAL_DEALT,
+            proc_mask: ProcMask::SPELL_HEALING,
+            ..ProcTrigger::default()
+        },
+    );
+    on_use_item(env, 21625, aura);
 }
 
 /// The buff of an item's equip effect.
@@ -419,14 +531,26 @@ pub(crate) fn stat_auras(env: &Environment) -> Vec<String> {
         return Vec::new();
     }
     let unit = env.player;
+    let mut labels = Vec::new();
     if FURIOUS_STORM
         .iter()
         .any(|set| env.sim.get_aura(unit, set).is_some())
     {
-        vec!["The Furious Storm".to_string()]
-    } else {
-        Vec::new()
+        labels.push("The Furious Storm".to_string());
     }
+    if env.sim.get_aura(unit, UNSTABLE_POWER).is_some() {
+        labels.push(UNSTABLE_POWER.to_string());
+    }
+    // The stacks of a stacking on-use trinket the reference registers.
+    for registration in super::forever_items_generated::ITEMS {
+        if let Registration::Stacking(config) = registration {
+            let label = format!("{} Proc", config.name);
+            if env.sim.get_aura(unit, &label).is_some() {
+                labels.push(label);
+            }
+        }
+    }
+    labels
 }
 
 /// The healer gear's listeners: mana on cast and The Furious Storm.
@@ -498,8 +622,27 @@ pub(crate) fn use_item_effect(
     item: i32,
     unrepresented: &mut Vec<String>,
 ) -> Option<Value> {
-    if !applies(env) || !matches!(item, 19958 | 19955) {
+    if !applies(env) {
         return None;
+    }
+    match item {
+        19958 | 19955 => {}
+        19950 => {
+            return Some(json!({
+                "kind": "stacking_cd_on_use", "item_id": item, "stat_aura": UNSTABLE_POWER,
+                "window_aura": UNSTABLE_POWER_WINDOW, "decay": true,
+                "trigger_spells": proc_trigger_spells(env, &spell_cast_trigger("")),
+                "callbacks": ["on_cast_complete"], "landed_only": false, "proc_chance": 1.0,
+            }))
+        }
+        21625 => {
+            return Some(json!({
+                "kind": "shield_on_heal", "item_id": item, "aura": PERSISTENT_SHIELD,
+                "share": 0.15,
+            }))
+        }
+        19344 => return Some(natural_alignment_crystal(env, item)),
+        _ => return stacking_cd_effect(env, spell, item, unrepresented),
     }
     let db = super::items::database_item(item)?;
     let row = db
@@ -515,6 +658,114 @@ pub(crate) fn use_item_effect(
         "kind": "spell_mod_aura_on_use", "item_id": env.sim.spell(spell).action_id.item_id,
         "aura": row.name, "changes": changes,
     }))
+}
+
+/// Natural Alignment Crystal: on use, Nature Aligned (23734) for 20 sec, 20% more damage and
+/// healing from spells and 20% more mana spent on them (the row's percent damage, percent
+/// healing and school cost auras, which the parser keeps on the player's pseudo stats). A
+/// healer's heals take it as a 20% bonus on the heal and its ticks, every magic spell the cost.
+fn natural_alignment_crystal(env: &Environment, item: i32) -> Value {
+    let row = must_find(23734);
+    let share = row.effect_n(1).percent();
+    let book = &env.sim.unit(env.player).spellbook;
+    let mut changes = Vec::new();
+    for (position, id) in book.iter().enumerate() {
+        let spell = env.sim.spell(*id);
+        if spell.spell_school & !super::spell::school::PHYSICAL == 0 {
+            continue;
+        }
+        if spell.proc_mask.matches(ProcMask::SPELL_HEALING) {
+            changes.push(json!({"spell": position, "kind": "damage_done_percent", "value": share}));
+            if spell.dots.iter().any(Option::is_some) {
+                changes.push(
+                    json!({"spell": position, "kind": "dot_damage_done_percent", "value": share}),
+                );
+            }
+        }
+        if spell
+            .cost
+            .as_ref()
+            .is_some_and(|cost| cost.resource == Resource::Mana)
+        {
+            changes
+                .push(json!({"spell": position, "kind": "power_cost_percent_add", "value": share}));
+        }
+    }
+    json!({
+        "kind": "spell_mod_aura_on_use", "item_id": item, "aura": row.name, "changes": changes,
+    })
+}
+
+/// A stacking on-use trinket the reference registers (`NewStackingStatBonusCD`), as Talisman of
+/// Ascendance: its window and stats auras, and the spells its trigger hears at the stack proc's
+/// chance. A trigger on a proc rate is not described.
+fn stacking_cd_effect(
+    env: &Environment,
+    spell: SpellId,
+    item: i32,
+    unrepresented: &mut Vec<String>,
+) -> Option<Value> {
+    let config = super::forever_items_generated::ITEMS
+        .iter()
+        .find_map(|registration| match registration {
+            Registration::Stacking(config) if config.id == item => Some(*config),
+            _ => None,
+        })?;
+    let unit = env.player;
+    let stat = env.sim.spell(spell).related_self_buff?;
+    let stat_label = env.sim.aura(stat).label.clone();
+    let window = env
+        .sim
+        .unit(unit)
+        .auras
+        .iter()
+        .map(|aura| env.sim.aura(*aura).label.clone())
+        .find(|label| label.starts_with(&format!("{} Limit Aura", config.name)))
+        .unwrap_or_else(|| stat_label.clone());
+    let effect = shared_on_use::on_use_effects_for(item).into_iter().next()?;
+    let stack_proc = effect.message("stack_proc");
+    let trigger = stacking_trigger(&config);
+    let trigger_spells = proc_trigger_spells(env, &trigger);
+    // A rate needs the spells it hears: none of a healer's reach Badge of the Swarmguard's.
+    let rated = stack_proc.is_some_and(|proc| proc.f64("ppm") != 0.0 || proc.i32("icd_ms") != 0);
+    if window == stat_label || (rated && !trigger_spells.is_empty()) {
+        unrepresented.push(format!(
+            "stacking trinket {item} stacks on a proc rate or its own window"
+        ));
+        return Some(Value::Null);
+    }
+    let chance = stack_proc
+        .map(|proc| proc.f64("proc_chance"))
+        .filter(|chance| *chance != 0.0)
+        .unwrap_or(1.0);
+    let mut callbacks = Vec::new();
+    for (bit, name) in [
+        (CallbackMask::ON_SPELL_HIT_DEALT, "on_spell_hit_dealt"),
+        (CallbackMask::ON_HEAL_DEALT, "on_heal_dealt"),
+        (CallbackMask::ON_CAST_COMPLETE, "on_cast_complete"),
+    ] {
+        if config.callback.0 & bit.0 != 0 {
+            callbacks.push(name);
+        }
+    }
+    Some(json!({
+        "kind": "stacking_cd_on_use", "item_id": item, "stat_aura": stat_label,
+        "window_aura": window, "decay": false,
+        "trigger_spells": trigger_spells, "callbacks": callbacks,
+        "landed_only": config.outcome == HitOutcome::LANDED, "proc_chance": chance,
+    }))
+}
+
+fn stacking_trigger(config: &StackingStatBonusCd) -> ProcTrigger {
+    ProcTrigger {
+        callback: config.callback,
+        proc_mask: config.proc_mask,
+        spell_flags: config.spell_flags,
+        spell_flags_exclude: config.spell_flags_exclude,
+        can_proc_from_procs: config.can_proc_from_procs,
+        outcome: config.outcome,
+        ..ProcTrigger::default()
+    }
 }
 
 /// What an aura changes on each spell while it is up, by spellbook position, as the runtime's

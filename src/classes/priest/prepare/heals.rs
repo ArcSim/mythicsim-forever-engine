@@ -4,17 +4,21 @@
 //! 1.60.1.70425.
 //!
 //! Each heal lands on players who need it: Prayer of Healing on the party of five, Binding Heal
-//! on its target and the priest, Prayer of Mending on each of the five players its charges reach.
+//! on its target and the priest, Prayer of Mending on each of the five players its charges reach
+//! (under Forever's rules, as the party's damage moves them: `prepare::party_damage`).
 //! Power Word: Shield goes up as often as its cooldown lets it, each time on another player, so
 //! Weakened Soul never stops it. Penance's heal, Desperate Prayer, Inner Focus's free heal and
 //! the talents that need a heal's target or its history (Divine Aegis, Renewed Hope, Litany of
 //! Light) are not modelled yet.
 
+use crate::contracts::prepared_v2::SmartHeal;
+use crate::core::time::NS_PER_SECOND;
 use crate::prepare::heals::{
     apply_heal_talent, register_heal, register_heal_from, talent_rank, HealShape,
 };
-use crate::prepare::sim::{Sim, UnitId};
+use crate::prepare::sim::{Duration, Sim, UnitId};
 use crate::prepare::spelldata::store::must_find;
+use crate::prepare::spelldata::Spell as Row;
 
 use super::masks;
 use super::Priest;
@@ -34,6 +38,16 @@ const BINDING_HEAL: &[i32] = &[401937, 1240770, 1240771, 1240772, 1240773, 12407
 /// five charges each heal a player.
 const PRAYER_OF_MENDING: &[i32] = &[401859, 1240826, 1240827];
 const PRAYER_OF_MENDING_CHARGES: u32 = 5;
+/// How long Prayer of Mending's buff waits on each player: the duration of the buff row the
+/// cast's tooltip names (401877 for rank 1, 30 seconds).
+fn mending_duration(row: &Row) -> Duration {
+    row.refs()
+        .into_iter()
+        .map(|buff| buff.duration())
+        .find(|&duration| duration > 0)
+        .unwrap_or(30 * NS_PER_SECOND)
+}
+
 /// Prayer of Healing reaches the priest's party.
 const PARTY: u32 = 5;
 
@@ -85,13 +99,17 @@ impl Priest {
             let timer = sim.new_timer(unit);
             for &id in PRAYER_OF_MENDING {
                 let row = must_find(id);
+                let shape = HealShape::party(PRAYER_OF_MENDING_CHARGES).smart(SmartHeal::Mending {
+                    charges: PRAYER_OF_MENDING_CHARGES,
+                    duration: mending_duration(row),
+                });
                 ranks.push(register_heal_from(
                     sim,
                     unit,
                     row,
                     row.effect_n(1),
                     masks::HEAL,
-                    HealShape::party(PRAYER_OF_MENDING_CHARGES),
+                    shape,
                     Some(timer),
                 ));
             }

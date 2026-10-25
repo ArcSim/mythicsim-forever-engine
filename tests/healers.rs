@@ -36,6 +36,41 @@ fn run(name: &str) -> Value {
         .result
 }
 
+/// [`run`] under the Go reference's rules, where no heal follows the party's damage.
+fn run_reference(name: &str) -> Value {
+    let request = fs::read(fixtures().join(format!("{name}.request.json"))).unwrap();
+    let value = prepare_json_with(&request, "rust", Rules::GoReference)
+        .unwrap_or_else(|err| panic!("{name}: {err:?}"));
+    assert!(
+        !value.to_string().contains("\"party\""),
+        "{name}: the reference has no party damage"
+    );
+    let prepared = serde_json::from_value(value).unwrap();
+    check_prepared(&prepared).unwrap_or_else(|err| panic!("{name}: {err:?}"));
+    simulate_prepared(&prepared)
+        .unwrap_or_else(|err| panic!("{name}: {err:?}"))
+        .result
+}
+
+/// A heal's players reached a cast: its hits and crits over its casts.
+fn players_a_cast(result: &Value, spell: i64) -> f64 {
+    let action = player(result)["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|action| action["id"]["spellId"] == spell)
+        .unwrap();
+    let sum = |key: &str| -> f64 {
+        action["targets"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|target| target[key].as_f64().unwrap_or(0.0))
+            .sum()
+    };
+    (sum("hits") + sum("crits")) / sum("casts")
+}
+
 fn player(result: &Value) -> &Value {
     &result["raidMetrics"]["parties"][0]["players"][0]
 }
@@ -107,7 +142,7 @@ fn holy_priest_heals_as_its_rows_state() {
         &result,
         &[
             // Prayer of Mending rank 1 (401859): 172 + 0.429 x 268.2 = 287.06, then +10%, on
-            // each of its five charges.
+            // each charge that heals.
             "{SpellID: 401859} [DEBUG] HealingPower: 268.2, BaseHealing:287.1, AfterCasterMods:315.8",
             // Power Word: Shield rank 10 (10901): 928 + 0.1 x 268.2 = 954.82, then +20%.
             "{SpellID: 10901} Shield for 1145.790.",
@@ -116,35 +151,19 @@ fn holy_priest_heals_as_its_rows_state() {
             "{SpellID: 25315} tick Hit for 244.895 healing, 46.855 overhealing.",
         ],
     );
-    let hits = player(&result)["actions"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .find(|action| action["id"]["spellId"] == 401859)
-        .map(|action| {
-            action["targets"][1]["hits"].as_f64().unwrap_or(0.0)
-                + action["targets"][1]["crits"].as_f64().unwrap_or(0.0)
-        })
-        .unwrap();
-    let casts: f64 = player(&result)["actions"]
-        .as_array()
-        .unwrap()
-        .iter()
-        .find(|action| action["id"]["spellId"] == 401859)
-        .map(|action| {
-            action["targets"]
-                .as_array()
-                .unwrap()
-                .iter()
-                .map(|t| t["casts"].as_f64().unwrap_or(0.0))
-                .sum()
-        })
-        .unwrap();
-    assert_eq!(
-        hits,
-        casts * 5.0,
-        "each Prayer of Mending heals five players"
+    // Under Forever's rules a charge heals only when the player holding it is hit
+    // (`prepare::party_damage`): the tank about once a second, the others about once every five
+    // seconds. Recast every ten seconds or so, a cast heals about three charges before the next
+    // replaces it; the same process drawn a million times in Python gives 2.97 at ten seconds
+    // and 3.03 at 10.3.
+    let charges = players_a_cast(&result, 401859);
+    assert!(
+        (2.85..=3.2).contains(&charges),
+        "{charges} Prayer of Mending charges a cast"
     );
+    // The Go reference's rules heal all five charges at once.
+    let reference = run_reference("holy-priest");
+    assert_eq!(players_a_cast(&reference, 401859), 5.0);
     golden("holy-priest", &result);
 }
 
@@ -177,23 +196,42 @@ fn restoration_druid_heals_as_its_rows_state() {
 fn restoration_shaman_heals_as_its_rows_state() {
     let result = run("restoration-shaman");
     let log = result["logs"].as_str().unwrap();
-    // Chain Heal rank 3 (10623) lands on three players, each with its own roll of 473 to 539
-    // plus 0.714 of healing power, the second at half and the third at a quarter.
+    // Chain Heal rank 3 (10623) lands on up to three players, each with its own roll of 473 to
+    // 539 plus 0.714 of healing power, the second at half and the third at a quarter. A cast's
+    // first heal is the largest, so a heal larger than the one before starts the next cast.
     let field = |line: &str, name: &str| -> f64 {
         let at = line.find(name).unwrap() + name.len();
         line[at..].split(',').next().unwrap().parse().unwrap()
     };
-    let chain: Vec<(f64, f64)> = log
+    let mut casts: Vec<Vec<(f64, f64)>> = Vec::new();
+    for line in log
         .lines()
         .filter(|line| line.contains("{SpellID: 10623} [DEBUG]"))
-        .take(3)
-        .map(|line| (field(line, "HealingPower: "), field(line, "BaseHealing:")))
-        .collect();
-    assert_eq!(chain.len(), 3);
-    for (jump, (healing_power, base)) in chain.into_iter().enumerate() {
-        let roll = base / 0.5f64.powi(jump as i32) - 0.714 * healing_power;
-        assert!((472.5..=539.5).contains(&roll), "jump {jump}: roll {roll}");
+    {
+        let heal = (field(line, "HealingPower: "), field(line, "BaseHealing:"));
+        match casts.last_mut() {
+            Some(cast) if cast.last().is_some_and(|last| heal.1 < last.1) => cast.push(heal),
+            _ => casts.push(vec![heal]),
+        }
     }
+    assert!(!casts.is_empty());
+    for cast in &casts {
+        assert!(cast.len() <= 3, "{} Chain Heal jumps", cast.len());
+        for (jump, &(healing_power, base)) in cast.iter().enumerate() {
+            let roll = base / 0.5f64.powi(jump as i32) - 0.714 * healing_power;
+            assert!((472.5..=539.5).contains(&roll), "jump {jump}: roll {roll}");
+        }
+    }
+    // Under Forever's rules it jumps only to players hit in the last four seconds
+    // (`prepare::party_damage`): each of the other four with 1 - e^(-0.2 x 4) = 55%, so a cast
+    // reaches 2.72 players on average. The Go reference's rules reach all three.
+    let players = players_a_cast(&result, 10623);
+    assert!(
+        (2.65..=2.79).contains(&players),
+        "{players} players a Chain Heal"
+    );
+    let reference = run_reference("restoration-shaman");
+    assert_eq!(players_a_cast(&reference, 10623), 3.0);
     // Riptide recast every 6 seconds keeps its 15 second heal over time on each player: about
     // five ticks a cast, not the two or three a cut short one would give.
     let riptide = player(&result)["actions"]

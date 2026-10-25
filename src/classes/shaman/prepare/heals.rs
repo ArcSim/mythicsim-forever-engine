@@ -2,10 +2,13 @@
 //! `prepare::heals`): every rank of Healing Wave, Lesser Healing Wave, Chain Heal and Healing
 //! Stream Totem, and the talent's Riptide, from the client rows of build 1.60.1.70425.
 //!
-//! Chain Heal lands on three players, each jump at half of the one before, as its row states.
+//! Chain Heal lands on three players, each jump at half of the one before, as its row states;
+//! under Forever's rules it jumps only to players the party's damage hit lately
+//! (`prepare::party_damage`).
 //! Healing Stream Totem heals the party of five every two seconds while it stands. Riptide's
 //! bonus to a Chain Heal on its target and Nature's Swiftness on a heal are not modelled yet.
 
+use crate::contracts::prepared_v2::SmartHeal;
 use crate::prepare::heals::{
     apply_heal_talent, register_heal, register_totem_heal, talent_rank, HealShape,
 };
@@ -63,6 +66,7 @@ impl Shaman {
             let shape = HealShape {
                 targets: u32::try_from(heal.chain_targets.max(1)).unwrap_or(1),
                 jump_multiplier: f64::from(heal.chain_amp),
+                smart: Some(SmartHeal::Chain),
             };
             ranks.push(register_heal(sim, unit, row, masks::HEAL, shape, None));
         }

@@ -451,8 +451,15 @@ impl DruidAgent {
                     heals,
                     player,
                     bonus_healing_taken,
+                    party,
                 } => {
-                    let book = HealBook::bind(&fight, heals, *player, *bonus_healing_taken)?;
+                    let book = HealBook::bind(
+                        &fight,
+                        heals,
+                        *player,
+                        *bonus_healing_taken,
+                        party.as_ref(),
+                    )?;
                     let rank_of = |id: &i32| heals.iter().position(|heal| heal.spell_id == *id);
                     fight.agent.swiftmend_hots = swiftmend::CONSUMES
                         .iter()

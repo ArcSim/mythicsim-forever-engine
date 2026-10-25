@@ -533,8 +533,15 @@ impl ShamanAgent {
                     heals,
                     player,
                     bonus_healing_taken,
+                    party,
                 } => {
-                    let book = HealBook::bind(&fight, heals, *player, *bonus_healing_taken)?;
+                    let book = HealBook::bind(
+                        &fight,
+                        heals,
+                        *player,
+                        *bonus_healing_taken,
+                        party.as_ref(),
+                    )?;
                     fight.agent.heals = Some(Rc::new(book));
                 }
                 Effect::LightningBolt {

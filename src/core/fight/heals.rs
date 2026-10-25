@@ -13,8 +13,16 @@
 //! it runs, it goes on another player: the
 //! one running is not cut short, and its ticks left are counted when the new one goes up. A shield counts its absorb, with its coefficient and the
 //! caster's multipliers, as shielding when it goes up; nothing in the fight hits the shield.
+//!
+//! Under Forever's rules two heals follow the party's damage ([`PartyDamage`]): each member is
+//! hit at its own rate, at random. Chain Heal lands on the tank, then jumps only to the other
+//! members hit within the injured window. Prayer of Mending waits on a member until that member
+//! is hit; its class runs the buff with [`HealBook::mending`], [`HealBook::mending_wait`],
+//! [`HealBook::mending_heal`] and [`HealBook::next_holder`].
 
-use crate::contracts::prepared_v2::{HealModifiers, HealSpell};
+use crate::contracts::prepared_v2::{HealModifiers, HealSpell, PartyDamage, SmartHeal};
+
+use crate::core::time::NS_PER_SECOND;
 
 use super::{
     damage::{OUTCOME_CRIT, OUTCOME_HIT},
@@ -34,6 +42,7 @@ pub(crate) struct BoundHeal {
     tick_can_crit: bool,
     pub(crate) dot: Option<DotId>,
     absorb: Option<f64>,
+    smart: Option<SmartHeal>,
 }
 
 /// Every heal rank of the healer and the player's healing modifiers.
@@ -42,6 +51,8 @@ pub(crate) struct HealBook {
     pub(crate) heals: Vec<BoundHeal>,
     modifiers: HealModifiers,
     bonus_healing_taken: f64,
+    /// The party's damage, under Forever's rules when a heal follows it.
+    party: Option<PartyDamage>,
 }
 
 impl HealBook {
@@ -51,7 +62,18 @@ impl HealBook {
         heals: &[HealSpell],
         modifiers: HealModifiers,
         bonus_healing_taken: f64,
+        party: Option<&PartyDamage>,
     ) -> Result<Self, String> {
+        if let Some(party) = party {
+            if party.hit_rates.len() < 2
+                || party
+                    .hit_rates
+                    .iter()
+                    .any(|rate| rate.is_nan() || *rate <= 0.0)
+            {
+                return Err(format!("party hit rates {:?}", party.hit_rates));
+            }
+        }
         let heals = heals
             .iter()
             .map(|heal| {
@@ -76,6 +98,7 @@ impl HealBook {
                     tick_can_crit: heal.tick_can_crit,
                     dot: heal.tick.and(dot),
                     absorb: heal.absorb,
+                    smart: heal.smart,
                 })
             })
             .collect::<Result<_, String>>()?;
@@ -83,6 +106,7 @@ impl HealBook {
             heals,
             modifiers,
             bonus_healing_taken,
+            party: party.cloned(),
         })
     }
 
@@ -114,7 +138,15 @@ impl HealBook {
         let healing = self.healing(fight, caster);
         if let Some((average, variance)) = heal.direct {
             let mut share = scale;
-            for _ in 0..heal.targets {
+            let targets = match (heal.smart, &self.party) {
+                (Some(SmartHeal::Chain), Some(party)) => {
+                    1 + self
+                        .injured_others(fight, party)
+                        .min(heal.targets.saturating_sub(1))
+                }
+                _ => heal.targets,
+            };
+            for _ in 0..targets {
                 let base = fight.effect_roll(average, variance);
                 fight.calc_and_deal_healing_scaled(
                     heal.spell,
@@ -147,6 +179,75 @@ impl HealBook {
             let amount = self.shield_amount(fight, heal.spell, absorb, healing) * scale;
             fight.deal_shield(heal.spell, amount);
         }
+    }
+
+    /// The other members a chain heal from the tank can jump to: each hit within the injured
+    /// window, at its rate.
+    fn injured_others<A: Agent>(&self, fight: &mut Fight<A>, party: &PartyDamage) -> u32 {
+        let window = party.injured_window as f64 / NS_PER_SECOND as f64;
+        let mut injured = 0;
+        for &rate in &party.hit_rates[1..] {
+            if fight.random("Party Hit") < 1.0 - (-rate * window).exp() {
+                injured += 1;
+            }
+        }
+        injured
+    }
+
+    /// A rank that waits on the party's damage (Prayer of Mending) under Forever's rules: its
+    /// charges and how long it waits on each member.
+    pub(crate) fn mending(&self, rank: usize) -> Option<(u32, i64)> {
+        match (self.heals[rank].smart, &self.party) {
+            (Some(SmartHeal::Mending { charges, duration }), Some(_)) => Some((charges, duration)),
+            _ => None,
+        }
+    }
+
+    /// How long until `member` is next hit: its hits arrive at random at its rate.
+    pub(crate) fn mending_wait<A: Agent>(&self, fight: &mut Fight<A>, member: usize) -> i64 {
+        let rate = self
+            .party
+            .as_ref()
+            .expect("a party for a mending heal")
+            .hit_rates[member];
+        let roll = fight.random("Party Hit");
+        (-(1.0 - roll).ln() / rate * NS_PER_SECOND as f64) as i64
+    }
+
+    /// Another member of the party than `member`, at random, for the charge to move to.
+    pub(crate) fn next_holder<A: Agent>(&self, fight: &mut Fight<A>, member: usize) -> usize {
+        let members = self
+            .party
+            .as_ref()
+            .expect("a party for a mending heal")
+            .hit_rates
+            .len();
+        let pick = (fight.random("Party Hit") * (members - 1) as f64) as usize;
+        let pick = pick.min(members - 2);
+        if pick >= member {
+            pick + 1
+        } else {
+            pick
+        }
+    }
+
+    /// One charge of a mending heal on the member hit: its roll, crit and overhealing share.
+    pub(crate) fn mending_heal<A: Agent>(&self, fight: &mut Fight<A>, rank: usize) {
+        let heal = &self.heals[rank];
+        let Some((average, variance)) = heal.direct else {
+            return;
+        };
+        let caster = fight.spells[heal.spell].caster;
+        let healing = self.healing(fight, caster);
+        let base = fight.effect_roll(average, variance);
+        fight.calc_and_deal_healing_scaled(
+            heal.spell,
+            Side::Player,
+            base,
+            healing,
+            self.bonus_healing_taken,
+            1.0,
+        );
     }
 
     /// Go `Dot.SnapshotHeal`: the tick plus its coefficient on healing power, times the

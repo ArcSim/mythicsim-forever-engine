@@ -6,6 +6,7 @@ pub(crate) mod bloodrage;
 pub(crate) mod bloodthirst;
 pub(crate) mod challenging_shout;
 pub(crate) mod charge;
+pub(crate) mod concussion_blow;
 pub(crate) mod death_wish;
 pub(crate) mod demoralizing_shout;
 pub(crate) mod execute;

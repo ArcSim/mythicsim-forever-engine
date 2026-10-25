@@ -9,7 +9,7 @@ use crate::prepare::common_effects::{exclusive_category_effect, SPELL_BATCH_WIND
 use crate::prepare::dbcenums;
 use crate::prepare::env::Environment;
 use crate::prepare::rotation::rotation_spells;
-use crate::prepare::sim::{AuraId, Sim, UnitId, NEVER_EXPIRES, SECOND};
+use crate::prepare::sim::{AuraId, Rules, Sim, UnitId, NEVER_EXPIRES, SECOND};
 use crate::prepare::spell::{DefenseType, ProcMask};
 use crate::prepare::spelldata::Spell as Row;
 use crate::prepare::stats::Stat;
@@ -490,10 +490,17 @@ impl Warrior {
         // target, with the rage, global cooldown and cooldown the shared cast applies (Taunt
         // needs Defensive Stance). The fork has no taunt and no fear, so neither changes a
         // target's aim, swing or threat, and the shout does not reach the other targets.
+        // talents_protection.go Concussion Blow: a special hit outcome with no damage, refunded
+        // on a miss; the fork's stun changes no target's swing. Go's exporter has no effect for
+        // it, so only Forever's rules describe it.
         for (kind, rank) in [
             ("taunt", data.taunt.highest()),
             ("intimidating_shout", data.intimidating_shout.highest()),
+            ("concussion_blow", data.concussion_blow.highest()),
         ] {
+            if kind == "concussion_blow" && sim.rules != Rules::Forever {
+                continue;
+            }
             if let Some(spell) = Self::spell_of(sim, unit, rank) {
                 if let Some(position) = sim
                     .unit(unit)

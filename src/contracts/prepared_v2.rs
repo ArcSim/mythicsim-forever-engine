@@ -3952,6 +3952,11 @@ pub enum Effect {
     IntimidatingShout {
         spell: usize,
     },
+    /// Concussion Blow: a special hit outcome with no damage on the target, refunded on a miss.
+    /// Its stun has no effect in scope.
+    ConcussionBlow {
+        spell: usize,
+    },
     /// Bloodthrill: main hand hits on a bleeding target may open the Overpower window longer.
     Bloodthrill {
         trigger_aura: String,
@@ -4938,6 +4943,7 @@ impl Effect {
             Effect::ChallengingShout { .. } => "challenging_shout",
             Effect::Taunt { .. } => "taunt",
             Effect::IntimidatingShout { .. } => "intimidating_shout",
+            Effect::ConcussionBlow { .. } => "concussion_blow",
             Effect::Bloodthrill { .. } => "bloodthrill",
             Effect::WeaponmasterSword { .. } => "weaponmaster_sword",
             Effect::Revenge { .. } => "revenge",

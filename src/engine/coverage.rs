@@ -2405,9 +2405,10 @@ fn other_target_casts(
         };
         if unit == Unit::Player {
             // A helpful spell is cast on the player as `castFriendlySpell` casts it, which the
-            // class checks with the rest of its spells. Any other spell on the player is
-            // unsupported.
-            if !spell.has_flag("SpellFlagHelpful") {
+            // class checks with the rest of its spells. A harmful spell whose dot sits on its
+            // target never casts there, as the game refuses it, where Go panics on the
+            // player's missing dot. Any other spell on the player is unsupported.
+            if !spell.has_flag("SpellFlagHelpful") && !harmful_target_dot(spell) {
                 reasons.insert(format!(
                     "rotation item {}: castSpell of {id} on the player is unsupported",
                     item.position
@@ -2437,6 +2438,12 @@ fn other_target_casts(
         }
     }
     reasons.into_iter().collect()
+}
+
+/// Whether a spell is harmful and keeps its own dot on the targets, which the runtime never
+/// casts at the player (`Fight::harmful_target_dot`).
+fn harmful_target_dot(spell: &Spell) -> bool {
+    !spell.has_flag("SpellFlagHelpful") && spell.dot.as_ref().is_some_and(|dot| dot.unit != "self")
 }
 
 /// The reachable spells of the given class spell names, which reach a target past the first

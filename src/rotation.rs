@@ -1180,6 +1180,10 @@ fn parse_prepull(item: &Json, position: usize) -> Result<Option<Prepull>, String
         .get("action")
         .and_then(Json::as_object)
         .ok_or("no action")?;
+    // Go registers no prepull action for a cast that names no spell.
+    if names_no_spell(action) {
+        return Ok(None);
+    }
     let condition = match action.get("condition") {
         Some(condition) => Some(parse_value(condition).map_err(|reasons| reasons.join("; "))?),
         None => None,
@@ -1354,7 +1358,24 @@ fn parse_item(item: &Json, position: usize) -> Result<Option<Item>, Vec<String>>
         .get("action")
         .and_then(Json::as_object)
         .ok_or_else(|| vec!["item has no action".to_string()])?;
+    if names_no_spell(action) {
+        return Ok(None);
+    }
     parse_action_object(action, position).map(Some)
+}
+
+/// Whether an action is a cast that names no spell. Go `GetAPLSpell` returns no spell for a
+/// missing `spellId`, so `newActionCastSpell`, `newActionCastFriendlySpell` and
+/// `newActionChannelSpell` build no action and the rotation skips the line, condition and all,
+/// as it skips a hidden one (Discipline Priest sim e4f6ebb0, 25 October 2026: a
+/// castFriendlySpell line saved before its spell was picked).
+fn names_no_spell(action: &Map<String, Json>) -> bool {
+    match single(action, &["uuid", "condition"]) {
+        Ok(("castSpell" | "castFriendlySpell" | "channelSpell", config)) => config
+            .as_object()
+            .is_some_and(|config| config.get("spellId").is_none_or(Json::is_null)),
+        _ => false,
+    }
 }
 
 /// A protojson `APLAction`: its condition and what it does.
@@ -4654,6 +4675,35 @@ mod tests {
                 spell: ActionId::spell(25292),
                 target: UnitRef::Target(1)
             })
+        );
+    }
+
+    /// Go `GetAPLSpell` finds no spell for a missing `spellId`, so a cast, friendly cast or
+    /// channel naming none builds no action: the line is skipped whatever its condition reads,
+    /// and a prepull one registers nothing (Discipline Priest sim e4f6ebb0, 25 October 2026).
+    #[test]
+    fn a_cast_naming_no_spell_builds_no_action() {
+        let rotation = parse(&serde_json::json!({
+            "type": "TypeAPL",
+            "prepullActions": [{"action": {"castSpell": {}}, "doAtValue": {"const": {"val": "-1s"}}}],
+            "priorityList": [
+                {"action": {"castFriendlySpell": {"target": {"type": "Self"}},
+                    "condition": {"spellIsReady": {"spellId": {"spellId": 10060}}}}},
+                {"action": {"castSpell": {"spellId": {"spellId": 10934}}}},
+                {"action": {"channelSpell": {"interruptIf": {"const": {"val": "true"}}}}},
+                {"action": {"castSpell": {"spellId": null, "target": {"type": "Self"}}}},
+            ],
+        }))
+        .expect("the rotation parses");
+        assert!(rotation.prepull.is_empty());
+        assert_eq!(rotation.priority_list.len(), 1);
+        assert_eq!(rotation.priority_list[0].position, 2);
+        assert_eq!(
+            rotation.priority_list[0].action,
+            Action::CastSpell {
+                spell: ActionId::spell(10934),
+                target: UnitRef::CurrentTarget
+            }
         );
     }
 

@@ -323,3 +323,36 @@ fn a_summoned_imp_gets_mana_spring_totem_only() {
         );
     }
 }
+
+/// Go buffs/meta.go `newDamageShield`: the party's Retribution Aura and Thorns answer the
+/// physical hits the player takes, and nothing physical hits a player the target does not swing
+/// at, so both are inert listeners there and the gate supports them (production fallbacks to Go,
+/// 24 and 25 October 2026).
+#[test]
+fn party_damage_shields_are_inert_without_a_tank() {
+    let id = "production-subtlety-rogue";
+    let cases = manifest().cases;
+    let case = cases.iter().find(|case| case.id == id).unwrap();
+    let mut request: Value = serde_json::from_slice(&request_bytes(case)).unwrap();
+    request["raid"]["parties"][0]["buffs"]["retributionAura"] = true.into();
+    request["raid"]["buffs"]["thorns"] = true.into();
+    let prepared = forever_engine::prepare_json(&serde_json::to_vec(&request).unwrap(), id)
+        .unwrap_or_else(|err| panic!("{id}: {err}"));
+    for label in ["Retribution Aura (External)", "Thorns (External)"] {
+        assert!(
+            prepared["effects"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|effect| {
+                    effect["kind"] == "inert_listener"
+                        && effect["unit"] == "player"
+                        && effect["aura"] == label
+                }),
+            "{label}"
+        );
+    }
+    let prepared: forever_engine::contracts::prepared_v2::PreparedV2 =
+        serde_json::from_value(prepared).unwrap();
+    assert!(forever_engine::prepared_refusals(&prepared).is_empty());
+}

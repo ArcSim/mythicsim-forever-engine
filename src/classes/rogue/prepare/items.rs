@@ -5,8 +5,12 @@
 
 use std::rc::Rc;
 
+use serde_json::{json, Value};
+
 use crate::prepare::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger};
 use crate::prepare::character::{cooldown_type, MajorCooldown};
+use crate::prepare::common_effects::SPELL_BATCH_WINDOW;
+use crate::prepare::consumable_effects::proc_trigger_spells;
 use crate::prepare::env::Environment;
 use crate::prepare::item_sets::ItemSet;
 use crate::prepare::sim::{AuraConfig, AuraId, BuildPhase, Cooldown, Sim, UnitId, SECOND};
@@ -327,6 +331,23 @@ fn nightslayer_8(env: &mut Environment, aura: AuraId) {
             ..ProcTrigger::default()
         },
     );
+}
+
+/// The effect of Nightslayer Armor's eight piece trigger (`nightslayer_8`): a spell batch window
+/// after each Vanish cast, Go's literal 500 health, as Clean Escape (23583) heals, under health
+/// metrics of the bonus spell (23582). Nothing rolls.
+pub(super) fn nightslayer_8_effect(env: &Environment) -> Option<Value> {
+    let aura = env.sim.get_aura(env.player, "Nightslayer Armor 8P")?;
+    let trigger = ProcTrigger {
+        callback: CallbackMask::ON_CAST_COMPLETE,
+        class_spell_mask: masks::VANISH,
+        ..ProcTrigger::default()
+    };
+    Some(json!({
+        "kind": "health_on_cast", "trigger_aura": env.sim.aura(aura).label,
+        "trigger_spells": proc_trigger_spells(env, &trigger), "health": 500.0,
+        "metrics_action_id": {"spell_id": 23582}, "delay_ns": SPELL_BATCH_WINDOW,
+    }))
 }
 
 /// Bloodfang Armor, 3 pieces: 5% more chance to apply poisons.

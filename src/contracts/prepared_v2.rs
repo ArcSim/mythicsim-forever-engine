@@ -2421,6 +2421,15 @@ pub enum Effect {
         /// The damage over time the row carries, on the targets the proc landed on.
         #[serde(default, skip_serializing_if = "Option::is_none")]
         periodic: Option<ProcPeriodic>,
+        /// A Go literal proc trigger whose handler waits this long before it casts the hit, as
+        /// item_sets_classic.go `setMeleeDamageProc` does a spell batch window later on the
+        /// unit the trigger hit. Absent, the hit is cast at once.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        delay_ns: Option<i64>,
+        /// The label the trigger's chance rolls under, where it is not the trigger aura's: the
+        /// trigger's own name.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        rng_label: Option<String>,
     },
     /// common/shared/shared_utils.go NewSpellDataAbsorbOnUse: the item use's aura shields the
     /// wearer for the absorb effect's roll against the schools its bits name.
@@ -3002,6 +3011,18 @@ pub enum Effect {
         proc_chance: f64,
         proc_mask: Vec<String>,
         mana: f64,
+        metrics_action_id: ActionId,
+        delay_ns: i64,
+    },
+    /// Go buffs/paladin.go `AttachJudgementOfLightHeal`: a landed melee hit on the judged target
+    /// that is no proc runs the handler a spell batch window later, which rolls `proc_chance`
+    /// under `rng_label` and heals the attacker for `heal`. The health metrics belong to the
+    /// target, as Go registers them on the aura's unit.
+    JudgementOfLight {
+        aura: String,
+        proc_chance: f64,
+        rng_label: String,
+        heal: f64,
         metrics_action_id: ActionId,
         delay_ns: i64,
     },
@@ -4531,6 +4552,16 @@ pub enum Effect {
         aura: String,
         chance: f64,
     },
+    /// A proc trigger on the player's casts of the spells it hears, by spellbook position, whose
+    /// handler a delay later restores a fixed amount of health through Go `GainHealth`, as
+    /// Nightslayer Armor's eight piece bonus does on Vanish.
+    HealthOnCast {
+        trigger_aura: String,
+        trigger_spells: Vec<usize>,
+        health: f64,
+        metrics_action_id: ActionId,
+        delay_ns: i64,
+    },
     /// An item proc trigger that restores energy a spell batch window after a landed hit, such
     /// as Shadowcraft Armor's: the chance each spell rolls, by spellbook position.
     EnergizeProc {
@@ -4716,6 +4747,7 @@ impl Effect {
             Effect::FingersOfFrost { .. } => "fingers_of_frost",
             Effect::WintersChill { .. } => "winters_chill",
             Effect::JudgementOfWisdom { .. } => "judgement_of_wisdom",
+            Effect::JudgementOfLight { .. } => "judgement_of_light",
             Effect::PotionMana { .. } => "potion_mana",
             Effect::ConjuredMana { .. } => "conjured_mana",
             Effect::EnergizeOnUse { .. } => "energize_on_use",
@@ -4899,6 +4931,7 @@ impl Effect {
             Effect::ParryHaste { .. } => "parry_haste",
             Effect::PushbackTrigger { .. } => "pushback_trigger",
             Effect::FixedUptimeAura { .. } => "fixed_uptime_aura",
+            Effect::HealthOnCast { .. } => "health_on_cast",
             Effect::EnergizeProc { .. } => "energize_proc",
         }
     }

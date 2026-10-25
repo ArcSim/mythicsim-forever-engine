@@ -54,6 +54,12 @@ pub(crate) enum AuraBehavior<K> {
     },
     /// An item proc that restores energy: [`super::energy::EnergizeProc`], by index.
     EnergizeProc(usize),
+    /// A proc on the player's casts that restores health a delay later: by its position in
+    /// `Fight::health_on_cast`.
+    HealthOnCast(usize),
+    /// Go buffs/paladin.go `AttachJudgementOfLightHeal`, on the target: by its position in
+    /// `Fight::judgements_of_light`.
+    JudgementOfLight(usize),
     /// Go buffs/paladin.go `AttachJudgementOfWisdomMana`.
     JudgementOfWisdom {
         chance: f64,
@@ -1168,6 +1174,20 @@ impl<A: Agent> Fight<A> {
             match self.aura(aura).behavior {
                 AuraBehavior::Class(kind) => A::on_cast_complete(self, aura, kind, spell),
                 AuraBehavior::RevelationBuff => self.revelation_cast_complete(spell),
+                // Go `AttachProcTriggerCallback`'s OnCastComplete: the spells it hears, no chance
+                // to roll, then the handler a delay later. A cast carries no result.
+                AuraBehavior::HealthOnCast(index) if self.health_on_cast[index].spells[spell] => {
+                    let result = SpellResult {
+                        armor_multiplier: 0.0,
+                        target: Side::Target,
+                        attacker: Side::Player,
+                        outcome: 0,
+                        damage: 0.0,
+                        threat: 0.0,
+                    };
+                    let delay = self.health_on_cast[index].delay;
+                    self.schedule_delayed_proc_at(self.now + delay, aura, spell, result);
+                }
                 AuraBehavior::SpellDataStatProc(proc) if self.spell_stat_procs[proc].casts => {
                     self.spell_stat_proc_callback(aura, proc, Some(spell), None)
                 }
@@ -1282,6 +1302,9 @@ impl<A: Agent> Fight<A> {
                     AuraBehavior::JudgementOfWisdom { chance, delay, .. } => {
                         self.judgement_of_wisdom_callback(aura, spell, result, chance, delay)
                     }
+                    AuraBehavior::JudgementOfLight(index) if !dealt => {
+                        self.judgement_of_light_callback(aura, index, spell, result)
+                    }
                     AuraBehavior::TouchOfTheGrave { chance, delay, .. } if dealt => {
                         self.touch_of_the_grave_callback(aura, spell, result, chance, delay)
                     }
@@ -1389,6 +1412,40 @@ impl<A: Agent> Fight<A> {
             return;
         }
         self.schedule_delayed_proc_at(self.now + delay, aura, spell, *result);
+    }
+
+    /// Go `AttachJudgementOfLightHeal`'s trigger on the judged target: a landed melee hit that
+    /// is no proc runs the handler a spell batch window later, with no chance of its own.
+    fn judgement_of_light_callback(
+        &mut self,
+        aura: AuraRef,
+        index: usize,
+        spell: SpellId,
+        result: &SpellResult,
+    ) {
+        let state = &self.spells[spell];
+        if state.flags.proc || !state.melee_proc || result.outcome & super::OUTCOME_LANDED == 0 {
+            return;
+        }
+        let delay = self.judgements_of_light[index].delay;
+        self.schedule_delayed_proc_at(self.now + delay, aura, spell, *result);
+    }
+
+    /// The handler: Go `Proc(judgementProcChance, "Judgement of Light - Heal")`, then the
+    /// attacker gains the heal under the target's health metrics. The gate keeps the attacker
+    /// the player: it refuses the aura beside a pet that strikes in melee.
+    fn judgement_of_light_heal(&mut self, index: usize, spell: SpellId) {
+        let state = &self.judgements_of_light[index];
+        let (chance, heal, metrics) = (state.chance, state.heal, state.metrics);
+        if !self
+            .rng
+            .proc(chance, &self.judgements_of_light[index].rng_label)
+        {
+            return;
+        }
+        if self.spells[spell].caster == Side::Player {
+            self.gain_health(heal, metrics);
+        }
     }
 
     /// Go `AttachProcTriggerCallback`'s delayed handler: run it a spell batch window from now.
@@ -1523,8 +1580,17 @@ impl<A: Agent> Fight<A> {
                 return;
             }
         }
-        if chance != 1.0 && self.random_for_aura(aura) > chance {
-            return;
+        if chance != 1.0 {
+            let roll = match &self.damage_procs[proc].rng_label {
+                Some(label) => {
+                    let label = label.clone();
+                    self.rng.next_f64(&label)
+                }
+                None => self.random_for_aura(aura),
+            };
+            if roll > chance {
+                return;
+            }
         }
         // Go `DynamicProcManager.Proc` under the trigger's name, after the static chance; a spell
         // its masks miss never procs.
@@ -1537,14 +1603,23 @@ impl<A: Agent> Fight<A> {
         if let Some((timer, duration)) = icd {
             self.timers[timer] = self.now + duration;
         }
-        // Go procDamageTarget: a proc of a hit taken answers its attacker, which for the
-        // swing of a copy of the boss is that copy.
-        let target = match (result.target == Side::Player, spell) {
+        // A Go literal trigger without TriggerImmediately: the handler casts the hit a delay
+        // later, on the unit the trigger's hit landed on.
+        if let (Some(delay), Some(spell)) = (self.damage_procs[proc].delay, spell) {
+            self.schedule_delayed_proc_at(self.now + delay, aura, spell, *result);
+            return;
+        }
+        self.cast(damage_spell, Self::damage_proc_target(spell, result));
+    }
+
+    /// Go procDamageTarget: a proc of a hit taken answers its attacker, which for the swing of a
+    /// copy of the boss is that copy.
+    fn damage_proc_target(spell: Option<SpellId>, result: &SpellResult) -> Side {
+        match (result.target == Side::Player, spell) {
             (true, None) => result.attacker,
             (true, Some(_)) => Side::Target,
             (false, _) => result.target,
-        };
-        self.cast(damage_spell, target);
+        }
     }
 
     /// Go `AttachProcTriggerCallback` for a spell data stat proc: the spells it hears, and for a
@@ -1705,6 +1780,18 @@ impl<A: Agent> Fight<A> {
                 self.cast(spell, result.target);
             }
             AuraBehavior::EnergizeProc(index) => self.energize_proc_handler(index),
+            AuraBehavior::SpellDataDamageProc(proc) => {
+                let damage_spell = self.damage_procs[proc].spell;
+                self.cast(damage_spell, Self::damage_proc_target(Some(spell), &result));
+            }
+            AuraBehavior::HealthOnCast(index) => {
+                let (health, metrics) = (
+                    self.health_on_cast[index].health,
+                    self.health_on_cast[index].metrics,
+                );
+                self.gain_health(health, metrics);
+            }
+            AuraBehavior::JudgementOfLight(index) => self.judgement_of_light_heal(index, spell),
             AuraBehavior::Class(kind) => A::on_delayed_proc(self, aura, kind, spell, result),
             _ => {}
         }

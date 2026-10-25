@@ -1135,6 +1135,10 @@ pub(crate) struct DamageProc {
     /// A weapon proc's manager: each spell's chance, rolled with Go `Proc`.
     pub(crate) chances: Option<Vec<Option<f64>>>,
     pub(crate) spell: SpellId,
+    /// The wait before the handler casts the hit, or none to cast it at once.
+    pub(crate) delay: Option<i64>,
+    /// The label of the chance roll where it is not the trigger aura's.
+    pub(crate) rng_label: Option<String>,
 }
 
 /// A proc whose manager rolls on landed hits and whose handler a spell batch window later
@@ -1167,6 +1171,28 @@ pub(crate) struct SpellStatProc {
     pub(crate) require_damage: bool,
     pub(crate) chance: f64,
     pub(crate) aura: AuraRef,
+}
+
+/// A proc on the player's casts whose handler restores health a delay later: Nightslayer
+/// Armor's eight piece bonus on Vanish.
+#[derive(Clone, Debug)]
+pub(crate) struct HealthOnCast {
+    /// The spells it hears, by spellbook position.
+    pub(crate) spells: Vec<bool>,
+    pub(crate) health: f64,
+    pub(crate) metrics: usize,
+    pub(crate) delay: i64,
+}
+
+/// Go buffs/paladin.go `AttachJudgementOfLightHeal` on the judged target.
+#[derive(Clone, Debug)]
+pub(crate) struct JudgementOfLight {
+    pub(crate) rng_label: String,
+    pub(crate) chance: f64,
+    pub(crate) heal: f64,
+    /// The target's health metrics.
+    pub(crate) metrics: usize,
+    pub(crate) delay: i64,
 }
 
 /// Go core/consumes.go `registerDragonbreathChili`.
@@ -1651,6 +1677,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) fixed_uptime: Vec<FixedUptime>,
     /// Item procs that restore energy.
     pub(crate) energize_procs: Vec<energy::EnergizeProc>,
+    pub(crate) health_on_cast: Vec<HealthOnCast>,
+    pub(crate) judgements_of_light: Vec<JudgementOfLight>,
     /// Go `rageBar`, for a player that has one.
     pub(crate) rage: Option<rage::RageBar>,
     /// Single aura exclusive categories the runtime enforces.
@@ -1904,6 +1932,8 @@ pub(crate) fn chances_by_spell(
 /// The damage proc a spell data damage proc or a weapon's extra attack proc runs, with its
 /// trigger spells and its proc manager's chances by spell, or none for another effect.
 pub(crate) fn damage_proc_of(effect: &Effect, spells: usize) -> Option<DamageProc> {
+    let mut delay = None;
+    let mut rng_label = None;
     let (trigger_spells, struck, casts, landed_only, require_damage, proc_chance, spell, chances) =
         match effect {
             Effect::SpellDataDamageProc {
@@ -1915,17 +1945,23 @@ pub(crate) fn damage_proc_of(effect: &Effect, spells: usize) -> Option<DamagePro
                 proc_chance,
                 spell,
                 chances,
+                delay_ns,
+                rng_label: label,
                 ..
-            } => (
-                trigger_spells.clone(),
-                *struck,
-                *casts,
-                *landed_only,
-                *require_damage,
-                *proc_chance,
-                *spell,
-                chances,
-            ),
+            } => {
+                delay = *delay_ns;
+                rng_label = label.clone();
+                (
+                    trigger_spells.clone(),
+                    *struck,
+                    *casts,
+                    *landed_only,
+                    *require_damage,
+                    *proc_chance,
+                    *spell,
+                    chances,
+                )
+            }
             // A weapon proc that casts the spell granting the extra attacks: it hears the
             // landed hits its proc manager has a chance for.
             Effect::ExtraAttackProc {
@@ -1962,6 +1998,8 @@ pub(crate) fn damage_proc_of(effect: &Effect, spells: usize) -> Option<DamagePro
         chance: proc_chance,
         chances,
         spell,
+        delay,
+        rng_label,
     })
 }
 
@@ -3490,6 +3528,30 @@ impl<A: Agent> Fight<A> {
                     .flatten()
                 {
                     AuraBehavior::EnergizeProc(index)
+                } else if let Some(index) = (side == Side::Player)
+                    .then(|| {
+                        effects
+                            .iter()
+                            .filter(|effect| matches!(effect, Effect::HealthOnCast { .. }))
+                            .position(|effect| {
+                                matches!(effect, Effect::HealthOnCast { trigger_aura, .. } if *trigger_aura == exported.label)
+                            })
+                    })
+                    .flatten()
+                {
+                    AuraBehavior::HealthOnCast(index)
+                } else if let Some(index) = (side == Side::Target)
+                    .then(|| {
+                        effects
+                            .iter()
+                            .filter(|effect| matches!(effect, Effect::JudgementOfLight { .. }))
+                            .position(|effect| {
+                                matches!(effect, Effect::JudgementOfLight { aura, .. } if *aura == exported.label)
+                            })
+                    })
+                    .flatten()
+                {
+                    AuraBehavior::JudgementOfLight(index)
                 } else if side == Side::Player
                     && effects.iter().any(|effect| {
                         matches!(effect, Effect::Crusader { trigger_aura, .. } if *trigger_aura == exported.label)
@@ -3772,6 +3834,8 @@ impl<A: Agent> Fight<A> {
             death: damage_taken::Death::default(),
             fixed_uptime: Vec::new(),
             energize_procs: Vec::new(),
+            health_on_cast: Vec::new(),
+            judgements_of_light: Vec::new(),
             player: Player::initial(&config),
             cast_speed: config.cast_speed,
             targets: vec![
@@ -3959,6 +4023,55 @@ impl<A: Agent> Fight<A> {
                     metrics,
                     delay: *delay_ns,
                 });
+            }
+        }
+        for effect in effects {
+            match effect {
+                Effect::HealthOnCast {
+                    trigger_spells,
+                    health,
+                    metrics_action_id,
+                    delay_ns,
+                    ..
+                } => {
+                    let mut spells = vec![false; fight.spells.len()];
+                    for &spell in trigger_spells {
+                        if let Some(slot) = spells.get_mut(spell) {
+                            *slot = true;
+                        }
+                    }
+                    let metrics =
+                        fight.new_resource_metrics(metrics_action_id.clone(), ResourceKind::Health);
+                    fight.health_on_cast.push(HealthOnCast {
+                        spells,
+                        health: *health,
+                        metrics,
+                        delay: *delay_ns,
+                    });
+                }
+                Effect::JudgementOfLight {
+                    proc_chance,
+                    rng_label,
+                    heal,
+                    metrics_action_id,
+                    delay_ns,
+                    ..
+                } => {
+                    // Go registers the heal's metrics on the judged target.
+                    let metrics = fight.new_resource_metrics_of(
+                        Side::Target,
+                        metrics_action_id.clone(),
+                        ResourceKind::Health,
+                    );
+                    fight.judgements_of_light.push(JudgementOfLight {
+                        rng_label: rng_label.clone(),
+                        chance: *proc_chance,
+                        heal: *heal,
+                        metrics,
+                        delay: *delay_ns,
+                    });
+                }
+                _ => {}
             }
         }
         for effect in effects {

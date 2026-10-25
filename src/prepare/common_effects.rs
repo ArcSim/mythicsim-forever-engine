@@ -14,6 +14,7 @@ pub(crate) fn common_effects(env: &mut Environment, unrepresented: &mut Vec<Stri
     effects.extend(aura_refresh_effects(env, unrepresented));
     effects.extend(player_movement_effect(env));
     effects.extend(judgement_of_wisdom_effects(env));
+    effects.extend(super::buffs::judgement_of_light_effects(env));
     effects.extend(racial_effects(env, unrepresented));
     effects.extend(battle_shout_effect(env));
     effects.extend(sunder_armor_effect(env, unrepresented));

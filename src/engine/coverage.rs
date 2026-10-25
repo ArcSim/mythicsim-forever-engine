@@ -223,7 +223,9 @@ const COMMON_EFFECTS: &[&str] = &[
     "inert_pet",
     "innervate_regen",
     "item_swap",
+    "judgement_of_light",
     "judgement_of_wisdom",
+    "health_on_cast",
     "parry_haste",
     "player_movement",
     "potion_mana",
@@ -442,7 +444,10 @@ fn common_claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         | Effect::PowerInfusion { aura, .. }
         | Effect::InnervateRegen { aura, .. }
         | Effect::ExternalCooldown { aura, .. } => vec![("player", aura)],
-        Effect::JudgementOfWisdom { aura, .. } => vec![("target", aura)],
+        Effect::JudgementOfWisdom { aura, .. } | Effect::JudgementOfLight { aura, .. } => {
+            vec![("target", aura)]
+        }
+        Effect::HealthOnCast { trigger_aura, .. } => vec![("player", trigger_aura)],
         Effect::RageBar { aura, .. } => vec![("player", aura)],
         Effect::ExtraAttackProc { trigger_aura, .. } => vec![("player", trigger_aura)],
         Effect::ChanceOfDeath { aura } => vec![("player", aura)],
@@ -596,6 +601,60 @@ fn undirected_procs(prepared: &PreparedV2) -> Vec<String> {
             _ => None,
         })
         .collect()
+}
+
+/// Judgement of Light heals whoever strikes the judged target, and the runtime heals only the
+/// player: a pet that strikes in melee would gain the heal itself. The runtime also follows the
+/// judgement on the one target the effect names, not on copies of it.
+fn judgement_of_light_limits(prepared: &PreparedV2) -> Vec<String> {
+    let Some(aura) = prepared.effects.iter().find_map(|effect| match effect {
+        Effect::JudgementOfLight { aura, .. } => Some(aura),
+        _ => None,
+    }) else {
+        return Vec::new();
+    };
+    let mut reasons = Vec::new();
+    if prepared.encounter.target_count > 1 {
+        reasons.push(format!(
+            "target aura {aura:?} heals the attackers of copies of the target"
+        ));
+    }
+    let melee = |mask: &String| mask.starts_with("ProcMaskMelee");
+    for pet in &prepared.pets {
+        if pet
+            .spells
+            .iter()
+            .any(|spell| spell.proc_mask.iter().any(melee))
+        {
+            reasons.push(format!(
+                "target aura {aura:?} heals pet {:?}, which strikes in melee",
+                pet.label
+            ));
+        }
+    }
+    reasons
+}
+
+/// The party's Flametongue Totem hits for the main hand's speed when preparation reads it, which an
+/// item swap of the main hand would change.
+fn party_flametongue_swap_limits(prepared: &PreparedV2) -> Vec<String> {
+    let totem = prepared.effects.iter().any(|effect| {
+        matches!(effect, Effect::SpellDataDamageProc { trigger_aura, .. }
+            if trigger_aura == "Flametongue Totem Trigger")
+    });
+    let swap = prepared
+        .effects
+        .iter()
+        .any(|effect| matches!(effect, Effect::ItemSwap { .. }));
+    if totem && swap {
+        vec![
+            "the party's Flametongue Totem hits for the main hand's speed, which an item swap \
+             changes"
+                .to_string(),
+        ]
+    } else {
+        Vec::new()
+    }
 }
 
 /// Runeblade of Baron Rivendare's Unholy Aura starts a periodic action as it gains, which gives
@@ -2192,6 +2251,14 @@ pub(crate) fn prepared_coverage(
             several_target_limits(prepared, gate, &reachable),
         ));
         reasons.extend(coded("proc_unsupported", undirected_procs(prepared)));
+        reasons.extend(coded(
+            "proc_unsupported",
+            judgement_of_light_limits(prepared),
+        ));
+        reasons.extend(coded(
+            "proc_unsupported",
+            party_flametongue_swap_limits(prepared),
+        ));
         reasons.extend(coded("effect_unimplemented", shared_dot_auras(prepared)));
         reasons.extend(coded(
             "effect_unimplemented",

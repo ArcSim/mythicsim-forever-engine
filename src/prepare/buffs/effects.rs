@@ -157,6 +157,31 @@ pub(crate) fn judgement_of_wisdom_effects(env: &Environment) -> Vec<Value> {
         .collect()
 }
 
+/// Go buffs/paladin.go `AttachJudgementOfLightHeal` on the raid's `Judgement of Light
+/// (External)`: a landed melee hit on the target that is no proc runs the handler a spell batch
+/// window later, which rolls the judgement's chance under the Go literal label and heals the
+/// attacker for the top rank's heal, under health metrics of the target. Only the first target's
+/// copy is described; the gate refuses copies of it.
+pub(crate) fn judgement_of_light_effects(env: &Environment) -> Vec<Value> {
+    let target = env.encounter.targets[0];
+    let rank = paladin::judgement_of_light_max_rank();
+    env.sim
+        .unit(target)
+        .auras
+        .iter()
+        .filter(|aura| env.sim.aura(**aura).label == "Judgement of Light (External)")
+        .map(|aura| {
+            json!({
+                "kind": "judgement_of_light", "aura": env.sim.aura(*aura).label,
+                "proc_chance": paladin::JUDGEMENT_PROC_CHANCE,
+                "rng_label": "Judgement of Light - Heal", "heal": rank.value,
+                "metrics_action_id": action_id(Some(&ActionId::spell(rank.spell_id))),
+                "delay_ns": SPELL_BATCH_WINDOW,
+            })
+        })
+        .collect()
+}
+
 /// buffs.go `ApplyFixedShoutAura`: the party's Battle Shout is up for good, through
 /// `ApplyFixedUptimeAura`'s rolls: a period of its duration and a nanosecond, and a first try a
 /// nanosecond before the pull with a rolled duration. Behind the player's own shout it chains

@@ -21,7 +21,7 @@ use super::sim::{Cooldown, Duration, Rules, Sim, SpellId, TimerId, UnitId};
 use super::spell::{Cast, CastConfig, CostOptions, DotConfig, ProcMask, SpellConfig, SpellFlag};
 use super::spell_mod::{SpellModConfig, SpellModType};
 use super::spelldata::{Effect, Ladder, Spell as Row};
-use crate::contracts::prepared_v2::ActionId;
+use crate::contracts::prepared_v2::{ActionId, SmartHeal};
 use crate::contracts::request::{Message, Value as RequestValue};
 use crate::prepare::character::constants::CHARACTER_LEVEL;
 use crate::prepare::sim::AuraConfig;
@@ -34,6 +34,8 @@ pub(crate) struct HealShape {
     pub targets: u32,
     /// Each further player's share of the heal before it: a chain heal's falloff.
     pub jump_multiplier: f64,
+    /// Under Forever's rules, a heal that follows the party's damage (`prepare::party_damage`).
+    pub smart: Option<SmartHeal>,
 }
 
 impl HealShape {
@@ -41,6 +43,7 @@ impl HealShape {
     pub(crate) const SINGLE: HealShape = HealShape {
         targets: 1,
         jump_multiplier: 1.0,
+        smart: None,
     };
 
     /// A party heal: each of `targets` players takes the full heal.
@@ -48,6 +51,15 @@ impl HealShape {
         HealShape {
             targets,
             jump_multiplier: 1.0,
+            smart: None,
+        }
+    }
+
+    /// The shape with a heal that follows the party's damage under Forever's rules.
+    pub(crate) fn smart(self, smart: SmartHeal) -> HealShape {
+        HealShape {
+            smart: Some(smart),
+            ..self
         }
     }
 }
@@ -397,10 +409,16 @@ pub(crate) fn heals_effect(env: &Environment, ranks: &[HealRank]) -> Value {
             if let Some(absorb) = rank.absorb {
                 heal["absorb"] = json!(absorb);
             }
+            // Forever's party damage decides how far these heals reach (README, Rust-only
+            // mechanics); the reference heals every target at once.
+            if let (Some(smart), Rules::Forever) = (rank.shape.smart, env.rules) {
+                heal["smart"] = json!(smart);
+            }
             heal
         })
         .collect();
-    json!({
+    let smart = env.rules == Rules::Forever && ranks.iter().any(|rank| rank.shape.smart.is_some());
+    let mut effect = json!({
         "kind": "heals",
         "heals": heals,
         "player": {
@@ -411,5 +429,9 @@ pub(crate) fn heals_effect(env: &Environment, ranks: &[HealRank]) -> Value {
             "healing_power": sim.stat(env.player, Stat::HealingPower) + pseudo.bonus_healing_taken,
         },
         "bonus_healing_taken": pseudo.bonus_healing_taken,
-    })
+    });
+    if smart {
+        effect["party"] = super::party_damage::export();
+    }
+    effect
 }

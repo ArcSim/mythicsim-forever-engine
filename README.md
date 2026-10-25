@@ -198,6 +198,12 @@ the Go goldens and exporter uses. The departures:
   of the Swarmguard, is worn without effect. The prepared effects are `mana_on_cast`,
   `spell_mod_aura_on_use`, `stacking_cd_on_use`, `shield_on_heal` and the heals' shapes; a sim
   that is not a healer's keeps the reference's gear (`tests/healer_gear.rs`).
+- Forever's Engineering ammo, from the Wowhead Forever tooltips: Swiftfeather Arrow (274387) and
+  Swiftstrike Shot (274388), item level 65 and requiring level 60, each "Adds 24.5 damage per
+  second". The reference's ammo stops at Miniature Cannon Balls, so the request schema adds them
+  to `HunterOptions.Ammo` as `SwiftfeatherArrow` (13) and `SwiftstrikeShot` (14)
+  (`src/contracts/request/schema.rs`), leaving `data/proto-schema.json` as the pinned reference
+  wrote it. They are data, not a departure, so both rule sets add the 24.5.
 
 ## Repository layout
 

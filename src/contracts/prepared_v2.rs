@@ -3132,6 +3132,30 @@ pub enum Effect {
         spells: Vec<SpellMana>,
         metrics_action_id: ActionId,
     },
+    /// MythicSim's healer sims under Forever's rules: an item use whose window aura moves the
+    /// stacks of a stacking stats aura while it is up, as Talisman of Ascendance (a stack on each
+    /// hit or heal) or Zandalarian Hero Charm (all its stacks at once, one fewer each cast). The
+    /// window going up brings the stats aura up, at its most stacks when they `decay`, and its
+    /// end takes the stats aura down. Each heard event of a `trigger_spells` spell rolls
+    /// `proc_chance`, and a spell batch window later the stacks move.
+    StackingCdOnUse {
+        item_id: i32,
+        stat_aura: String,
+        window_aura: String,
+        decay: bool,
+        trigger_spells: Vec<usize>,
+        callbacks: Vec<String>,
+        landed_only: bool,
+        proc_chance: f64,
+    },
+    /// MythicSim's healer sims under Forever's rules: an item use whose aura, while up, shields
+    /// the player each direct heal lands on for `share` of the healing it did, as Scarab
+    /// Brooch's Persistent Shield. The shields count on the item's spell.
+    ShieldOnHeal {
+        item_id: i32,
+        aura: String,
+        share: f64,
+    },
     InertListener {
         unit: String,
         aura: String,
@@ -4807,6 +4831,8 @@ impl Effect {
             Effect::SpellCostAuraOnUse { .. } => "spell_cost_aura_on_use",
             Effect::SpellModAuraOnUse { .. } => "spell_mod_aura_on_use",
             Effect::ManaOnCast { .. } => "mana_on_cast",
+            Effect::StackingCdOnUse { .. } => "stacking_cd_on_use",
+            Effect::ShieldOnHeal { .. } => "shield_on_heal",
             Effect::InertListener { .. } => "inert_listener",
             Effect::ShadowBolt {} => "shadow_bolt",
             Effect::Immolate { .. } => "immolate",

@@ -262,3 +262,96 @@ fn the_furious_storm_procs_on_a_healers_casts() {
     assert!(!procs[0]["trigger_spells"].as_array().unwrap().is_empty());
     heals(&forever);
 }
+
+/// The fight's aura metrics for one spell ID.
+fn aura_uptime(result: &Value, spell_id: i64) -> f64 {
+    result["raidMetrics"]["parties"][0]["players"][0]["auras"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|aura| aura["id"]["spellId"] == spell_id)
+        .and_then(|aura| aura["uptimeSecondsAvg"].as_f64())
+        .unwrap_or(0.0)
+}
+
+/// Talisman of Ascendance (22678): on use, a 20 sec window in which each landed heal adds a
+/// stack of Ascendance (28204), 75 healing and 40 spell damage, up to five. Rust refused it.
+#[test]
+fn talisman_of_ascendance_stacks_on_heals() {
+    let forever = prepared(&request("holy-priest", &[(12, 22678)]), Rules::Forever);
+    let used = effects(&forever, "stacking_cd_on_use");
+    assert_eq!(used.len(), 1, "{used:?}");
+    assert_eq!(used[0]["decay"], false);
+    assert!(used[0]["callbacks"]
+        .as_array()
+        .unwrap()
+        .contains(&json!("on_heal_dealt")));
+    assert!(!used[0]["trigger_spells"].as_array().unwrap().is_empty());
+    let result = heals(&forever);
+    assert!(aura_uptime(&result, 28204) > 0.0);
+}
+
+/// Zandalarian Hero Charm (19950): on use, twelve stacks of Unstable Power, 34 healing each,
+/// one fewer with each spell cast, for 20 sec.
+#[test]
+fn zandalarian_hero_charm_decays_a_stack_a_cast() {
+    let forever = prepared(
+        &request("restoration-druid", &[(12, 19950)]),
+        Rules::Forever,
+    );
+    let used = effects(&forever, "stacking_cd_on_use");
+    assert_eq!(used.len(), 1, "{used:?}");
+    assert_eq!(used[0]["decay"], true);
+    assert_eq!(used[0]["stat_aura"], "Unstable Power");
+    let result = heals(&forever);
+    let uptime = aura_uptime(&result, 24658);
+    // Twelve casts end it well before its 20 sec.
+    assert!(
+        uptime > 0.0 && uptime < 20.0 * 3.0,
+        "Unstable Power up {uptime} sec"
+    );
+    let plain = heals(&prepared(
+        &request("restoration-druid", &[]),
+        Rules::Forever,
+    ));
+    let hps = |result: &Value| {
+        result["raidMetrics"]["parties"][0]["players"][0]["hps"]["avg"]
+            .as_f64()
+            .unwrap()
+    };
+    assert!(hps(&result) > hps(&plain));
+}
+
+/// Scarab Brooch (21625): on use, 30 sec of Persistent Shield, each direct heal shielding for
+/// 15% of its healing, counted on the item.
+#[test]
+fn scarab_brooch_shields_for_a_share_of_each_heal() {
+    let forever = prepared(
+        &request("restoration-shaman", &[(12, 21625)]),
+        Rules::Forever,
+    );
+    let used = effects(&forever, "shield_on_heal");
+    assert_eq!(used.len(), 1, "{used:?}");
+    assert_eq!(used[0]["share"], 0.15);
+    let result = heals(&forever);
+    let shielded: f64 = result["raidMetrics"]["parties"][0]["players"][0]["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"]["itemId"] == 21625)
+        .flat_map(|action| action["targets"].as_array().unwrap().iter())
+        .map(|target| target["shielding"].as_f64().unwrap_or(0.0))
+        .sum();
+    assert!(shielded > 0.0, "Scarab Brooch shielded nothing");
+}
+
+/// Badge of the Swarmguard stacks on melee and ranged hits, which a healer never lands: it is
+/// worn without effect rather than refused.
+#[test]
+fn a_stacking_trinket_no_heal_reaches_is_worn_without_effect() {
+    let forever = prepared(&request("holy-priest", &[(12, 21670)]), Rules::Forever);
+    let used = effects(&forever, "stacking_cd_on_use");
+    assert_eq!(used.len(), 1, "{used:?}");
+    assert!(used[0]["trigger_spells"].as_array().unwrap().is_empty());
+    heals(&forever);
+}

@@ -181,6 +181,10 @@ pub(crate) enum AuraBehavior<K> {
     /// A listener on the player's casts that restores mana, by its position in
     /// `Fight::mana_on_cast`.
     ManaOnCast(usize),
+    /// A healer's stacking on-use trinket's window, by its position in `Fight::stacking_cds`.
+    StackingCdWindow(usize),
+    /// A healer's on-use shield on heals, by its position in `Fight::shields_on_heal`.
+    ShieldOnHeal(usize),
     /// The aura of a dot or channel.
     Dot(DotId),
     /// Go movement.go's Movement aura, which marks its unit moving.
@@ -837,6 +841,7 @@ impl<A: Agent> Fight<A> {
                     self.activate_mod(self.aura_mods[index][position]);
                 }
             }
+            AuraBehavior::StackingCdWindow(index) => self.stacking_cd_gained(index),
             AuraBehavior::ArmorIgnoreFactor(delta) => {
                 if !self.resetting_auras {
                     self.config.melee.armor_ignore_factor += delta;
@@ -889,6 +894,7 @@ impl<A: Agent> Fight<A> {
                     self.deactivate_mod(self.aura_mods[index][position]);
                 }
             }
+            AuraBehavior::StackingCdWindow(index) => self.stacking_cd_expired(index),
             AuraBehavior::WindfuryTotem => {
                 let trigger = self
                     .windfury
@@ -1195,6 +1201,13 @@ impl<A: Agent> Fight<A> {
                     self.spell_stat_proc_callback(aura, proc, Some(spell), None)
                 }
                 AuraBehavior::ManaOnCast(index) => self.mana_on_cast_callback(aura, index, spell),
+                AuraBehavior::StackingCdWindow(index) => self.stacking_cd_callback(
+                    aura,
+                    index,
+                    spell,
+                    super::healer_gear::StackEvent::Cast,
+                    None,
+                ),
                 AuraBehavior::SpellDataDamageProc(proc) if self.damage_procs[proc].casts => {
                     // A cast carries no result: the proc answers the current target.
                     let result = SpellResult {
@@ -1264,6 +1277,14 @@ impl<A: Agent> Fight<A> {
                 AuraBehavior::SpellDataStatProc(proc) if self.spell_stat_procs[proc].heals => {
                     self.spell_stat_proc_callback(aura, proc, Some(spell), Some(result))
                 }
+                AuraBehavior::StackingCdWindow(index) => self.stacking_cd_callback(
+                    aura,
+                    index,
+                    spell,
+                    super::healer_gear::StackEvent::Heal,
+                    Some(result),
+                ),
+                AuraBehavior::ShieldOnHeal(index) => self.shield_on_heal(index, spell, result),
                 _ => {}
             }
         }
@@ -1392,6 +1413,13 @@ impl<A: Agent> Fight<A> {
                     AuraBehavior::EnergizeProc(index) if dealt => {
                         self.energize_proc_callback(aura, index, spell, result)
                     }
+                    AuraBehavior::StackingCdWindow(index) if dealt => self.stacking_cd_callback(
+                        aura,
+                        index,
+                        spell,
+                        super::healer_gear::StackEvent::Hit,
+                        Some(result),
+                    ),
                     _ => {}
                 }
             }
@@ -1797,6 +1825,7 @@ impl<A: Agent> Fight<A> {
             }
             AuraBehavior::JudgementOfLight(index) => self.judgement_of_light_heal(index, spell),
             AuraBehavior::ManaOnCast(index) => self.mana_on_cast_handler(index, spell),
+            AuraBehavior::StackingCdWindow(index) => self.stacking_cd_handler(index),
             AuraBehavior::Class(kind) => A::on_delayed_proc(self, aura, kind, spell, result),
             _ => {}
         }

@@ -33,6 +33,7 @@ pub(crate) mod proc_damage;
 mod revelation;
 pub(crate) use on_use_damage::known as on_use_damage_known;
 mod heal_proc;
+pub(crate) mod healer_gear;
 pub(crate) mod healing;
 pub(crate) mod heals;
 mod log;
@@ -1681,6 +1682,10 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) judgements_of_light: Vec<JudgementOfLight>,
     /// Listeners on the player's casts that restore mana: [`Effect::ManaOnCast`].
     pub(crate) mana_on_cast: Vec<energy::ManaOnCast>,
+    /// A healer's stacking on-use trinkets: [`Effect::StackingCdOnUse`].
+    pub(crate) stacking_cds: Vec<healer_gear::StackingCd>,
+    /// A healer's on-use shields on heals: [`Effect::ShieldOnHeal`].
+    pub(crate) shields_on_heal: Vec<healer_gear::ShieldOnHeal>,
     /// Go `rageBar`, for a player that has one.
     pub(crate) rage: Option<rage::RageBar>,
     /// Single aura exclusive categories the runtime enforces.
@@ -2606,7 +2611,12 @@ impl<A: Agent> Fight<A> {
                         }),
                         Effect::SpellCostAuraOnUse { item_id, aura, .. }
                         | Effect::SpellModAuraOnUse { item_id, aura, .. }
-                            if *item_id == item && id.tag == 0 =>
+                        | Effect::ShieldOnHeal { item_id, aura, .. }
+                        | Effect::StackingCdOnUse {
+                            item_id,
+                            window_aura: aura,
+                            ..
+                        } if *item_id == item && id.tag == 0 =>
                         {
                             activations.push((spells.len(), aura));
                             Some(SpellBehavior::None)
@@ -3567,6 +3577,30 @@ impl<A: Agent> Fight<A> {
                     .flatten()
                 {
                     AuraBehavior::ManaOnCast(index)
+                } else if let Some(index) = (side == Side::Player)
+                    .then(|| {
+                        effects
+                            .iter()
+                            .filter(|effect| matches!(effect, Effect::StackingCdOnUse { .. }))
+                            .position(|effect| {
+                                matches!(effect, Effect::StackingCdOnUse { window_aura, .. } if *window_aura == exported.label)
+                            })
+                    })
+                    .flatten()
+                {
+                    AuraBehavior::StackingCdWindow(index)
+                } else if let Some(index) = (side == Side::Player)
+                    .then(|| {
+                        effects
+                            .iter()
+                            .filter(|effect| matches!(effect, Effect::ShieldOnHeal { .. }))
+                            .position(|effect| {
+                                matches!(effect, Effect::ShieldOnHeal { aura, .. } if *aura == exported.label)
+                            })
+                    })
+                    .flatten()
+                {
+                    AuraBehavior::ShieldOnHeal(index)
                 } else if side == Side::Player
                     && effects.iter().any(|effect| {
                         matches!(effect, Effect::Crusader { trigger_aura, .. } if *trigger_aura == exported.label)
@@ -3852,6 +3886,8 @@ impl<A: Agent> Fight<A> {
             health_on_cast: Vec::new(),
             judgements_of_light: Vec::new(),
             mana_on_cast: Vec::new(),
+            stacking_cds: Vec::new(),
+            shields_on_heal: Vec::new(),
             player: Player::initial(&config),
             cast_speed: config.cast_speed,
             targets: vec![
@@ -4111,6 +4147,61 @@ impl<A: Agent> Fight<A> {
                         chance: *proc_chance,
                         mana,
                         metrics,
+                    });
+                }
+                _ => {}
+            }
+        }
+        for effect in effects {
+            match effect {
+                Effect::StackingCdOnUse {
+                    stat_aura,
+                    window_aura,
+                    decay,
+                    trigger_spells,
+                    callbacks,
+                    landed_only,
+                    proc_chance,
+                    ..
+                } => {
+                    let mut chances = vec![None; fight.spells.len()];
+                    for &spell in trigger_spells {
+                        let slot = chances.get_mut(spell).ok_or_else(|| {
+                            format!("stacking trinket spell {spell} outside the spellbook")
+                        })?;
+                        *slot = Some(*proc_chance);
+                    }
+                    let heard = |name: &str| callbacks.iter().any(|callback| callback == name);
+                    if callbacks.iter().any(|callback| {
+                        !["on_spell_hit_dealt", "on_heal_dealt", "on_cast_complete"]
+                            .contains(&callback.as_str())
+                    }) {
+                        return Err(format!("a stacking trinket listens to {callbacks:?}"));
+                    }
+                    let stat = fight.player_aura(stat_aura)?;
+                    if fight.aura(stat).max_stacks == 0 {
+                        return Err(format!("stacking trinket aura {stat_aura} has no stacks"));
+                    }
+                    fight.stacking_cds.push(healer_gear::StackingCd {
+                        label: window_aura.clone(),
+                        stat_aura: stat,
+                        decay: *decay,
+                        chances,
+                        hits: heard("on_spell_hit_dealt"),
+                        heals: heard("on_heal_dealt"),
+                        casts: heard("on_cast_complete"),
+                        landed_only: *landed_only,
+                    });
+                }
+                Effect::ShieldOnHeal { item_id, share, .. } => {
+                    let spell = fight
+                        .spells
+                        .iter()
+                        .position(|state| state.id.item_id == *item_id && state.id.tag == 0)
+                        .ok_or_else(|| format!("shield item {item_id} has no spell"))?;
+                    fight.shields_on_heal.push(healer_gear::ShieldOnHeal {
+                        share: *share,
+                        spell,
                     });
                 }
                 _ => {}

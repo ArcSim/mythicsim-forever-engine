@@ -48,6 +48,7 @@ pub(crate) mod items_registry;
 pub(crate) mod major_cooldown;
 pub(crate) mod overheal;
 pub(crate) mod parse_effects;
+pub(crate) mod party_damage;
 pub(crate) mod periodic_action;
 pub(crate) mod pet;
 pub(crate) mod power_infusion;

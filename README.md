@@ -152,6 +152,16 @@ the Go goldens and exporter uses. The departures:
   iteration has no swings or strikes: the Go golden of the Survival weave
   (`survival-hunter-aspect-of-the-beast-over-hawk`) has iterations at 400 to 510 DPS from it, and
   a held move makes it far more common.
+- Party damage for heals that follow it, an assumption until the logs hold them: Forever's level
+  30 beta logs have no Prayer of Mending or Chain Heal yet. A healer's party of five takes hits
+  at random, the tank about once a second and each of the other four about once every five
+  seconds. Prayer of Mending goes on the tank and heals only when the player holding it is hit,
+  then moves to another member with 30 seconds again (its buff row, 401877), so a cast recast
+  every ten seconds heals about three of its five charges. Chain Heal lands on the tank and jumps
+  only to members hit in the last four seconds, 2.72 players a cast on average. Holy Priest
+  healing falls about 13%, Restoration Shaman's about 0.5%. Recalibrate the rates once the logs
+  reach these heals. The reference heals every charge and jump at once. The prepared `heals`
+  effect carries `party`, and each such heal `smart` (`src/prepare/party_damage.rs`).
 
 ## Repository layout
 

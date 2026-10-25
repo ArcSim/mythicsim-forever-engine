@@ -5,5 +5,6 @@ pub(crate) mod devouring_plague;
 pub(crate) mod direct;
 pub(crate) mod holy;
 pub(crate) mod periodic;
+pub(crate) mod prayer_of_mending;
 pub(crate) mod shadowfiend;
 pub(crate) mod shadowform;

@@ -1356,6 +1356,41 @@ pub struct HealSpell {
     /// A shield's client absorb at the caster level, counted as shielding when it goes up.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub absorb: Option<f64>,
+    /// Under Forever's rules, a heal whose reach depends on who the party's damage hits
+    /// ([`PartyDamage`]); none heals `targets` players at once.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub smart: Option<SmartHeal>,
+}
+
+/// A heal that reaches players as the party's damage hits them, in MythicSim's healer sims under
+/// Forever's rules.
+#[derive(Clone, Copy, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(rename_all = "snake_case", deny_unknown_fields)]
+pub enum SmartHeal {
+    /// Prayer of Mending: the buff waits on a player until that player is hit, heals, and moves
+    /// to another member of the party with a charge less and its duration again, until the
+    /// charges or the duration run out. A new cast replaces the one running.
+    Mending {
+        charges: u32,
+        /// How long the buff waits on each player, in nanoseconds.
+        duration: i64,
+    },
+    /// Chain Heal: the first player, then a jump to each other member hit lately, up to
+    /// `targets` players.
+    Chain,
+}
+
+/// The damage a healer's party takes, in MythicSim's healer sims under Forever's rules: how
+/// often each of the five members is hit, for the heals that follow it ([`SmartHeal`]). An
+/// assumption, not a measurement: Forever's level 30 logs hold neither Prayer of Mending nor
+/// Chain Heal (`prepare::party_damage`).
+#[derive(Clone, Debug, Deserialize, Serialize, PartialEq)]
+#[serde(deny_unknown_fields)]
+pub struct PartyDamage {
+    /// Hits a second on each member, the tank first.
+    pub hit_rates: Vec<f64>,
+    /// How long after a hit a member still needs healing, in nanoseconds.
+    pub injured_window: i64,
 }
 
 /// A client damage row's roll: spelldata `Effect.Roll` draws between the bounds unless the
@@ -2207,6 +2242,9 @@ pub enum Effect {
         heals: Vec<HealSpell>,
         player: HealModifiers,
         bonus_healing_taken: f64,
+        /// Forever's rules: the party's damage, when a heal follows it ([`SmartHeal`]).
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        party: Option<PartyDamage>,
     },
     /// Paladin lay_on_hands.go: each rank the rotation names drains the paladin's mana,
     /// restores mana to the paladin when it heals the paladin, and heals for the paladin's

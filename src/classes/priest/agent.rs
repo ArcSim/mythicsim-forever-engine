@@ -9,7 +9,10 @@ use crate::{
 };
 
 use super::{
-    spells::{dark_sacrifice, devouring_plague, direct, holy, periodic, shadowfiend, shadowform},
+    spells::{
+        dark_sacrifice, devouring_plague, direct, holy, periodic, prayer_of_mending, shadowfiend,
+        shadowform,
+    },
     talents::{inner_focus, power_in_light, power_infusion, searing_light, shadow_weaving},
 };
 
@@ -70,6 +73,8 @@ pub(crate) struct PriestAgent {
     holy_nova: Option<Rc<HolyNova>>,
     /// The healer's heals.
     heals: Option<Rc<HealBook>>,
+    /// Prayer of Mending on the party, under Forever's rules.
+    pub(crate) mending: Option<prayer_of_mending::MendingRun>,
     power_infusion: Option<Rc<power_infusion::PowerInfusion>>,
     shadowfiend: Option<Rc<shadowfiend::Shadowfiend>>,
 }
@@ -319,8 +324,15 @@ impl PriestAgent {
                     heals,
                     player,
                     bonus_healing_taken,
+                    party,
                 } => {
-                    let book = HealBook::bind(&fight, heals, *player, *bonus_healing_taken)?;
+                    let book = HealBook::bind(
+                        &fight,
+                        heals,
+                        *player,
+                        *bonus_healing_taken,
+                        party.as_ref(),
+                    )?;
                     fight.agent.heals = Some(Rc::new(book));
                 }
                 Effect::ShadowWordDeath { early_demise_crit } => {
@@ -522,6 +534,17 @@ impl Agent for PriestAgent {
     type Spell = PriestSpell;
     type Aura = PriestAura;
 
+    fn reset(fight: &mut Fight<Self>) {
+        fight.agent.mending = None;
+    }
+
+    fn on_class_action(fight: &mut Fight<Self>, tag: u32) {
+        if tag == prayer_of_mending::MENDING_TAG {
+            let book = fight.agent.heals.clone().expect("the heals are bound");
+            prayer_of_mending::hop(fight, &book);
+        }
+    }
+
     fn apply_effects(fight: &mut Fight<Self>, spell: SpellId, target: Side, behavior: PriestSpell) {
         match behavior {
             PriestSpell::Heal => {
@@ -529,7 +552,12 @@ impl Agent for PriestAgent {
                 let rank = book
                     .rank_of(spell)
                     .expect("a heal is one of the bound ranks");
-                book.cast(fight, rank);
+                match book.mending(rank) {
+                    Some((charges, duration)) => {
+                        prayer_of_mending::cast(fight, &book, rank, charges, duration);
+                    }
+                    None => book.cast(fight, rank),
+                }
             }
             PriestSpell::MindBlast | PriestSpell::Smite => direct::apply(fight, spell, target),
             // talents_holy.go: Go `CalcAndDealAoeDamageWithVariance`, which rolls, resolves and

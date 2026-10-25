@@ -146,6 +146,14 @@ the Go goldens and exporter uses. The departures:
   healing falls about 13%, Restoration Shaman's about 0.5%. Recalibrate the rates once the logs
   reach these heals. The reference heals every charge and jump at once. The prepared `heals`
   effect carries `party`, and each such heal `smart` (`src/prepare/party_damage.rs`).
+- Burst healing, a MythicSim measure rather than a game mechanic: a healer sim reports, beside
+  its healing per second over the fight (sustained, which its mana spreads thin), the most it
+  heals in any ten seconds of each fight over ten seconds (burst), counted as healing per second
+  is: heals, ticks and shields on the healer, less overhealing. Ten seconds is a judgement: a few
+  casts and a heal over time's ticks, short enough that mana does not decide it. The fixtures'
+  bursts run 3 to 4.7 times their healing per second. The prepared player carries
+  `burst_window`, and the report's player `burstHps` (`src/prepare/burst_hps.rs`,
+  `src/core/fight/burst.rs`). The reference, like Go, reports none.
 
 ## Repository layout
 

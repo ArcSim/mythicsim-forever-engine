@@ -389,3 +389,86 @@ fn forever_heal_ticks_crit_as_their_rows_state() {
         &["{SpellID: 25299} tick Crit for 416.842 healing, 90.018 overhealing."],
     );
 }
+
+/// A healer sim under Forever's rules reports its burst healing beside its healing per second:
+/// the most it healed in any ten seconds of each fight, over ten seconds (`prepare::burst_hps`).
+/// It is at least the fight's whole healing per second, and at most all of a fight's healing in
+/// ten seconds. The Go reference's rules report none.
+#[test]
+fn forever_healer_sims_report_burst_healing() {
+    for name in ["holy-priest", "restoration-druid", "restoration-shaman"] {
+        let result = run(name);
+        let player = player(&result);
+        let hps = player["hps"]["avg"].as_f64().unwrap();
+        let burst = player["burstHps"]["avg"].as_f64().unwrap();
+        let fight = result["avgIterationDuration"].as_f64().unwrap_or(120.0);
+        println!("{name}: {hps:.1} HPS, burst {burst:.1}, fight {fight:.1} s");
+        assert!(burst > hps, "{name}: burst {burst} at most {hps}");
+        assert!(
+            burst < hps * fight / 10.0,
+            "{name}: burst {burst} above the fight's healing"
+        );
+        assert!(
+            run_reference(name)["raidMetrics"]["parties"][0]["players"][0]
+                .get("burstHps")
+                .is_none(),
+            "{name}: the reference reports burst"
+        );
+    }
+}
+
+/// The first fight's burst equals the best ten seconds of the healing its log lines show: every
+/// heal, tick and shield on the healer, less overhealing. The log's times are rounded to the
+/// hundredth of a second, so the check brackets it between windows a hundredth shorter and longer.
+#[test]
+fn the_first_fights_burst_is_its_best_ten_seconds_of_logged_healing() {
+    let mut request: Value =
+        serde_json::from_slice(&fs::read(fixtures().join("holy-priest.request.json")).unwrap())
+            .unwrap();
+    request["simOptions"]["saveAllValues"] = json!(true);
+    let prepared = prepare(request.to_string().as_bytes(), "rust").unwrap();
+    check_prepared(&prepared).unwrap();
+    let result = simulate_prepared(&prepared).unwrap().result;
+    let first = player(&result)["burstHps"]["allValues"][0]
+        .as_f64()
+        .unwrap();
+    let mut heals: Vec<(f64, f64)> = Vec::new();
+    for line in result["logs"].as_str().unwrap().lines() {
+        let labels: Vec<&str> = line.splitn(4, "] [").collect();
+        if labels.len() < 3 {
+            continue;
+        }
+        let (unit, target) = (labels[1], labels[2].split(']').next().unwrap());
+        if unit != target {
+            continue;
+        }
+        let amount = if let Some(at) = line.find(" for ").filter(|_| line.contains(" healing")) {
+            line[at + 5..].split(' ').next().unwrap()
+        } else if let Some(at) = line.find(" Shield for ") {
+            line[at + 12..].trim_end_matches('.')
+        } else {
+            continue;
+        };
+        let time: f64 = line[1..line.find(']').unwrap()].parse().unwrap();
+        heals.push((time, amount.parse().unwrap()));
+    }
+    assert!(heals.len() > 50, "{} heals logged", heals.len());
+    let best = |window: f64| -> f64 {
+        heals
+            .iter()
+            .map(|&(end, _)| {
+                heals
+                    .iter()
+                    .filter(|&&(at, _)| at > end - window && at <= end)
+                    .map(|&(_, amount)| amount)
+                    .sum::<f64>()
+            })
+            .fold(0.0, f64::max)
+            / 10.0
+    };
+    let (low, high) = (best(9.99), best(10.01));
+    assert!(
+        low - 0.01 <= first && first <= high + 0.01,
+        "burst {first}, logged {low} to {high}"
+    );
+}

@@ -871,6 +871,11 @@ pub struct Player {
     /// heal in full.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub overheal: Vec<Overheal>,
+    /// MythicSim's healer sims under Forever's rules: the length of the window burst healing
+    /// per second is measured over, in nanoseconds (`prepare::burst_hps`). None reports no burst,
+    /// as Go does not.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub burst_window: Option<i64>,
     /// Every prepull action Go registered: the rotation's, and any a class or item adds.
     pub prepull_actions: usize,
     /// The dot base durations the rotation's `dotBaseDuration` values captured when Go built

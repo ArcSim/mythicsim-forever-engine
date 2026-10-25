@@ -1207,3 +1207,88 @@ fn only_forever_preparation_refreshes_casting_regen_at_once() {
     );
     assert!(go["player"].get("move_arrives_at_destination").is_none());
 }
+
+/// The production Marksmanship Hunter's request prepared with `rules`.
+fn production_marksmanship_prepared(rules: forever_engine::Rules) -> Value {
+    let request = fs::read(
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-marksmanship-hunter.request.json"),
+    )
+    .unwrap();
+    forever_engine::prepare_json_with(&request, "x", rules).unwrap()
+}
+
+/// Each Multi-Shot cast of the first fight with the ranged haste up as it starts: whether Rapid
+/// Fire (3045) and Quick Shots (6150) are up, and the cast line.
+fn multi_shot_casts(logs: &str) -> Vec<(bool, bool, &str)> {
+    let (mut rapid_fire, mut quick_shots) = (false, false);
+    let mut casts = Vec::new();
+    for line in unit_lines(logs, "marksmanship-hunter (#1)") {
+        for (aura, up) in [
+            ("{SpellID: 3045}", &mut rapid_fire),
+            ("{SpellID: 6150}", &mut quick_shots),
+        ] {
+            if line.ends_with(&format!("Aura gained: {aura}")) {
+                *up = true;
+            } else if line.ends_with(&format!("Aura faded: {aura}")) {
+                *up = false;
+            }
+        }
+        if line.contains("Casting {SpellID: 2643}") {
+            casts.push((rapid_fire, quick_shots, line));
+        }
+    }
+    casts
+}
+
+/// Forever's rule (README, Rust-only mechanics): Multi-Shot casts over half a second divided by
+/// the ranged haste multiplier, as Aimed Shot's two seconds are. Our Forever beta logs: 0.44 to
+/// 0.45 seconds with the quiver's 15% (0.5 / 1.15), 0.32 under Rapid Fire as well (0.5 / 1.61).
+/// Seed 8's first fight casts it with the quiver alone and with Rapid Fire up.
+#[test]
+fn multi_shot_casts_half_a_second_over_the_ranged_haste_in_forever() {
+    let mut value = production_marksmanship_prepared(forever_engine::Rules::Forever);
+    value["sim"]["seed"] = json!(8);
+    let logs = first_fight_log(value);
+    let casts = multi_shot_casts(&logs);
+    let expected = |rapid_fire: bool, quick_shots: bool| match (rapid_fire, quick_shots) {
+        (false, false) => "Cast Time = 434.782608ms",
+        (true, false) => "Cast Time = 310.559006ms",
+        (false, true) => "Cast Time = 334.44816ms",
+        (true, true) => "Cast Time = 238.891543ms",
+    };
+    for &(rapid_fire, quick_shots, line) in &casts {
+        assert!(line.contains(expected(rapid_fire, quick_shots)), "{line}");
+    }
+    for rapid_fire in [false, true] {
+        assert!(
+            casts.iter().any(|&(rf, qs, _)| rf == rapid_fire && !qs),
+            "no Multi-Shot with Rapid Fire {rapid_fire} and Quick Shots down: {casts:?}"
+        );
+    }
+}
+
+/// Only Forever preparation gives Multi-Shot its half second cast; under the reference's rules
+/// its row's cast time, none, keeps it instant.
+#[test]
+fn only_forever_preparation_gives_multi_shot_a_cast_time() {
+    let cast_time = |prepared: &Value| {
+        let spells = prepared["player"]["spells"].as_array().unwrap();
+        let multi_shot = spells
+            .iter()
+            .find(|spell| spell["action_id"] == json!({ "spell_id": 2643 }))
+            .expect("Multi-Shot");
+        multi_shot["default_cast"]["cast_time_ns"].clone()
+    };
+    let forever = production_marksmanship_prepared(forever_engine::Rules::Forever);
+    let mut go = production_marksmanship_prepared(forever_engine::Rules::GoReference);
+    assert_eq!(cast_time(&forever), json!(500_000_000));
+    assert_eq!(cast_time(&go), json!(0));
+    go["sim"]["seed"] = json!(8);
+    let logs = first_fight_log(go);
+    let casts = multi_shot_casts(&logs);
+    assert!(!casts.is_empty(), "{logs}");
+    for (_, _, line) in casts {
+        assert!(line.contains("Cast Time = 0s"), "{line}");
+    }
+}

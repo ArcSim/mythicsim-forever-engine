@@ -152,6 +152,14 @@ the Go goldens and exporter uses. The departures:
   iteration has no swings or strikes: the Go golden of the Survival weave
   (`survival-hunter-aspect-of-the-beast-over-hawk`) has iterations at 400 to 510 DPS from it, and
   a held move makes it far more common.
+- Multi-Shot's cast, from our Forever beta combat logs on Warcraft Logs (reports
+  Par9kghHbAVYptwm, TBqwNKxVW8H3narp and mJGyPgZAtr2T4YpX, quiver at 15% speed): all 121
+  Multi-Shots have a cast start, a median 0.45, 0.45 and 0.44 seconds before the shot, and 0.32
+  under Rapid Fire in the third. Its client row (2643) has no cast time, so the reference casts
+  it at once.
+  Forever preparation gives it a 0.5 second cast, which the ranged haste multiplier divides as it
+  does Aimed Shot's (0.5 / 1.15 is 0.435, and 0.5 / (1.15 x 1.4) is 0.31 under Rapid Fire); its
+  global cooldown and cooldown are unchanged, and like any cast it cannot start while moving.
 - Party damage for heals that follow it, an assumption until the logs hold them: Forever's level
   30 beta logs have no Prayer of Mending or Chain Heal yet. A healer's party of five takes hits
   at random, the tank about once a second and each of the other four about once every five

@@ -226,6 +226,7 @@ const COMMON_EFFECTS: &[&str] = &[
     "judgement_of_light",
     "judgement_of_wisdom",
     "health_on_cast",
+    "mana_on_cast",
     "parry_haste",
     "player_movement",
     "potion_mana",
@@ -243,6 +244,7 @@ const COMMON_EFFECTS: &[&str] = &[
     "shatter_curse",
     "speed_on_use",
     "spell_cost_aura_on_use",
+    "spell_mod_aura_on_use",
     "spell_data_damage_proc",
     "spell_data_stat_proc",
     "spell_data_heal_proc",
@@ -341,6 +343,9 @@ fn common_spell_capability(spell: &Spell, prepared: &PreparedV2) -> Option<&'sta
         }
         Effect::SpellCostAuraOnUse { item_id, .. } if *item_id == item && id.tag == 0 => {
             Some("spell_cost_aura_on_use")
+        }
+        Effect::SpellModAuraOnUse { item_id, .. } if *item_id == item && id.tag == 0 => {
+            Some("spell_mod_aura_on_use")
         }
         // A damage on-use item whose outcome appliers the runtime knows.
         Effect::DamageOnUse {
@@ -510,7 +515,10 @@ fn common_claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         Effect::ArmorDebuffProc {
             trigger_aura, aura, ..
         } => vec![("player", trigger_aura), ("target", aura)],
-        Effect::SpellCostAuraOnUse { aura, .. } => vec![("player", aura)],
+        Effect::SpellCostAuraOnUse { aura, .. } | Effect::SpellModAuraOnUse { aura, .. } => {
+            vec![("player", aura)]
+        }
+        Effect::ManaOnCast { trigger_aura, .. } => vec![("player", trigger_aura)],
         Effect::WindfuryTotem {
             trigger_aura,
             proc_aura,

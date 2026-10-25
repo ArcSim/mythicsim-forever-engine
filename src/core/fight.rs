@@ -1679,6 +1679,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) energize_procs: Vec<energy::EnergizeProc>,
     pub(crate) health_on_cast: Vec<HealthOnCast>,
     pub(crate) judgements_of_light: Vec<JudgementOfLight>,
+    /// Listeners on the player's casts that restore mana: [`Effect::ManaOnCast`].
+    pub(crate) mana_on_cast: Vec<energy::ManaOnCast>,
     /// Go `rageBar`, for a player that has one.
     pub(crate) rage: Option<rage::RageBar>,
     /// Single aura exclusive categories the runtime enforces.
@@ -2603,6 +2605,7 @@ impl<A: Agent> Fight<A> {
                             periodic: *periodic,
                         }),
                         Effect::SpellCostAuraOnUse { item_id, aura, .. }
+                        | Effect::SpellModAuraOnUse { item_id, aura, .. }
                             if *item_id == item && id.tag == 0 =>
                         {
                             activations.push((spells.len(), aura));
@@ -3552,6 +3555,18 @@ impl<A: Agent> Fight<A> {
                     .flatten()
                 {
                     AuraBehavior::JudgementOfLight(index)
+                } else if let Some(index) = (side == Side::Player)
+                    .then(|| {
+                        effects
+                            .iter()
+                            .filter(|effect| matches!(effect, Effect::ManaOnCast { .. }))
+                            .position(|effect| {
+                                matches!(effect, Effect::ManaOnCast { trigger_aura, .. } if *trigger_aura == exported.label)
+                            })
+                    })
+                    .flatten()
+                {
+                    AuraBehavior::ManaOnCast(index)
                 } else if side == Side::Player
                     && effects.iter().any(|effect| {
                         matches!(effect, Effect::Crusader { trigger_aura, .. } if *trigger_aura == exported.label)
@@ -3836,6 +3851,7 @@ impl<A: Agent> Fight<A> {
             energize_procs: Vec::new(),
             health_on_cast: Vec::new(),
             judgements_of_light: Vec::new(),
+            mana_on_cast: Vec::new(),
             player: Player::initial(&config),
             cast_speed: config.cast_speed,
             targets: vec![
@@ -4069,6 +4085,32 @@ impl<A: Agent> Fight<A> {
                         heal: *heal,
                         metrics,
                         delay: *delay_ns,
+                    });
+                }
+                Effect::ManaOnCast {
+                    rng_label,
+                    proc_chance,
+                    spells,
+                    metrics_action_id,
+                    ..
+                } => {
+                    let mut mana = vec![None; fight.spells.len()];
+                    for entry in spells {
+                        let slot = mana.get_mut(entry.spell).ok_or_else(|| {
+                            format!(
+                                "mana on cast of spell {} outside the spellbook",
+                                entry.spell
+                            )
+                        })?;
+                        *slot = Some(entry.mana);
+                    }
+                    let metrics =
+                        fight.new_resource_metrics(metrics_action_id.clone(), ResourceKind::Mana);
+                    fight.mana_on_cast.push(energy::ManaOnCast {
+                        label: rng_label.clone(),
+                        chance: *proc_chance,
+                        mana,
+                        metrics,
                     });
                 }
                 _ => {}
@@ -4591,6 +4633,42 @@ impl<A: Agent> Fight<A> {
                             0,
                             affected,
                         )
+                    })
+                    .collect();
+                fight.aura_mods.push(mods);
+                fight.aura_mut(aura).behavior = AuraBehavior::SpellMods(fight.aura_mods.len() - 1);
+            }
+            // A healer's on-use aura of spell mods: one dynamic mod per kind and amount, over the
+            // spells it changes.
+            if let Effect::SpellModAuraOnUse { aura, changes, .. } = effect {
+                let aura = fight.player_aura(aura)?;
+                let mut groups: Vec<(spell_mod::ModKind, f64, Vec<SpellId>)> = Vec::new();
+                for change in changes {
+                    let kind = spell_mod::ModKind::named(&change.kind)
+                        .ok_or_else(|| format!("spell mod {:?} on use", change.kind))?;
+                    if change.spell >= fight.spells.len() {
+                        return Err(format!(
+                            "spell mod on spell {} outside the spellbook",
+                            change.spell
+                        ));
+                    }
+                    match groups
+                        .iter_mut()
+                        .find(|(k, value, _)| *k == kind && *value == change.value)
+                    {
+                        Some((_, _, spells)) => spells.push(change.spell),
+                        None => groups.push((kind, change.value, vec![change.spell])),
+                    }
+                }
+                let mods = groups
+                    .into_iter()
+                    .map(|(kind, value, spells)| {
+                        let (float, time) = if kind.is_time() {
+                            (0.0, value as i64)
+                        } else {
+                            (value, 0)
+                        };
+                        fight.register_mod(kind, float, time, spells)
                     })
                     .collect();
                 fight.aura_mods.push(mods);

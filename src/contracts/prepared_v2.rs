@@ -135,6 +135,14 @@ pub struct ActionId {
     pub tag: i32,
 }
 
+fn one() -> f64 {
+    1.0
+}
+
+fn is_one(value: &f64) -> bool {
+    *value == 1.0
+}
+
 fn is_false(value: &bool) -> bool {
     !*value
 }
@@ -1365,6 +1373,10 @@ pub struct HealSpell {
     /// ([`PartyDamage`]); none heals `targets` players at once.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub smart: Option<SmartHeal>,
+    /// A multiplier on every player past the first, on top of the falloff: The Ten Storms'
+    /// bonus to Chain Heal's jumps. One is none.
+    #[serde(default = "one", skip_serializing_if = "is_one")]
+    pub past_first_multiplier: f64,
 }
 
 /// A heal that reaches players as the party's damage hits them, in MythicSim's healer sims under
@@ -1431,6 +1443,26 @@ pub struct AvoidTrigger {
 pub struct CostChange {
     pub spell: usize,
     pub flat: i32,
+}
+
+/// A spell mod's change to one spell, by spellbook position: `kind` names the runtime's mod
+/// (`cast_time_percent`, `cast_time_flat`, `power_cost_percent_add`, `power_cost_flat`,
+/// `bonus_crit_percent`, `damage_done_flat` or `global_cooldown_flat`); a time is in
+/// nanoseconds.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SpellModChange {
+    pub spell: usize,
+    pub kind: String,
+    pub value: f64,
+}
+
+/// A spell a mana listener hears, by spellbook position, with the mana it restores.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SpellMana {
+    pub spell: usize,
+    pub mana: f64,
 }
 
 /// shared_utils.go `calcMultiTargetDamage` for a chain: the targets it reaches and the share of
@@ -3079,6 +3111,26 @@ pub enum Effect {
         item_id: i32,
         aura: String,
         cost_changes: Vec<CostChange>,
+    },
+    /// MythicSim's healer sims under Forever's rules: an item use that activates an aura of
+    /// spell mods its client row states, as Hazza'rah's Charm of Healing's cast time and cost.
+    /// Each change is one spell's, by spellbook position, as a reset simulation with the aura
+    /// active reads it.
+    SpellModAuraOnUse {
+        item_id: i32,
+        aura: String,
+        changes: Vec<SpellModChange>,
+    },
+    /// MythicSim's healer sims under Forever's rules: a listener on the player's casts that
+    /// restores mana a spell batch window later, as Sudden Insight, Idol of Longevity or The
+    /// Earthfury's Mana Surge. Each spell it hears, by spellbook position, with the mana it
+    /// restores.
+    ManaOnCast {
+        trigger_aura: String,
+        rng_label: String,
+        proc_chance: f64,
+        spells: Vec<SpellMana>,
+        metrics_action_id: ActionId,
     },
     InertListener {
         unit: String,
@@ -4753,6 +4805,8 @@ impl Effect {
             Effect::EnergizeOnUse { .. } => "energize_on_use",
             Effect::SpellDataStatProc { .. } => "spell_data_stat_proc",
             Effect::SpellCostAuraOnUse { .. } => "spell_cost_aura_on_use",
+            Effect::SpellModAuraOnUse { .. } => "spell_mod_aura_on_use",
+            Effect::ManaOnCast { .. } => "mana_on_cast",
             Effect::InertListener { .. } => "inert_listener",
             Effect::ShadowBolt {} => "shadow_bolt",
             Effect::Immolate { .. } => "immolate",

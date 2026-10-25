@@ -178,6 +178,9 @@ pub(crate) enum AuraBehavior<K> {
     SpellDataStatProc(usize),
     /// An aura whose spell mods, at this position in `Fight::aura_mods`, apply while active.
     SpellMods(usize),
+    /// A listener on the player's casts that restores mana, by its position in
+    /// `Fight::mana_on_cast`.
+    ManaOnCast(usize),
     /// The aura of a dot or channel.
     Dot(DotId),
     /// Go movement.go's Movement aura, which marks its unit moving.
@@ -1191,6 +1194,7 @@ impl<A: Agent> Fight<A> {
                 AuraBehavior::SpellDataStatProc(proc) if self.spell_stat_procs[proc].casts => {
                     self.spell_stat_proc_callback(aura, proc, Some(spell), None)
                 }
+                AuraBehavior::ManaOnCast(index) => self.mana_on_cast_callback(aura, index, spell),
                 AuraBehavior::SpellDataDamageProc(proc) if self.damage_procs[proc].casts => {
                     // A cast carries no result: the proc answers the current target.
                     let result = SpellResult {
@@ -1792,6 +1796,7 @@ impl<A: Agent> Fight<A> {
                 self.gain_health(health, metrics);
             }
             AuraBehavior::JudgementOfLight(index) => self.judgement_of_light_heal(index, spell),
+            AuraBehavior::ManaOnCast(index) => self.mana_on_cast_handler(index, spell),
             AuraBehavior::Class(kind) => A::on_delayed_proc(self, aura, kind, spell, result),
             _ => {}
         }

@@ -1115,6 +1115,186 @@ fn a_queued_spell_holds_the_weave_in_place_until_it_fires() {
     assert!(hits > 20 && shots > 20, "{hits} hits, {shots} shots");
 }
 
+const WEAVER: &str = "survival-hunter (#1)";
+
+/// A rotation move to `range` yards when `condition` holds.
+fn move_when(range: &str, condition: Value) -> Value {
+    json!({"action": {"condition": condition, "move": {"rangeFromTarget": {"const": {"val": range}}}}})
+}
+
+/// The current time compared with a constant.
+fn time_is(op: &str, time: &str) -> Value {
+    json!({"cmp": {"op": op, "lhs": {"currentTime": {}}, "rhs": {"const": {"val": time}}}})
+}
+
+/// The distance to the target compared with a constant.
+fn distance_is(op: &str, yards: &str) -> Value {
+    json!({"cmp": {"op": op, "lhs": {"unitDistance": {}}, "rhs": {"const": {"val": yards}}}})
+}
+
+/// The weaving Survival Hunter with the beta swing probe's 2.33 s off hand: the prepull walk
+/// leaves it `start` yards out, its Auto Shot fires at the pull, and its priority list holds
+/// only `moves`. The first fight's log, under Forever's off hand rule or the reference's.
+fn off_hand_weave(start: &str, moves: Value, forever: bool) -> String {
+    let mut value = fixture("survival-hunter-weaving-moves");
+    value["melee"]["off_hand"]["swing_speed"] = json!(2.33);
+    value["player"]["rotation"]["prepullActions"][1]["action"]["move"]["rangeFromTarget"]
+        ["const"]["val"] = json!(start);
+    value["player"]["rotation"]["priorityList"] = moves;
+    if forever {
+        value["player"]["off_hand_waits_from_attack_start"] = json!(true);
+    }
+    first_fight_log(value)
+}
+
+/// One walk in from 20 or 12 yards, a second into the fight.
+fn walk_in_once(start: &str, forever: bool) -> String {
+    off_hand_weave(
+        start,
+        json!([move_when("5", time_is("OpGe", "1s"))]),
+        forever,
+    )
+}
+
+/// A walk in from 12 yards a second into the fight, a walk out at 8.5 s and straight back in.
+fn walk_out_and_back(forever: bool) -> String {
+    let out = json!({"and": {"vals": [
+        time_is("OpGe", "8.5s"), time_is("OpLt", "10s"), distance_is("OpLe", "5")
+    ]}});
+    let back = json!({"and": {"vals": [time_is("OpGe", "8.5s"), distance_is("OpGe", "12")]}});
+    let first = json!({"and": {"vals": [time_is("OpGe", "1s"), time_is("OpLt", "8.5s")]}});
+    off_hand_weave(
+        "12",
+        json!([
+            move_when("5", first),
+            move_when("12", out),
+            move_when("5", back)
+        ]),
+        forever,
+    )
+}
+
+/// The seconds of the player's off hand swings and Auto Shots in a first-fight log.
+fn swings(logs: &str, needle: &str) -> Vec<f64> {
+    unit_lines(logs, WEAVER)
+        .into_iter()
+        .filter(|line| line.contains(needle))
+        .map(at)
+        .collect()
+}
+
+const OFF_HAND: &str = "Casting {OtherID: 3, Tag: 2}";
+const AUTO_SHOT: &str = "Casting {OtherID: 4}";
+
+/// The first off hand swing at or after `time`, and half the off hand's swing, from the gap
+/// between two swings in melee range. Log times are rounded to the hundredth.
+fn off_hand_after(logs: &str, time: f64) -> (f64, f64) {
+    let off_hand = swings(logs, OFF_HAND);
+    let half = (off_hand[1] - off_hand[0]) / 2.0;
+    let first = off_hand
+        .into_iter()
+        .find(|&swing| swing >= time - 0.005)
+        .expect("an off hand swing");
+    (first, half)
+}
+
+/// Forever's rule, from the beta swing probe: an Auto Shot turns the melee attack off and the
+/// walk back in turns it on as it starts, so the off hand's half swing wait runs during the walk.
+/// A walk longer than the wait brings the off hand in on arrival, beside the main hand.
+#[test]
+fn a_walk_in_longer_than_half_the_off_hand_swing_swings_it_on_arrival() {
+    let logs = walk_in_once("20", true);
+    let (start, arrival) = movement_windows(&logs, WEAVER)[1];
+    assert!(swings(&logs, AUTO_SHOT)[0] <= start, "{logs}");
+    let (first, half) = off_hand_after(&logs, arrival);
+    assert!(
+        arrival - start > half + 0.5,
+        "{start}..{arrival}, half {half}"
+    );
+    assert!((first - arrival).abs() < 0.015, "{first} after {arrival}");
+}
+
+/// A walk shorter than the off hand's half swing wait: the off hand swings half a swing after the
+/// walk began, a little after arrival.
+#[test]
+fn a_short_walk_in_swings_the_off_hand_half_a_swing_after_it_began() {
+    let logs = walk_in_once("12", true);
+    let (start, arrival) = movement_windows(&logs, WEAVER)[1];
+    assert!(swings(&logs, AUTO_SHOT)[0] <= start, "{logs}");
+    let (first, half) = off_hand_after(&logs, arrival);
+    assert!(
+        arrival - start < half - 0.1,
+        "{start}..{arrival}, half {half}"
+    );
+    assert!(
+        (first - (start + half)).abs() < 0.015,
+        "{first}, {start} + {half}"
+    );
+}
+
+/// With no Auto Shot since the attack started, a walk out of melee range and back in adds no new
+/// wait: the off hand resumes on arrival, as the main hand does, since its swing came due while
+/// the hunter was out.
+#[test]
+fn walking_out_and_back_in_without_a_shot_adds_no_off_hand_wait() {
+    let logs = walk_out_and_back(true);
+    let windows = movement_windows(&logs, WEAVER);
+    let (out, _) = windows[2];
+    let (_, back) = windows[3];
+    assert!(
+        swings(&logs, AUTO_SHOT)
+            .iter()
+            .all(|&shot| shot < out || shot > back),
+        "{logs}"
+    );
+    let last = swings(&logs, OFF_HAND)
+        .into_iter()
+        .rev()
+        .find(|&swing| swing < out)
+        .expect("an off hand swing before the walk out");
+    let (first, half) = off_hand_after(&logs, back);
+    assert!(
+        last + 2.0 * half < back,
+        "{last} + {} before {back}",
+        2.0 * half
+    );
+    assert!((first - back).abs() < 0.015, "{first} after {back}");
+}
+
+/// Only Forever preparation writes the rule. Under the reference the off hand swings half a swing
+/// after every arrival in melee range: after a long walk, a short one, and a step back in with
+/// the attack still on.
+#[test]
+fn the_reference_swings_the_off_hand_half_a_swing_after_every_arrival() {
+    let request = fs::read(
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-survival-hunter.request.json"),
+    )
+    .unwrap();
+    let forever = forever_engine::prepare_json(&request, "x").unwrap();
+    let go = forever_engine::prepare_json_with(&request, "x", forever_engine::Rules::GoReference)
+        .unwrap();
+    assert_eq!(
+        forever["player"]["off_hand_waits_from_attack_start"],
+        json!(true)
+    );
+    assert!(go["player"]
+        .get("off_hand_waits_from_attack_start")
+        .is_none());
+    for (logs, walk) in [
+        (walk_in_once("20", false), 1),
+        (walk_in_once("12", false), 1),
+        (walk_out_and_back(false), 3),
+    ] {
+        let (_, arrival) = movement_windows(&logs, WEAVER)[walk];
+        let (first, half) = off_hand_after(&logs, arrival);
+        assert!(
+            (first - (arrival + half)).abs() < 0.015,
+            "{first}, {arrival} + {half}"
+        );
+    }
+}
+
 /// The player's mana metrics, by action id, and its damage per second, over a short run.
 fn mana_rows(mut value: Value, forever: bool) -> (Vec<(Value, f64, f64)>, f64) {
     value["sim"]["iterations"] = json!(200);

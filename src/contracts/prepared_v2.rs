@@ -877,6 +877,12 @@ pub struct Player {
     /// Hunter who stepped in out of melee range for the rest of the fight.
     #[serde(default, skip_serializing_if = "is_false")]
     pub move_arrives_at_destination: bool,
+    /// Forever's rule: a dual wielder who also shoots has a melee attack that an Auto Shot turns
+    /// off and a walk into melee range turns back on as it starts, and the off hand's half swing
+    /// wait counts from then. An attack still on when the player steps back in adds no new wait.
+    /// False is the Go reference, which adds the half swing on every arrival in melee range.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub off_hand_waits_from_attack_start: bool,
     /// MythicSim's healer sims under Forever's rules: each heal's share that real healers
     /// overheal, measured on foreverlogs.gg (`prepare::overheal`). Only the rest counts as
     /// healing; the share counts as overhealing. Empty is the Go reference, which counts every

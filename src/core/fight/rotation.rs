@@ -2380,11 +2380,9 @@ impl<A: Agent> Fight<A> {
         // Forever's rule (README, Rust-only mechanics): a player who has queued a spell stays
         // put until it fires. The reference walks at once, so a shot queued for the end of the
         // global cooldown fires inside its minimum range, or a strike outside melee range.
-        if ready && self.move_waits_for_queued_cast {
-            if self.queued_cast_pending() {
-                self.apl.move_held_for_queue = true;
-                return false;
-            }
+        if ready && self.move_waits_for_queued_cast && self.queued_cast_pending() {
+            self.apl.move_held_for_queue = true;
+            return false;
         }
         ready
     }

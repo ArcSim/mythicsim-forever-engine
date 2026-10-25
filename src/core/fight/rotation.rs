@@ -255,6 +255,8 @@ pub(crate) struct AplState {
     /// While a look walks the list: the energy below which every answer it asked holds as
     /// energy rises.
     walk_energy: f64,
+    /// A move waits for the queued spell: the rotation runs again as soon as the spell fires.
+    pub(crate) move_held_for_queue: bool,
 }
 
 /// A look's proof that no item is ready: it holds while the clock is before `until` and nothing
@@ -2372,9 +2374,26 @@ impl<A: Agent> Fight<A> {
     /// Go `APLActionMove.IsReady`: not already moving, a different range or the prepull, and no
     /// cast in progress.
     fn move_ready(&mut self, range: &Compiled) -> bool {
-        !self.player.moving
+        let ready = !self.player.moving
             && (self.get_float(range) != self.config.distance || self.now < 0)
-            && self.player.hardcast.expires < self.now
+            && self.player.hardcast.expires < self.now;
+        // Forever's rule (README, Rust-only mechanics): a player who has queued a spell stays
+        // put until it fires. The reference walks at once, so a shot queued for the end of the
+        // global cooldown fires inside its minimum range, or a strike outside melee range.
+        if ready && self.move_waits_for_queued_cast && self.queued_cast_pending() {
+            self.apl.move_held_for_queue = true;
+            return false;
+        }
+        ready
+    }
+
+    /// Whether the player has a queued spell still waiting to fire that is in range where the
+    /// player stands: waiting for one out of range would not let it land, and a rotation that
+    /// keeps queueing it would never move.
+    fn queued_cast_pending(&self) -> bool {
+        self.player
+            .queued
+            .is_some_and(|queued| queued.action.is_some() && self.in_cast_range(queued.spell))
     }
 
     /// Go `APLActionMoveDuration.IsReady`: not moving, or the move ends this step, for a
@@ -2972,6 +2991,7 @@ impl<A: Agent> Fight<A> {
         if side == Side::Player {
             self.in_rotation = false;
             self.apl.controlling = None;
+            self.apl.move_held_for_queue = false;
             self.apl.interrupt_channel_if = None;
             self.apl.allow_channel_recast = false;
             self.apl.proofs.clear();

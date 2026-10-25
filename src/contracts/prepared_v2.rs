@@ -865,6 +865,18 @@ pub struct Player {
     /// tick ignores the change until something else refreshes it.
     #[serde(default, skip_serializing_if = "is_false")]
     pub casting_regen_at_once: bool,
+    /// Forever's rule: a rotation's move waits for a spell the player has queued to fire, so a
+    /// shot or strike queued at the end of the global cooldown is cast where it was pressed. False
+    /// is the Go reference, whose move starts at once and can carry the player out of the queued
+    /// spell's range before it fires.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub move_waits_for_queued_cast: bool,
+    /// Forever's rule: a move whose end time has come reads as arrived, so a rotation woken at
+    /// that instant, before the move's end action runs, sees the destination. False is the Go
+    /// reference, which reads the millisecond-rounded walk a hair short of it and can leave a
+    /// Hunter who stepped in out of melee range for the rest of the fight.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub move_arrives_at_destination: bool,
     /// MythicSim's healer sims under Forever's rules: each heal's share that real healers
     /// overheal, measured on foreverlogs.gg (`prepare::overheal`). Only the rest counts as
     /// healing; the share counts as overhealing. Empty is the Go reference, which counts every

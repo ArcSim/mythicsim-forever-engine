@@ -1090,6 +1090,31 @@ fn the_survival_weave_keeps_melee_and_shot_ranges() {
     assert!(hits > 20 && shots > 20, "{hits} hits, {shots} shots");
 }
 
+/// Forever's rule on the same fight: a player who has queued a spell stays put until it fires,
+/// so the shots queued at the end of the global cooldown go off before the step in, and fewer
+/// shots fail inside the minimum range. A shot the rotation queues once the walk has started can
+/// still fail, as the reference's can.
+#[test]
+fn a_queued_spell_holds_the_weave_in_place_until_it_fires() {
+    let failed = |logs: &str| {
+        logs.matches("failed to cast: extra spell condition")
+            .count()
+    };
+    let reference = first_fight_log(fixture("survival-hunter-weave-bae-queued-shot"));
+    let mut value = fixture("survival-hunter-weave-bae-queued-shot");
+    value["player"]["move_waits_for_queued_cast"] = json!(true);
+    value["player"]["move_arrives_at_destination"] = json!(true);
+    let logs = first_fight_log(value);
+    assert!(
+        failed(&logs) < failed(&reference),
+        "{} failed casts under Forever's rule, {} under the reference",
+        failed(&logs),
+        failed(&reference)
+    );
+    let (hits, shots) = assert_ranges_hold(&logs, "Custom Hunter (#1)", 12.0);
+    assert!(hits > 20 && shots > 20, "{hits} hits, {shots} shots");
+}
+
 /// The player's mana metrics, by action id, and its damage per second, over a short run.
 fn mana_rows(mut value: Value, forever: bool) -> (Vec<(Value, f64, f64)>, f64) {
     value["sim"]["iterations"] = json!(200);
@@ -1174,4 +1199,11 @@ fn only_forever_preparation_refreshes_casting_regen_at_once() {
         .unwrap();
     assert_eq!(forever["player"]["casting_regen_at_once"], json!(true));
     assert!(go["player"].get("casting_regen_at_once").is_none());
+    assert_eq!(forever["player"]["move_waits_for_queued_cast"], json!(true));
+    assert!(go["player"].get("move_waits_for_queued_cast").is_none());
+    assert_eq!(
+        forever["player"]["move_arrives_at_destination"],
+        json!(true)
+    );
+    assert!(go["player"].get("move_arrives_at_destination").is_none());
 }

@@ -141,13 +141,17 @@ impl<A: Agent> Fight<A> {
         }
     }
 
-    pub(crate) fn extra_cast_condition(&mut self, spell: SpellId) -> bool {
-        // Go RegisterSpell wraps the condition with the range check, which runs first.
+    /// Go RegisterSpell's range check: the caster is within the spell's range now.
+    pub(crate) fn in_cast_range(&self, spell: SpellId) -> bool {
         let state = &self.spells[spell];
         let distance = self.distance_now(state.caster);
-        if (state.min_range != 0.0 && distance < state.min_range)
-            || (state.max_range != 0.0 && distance > state.max_range)
-        {
+        !((state.min_range != 0.0 && distance < state.min_range)
+            || (state.max_range != 0.0 && distance > state.max_range))
+    }
+
+    pub(crate) fn extra_cast_condition(&mut self, spell: SpellId) -> bool {
+        // Go RegisterSpell wraps the condition with the range check, which runs first.
+        if !self.in_cast_range(spell) {
             return false;
         }
         match self.spells[spell].behavior {

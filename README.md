@@ -136,6 +136,22 @@ the Go goldens and exporter uses. The departures:
   mage who uses a gem cannot use a rune for 2 minutes, and the reverse. The reference gives the
   gems a category 30 timer of their own, which no Forever item has, so a gem and a rune went back
   to back. Forever preparation puts the gems on the category 1153 timer.
+- A queued spell holds a rotation's move, from MythicSim's Discord (25 October 2026, Bae and
+  MuRRRkn on the Survival weave): a player who has pressed a shot or strike in the spell queue
+  window does not walk off before it fires. The reference starts the move at once, so a shot
+  queued at the end of the global cooldown fired from inside its 10.5 yard minimum range and a
+  Strider Kick queued as the weave stepped out fired from outside melee range, and both failed.
+  On the Survival light weave that cost a Strider Kick or a shot every few cycles, and 3% haste
+  lost 19 DPS because it moved the Auto Shot onto the global cooldown more often. Forever
+  preparation writes `move_waits_for_queued_cast`; a spell out of range where the player stands
+  does not hold the move.
+- A move arrives when its time is up (`move_arrives_at_destination`, Forever preparation): a
+  rotation woken at the instant a move ends, before its end action runs, reads the destination.
+  The reference reads the walk rounded to the millisecond, 5.001 yards for a step in to 5, takes
+  the Hunter out of melee range with no move left to bring them back, and the rest of the
+  iteration has no swings or strikes: the Go golden of the Survival weave
+  (`survival-hunter-aspect-of-the-beast-over-hawk`) has iterations at 400 to 510 DPS from it, and
+  a held move makes it far more common.
 - Party damage for heals that follow it, an assumption until the logs hold them: Forever's level
   30 beta logs have no Prayer of Mending or Chain Heal yet. A healer's party of five takes hits
   at random, the tank about once a second and each of the other four about once every five

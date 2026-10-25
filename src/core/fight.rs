@@ -1864,6 +1864,10 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) hp_percent_for_defensives: f64,
     /// Forever's rule for casting regeneration auras (see [`casting_regen`]).
     pub(crate) casting_regen_at_once: bool,
+    /// Forever's rule that a rotation's move waits for a queued spell to fire.
+    pub(crate) move_waits_for_queued_cast: bool,
+    /// Forever's rule that a move whose end time has come reads as arrived.
+    pub(crate) move_arrives_at_destination: bool,
     /// How each exclusive effect of an aura a rotation asks about reads.
     pub(crate) aura_refresh: Vec<(AuraRef, Vec<exclusive::RefreshReading>)>,
     /// Single aura categories that a rotation's `auraShouldRefresh` reads, or a class asks for,
@@ -3903,6 +3907,8 @@ impl<A: Agent> Fight<A> {
             health_at_reset: player.health_at_reset,
             hp_percent_for_defensives: player.hp_percent_for_defensives,
             casting_regen_at_once: player.casting_regen_at_once,
+            move_waits_for_queued_cast: player.move_waits_for_queued_cast,
+            move_arrives_at_destination: player.move_arrives_at_destination,
             aura_refresh: Vec::new(),
             derived_categories: Vec::new(),
         };
@@ -5389,6 +5395,11 @@ impl<A: Agent> Fight<A> {
                     self.cast(spell, target);
                     for item in hooks {
                         self.advance_sequence(item);
+                    }
+                    // A move the rotation held for this spell goes now, not at the end of the
+                    // global cooldown the spell started (Forever's rule, `move_ready`).
+                    if std::mem::take(&mut self.apl.move_held_for_queue) {
+                        self.set_rotation_timer(self.now);
                     }
                 }
             }

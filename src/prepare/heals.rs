@@ -414,10 +414,12 @@ pub(crate) fn heals_effect(env: &Environment, ranks: &[HealRank]) -> Value {
             if let (Some(smart), Rules::Forever) = (rank.shape.smart, env.rules) {
                 heal["smart"] = json!(smart);
             }
+            // A healer's gear under Forever's rules (README, Rust-only mechanics).
+            super::healer_gear::heal_shape(env, rank.row, &mut heal);
             heal
         })
         .collect();
-    let smart = env.rules == Rules::Forever && ranks.iter().any(|rank| rank.shape.smart.is_some());
+    let smart = env.rules == Rules::Forever && heals.iter().any(|heal| heal.get("smart").is_some());
     let mut effect = json!({
         "kind": "heals",
         "heals": heals,

@@ -40,6 +40,38 @@ pub(crate) enum ModKind {
     PowerCostFlat,
 }
 
+impl ModKind {
+    /// The mod a prepared [`SpellModChange`](crate::contracts::prepared_v2::SpellModChange)
+    /// names.
+    pub(crate) fn named(name: &str) -> Option<ModKind> {
+        Some(match name {
+            "bonus_crit_percent" => ModKind::BonusCritPercent,
+            "power_cost_percent_add" => ModKind::PowerCostPercentAdd,
+            "power_cost_percent" => ModKind::PowerCostPercent,
+            "power_cost_flat" => ModKind::PowerCostFlat,
+            "damage_done_flat" => ModKind::DamageDoneFlat,
+            "damage_done_percent" => ModKind::DamageDonePercent,
+            "dot_damage_done_percent" => ModKind::DotDamageDonePercent,
+            "cast_time_percent" => ModKind::CastTimePercent,
+            "cast_time_flat" => ModKind::CastTimeFlat,
+            "global_cooldown_flat" => ModKind::GlobalCooldownFlat,
+            "cooldown_flat" => ModKind::CooldownFlat,
+            _ => return None,
+        })
+    }
+
+    /// Whether the mod's value is a time, in nanoseconds.
+    pub(crate) fn is_time(self) -> bool {
+        matches!(
+            self,
+            ModKind::CastTimeFlat
+                | ModKind::GlobalCooldownFlat
+                | ModKind::CooldownFlat
+                | ModKind::DotTickLengthFlat
+        )
+    }
+}
+
 #[derive(Clone, Debug)]
 pub(crate) struct SpellMod {
     kind: ModKind,

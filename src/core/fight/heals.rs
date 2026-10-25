@@ -43,6 +43,7 @@ pub(crate) struct BoundHeal {
     pub(crate) dot: Option<DotId>,
     absorb: Option<f64>,
     smart: Option<SmartHeal>,
+    past_first_multiplier: f64,
 }
 
 /// Every heal rank of the healer and the player's healing modifiers.
@@ -99,6 +100,7 @@ impl HealBook {
                     dot: heal.tick.and(dot),
                     absorb: heal.absorb,
                     smart: heal.smart,
+                    past_first_multiplier: heal.past_first_multiplier,
                 })
             })
             .collect::<Result<_, String>>()?;
@@ -146,15 +148,20 @@ impl HealBook {
                 }
                 _ => heal.targets,
             };
-            for _ in 0..targets {
+            for jump in 0..targets {
                 let base = fight.effect_roll(average, variance);
+                let past_first = if jump > 0 {
+                    heal.past_first_multiplier
+                } else {
+                    1.0
+                };
                 fight.calc_and_deal_healing_scaled(
                     heal.spell,
                     Side::Player,
                     base,
                     healing,
                     self.bonus_healing_taken,
-                    share,
+                    share * past_first,
                 );
                 share *= heal.jump_multiplier;
             }

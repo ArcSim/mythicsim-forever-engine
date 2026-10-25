@@ -170,6 +170,27 @@ the Go goldens and exporter uses. The departures:
   bursts run 3 to 4.7 times their healing per second. The prepared player carries
   `burst_window`, and the report's player `burstHps` (`src/prepare/burst_hps.rs`,
   `src/core/fight/burst.rs`). The reference, like Go, reports none.
+- A healer's gear, from the client rows (1.60.1.70425): the reference counts many healing items
+  and set bonuses for nothing, as it registers neither them nor their sets, and Rust refused a
+  healer wearing a set it registers but whose listener Rust left unclaimed. In a healer sim,
+  Forever preparation (`src/prepare/healer_gear.rs`) reads the bonus rows (ItemSetSpell, through
+  `tools/forever_set_spells.py`) of every set the reference does not register: healing power,
+  spell damage, mana per 5 seconds, spell crit, stats, casting regeneration and spell mods, as
+  Vestments of Prophecy's Flash Heal and Prayer of Healing bonuses, Vestments of Faith's Renew
+  cost or the PvP sets' healing; procs and conditional bonuses are left out. It adds the healing
+  bonuses the reference leaves empty: Stormrage Raiment's Regrowth cast time and Rejuvenation
+  duration, The Earthfury's Mana Surge (a 25% chance after Healing Wave or Lesser Healing Wave to
+  regain 35% of its base cost) and Healing Wave jumping to two more players at 20% of the heal
+  before each, and The Ten Storms' 30% more Chain Heal past the first player. It wires the healing
+  idols and totems (Idol of Health, Idol of Longevity, Idol of Swiftness, Totem of Life, Totem of
+  Flowing Water, Tidal Totem, Totem of Urgency) and Hazza'rah's Charm of Healing and Wushoolay's
+  Charm of Nature, whose use gives their rows' cast time and cost mods for 15 seconds. And it
+  claims Sudden Insight (Vestments of the Devout and Magister's Regalia, 5 pieces: a cast's 5%
+  chance at 200 mana) and The Furious Storm (The Elements 5, The Five Thunders 4: a cast's 4%
+  chance at 65 spell power for 10 seconds), which the reference registers. Totem of Life's 80 is
+  added to Lesser Healing Wave's roll, as the reference adds Libram of Light's to Flash of Light.
+  The prepared effects are `mana_on_cast`, `spell_mod_aura_on_use` and the heals' shapes; a sim
+  that is not a healer's keeps the reference's gear (`tests/healer_gear.rs`).
 
 ## Repository layout
 

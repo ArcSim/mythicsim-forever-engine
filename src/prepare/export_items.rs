@@ -418,6 +418,14 @@ pub(crate) fn use_item_effect(
             "period_ns": SECOND, "metrics_spell_id": 15604, "min_deficit": 630.0,
         })]);
     }
+    // A healer's on-use spell mods under Forever's rules.
+    if let Some(effect) = super::healer_gear::use_item_effect(env, spell, item, unrepresented) {
+        return Some(if effect.is_null() {
+            Vec::new()
+        } else {
+            vec![effect]
+        });
+    }
     // A use effect a class file registers itself.
     if let Some(effect) = env.agent.class_item_use_effect(env, spell, item) {
         return Some(vec![effect]);
@@ -2039,6 +2047,7 @@ pub(crate) fn item_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
     effects.extend(gear_proc_effects(env, unrepresented));
     effects.extend(spell_data_stat_proc_effects(env, unrepresented));
     effects.extend(energy_proc_effects(env, unrepresented));
+    effects.extend(super::healer_gear::export_effects(env, unrepresented));
     effects
 }
 

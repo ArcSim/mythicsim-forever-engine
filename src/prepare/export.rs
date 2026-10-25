@@ -741,6 +741,7 @@ fn tail_effects(
     if takes_damage && env.sim.get_aura(player, "Chance of Death").is_some() {
         effects.push(json!({"kind": "chance_of_death", "aura": "Chance of Death"}));
     }
+    effects.extend(party_damage_shields(env, tanking));
     effects.extend(super::export_items::melee_item_listeners(env));
     effects.extend(super::export_items::hit_taken_item_listeners(
         env,
@@ -768,7 +769,8 @@ fn tail_effects(
                 || effect["unit"] != "player"
                 || (!tanking
                     && (SAPPER_ONLY.contains(&label)
-                        || effect["reason"] == "hears only melee hits the player takes"))
+                        || effect["reason"] == "hears only melee hits the player takes"
+                        || effect["reason"] == DAMAGE_SHIELD_REASON))
             {
                 continue;
             }
@@ -1201,4 +1203,40 @@ pub(crate) fn export_state(
     unrepresented.sort();
     prepared["unrepresented"] = json!(unrepresented);
     Ok((prepared, unrepresented))
+}
+
+/// The reason an inert party damage shield names.
+const DAMAGE_SHIELD_REASON: &str = "a damage shield: hears only physical hits the player takes";
+
+/// The party's damage shields on the player: Go buffs/meta.go `newDamageShield` over
+/// `core.NewDamageShield`, a listener on the landed hits the player takes that answers a
+/// physical one. Without a tank nothing physical hits the player (the Goblin Sapper Charge's
+/// self hit is fire), so a shield that hears nothing else never acts and is inert. A tank's
+/// shield stays unclaimed: the gate refuses it as a reaction to the target's swings.
+fn party_damage_shields(env: &Environment, tanking: bool) -> Vec<Value> {
+    const LIFECYCLE: [&str; 6] = [
+        "on_init",
+        "on_reset",
+        "on_done_iteration",
+        "on_gain",
+        "on_expire",
+        "on_stacks_change",
+    ];
+    if tanking {
+        return Vec::new();
+    }
+    ["Retribution Aura (External)", "Thorns (External)"]
+        .into_iter()
+        .filter(|label| {
+            env.sim.get_aura(env.player, label).is_some_and(|aura| {
+                env.sim.aura(aura).callback_names().iter().all(|callback| {
+                    LIFECYCLE.contains(&callback.as_str()) || callback == "on_spell_hit_taken"
+                })
+            })
+        })
+        .map(|label| {
+            json!({"kind": "inert_listener", "unit": "player", "aura": label,
+                "reason": DAMAGE_SHIELD_REASON})
+        })
+        .collect()
 }

@@ -138,6 +138,17 @@ fn a_cast_on_the_player_is_refused() {
     );
 }
 
+/// A harmful spell whose dot sits on its target never casts at the player, so a line aiming
+/// Corruption at the warlock is supported; Life Tap at the player stays refused (above).
+#[test]
+fn a_harmful_dot_aimed_at_the_player_is_supported() {
+    assert_supported(with_items(
+        "production-affliction-warlock",
+        1,
+        vec![cast_at(25311, json!({"type": "Self"}))],
+    ));
+}
+
 #[test]
 fn units_outside_scope_are_refused_with_the_rotation_code() {
     let item = json!({"action": {"castSpell": {"spellId": {"spellId": 25307}},

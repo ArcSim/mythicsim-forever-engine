@@ -328,6 +328,13 @@ impl<A: Agent> Fight<A> {
         (!self.dots[dot].side.is_target() || matches!(unit, Unit::Target(_))).then_some(holder)
     }
 
+    /// Whether a spell is harmful and keeps its own dot on the targets: one the game refuses to
+    /// cast at the player, and the gate's `harmful_target_dot`.
+    fn harmful_target_dot(&self, spell: SpellId) -> bool {
+        let spell = &self.spells[spell];
+        !spell.flags.helpful && spell.dot.is_some_and(|dot| self.dots[dot].side.is_target())
+    }
+
     /// Go `GetIcdAuraByID` on a unit, as the rotation reads it.
     fn rotation_icd_aura(&self, unit: Unit, id: &ActionId) -> Option<AuraRef> {
         let side = match unit {
@@ -1027,6 +1034,13 @@ impl<A: Agent> Fight<A> {
             ParsedAction::CastSpell { spell: id, target } => {
                 let unit = target.resolve(self.targets.len());
                 match (self.apl_cast_spell(id), unit) {
+                    // The game refuses a harmful spell on a friendly unit, so a line casting
+                    // one whose dot sits on its target at the player never casts. Go builds
+                    // the action and panics on the player's missing dot (Rupture, Subtlety
+                    // Rogue sim 2990f120, 25 October 2026); Rust follows the game.
+                    (Some(spell), Some(Unit::Player)) if self.harmful_target_dot(spell) => {
+                        return None
+                    }
                     (Some(spell), Some(Unit::Player)) => Act::Cast(spell, Side::Player),
                     (Some(spell), Some(Unit::Target(position))) => {
                         Act::Cast(spell, Side::target(position))

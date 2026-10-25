@@ -89,6 +89,26 @@ fn spells_matching(sim: &Sim, unit: crate::prepare::sim::UnitId, mask: i64) -> V
         .collect()
 }
 
+/// The spellbook positions of the healer's heals (the heal mask) that a client effect's class
+/// flags name.
+fn heals_named(
+    sim: &Sim,
+    unit: crate::prepare::sim::UnitId,
+    flags: &crate::data::spells::ClassFlags,
+) -> Vec<usize> {
+    sim.unit(unit)
+        .spellbook
+        .iter()
+        .enumerate()
+        .filter(|(_, spell)| {
+            let spell = sim.spell(**spell);
+            spell.matches(masks::HEAL)
+                && crate::prepare::spell_mod::class_flags_matches(flags, &spell.class_flags)
+        })
+        .map(|(position, _)| position)
+        .collect()
+}
+
 /// `priestModSpells`: the spellbook positions a spell modifier with a class mask and school
 /// applies to, by core `shouldApply` for the fields priest modifiers set.
 fn mod_spells(
@@ -392,22 +412,30 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
     if let Some(aura) = priest.inner_focus_aura {
         // talents_discipline.go applyInnerFocus
         let rank = data.inner_focus.highest();
-        let spenders = spells_matching(sim, player, masks::ALL);
+        let cost = rank.effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_COST);
+        let crit = rank.effect(
+            dbcenums::A_ADD_FLAT_MODIFIER,
+            dbcenums::SPELLMOD_CRITICAL_CHANCE,
+        );
+        // The healer's heals (Rust only) carry the heal mask, outside Go's masks::ALL. The
+        // client's masks on Inner Focus's two effects name them: every heal spends its one
+        // charge, and the direct heals take its crit (Renew and Power Word: Shield do not).
+        // Without them a healer's Inner Focus never ended and made every heal free.
+        let mut spenders = spells_matching(sim, player, masks::ALL);
+        spenders.extend(heals_named(sim, player, &cost.class_flags));
+        let mut crit_spells = mod_spells(
+            sim,
+            player,
+            masks::ALL
+                & !(masks::SHADOW_WORD_DEATH | masks::DEVOURING_PLAGUE | masks::SHADOW_WORD_PAIN),
+            0,
+        );
+        crit_spells.extend(heals_named(sim, player, &crit.class_flags));
         effects.push(json!({
             "kind": "inner_focus", "spell_id": rank.id, "aura": sim.aura(aura).label,
-            "cost_percent": rank
-                .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_COST)
-                .average(CHARACTER_LEVEL) as i32,
-            "crit_percent": rank
-                .effect(dbcenums::A_ADD_FLAT_MODIFIER, dbcenums::SPELLMOD_CRITICAL_CHANCE)
-                .average(CHARACTER_LEVEL),
-            "crit_spells": mod_spells(
-                sim,
-                player,
-                masks::ALL
-                    & !(masks::SHADOW_WORD_DEATH | masks::DEVOURING_PLAGUE | masks::SHADOW_WORD_PAIN),
-                0,
-            ),
+            "cost_percent": cost.average(CHARACTER_LEVEL) as i32,
+            "crit_percent": crit.average(CHARACTER_LEVEL),
+            "crit_spells": crit_spells,
             "spender_spells": spenders,
         }));
     }

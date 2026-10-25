@@ -877,6 +877,12 @@ pub struct Player {
     /// Hunter who stepped in out of melee range for the rest of the fight.
     #[serde(default, skip_serializing_if = "is_false")]
     pub move_arrives_at_destination: bool,
+    /// MythicSim's healer sims under Forever's rules: each heal's share that real healers
+    /// overheal, measured on foreverlogs.gg (`prepare::overheal`). Only the rest counts as
+    /// healing; the share counts as overhealing. Empty is the Go reference, which counts every
+    /// heal in full.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub overheal: Vec<Overheal>,
     /// Every prepull action Go registered: the rotation's, and any a class or item adds.
     pub prepull_actions: usize,
     /// The dot base durations the rotation's `dotBaseDuration` values captured when Go built
@@ -1313,6 +1319,15 @@ pub struct HealModifiers {
     pub healing_power: f64,
 }
 
+/// One heal's overhealing share in MythicSim's healer sims: what real healers overheal of it.
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct Overheal {
+    pub spell_id: i32,
+    /// The share of each heal that is overhealing, from zero to below one.
+    pub fraction: f64,
+}
+
 /// One heal rank a healer casts on the player, in MythicSim's healer sims (Rust only, no Go
 /// counterpart): every heal lands on a player who needs it and counts in full. A rank can heal
 /// at once, over time, both (Regrowth) or shield; the spell carries its cost, cast, crit bonus,
@@ -1334,6 +1349,10 @@ pub struct HealSpell {
     /// A heal over time's client amount per tick at the caster level.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub tick: Option<f64>,
+    /// Forever's rule: each tick of the heal over time rolls the healing crit, as its row
+    /// states Periodic Can Crit. False is the Go reference, whose heal ticks never crit.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub tick_can_crit: bool,
     /// A shield's client absorb at the caster level, counted as shielding when it goes up.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub absorb: Option<f64>,

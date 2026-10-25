@@ -1107,6 +1107,12 @@ pub(crate) fn export_state(
         // A move whose end time has come has arrived (README, Rust-only mechanics); the
         // reference can read the walk a hair short of the destination at that instant.
         prepared["player"]["move_arrives_at_destination"] = json!(true);
+        // A healer sim counts only the share of each heal real healers do not overheal
+        // (README, Rust-only mechanics); the reference counts every heal in full.
+        let overheal = super::overheal::export(&player_message, &prepared["player"]["spells"]);
+        if !overheal.is_empty() {
+            prepared["player"]["overheal"] = Value::Array(overheal);
+        }
     }
     if let Some(reads) = &env.rotation_reads {
         prepared["player"]["rotation_reads"] = json!(reads);

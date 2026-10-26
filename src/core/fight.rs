@@ -4214,15 +4214,34 @@ impl<A: Agent> Fight<A> {
                         rng_label: rng_label.clone().unwrap_or_else(|| window_aura.clone()),
                     });
                 }
-                Effect::ShieldOnHeal { item_id, share, .. } => {
+                Effect::ShieldOnHeal {
+                    item_id,
+                    aura,
+                    share,
+                    chance,
+                    heal,
+                    spell_id,
+                } => {
                     let spell = fight
                         .spells
                         .iter()
-                        .position(|state| state.id.item_id == *item_id && state.id.tag == 0)
-                        .ok_or_else(|| format!("shield item {item_id} has no spell"))?;
+                        .position(|state| {
+                            state.id.tag == 0
+                                && if *item_id != 0 {
+                                    state.id.item_id == *item_id
+                                } else {
+                                    state.id.spell_id == *spell_id && state.id.item_id == 0
+                                }
+                        })
+                        .ok_or_else(|| {
+                            format!("shield item {item_id} or spell {spell_id} has no spell")
+                        })?;
                     fight.shields_on_heal.push(healer_gear::ShieldOnHeal {
                         share: *share,
                         spell,
+                        chance: *chance,
+                        heal: *heal,
+                        label: aura.clone(),
                     });
                 }
                 _ => {}

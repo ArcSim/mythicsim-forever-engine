@@ -194,8 +194,17 @@ the Go goldens and exporter uses. The departures:
   seconds for 30 seconds), Dreamwalker Raiment's Healing Touch crit returning 30% of its cost,
   Vestments of Transcendence's rank 5 Renew on each Greater Heal, and Idol of Rejuvenation's 5%
   on Regrowth's direct heal while a Rejuvenation of the druid's is up (read as "on a target
-  under your Rejuvenation", since heals land on whoever needs them). Bonuses that help only the
-  heal's target (Dreamwalker's Rejuvenation mana, Totemic Power, Holy Power) are left out.
+  under your Rejuvenation", since heals land on whoever needs them), Idol of Synthesis (a second
+  off Swiftmend's cooldown for each heal over time up as it is cast), Garments of the Oracle (3:
+  a heal's 20% chance to heal the healer for 10% of it), Rotmender's Raiment (5: a heal's cast,
+  at most every 2 seconds, puts up Rotmending's 40 every 3 seconds for 15 seconds, counted at
+  once), The Earthshatterer (4: the party's Mana Spring 25% stronger; 8: Lightning Shield's 15
+  mana per 5 seconds, read as kept up) and Redemption Armor (4: Lay on Hands 12 minutes sooner).
+  On use, Blessed Prayer Beads heal for 648 and Enamored Water Spirit's totem restores 33 mana
+  every 2 seconds for 24 seconds; Wushoolay's Charm of Spirits, a Lightning Shield trinket, is
+  worn without effect. Bonuses that help only the heal's target (Dreamwalker's Rejuvenation
+  mana, Totemic Power, Holy Power, Totemic Power's armor) change nothing the healer heals, and
+  The Eye of Divinity has no effect in Forever (its tooltip is flavour text).
   The healer trinkets on use: Talisman of Ascendance, which the reference registers, stacks
   Ascendance on each landed heal; Zandalarian Hero Charm, which it does not, starts at twelve
   stacks of 17 spell damage and 34 healing (its tooltip; the row is a dummy) and loses one each

@@ -1389,6 +1389,11 @@ pub struct HealSpell {
     /// heal over time ranks is up (Idol of Rejuvenation on Regrowth).
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub hot_bonus: Option<HotBonus>,
+    /// A healer's gear under Forever's rules: what each of the healer's heals over time up
+    /// takes off this spell's cooldown when it is cast, in nanoseconds (Idol of Synthesis on
+    /// Swiftmend).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cooldown_per_hot_ns: Option<i64>,
 }
 
 /// A direct heal's bonus while a heal over time of the healer is up.
@@ -2560,6 +2565,10 @@ pub enum Effect {
         average: Option<f64>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         variance: Option<f64>,
+        /// The trigger hears the casts of `trigger_spells` instead of their hits: a healer's
+        /// gear under Forever's rules (Rotmender's Raiment's Rotmending).
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        casts: bool,
     },
     /// common/shared/shared_utils.go NewSpellDataDamageOnUse: an on-use item's spell, by
     /// spellbook position, that deals its row's hit or damage over time on the one target.
@@ -3188,6 +3197,16 @@ pub enum Effect {
         item_id: i32,
         aura: String,
         share: f64,
+        /// Each heal's chance; one when unset.
+        #[serde(default = "one", skip_serializing_if = "is_one")]
+        chance: f64,
+        /// Heals the healer instead of shielding (Garments of the Oracle's 10% of a heal on
+        /// another player).
+        #[serde(default, skip_serializing_if = "is_false")]
+        heal: bool,
+        /// The spell, by client ID, the amounts count on when `item_id` is 0 (a set bonus).
+        #[serde(default, skip_serializing_if = "is_zero")]
+        spell_id: i32,
     },
     InertListener {
         unit: String,

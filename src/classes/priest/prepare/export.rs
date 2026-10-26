@@ -470,7 +470,7 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
     effects.push(json!({"kind": "holy_fire", "ranks": dot_ranks(&data.holy_fire)}));
     // penance.go: every rank, on the shared category cooldown, fires its own damage bolt, the
     // first the cast's tooltip names, on application and a channel tick a second.
-    if talents.bool("penance") {
+    if talents.bool("penance") && !priest.healer {
         let mut ranks = Vec::new();
         data.penance.each(|_, rank| {
             let bolt = rank.refs()[0];

@@ -157,3 +157,84 @@ impl<A: Agent> Fight<A> {
         }
     }
 }
+
+/// An instant cast aura: its mods while up, and the spells whose cast spends it.
+#[derive(Clone, Debug)]
+pub(crate) struct InstantCast {
+    pub(crate) mods: Vec<super::ModId>,
+    pub(crate) spends: Vec<bool>,
+}
+
+impl<A: Agent> Fight<A> {
+    pub(crate) fn instant_cast_gained(&mut self, index: usize) {
+        for position in 0..self.instant_casts[index].mods.len() {
+            self.activate_mod(self.instant_casts[index].mods[position]);
+        }
+    }
+
+    pub(crate) fn instant_cast_expired(&mut self, index: usize) {
+        for position in 0..self.instant_casts[index].mods.len() {
+            self.deactivate_mod(self.instant_casts[index].mods[position]);
+        }
+    }
+
+    /// A cast the aura made instant spends it.
+    pub(crate) fn instant_cast_spent(&mut self, aura: AuraRef, index: usize, spell: SpellId) {
+        if self.aura(aura).active
+            && self.instant_casts[index]
+                .spends
+                .get(spell)
+                .copied()
+                .unwrap_or(false)
+        {
+            self.deactivate_aura(aura);
+        }
+    }
+}
+
+/// A self buff of globes, as Water Shield: [`Effect::ManaGlobes`](crate::contracts::prepared_v2::Effect).
+#[derive(Clone, Debug)]
+pub(crate) struct ManaGlobes {
+    pub(crate) fraction: f64,
+    pub(crate) icd: i64,
+    /// The internal cooldown, a runtime timer.
+    pub(crate) timer: usize,
+    pub(crate) metrics: usize,
+}
+
+impl<A: Agent> Fight<A> {
+    /// The buff going up with all its globes.
+    pub(crate) fn mana_globes_gained(&mut self, aura: AuraRef) {
+        let max = self.aura(aura).max_stacks;
+        self.set_stacks(aura, max);
+    }
+
+    /// A direct heal that crits spends a globe for its mana, once per internal cooldown.
+    pub(crate) fn mana_globes_on_heal(
+        &mut self,
+        aura: AuraRef,
+        index: usize,
+        result: &SpellResult,
+    ) {
+        let state = &self.mana_globes[index];
+        if !self.aura(aura).active
+            || result.outcome & super::damage::OUTCOME_CRIT == 0
+            || self.timers[state.timer] > self.now
+        {
+            return;
+        }
+        let (timer, icd, fraction, metrics) =
+            (state.timer, state.icd, state.fraction, state.metrics);
+        self.timers[timer] = self.now + icd;
+        self.changed(super::reads::TIMERS);
+        if self.has_mana_bar() {
+            let mana = fraction * self.unit(super::Side::Player).powers.max_mana;
+            self.add_mana(mana, metrics);
+        }
+        if self.aura(aura).stacks <= 1 {
+            self.deactivate_aura(aura);
+        } else {
+            self.remove_stack(aura);
+        }
+    }
+}

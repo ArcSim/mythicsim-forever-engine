@@ -1,7 +1,8 @@
 //! The on-use trinkets of MythicSim's healer sims under Forever's rules (`prepare::healer_gear`):
 //! a window aura that moves a stacking stats aura's stacks while it is up
 //! ([`Effect::StackingCdOnUse`](crate::contracts::prepared_v2::Effect)), and an aura that
-//! shields the player each direct heal lands on ([`Effect::ShieldOnHeal`]).
+//! shields the player each direct heal lands on
+//! ([`Effect::ShieldOnHeal`](crate::contracts::prepared_v2::Effect)).
 
 use super::{Agent, AuraRef, Fight, SpellId, SpellResult};
 

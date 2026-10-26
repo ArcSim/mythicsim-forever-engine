@@ -152,6 +152,34 @@ the Go goldens and exporter uses. The departures:
   iteration has no swings or strikes: the Go golden of the Survival weave
   (`survival-hunter-aspect-of-the-beast-over-hawk`) has iterations at 400 to 510 DPS from it, and
   a held move makes it far more common.
+- Autocast looks past a cooldown the GCD holds back (`autocast_skips_unready_cooldowns`,
+  Forever preparation), as wowsims/forever does since 21 and 22 October 2026 (10b0e65f2,
+  fbf5d98e8). Autocast Other Cooldowns took the first ready major cooldown and then applied the
+  GCD rule to it alone (an explosive only while the GCD runs, any other only once it is ready),
+  so a cooldown waiting for the GCD held back an explosive sorted after it, and through a run of
+  hardcasts an explosive held back every cooldown behind it. Now each ready cooldown that fails
+  the rule is passed over, and an explosive whose cast fits in the shortest GCD also waits while
+  less of the GCD is left than its cast, so it never delays the next spell. The reference stops at
+  the first ready cooldown.
+- Idol of the Dream (220606) adds 2 seconds to Rip (Improved Rip, 446212, client 1.60.1.70532:
+  a flat duration modifier on Rip's class mask), so Rip ticks once more at the same period; ported
+  from wowsims/forever 8d879a401. The reference registers no effect for it.
+- Jewel of the Guard Captain (270225) and Cleansed Vilebranch Icon (270276) give 8 spell damage
+  and healing, tripled in Forest and Grassland areas (Wowhead Forever); the imported data had 32.
+- Water Shield gives mana (`water_shield`, Forever preparation), from the client (1.60.1.70532)
+  and MythicSim's Discord (26 October 2026, Maro): a critical spell of the shaman's, damage or
+  heal, spends one of three globes for 2% of maximum mana, one globe every 3.5 seconds at most,
+  and the cast has no cooldown since 70532 (it had 15 seconds). The reference registers the talent
+  but no build could cast it.
+- Read Ley Line's Energized lasts 30 seconds (Forever preparation), as client 1.60.1.70532 has it;
+  the reference keeps 70245's 15.
+- A damage bonus applied after the calculation is threat too (`threat_follows_damage_bonus`,
+  Forever preparation), from MythicSim's Discord (26 October 2026, Vrelk: a Shadow Priest with
+  no threat talents had less threat than damage). Improved Mind Flay's ramp, Ice Lance on a
+  frozen target, Soul Siphon on Drain Life and Wrack, Amplify Curse on Curse of Agony and
+  Incinerate on an Immolated target raise a hit's damage after its threat is worked out; the
+  reference keeps the threat of the damage before the bonus, so Mind Flay made about 0.82
+  threat per damage with no threat talents.
 - Party damage for heals that follow it, an assumption until the logs hold them: Forever's level
   30 beta logs have no Prayer of Mending or Chain Heal yet. A healer's party of five takes hits
   at random, the tank about once a second and each of the other four about once every five
@@ -194,8 +222,17 @@ the Go goldens and exporter uses. The departures:
   seconds for 30 seconds), Dreamwalker Raiment's Healing Touch crit returning 30% of its cost,
   Vestments of Transcendence's rank 5 Renew on each Greater Heal, and Idol of Rejuvenation's 5%
   on Regrowth's direct heal while a Rejuvenation of the druid's is up (read as "on a target
-  under your Rejuvenation", since heals land on whoever needs them). Bonuses that help only the
-  heal's target (Dreamwalker's Rejuvenation mana, Totemic Power, Holy Power) are left out.
+  under your Rejuvenation", since heals land on whoever needs them), Idol of Synthesis (a second
+  off Swiftmend's cooldown for each heal over time up as it is cast), Garments of the Oracle (3:
+  a heal's 20% chance to heal the healer for 10% of it), Rotmender's Raiment (5: a heal's cast,
+  at most every 2 seconds, puts up Rotmending's 40 every 3 seconds for 15 seconds, counted at
+  once), The Earthshatterer (4: the party's Mana Spring 25% stronger; 8: Lightning Shield's 15
+  mana per 5 seconds, read as kept up) and Redemption Armor (4: Lay on Hands 12 minutes sooner).
+  On use, Blessed Prayer Beads heal for 648 and Enamored Water Spirit's totem restores 33 mana
+  every 2 seconds for 24 seconds; Wushoolay's Charm of Spirits, a Lightning Shield trinket, is
+  worn without effect. Bonuses that help only the heal's target (Dreamwalker's Rejuvenation
+  mana, Totemic Power, Holy Power, Totemic Power's armor) change nothing the healer heals, and
+  The Eye of Divinity has no effect in Forever (its tooltip is flavour text).
   The healer trinkets on use: Talisman of Ascendance, which the reference registers, stacks
   Ascendance on each landed heal; Zandalarian Hero Charm, which it does not, starts at twelve
   stacks of 17 spell damage and 34 healing (its tooltip; the row is a dummy) and loses one each

@@ -1109,6 +1109,12 @@ pub(crate) fn export_state(
         // A move whose end time has come has arrived (README, Rust-only mechanics); the
         // reference can read the walk a hair short of the destination at that instant.
         prepared["player"]["move_arrives_at_destination"] = json!(true);
+        // Autocasting looks past a cooldown the GCD holds back (README, Rust-only mechanics);
+        // the reference stops at the first ready one.
+        prepared["player"]["autocast_skips_unready_cooldowns"] = json!(true);
+        // A damage bonus applied after the calculation is damage the target takes, so threat
+        // (README, Rust-only mechanics); the reference kept the threat of the damage before it.
+        prepared["player"]["threat_follows_damage_bonus"] = json!(true);
         // A healer sim counts only the share of each heal real healers do not overheal
         // (README, Rust-only mechanics); the reference counts every heal in full.
         let overheal = super::overheal::export(&player_message, &prepared["player"]["spells"]);

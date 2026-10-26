@@ -649,12 +649,13 @@ impl Agent for PriestAgent {
                 let mut result = fight.snapshot_dot_tick_calc(dot);
                 let ticks = fight.dots[dot].tick_count() - 1;
                 let ramp = fight.agent.mind_flay_ramp;
-                result.damage *= if fight.agent.mind_flay_ramp_compounds {
+                let factor = if fight.agent.mind_flay_ramp_compounds {
                     (1.0 + ramp).powi(ticks)
                 } else {
                     ramp.mul_add(f64::from(ticks), 1.0)
                 };
                 let spell = fight.dots[dot].spell;
+                fight.scale_damage(spell, &mut result, factor);
                 fight.deal_damage(spell, result, true);
             }
             PriestSpell::ShadowWordPain

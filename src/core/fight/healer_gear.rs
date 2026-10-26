@@ -28,6 +28,10 @@ pub(crate) struct ShieldOnHeal {
     pub(crate) share: f64,
     /// The item's spell, which the shields count on.
     pub(crate) spell: SpellId,
+    pub(crate) chance: f64,
+    /// Heals the healer instead of shielding.
+    pub(crate) heal: bool,
+    pub(crate) label: String,
 }
 
 /// Which of a window's events a callback is.
@@ -119,7 +123,37 @@ impl<A: Agent> Fight<A> {
         if spell == state.spell || result.damage <= 0.0 {
             return;
         }
-        let (shield, amount) = (state.spell, state.share * result.damage);
-        self.deal_shield(shield, amount);
+        let (target, amount, heal) = (state.spell, state.share * result.damage, state.heal);
+        // Go `Proc(chance, label)`, reading the label in place.
+        if !self
+            .rng
+            .proc(state.chance, &self.shields_on_heal[index].label)
+        {
+            return;
+        }
+        if heal {
+            self.deal_flat_healing(target, amount);
+        } else {
+            self.deal_shield(target, amount);
+        }
+    }
+
+    /// Healing of a fixed amount on the player, counted on `spell`: no coefficient, multiplier
+    /// or crit, less the spell's overhealing share.
+    pub(crate) fn deal_flat_healing(&mut self, spell: SpellId, amount: f64) {
+        let index = super::Side::Player.index();
+        let (amount, _) = self.landed_healing(spell, index, amount);
+        let metrics = &mut self.spells[spell].metrics[index];
+        metrics.hits += 1;
+        metrics.total_healing += amount;
+        self.note_burst(amount);
+        if self.log.is_some() {
+            let line = format!(
+                "[{}] {} Hit for {amount:.3} healing.",
+                self.config.player_label,
+                super::log::action_string(&self.spells[spell].id),
+            );
+            self.player_log(&line);
+        }
     }
 }

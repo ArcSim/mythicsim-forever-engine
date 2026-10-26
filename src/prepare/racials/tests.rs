@@ -352,6 +352,7 @@ fn energized_and_elemental_blessing_change_regen_and_movement() {
 
     let mut env = warrior("RaceHighOrderSkyborne", "");
     let energized = aura(&env, "Energized").expect("Energized");
+    assert_eq!(env.sim.aura(energized).duration, 30 * SECOND);
     // A warrior has no mana bar, so the aura changes nothing; a mana bar doubles the regen.
     env.sim.activate(energized);
     assert_eq!(env.sim.unit(env.player).mana_bar.mana_regen_multiplier, 0.0);

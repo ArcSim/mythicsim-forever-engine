@@ -1904,6 +1904,10 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) move_waits_for_queued_cast: bool,
     /// Forever's rule that a move whose end time has come reads as arrived.
     pub(crate) move_arrives_at_destination: bool,
+    /// Forever's rule that autocasting passes over a cooldown the GCD holds back.
+    pub(crate) autocast_skips_unready_cooldowns: bool,
+    /// Forever's rule that a damage bonus applied after the calculation raises threat too.
+    pub(crate) threat_follows_damage_bonus: bool,
     /// A healer sim's burst healing window under Forever's rules (see [`burst`]).
     pub(crate) burst: Option<burst::BurstWindow>,
     /// How each exclusive effect of an aura a rotation asks about reads.
@@ -4028,6 +4032,8 @@ impl<A: Agent> Fight<A> {
             casting_regen_at_once: player.casting_regen_at_once,
             move_waits_for_queued_cast: player.move_waits_for_queued_cast,
             move_arrives_at_destination: player.move_arrives_at_destination,
+            autocast_skips_unready_cooldowns: player.autocast_skips_unready_cooldowns,
+            threat_follows_damage_bonus: player.threat_follows_damage_bonus,
             burst: player.burst_window.map(burst::BurstWindow::new),
             aura_refresh: Vec::new(),
             derived_categories: Vec::new(),
@@ -4214,15 +4220,34 @@ impl<A: Agent> Fight<A> {
                         rng_label: rng_label.clone().unwrap_or_else(|| window_aura.clone()),
                     });
                 }
-                Effect::ShieldOnHeal { item_id, share, .. } => {
+                Effect::ShieldOnHeal {
+                    item_id,
+                    aura,
+                    share,
+                    chance,
+                    heal,
+                    spell_id,
+                } => {
                     let spell = fight
                         .spells
                         .iter()
-                        .position(|state| state.id.item_id == *item_id && state.id.tag == 0)
-                        .ok_or_else(|| format!("shield item {item_id} has no spell"))?;
+                        .position(|state| {
+                            state.id.tag == 0
+                                && if *item_id != 0 {
+                                    state.id.item_id == *item_id
+                                } else {
+                                    state.id.spell_id == *spell_id && state.id.item_id == 0
+                                }
+                        })
+                        .ok_or_else(|| {
+                            format!("shield item {item_id} or spell {spell_id} has no spell")
+                        })?;
                     fight.shields_on_heal.push(healer_gear::ShieldOnHeal {
                         share: *share,
                         spell,
+                        chance: *chance,
+                        heal: *heal,
+                        label: aura.clone(),
                     });
                 }
                 _ => {}

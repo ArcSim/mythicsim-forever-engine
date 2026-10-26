@@ -403,3 +403,58 @@ fn improved_stormstrike_mana_acts_at_once_in_forever() {
     assert!(gain.expect("an Improved Stormstrike row") > 0.0);
     assert!(dps > go_dps, "{dps} against {go_dps}");
 }
+
+/// Water Shield (client 1.60.1.70532): an Elemental Shaman who takes the talent and keeps the
+/// shield up gets 2% of maximum mana from a critical spell, at most one globe every 3.5 seconds,
+/// in the globe spell's own row (408511).
+#[test]
+fn water_shield_crits_restore_mana() {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("fixtures/mage/prepared-v2/production-elemental-shaman.request.json");
+    let mut request: Value = serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
+    let player = &mut request["raid"]["parties"][0]["players"][0];
+    // A point of Lightning Overload moves to Water Shield (Restoration's ninth talent).
+    player["talentsString"] = json!("5502331020021251-05-053050001");
+    player["rotation"]["priorityList"]
+        .as_array_mut()
+        .unwrap()
+        .insert(
+            0,
+            json!({"action": {
+                "castSpell": {"spellId": {"spellId": 408510}},
+                "condition": {"not": {"val": {"auraIsActive": {"auraId": {"spellId": 408510}}}}}
+            }}),
+        );
+    request["simOptions"]["iterations"] = json!(200);
+    let prepared =
+        forever_engine::prepare_json(&serde_json::to_vec(&request).unwrap(), "x").unwrap();
+    let effect = prepared["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|effect| effect["kind"] == "water_shield")
+        .expect("a Water Shield effect");
+    assert_eq!(effect["globes"], json!(3));
+    assert_eq!(effect["icd_ns"], json!(3_500_000_000_i64));
+    assert!(!effect["trigger_spells"].as_array().unwrap().is_empty());
+    let prepared: PreparedV2 = serde_json::from_value(prepared).unwrap();
+    assert_eq!(prepared_coverage(&prepared), Vec::<String>::new());
+    let report = forever_engine::simulate_prepared(&prepared).unwrap();
+    let player = &report.result["raidMetrics"]["parties"][0]["players"][0];
+    let row = player["resources"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|row| row["id"] == json!({ "spellId": 408511 }))
+        .expect("a Water Shield mana row");
+    let events = row["events"].as_f64().unwrap();
+    let gain = row["gain"].as_f64().unwrap();
+    assert!(events > 0.0 && gain > 0.0, "{row}");
+    // No more than one globe per 3.5 seconds of each iteration (the rows are totals).
+    let duration = report.result["avgIterationDuration"].as_f64().unwrap();
+    let per_fight = events / 200.0;
+    assert!(
+        per_fight <= (duration / 3.5).ceil(),
+        "{per_fight} globes in {duration} s"
+    );
+}

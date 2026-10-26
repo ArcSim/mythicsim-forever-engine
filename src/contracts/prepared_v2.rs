@@ -885,6 +885,12 @@ pub struct Player {
     /// Hunter who stepped in out of melee range for the rest of the fight.
     #[serde(default, skip_serializing_if = "is_false")]
     pub move_arrives_at_destination: bool,
+    /// Forever's rule: a damage bonus applied after the damage is calculated (Improved Mind
+    /// Flay's ramp, Ice Lance on a frozen target, Soul Siphon, Amplify Curse, Incinerate on an
+    /// Immolated target) raises the hit's threat with its damage. False is the Go reference,
+    /// which kept the threat of the damage before the bonus.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub threat_follows_damage_bonus: bool,
     /// MythicSim's healer sims under Forever's rules: each heal's share that real healers
     /// overheal, measured on foreverlogs.gg (`prepare::overheal`). Only the rest counts as
     /// healing; the share counts as overhealing. Empty is the Go reference, which counts every
@@ -3588,6 +3594,20 @@ pub enum Effect {
         aura: String,
         charges: i32,
     },
+    /// Water Shield (client 1.60.1.70532): the cast puts up every globe; a critical hit of a
+    /// trigger spell, damage or heal, spends one and restores a share of maximum mana, one globe
+    /// per internal cooldown.
+    WaterShield {
+        spell_id: i32,
+        aura: String,
+        globes: i32,
+        icd_ns: i64,
+        mana_percent: f64,
+        /// The globe spell whose mana row the gains land in (408511).
+        mana_spell_id: i32,
+        /// Spellbook positions whose critical hits spend a globe.
+        trigger_spells: Vec<usize>,
+    },
     /// Grace of Air Totem: the air totem's aura, whose Agility is a class stat aura.
     GraceOfAirTotem {
         spell_id: i32,
@@ -4948,6 +4968,7 @@ impl Effect {
             Effect::WindfuryWeapon { .. } => "windfury_weapon",
             Effect::MagmaTotem { .. } => "magma_totem",
             Effect::LightningShield { .. } => "lightning_shield",
+            Effect::WaterShield { .. } => "water_shield",
             Effect::GraceOfAirTotem { .. } => "grace_of_air_totem",
             Effect::ManaSpringTotem { .. } => "mana_spring_totem",
             Effect::WindfuryTotemSelf { .. } => "windfury_totem_self",

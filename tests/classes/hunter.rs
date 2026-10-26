@@ -1206,6 +1206,11 @@ fn only_forever_preparation_refreshes_casting_regen_at_once() {
         json!(true)
     );
     assert!(go["player"].get("move_arrives_at_destination").is_none());
+    assert_eq!(
+        forever["player"]["threat_follows_damage_bonus"],
+        json!(true)
+    );
+    assert!(go["player"].get("threat_follows_damage_bonus").is_none());
 }
 
 /// Go `GetAPLCastSpell`: a rotation that names Raptor Strike untagged, as a spell picker writes

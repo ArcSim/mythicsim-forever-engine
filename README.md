@@ -152,6 +152,20 @@ the Go goldens and exporter uses. The departures:
   iteration has no swings or strikes: the Go golden of the Survival weave
   (`survival-hunter-aspect-of-the-beast-over-hawk`) has iterations at 400 to 510 DPS from it, and
   a held move makes it far more common.
+- Water Shield gives mana (`water_shield`, Forever preparation), from the client (1.60.1.70532)
+  and MythicSim's Discord (26 October 2026, Maro): a critical spell of the shaman's, damage or
+  heal, spends one of three globes for 2% of maximum mana, one globe every 3.5 seconds at most,
+  and the cast has no cooldown since 70532 (it had 15 seconds). The reference registers the talent
+  but no build could cast it.
+- Read Ley Line's Energized lasts 30 seconds (Forever preparation), as client 1.60.1.70532 has it;
+  the reference keeps 70245's 15.
+- A damage bonus applied after the calculation is threat too (`threat_follows_damage_bonus`,
+  Forever preparation), from MythicSim's Discord (26 October 2026, Vrelk: a Shadow Priest with
+  no threat talents had less threat than damage). Improved Mind Flay's ramp, Ice Lance on a
+  frozen target, Soul Siphon on Drain Life and Wrack, Amplify Curse on Curse of Agony and
+  Incinerate on an Immolated target raise a hit's damage after its threat is worked out; the
+  reference keeps the threat of the damage before the bonus, so Mind Flay made about 0.82
+  threat per damage with no threat talents.
 - Party damage for heals that follow it, an assumption until the logs hold them: Forever's level
   30 beta logs have no Prayer of Mending or Chain Heal yet. A healer's party of five takes hits
   at random, the tank about once a second and each of the other four about once every five

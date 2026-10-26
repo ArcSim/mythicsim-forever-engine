@@ -778,6 +778,9 @@ pub enum Action {
 pub struct Step {
     pub spell: ActionId,
     pub target: UnitRef,
+    /// A strict sequence step's own condition, which Go checks as it asks whether the step is
+    /// ready.
+    pub condition: Option<Value>,
 }
 
 impl Action {
@@ -790,6 +793,10 @@ impl Action {
             }
             Action::Move(value) | Action::MoveDuration(value) => vec![value],
             Action::Wait(value) | Action::WaitUntil(value) => value.iter().collect(),
+            Action::StrictSequence(steps) => steps
+                .iter()
+                .filter_map(|step| step.condition.as_ref())
+                .collect(),
             // Go builds the inner action without the group's variables.
             Action::Schedule { inner, .. } => {
                 let mut values: Vec<&Value> = inner.condition.iter().collect();
@@ -1586,8 +1593,16 @@ fn parse_strict_sequence(config: &Json) -> Result<Action, String> {
         let action = action
             .as_object()
             .ok_or("strictSequence action must be an object")?;
-        match single(action, &["uuid"])? {
-            ("castSpell", cast) => spells.push(parse_step(cast)?),
+        match single(action, &["uuid", "condition"])? {
+            ("castSpell", cast) => {
+                let mut step = parse_step(cast)?;
+                // Go builds each step as an action of its own, condition included.
+                if let Some(condition) = action.get("condition") {
+                    step.condition =
+                        Some(parse_value(condition).map_err(|reasons| reasons.join("; "))?);
+                }
+                spells.push(step)
+            }
             (name, _) => return Err(format!("strictSequence action {name} is unsupported")),
         }
     }
@@ -1790,7 +1805,11 @@ fn parse_step(config: &Json) -> Result<Step, String> {
         }
     }
     let spell = parse_action_id(object.get("spellId").ok_or("castSpell has no spellId")?)?;
-    Ok(Step { spell, target })
+    Ok(Step {
+        spell,
+        target,
+        condition: None,
+    })
 }
 
 /// Go `GetTargetUnit` and `GetSourceUnit`: the unit a `UnitReference` names, or `default`
@@ -2015,8 +2034,11 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
             if !reasons.is_empty() {
                 return Err(reasons);
             }
-            // Go has no boolean or string getter for them and panics where it reads one.
-            if matches!(highest_type(&values), ValueType::Bool | ValueType::String) {
+            // Go has no boolean or string getter for them and panics where it reads one. One
+            // value stands for the operator (Go `newValueMin` returns it), so it is read as itself.
+            if values.len() > 1
+                && matches!(highest_type(&values), ValueType::Bool | ValueType::String)
+            {
                 return Err(vec![format!(
                     "{name} of booleans or strings is unsupported"
                 )]);
@@ -4397,6 +4419,39 @@ mod tests {
         );
     }
 
+    /// Go `newValueMin` returns a single value as itself, so a `min` of one boolean is that
+    /// boolean; two booleans still reach Go's `Min`, which panics reading them.
+    #[test]
+    fn a_min_of_one_boolean_is_the_boolean() {
+        let one = serde_json::json!({"min": {"vals": [{"const": {"val": "true"}}]}});
+        assert!(matches!(parse_value(&one).unwrap(), Value::Min(values) if values.len() == 1));
+        let two = serde_json::json!({"min": {"vals": [
+            {"const": {"val": "true"}}, {"const": {"val": "false"}}
+        ]}});
+        assert!(parse_value(&two).is_err());
+    }
+
+    /// Go builds each strict sequence step as an action of its own, so a step may carry a
+    /// condition, which its readiness checks.
+    #[test]
+    fn a_strict_sequence_step_keeps_its_condition() {
+        let rotation = serde_json::json!({"type": "TypeAPL", "priorityList": [{"action": {
+            "strictSequence": {"actions": [
+                {"castSpell": {"spellId": {"spellId": 1311595}},
+                 "condition": {"cmp": {"lhs": {"currentManaPercent": {}}, "op": "OpGt",
+                                        "rhs": {"const": {"val": "40%"}}}}},
+                {"castSpell": {"spellId": {"spellId": 20930}}}
+            ]}
+        }}]});
+        let parsed = parse(&rotation).unwrap();
+        let Action::StrictSequence(steps) = &parsed.priority_list[0].action else {
+            panic!("a strict sequence");
+        };
+        assert!(steps[0].condition.is_some());
+        assert!(steps[1].condition.is_none());
+        assert_eq!(parsed.priority_list[0].action.values().len(), 1);
+    }
+
     /// Go `APLValueAutoSwingTime` and `APLValueSpellCurrentCost`, read by the upstream Rogue
     /// and Feral presets.
     #[test]
@@ -4845,11 +4900,13 @@ mod tests {
             Action::StrictSequence(vec![
                 Step {
                     spell: ActionId::spell(14751),
-                    target: UnitRef::CurrentTarget
+                    target: UnitRef::CurrentTarget,
+                    condition: None,
                 },
                 Step {
                     spell: ActionId::spell(10947),
-                    target: UnitRef::CurrentTarget
+                    target: UnitRef::CurrentTarget,
+                    condition: None,
                 }
             ])
         );
@@ -4903,11 +4960,13 @@ mod tests {
                 steps: vec![
                     Step {
                         spell: ActionId::spell(2458),
-                        target: UnitRef::CurrentTarget
+                        target: UnitRef::CurrentTarget,
+                        condition: None,
                     },
                     Step {
                         spell: ActionId::spell(1719),
-                        target: UnitRef::CurrentTarget
+                        target: UnitRef::CurrentTarget,
+                        condition: None,
                     }
                 ]
             }
@@ -5186,7 +5245,8 @@ mod tests {
                     name: String::new(),
                     steps: vec![Step {
                         spell: ActionId::spell(1),
-                        target: unit
+                        target: unit,
+                        condition: None,
                     }]
                 })
             );

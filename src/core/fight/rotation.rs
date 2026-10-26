@@ -35,6 +35,8 @@ pub(crate) enum Act {
     /// Go `APLActionStrictSequence`: its casts and the next one to run.
     StrictSequence {
         spells: Vec<SpellId>,
+        /// Each step's own condition, `None` for one without.
+        conditions: Vec<Option<Rc<Cond>>>,
         next: usize,
     },
     /// Go `APLActionSequence`: its name, its casts and the next one to run.
@@ -1072,7 +1074,22 @@ impl<A: Agent> Fight<A> {
                 if spells.is_empty() {
                     return None;
                 }
-                Act::StrictSequence { spells, next: 0 }
+                // A step whose condition is a constant false is pruned, so Go drops the action.
+                let mut conditions = Vec::with_capacity(steps.len());
+                for step in steps {
+                    conditions.push(match compile_condition(step.condition.as_ref(), lookup) {
+                        CompiledCondition::Pruned => return None,
+                        CompiledCondition::Always => None,
+                        CompiledCondition::When(condition) => {
+                            Some(Rc::new(Cond::lower(&condition)))
+                        }
+                    });
+                }
+                Act::StrictSequence {
+                    spells,
+                    conditions,
+                    next: 0,
+                }
             }
             // Go newActionSequence drops unknown casts, and the action when none remain.
             ParsedAction::Sequence { name, steps } => {
@@ -1885,12 +1902,20 @@ impl<A: Agent> Fight<A> {
     /// Go `APLActionStrictSequence.IsReady`. A ready sequence leaves the sequence flag set,
     /// as Go does.
     fn sequence_ready(&mut self, item: usize) -> bool {
-        let Act::StrictSequence { ref spells, .. } = self.rotation[item].action else {
+        let Act::StrictSequence {
+            ref spells,
+            ref conditions,
+            ..
+        } = self.rotation[item].action
+        else {
             unreachable!("item is a strict sequence");
         };
-        let first = spells[0];
+        let (first, condition) = (spells[0], conditions[0].clone());
         self.apl.in_sequence = true;
-        if self.gcd_time_to_ready() > MAX_SPELL_QUEUE_WINDOW || !self.cast_ready(first) {
+        if self.gcd_time_to_ready() > MAX_SPELL_QUEUE_WINDOW
+            || !self.step_condition_holds(condition.as_deref())
+            || !self.cast_ready(first)
+        {
             self.apl.in_sequence = false;
             return false;
         }
@@ -2012,6 +2037,17 @@ impl<A: Agent> Fight<A> {
             }
         }
         ready
+    }
+
+    /// A strict sequence step's own condition, as Go's step `IsReady` reads it: the walk's
+    /// promise lasts no longer than the condition's answer.
+    fn step_condition_holds(&mut self, condition: Option<&Cond>) -> bool {
+        let Some(condition) = condition else {
+            return true;
+        };
+        let (holds, until, _) = self.condition_stable(condition);
+        self.note_until(until);
+        holds
     }
 
     /// Whether an item's condition is false, keeping a proof of it that holds as long as the
@@ -2586,17 +2622,22 @@ impl<A: Agent> Fight<A> {
     /// Go `APLActionStrictSequence.GetNextAction`, of a strict sequence or of the one a strict
     /// multidot runs.
     fn sequence_next_action(&mut self, item: usize) -> Option<Ready> {
-        let (spell, target) = match self.rotation[item].action {
-            Act::StrictSequence { ref spells, next } => (spells[next], Side::Target),
+        let (spell, target, condition) = match self.rotation[item].action {
+            Act::StrictSequence {
+                ref spells,
+                ref conditions,
+                next,
+            } => (spells[next], Side::Target, conditions[next].clone()),
             Act::StrictMultidot {
                 spell,
                 ref ready,
                 next,
                 ..
-            } => (spell, ready[next]),
+            } => (spell, ready[next], None),
             _ => unreachable!("only strict sequences and waits control the rotation"),
         };
-        if self.cast_ready(spell) {
+        // Go `APLAction.IsReady` of the step: its condition, then its cast.
+        if self.step_condition_holds(condition.as_deref()) && self.cast_ready(spell) {
             // Off the GCD the step advances now; otherwise the cast queues and the step
             // stays until it fires.
             if self.gcd_ready() {
@@ -2631,6 +2672,7 @@ impl<A: Agent> Fight<A> {
             Act::StrictSequence {
                 ref spells,
                 ref mut next,
+                ..
             } => {
                 *next += 1;
                 *next == spells.len()

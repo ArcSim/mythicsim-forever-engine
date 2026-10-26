@@ -644,12 +644,19 @@ fn undirected_procs(prepared: &PreparedV2) -> Vec<String> {
 /// player: a pet that strikes in melee would gain the heal itself. The runtime also follows the
 /// judgement on the one target the effect names, not on copies of it.
 fn judgement_of_light_limits(prepared: &PreparedV2) -> Vec<String> {
-    let Some(aura) = prepared.effects.iter().find_map(|effect| match effect {
-        Effect::JudgementOfLight { aura, .. } => Some(aura),
-        _ => None,
-    }) else {
-        return Vec::new();
-    };
+    prepared
+        .effects
+        .iter()
+        .filter_map(|effect| match effect {
+            Effect::JudgementOfLight { aura, .. } => Some(aura),
+            _ => None,
+        })
+        .flat_map(|aura| judgement_of_light_aura_limits(prepared, aura))
+        .collect()
+}
+
+/// [`judgement_of_light_limits`] for one judged aura.
+fn judgement_of_light_aura_limits(prepared: &PreparedV2, aura: &str) -> Vec<String> {
     let mut reasons = Vec::new();
     if prepared.encounter.target_count > 1 {
         reasons.push(format!(
@@ -670,28 +677,6 @@ fn judgement_of_light_limits(prepared: &PreparedV2) -> Vec<String> {
         }
     }
     reasons
-}
-
-/// The party's Flametongue Totem hits for the main hand's speed when preparation reads it, which an
-/// item swap of the main hand would change.
-fn party_flametongue_swap_limits(prepared: &PreparedV2) -> Vec<String> {
-    let totem = prepared.effects.iter().any(|effect| {
-        matches!(effect, Effect::SpellDataDamageProc { trigger_aura, .. }
-            if trigger_aura == "Flametongue Totem Trigger")
-    });
-    let swap = prepared
-        .effects
-        .iter()
-        .any(|effect| matches!(effect, Effect::ItemSwap { .. }));
-    if totem && swap {
-        vec![
-            "the party's Flametongue Totem hits for the main hand's speed, which an item swap \
-             changes"
-                .to_string(),
-        ]
-    } else {
-        Vec::new()
-    }
 }
 
 /// Runeblade of Baron Rivendare's Unholy Aura starts a periodic action as it gains, which gives
@@ -858,6 +843,9 @@ const SWAP_EFFECT_FIELDS: &[(&str, &[&str])] = &[
     // The healing power the heals snapshot, which the swap set's weapon moves.
     ("paladin_heals", &["player", "target"]),
     ("crusader", &["chances"]),
+    // Proc managers an item swap rebuilds for the weapons in the hands.
+    ("stat_proc", &["chances"]),
+    ("sulfuras_hand_of_ragnaros", &["chances"]),
     ("spell_data_damage_proc", &["chances", "trigger_spells"]),
     ("extra_attack_proc", &["chances"]),
     (
@@ -880,6 +868,15 @@ const SWAP_EFFECT_FIELDS: &[(&str, &[&str])] = &[
     ("flametongue_weapon", &["hands/base_damage"]),
     ("flametongue_totem", &["attack_damage"]),
     ("maelstrom_weapon", &["chances"]),
+    // The imbue's proc manager rebuilt for the weapon in the hand, and whether a main hand
+    // imbue blocks the party Windfury Totem (the trigger's gain takes the totem down).
+    (
+        "windfury_weapon",
+        &["chances", "trigger_spells", "blocks_windfury_totem"],
+    ),
+    // Whether the shaman's own Windfury Totem is contested: the class gate refuses a reachable
+    // one contested under either set.
+    ("windfury_totem_self", &["contested"]),
     // Patch 181: the hands that carry Rockbiter and the main hand's speed, as the weapons worn say.
     (
         "rockbiter_threat",
@@ -1071,6 +1068,35 @@ fn item_swap_limits(
             ));
         }
     }
+    // A main hand Windfury Weapon the swap switches on outbids the party Windfury Totem: its
+    // trigger's gain takes the totem and its trigger down, as the swapped state shows them.
+    let totem_auras: Vec<&str> = prepared
+        .effects
+        .iter()
+        .filter_map(|effect| match effect {
+            Effect::WindfuryTotem {
+                totem_aura,
+                trigger_aura,
+                ..
+            } => Some([totem_aura.as_str(), trigger_aura.as_str()]),
+            _ => None,
+        })
+        .flatten()
+        .collect();
+    // Either way: a swap that puts the blocking imbue on, or takes it off and frees the totem,
+    // which comes back at its next refresh as its trigger's expiry allows.
+    let imbue_blocks_totem = swapped.iter().any(|change| {
+        let parts: Vec<&str> = change.path.split('/').skip(1).collect();
+        matches!(parts.as_slice(), ["effects", index, "blocks_windfury_totem"]
+            if index.parse::<usize>().ok().and_then(|index| prepared.effects.get(index))
+                .is_some_and(|effect| matches!(effect, Effect::WindfuryWeapon { trigger_aura, .. }
+                    if targets.contains(&trigger_aura.as_str()))))
+    });
+    let displaced_totem: Vec<&str> = if imbue_blocks_totem {
+        totem_auras
+    } else {
+        Vec::new()
+    };
     for change in swapped {
         if let Some(reason) = swap_change_limit(
             prepared,
@@ -1080,6 +1106,7 @@ fn item_swap_limits(
             &crit_mods,
             &damage_mods,
             aura_effects,
+            &displaced_totem,
         ) {
             reasons.push(reason);
         }
@@ -1128,6 +1155,7 @@ fn flametongue_totem_held(prepared: &PreparedV2, switched: &[&str]) -> bool {
 }
 
 /// Why the runtime cannot follow one value the swapped state changes, if it cannot.
+#[allow(clippy::too_many_arguments)]
 fn swap_change_limit(
     prepared: &PreparedV2,
     change: &SwapChange,
@@ -1136,6 +1164,7 @@ fn swap_change_limit(
     crit_mods: &[(&[usize], f64, bool, bool)],
     damage_mods: &[(&[usize], f64, bool, bool)],
     aura_effects: &[crate::contracts::prepared_v2::SwapAuraEffect],
+    displaced_totem: &[&str],
 ) -> Option<String> {
     let parts: Vec<&str> = change.path.split('/').skip(1).collect();
     let refuse = || {
@@ -1180,13 +1209,19 @@ fn swap_change_limit(
                 refuse()
             }
         }
-        ["player", "auras", index, field] if matches!(*field, "active" | "blocked_at_reset") => {
+        ["player", "auras", index, field]
+            if matches!(*field, "active" | "blocked_at_reset" | "displaced_by") =>
+        {
             let label = &prepared
                 .player
                 .auras
                 .get(index.parse::<usize>().ok()?)?
                 .label;
-            if switched.contains(&label.as_str()) {
+            if displaced_totem.contains(&label.as_str()) {
+                None
+            } else if *field == "displaced_by" {
+                refuse()
+            } else if switched.contains(&label.as_str()) {
                 None
             } else {
                 refuse()
@@ -1259,6 +1294,24 @@ fn swap_change_limit(
         // Go updateWeaponSkills: the tables of the hands whose skill the equipment sets.
         ["melee", "main_hand_skill" | "off_hand_skill" | "ranged_skill", ..] => None,
         ["melee", "armor_ignore_factor"] if !aura_effects.is_empty() => None,
+        // The effect roll a hit reads the weapon in the hand for, as the party's Flametongue
+        // Totem does with the main hand's speed: the runtime takes the swapped average for a
+        // plain effect roll only.
+        ["effects", index, "average"]
+            if matches!(
+                prepared.effects.get(index.parse::<usize>().ok()?)?,
+                Effect::SpellDataDamageProc {
+                    roll: None,
+                    outcome: None,
+                    chain: None,
+                    area: None,
+                    periodic: None,
+                    ..
+                }
+            ) =>
+        {
+            None
+        }
         ["effects", index, field, rest @ ..] => {
             let effect = prepared.effects.get(index.parse::<usize>().ok()?)?;
             let fields = SWAP_EFFECT_FIELDS
@@ -1384,8 +1437,16 @@ fn uninherited_stat_changes(prepared: &PreparedV2) -> Vec<String> {
     reasons
 }
 
-/// Stat aura combinations that change a stat the runtime holds fixed.
+/// Stat aura combinations that change a stat the runtime holds fixed. Ranged crit is read only
+/// by ranged attacks (a pet's offset from it is checked on its own), so a player with none of
+/// them never reads it.
 fn fixed_stat_aura_changes(prepared: &PreparedV2) -> Vec<String> {
+    let ranged = prepared.player.spells.iter().any(|spell| {
+        spell
+            .proc_mask
+            .iter()
+            .any(|mask| mask == "ProcMaskRangedAuto" || mask == "ProcMaskRangedSpecial")
+    });
     prepared
         .effects
         .iter()
@@ -1393,10 +1454,12 @@ fn fixed_stat_aura_changes(prepared: &PreparedV2) -> Vec<String> {
             Effect::StatAuras { auras, changed, .. } => Some((auras, changed)),
             _ => None,
         })
-        .flat_map(|(auras, changed)| {
+        .flat_map(move |(auras, changed)| {
             changed
                 .iter()
-                .filter(|stat| !followed_stat(stat))
+                .filter(move |stat| {
+                    !followed_stat(stat) && (ranged || *stat != "RangedCritPercent")
+                })
                 .map(move |stat| {
                     format!("stat auras {auras:?} change {stat}, which the runtime holds fixed")
                 })
@@ -2355,10 +2418,6 @@ pub(crate) fn prepared_coverage(
         reasons.extend(coded(
             "proc_unsupported",
             judgement_of_light_limits(prepared),
-        ));
-        reasons.extend(coded(
-            "proc_unsupported",
-            party_flametongue_swap_limits(prepared),
         ));
         reasons.extend(coded("effect_unimplemented", shared_dot_auras(prepared)));
         reasons.extend(coded(

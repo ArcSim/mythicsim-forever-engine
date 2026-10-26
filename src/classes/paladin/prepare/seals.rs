@@ -44,13 +44,13 @@ const SEAL_OF_RIGHTEOUSNESS_PROC_IDS: [(i32, i32); 8] = [
 
 /// The heal each rank's Judgement of Light grants attackers. It carries no rank subtext, so the
 /// pairing is by hand.
-const JUDGEMENT_OF_LIGHT_HEAL_IDS: [(i32, i32); 4] =
+pub(super) const JUDGEMENT_OF_LIGHT_HEAL_IDS: [(i32, i32); 4] =
     [(1, 20267), (2, 20341), (3, 20342), (4, 20343)];
 
 /// The mana each rank's Judgement of Wisdom grants attackers.
 const JUDGEMENT_OF_WISDOM_MANA_IDS: [(i32, i32); 3] = [(1, 20268), (2, 20352), (3, 20353)];
 
-fn paired(table: &[(i32, i32)], rank: i32) -> i32 {
+pub(super) fn paired(table: &[(i32, i32)], rank: i32) -> i32 {
     table
         .iter()
         .find(|(n, _)| *n == rank)

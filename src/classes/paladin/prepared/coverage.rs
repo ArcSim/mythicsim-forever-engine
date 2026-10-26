@@ -35,6 +35,7 @@ const EFFECTS: &[&str] = &[
     "judgement_refresh",
     "lay_on_hands",
     "lights_vigil",
+    "paladin_aura_cast",
     "paladin_heals",
     "pursuit_of_justice",
     "reckoning",
@@ -44,6 +45,7 @@ const EFFECTS: &[&str] = &[
     "sanctified_judgement",
     "seal_of_command",
     "seal_of_fury",
+    "seal_of_light",
     "seal_of_righteousness",
     "seal_of_the_crusader",
     "shield_specialization",
@@ -65,6 +67,7 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         }
         "seal_of_the_crusader" | "judgement_of_the_crusader" => Some("seal_of_the_crusader"),
         "seal_of_fury" | "seal_of_fury_proc" | "judgement_of_fury" => Some("seal_of_fury"),
+        "seal_of_light" | "seal_of_light_proc" | "judgement_of_light" => Some("seal_of_light"),
         "judgement" => Some("judgement"),
         "holy_strike" => Some("holy_strike"),
         "hammer_of_wrath" => Some("hammer_of_wrath"),
@@ -80,6 +83,7 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "holy_shield" | "holy_shield_proc" => Some("holy_shield"),
         "holy_light" | "flash_of_light" | "holy_shock_heal" => Some("paladin_heals"),
         "lay_on_hands" => Some("lay_on_hands"),
+        "retribution_aura" => Some("paladin_aura_cast"),
         _ => None,
     }
 }
@@ -160,6 +164,10 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
             .iter()
             .map(|rank| ("target", rank.aura.as_str()))
             .collect(),
+        Effect::PaladinAuraCast { ranks } => ranks
+            .iter()
+            .map(|rank| ("player", rank.aura.as_str()))
+            .collect(),
         Effect::HolyShield { ranks, .. } => ranks
             .iter()
             .map(|rank| ("player", rank.aura.as_str()))
@@ -179,6 +187,15 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
                 [
                     ("player", rank.aura.as_str()),
                     ("player", &rank.shield_aura),
+                ]
+            })
+            .collect(),
+        Effect::SealOfLight { ranks, .. } => ranks
+            .iter()
+            .flat_map(|rank| {
+                [
+                    ("player", rank.aura.as_str()),
+                    ("target", &rank.judgement_aura),
                 ]
             })
             .collect(),

@@ -368,6 +368,15 @@ impl Paladin {
                 effects.push(category);
             }
         }
+        // seal_of_light.go, under Forever's rules where the rotation reaches a rank: the seal's
+        // self heal on its 15 PPM manager, and each rank's Judgement of Light on the target.
+        let mut light_reached = false;
+        data.seal_of_light.each(|_, rank| {
+            light_reached |= rotation_spells.contains(&i64::from(rank.id));
+        });
+        if sim.rules == crate::prepare::sim::Rules::Forever && light_reached {
+            self.export_seal_of_light(env, &mut effects, notes);
+        }
         // holy_strike.go: the weapon percent of the normalized swing plus the flat roll.
         let mut holy_strikes = Vec::new();
         data.holy_strike.each(|_, rank| {
@@ -549,6 +558,25 @@ impl Paladin {
                 notes.push("Lay on Hands restoring the target's mana is unsupported".to_string());
             }
         }
+        // auras.go registerAuraSpell: a Retribution Aura rank's cast turns its aura on. Forever's
+        // rules describe it; Go's exporter leaves the cast unknown.
+        if sim.rules == crate::prepare::sim::Rules::Forever {
+            let mut ranks = Vec::new();
+            data.retribution_aura.each(|_, rank| {
+                if !rotation_spells.contains(&i64::from(rank.id)) {
+                    return;
+                }
+                let aura = sim
+                    .get_spell(unit, &ActionId::spell(rank.id))
+                    .and_then(|spell| sim.spell(spell).related_self_buff);
+                if let Some(aura) = aura {
+                    ranks.push(json!({"spell_id": rank.id, "aura": sim.aura(aura).label}));
+                }
+            });
+            if !ranks.is_empty() {
+                effects.push(json!({"kind": "paladin_aura_cast", "ranks": ranks}));
+            }
+        }
         let eye = talents.i32("eye_for_an_eye");
         if eye > 0 {
             // talents_retribution.go applyEyeForAnEye
@@ -576,6 +604,72 @@ impl Paladin {
             }
         }
         effects
+    }
+
+    /// Go `registerSealOfLight`'s seal, self heal and judgement for each rank.
+    fn export_seal_of_light(
+        &self,
+        env: &Environment,
+        effects: &mut Vec<Value>,
+        notes: &mut Vec<String>,
+    ) {
+        let sim = &env.sim;
+        let unit = env.player;
+        let label = sim.unit(unit).label.clone();
+        let data = spell_data();
+        let pseudo = &sim.unit(unit).pseudo_stats;
+        let mut ranks = Vec::new();
+        let mut chances = None;
+        let mut judgements = Vec::new();
+        data.seal_of_light.each(|_, rank| {
+            let aura = Self::seal_aura_label("Seal of Light", &label, rank);
+            let judgement_id = rank.effect_n(2).base_value() as i32;
+            let judgement_heal = data
+                .seal_of_light_triggered
+                .by_id(super::seals::paired(
+                    &super::seals::JUDGEMENT_OF_LIGHT_HEAL_IDS,
+                    rank.rank_number(),
+                ))
+                .heal_effect()
+                .average(CHARACTER_LEVEL);
+            let judgement_aura = format!("Judgement of Light Rank {}", rank.rank_number());
+            let proc_rank = rank.refs()[0];
+            if chances.is_none() {
+                let dpm = sim
+                    .get_aura(unit, &aura)
+                    .and_then(|aura| sim.aura(aura).dpm.clone());
+                chances = dpm.map(|dpm| {
+                    crate::prepare::export_items::dpm_chances(env, &dpm, |spell| {
+                        spell.proc_mask.matches(ProcMask::MELEE)
+                            && !spell.flags.matches(SpellFlag::PROC)
+                    })
+                });
+            }
+            ranks.push(json!({
+                "seal_spell_id": rank.id, "aura": aura, "proc_spell_id": proc_rank.id,
+                "heal": proc_rank.heal_effect().average(CHARACTER_LEVEL),
+                "judgement_spell_id": judgement_id, "judgement_aura": judgement_aura,
+            }));
+            // buffs/paladin.go AttachJudgementOfLightHeal, under health metrics of the target.
+            judgements.push(json!({
+                "kind": "judgement_of_light", "aura": judgement_aura,
+                "proc_chance": crate::prepare::buffs::paladin::JUDGEMENT_PROC_CHANCE,
+                "rng_label": "Judgement of Light - Heal", "heal": judgement_heal,
+                "metrics_action_id": action_id(Some(&ActionId::spell(judgement_id))),
+                "delay_ns": crate::prepare::common_effects::SPELL_BATCH_WINDOW,
+            }));
+        });
+        let Some(chances) = chances else {
+            notes.push("Seal of Light has no proc manager".to_string());
+            return;
+        };
+        effects.push(json!({
+            "kind": "seal_of_light", "ranks": ranks, "chances": chances,
+            "healing_dealt_multiplier": pseudo.healing_dealt_multiplier,
+            "healing_taken_multiplier": pseudo.healing_taken_multiplier,
+            "table_healing_dealt_multiplier": env.attack_table(unit, unit).healing_dealt_multiplier,
+        }));
+        effects.extend(judgements);
     }
 
     /// Go `paladinStatAuras`: the paladin auras whose gain or loss changes the stats the

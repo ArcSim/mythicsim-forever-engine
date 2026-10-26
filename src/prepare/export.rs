@@ -1214,6 +1214,66 @@ pub(crate) fn export_state(
 /// The reason an inert party damage shield names.
 const DAMAGE_SHIELD_REASON: &str = "a damage shield: hears only physical hits the player takes";
 
+/// A tank's party damage shields: Go `core.NewDamageShield`'s trigger, on each landed hit the
+/// player takes from a physical attack, casts the shield's spell (its action with the tag plus
+/// two) on the attacker a spell batch window later (the trigger is not immediate), a fixed magic
+/// hit of the shield's damage that cannot crit. The damage is the shield's bid in its category;
+/// the shield spell adds the wearer's spell power by its coefficient. Under Forever's rules a
+/// paladin's own Retribution Aura rank the rotation casts is one more shield.
+fn tank_damage_shields(env: &Environment) -> Vec<Value> {
+    let mut effects = Vec::new();
+    let mut auras: Vec<_> = ["Retribution Aura (External)", "Thorns (External)"]
+        .into_iter()
+        .filter_map(|label| env.sim.get_aura(env.player, label))
+        .collect();
+    if env.sim.rules == crate::prepare::sim::Rules::Forever {
+        let casts = crate::prepare::rotation::rotation_spells(&env.sim, env.player);
+        auras.extend(
+            env.sim
+                .unit(env.player)
+                .auras
+                .iter()
+                .copied()
+                .filter(|&aura| {
+                    let state = env.sim.aura(aura);
+                    state.label.starts_with("Retribution Aura Rank ")
+                        && state.action_id.as_ref().is_some_and(|id| {
+                            id.tag == 0 && casts.contains(&i64::from(id.spell_id))
+                        })
+                }),
+        );
+    }
+    for aura in auras {
+        let state = env.sim.aura(aura);
+        let label = state.label.as_str();
+        let Some(id) = state.action_id.clone() else {
+            continue;
+        };
+        let spell = ActionId {
+            tag: id.tag + 2,
+            ..id
+        };
+        let Some(position) = super::export_items::spell_position(env, &spell) else {
+            continue;
+        };
+        let Some(damage) = state
+            .exclusive_effects
+            .first()
+            .map(|effect| env.sim.effects[effect.0].priority)
+        else {
+            continue;
+        };
+        effects.push(json!({
+            "kind": "spell_data_damage_proc", "trigger_aura": label,
+            "trigger_spells": Vec::<usize>::new(), "struck": true, "landed_only": true,
+            "require_damage": false, "proc_chance": 1.0, "spell": position, "average": 0.0,
+            "variance": 0.0, "roll": [damage, damage], "can_crit": false,
+            "delay_ns": super::common_effects::SPELL_BATCH_WINDOW,
+        }));
+    }
+    effects
+}
+
 /// The party's damage shields on the player: Go buffs/meta.go `newDamageShield` over
 /// `core.NewDamageShield`, a listener on the landed hits the player takes that answers a
 /// physical one. Without a tank nothing physical hits the player (the Goblin Sapper Charge's
@@ -1229,7 +1289,7 @@ fn party_damage_shields(env: &Environment, tanking: bool) -> Vec<Value> {
         "on_stacks_change",
     ];
     if tanking {
-        return Vec::new();
+        return tank_damage_shields(env);
     }
     ["Retribution Aura (External)", "Thorns (External)"]
         .into_iter()

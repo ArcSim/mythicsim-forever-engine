@@ -191,15 +191,28 @@ fn limits(prepared: &PreparedV2, reachable: &[&Spell]) -> Vec<String> {
                 "rotation reaches {id}, a totem without a known behavior"
             ));
         }
-        for effect in &prepared.effects {
+        for (index, effect) in prepared.effects.iter().enumerate() {
+            // The totem is contested under either set an item swap wears.
+            let swapped_contested = prepared.effects.iter().any(|swap| match swap {
+                Effect::ItemSwap { swapped, .. } => swapped.iter().any(|change| {
+                    change.path == format!("/effects/{index}/contested")
+                        && change.value == serde_json::Value::Bool(true)
+                }),
+                _ => false,
+            });
             match effect {
                 Effect::WindfuryTotemSelf {
                     spell_id,
-                    contested: true,
+                    contested,
                     ..
-                } if *spell_id == id.spell_id && id.tag == 0 => reasons.push(format!(
+                } if (*contested || swapped_contested)
+                    && *spell_id == id.spell_id
+                    && id.tag == 0 =>
+                {
+                    reasons.push(format!(
                     "rotation reaches {id}, a Windfury Totem that contests the party's or Windfury Weapon"
-                )),
+                    ))
+                }
                 Effect::FlametongueTotem {
                     spell_id,
                     party_totem: true,

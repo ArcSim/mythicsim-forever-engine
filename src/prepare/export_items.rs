@@ -1064,7 +1064,8 @@ pub(crate) fn melee_item_listeners(env: &Environment) -> Vec<Value> {
 ///
 /// Beyond the exporter's list, Deathbone Guardian's three piece Deathbone Surge
 /// (item_sets_classic.go `setStatProc`): a 15% chance on the melee hits the wearer takes, so
-/// without a tank it never rolls, and a tank's stays refused as a reaction to the target's swings.
+/// without a tank it never rolls. A tank's is a struck stat proc under Forever's rules and stays
+/// refused as a reaction to the target's swings under Go's.
 const HIT_TAKEN_ITEM_PROCS: [(&str, i32, i32); 11] = [
     ("Essence of the Pure Flame", 0, 0),
     ("Force Reactive Disk", 0, 0),
@@ -1164,6 +1165,33 @@ pub(crate) fn hit_taken_item_listeners(
             match lion_horn_proc(env, aura) {
                 Some(effect) => effects.push(effect),
                 None => unrepresented.push(format!("{label}'s proc is not a chance stat proc")),
+            }
+            continue;
+        }
+        // Go setStatProc's Deathbone Surge: each melee swing the wearer takes, landed or not, has
+        // a 15% chance, once a minute (the set aura's cooldown), to give 70 spell power for 10
+        // sec, a spell batch window later. Forever's rules describe it; Go's exporter refuses it.
+        if heard
+            && tanking
+            && label == "Deathbone Guardian 3P"
+            && env.sim.rules == super::sim::Rules::Forever
+        {
+            match aura_named(env, "Deathbone Surge") {
+                Some(proc_aura) if env.sim.aura(aura).icd.is_some() => {
+                    let bonus =
+                        Stats::from_pairs(&[(Stat::SpellDamage, 70.0), (Stat::HealingPower, 70.0)]);
+                    let id = ActionId::spell(1299746);
+                    effects.push(json!({
+                        "kind": "spell_data_stat_proc", "trigger_aura": label,
+                        "aura": env.sim.aura(proc_aura).label,
+                        "trigger_spells": Vec::<usize>::new(),
+                        "callbacks": ["on_spell_hit_taken"], "struck": true, "landed_only": false,
+                        "require_damage": false, "proc_chance": 0.15,
+                        "gain_log": format!("Gained {} from {}.", flat_string(&bonus), action_id_string(&id)),
+                        "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
+                    }));
+                }
+                _ => unrepresented.push(format!("{label}'s proc is not a chance stat proc")),
             }
             continue;
         }

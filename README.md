@@ -1,8 +1,9 @@
 # MythicSim Forever Engine
 
-A Rust simulation engine for WoW Forever. [MythicSim](https://mythicsim.com/wow-forever/sim)
-runs Forever Quick Sims on it, and the Go engine for the rest; [Coverage](#coverage) lists
-which is which.
+A Rust simulation engine for WoW Forever. Every Forever sim on
+[MythicSim](https://mythicsim.com/wow-forever/sim) runs on it: Quick Sims, stat weights, Best
+Gear, the trinket and race boards, the Build Lab and the healer sims. [Coverage](#coverage) says
+what that covers and what it refuses.
 
 The engine began as an exact port of [MythicSim's Go fork](https://github.com/sage3648/mythicsim-forever-engine-go)
 of [wowsims Forever](https://github.com/ElliotWood/Forever): event order, random numbers and
@@ -38,28 +39,28 @@ the engine.
 3. Rust runs the fight.
 
 [`tools/route.py`](docs/routing.md) is what the MythicSim worker calls. It runs a request in
-Rust, or tells the worker to run it in Go and says why.
+Rust, or says why it cannot. With the worker's `FOREVER_GO_FALLBACK` off, as on MythicSim, a
+request Rust refuses fails with that reason; nothing runs in Go.
 
 ## Coverage
 
-MythicSim's Forever Quick Sims run in Rust, for every class and spec it offers: the Druid,
-Hunter, Mage, Paladin, Priest, Rogue, Shaman, Warlock and Warrior damage and tank specs, with
-their talents, gear, buffs, consumables, pets, tanking and 2 to 5 targets. Holy Paladin heal
-sims match Go too, under the reference's rules: heals cast on the player and counted in full, as
-Go counts them. Production prepares them with Forever's rules, which leave out overhealing.
+Every class and spec MythicSim offers runs in Rust: the Druid, Hunter, Mage, Paladin, Priest,
+Rogue, Shaman, Warlock and Warrior damage and tank specs, with their talents, gear, buffs,
+consumables, pets, tanking, item swaps and 2 to 5 targets, and the Holy Paladin, Priest,
+Restoration Shaman and Restoration Druid healer sims. Rust prepares the character as well as
+running the fight, so no part of a request goes through Go. Holy Paladin heal sims match Go
+too, under the reference's rules: heals cast on the player and counted in full, as Go counts
+them. Production prepares them with Forever's rules, which leave out overhealing.
 
-These still run in Go:
+The 812 production requests that fell back to Go, or needed the Go exporter to prepare them,
+between 24 and 27 October 2026 all prepare and run in Rust: tank damage shields, Seal of Light,
+Vampiric Embrace, item swaps onto weapons with procs, custom rotation sequences and the rest.
+The coverage gate still refuses what Rust cannot simulate exactly, each refusal with a stable
+reason code (see [routing](docs/routing.md)), and MythicSim fails such a request with that
+reason rather than run it in Go.
 
-- Quick Sims that ask for stat weights.
-- Best Gear, trinket boards, race boards and the Build Lab.
-- The one fight a Quick Sim's timeline and combat log show. It is replayed in Go, which gives
-  the same fight.
-- Quick Sims the coverage gate refuses, about 5% of them: some item swaps, some custom
-  rotation syntax and a few spells and set bonuses. Each refusal gives a reason code.
-- Quick Sims on MythicSim's second worker, which does not carry the Rust engine yet.
-
-A character Rust preparation does not cover yet is prepared by the Go exporter, and Rust
-still runs the fight.
+A Quick Sim's timeline and combat log show the run's first fight. Rust keeps no per-iteration
+DPS, so the fight nearest the median is not picked.
 
 ## The Go reference
 

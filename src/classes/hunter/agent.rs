@@ -889,7 +889,10 @@ impl Agent for HunterAgent {
             HunterSpell::PetAbility(index) => {
                 let enabled = fight.active_pet(fight.caster(spell)).enabled;
                 match fight.agent.pet_abilities[index] {
-                    PetAbility::Swipe => false,
+                    PetAbility::Swipe {
+                        min_targets,
+                        cleave,
+                    } => enabled && cleave.is_some() && fight.targets.len() >= min_targets,
                     PetAbility::DustCloud => {
                         let (aura, _) = fight.agent.dust_cloud.expect("Dust Cloud is bound");
                         // Go `DustCloudYieldsToSunderAndExpose` (mythicsim patch 110): the pet

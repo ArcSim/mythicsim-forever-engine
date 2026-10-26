@@ -479,8 +479,8 @@ impl PrepAgent for Shaman {
     }
 
     /// The Shaman auras whose gain and expiry change stats through `AddStatsDynamic`.
-    fn stat_auras(&self, _sim: &Sim, _unit: UnitId) -> Vec<String> {
-        [
+    fn stat_auras(&self, sim: &Sim, _unit: UnitId) -> Vec<String> {
+        let mut labels: Vec<String> = [
             "Strength Of Earth Totem (Self)",
             "Grace Of Air Totem (Self)",
             "Mana Spring Totem (Self)",
@@ -488,7 +488,12 @@ impl PrepAgent for Shaman {
         ]
         .iter()
         .map(|label| label.to_string())
-        .collect()
+        .collect();
+        // Stormcaller's Garb's proc aura, which Forever's rules describe.
+        if sim.rules == crate::prepare::sim::Rules::Forever {
+            labels.push("Stormcaller's Wrath".to_string());
+        }
+        labels
     }
 
     fn damage_effect(&self, sim: &Sim, spell: SpellId) -> Option<serde_json::Value> {

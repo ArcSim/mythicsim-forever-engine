@@ -254,12 +254,23 @@ impl Hunter {
             }
             return Some(pet_row_strike(id, thunderstomp, "magic"));
         }
-        // newSwipe: its cast condition needs three active targets, and it cleaves them.
-        if data.swipe_triggered.highest().id == id {
+        // newSwipe: its cast condition needs three active targets, and it cleaves them, each a
+        // roll of the row on the melee special table. Forever's rules describe the cleave; Go's
+        // exporter refuses it.
+        let swipe = data.swipe_triggered.highest();
+        if swipe.id == id {
+            let mut effect = json!({"kind": "hunter_pet_swipe", "spell_id": id, "min_targets": 3});
             if active_target_count(sim) >= 3 {
-                return None;
+                if sim.rules != crate::prepare::sim::Rules::Forever {
+                    return None;
+                }
+                let damage = swipe.damage_effect();
+                effect["cleave"] = json!({
+                    "max_targets": i32::from(damage.chain_targets),
+                    "average": damage.average(CHARACTER_LEVEL), "variance": damage.variance,
+                });
             }
-            return Some(json!({"kind": "hunter_pet_swipe", "spell_id": id, "min_targets": 3}));
+            return Some(effect);
         }
         let bleed_rows = [
             &data.savage_rend_triggered,

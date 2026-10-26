@@ -275,7 +275,7 @@ pub(crate) fn stat_auras_effect_reading(
     if labels.is_empty() {
         return Ok(None);
     }
-    if layout.bits > 12 {
+    if layout.bits > 14 {
         return Err(Refusal::new(
             "stat_auras",
             format!("{} stat auras exceed the combination limit", labels.len()),

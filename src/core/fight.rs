@@ -353,6 +353,15 @@ pub(crate) trait Agent: Sized {
         _result: &SpellResult,
     ) {
     }
+    /// Go `OnPeriodicDamageTaken` of a class aura on the target, for the player's tick.
+    fn on_periodic_damage_taken(
+        _fight: &mut Fight<Self>,
+        _aura: AuraRef,
+        _kind: Self::Aura,
+        _spell: SpellId,
+        _result: &SpellResult,
+    ) {
+    }
     /// Go `OnPeriodicDamageDealt` for an aura of the caster.
     fn on_periodic_damage_dealt(
         _fight: &mut Fight<Self>,
@@ -1487,6 +1496,9 @@ pub(crate) enum Action {
     /// A rotation prepull action: Go `APLActionChannelSpell.Execute`, with the item holding its
     /// interrupt condition.
     PrepullChannel(SpellId, usize),
+    /// A rotation prepull action: Go `APLActionStrictSequence.Execute`, with the item holding
+    /// the sequence.
+    PrepullSequence(usize),
     /// A rotation prepull action: Go `APLActionItemSwap.Execute`.
     PrepullItemSwap(bool),
     /// apl.go's swap back to Main before the pull.
@@ -5409,6 +5421,7 @@ impl<A: Agent> Fight<A> {
                 rotation::PrepullAct::Cast(spell) => Action::Prepull(spell),
                 rotation::PrepullAct::CastAtPlayer(spell) => Action::PrepullAtPlayer(spell),
                 rotation::PrepullAct::Channel(spell, item) => Action::PrepullChannel(spell, item),
+                rotation::PrepullAct::StrictSequence(item) => Action::PrepullSequence(item),
                 rotation::PrepullAct::ItemSwap(to_swapped) => Action::PrepullItemSwap(to_swapped),
                 rotation::PrepullAct::SwapBackToMain => Action::PrepullSwapBack,
                 rotation::PrepullAct::ChangeTarget => Action::PrepullChangeTarget,
@@ -5839,6 +5852,7 @@ impl<A: Agent> Fight<A> {
             Action::Prepull(spell) => self.cast_or_queue(spell, Side::Target),
             Action::PrepullAtPlayer(spell) => self.cast_or_queue(spell, Side::Player),
             Action::PrepullChannel(spell, item) => self.prepull_channel(spell, item),
+            Action::PrepullSequence(item) => self.prepull_sequence(item),
             Action::PrepullItemSwap(to_swapped) => self.item_swap_action(to_swapped),
             // Go's `SwapItems` to Main, which logs nothing of its own.
             Action::PrepullSwapBack => self.swap_items(false, false),

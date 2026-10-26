@@ -1260,8 +1260,8 @@ impl<A: Agent> Fight<A> {
         }
     }
 
-    /// Go `auraTracker.OnPeriodicDamageDealt` on the caster, which skips no inactive aura. No
-    /// target aura in scope acts on periodic damage taken.
+    /// Go `auraTracker.OnPeriodicDamageDealt` on the caster, which skips no inactive aura, then
+    /// `OnPeriodicDamageTaken` on the target for its class auras (Vampiric Embrace).
     pub(crate) fn on_periodic_damage(&mut self, spell: SpellId, result: &SpellResult) {
         let side = self.spells[spell].caster;
         let list = List::PeriodicDamageDealt as usize;
@@ -1275,6 +1275,20 @@ impl<A: Agent> Fight<A> {
                 }
                 AuraBehavior::RevelationTrigger => self.revelation_callback(aura, spell, result),
                 _ => {}
+            }
+        }
+        // Go `OnPeriodicDamageTaken` on the target, for the class auras that listen to it.
+        let side = result.target;
+        let list = List::PeriodicDamageTaken as usize;
+        let snapshot = self.trackers[side.index()].lists[list].snapshot();
+        for position in 0..snapshot.len {
+            let index = self.trackers[side.index()].lists[list].read(snapshot, position);
+            let aura = AuraRef { side, index };
+            if !self.aura(aura).active {
+                continue;
+            }
+            if let AuraBehavior::Class(kind) = self.aura(aura).behavior {
+                A::on_periodic_damage_taken(self, aura, kind, spell, result);
             }
         }
     }

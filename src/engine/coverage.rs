@@ -2203,6 +2203,7 @@ pub(crate) fn prepared_coverage(
         let mut last_prepull_swap: Option<bool> = None;
         let mut prepull_moves = false;
         let mut rotation_moves = false;
+        let mut prepull_sequences = 0;
         // Prepull parsing accepts casts, aura activations and moves.
         for prepull in &rotation.prepull {
             if prepull_pruned(prepared, prepull) {
@@ -2288,6 +2289,59 @@ pub(crate) fn prepared_coverage(
                 Action::CastAllStatBuffCooldowns(stats) => {
                     reachable.extend(cast_all_spells(prepared, stats));
                     true
+                }
+                // Go `newActionStrictSequence`: built only when every step is, and its Execute
+                // takes control of the rotation before the pull. The runtime follows steps at the
+                // first target whose conditions read only time and logic, which no other check
+                // gates, and one such sequence.
+                Action::StrictSequence(steps) => {
+                    let spells: Vec<_> = steps
+                        .iter()
+                        .map(|step| {
+                            step.target
+                                .resolve(targets)
+                                .and_then(|_| rotation_cast_spell(prepared, &step.spell))
+                        })
+                        .collect();
+                    if spells.iter().any(Option::is_none) {
+                        false
+                    } else {
+                        prepull_sequences += 1;
+                        let plain = |condition: &Value| {
+                            let mut plain = true;
+                            condition.visit(&mut |value| {
+                                plain &= matches!(
+                                    value,
+                                    Value::Const(_)
+                                        | Value::CurrentTime
+                                        | Value::RemainingTime
+                                        | Value::RemainingTimePercent
+                                        | Value::Compare { .. }
+                                        | Value::And(_)
+                                        | Value::Or(_)
+                                        | Value::Not(_)
+                                );
+                            });
+                            plain
+                        };
+                        let unsupported = steps.iter().any(|step| {
+                            step.condition.as_ref().is_some_and(|c| !plain(c))
+                                || step.target.resolve(targets) != Some(Unit::Target(0))
+                        });
+                        if unsupported || prepull_sequences > 1 {
+                            reasons.push(Refusal::new(
+                                "prepull_unsupported",
+                                format!(
+                                    "prepull action {}: a strictSequence with step conditions \
+                                     beyond time and logic, at another unit or after another is \
+                                     unsupported",
+                                    prepull.position
+                                ),
+                            ));
+                        }
+                        reachable.extend(spells.into_iter().flatten());
+                        true
+                    }
                 }
                 Action::ChangeTarget(unit) => unit.resolve(targets).is_some(),
                 // Go `newActionActivateAllStatBuffProcAuras`: none without a proc buff of the
@@ -3396,7 +3450,7 @@ fn unsummoned_pet_mana(prepared: &PreparedV2, rotation: &Rotation) -> Vec<String
         let mut unsummoned = None;
         if let Some(condition) = &item.condition {
             condition.visit(&mut |value| {
-                if let Value::PetCurrentMana(pet) = value {
+                if let Value::PetCurrentMana(pet) | Value::PetCurrentManaPercent(pet) = value {
                     if !simulated(*pet) {
                         unsummoned = Some(*pet);
                     }

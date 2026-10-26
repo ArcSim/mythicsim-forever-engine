@@ -44,6 +44,12 @@ pub(crate) struct BoundHeal {
     absorb: Option<f64>,
     smart: Option<SmartHeal>,
     past_first_multiplier: f64,
+    /// The heal over time rank, by position, that goes up with this heal at no cost.
+    then_hot: Option<usize>,
+    /// The absorb a crit of the direct heal puts on its player.
+    crit_shield: Option<f64>,
+    /// The direct heal's multiplier while any of these heal over time ranks is up.
+    hot_bonus: Option<(Vec<usize>, f64)>,
 }
 
 /// Every heal rank of the healer and the player's healing modifiers.
@@ -60,7 +66,7 @@ impl HealBook {
     /// Binds the exported heals: each rank to the spell of its action id and that spell's dot.
     pub(crate) fn bind<A: Agent>(
         fight: &Fight<A>,
-        heals: &[HealSpell],
+        heals_spec: &[HealSpell],
         modifiers: HealModifiers,
         bonus_healing_taken: f64,
         party: Option<&PartyDamage>,
@@ -75,7 +81,7 @@ impl HealBook {
                 return Err(format!("party hit rates {:?}", party.hit_rates));
             }
         }
-        let heals = heals
+        let heals = heals_spec
             .iter()
             .map(|heal| {
                 let spell = fight
@@ -101,9 +107,37 @@ impl HealBook {
                     absorb: heal.absorb,
                     smart: heal.smart,
                     past_first_multiplier: heal.past_first_multiplier,
+                    then_hot: None,
+                    crit_shield: heal.crit_shield,
+                    hot_bonus: None,
                 })
             })
-            .collect::<Result<_, String>>()?;
+            .collect::<Result<Vec<BoundHeal>, String>>()?;
+        // A heal's links to other ranks, by spell ID, once every rank is bound.
+        let rank = |spell_id: i32| heals_spec.iter().position(|heal| heal.spell_id == spell_id);
+        let mut heals = heals;
+        for (index, heal) in heals_spec.iter().enumerate() {
+            if let Some(id) = heal.then_hot {
+                let hot = rank(id)
+                    .ok_or_else(|| format!("heal {} goes up with {id}, no heal", heal.spell_id))?;
+                if heals[hot].dot.is_none() {
+                    return Err(format!(
+                        "heal {} goes up with {id}, no heal over time",
+                        heal.spell_id
+                    ));
+                }
+                heals[index].then_hot = Some(hot);
+            }
+            if let Some(bonus) = &heal.hot_bonus {
+                let ranks = bonus
+                    .spell_ids
+                    .iter()
+                    .filter_map(|id| rank(*id))
+                    .filter(|&hot| heals[hot].dot.is_some())
+                    .collect();
+                heals[index].hot_bonus = Some((ranks, bonus.multiplier));
+            }
+        }
         Ok(HealBook {
             heals,
             modifiers,
@@ -140,6 +174,16 @@ impl HealBook {
         let healing = self.healing(fight, caster);
         if let Some((average, variance)) = heal.direct {
             let mut share = scale;
+            if let Some((hots, multiplier)) = &heal.hot_bonus {
+                if hots.iter().any(|&hot| {
+                    let dot = self.heals[hot]
+                        .dot
+                        .expect("a bonus's heal over time has a dot");
+                    fight.aura(fight.dots[dot].aura).active
+                }) {
+                    share *= multiplier;
+                }
+            }
             let targets = match (heal.smart, &self.party) {
                 (Some(SmartHeal::Chain), Some(party)) => {
                     1 + self
@@ -155,7 +199,7 @@ impl HealBook {
                 } else {
                     1.0
                 };
-                fight.calc_and_deal_healing_scaled(
+                let result = fight.calc_and_deal_healing_scaled(
                     heal.spell,
                     Side::Player,
                     base,
@@ -163,9 +207,26 @@ impl HealBook {
                     self.bonus_healing_taken,
                     share * past_first,
                 );
+                if let (Some(absorb), true) = (heal.crit_shield, result.outcome == OUTCOME_CRIT) {
+                    fight.deal_shield(heal.spell, absorb);
+                }
                 share *= heal.jump_multiplier;
             }
         }
+        self.apply_hot(fight, rank, scale, healing);
+        if let Some(then) = heal.then_hot {
+            self.apply_hot(fight, then, 1.0, healing);
+        }
+        if let Some(absorb) = heal.absorb {
+            let amount = self.shield_amount(fight, heal.spell, absorb, healing) * scale;
+            fight.deal_shield(heal.spell, amount);
+        }
+    }
+
+    /// A rank's heal over time going up, `scale` on its tick: one running already goes on another
+    /// player who needs it, its ticks left counted now.
+    fn apply_hot<A: Agent>(&self, fight: &mut Fight<A>, rank: usize, scale: f64, healing: Healing) {
+        let heal = &self.heals[rank];
         if let (Some(tick), Some(dot)) = (heal.tick, heal.dot) {
             // A heal over time cast again while it runs goes on another player who needs it, so
             // the one running keeps healing its own: its ticks left are counted now.
@@ -181,10 +242,6 @@ impl HealBook {
             let snapshot = self.snapshot_tick(fight, heal.spell, dot, tick, healing) * scale;
             fight.apply_dot(dot);
             fight.dots[dot].snapshot_base = snapshot;
-        }
-        if let Some(absorb) = heal.absorb {
-            let amount = self.shield_amount(fight, heal.spell, absorb, healing) * scale;
-            fight.deal_shield(heal.spell, amount);
         }
     }
 

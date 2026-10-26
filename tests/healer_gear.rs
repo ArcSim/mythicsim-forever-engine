@@ -355,3 +355,123 @@ fn a_stacking_trinket_no_heal_reaches_is_worn_without_effect() {
     assert!(used[0]["trigger_spells"].as_array().unwrap().is_empty());
     heals(&forever);
 }
+
+/// Vestments of Faith (Naxxramas), a set the reference does not register: Renew 12% cheaper
+/// (2), a Greater Heal crit shields for 500 (4) and Epiphany, a cast's 5% chance at 24 mana per
+/// 5 sec for 30 sec (8).
+#[test]
+fn vestments_of_faith_shield_greater_heal_crits_and_proc_epiphany() {
+    let faith = [
+        (0, 22514),
+        (2, 22515),
+        (4, 22512),
+        (5, 22519),
+        (6, 22517),
+        (7, 22518),
+        (8, 22513),
+        (9, 22516),
+    ];
+    let forever = prepared(&request("holy-priest", &faith), Rules::Forever);
+    assert_eq!(heal(&forever, 25314)["crit_shield"], 500.0);
+    let epiphany: Vec<&Value> = effects(&forever, "spell_data_stat_proc")
+        .into_iter()
+        .filter(|effect| effect["aura"] == "Epiphany")
+        .collect();
+    assert_eq!(epiphany.len(), 1);
+    assert_eq!(epiphany[0]["proc_chance"], 0.05);
+    let result = heals(&forever);
+    let shielded: f64 = result["raidMetrics"]["parties"][0]["players"][0]["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"]["spellId"] == 25314)
+        .flat_map(|action| action["targets"].as_array().unwrap().iter())
+        .map(|target| target["shielding"].as_f64().unwrap_or(0.0))
+        .sum();
+    assert!(shielded > 0.0, "no Armor of Faith on Greater Heal crits");
+    assert!(aura_uptime(&result, 28804) > 0.0, "no Epiphany");
+}
+
+/// Dreamwalker Raiment (8): a Healing Touch crit returns 30% of what it cost.
+#[test]
+fn dreamwalker_refunds_a_share_of_a_healing_touch_crit() {
+    let dreamwalker = [
+        (0, 22490),
+        (2, 22491),
+        (4, 22488),
+        (5, 22495),
+        (6, 22493),
+        (7, 22494),
+        (8, 22489),
+        (9, 22492),
+    ];
+    let forever = prepared(&request("restoration-druid", &dreamwalker), Rules::Forever);
+    let refunds: Vec<&Value> = effects(&forever, "mana_on_cast")
+        .into_iter()
+        .filter(|effect| effect["crit_only"] == true)
+        .collect();
+    assert_eq!(refunds.len(), 1, "{refunds:?}");
+    let touch = positions(&forever, &[25297])[0];
+    let cost = forever["player"]["spells"][touch]["default_cast"]["cost"]
+        .as_f64()
+        .unwrap();
+    let entry = refunds[0]["spells"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|spell| spell["spell"] == touch)
+        .expect("Healing Touch refunds");
+    assert!((entry["mana"].as_f64().unwrap() - 0.3 * cost).abs() < 1e-9);
+    let result = heals(&forever);
+    let refunded = result["raidMetrics"]["parties"][0]["players"][0]["resources"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|resource| resource["id"]["spellId"] == 28719)
+        .expect("the refund's mana metrics");
+    assert!(refunded["events"].as_f64().unwrap() > 0.0);
+}
+
+/// Idol of Rejuvenation: Regrowth's direct heal is 5% more while a Rejuvenation is up.
+#[test]
+fn idol_of_rejuvenation_raises_regrowth_under_rejuvenation() {
+    let forever = prepared(
+        &request("restoration-druid", &[(16, 22398)]),
+        Rules::Forever,
+    );
+    let regrowth = heal(&forever, 9858);
+    assert_eq!(regrowth["hot_bonus"]["multiplier"], 1.05);
+    assert!(regrowth["hot_bonus"]["spell_ids"]
+        .as_array()
+        .unwrap()
+        .contains(&json!(25299)));
+    heals(&forever);
+}
+
+/// A heal's `then_hot` (Vestments of Transcendence's 8 piece, whose pieces the item data does
+/// not yet hold all of) puts the named heal over time rank up with it at no cost.
+#[test]
+fn a_heal_puts_its_linked_heal_over_time_up() {
+    let mut forever = prepared(&request("holy-priest", &[]), Rules::Forever);
+    let heals_effect = forever["effects"]
+        .as_array_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|effect| effect["kind"] == "heals")
+        .unwrap();
+    for heal in heals_effect["heals"].as_array_mut().unwrap() {
+        if heal["spell_id"] == 25314 {
+            heal["then_hot"] = json!(6077);
+        }
+    }
+    let result = heals(&forever);
+    let renew5: f64 = result["raidMetrics"]["parties"][0]["players"][0]["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"]["spellId"] == 6077)
+        .flat_map(|action| action["targets"].as_array().unwrap().iter())
+        .map(|target| target["healing"].as_f64().unwrap_or(0.0))
+        .sum();
+    assert!(renew5 > 0.0, "Greater Heal put no rank 5 Renew up");
+}

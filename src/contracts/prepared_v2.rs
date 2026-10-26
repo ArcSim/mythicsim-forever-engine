@@ -1377,6 +1377,27 @@ pub struct HealSpell {
     /// bonus to Chain Heal's jumps. One is none.
     #[serde(default = "one", skip_serializing_if = "is_one")]
     pub past_first_multiplier: f64,
+    /// A healer's gear under Forever's rules: the heal over time rank, by client spell ID, that
+    /// goes up with this heal at no cost (Vestments of Transcendence's Renew on Greater Heal).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub then_hot: Option<i32>,
+    /// A healer's gear under Forever's rules: the absorb a crit of the direct heal puts on its
+    /// player, counted as this heal's shielding (Vestments of Faith's Armor of Faith).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub crit_shield: Option<f64>,
+    /// A healer's gear under Forever's rules: the direct heal's multiplier while any of these
+    /// heal over time ranks is up (Idol of Rejuvenation on Regrowth).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hot_bonus: Option<HotBonus>,
+}
+
+/// A direct heal's bonus while a heal over time of the healer is up.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct HotBonus {
+    /// The heal over time ranks, by client spell ID.
+    pub spell_ids: Vec<i32>,
+    pub multiplier: f64,
 }
 
 /// A heal that reaches players as the party's damage hits them, in MythicSim's healer sims under
@@ -3131,6 +3152,9 @@ pub enum Effect {
         proc_chance: f64,
         spells: Vec<SpellMana>,
         metrics_action_id: ActionId,
+        /// Only a heal that crits restores the mana, as Dreamwalker Raiment's Healing Touch.
+        #[serde(default, skip_serializing_if = "is_false")]
+        crit_only: bool,
     },
     /// MythicSim's healer sims under Forever's rules: an item use whose window aura moves the
     /// stacks of a stacking stats aura while it is up, as Talisman of Ascendance (a stack on each

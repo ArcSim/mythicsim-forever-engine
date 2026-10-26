@@ -39,6 +39,8 @@ pub(crate) struct ManaOnCast {
     /// The mana each spell it hears restores, by spellbook position.
     pub(crate) mana: Vec<Option<f64>>,
     pub(crate) metrics: usize,
+    /// Only a heal that crits restores the mana.
+    pub(crate) crit_only: bool,
 }
 
 /// An item proc trigger that restores energy, such as Shadowcraft Armor's.
@@ -86,7 +88,7 @@ impl<A: Agent> Fight<A> {
         spell: super::SpellId,
     ) {
         let proc = &self.mana_on_cast[index];
-        if proc.mana.get(spell).copied().flatten().is_none() {
+        if proc.crit_only || proc.mana.get(spell).copied().flatten().is_none() {
             return;
         }
         let chance = proc.chance;
@@ -103,6 +105,27 @@ impl<A: Agent> Fight<A> {
             threat: 0.0,
         };
         self.schedule_delayed_proc(aura, spell, result);
+    }
+
+    /// A heal's crit the crit-only mana listener hears: the mana a spell batch window later.
+    pub(crate) fn mana_on_crit_callback(
+        &mut self,
+        aura: super::AuraRef,
+        index: usize,
+        spell: super::SpellId,
+        result: &super::SpellResult,
+    ) {
+        let proc = &self.mana_on_cast[index];
+        if !proc.crit_only
+            || result.outcome & super::damage::OUTCOME_CRIT == 0
+            || proc.mana.get(spell).copied().flatten().is_none()
+        {
+            return;
+        }
+        if !self.rng.proc(proc.chance, &self.mana_on_cast[index].label) {
+            return;
+        }
+        self.schedule_delayed_proc(aura, spell, *result);
     }
 
     /// The mana listener's handler: the cast's mana, for a character with a mana bar.

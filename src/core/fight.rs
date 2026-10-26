@@ -4128,6 +4128,7 @@ impl<A: Agent> Fight<A> {
                     proc_chance,
                     spells,
                     metrics_action_id,
+                    crit_only,
                     ..
                 } => {
                     let mut mana = vec![None; fight.spells.len()];
@@ -4147,6 +4148,7 @@ impl<A: Agent> Fight<A> {
                         chance: *proc_chance,
                         mana,
                         metrics,
+                        crit_only: *crit_only,
                     });
                 }
                 _ => {}

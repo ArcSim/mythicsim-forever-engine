@@ -1285,6 +1285,9 @@ impl<A: Agent> Fight<A> {
                     Some(result),
                 ),
                 AuraBehavior::ShieldOnHeal(index) => self.shield_on_heal(index, spell, result),
+                AuraBehavior::ManaOnCast(index) => {
+                    self.mana_on_crit_callback(aura, index, spell, result)
+                }
                 _ => {}
             }
         }

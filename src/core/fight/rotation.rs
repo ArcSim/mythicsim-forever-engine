@@ -866,6 +866,11 @@ impl<A: Agent> Fight<A> {
                 .map(|(_, duration)| *duration)
         };
         let pet_aura_known = |pet: usize, id: &ActionId| self.pet_aura_known(pet, id);
+        // A pet the fight simulates, by its position among the player's pets.
+        let pet_aura = |pet: usize, id: &ActionId| {
+            let side = self.pet_side(self.pet_agent_labels.get(pet)?)?;
+            self.rotation_aura(side, id)
+        };
         let icd_aura = |unit: Unit, id: &ActionId| self.rotation_icd_aura(unit, id);
         let lookup = Lookup {
             aura: &aura,
@@ -875,6 +880,7 @@ impl<A: Agent> Fight<A> {
             dot: &dot,
             dot_base_duration: &dot_base_duration,
             pet_aura_known: &pet_aura_known,
+            pet_aura: &pet_aura,
             item_swap: self.item_swap.is_some(),
             bars: self.rotation_bars(),
             icd_aura: &icd_aura,

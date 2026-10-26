@@ -255,8 +255,9 @@ fn concussion_blow_is_cast_under_forever_rules() {
         ],
     });
     let bytes = serde_json::to_vec(&request).unwrap();
-    let go = forever_engine::prepare_json_with(&bytes, "concussion", forever_engine::Rules::GoReference)
-        .unwrap();
+    let go =
+        forever_engine::prepare_json_with(&bytes, "concussion", forever_engine::Rules::GoReference)
+            .unwrap();
     let kinds = |prepared: &Value| -> Vec<String> {
         prepared["effects"]
             .as_array()
@@ -266,12 +267,16 @@ fn concussion_blow_is_cast_under_forever_rules() {
             .collect()
     };
     assert!(!kinds(&go).contains(&"concussion_blow".to_string()));
-    let forever = forever_engine::prepare_json_with(&bytes, "concussion", forever_engine::Rules::Forever)
-        .unwrap();
+    let forever =
+        forever_engine::prepare_json_with(&bytes, "concussion", forever_engine::Rules::Forever)
+            .unwrap();
     assert!(kinds(&forever).contains(&"concussion_blow".to_string()));
     let prepared: forever_engine::contracts::prepared_v2::PreparedV2 =
         serde_json::from_value(forever).unwrap();
-    assert_eq!(forever_engine::prepared_coverage(&prepared), Vec::<String>::new());
+    assert_eq!(
+        forever_engine::prepared_coverage(&prepared),
+        Vec::<String>::new()
+    );
     let result = forever_engine::simulate_prepared(&prepared).unwrap().result;
     let casts: f64 = result["raidMetrics"]["parties"][0]["players"][0]["actions"]
         .as_array()

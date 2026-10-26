@@ -1773,9 +1773,15 @@ pub(crate) fn rotation_spell<'a>(prepared: &'a PreparedV2, id: &ActionId) -> Opt
 /// defers to an APL-flagged spell of the same action under another tag (the queue of an
 /// on-next-swing ability, such as a Raptor Strike a spell picker names untagged), then to
 /// [`rotation_spell`].
-pub(crate) fn rotation_cast_spell<'a>(prepared: &'a PreparedV2, id: &ActionId) -> Option<&'a Spell> {
+pub(crate) fn rotation_cast_spell<'a>(
+    prepared: &'a PreparedV2,
+    id: &ActionId,
+) -> Option<&'a Spell> {
     let spells = &prepared.player.spells;
-    if let Some(spell) = spells.iter().find(|spell| spell.action_id.as_ref() == Some(id)) {
+    if let Some(spell) = spells
+        .iter()
+        .find(|spell| spell.action_id.as_ref() == Some(id))
+    {
         if !spell.has_flag("SpellFlagAPL") {
             let same = |other: &ActionId| {
                 other.spell_id == id.spell_id
@@ -2673,6 +2679,7 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
         dot: &dot,
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
+        pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -2813,6 +2820,7 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
         dot: &dot,
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
+        pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -2886,6 +2894,7 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
         dot: &dot,
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
+        pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -3246,6 +3255,27 @@ fn find_icd_aura(prepared: &PreparedV2, unit: Unit, id: &ActionId) -> Option<Act
 }
 
 /// Go `GetAuraByID` on a unit's exported auras.
+/// Go `GetAuraByID` on the player's pet at a position among its pets (as
+/// [`crate::core::fight::pet::pet_agent_auras`] orders them) while the fight simulates it.
+fn simulated_pet_aura(
+    prepared: &PreparedV2,
+    pet: usize,
+    id: &ActionId,
+) -> Option<FoundAura<ActionId>> {
+    let mut pets: Vec<(i32, Option<&[crate::contracts::prepared_v2::Aura]>)> = prepared
+        .pets
+        .iter()
+        .map(|pet| (pet.index, Some(pet.auras.as_slice())))
+        .collect();
+    for effect in &prepared.effects {
+        if let Effect::InertPet { unit_index, .. } = effect {
+            pets.push((*unit_index, None));
+        }
+    }
+    pets.sort_by_key(|(index, _)| *index);
+    find_unit_aura(pets.get(pet)?.1?, id)
+}
+
 fn find_unit_aura(
     auras: &[crate::contracts::prepared_v2::Aura],
     id: &ActionId,
@@ -3281,6 +3311,7 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
         dot: &dot,
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
+        pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),

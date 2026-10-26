@@ -234,6 +234,12 @@ pub enum Value {
         pet: usize,
         id: ActionId,
     },
+    /// `auraIsActive` with one of the player's pets, by its position among them, as its source
+    /// unit: the pet's aura while it is simulated, else an aura that is never up.
+    PetAuraIsActive {
+        pet: usize,
+        id: ActionId,
+    },
     AuraIsActive(ActionId),
     AuraNumStacks(ActionId),
     AuraRemainingTime(ActionId),
@@ -545,6 +551,7 @@ impl Value {
             | Value::Not(_)
             | Value::AuraIsKnown(_)
             | Value::PetAuraIsKnown { .. }
+            | Value::PetAuraIsActive { .. }
             | Value::AuraIsActive(_)
             | Value::AuraShouldRefresh { .. }
             | Value::ActionGroupUsed { .. }
@@ -2569,7 +2576,7 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                 .ok_or_else(|| vec!["not has no val".to_string()])?;
             Ok(Value::Not(Box::new(parse_value(value)?)))
         }
-        "auraIsKnown"
+        "auraIsKnown" | "auraIsActive" | "auraIsInactive"
             if config
                 .get("sourceUnit")
                 .and_then(|unit| unit.get("type"))
@@ -2611,7 +2618,13 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                             .and_then(|index| usize::try_from(index).ok())
                             .ok_or_else(unsupported)?,
                     };
-                    Ok(Value::PetAuraIsKnown { pet, id })
+                    Ok(match name {
+                        "auraIsKnown" => Value::PetAuraIsKnown { pet, id },
+                        "auraIsActive" => Value::PetAuraIsActive { pet, id },
+                        // Go `newValueAuraIsInactive`: `!aura.IsActive()`, a constant true for an
+                        // aura the pet lacks.
+                        _ => Value::Not(Box::new(Value::PetAuraIsActive { pet, id })),
+                    })
                 }
                 _ => Err(unsupported()),
             }
@@ -3397,6 +3410,9 @@ pub struct Lookup<'a, R> {
     /// Go `GetAuraByID` on the player's pet at a position among its pets: whether it has the
     /// aura, false when there is no such pet.
     pub pet_aura_known: &'a dyn Fn(usize, &ActionId) -> bool,
+    /// Go `GetAuraByID` on the player's pet at a position among its pets, while the pet is
+    /// simulated: its aura, `None` for a pet that is never summoned or lacks the aura.
+    pub pet_aura: &'a dyn Fn(usize, &ActionId) -> Option<FoundAura<R>>,
     /// Go `ItemSwap.IsEnabled`: whether the character swaps items.
     pub item_swap: bool,
     /// The player's resource bars as the rotation is built, which values of a bar the player
@@ -3853,6 +3869,15 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
         Value::ActionGroupUsed { used, .. } => Compiled::GroupUsed(*used),
         Value::AuraIsKnown(id) => bool_const(aura(id).is_some()),
         Value::PetAuraIsKnown { pet, id } => bool_const((lookup.pet_aura_known)(*pet, id)),
+        // Go `newValueAuraIsActive` on a pet: a constant false for an aura it lacks (with Go's
+        // warning) and for the aura of a pet never summoned, whose auras never go up.
+        Value::PetAuraIsActive { pet, id } => match (lookup.pet_aura)(*pet, id) {
+            Some(found) => Compiled::AuraIsActive(found.aura),
+            None => {
+                (lookup.pet_aura_known)(*pet, id);
+                bool_const(false)
+            }
+        },
         Value::AuraIsActive(id) => match aura(id) {
             Some(found) => Compiled::AuraIsActive(found.aura),
             None => bool_const(false),
@@ -4029,6 +4054,7 @@ mod tests {
             dot: &no_dot,
             dot_base_duration: &|_| None,
             pet_aura_known: &|_, _| false,
+            pet_aura: &|_, _| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -4067,6 +4093,7 @@ mod tests {
         let known = |pet: usize, aura: &ActionId| pet == 1 && *aura == id;
         let lookup = Lookup {
             pet_aura_known: &known,
+            pet_aura: &|_, _| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -4090,6 +4117,51 @@ mod tests {
             "sourceUnit": {"type": "Pet", "index": 0, "owner": {"type": "CurrentTarget"}}
         }});
         assert!(parse_value(&other).is_err());
+    }
+
+    /// Go `GetSourceUnit` on a pet of the player: `auraIsActive` reads the aura of a pet the fight
+    /// simulates, as a Demonology rotation asks whether its Succubus carries Demonic Brand, and
+    /// is never true for a pet that is never summoned or lacks the aura; `auraIsInactive` is its
+    /// negation.
+    #[test]
+    fn aura_is_active_reads_a_simulated_pet_of_the_player() {
+        let id = ActionId {
+            spell_id: 1293696,
+            ..ActionId::default()
+        };
+        let read = |name: &str| {
+            parse_value(&serde_json::json!({name: {
+                "auraId": {"spellId": 1293696},
+                "sourceUnit": {"type": "Pet", "index": 2, "owner": {"type": "Self"}}
+            }}))
+            .unwrap()
+        };
+        let active = read("auraIsActive");
+        assert_eq!(
+            active,
+            Value::PetAuraIsActive {
+                pet: 2,
+                id: id.clone()
+            }
+        );
+        assert_eq!(read("auraIsInactive"), Value::Not(Box::new(active.clone())));
+        let none = |_: &ActionId| -> Option<FoundAura<ActionId>> { None };
+        let simulated = |pet: usize, aura: &ActionId| {
+            (pet == 2 && *aura == id).then(|| FoundAura {
+                aura: aura.clone(),
+                max_stacks: 0,
+            })
+        };
+        let lookup = Lookup {
+            pet_aura: &simulated,
+            ..only_auras(&none, &|_, _| None)
+        };
+        assert_eq!(
+            compile_condition(Some(&active), &lookup),
+            CompiledCondition::When(Compiled::AuraIsActive(id.clone()))
+        );
+        let inert = only_auras(&none, &|_, _| None);
+        assert!(compile_condition(Some(&active), &inert).never_holds());
     }
 
     /// Go `APLValueAutoSwingTime` and `APLValueSpellCurrentCost`, read by the upstream Rogue
@@ -4292,7 +4364,9 @@ mod tests {
                 Some(Value::TargetAura { unit: found, .. }) if found == unit
             ));
         }
-        let source = serde_json::json!({"type": "Pet", "owner": {"type": "Self"}});
+        // A pet of the player reads that pet (`aura_is_active_reads_a_simulated_pet_of_the_player`);
+        // a pet of another unit is unsupported.
+        let source = serde_json::json!({"type": "Pet", "owner": {"type": "CurrentTarget"}});
         let rotation =
             serde_json::json!({"type": "TypeAPL", "priorityList": [item(source.clone())]});
         assert_eq!(
@@ -4734,6 +4808,7 @@ mod tests {
             dot: &dot,
             dot_base_duration: &|_| None,
             pet_aura_known: &|_, _| false,
+            pet_aura: &|_, _| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -5240,6 +5315,7 @@ mod tests {
             dot: &no_dot,
             dot_base_duration: &|id| (id.spell_id == 7).then_some(18_000_000_000),
             pet_aura_known: &|_, _| false,
+            pet_aura: &|_, _| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,

@@ -885,6 +885,12 @@ pub struct Player {
     /// Hunter who stepped in out of melee range for the rest of the fight.
     #[serde(default, skip_serializing_if = "is_false")]
     pub move_arrives_at_destination: bool,
+    /// Forever's rule: Autocast Other Cooldowns passes over a ready cooldown that may not fire
+    /// at this point of the GCD (an explosive while the GCD is ready or too little of it is
+    /// left for its cast, any other while the GCD runs) and looks at the next one. False is the
+    /// Go reference, which stops at the first ready cooldown and fires nothing when it fails.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub autocast_skips_unready_cooldowns: bool,
     /// Forever's rule: a damage bonus applied after the damage is calculated (Improved Mind
     /// Flay's ramp, Ice Lance on a frozen target, Soul Siphon, Amplify Curse, Incinerate on an
     /// Immolated target) raises the hit's threat with its damage. False is the Go reference,

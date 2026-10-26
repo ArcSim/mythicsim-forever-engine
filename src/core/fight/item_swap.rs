@@ -88,6 +88,11 @@ struct Variants {
     /// The rage a main hand and an off hand swing gives, and a crit's on top, which the rage bar
     /// reads from the weapon in the hand.
     rage: Option<[[f64; 4]; 2]>,
+    /// The stat procs whose proc manager the swap rebuilds for the weapons in the hands, by
+    /// their position: each spell's chance under either set.
+    stat_procs: Vec<(usize, [Vec<Option<f64>>; 2])>,
+    /// Sulfuras' chances, which its weapon proc manager rebuilds.
+    sulfuras: Option<[Vec<Option<f64>>; 2]>,
 }
 
 /// The prepared input with the swap set worn: the reset's with each changed value set.
@@ -341,6 +346,39 @@ impl<A: Agent> Fight<A> {
                 variants.rage = Some([main, swapped]);
             }
         }
+        let stat_procs = |effects: &[Effect]| -> Vec<Vec<Option<f64>>> {
+            effects
+                .iter()
+                .filter_map(|effect| match effect {
+                    Effect::StatProc { chances, .. } => {
+                        Some(super::chances_by_spell(chances, spells))
+                    }
+                    _ => None,
+                })
+                .collect()
+        };
+        for (index, (main, swapped)) in stat_procs(effects)
+            .into_iter()
+            .zip(stat_procs(&worn))
+            .enumerate()
+        {
+            if main != swapped {
+                variants.stat_procs.push((index, [main, swapped]));
+            }
+        }
+        let sulfuras = |effects: &[Effect]| {
+            effects.iter().find_map(|effect| match effect {
+                Effect::SulfurasHandOfRagnaros { chances, .. } => {
+                    Some(super::chances_by_spell(chances, spells))
+                }
+                _ => None,
+            })
+        };
+        if let (Some(main), Some(swapped)) = (sulfuras(effects), sulfuras(&worn)) {
+            if main != swapped {
+                variants.sulfuras = Some([main, swapped]);
+            }
+        }
         self.item_swap.as_mut().expect("bound").variants = variants;
     }
 
@@ -546,6 +584,12 @@ impl<A: Agent> Fight<A> {
             bar.off_hand_rage = off_hand;
             bar.main_hand_crit_rage = main_crit;
             bar.off_hand_crit_rage = off_crit;
+        }
+        for (proc, by_set) in variants.stat_procs {
+            self.stat_procs[proc].chances = by_set[index].clone();
+        }
+        if let (Some(by_set), Some(sulfuras)) = (variants.sulfuras, self.sulfuras.as_mut()) {
+            sulfuras.chances = by_set[index].clone();
         }
         for (proc, by_set) in variants.damage_procs {
             let (trigger_spells, chances) = by_set[index].clone();

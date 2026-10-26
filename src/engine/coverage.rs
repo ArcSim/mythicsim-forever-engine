@@ -843,6 +843,9 @@ const SWAP_EFFECT_FIELDS: &[(&str, &[&str])] = &[
     // The healing power the heals snapshot, which the swap set's weapon moves.
     ("paladin_heals", &["player", "target"]),
     ("crusader", &["chances"]),
+    // Proc managers an item swap rebuilds for the weapons in the hands.
+    ("stat_proc", &["chances"]),
+    ("sulfuras_hand_of_ragnaros", &["chances"]),
     ("spell_data_damage_proc", &["chances", "trigger_spells"]),
     ("extra_attack_proc", &["chances"]),
     (

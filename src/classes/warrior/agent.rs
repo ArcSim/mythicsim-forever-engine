@@ -17,6 +17,7 @@ use super::{
         bloodthirst::{self, Bloodthirst},
         challenging_shout,
         charge::{self, Charge},
+        concussion_blow,
         death_wish::{self, DeathWish},
         demoralizing_shout,
         execute::{self, Execute},
@@ -101,6 +102,8 @@ pub(crate) enum WarriorSpell {
     Taunt,
     /// intimidating_shout.go: an always hit with no damage on the target.
     IntimidatingShout,
+    /// talents_protection.go: a special hit with no damage on the target, refunded on a miss.
+    ConcussionBlow,
     Retaliation,
     RetaliationHit,
     SweepingStrikes,
@@ -304,6 +307,7 @@ impl WarriorAgent {
             "intimidating_shout" if has("intimidating_shout") => {
                 Some(WarriorSpell::IntimidatingShout)
             }
+            "concussion_blow" if has("concussion_blow") => Some(WarriorSpell::ConcussionBlow),
             "retaliation" if has("retaliation") => Some(WarriorSpell::Retaliation),
             "retaliation_hit" if has("retaliation") => Some(WarriorSpell::RetaliationHit),
             "sweeping_strikes" if has("sweeping_strikes") => Some(WarriorSpell::SweepingStrikes),
@@ -1340,6 +1344,7 @@ impl Agent for WarriorAgent {
             WarriorSpell::ChallengingShout => challenging_shout::apply(fight, spell),
             WarriorSpell::Taunt => taunt::apply(fight, spell, target),
             WarriorSpell::IntimidatingShout => intimidating_shout::apply(fight, spell, target),
+            WarriorSpell::ConcussionBlow => concussion_blow::apply(fight, spell, target),
             WarriorSpell::Retaliation => {
                 let params = fight.agent.retaliation.expect("Retaliation is bound");
                 retaliation::apply(fight, params);

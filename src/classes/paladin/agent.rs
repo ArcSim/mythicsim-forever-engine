@@ -145,6 +145,9 @@ pub(crate) struct PaladinAgent {
     /// Infusion of Light's and Holy Alacrity's auras and whether a crit is needed.
     holy_light_haste: Vec<HolyLightHaste>,
     heals: Option<Rc<Heals>>,
+    /// The heals as each set reads them, Main then Swap1, when an item swap changes the healing
+    /// power they snapshot.
+    heals_by_set: Option<[Rc<Heals>; 2]>,
     /// Each Lay on Hands rank's mana restore and mana metrics.
     lay_on_hands: Vec<(f64, usize)>,
     illumination: Option<Illumination>,
@@ -754,14 +757,37 @@ impl PaladinAgent {
                     player,
                     target,
                 } => {
-                    let bound = Heals::bind(
+                    let bound = Rc::new(Heals::bind(
                         ranks,
                         *flash_of_light_bonus,
                         (*blessing_holy_light, *blessing_flash_of_light),
                         player,
                         target,
-                    )?;
-                    fight.agent.heals = Some(Rc::new(bound));
+                    )?);
+                    // The swap set's weapon moves the healing power the heals read.
+                    let worn = fight.item_swap_worn_effects().and_then(|worn| {
+                        worn.into_iter().find_map(|effect| match effect {
+                            Effect::PaladinHeals {
+                                ranks,
+                                flash_of_light_bonus,
+                                blessing_holy_light,
+                                blessing_flash_of_light,
+                                player,
+                                target,
+                            } => Some(Heals::bind(
+                                &ranks,
+                                flash_of_light_bonus,
+                                (blessing_holy_light, blessing_flash_of_light),
+                                &player,
+                                &target,
+                            )),
+                            _ => None,
+                        })
+                    });
+                    if let Some(worn) = worn {
+                        fight.agent.heals_by_set = Some([bound.clone(), Rc::new(worn?)]);
+                    }
+                    fight.agent.heals = Some(bound);
                 }
                 Effect::LayOnHands { ranks } => {
                     for rank in ranks {
@@ -885,6 +911,9 @@ impl Agent for PaladinAgent {
 
     fn on_item_swap(fight: &mut Fight<Self>, worn: bool) {
         seals::on_item_swap(fight, worn);
+        if let Some(by_set) = &fight.agent.heals_by_set {
+            fight.agent.heals = Some(by_set[usize::from(worn)].clone());
+        }
     }
 
     fn apply_effects(

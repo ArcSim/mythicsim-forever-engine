@@ -12,7 +12,7 @@ use crate::contracts::request::Message;
 use crate::prepare::character::constants::CHARACTER_LEVEL;
 use crate::prepare::dbcenums;
 use crate::prepare::export::action_id;
-use crate::prepare::sim::{Duration, Sim, SpellId, UnitId, MILLISECOND, SECOND};
+use crate::prepare::sim::{Duration, Rules, Sim, SpellId, UnitId, MILLISECOND, SECOND};
 use crate::prepare::spell::DefenseType;
 use crate::prepare::spelldata::{Ladder, Spell as Row};
 
@@ -68,13 +68,30 @@ pub(super) fn damage_effect(sim: &Sim, spell: SpellId) -> Option<Value> {
     if action.spell_id == 0 || action.tag != 0 {
         return None;
     }
-    let row = damage_rows().get(&action.spell_id)?;
+    let row = match damage_rows().get(&action.spell_id) {
+        Some(row) => *row,
+        // Frost Blast (patch 153) rolls Frostbolt's way, but Go's exporter lists no row for it,
+        // so only Forever's rules describe it.
+        None if sim.rules == Rules::Forever => frost_blast_row(action.spell_id)?,
+        None => return None,
+    };
     let effect = row.damage_effect();
     if effect.is_nil() {
         // Go's exporter stops on a row without a damage effect; there is nothing to describe.
         return None;
     }
     Some(json!({"average": effect.average(CHARACTER_LEVEL), "variance": effect.variance}))
+}
+
+/// A Frost Blast rank's client row.
+fn frost_blast_row(id: i32) -> Option<&'static Row> {
+    let mut found = None;
+    spell_data().frost_blast.each(|_, row| {
+        if row.id == id {
+            found = Some(row);
+        }
+    });
+    found
 }
 
 fn nanos(d: Duration) -> i64 {

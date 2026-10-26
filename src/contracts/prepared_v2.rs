@@ -1383,6 +1383,32 @@ pub struct HealSpell {
     /// bonus to Chain Heal's jumps. One is none.
     #[serde(default = "one", skip_serializing_if = "is_one")]
     pub past_first_multiplier: f64,
+    /// A healer's gear under Forever's rules: the heal over time rank, by client spell ID, that
+    /// goes up with this heal at no cost (Vestments of Transcendence's Renew on Greater Heal).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub then_hot: Option<i32>,
+    /// A healer's gear under Forever's rules: the absorb a crit of the direct heal puts on its
+    /// player, counted as this heal's shielding (Vestments of Faith's Armor of Faith).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub crit_shield: Option<f64>,
+    /// A healer's gear under Forever's rules: the direct heal's multiplier while any of these
+    /// heal over time ranks is up (Idol of Rejuvenation on Regrowth).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub hot_bonus: Option<HotBonus>,
+    /// A healer's gear under Forever's rules: what each of the healer's heals over time up
+    /// takes off this spell's cooldown when it is cast, in nanoseconds (Idol of Synthesis on
+    /// Swiftmend).
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub cooldown_per_hot_ns: Option<i64>,
+}
+
+/// A direct heal's bonus while a heal over time of the healer is up.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct HotBonus {
+    /// The heal over time ranks, by client spell ID.
+    pub spell_ids: Vec<i32>,
+    pub multiplier: f64,
 }
 
 /// A heal that reaches players as the party's damage hits them, in MythicSim's healer sims under
@@ -2545,6 +2571,10 @@ pub enum Effect {
         average: Option<f64>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         variance: Option<f64>,
+        /// The trigger hears the casts of `trigger_spells` instead of their hits: a healer's
+        /// gear under Forever's rules (Rotmender's Raiment's Rotmending).
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        casts: bool,
     },
     /// common/shared/shared_utils.go NewSpellDataDamageOnUse: an on-use item's spell, by
     /// spellbook position, that deals its row's hit or damage over time on the one target.
@@ -3137,13 +3167,19 @@ pub enum Effect {
         proc_chance: f64,
         spells: Vec<SpellMana>,
         metrics_action_id: ActionId,
+        /// Only a heal that crits restores the mana, as Dreamwalker Raiment's Healing Touch.
+        #[serde(default, skip_serializing_if = "is_false")]
+        crit_only: bool,
     },
     /// MythicSim's healer sims under Forever's rules: an item use whose window aura moves the
     /// stacks of a stacking stats aura while it is up, as Talisman of Ascendance (a stack on each
     /// hit or heal) or Zandalarian Hero Charm (all its stacks at once, one fewer each cast). The
     /// window going up brings the stats aura up, at its most stacks when they `decay`, and its
     /// end takes the stats aura down. Each heard event of a `trigger_spells` spell rolls
-    /// `proc_chance`, and a spell batch window later the stacks move.
+    /// `proc_chance`, and a spell batch window later the stacks move. A trigger on a proc rate,
+    /// as Badge of the Swarmguard's, rolls its manager's chance for each spell in `chances` in
+    /// place of `proc_chance`, under the trigger's `rng_label`, and with `require_damage` a hit
+    /// that dealt no damage is not heard.
     StackingCdOnUse {
         item_id: i32,
         stat_aura: String,
@@ -3153,6 +3189,12 @@ pub enum Effect {
         callbacks: Vec<String>,
         landed_only: bool,
         proc_chance: f64,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        chances: Option<Vec<SpellChance>>,
+        #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+        require_damage: bool,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        rng_label: Option<String>,
     },
     /// MythicSim's healer sims under Forever's rules: an item use whose aura, while up, shields
     /// the player each direct heal lands on for `share` of the healing it did, as Scarab
@@ -3161,6 +3203,16 @@ pub enum Effect {
         item_id: i32,
         aura: String,
         share: f64,
+        /// Each heal's chance; one when unset.
+        #[serde(default = "one", skip_serializing_if = "is_one")]
+        chance: f64,
+        /// Heals the healer instead of shielding (Garments of the Oracle's 10% of a heal on
+        /// another player).
+        #[serde(default, skip_serializing_if = "is_false")]
+        heal: bool,
+        /// The spell, by client ID, the amounts count on when `item_id` is 0 (a set bonus).
+        #[serde(default, skip_serializing_if = "is_zero")]
+        spell_id: i32,
     },
     InertListener {
         unit: String,
@@ -3651,6 +3703,10 @@ pub enum Effect {
         aura: String,
         gain_log: String,
         expire_log: String,
+        /// Spirit Weapons' threat multiplier, which the aura multiplies into the player's as it
+        /// is gained and divides out as it fades, when it follows the weapon in the hand.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        threat_multiplier: Option<f64>,
     },
     /// Rockbiter Weapon Proc (patch 181): a landed melee hit of a hand whose weapon carries
     /// Rockbiter casts the spell, whose flat threat is `threat_per_swing_second` times the main
@@ -3961,6 +4017,11 @@ pub enum Effect {
     /// Intimidating Shout: an always hit outcome with no damage on the target, as Go's fork casts
     /// it, with no fear and no effect on the other targets.
     IntimidatingShout {
+        spell: usize,
+    },
+    /// Concussion Blow: a special hit outcome with no damage on the target, refunded on a miss.
+    /// Its stun has no effect in scope.
+    ConcussionBlow {
         spell: usize,
     },
     /// Bloodthrill: main hand hits on a bleeding target may open the Overpower window longer.
@@ -4950,6 +5011,7 @@ impl Effect {
             Effect::ChallengingShout { .. } => "challenging_shout",
             Effect::Taunt { .. } => "taunt",
             Effect::IntimidatingShout { .. } => "intimidating_shout",
+            Effect::ConcussionBlow { .. } => "concussion_blow",
             Effect::Bloodthrill { .. } => "bloodthrill",
             Effect::WeaponmasterSword { .. } => "weaponmaster_sword",
             Effect::Revenge { .. } => "revenge",

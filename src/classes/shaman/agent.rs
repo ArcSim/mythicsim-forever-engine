@@ -184,6 +184,8 @@ pub(crate) struct ShamanAgent {
     rockbiter_logs: Option<(String, String)>,
     /// Rockbiter Weapon's stat aura bit, when an item swap switches it.
     rockbiter_stat_bit: Option<u32>,
+    /// Spirit Weapons' threat on a Rockbiter aura that follows the weapon in the hand.
+    rockbiter_threat_multiplier: Option<f64>,
     /// Rockbiter Weapon Proc and the hands that carry Rockbiter now (patch 181).
     rockbiter_threat: Option<RockbiterThreat>,
     /// Whether each spell's proc mask holds the main hand's or the off hand's melee bits.
@@ -745,8 +747,10 @@ impl ShamanAgent {
                     aura,
                     gain_log,
                     expire_log,
+                    threat_multiplier,
                 } => {
                     fight.agent.rockbiter_logs = Some((gain_log.clone(), expire_log.clone()));
+                    fight.agent.rockbiter_threat_multiplier = *threat_multiplier;
                     // With an item swap that switches it, a stat aura whose bit carries its attack
                     // power.
                     fight.agent.rockbiter_stat_bit =
@@ -1629,6 +1633,9 @@ impl Agent for ShamanAgent {
                 if let Some(bit) = fight.agent.rockbiter_stat_bit {
                     fight.set_stat_mask(fight.stat_mask | bit);
                 }
+                if let Some(threat) = fight.agent.rockbiter_threat_multiplier {
+                    fight.player.threat_multiplier *= threat;
+                }
             }
             _ => {}
         }
@@ -1701,6 +1708,9 @@ impl Agent for ShamanAgent {
                 }
                 if let Some(bit) = fight.agent.rockbiter_stat_bit {
                     fight.set_stat_mask(fight.stat_mask & !bit);
+                }
+                if let Some(threat) = fight.agent.rockbiter_threat_multiplier {
+                    fight.player.threat_multiplier /= threat;
                 }
             }
             _ => {}

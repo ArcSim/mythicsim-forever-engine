@@ -25,6 +25,8 @@ pub(crate) struct HealProc {
     require_damage: bool,
     chance: f64,
     spell: SpellId,
+    /// The trigger hears casts instead of hits.
+    pub(crate) casts: bool,
 }
 
 /// What the heal spell does: a share of the wearer's maximum health or a rolled amount.
@@ -125,6 +127,7 @@ impl<A: Agent> Fight<A> {
                 require_damage,
                 proc_chance,
                 spell,
+                casts,
                 ..
             } = effect
             {
@@ -145,6 +148,7 @@ impl<A: Agent> Fight<A> {
                     require_damage: *require_damage,
                     chance: *proc_chance,
                     spell: *spell,
+                    casts: *casts,
                 });
             }
         }

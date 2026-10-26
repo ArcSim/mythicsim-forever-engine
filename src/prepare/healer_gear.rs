@@ -37,6 +37,7 @@ use super::dbcenums;
 use super::env::Environment;
 use super::forever_items::Registration;
 use super::parse_effects::{parse_effects, ParseOptions};
+use super::shared_items::{dpm_for_mask, EffectSource};
 use super::shared_on_use::StackingStatBonusCd;
 use super::shared_on_use::{self, OnUseKind};
 use super::sim::{AuraConfig, NEVER_EXPIRES, SECOND};
@@ -59,6 +60,34 @@ pub(crate) struct HealerGear {
     pub past_first: Vec<(ClassFlags, f64)>,
     /// Listeners on casts that restore mana.
     pub mana_listeners: Vec<ManaListener>,
+    /// What a heal gains, by the client name of its rows.
+    pub extras: Vec<(&'static str, HealExtra)>,
+    /// Listeners that heal the healer for a share of a heal.
+    pub heal_shares: Vec<HealShare>,
+    /// Rotmender's Raiment's set aura, whose trigger casts Rotmending.
+    pub rotmending: Option<AuraId>,
+}
+
+/// A listener on heals that heals the healer for a share of each, at a chance.
+#[derive(Clone)]
+pub(crate) struct HealShare {
+    pub aura: AuraId,
+    pub spell_id: i32,
+    pub chance: f64,
+    pub share: f64,
+}
+
+/// What a set or item adds to a heal.
+#[derive(Clone)]
+pub(crate) enum HealExtra {
+    /// A heal over time rank, by spell ID, that goes up with the heal at no cost.
+    ThenHot(i32),
+    /// An absorb on the player a crit of the direct heal lands on.
+    CritShield(f64),
+    /// The direct heal's multiplier while any of these heal over time ranks is up.
+    HotBonus(&'static [i32], f64),
+    /// What each heal over time up takes off the spell's cooldown when it is cast.
+    CooldownPerHot(i64),
 }
 
 /// A listener on casts that restores mana.
@@ -71,6 +100,8 @@ pub(crate) struct ManaListener {
     pub trigger: ProcTrigger,
     pub mana: Mana,
     pub metrics_spell_id: i32,
+    /// Only a heal's crit restores the mana.
+    pub crit_only: bool,
 }
 
 /// How much mana a cast returns.
@@ -79,6 +110,8 @@ pub(crate) enum Mana {
     Flat(f64),
     /// A share of the spell's base cost: The Earthfury's Mana Surge.
     BaseCostShare(f64),
+    /// A share of what the spell costs: Dreamwalker Raiment's Healing Touch refund.
+    CostShare(f64),
 }
 
 /// Whether the sim is a healer's under Forever's rules, the only sims this module reaches.
@@ -264,6 +297,7 @@ fn apply_empty_set_bonuses(env: &mut Environment) {
                         trigger,
                         mana: Mana::BaseCostShare(0.35),
                         metrics_spell_id: 23572,
+                        crit_only: false,
                     });
                 }
                 // Chain Healing Wave (23573): Healing Wave jumps to up to two more players,
@@ -273,6 +307,140 @@ fn apply_empty_set_bonuses(env: &mut Environment) {
                         .chains
                         .push((flags(SHAMAN, HEALING_WAVE), 3, 0.2));
                 }
+            }
+            // Greater Heal Renew (22010): a Greater Heal also puts a rank 5 Renew up.
+            // Oracle Healing Bonus (26169): a heal's 20% chance to heal the healer for 10% of
+            // it, as the heal lands on another player. Counted on its own spell.
+            "Garments of the Oracle" if reached(3) => {
+                let unit = env.player;
+                let aura = forever_status_aura(env, &name, 3);
+                let trigger = ProcTrigger {
+                    name: "Oracle Healing Bonus".to_string(),
+                    callback: CallbackMask::ON_HEAL_DEALT,
+                    proc_mask: ProcMask::SPELL_HEALING,
+                    ..ProcTrigger::default()
+                };
+                env.sim.attach_proc_trigger(aura, &trigger);
+                passive_heal_spell(env, unit, 26169);
+                env.healer_gear.heal_shares.push(HealShare {
+                    aura,
+                    spell_id: 26169,
+                    chance: f64::from(must_find(26169).proc_chance) / 100.0,
+                    share: 0.1,
+                });
+            }
+            // Rotmending (1321587, 1321586): a heal's cast, at most every 2 sec, puts a heal over
+            // time of 40 every 3 sec for 15 sec on its target, counted at once as its five ticks.
+            "Rotmender's Raiment" if reached(5) => {
+                let unit = env.player;
+                let aura = forever_status_aura(env, &name, 5);
+                let proc = must_find(1321587);
+                let trigger = ProcTrigger {
+                    name: "Rotmending".to_string(),
+                    callback: CallbackMask::ON_CAST_COMPLETE,
+                    proc_mask: ProcMask::SPELL_HEALING,
+                    icd: i64::from(proc.icd_ms) * super::sim::MILLISECOND,
+                    ..ProcTrigger::default()
+                };
+                env.sim.attach_proc_trigger(aura, &trigger);
+                passive_heal_spell(env, unit, 1321586);
+                env.healer_gear.rotmending = Some(aura);
+            }
+            // Totemic Energy is parsed from its row (2); Strong Current (29171): Mana Spring
+            // totems 25% more mana (4), as the party's Mana Spring buff; Lightning Shield's 15
+            // mana per 5 sec (8), read as Lightning Shield kept up, as a healer wearing the set
+            // keeps it.
+            "The Earthshatterer" => {
+                if reached(4) {
+                    let share = must_find(29171).effect_n(1).percent();
+                    let unit = env.player;
+                    env.pre_finalize
+                        .push(std::rc::Rc::new(move |env: &mut Environment| {
+                            if env.sim.get_aura(unit, "Mana Spring Totem").is_none() {
+                                return;
+                            }
+                            // Rank 4's 10 mana every 2 sec, the party buff's totem (10494).
+                            let row = must_find(10494);
+                            let mp5 = row.effect_n(1).base_points * 5.0 / 2.0 * share;
+                            let aura = env
+                                .sim
+                                .register_permanent_gear_aura(unit, "Strong Current".to_string());
+                            env.sim
+                                .attach_stats_buff(aura, Stats::from_pairs(&[(Stat::MP5, mp5)]));
+                        }));
+                }
+                if reached(8) {
+                    let aura = forever_status_aura(env, &name, 8);
+                    let mp5 = must_find(28820).effect_n(1).base_points;
+                    env.sim
+                        .attach_stats_buff(aura, Stats::from_pairs(&[(Stat::MP5, mp5)]));
+                }
+            }
+            // Lay Hands (28774): Lay on Hands's cooldown 12 min shorter (4). The Holy Paladin's
+            // spells carry the class's own masks rather than the client's.
+            "Redemption Armor" if reached(4) => {
+                let unit = env.player;
+                let row = must_find(28774);
+                env.sim.add_static_mod(
+                    unit,
+                    super::spell_mod::SpellModConfig {
+                        class_mask: crate::classes::paladin::prepare::masks::LAY_ON_HANDS,
+                        kind: super::spell_mod::SpellModType::CooldownFlat,
+                        time_value: row.effect_n(1).time_value(),
+                        ..super::spell_mod::SpellModConfig::default()
+                    },
+                );
+            }
+            "Vestments of Transcendence" if reached(8) => {
+                env.healer_gear
+                    .extras
+                    .push(("Greater Heal", HealExtra::ThenHot(6077)));
+            }
+            "Vestments of Faith" => {
+                // Armor of Faith (28809, 28810): a Greater Heal crit shields its player for 500.
+                if reached(4) {
+                    let absorb = must_find(28810).effect_n(1).base_points;
+                    env.healer_gear
+                        .extras
+                        .push(("Greater Heal", HealExtra::CritShield(absorb)));
+                }
+                // Epiphany (28802, 28804): a spell cast's 5% chance at 24 mana per 5 sec for
+                // 30 sec.
+                if reached(8) {
+                    let unit = env.player;
+                    let aura = forever_status_aura(env, &name, 8);
+                    let row = must_find(28804);
+                    env.sim.new_temporary_stats_aura(
+                        unit,
+                        EPIPHANY,
+                        &ActionId::spell(row.id),
+                        Stats::from_pairs(&[(Stat::MP5, row.effect_n(1).base_points)]),
+                        row.duration(),
+                    );
+                    let trigger = ProcTrigger {
+                        proc_chance: f64::from(must_find(28802).proc_chance) / 100.0,
+                        ..spell_cast_trigger("Epiphany")
+                    };
+                    env.sim.attach_proc_trigger(aura, &trigger);
+                }
+            }
+            // Healing Touch (28719): a Healing Touch crit returns 30% of its cost.
+            "Dreamwalker Raiment" if reached(8) => {
+                let aura = forever_status_aura(env, &name, 8);
+                let trigger = ProcTrigger {
+                    callback: CallbackMask::ON_HEAL_DEALT,
+                    ..cast_trigger("Healing Touch Refund", 28719, flags(DRUID, HEALING_TOUCH))
+                };
+                env.sim.attach_proc_trigger(aura, &trigger);
+                env.healer_gear.mana_listeners.push(ManaListener {
+                    aura,
+                    rng_label: "",
+                    chance: 1.0,
+                    trigger,
+                    mana: Mana::CostShare(0.3),
+                    metrics_spell_id: 28719,
+                    crit_only: true,
+                });
             }
             // Improved Chain Heal (21899): 30% more healing on each player past the first.
             "The Ten Storms" if reached(3) => {
@@ -362,6 +530,29 @@ fn apply_items(env: &mut Environment) {
             // Nature (Nimble Healing Touch, 24542): on use, 15 sec of their rows' cast time
             // and cost mods.
             19958 | 19955 => shared_on_use::apply(env, OnUseKind::Aura, item.id),
+            // Blessed Prayer Beads (24354): on use, heals for 648. The shared constructor makes
+            // it a survival cooldown, which waits on the healer's own health; a healer presses
+            // it for its heal.
+            19990 => on_use_item_spell(env, item.id, cooldown_type::DPS, None),
+            // Enamored Water Spirit (24854): on use, a Mana Spring Totem for 24 sec.
+            20503 => on_use_item_spell(env, item.id, cooldown_type::MANA, None),
+            // Idol of Synthesis (1291075): each heal over time up takes 1 sec off Swiftmend's
+            // cooldown as it is cast.
+            272429 => {
+                let cut =
+                    must_find(1291075).effect_n(1).base_points as i64 * super::sim::MILLISECOND;
+                env.healer_gear
+                    .extras
+                    .push(("Swiftmend", HealExtra::CooldownPerHot(cut)));
+            }
+            // Idol of Rejuvenation (27853): Regrowth's direct heal 5% more on a target under
+            // the druid's Rejuvenation, read as any Rejuvenation of the druid's up.
+            22398 => {
+                let bonus = 1.0 + must_find(27853).effect_n(1).base_points / 100.0;
+                env.healer_gear
+                    .extras
+                    .push(("Regrowth", HealExtra::HotBonus(REJUVENATION, bonus)));
+            }
             19950 => zandalarian_hero_charm(env),
             21625 => scarab_brooch(env),
             _ => {}
@@ -372,18 +563,33 @@ fn apply_items(env: &mut Environment) {
 /// An item's on-use spell on its effect's cooldowns, a major cooldown, with the aura it brings
 /// up as its buff.
 fn on_use_item(env: &mut Environment, item: i32, buff: AuraId) {
+    on_use_item_spell(env, item, cooldown_type::DPS, Some(buff));
+}
+
+/// An item's on-use spell on its effect's cooldowns, a major cooldown of the type given.
+fn on_use_item_spell(env: &mut Environment, item: i32, cooldown_type: u32, buff: Option<AuraId>) {
     let unit = env.player;
     let Some(effect) = shared_on_use::on_use_effects_for(item).into_iter().next() else {
         return;
     };
     let cast = shared_on_use::on_use_cast(&mut env.sim, unit, &effect);
+    let school = must_find(effect.i32("buff_id")).spell_school();
     let spell = env.sim.register_spell(
         unit,
         SpellConfig {
             action_id: ActionId::item(item),
+            spell_school: if school == 0 {
+                super::spell::school::HOLY
+            } else {
+                school
+            },
             flags: SpellFlag::NO_ON_CAST_COMPLETE,
             cast,
-            related_self_buff: Some(buff),
+            related_self_buff: buff,
+            // A heal on use (Blessed Prayer Beads) deals through the spell's multipliers.
+            proc_mask: ProcMask::EMPTY,
+            damage_multiplier: 1.0,
+            threat_multiplier: 1.0,
             ..SpellConfig::default()
         },
     );
@@ -392,11 +598,28 @@ fn on_use_item(env: &mut Environment, item: i32, buff: AuraId) {
         MajorCooldown {
             spell,
             priority: 0,
-            cooldown_type: cooldown_type::DPS,
+            cooldown_type,
             allow_spell_queueing: false,
             timings: Vec::new(),
         },
     );
+}
+
+/// A heal a set bonus deals on its own, registered so its healing counts on its own spell.
+fn passive_heal_spell(env: &mut Environment, unit: UnitId, spell_id: i32) -> SpellId {
+    let row = must_find(spell_id);
+    env.sim.register_spell(
+        unit,
+        SpellConfig {
+            action_id: ActionId::spell(spell_id),
+            spell_school: row.spell_school(),
+            proc_mask: ProcMask::EMPTY,
+            flags: SpellFlag::PROC | SpellFlag::HELPFUL,
+            damage_multiplier: 1.0,
+            threat_multiplier: 1.0,
+            ..SpellConfig::default()
+        },
+    )
 }
 
 /// Zandalarian Hero Charm: on use, Unstable Power (24658) for 20 sec, up to 204 spell damage and
@@ -493,6 +716,7 @@ fn mana_item(env: &mut Environment, name: &str, spell_id: i32, class_flags: Clas
         trigger,
         mana: Mana::Flat(mana),
         metrics_spell_id: spell_id,
+        crit_only: false,
     });
 }
 
@@ -518,9 +742,17 @@ fn sudden_insight(env: &mut Environment) {
             },
             mana: Mana::Flat(must_find(450554).effect_n(1).base_points),
             metrics_spell_id: spell_id,
+            crit_only: false,
         });
     }
 }
+
+/// Vestments of Faith's Epiphany stats aura.
+const EPIPHANY: &str = "Epiphany";
+/// Every Rejuvenation rank (client 70425).
+const REJUVENATION: &[i32] = &[
+    774, 1058, 1430, 2090, 2091, 3627, 8910, 9839, 9840, 9841, 25299,
+];
 
 /// The Furious Storm's set auras and the stats aura each one's proc activates.
 const FURIOUS_STORM: &[&str] = &["The Elements 5P", "The Five Thunders 4P"];
@@ -528,7 +760,11 @@ const FURIOUS_STORM: &[&str] = &["The Elements 5P", "The Five Thunders 4P"];
 /// The stat auras this module's procs activate, for the stat aura combinations.
 pub(crate) fn stat_auras(env: &Environment) -> Vec<String> {
     if !applies(env) {
-        return Vec::new();
+        return if env.rules == Rules::Forever {
+            stacking_stat_auras(env)
+        } else {
+            Vec::new()
+        };
     }
     let unit = env.player;
     let mut labels = Vec::new();
@@ -538,14 +774,22 @@ pub(crate) fn stat_auras(env: &Environment) -> Vec<String> {
     {
         labels.push("The Furious Storm".to_string());
     }
-    if env.sim.get_aura(unit, UNSTABLE_POWER).is_some() {
-        labels.push(UNSTABLE_POWER.to_string());
+    for label in [UNSTABLE_POWER, EPIPHANY] {
+        if env.sim.get_aura(unit, label).is_some() {
+            labels.push(label.to_string());
+        }
     }
-    // The stacks of a stacking on-use trinket the reference registers.
+    labels.extend(stacking_stat_auras(env));
+    labels
+}
+
+/// The stacks of a stacking on-use trinket the reference registers.
+fn stacking_stat_auras(env: &Environment) -> Vec<String> {
+    let mut labels = Vec::new();
     for registration in super::forever_items_generated::ITEMS {
         if let Registration::Stacking(config) = registration {
             let label = format!("{} Proc", config.name);
-            if env.sim.get_aura(unit, &label).is_some() {
+            if env.sim.get_aura(env.player, &label).is_some() {
                 labels.push(label);
             }
         }
@@ -574,6 +818,12 @@ pub(crate) fn export_effects(env: &Environment, unrepresented: &mut Vec<String>)
                         }
                         _ => return None,
                     },
+                    Mana::CostShare(share) => match &spell.cost {
+                        Some(cost) if cost.resource == Resource::Mana => {
+                            share * spell.default_cast.cost
+                        }
+                        _ => return None,
+                    },
                 };
                 (mana > 0.0).then(|| json!({"spell": position, "mana": mana}))
             })
@@ -584,6 +834,60 @@ pub(crate) fn export_effects(env: &Environment, unrepresented: &mut Vec<String>)
             "rng_label": if listener.rng_label.is_empty() { aura.label.as_str() } else { listener.rng_label },
             "proc_chance": listener.chance, "spells": spells,
             "metrics_action_id": {"spell_id": listener.metrics_spell_id},
+            "crit_only": listener.crit_only,
+        }));
+    }
+    for share in &env.healer_gear.heal_shares {
+        effects.push(json!({
+            "kind": "shield_on_heal", "item_id": 0, "aura": env.sim.aura(share.aura).label,
+            "share": share.share, "chance": share.chance, "heal": true, "spell_id": share.spell_id,
+        }));
+    }
+    // Rotmender's Raiment (5): Rotmending, its five ticks at once.
+    if let Some(aura) = env.healer_gear.rotmending {
+        let row = must_find(1321586);
+        let tick = row.effect_n(1);
+        let ticks = (row.duration() / tick.period()).max(1) as f64;
+        let position = book
+            .iter()
+            .position(|spell| env.sim.spell(*spell).action_id == ActionId::spell(row.id));
+        let listener = ProcTrigger {
+            callback: CallbackMask::ON_CAST_COMPLETE,
+            proc_mask: ProcMask::SPELL_HEALING,
+            ..ProcTrigger::default()
+        };
+        let pseudo = &env.sim.unit(unit).pseudo_stats;
+        if let Some(position) = position {
+            effects.push(json!({
+                "kind": "spell_data_heal_proc", "trigger_aura": env.sim.aura(aura).label,
+                "trigger_spells": proc_trigger_spells(env, &listener), "outcome": [],
+                "require_damage": false, "proc_chance": 1.0, "spell": position, "can_crit": false,
+                "healing_dealt_multiplier": pseudo.healing_dealt_multiplier,
+                "healing_taken_multiplier": pseudo.healing_taken_multiplier,
+                "table_healing_dealt_multiplier": env.attack_table(unit, unit).healing_dealt_multiplier,
+                "bonus_healing_taken": pseudo.bonus_healing_taken,
+                "average": tick.base_points * ticks, "variance": 0.0, "casts": true,
+            }));
+        } else {
+            unrepresented.push("Rotmending has no spell".to_string());
+        }
+    }
+    // Vestments of Faith (8): Epiphany.
+    if let (Some(trigger), Some(aura)) = (
+        env.sim.get_aura(unit, "Vestments of Faith 8P"),
+        env.sim.get_aura(unit, EPIPHANY),
+    ) {
+        let row = must_find(28804);
+        let bonus = Stats::from_pairs(&[(Stat::MP5, row.effect_n(1).base_points)]);
+        let id = ActionId::spell(row.id);
+        effects.push(json!({
+            "kind": "spell_data_stat_proc", "trigger_aura": env.sim.aura(trigger).label,
+            "aura": env.sim.aura(aura).label,
+            "trigger_spells": proc_trigger_spells(env, &spell_cast_trigger("")),
+            "callbacks": ["on_cast_complete"], "landed_only": false, "require_damage": false,
+            "proc_chance": f64::from(must_find(28802).proc_chance) / 100.0,
+            "gain_log": format!("Gained {} from {}.", flat_string(&bonus), action_id_string(&id)),
+            "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
         }));
     }
     for set in FURIOUS_STORM {
@@ -610,7 +914,6 @@ pub(crate) fn export_effects(env: &Environment, unrepresented: &mut Vec<String>)
             "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
         }));
     }
-    let _ = unrepresented;
     effects
 }
 
@@ -623,10 +926,26 @@ pub(crate) fn use_item_effect(
     unrepresented: &mut Vec<String>,
 ) -> Option<Value> {
     if !applies(env) {
+        // A stacking on-use trinket under Forever's rules, for any spec: Badge of the
+        // Swarmguard is a rogue's or a warrior's. Go's exporter has no effect for it.
+        if env.rules == Rules::Forever {
+            return stacking_cd_effect(env, spell, item, unrepresented);
+        }
         return None;
     }
     match item {
-        19958 | 19955 => {}
+        19958 | 19955 | 19956 => {}
+        // Enamored Water Spirit's totem: its Mana Spring row's mana every period, for the
+        // totem's duration, on the totem's metrics.
+        20503 => {
+            let tick = must_find(24853).effect_n(1);
+            let ticks = (must_find(24854).duration() / tick.period()).max(1);
+            return Some(json!({
+                "kind": "second_wind", "item_id": item, "mana": tick.base_points,
+                "ticks": ticks, "period_ns": tick.period(), "metrics_spell_id": 24854,
+                "min_deficit": tick.base_points * ticks as f64,
+            }));
+        }
         19950 => {
             return Some(json!({
                 "kind": "stacking_cd_on_use", "item_id": item, "stat_aura": UNSTABLE_POWER,
@@ -726,14 +1045,42 @@ fn stacking_cd_effect(
     let stack_proc = effect.message("stack_proc");
     let trigger = stacking_trigger(&config);
     let trigger_spells = proc_trigger_spells(env, &trigger);
-    // A rate needs the spells it hears: none of a healer's reach Badge of the Swarmguard's.
-    let rated = stack_proc.is_some_and(|proc| proc.f64("ppm") != 0.0 || proc.i32("icd_ms") != 0);
-    if window == stat_label || (rated && !trigger_spells.is_empty()) {
+    let ppm = stack_proc.map_or(0.0, |proc| proc.f64("ppm"));
+    let icd = stack_proc.is_some_and(|proc| proc.i32("icd_ms") != 0);
+    if window == stat_label || (icd && !trigger_spells.is_empty()) {
         unrepresented.push(format!(
-            "stacking trinket {item} stacks on a proc rate or its own window"
+            "stacking trinket {item} stacks on a cooldown or its own window"
         ));
         return Some(Value::Null);
     }
+    // Go `attachStackingCDTrigger`: a rate rolls the item's procs per minute manager over the
+    // trigger's mask (`dpmForMask`), as Badge of the Swarmguard's 10 a minute on melee and
+    // ranged hits, and no fixed chance before it.
+    let manager = if ppm != 0.0 && !trigger_spells.is_empty() {
+        let source = EffectSource {
+            id: item,
+            is_enchant: false,
+        };
+        let Some(dpm) = dpm_for_mask(&env.sim, unit, source, ppm, config.proc_mask) else {
+            unrepresented.push(format!("stacking trinket {item} has no proc manager"));
+            return Some(Value::Null);
+        };
+        let book = &env.sim.unit(unit).spellbook;
+        let chances: Vec<Value> = trigger_spells
+            .iter()
+            .filter_map(|&position| {
+                let mask = env.sim.spell(book[position]).proc_mask;
+                dpm.proc_masks
+                    .iter()
+                    .zip(&dpm.proc_chances)
+                    .find(|(manager_mask, _)| manager_mask.matches(mask))
+                    .map(|(_, chance)| json!({"spell": position, "chance": chance}))
+            })
+            .collect();
+        Some(chances)
+    } else {
+        None
+    };
     let chance = stack_proc
         .map(|proc| proc.f64("proc_chance"))
         .filter(|chance| *chance != 0.0)
@@ -748,12 +1095,19 @@ fn stacking_cd_effect(
             callbacks.push(name);
         }
     }
-    Some(json!({
+    let mut effect = json!({
         "kind": "stacking_cd_on_use", "item_id": item, "stat_aura": stat_label,
         "window_aura": window, "decay": false,
         "trigger_spells": trigger_spells, "callbacks": callbacks,
         "landed_only": config.outcome == HitOutcome::LANDED, "proc_chance": chance,
-    }))
+    });
+    if let Some(chances) = manager {
+        effect["proc_chance"] = json!(1.0);
+        effect["chances"] = json!(chances);
+        effect["require_damage"] = json!(config.require_damage_dealt);
+        effect["rng_label"] = json!(config.name);
+    }
+    Some(effect)
 }
 
 fn stacking_trigger(config: &StackingStatBonusCd) -> ProcTrigger {
@@ -833,6 +1187,22 @@ pub(crate) fn heal_shape(env: &Environment, row: &Row, heal: &mut Value) {
                 heal["jump_multiplier"] = json!(falloff);
                 heal["smart"] = json!("chain");
             }
+        }
+    }
+    for (name, extra) in &gear.extras {
+        if *name != row.name {
+            continue;
+        }
+        match extra {
+            HealExtra::ThenHot(id) if heal.get("direct").is_some() => heal["then_hot"] = json!(id),
+            HealExtra::CritShield(absorb) if heal.get("direct").is_some() => {
+                heal["crit_shield"] = json!(absorb)
+            }
+            HealExtra::HotBonus(ids, multiplier) if heal.get("direct").is_some() => {
+                heal["hot_bonus"] = json!({"spell_ids": ids, "multiplier": multiplier})
+            }
+            HealExtra::CooldownPerHot(ns) => heal["cooldown_per_hot_ns"] = json!(ns),
+            _ => {}
         }
     }
     let past: f64 = gear

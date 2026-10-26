@@ -279,11 +279,18 @@ impl Shaman {
                             .fraction_at(talent("elemental_weapons"))),
             )]);
             let id = aura.action_id.clone().unwrap_or_default();
-            effects.push(json!({
+            let mut effect = json!({
                 "kind": "rockbiter_weapon", "aura": aura.label,
                 "gain_log": format!("Gained {} from {}.", flat_string(&bonus), action_id_string(&id)),
                 "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
-            }));
+            });
+            // Spirit Weapons' threat, which the aura multiplies in as it is gained and divides out
+            // as it fades when it follows the weapon in the hand. Go's exporter does not say.
+            let threat = sim.state(self.rockbiter_swap_threat);
+            if threat != 0.0 && sim.rules == crate::prepare::sim::Rules::Forever {
+                effect["threat_multiplier"] = json!(threat);
+            }
+            effects.push(effect);
         }
         // weapon_imbues.go registerRockbiterThreat (patch 181): the hands whose weapons carry Rockbiter
         // and the main hand's swing speed, read from the weapons worn now.

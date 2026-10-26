@@ -3640,6 +3640,10 @@ pub enum Effect {
         aura: String,
         gain_log: String,
         expire_log: String,
+        /// Spirit Weapons' threat multiplier, which the aura multiplies into the player's as it
+        /// is gained and divides out as it fades, when it follows the weapon in the hand.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        threat_multiplier: Option<f64>,
     },
     /// Rockbiter Weapon Proc (patch 181): a landed melee hit of a hand whose weapon carries
     /// Rockbiter casts the spell, whose flat threat is `threat_per_swing_second` times the main

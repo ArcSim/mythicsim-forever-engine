@@ -840,6 +840,8 @@ fn swap_activated_auras(effect: &Effect) -> Vec<&str> {
 const SWAP_EFFECT_FIELDS: &[(&str, &[&str])] = &[
     ("seal_of_righteousness", &["swing_speed", "hand_multiplier"]),
     ("seal_of_command", &["proc_chance"]),
+    // The healing power the heals snapshot, which the swap set's weapon moves.
+    ("paladin_heals", &["player", "target"]),
     ("crusader", &["chances"]),
     ("spell_data_damage_proc", &["chances", "trigger_spells"]),
     ("extra_attack_proc", &["chances"]),
@@ -1130,6 +1132,39 @@ fn swap_change_limit(
     match parts.as_slice() {
         // The stats follow the stat auras, the swap's own among them.
         ["player", "stats", _] | ["player", "mana", _] => None,
+        // Spirit Weapons' threat, which a Rockbiter aura the swap switches multiplies in as it is
+        // gained and divides out as it fades.
+        ["player", "pseudo_stats", "threat_multiplier"] => {
+            let reset = prepared.player.pseudo_stats.threat_multiplier;
+            let follows = prepared.effects.iter().any(|effect| match effect {
+                Effect::RockbiterWeapon {
+                    aura,
+                    threat_multiplier: Some(threat),
+                    ..
+                } if switched.contains(&aura.as_str()) => {
+                    let active = prepared
+                        .player
+                        .auras
+                        .iter()
+                        .any(|candidate| candidate.label == *aura && candidate.active);
+                    let worn = if active {
+                        reset / threat
+                    } else {
+                        reset * threat
+                    };
+                    change
+                        .value
+                        .as_f64()
+                        .is_some_and(|value| value.to_bits() == worn.to_bits())
+                }
+                _ => false,
+            });
+            if follows {
+                None
+            } else {
+                refuse()
+            }
+        }
         ["player", "auras", index, field] if matches!(*field, "active" | "blocked_at_reset") => {
             let label = &prepared
                 .player

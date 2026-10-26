@@ -422,9 +422,16 @@ set_stats!(lightforge_armor_3, set_spell_power(18.0));
 /// Crusader's Wrath, moved down from 6 pieces and cut from 95 to 65 spell power.
 fn lightforge_armor_5(env: &mut Environment, aura: AuraId) {
     let unit = env.player;
+    // Go NewLegacyPPMManager, which an item swap rebuilds for the weapons in the hands.
     let dpm = Rc::new(
         env.sim
-            .new_ppm_manager(unit, 3.0, ProcMask::MELEE_WHITE_HIT),
+            .new_ppm_manager(unit, 3.0, ProcMask::MELEE_WHITE_HIT)
+            .rebuilt_by_swap(
+                &env.sim,
+                unit,
+                super::item_swap::ManagerChance::Ppm(3.0),
+                super::item_swap::ManagerMask::Static(ProcMask::MELEE_WHITE_HIT),
+            ),
     );
     set_stat_proc(
         env,

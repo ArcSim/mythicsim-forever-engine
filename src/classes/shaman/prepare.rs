@@ -192,6 +192,9 @@ pub(crate) struct Shaman {
     flametongue_totem_aura: Option<AuraId>,
     /// A Restoration shaman's heals, for the export.
     heals: Vec<crate::prepare::heals::HealRank>,
+    /// Spirit Weapons' threat multiplier on a Rockbiter Weapon aura that follows the weapon in
+    /// the hand, 0 when it is permanent or the talent is not taken.
+    rockbiter_swap_threat: StateSlot,
 }
 
 /// Go `Character.WeaponFromMainHand`.
@@ -301,6 +304,7 @@ pub(crate) fn new_shaman(
         sync_type,
         windfury_ap_bonus,
         chain_lightning_bounce_bonus: sim.new_state_slot(0.0),
+        rockbiter_swap_threat: sim.new_state_slot(0.0),
         flame_shock: None,
         magma_totem: None,
         flametongue_totem_aura: None,

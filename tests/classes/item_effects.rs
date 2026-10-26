@@ -706,7 +706,8 @@ fn judgement_of_light_heals_the_player_under_the_targets_metrics() {
 }
 
 /// Deathbone Guardian's three pieces roll on the melee hits the wearer takes. Nothing strikes a
-/// player who does not tank, so the bonus is inert there; a tank's stays refused.
+/// player who does not tank, so the bonus is inert there. A tank's is a struck stat proc under
+/// Forever's rules and stays refused under Go's.
 #[test]
 fn deathbone_surge_is_inert_without_a_tank() {
     let deathbone = [(6, 14622), (7, 14620), (9, 14621)];
@@ -737,6 +738,18 @@ fn deathbone_surge_is_inert_without_a_tank() {
         ),
         other => panic!("a tank's Deathbone Surge prepared: {other:?}"),
     }
+    let forever = forever_engine::prepare_json_with(
+        &serde_json::to_vec(&request).unwrap(),
+        "deathbone-tank",
+        forever_engine::Rules::Forever,
+    )
+    .unwrap();
+    assert!(has_effect(
+        &forever,
+        "spell_data_stat_proc",
+        "aura",
+        "Deathbone Surge"
+    ));
 }
 
 /// The party's Flametongue Totem on a character no class effect describes: while it alone holds

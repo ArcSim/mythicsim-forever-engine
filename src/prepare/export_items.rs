@@ -1064,7 +1064,8 @@ pub(crate) fn melee_item_listeners(env: &Environment) -> Vec<Value> {
 ///
 /// Beyond the exporter's list, Deathbone Guardian's three piece Deathbone Surge
 /// (item_sets_classic.go `setStatProc`): a 15% chance on the melee hits the wearer takes, so
-/// without a tank it never rolls, and a tank's stays refused as a reaction to the target's swings.
+/// without a tank it never rolls. A tank's is a struck stat proc under Forever's rules and stays
+/// refused as a reaction to the target's swings under Go's.
 const HIT_TAKEN_ITEM_PROCS: [(&str, i32, i32); 11] = [
     ("Essence of the Pure Flame", 0, 0),
     ("Force Reactive Disk", 0, 0),
@@ -1169,8 +1170,12 @@ pub(crate) fn hit_taken_item_listeners(
         }
         // Go setStatProc's Deathbone Surge: each melee swing the wearer takes, landed or not, has
         // a 15% chance, once a minute (the set aura's cooldown), to give 70 spell power for 10
-        // sec, a spell batch window later.
-        if heard && tanking && label == "Deathbone Guardian 3P" {
+        // sec, a spell batch window later. Forever's rules describe it; Go's exporter refuses it.
+        if heard
+            && tanking
+            && label == "Deathbone Guardian 3P"
+            && env.sim.rules == super::sim::Rules::Forever
+        {
             match aura_named(env, "Deathbone Surge") {
                 Some(proc_aura) if env.sim.aura(aura).icd.is_some() => {
                     let bonus =

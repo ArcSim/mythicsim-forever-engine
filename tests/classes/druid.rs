@@ -762,3 +762,47 @@ fn rake_scales_with_attack_power() {
     let without = snapshot(0.0);
     assert!(with > without + 10.0, "{with} against {without}");
 }
+
+/// Idol of the Dream (220606): Improved Rip (446212, client 1.60.1.70532) adds 2 seconds to Rip,
+/// with the same tick period, so Rip ticks once more; ported from wowsims/forever 8d879a401.
+#[test]
+fn idol_of_the_dream_extends_rip_by_two_seconds() {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("fixtures/mage/prepared-v2/production-feral-druid.request.json");
+    let request: Value = serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
+    let rip = |idol: Option<i64>| {
+        let mut request = request.clone();
+        let items = request["raid"]["parties"][0]["players"][0]["equipment"]["items"]
+            .as_array_mut()
+            .unwrap();
+        if let Some(idol) = idol {
+            let relic = items
+                .iter_mut()
+                .find(|item| item["id"] == json!(22397))
+                .expect("the reference's Idol of Ferocity");
+            *relic = json!({ "id": idol });
+        }
+        request["simOptions"]["iterations"] = json!(200);
+        let prepared =
+            forever_engine::prepare_json(&serde_json::to_vec(&request).unwrap(), "x").unwrap();
+        let dot = prepared["player"]["spells"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|spell| spell["action_id"]["spell_id"] == json!(9896))
+            .and_then(|spell| spell["dot"].as_object().cloned())
+            .expect("Rip's dot");
+        let flat = dot["base_duration_flat_ns"].as_i64().unwrap_or(0);
+        let period = dot["base_tick_length_ns"].clone();
+        let dps = simulate_prepared(&parse(prepared)).unwrap().result["raidMetrics"]["parties"][0]
+            ["players"][0]["dps"]["avg"]
+            .as_f64()
+            .unwrap();
+        (flat, period, dps)
+    };
+    let (flat, period, dps) = rip(None);
+    let (idol_flat, idol_period, idol_dps) = rip(Some(220606));
+    assert_eq!(idol_flat - flat, 2_000_000_000);
+    assert_eq!(idol_period, period);
+    assert!(idol_dps > dps, "{idol_dps} against {dps}");
+}

@@ -152,6 +152,20 @@ the Go goldens and exporter uses. The departures:
   iteration has no swings or strikes: the Go golden of the Survival weave
   (`survival-hunter-aspect-of-the-beast-over-hawk`) has iterations at 400 to 510 DPS from it, and
   a held move makes it far more common.
+- Autocast looks past a cooldown the GCD holds back (`autocast_skips_unready_cooldowns`,
+  Forever preparation), as wowsims/forever does since 21 and 22 October 2026 (10b0e65f2,
+  fbf5d98e8). Autocast Other Cooldowns took the first ready major cooldown and then applied the
+  GCD rule to it alone (an explosive only while the GCD runs, any other only once it is ready),
+  so a cooldown waiting for the GCD held back an explosive sorted after it, and through a run of
+  hardcasts an explosive held back every cooldown behind it. Now each ready cooldown that fails
+  the rule is passed over, and an explosive whose cast fits in the shortest GCD also waits while
+  less of the GCD is left than its cast, so it never delays the next spell. The reference stops at
+  the first ready cooldown.
+- Idol of the Dream (220606) adds 2 seconds to Rip (Improved Rip, 446212, client 1.60.1.70532:
+  a flat duration modifier on Rip's class mask), so Rip ticks once more at the same period; ported
+  from wowsims/forever 8d879a401. The reference registers no effect for it.
+- Jewel of the Guard Captain (270225) and Cleansed Vilebranch Icon (270276) give 8 spell damage
+  and healing, tripled in Forest and Grassland areas (Wowhead Forever); the imported data had 32.
 - Party damage for heals that follow it, an assumption until the logs hold them: Forever's level
   30 beta logs have no Prayer of Mending or Chain Heal yet. A healer's party of five takes hits
   at random, the tank about once a second and each of the other four about once every five

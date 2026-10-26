@@ -1769,6 +1769,29 @@ pub(crate) fn rotation_spell<'a>(prepared: &'a PreparedV2, id: &ActionId) -> Opt
     rotation_spell_index(prepared, id).map(|index| &prepared.player.spells[index])
 }
 
+/// Go `GetAPLCastSpell`, as the runtime presses a cast: a registered spell without the APL flag
+/// defers to an APL-flagged spell of the same action under another tag (the queue of an
+/// on-next-swing ability, such as a Raptor Strike a spell picker names untagged), then to
+/// [`rotation_spell`].
+pub(crate) fn rotation_cast_spell<'a>(prepared: &'a PreparedV2, id: &ActionId) -> Option<&'a Spell> {
+    let spells = &prepared.player.spells;
+    if let Some(spell) = spells.iter().find(|spell| spell.action_id.as_ref() == Some(id)) {
+        if !spell.has_flag("SpellFlagAPL") {
+            let same = |other: &ActionId| {
+                other.spell_id == id.spell_id
+                    && other.item_id == id.item_id
+                    && other.other_id == id.other_id
+            };
+            if let Some(apl) = spells.iter().find(|spell| {
+                spell.has_flag("SpellFlagAPL") && spell.action_id.as_ref().is_some_and(same)
+            }) {
+                return Some(apl);
+            }
+        }
+    }
+    rotation_spell(prepared, id)
+}
+
 /// The spell a major cooldown casts: its own when an earlier spell shares its action ID,
 /// otherwise the first spell with the ID, as the runtime binds it.
 fn cooldown_spell<'a>(prepared: &'a PreparedV2, cooldown: &MajorCooldown) -> Option<&'a Spell> {
@@ -2077,7 +2100,7 @@ pub(crate) fn prepared_coverage(
                 match target.resolve(prepared.encounter.target_count.max(1) as usize) {
                     None => {}
                     Some(unit) => {
-                        if let Some(spell) = rotation_spell(prepared, id) {
+                        if let Some(spell) = rotation_cast_spell(prepared, id) {
                             registered_prepull += 1;
                             reachable.push(spell);
                             if unit != Unit::Target(0) {
@@ -2107,7 +2130,7 @@ pub(crate) fn prepared_coverage(
                 Action::ActivateAuraWithStacks { id, .. } => known(id, true),
                 Action::TriggerIcd(id) => find_icd_aura(prepared, Unit::Player, id).is_some(),
                 Action::CastAtPlayer(id) => {
-                    let spell = rotation_spell(prepared, id);
+                    let spell = rotation_cast_spell(prepared, id);
                     reachable.extend(spell);
                     spell.is_some()
                 }
@@ -2242,7 +2265,7 @@ pub(crate) fn prepared_coverage(
                     for id in
                         action.reachable_spells(prepared.encounter.target_count.max(1) as usize)
                     {
-                        reachable.extend(rotation_spell(prepared, id));
+                        reachable.extend(rotation_cast_spell(prepared, id));
                     }
                 }
             }

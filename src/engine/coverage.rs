@@ -865,6 +865,12 @@ const SWAP_EFFECT_FIELDS: &[(&str, &[&str])] = &[
     ("flametongue_weapon", &["hands/base_damage"]),
     ("flametongue_totem", &["attack_damage"]),
     ("maelstrom_weapon", &["chances"]),
+    // The imbue's proc manager rebuilt for the weapon in the hand, and whether a main hand
+    // imbue blocks the party Windfury Totem (the trigger's gain takes the totem down).
+    (
+        "windfury_weapon",
+        &["chances", "trigger_spells", "blocks_windfury_totem"],
+    ),
     // Patch 181: the hands that carry Rockbiter and the main hand's speed, as the weapons worn say.
     (
         "rockbiter_threat",
@@ -1056,6 +1062,34 @@ fn item_swap_limits(
             ));
         }
     }
+    // A main hand Windfury Weapon the swap switches on outbids the party Windfury Totem: its
+    // trigger's gain takes the totem and its trigger down, as the swapped state shows them.
+    let totem_auras: Vec<&str> = prepared
+        .effects
+        .iter()
+        .filter_map(|effect| match effect {
+            Effect::WindfuryTotem {
+                totem_aura,
+                trigger_aura,
+                ..
+            } => Some([totem_aura.as_str(), trigger_aura.as_str()]),
+            _ => None,
+        })
+        .flatten()
+        .collect();
+    let imbue_blocks_totem = swapped.iter().any(|change| {
+        let parts: Vec<&str> = change.path.split('/').skip(1).collect();
+        matches!(parts.as_slice(), ["effects", index, "blocks_windfury_totem"]
+            if change.value == serde_json::Value::Bool(true)
+                && index.parse::<usize>().ok().and_then(|index| prepared.effects.get(index))
+                    .is_some_and(|effect| matches!(effect, Effect::WindfuryWeapon { trigger_aura, .. }
+                        if targets.contains(&trigger_aura.as_str()))))
+    });
+    let displaced_totem: Vec<&str> = if imbue_blocks_totem {
+        totem_auras
+    } else {
+        Vec::new()
+    };
     for change in swapped {
         if let Some(reason) = swap_change_limit(
             prepared,
@@ -1065,6 +1099,7 @@ fn item_swap_limits(
             &crit_mods,
             &damage_mods,
             aura_effects,
+            &displaced_totem,
         ) {
             reasons.push(reason);
         }
@@ -1121,6 +1156,7 @@ fn swap_change_limit(
     crit_mods: &[(&[usize], f64, bool, bool)],
     damage_mods: &[(&[usize], f64, bool, bool)],
     aura_effects: &[crate::contracts::prepared_v2::SwapAuraEffect],
+    displaced_totem: &[&str],
 ) -> Option<String> {
     let parts: Vec<&str> = change.path.split('/').skip(1).collect();
     let refuse = || {
@@ -1165,13 +1201,19 @@ fn swap_change_limit(
                 refuse()
             }
         }
-        ["player", "auras", index, field] if matches!(*field, "active" | "blocked_at_reset") => {
+        ["player", "auras", index, field]
+            if matches!(*field, "active" | "blocked_at_reset" | "displaced_by") =>
+        {
             let label = &prepared
                 .player
                 .auras
                 .get(index.parse::<usize>().ok()?)?
                 .label;
-            if switched.contains(&label.as_str()) {
+            if displaced_totem.contains(&label.as_str()) {
+                None
+            } else if *field == "displaced_by" {
+                refuse()
+            } else if switched.contains(&label.as_str()) {
                 None
             } else {
                 refuse()

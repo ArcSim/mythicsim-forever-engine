@@ -198,6 +198,8 @@ struct WeaponValues {
     maelstrom: maelstrom_weapon::Chances,
     /// The hands that carry Rockbiter and the main hand's swing speed (patch 181).
     rockbiter: Option<(bool, bool, f64)>,
+    /// Windfury Weapon's heard spells, chances and whether it blocks the party totem.
+    windfury: Option<(Vec<usize>, Vec<(usize, f64)>, bool)>,
 }
 
 impl WeaponValues {
@@ -228,6 +230,21 @@ impl WeaponValues {
                     ..
                 } => {
                     values.rockbiter = Some((*main_hand, *off_hand, *main_hand_swing_speed));
+                }
+                Effect::WindfuryWeapon {
+                    trigger_spells,
+                    chances,
+                    blocks_windfury_totem,
+                    ..
+                } => {
+                    values.windfury = Some((
+                        trigger_spells.clone(),
+                        chances
+                            .iter()
+                            .map(|chance| (chance.spell, chance.chance))
+                            .collect(),
+                        *blocks_windfury_totem,
+                    ));
                 }
                 _ => {}
             }
@@ -1063,6 +1080,28 @@ impl Agent for ShamanAgent {
             state.main_hand = main_hand;
             state.off_hand = off_hand;
             state.main_hand_swing_speed = speed;
+        }
+        // RegisterWindfuryImbue rebuilds its proc manager for the weapon in the hand, and a
+        // main hand imbue outbids the party totem.
+        if let (Some(state), Some((triggers, chances, blocks))) =
+            (fight.agent.windfury_weapon.as_mut(), &set.windfury)
+        {
+            let chances: Vec<crate::contracts::prepared_v2::SpellChance> = chances
+                .iter()
+                .map(
+                    |&(spell, chance)| crate::contracts::prepared_v2::SpellChance { spell, chance },
+                )
+                .collect();
+            state
+                .follow_weapon(triggers, &chances, *blocks)
+                .expect("the swap set's Windfury Weapon names known spells");
+            // The swap's callbacks put the imbue's trigger up before the values follow the new
+            // weapon: a trigger already up that now blocks the totem takes it down, as its gain
+            // does in Go once the main hand carries the imbue.
+            let state = state.clone();
+            if fight.aura(state.trigger).active {
+                state.on_trigger_gain(fight);
+            }
         }
     }
 

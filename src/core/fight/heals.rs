@@ -50,6 +50,8 @@ pub(crate) struct BoundHeal {
     crit_shield: Option<f64>,
     /// The direct heal's multiplier while any of these heal over time ranks is up.
     hot_bonus: Option<(Vec<usize>, f64)>,
+    /// What each heal over time up takes off this spell's cooldown when it is cast.
+    cooldown_per_hot: Option<i64>,
 }
 
 /// Every heal rank of the healer and the player's healing modifiers.
@@ -110,6 +112,7 @@ impl HealBook {
                     then_hot: None,
                     crit_shield: heal.crit_shield,
                     hot_bonus: None,
+                    cooldown_per_hot: heal.cooldown_per_hot_ns,
                 })
             })
             .collect::<Result<Vec<BoundHeal>, String>>()?;
@@ -385,6 +388,25 @@ impl HealBook {
         let can_crit = self.tick_can_crit(dot);
         for _ in 0..self.tick_players(dot) {
             fight.deal_heal_tick(spell, snapshot, healing, can_crit);
+        }
+    }
+
+    /// A rank cast with a cooldown cut per heal over time (Idol of Synthesis on Swiftmend):
+    /// its cooldown less the cut for each of the healer's heals over time up now.
+    pub(crate) fn cut_cooldown<A: Agent>(&self, fight: &mut Fight<A>, rank: usize) {
+        let heal = &self.heals[rank];
+        let Some(per_hot) = heal.cooldown_per_hot else {
+            return;
+        };
+        let up = self
+            .heals
+            .iter()
+            .filter_map(|other| other.dot)
+            .filter(|&dot| fight.aura(fight.dots[dot].aura).active)
+            .count() as i64;
+        if let (Some((timer, _)), true) = (fight.spells[heal.spell].cd, up > 0) {
+            let ready = fight.timers[timer];
+            fight.timers[timer] = (ready - per_hot * up).max(fight.now);
         }
     }
 

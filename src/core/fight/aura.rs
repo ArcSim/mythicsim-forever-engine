@@ -1201,6 +1201,17 @@ impl<A: Agent> Fight<A> {
                     self.spell_stat_proc_callback(aura, proc, Some(spell), None)
                 }
                 AuraBehavior::ManaOnCast(index) => self.mana_on_cast_callback(aura, index, spell),
+                AuraBehavior::HealProc(proc) if self.heal_procs[proc].casts => {
+                    let result = SpellResult {
+                        armor_multiplier: 0.0,
+                        target: Side::Player,
+                        attacker: Side::Player,
+                        outcome: 0,
+                        damage: 0.0,
+                        threat: 0.0,
+                    };
+                    self.heal_proc_callback(aura, proc, Some(spell), &result)
+                }
                 AuraBehavior::StackingCdWindow(index) => self.stacking_cd_callback(
                     aura,
                     index,
@@ -1375,7 +1386,7 @@ impl<A: Agent> Fight<A> {
                     {
                         self.damage_proc_callback(aura, proc, Some(spell), result)
                     }
-                    AuraBehavior::HealProc(proc) if dealt => {
+                    AuraBehavior::HealProc(proc) if dealt && !self.heal_procs[proc].casts => {
                         self.heal_proc_callback(aura, proc, Some(spell), result)
                     }
                     AuraBehavior::HealthRageProc(proc) if dealt => {

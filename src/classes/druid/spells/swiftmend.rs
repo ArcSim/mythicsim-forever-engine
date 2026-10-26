@@ -17,6 +17,10 @@ pub(crate) fn cast(
     ranks: &[usize],
     spell: SpellId,
 ) {
+    // Idol of Synthesis counts the heals over time up before Swiftmend consumes one.
+    if let Some(rank) = book.rank_of(spell) {
+        book.cut_cooldown(fight, rank);
+    }
     let Some((dot, amount)) = book.hot_up(fight, ranks) else {
         return;
     };

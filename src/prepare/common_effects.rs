@@ -266,8 +266,15 @@ fn racial_defensive_effects(env: &Environment) -> Vec<Value> {
     if let Some(aura) = env.sim.get_aura(player, "Energized") {
         for spell in &env.sim.unit(player).spellbook {
             if env.sim.spell(*spell).related_self_buff == Some(aura) {
-                effects.push(json!({"kind": "read_ley_line", "spell_id": env.sim.spell(*spell).action_id.spell_id,
-                    "aura": env.sim.aura(aura).label, "regen_multiplier": 2.0}));
+                let mut effect = json!({"kind": "read_ley_line", "spell_id": env.sim.spell(*spell).action_id.spell_id,
+                    "aura": env.sim.aura(aura).label,
+                    "regen_multiplier": super::racials::read_ley_line_regen_multiplier(env.sim.rules)});
+                // 26 October notes: "This ability cannot be used while Innervate is active, and
+                // will be replaced by Innervate as a more powerful effect."
+                if env.sim.rules == super::sim::Rules::Forever {
+                    effect["innervate_replaces"] = json!(true);
+                }
+                effects.push(effect);
             }
         }
     }

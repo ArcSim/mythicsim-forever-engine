@@ -172,8 +172,17 @@ the Go goldens and exporter uses. The departures:
   heal, spends one of three globes for 2% of maximum mana, one globe every 3.5 seconds at most,
   and the cast has no cooldown since 70532 (it had 15 seconds). The reference registers the talent
   but no build could cast it.
-- Read Ley Line's Energized lasts 30 seconds (Forever preparation), as client 1.60.1.70532 has it;
-  the reference keeps 70245's 15.
+- The racial pass of Forever's development notes of 26 October 2026 (Forever preparation; the
+  reference keeps the 16 October racials). Human Ruthless gives 1% crit (was 2%) and Human Spirit
+  10% Spirit (was 5%). Dwarf Earth Fury is gone and Artisan's Precision gives 1% hit with
+  attacks and spells. Tauren Endurance is 5% health only. Orc Savage is gone and Command gives
+  Hunter and Warlock pets 5% more damage. Skyborne Wind Blessed is 2% haste (was 3%). Read
+  Ley Line's Energized is 50% more regeneration for 15 seconds (70532 had 100% for 30), cannot
+  be cast while an Innervate is up, and an Innervate that lands removes it
+  (`read_ley_line.innervate_replaces`). Skysight's Elemental Blessing is 15% movement speed for
+  15 seconds (was 10% for 30). Attuned and Charged, which a Ley Line or an elemental convergence
+  grants before the pull and which double those two, are not assumed. Client 1.60.1.70532 still
+  has the old rows; the notes are the source until a client build carries the new ones.
 - A damage bonus applied after the calculation is threat too (`threat_follows_damage_bonus`,
   Forever preparation), from MythicSim's Discord (26 October 2026, Vrelk: a Shadow Priest with
   no threat talents had less threat than damage). Improved Mind Flay's ramp, Ice Lance on a

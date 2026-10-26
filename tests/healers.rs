@@ -268,7 +268,11 @@ fn forever_healer_sims_count_healing_less_overhealing() {
         "/fixtures/mage/prepared-v2"
     ));
     let request = |name: &str| fs::read(family.join(format!("{name}.request.json"))).unwrap();
-    let holy = request("holy-paladin-healing");
+    // Without racials: the 26 October racials are Forever's own, and this compares the
+    // overhealing split alone.
+    let mut holy: Value = serde_json::from_slice(&request("holy-paladin-healing")).unwrap();
+    holy["raid"]["parties"][0]["players"][0]["disableRacials"] = true.into();
+    let holy = serde_json::to_vec(&holy).unwrap();
     let forever = prepare_json_with(&holy, "rust", Rules::Forever).unwrap();
     let reference = prepare_json_with(&holy, "rust", Rules::GoReference).unwrap();
     let share = |spell: i64| {

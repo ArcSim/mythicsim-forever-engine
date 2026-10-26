@@ -1840,6 +1840,10 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) external_cooldowns: Vec<external_cooldown::ExternalCooldown>,
     /// The auras other than the druid's own that carry Innervate's regeneration.
     innervate_regens: Vec<innervate::InnervateRegen>,
+    /// Forever's Read Ley Line, which an Innervate blocks and replaces.
+    ley_line_innervate: Option<innervate::LeyLineInnervate>,
+    /// The Innervate regeneration auras up on the player, the druid's own included.
+    innervates_up: u32,
     /// What Power Infusion multiplies, when the player has a copy of its aura.
     power_infusion: Option<power_infusion::PowerInfusion>,
     /// The player's healing dealt multiplier relative to its exported value, which Power
@@ -4001,6 +4005,8 @@ impl<A: Agent> Fight<A> {
             windfury: None,
             external_cooldowns: Vec::new(),
             innervate_regens: Vec::new(),
+            ley_line_innervate: None,
+            innervates_up: 0,
             power_infusion: None,
             healing_dealt_factor: 1.0,
             chili: None,
@@ -4698,6 +4704,7 @@ impl<A: Agent> Fight<A> {
         fight.bind_heal_procs(effects)?;
         fight.bind_power_infusion(effects)?;
         fight.bind_innervate_regens(effects);
+        fight.bind_read_ley_line(effects)?;
         fight.bind_external_cooldowns(effects, &player.auras)?;
         for effect in effects {
             if let Effect::AbsorbOnUse {

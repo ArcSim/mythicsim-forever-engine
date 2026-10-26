@@ -7,7 +7,7 @@ use crate::contracts::prepared_v2::ActionId;
 use super::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger, PseudoStatField, StatMultiplier};
 use super::character::{cooldown_type, MajorCooldown};
 use super::env::Environment;
-use super::sim::{AuraConfig, AuraId, Cooldown, Sim, UnitId, MILLISECOND, SECOND};
+use super::sim::{AuraConfig, AuraId, Cooldown, Rules, Sim, UnitId, MILLISECOND, SECOND};
 use super::spell::{
     school, Cast, CastConfig, DefenseType, ProcMask, Resource, SpellConfig, SpellFlag, GCD_DEFAULT,
 };
@@ -33,10 +33,21 @@ pub(crate) struct EurekaSpells {
 pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
     let unit = env.player;
     let race = env.sim.character(unit).race.clone();
+    // The 26 October 2026 development notes' racial pass is Forever's own; the Go reference
+    // keeps the 16 October racials.
+    let oct26 = env.sim.rules == Rules::Forever;
     match race.as_str() {
         "RaceDwarf" => {
-            // Earth Fury replaced Mace Specialization: 2% increased critical damage and healing.
-            env.sim.unit_mut(unit).pseudo_stats.crit_damage_multiplier *= 1.02;
+            if oct26 {
+                // 26 October notes: "Earth Fury (2% increased critical strike damage and healing)
+                // removed. Added: Artisan's Precision - Increases hit chance with spells and
+                // attacks by 1%."
+                add_hit(env, 1.0);
+            } else {
+                // Earth Fury replaced Mace Specialization: 2% increased critical damage and
+                // healing.
+                env.sim.unit_mut(unit).pseudo_stats.crit_damage_multiplier *= 1.02;
+            }
             apply_creature_type_slaying(env, "MobTypeBeast");
 
             let action_id = ActionId::spell(20594);
@@ -83,9 +94,16 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
             apply_eureka(env);
         }
         "RaceHuman" => {
-            env.sim.unit_mut(unit).sdm.multiply_stat(Stat::Spirit, 1.05);
-            // Ruthless replaced Sword Specialization: 2% critical strike chance, any weapon.
-            add_crit(env, 2.0);
+            if oct26 {
+                // 26 October notes: "Ruthless now increases critical chance by 1% (was 2%).
+                // Human Spirit now increases Spirit by 10% (was 5%)."
+                env.sim.unit_mut(unit).sdm.multiply_stat(Stat::Spirit, 1.1);
+                add_crit(env, 1.0);
+            } else {
+                env.sim.unit_mut(unit).sdm.multiply_stat(Stat::Spirit, 1.05);
+                // Ruthless replaced Sword Specialization: 2% critical strike chance, any weapon.
+                add_crit(env, 2.0);
+            }
         }
         "RaceNightElf" => {
             let sim = &mut env.sim;
@@ -114,8 +132,14 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
             );
         }
         "RaceOrc" => {
-            // Savage replaced Axe Specialization: 1% critical strike chance, any weapon.
-            add_crit(env, 1.0);
+            if oct26 {
+                // 26 October notes: "Savage removed (1% increased critical strike chance).
+                // Command re-added, increasing Warlock and Hunter pet damage by 5%."
+                apply_command(&mut env.sim, unit);
+            } else {
+                // Savage replaced Axe Specialization: 1% critical strike chance, any weapon.
+                add_crit(env, 1.0);
+            }
 
             let sim = &mut env.sim;
             let blood_fury_id = ActionId::spell(20572);
@@ -221,9 +245,13 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
         "RaceTauren" => {
             let sim = &mut env.sim;
             sim.unit_mut(unit).sdm.multiply_stat(Stat::Health, 1.05);
-            // 16 October beta notes: "Endurance: Now grants 2% increased critical damage and
-            // healing (was 1% hit chance)."
-            sim.unit_mut(unit).pseudo_stats.crit_damage_multiplier *= 1.02;
+            // 26 October notes: "Endurance no longer provides any modifiers beyond 5% increased
+            // Health (no hit chance or critical damage modifiers)."
+            if !oct26 {
+                // 16 October beta notes: "Endurance: Now grants 2% increased critical damage and
+                // healing (was 1% hit chance)."
+                sim.unit_mut(unit).pseudo_stats.crit_damage_multiplier *= 1.02;
+            }
         }
         "RaceTroll" => {
             apply_creature_type_slaying(env, "MobTypeBeast");
@@ -266,28 +294,28 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
 
             let sim = &mut env.sim;
             // Client 1.60.1.70532: Energized (1270842) lasts 30 seconds; 70245 had 15, which the
-            // Go reference keeps.
-            let energized_duration = if sim.rules == crate::prepare::sim::Rules::Forever {
-                30 * SECOND
-            } else {
-                15 * SECOND
-            };
+            // Go reference keeps. The 26 October notes bring Forever back to 15 seconds: "Read
+            // Leyline now increases Mana and Health regeneration by 50% (was 100%), with a
+            // 15-second duration." Attuned's 100% needs a Ley Line before the pull, so it is not
+            // assumed.
+            let energized_duration = 15 * SECOND;
+            let regen = read_ley_line_regen_multiplier(sim.rules);
             let energized = sim.register_aura(
                 unit,
                 AuraConfig {
                     label: "Energized".to_string(),
                     action_id: Some(ActionId::spell(1270842)),
                     duration: energized_duration,
-                    on_gain: Some(Rc::new(|sim: &mut Sim, aura: AuraId| {
+                    on_gain: Some(Rc::new(move |sim: &mut Sim, aura: AuraId| {
                         let unit = sim.aura(aura).unit;
                         if sim.has_mana_bar(unit) {
-                            sim.multiply_mana_regen_speed(unit, 2.0);
+                            sim.multiply_mana_regen_speed(unit, regen);
                         }
                     })),
-                    on_expire: Some(Rc::new(|sim: &mut Sim, aura: AuraId| {
+                    on_expire: Some(Rc::new(move |sim: &mut Sim, aura: AuraId| {
                         let unit = sim.aura(aura).unit;
                         if sim.has_mana_bar(unit) {
-                            sim.multiply_mana_regen_speed(unit, 0.5);
+                            sim.multiply_mana_regen_speed(unit, 1.0 / regen);
                         }
                     })),
                     ..AuraConfig::default()
@@ -321,19 +349,27 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
             apply_skyborne_shared_racials(env);
 
             let sim = &mut env.sim;
+            // 26 October notes: "Skysight is now a 15% increased movement speed (was 10%), with a
+            // 15-second duration." Charged's 30% needs an elemental convergence before the pull,
+            // so it is not assumed.
+            let (speed, duration) = if oct26 {
+                (1.15, 15 * SECOND)
+            } else {
+                (1.1, 30 * SECOND)
+            };
             let elemental_blessing = sim.register_aura(
                 unit,
                 AuraConfig {
                     label: "Elemental Blessing".to_string(),
                     action_id: Some(ActionId::spell(1259688)),
-                    duration: 30 * SECOND,
-                    on_gain: Some(Rc::new(|sim: &mut Sim, aura: AuraId| {
+                    duration,
+                    on_gain: Some(Rc::new(move |sim: &mut Sim, aura: AuraId| {
                         let unit = sim.aura(aura).unit;
-                        sim.multiply_movement_speed(unit, 1.1);
+                        sim.multiply_movement_speed(unit, speed);
                     })),
-                    on_expire: Some(Rc::new(|sim: &mut Sim, aura: AuraId| {
+                    on_expire: Some(Rc::new(move |sim: &mut Sim, aura: AuraId| {
                         let unit = sim.aura(aura).unit;
-                        sim.multiply_movement_speed(unit, 1.0 / 1.1);
+                        sim.multiply_movement_speed(unit, 1.0 / speed);
                     })),
                     ..AuraConfig::default()
                 },
@@ -380,10 +416,39 @@ fn major_cooldown(spell: super::sim::SpellId, cooldown_type: u32) -> MajorCooldo
 /// Go `applySkyborneSharedRacials`.
 fn apply_skyborne_shared_racials(env: &mut Environment) {
     apply_creature_type_slaying(env, "MobTypeElemental");
-    // 16 October beta notes: "Wind Blessed: Haste bonus increased to 3% (was 1%)."
+    // 16 October beta notes: "Wind Blessed: Haste bonus increased to 3% (was 1%)." 26 October
+    // notes: "Wind-Blessed Haste bonus reduced to 2% (was 3%)."
+    let haste = if env.sim.rules == Rules::Forever {
+        1.02
+    } else {
+        1.03
+    };
     let pseudo = &mut env.sim.unit_mut(env.player).pseudo_stats;
-    pseudo.attack_speed_multiplier *= 1.03;
-    pseudo.cast_speed_multiplier *= 1.03;
+    pseudo.attack_speed_multiplier *= haste;
+    pseudo.cast_speed_multiplier *= haste;
+}
+
+/// Energized's mana regeneration: 50% more under the 26 October notes, double in the Go
+/// reference.
+pub(crate) fn read_ley_line_regen_multiplier(rules: Rules) -> f64 {
+    match rules {
+        Rules::Forever => 1.5,
+        Rules::GoReference => 2.0,
+    }
+}
+
+/// Command, which the 26 October notes re-add: "increasing Warlock and Hunter pet damage by 5%".
+/// The pets exist by now, as in Go, where the class registers them before its effects.
+fn apply_command(sim: &mut Sim, unit: UnitId) {
+    if !matches!(
+        sim.character(unit).class.as_str(),
+        "ClassHunter" | "ClassWarlock"
+    ) {
+        return;
+    }
+    for pet in sim.unit(unit).pets.clone() {
+        sim.unit_mut(pet).pseudo_stats.damage_dealt_multiplier *= 1.05;
+    }
 }
 
 /// Go `applyCreatureTypeSlaying`: Beast Slaying (troll 20557), Big Game Hunter (dwarf 1259721)
@@ -401,6 +466,15 @@ fn apply_creature_type_slaying(env: &mut Environment, mob_type: &'static str) {
                 }
             }
         }));
+}
+
+/// Dwarf Artisan's Precision, as Tauren Endurance's hit was before the 16 October notes:
+/// `AddStats` of the hit, physical and spell alike.
+fn add_hit(env: &mut Environment, hit_percent: f64) {
+    let unit = env.player;
+    env.sim
+        .add_stat(unit, Stat::PhysicalHitPercent, hit_percent);
+    env.sim.add_stat(unit, Stat::SpellHitPercent, hit_percent);
 }
 
 /// Ruthless and Savage: `AddStats` of the crit, physical and spell alike.

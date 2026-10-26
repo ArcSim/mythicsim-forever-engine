@@ -260,6 +260,7 @@ the spell itself. `rotation` is the request's APL in protojson form.
 | `magma_totem` | sim/shaman/fire_totems.go | The pulse's fixed base and the totem's lifetime, with Trial by Fire's (client 70425); each pulse calculates periodic area damage on every target before dealing any |
 | `flametongue_totem` | sim/shaman/fire_totems.go | The totem aura, its trigger and the spells it hears, the attack spell and its base, and whether a party Flametongue Totem shares the benefit |
 | `lightning_shield` | sim/shaman/shields.go | The cast, its aura and charges |
+| `water_shield` | client 1.60.1.70532 (Forever preparation only) | The cast, its aura and three globes, the 3.5 sec internal cooldown, 2% of maximum mana per globe in the 408511 row, and the spells whose critical hits spend one |
 | `grace_of_air_totem`, `mana_spring_totem` | sim/shaman/totems.go | The cast, its aura, a class stat aura and the totem's lifetime; since the 16 October 2026 beta notes no air totem slot joins it to the party's totems |
 | `windfury_totem_self` | sim/shaman/totems.go | The totem aura, its lifetime and refresh period, the tracking and dummy auras, the trigger's chance and spells, the attack power charges with their log lines, the spenders, the extra main hand attack, and whether the party's Windfury Totem or a main hand Windfury Weapon contests it |
 | `shadow_bolt`, `searing_pain`, `shadowburn`, `soul_fire` | sim/warlock/shadowbolt.go, searing_pain.go, shadowburn.go, soulfire.go | Damage rolls on the spells; Shadow Bolt and Soul Fire land after travel |

@@ -152,6 +152,13 @@ the Go goldens and exporter uses. The departures:
   iteration has no swings or strikes: the Go golden of the Survival weave
   (`survival-hunter-aspect-of-the-beast-over-hawk`) has iterations at 400 to 510 DPS from it, and
   a held move makes it far more common.
+- Water Shield gives mana (`water_shield`, Forever preparation), from the client (1.60.1.70532)
+  and MythicSim's Discord (26 October 2026, Maro): a critical spell of the shaman's, damage or
+  heal, spends one of three globes for 2% of maximum mana, one globe every 3.5 seconds at most,
+  and the cast has no cooldown since 70532 (it had 15 seconds). The reference registers the talent
+  but no build could cast it.
+- Read Ley Line's Energized lasts 30 seconds (Forever preparation), as client 1.60.1.70532 has it;
+  the reference keeps 70245's 15.
 - A damage bonus applied after the calculation is threat too (`threat_follows_damage_bonus`,
   Forever preparation), from MythicSim's Discord (26 October 2026, Vrelk: a Shadow Priest with
   no threat talents had less threat than damage). Improved Mind Flay's ramp, Ice Lance on a

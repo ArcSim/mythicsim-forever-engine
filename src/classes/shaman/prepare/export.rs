@@ -385,6 +385,22 @@ impl Shaman {
                 "charges": i32::from(row.proc_charges),
             }));
         }
+        // registerWaterShieldSpell (talent): the cast puts up every globe; the shaman's own
+        // critical spells spend one for mana (Forever's rules only: Go never casts it). The hit
+        // taken trigger never fires in scope.
+        if let Some(aura) = sim
+            .get_aura(player, "Water Shield")
+            .filter(|_| sim.rules == crate::prepare::sim::Rules::Forever)
+        {
+            use super::shields::*;
+            effects.push(json!({
+                "kind": "water_shield", "spell_id": WATER_SHIELD_SPELL_ID,
+                "aura": sim.aura(aura).label, "globes": WATER_SHIELD_GLOBES,
+                "icd_ns": nanos(WATER_SHIELD_ICD), "mana_percent": WATER_SHIELD_MANA_PERCENT,
+                "mana_spell_id": WATER_SHIELD_MANA_SPELL_ID,
+                "trigger_spells": proc_trigger_spells(env, &water_shield_crit_trigger()),
+            }));
+        }
         // Since the 16 October 2026 beta notes no air totem category stands between the
         // shaman's own totems and the party's: only the party's Windfury Totem still contests
         // the shaman's own, through the Windfury Totem category.

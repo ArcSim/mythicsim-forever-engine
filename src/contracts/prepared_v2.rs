@@ -3542,6 +3542,20 @@ pub enum Effect {
         aura: String,
         charges: i32,
     },
+    /// Water Shield (client 1.60.1.70532): the cast puts up every globe; a critical hit of a
+    /// trigger spell, damage or heal, spends one and restores a share of maximum mana, one globe
+    /// per internal cooldown.
+    WaterShield {
+        spell_id: i32,
+        aura: String,
+        globes: i32,
+        icd_ns: i64,
+        mana_percent: f64,
+        /// The globe spell whose mana row the gains land in (408511).
+        mana_spell_id: i32,
+        /// Spellbook positions whose critical hits spend a globe.
+        trigger_spells: Vec<usize>,
+    },
     /// Grace of Air Totem: the air totem's aura, whose Agility is a class stat aura.
     GraceOfAirTotem {
         spell_id: i32,
@@ -4893,6 +4907,7 @@ impl Effect {
             Effect::WindfuryWeapon { .. } => "windfury_weapon",
             Effect::MagmaTotem { .. } => "magma_totem",
             Effect::LightningShield { .. } => "lightning_shield",
+            Effect::WaterShield { .. } => "water_shield",
             Effect::GraceOfAirTotem { .. } => "grace_of_air_totem",
             Effect::ManaSpringTotem { .. } => "mana_spring_totem",
             Effect::WindfuryTotemSelf { .. } => "windfury_totem_self",

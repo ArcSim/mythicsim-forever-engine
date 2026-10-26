@@ -108,13 +108,21 @@ impl WindfuryWeapon {
         }
     }
 
+    /// The trigger aura's expiry, which only an item swap brings mid-fight: Go's category then
+    /// makes the party totem's effect active again (`SetActive` of the highest enabled effect),
+    /// whose gain puts its trigger back up while the totem is up.
     pub(crate) fn on_trigger_expire<A: Agent>(&self, fight: &mut Fight<A>) {
-        if let Some(windfury) = fight
+        let Some(windfury) = fight
             .windfury
             .as_mut()
             .filter(|_| self.blocks_windfury_totem)
-        {
-            windfury.blocked = false;
+        else {
+            return;
+        };
+        windfury.blocked = false;
+        let (trigger, totem) = (windfury.trigger, windfury.totem);
+        if fight.aura(totem).active && !fight.aura(trigger).active {
+            fight.activate_aura(trigger);
         }
     }
 

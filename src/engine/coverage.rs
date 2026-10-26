@@ -1077,13 +1077,14 @@ fn item_swap_limits(
         })
         .flatten()
         .collect();
+    // Either way: a swap that puts the blocking imbue on, or takes it off and frees the totem,
+    // which comes back at its next refresh as its trigger's expiry allows.
     let imbue_blocks_totem = swapped.iter().any(|change| {
         let parts: Vec<&str> = change.path.split('/').skip(1).collect();
         matches!(parts.as_slice(), ["effects", index, "blocks_windfury_totem"]
-            if change.value == serde_json::Value::Bool(true)
-                && index.parse::<usize>().ok().and_then(|index| prepared.effects.get(index))
-                    .is_some_and(|effect| matches!(effect, Effect::WindfuryWeapon { trigger_aura, .. }
-                        if targets.contains(&trigger_aura.as_str()))))
+            if index.parse::<usize>().ok().and_then(|index| prepared.effects.get(index))
+                .is_some_and(|effect| matches!(effect, Effect::WindfuryWeapon { trigger_aura, .. }
+                    if targets.contains(&trigger_aura.as_str()))))
     });
     let displaced_totem: Vec<&str> = if imbue_blocks_totem {
         totem_auras

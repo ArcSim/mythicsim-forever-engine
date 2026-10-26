@@ -871,6 +871,9 @@ const SWAP_EFFECT_FIELDS: &[(&str, &[&str])] = &[
         "windfury_weapon",
         &["chances", "trigger_spells", "blocks_windfury_totem"],
     ),
+    // Whether the shaman's own Windfury Totem is contested: the class gate refuses a reachable
+    // one contested under either set.
+    ("windfury_totem_self", &["contested"]),
     // Patch 181: the hands that carry Rockbiter and the main hand's speed, as the weapons worn say.
     (
         "rockbiter_threat",

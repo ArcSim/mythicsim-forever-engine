@@ -657,28 +657,6 @@ fn judgement_of_light_limits(prepared: &PreparedV2) -> Vec<String> {
     reasons
 }
 
-/// The party's Flametongue Totem hits for the main hand's speed when preparation reads it, which an
-/// item swap of the main hand would change.
-fn party_flametongue_swap_limits(prepared: &PreparedV2) -> Vec<String> {
-    let totem = prepared.effects.iter().any(|effect| {
-        matches!(effect, Effect::SpellDataDamageProc { trigger_aura, .. }
-            if trigger_aura == "Flametongue Totem Trigger")
-    });
-    let swap = prepared
-        .effects
-        .iter()
-        .any(|effect| matches!(effect, Effect::ItemSwap { .. }));
-    if totem && swap {
-        vec![
-            "the party's Flametongue Totem hits for the main hand's speed, which an item swap \
-             changes"
-                .to_string(),
-        ]
-    } else {
-        Vec::new()
-    }
-}
-
 /// Runeblade of Baron Rivendare's Unholy Aura starts a periodic action as it gains, which gives
 /// the wearer 60 health every five seconds; the runtime runs no such action.
 fn unholy_aura_regeneration(prepared: &PreparedV2) -> Vec<String> {
@@ -1293,6 +1271,24 @@ fn swap_change_limit(
         // Go updateWeaponSkills: the tables of the hands whose skill the equipment sets.
         ["melee", "main_hand_skill" | "off_hand_skill" | "ranged_skill", ..] => None,
         ["melee", "armor_ignore_factor"] if !aura_effects.is_empty() => None,
+        // The effect roll a hit reads the weapon in the hand for, as the party's Flametongue
+        // Totem does with the main hand's speed: the runtime takes the swapped average for a
+        // plain effect roll only.
+        ["effects", index, "average"]
+            if matches!(
+                prepared.effects.get(index.parse::<usize>().ok()?)?,
+                Effect::SpellDataDamageProc {
+                    roll: None,
+                    outcome: None,
+                    chain: None,
+                    area: None,
+                    periodic: None,
+                    ..
+                }
+            ) =>
+        {
+            None
+        }
         ["effects", index, field, rest @ ..] => {
             let effect = prepared.effects.get(index.parse::<usize>().ok()?)?;
             let fields = SWAP_EFFECT_FIELDS
@@ -2389,10 +2385,6 @@ pub(crate) fn prepared_coverage(
         reasons.extend(coded(
             "proc_unsupported",
             judgement_of_light_limits(prepared),
-        ));
-        reasons.extend(coded(
-            "proc_unsupported",
-            party_flametongue_swap_limits(prepared),
         ));
         reasons.extend(coded("effect_unimplemented", shared_dot_auras(prepared)));
         reasons.extend(coded(

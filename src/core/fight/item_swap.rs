@@ -93,6 +93,9 @@ struct Variants {
     stat_procs: Vec<(usize, [Vec<Option<f64>>; 2])>,
     /// Sulfuras' chances, which its weapon proc manager rebuilds.
     sulfuras: Option<[Vec<Option<f64>>; 2]>,
+    /// Damage procs whose effect roll reads the weapon in the hand (the party's Flametongue
+    /// Totem hits for the main hand's speed): the proc spell and its average under either set.
+    effect_rolls: Vec<(SpellId, [f64; 2])>,
 }
 
 /// The prepared input with the swap set worn: the reset's with each changed value set.
@@ -366,6 +369,25 @@ impl<A: Agent> Fight<A> {
                 variants.stat_procs.push((index, [main, swapped]));
             }
         }
+        let rolls = |effects: &[Effect]| -> Vec<(SpellId, f64)> {
+            effects
+                .iter()
+                .filter_map(|effect| match effect {
+                    Effect::SpellDataDamageProc {
+                        spell,
+                        average,
+                        roll: None,
+                        ..
+                    } => Some((*spell, *average)),
+                    _ => None,
+                })
+                .collect()
+        };
+        for ((spell, main), (worn_spell, swapped)) in rolls(effects).into_iter().zip(rolls(&worn)) {
+            if spell == worn_spell && main.to_bits() != swapped.to_bits() {
+                variants.effect_rolls.push((spell, [main, swapped]));
+            }
+        }
         let sulfuras = |effects: &[Effect]| {
             effects.iter().find_map(|effect| match effect {
                 Effect::SulfurasHandOfRagnaros { chances, .. } => {
@@ -584,6 +606,13 @@ impl<A: Agent> Fight<A> {
             bar.off_hand_rage = off_hand;
             bar.main_hand_crit_rage = main_crit;
             bar.off_hand_crit_rage = off_crit;
+        }
+        for (spell, by_set) in variants.effect_rolls {
+            if let super::SpellBehavior::EffectRoll { average, .. } =
+                &mut self.spells[spell].behavior
+            {
+                *average = by_set[index];
+            }
         }
         for (proc, by_set) in variants.stat_procs {
             self.stat_procs[proc].chances = by_set[index].clone();

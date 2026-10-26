@@ -396,7 +396,7 @@ fn blade_of_hanna(env: &mut Environment) {
             ..AuraConfig::default()
         },
     );
-    env.sim.make_proc_trigger_aura(
+    let trigger = env.sim.make_proc_trigger_aura(
         unit,
         &ProcTrigger {
             name: "Blade of Hanna".to_string(),
@@ -407,6 +407,12 @@ fn blade_of_hanna(env: &mut Environment) {
             ..ProcTrigger::default()
         },
     );
+    // Go registers no item swap callback, so its stacks keep counting whatever weapon the hand
+    // holds. Under Forever's rules the trigger is up while the hand holds the blade, as every
+    // other weapon proc's is (Go `ItemSwap.RegisterProc`).
+    if env.sim.rules == super::sim::Rules::Forever {
+        env.sim.register_item_proc(unit, 2801, trigger);
+    }
 }
 
 /// items_weapons.go Flurry Axe.

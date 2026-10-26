@@ -1414,8 +1414,16 @@ fn uninherited_stat_changes(prepared: &PreparedV2) -> Vec<String> {
     reasons
 }
 
-/// Stat aura combinations that change a stat the runtime holds fixed.
+/// Stat aura combinations that change a stat the runtime holds fixed. Ranged crit is read only
+/// by ranged attacks (a pet's offset from it is checked on its own), so a player with none of
+/// them never reads it.
 fn fixed_stat_aura_changes(prepared: &PreparedV2) -> Vec<String> {
+    let ranged = prepared.player.spells.iter().any(|spell| {
+        spell
+            .proc_mask
+            .iter()
+            .any(|mask| mask == "ProcMaskRangedAuto" || mask == "ProcMaskRangedSpecial")
+    });
     prepared
         .effects
         .iter()
@@ -1423,10 +1431,12 @@ fn fixed_stat_aura_changes(prepared: &PreparedV2) -> Vec<String> {
             Effect::StatAuras { auras, changed, .. } => Some((auras, changed)),
             _ => None,
         })
-        .flat_map(|(auras, changed)| {
+        .flat_map(move |(auras, changed)| {
             changed
                 .iter()
-                .filter(|stat| !followed_stat(stat))
+                .filter(move |stat| {
+                    !followed_stat(stat) && (ranged || *stat != "RangedCritPercent")
+                })
                 .map(move |stat| {
                     format!("stat auras {auras:?} change {stat}, which the runtime holds fixed")
                 })

@@ -265,12 +265,19 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
             apply_skyborne_shared_racials(env);
 
             let sim = &mut env.sim;
+            // Client 1.60.1.70532: Energized (1270842) lasts 30 seconds; 70245 had 15, which the
+            // Go reference keeps.
+            let energized_duration = if sim.rules == crate::prepare::sim::Rules::Forever {
+                30 * SECOND
+            } else {
+                15 * SECOND
+            };
             let energized = sim.register_aura(
                 unit,
                 AuraConfig {
                     label: "Energized".to_string(),
                     action_id: Some(ActionId::spell(1270842)),
-                    duration: 15 * SECOND,
+                    duration: energized_duration,
                     on_gain: Some(Rc::new(|sim: &mut Sim, aura: AuraId| {
                         let unit = sim.aura(aura).unit;
                         if sim.has_mana_bar(unit) {

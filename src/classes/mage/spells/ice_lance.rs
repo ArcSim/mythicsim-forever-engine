@@ -13,7 +13,7 @@ pub(crate) fn apply<A: Agent>(
     let base = fight.roll_damage_effect(spell);
     let mut result = fight.calc_damage(spell, target, base);
     if let Some(multiplier) = frozen_multiplier {
-        result.damage *= multiplier;
+        fight.scale_damage(spell, &mut result, multiplier);
     }
     fight.deal_damage_after_travel(spell, result);
 }

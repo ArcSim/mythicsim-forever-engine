@@ -11,6 +11,7 @@ pub(crate) mod rockbiter_threat;
 pub(crate) mod searing_totem;
 pub(crate) mod stormstrike;
 pub(crate) mod totems;
+pub(crate) mod water_shield;
 pub(crate) mod weapon_imbues;
 pub(crate) mod weapon_sync;
 pub(crate) mod windfury_totem;

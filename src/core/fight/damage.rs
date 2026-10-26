@@ -198,6 +198,18 @@ impl<A: Agent> Fight<A> {
 
     /// Go `Spell.ThreatFromDamage`, whose damage times the threat multiplier plus the flat
     /// bonus the arm64 build fuses.
+    /// Raises a calculated result's damage by `factor`. A bonus applied after the calculation
+    /// (Improved Mind Flay's ramp, Ice Lance on a frozen target, Soul Siphon, Amplify Curse,
+    /// Incinerate on an Immolated target) is damage the target takes, so under Forever's rules
+    /// (`threat_follows_damage_bonus`) it is threat too. Go scaled only the damage, which left a
+    /// Shadow Priest's threat below its damage with no threat talents (Vrelk, 26 October 2026).
+    pub(crate) fn scale_damage(&self, spell: SpellId, result: &mut SpellResult, factor: f64) {
+        result.damage *= factor;
+        if self.threat_follows_damage_bonus {
+            result.threat = self.threat_of(spell, result);
+        }
+    }
+
     pub(crate) fn threat_of(&self, spell: SpellId, result: &SpellResult) -> f64 {
         if result.landed() {
             let state = &self.spells[spell];

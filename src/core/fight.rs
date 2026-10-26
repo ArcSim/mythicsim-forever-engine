@@ -1906,6 +1906,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) move_arrives_at_destination: bool,
     /// Forever's rule that autocasting passes over a cooldown the GCD holds back.
     pub(crate) autocast_skips_unready_cooldowns: bool,
+    /// Forever's rule that a damage bonus applied after the calculation raises threat too.
+    pub(crate) threat_follows_damage_bonus: bool,
     /// A healer sim's burst healing window under Forever's rules (see [`burst`]).
     pub(crate) burst: Option<burst::BurstWindow>,
     /// How each exclusive effect of an aura a rotation asks about reads.
@@ -4031,6 +4033,7 @@ impl<A: Agent> Fight<A> {
             move_waits_for_queued_cast: player.move_waits_for_queued_cast,
             move_arrives_at_destination: player.move_arrives_at_destination,
             autocast_skips_unready_cooldowns: player.autocast_skips_unready_cooldowns,
+            threat_follows_damage_bonus: player.threat_follows_damage_bonus,
             burst: player.burst_window.map(burst::BurstWindow::new),
             aura_refresh: Vec::new(),
             derived_categories: Vec::new(),

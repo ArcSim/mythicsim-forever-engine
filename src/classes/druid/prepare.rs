@@ -51,6 +51,10 @@ pub(crate) enum Spec {
 static CLASS_SPELLS: &[ClassSpellName] = &[
     // MythicSim's healer sims (Rust only): the Restoration druid's heals and Swiftmend.
     ClassSpellName {
+        mask: masks::TRANQUILITY,
+        name: "heal",
+    },
+    ClassSpellName {
         mask: masks::HEALING_TOUCH,
         name: "heal",
     },
@@ -573,7 +577,10 @@ impl PrepAgent for Druid {
             Spec::Balance => self.register_balance_spells(sim),
             Spec::FeralCat => self.register_feral_cat_spells(sim),
             Spec::FeralBear => self.register_feral_tank_spells(sim),
-            Spec::Restoration => self.register_heals(sim),
+            Spec::Restoration => {
+                self.register_heals(sim);
+                self.register_natures_swiftness(sim);
+            }
         }
     }
 

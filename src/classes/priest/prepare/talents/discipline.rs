@@ -282,7 +282,8 @@ impl Priest {
     }
 
     fn apply_penance(&mut self, sim: &mut Sim, unit: UnitId) {
-        if !self.talents.bool("penance") {
+        // A healer's Penance heals (heals.rs).
+        if !self.talents.bool("penance") || self.healer {
             return;
         }
         spell_data().penance.each(|_, rank| {

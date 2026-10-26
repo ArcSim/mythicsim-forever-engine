@@ -3208,6 +3208,25 @@ pub enum Effect {
         #[serde(default, skip_serializing_if = "is_zero")]
         spell_id: i32,
     },
+    /// MythicSim's healer sims under Forever's rules: a spell whose aura makes the next cast of
+    /// the spells it changes instant and is spent by that cast, as Nature's Swiftness. Each
+    /// change is one spell's mod while the aura is up, by spellbook position.
+    InstantCastAura {
+        spell_id: i32,
+        aura: String,
+        changes: Vec<SpellModChange>,
+    },
+    /// MythicSim's healer sims under Forever's rules: a self buff of globes, as Water Shield.
+    /// Casting `spell_id` puts `aura` up with all its stacks. Each direct heal of the player's
+    /// that crits spends a globe, at most once per `icd_ns`, for `mana_fraction` of the maximum
+    /// mana; the last globe spent takes the aura down.
+    ManaGlobes {
+        spell_id: i32,
+        aura: String,
+        mana_fraction: f64,
+        icd_ns: i64,
+        metrics_action_id: ActionId,
+    },
     InertListener {
         unit: String,
         aura: String,
@@ -4894,6 +4913,8 @@ impl Effect {
             Effect::ManaOnCast { .. } => "mana_on_cast",
             Effect::StackingCdOnUse { .. } => "stacking_cd_on_use",
             Effect::ShieldOnHeal { .. } => "shield_on_heal",
+            Effect::InstantCastAura { .. } => "instant_cast_aura",
+            Effect::ManaGlobes { .. } => "mana_globes",
             Effect::InertListener { .. } => "inert_listener",
             Effect::ShadowBolt {} => "shadow_bolt",
             Effect::Immolate { .. } => "immolate",

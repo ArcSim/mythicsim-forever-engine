@@ -214,6 +214,16 @@ the Go goldens and exporter uses. The departures:
   of the Swarmguard, is worn without effect. The prepared effects are `mana_on_cast`,
   `spell_mod_aura_on_use`, `stacking_cd_on_use`, `shield_on_heal` and the heals' shapes; a sim
   that is not a healer's keeps the reference's gear (`tests/healer_gear.rs`).
+- A healer's spells past its heals, from the client rows (1.60.1.70425): the reference has no
+  heal for them. A Discipline priest's Penance heals at once and once a second for two more,
+  each the bolt row's heal, and deals no damage. A Restoration druid channels Tranquility, its
+  periodic heal on the party of five every 2 seconds for 10 seconds, on a 5 minute cooldown.
+  Nature's Swiftness (the Druid's and the Shaman's) makes the next heal with a cast time instant,
+  and that cast spends it. Water Shield's three globes are each spent, at most once every 3.5
+  seconds, by a direct heal of the shaman's that crits, for 2% of the maximum mana (the 16
+  October 2026 beta notes); the globes taken spell hits spend are not modelled, since the healer
+  takes none. The prepared effects are `instant_cast_aura`, `mana_globes` and the heals' channel
+  shapes (`tests/healer_spells.rs`).
 
 ## Repository layout
 

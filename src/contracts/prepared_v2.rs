@@ -472,6 +472,19 @@ pub struct ImprovedSealOfFury {
     pub no_threat: bool,
 }
 
+/// A Seal of Light rank: its seal, the self heal its proc casts and the heal's amount, and its
+/// judgement with the judgement's target aura.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SealOfLightRank {
+    pub seal_spell_id: i32,
+    pub aura: String,
+    pub proc_spell_id: i32,
+    pub heal: f64,
+    pub judgement_spell_id: i32,
+    pub judgement_aura: String,
+}
+
 /// A Seal of the Crusader rank: its seal, judgement, the judgement's target aura, the melee
 /// speed multiplier and the main hand auto damage it takes back.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -1522,6 +1535,14 @@ pub struct ProcPeriodic {
     pub application: Option<String>,
 }
 
+/// One castable paladin aura rank: the cast's spell and the aura it turns on.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct PaladinAuraRank {
+    pub spell_id: i32,
+    pub aura: String,
+}
+
 /// A spell a dynamic proc manager hears, by spellbook position, with the chance it rolls.
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(deny_unknown_fields)]
@@ -2264,6 +2285,17 @@ pub enum Effect {
         #[serde(default, skip_serializing_if = "Option::is_none")]
         improved: Option<ImprovedSealOfFury>,
     },
+    /// Paladin seal_of_light.go: every rank's seal, self heal and judgement. A landed melee hit
+    /// that is no proc rolls the 15 PPM manager's chance for the spell under the seal's label,
+    /// and a batch window later the heal lands on the paladin through the healing multipliers.
+    /// The judgement's debuff heals through a `judgement_of_light` effect.
+    SealOfLight {
+        ranks: Vec<SealOfLightRank>,
+        chances: Vec<SpellChance>,
+        healing_dealt_multiplier: f64,
+        healing_taken_multiplier: f64,
+        table_healing_dealt_multiplier: f64,
+    },
     /// Paladin seal_of_the_crusader.go: every rank's seal and judgement, and the spells the
     /// seal's main hand auto damage mod applies to. The judgement auras' Holy damage is their
     /// bid in the "Judgement of the Crusader" exclusive category.
@@ -2286,6 +2318,11 @@ pub enum Effect {
     /// Paladin holy_light.go, flash_of_light.go and holy_shock.go: every heal rank's roll,
     /// the Libram of Light's Flash of Light bonus, Blessing of Light's bonuses, and the
     /// healing modifiers on the paladin and on the target, which a plain cast heals.
+    /// A castable paladin aura (Forever's rules): each rank's cast turns its aura on, which
+    /// takes the paladin aura categories from the last one.
+    PaladinAuraCast {
+        ranks: Vec<PaladinAuraRank>,
+    },
     PaladinHeals {
         ranks: Vec<PaladinHealRank>,
         flash_of_light_bonus: f64,
@@ -4789,9 +4826,11 @@ impl Effect {
             Effect::SealOfRighteousness { .. } => "seal_of_righteousness",
             Effect::ItemSwap { .. } => "item_swap",
             Effect::SealOfTheCrusader { .. } => "seal_of_the_crusader",
+            Effect::SealOfLight { .. } => "seal_of_light",
             Effect::SealOfFury { .. } => "seal_of_fury",
             Effect::HolyLightHaste { .. } => "holy_light_haste",
             Effect::PaladinHeals { .. } => "paladin_heals",
+            Effect::PaladinAuraCast { .. } => "paladin_aura_cast",
             Effect::Heals { .. } => "heals",
             Effect::LayOnHands { .. } => "lay_on_hands",
             Effect::EyeForAnEye { .. } => "eye_for_an_eye",

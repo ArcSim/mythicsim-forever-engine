@@ -629,12 +629,19 @@ fn undirected_procs(prepared: &PreparedV2) -> Vec<String> {
 /// player: a pet that strikes in melee would gain the heal itself. The runtime also follows the
 /// judgement on the one target the effect names, not on copies of it.
 fn judgement_of_light_limits(prepared: &PreparedV2) -> Vec<String> {
-    let Some(aura) = prepared.effects.iter().find_map(|effect| match effect {
-        Effect::JudgementOfLight { aura, .. } => Some(aura),
-        _ => None,
-    }) else {
-        return Vec::new();
-    };
+    prepared
+        .effects
+        .iter()
+        .filter_map(|effect| match effect {
+            Effect::JudgementOfLight { aura, .. } => Some(aura),
+            _ => None,
+        })
+        .flat_map(|aura| judgement_of_light_aura_limits(prepared, aura))
+        .collect()
+}
+
+/// [`judgement_of_light_limits`] for one judged aura.
+fn judgement_of_light_aura_limits(prepared: &PreparedV2, aura: &str) -> Vec<String> {
     let mut reasons = Vec::new();
     if prepared.encounter.target_count > 1 {
         reasons.push(format!(

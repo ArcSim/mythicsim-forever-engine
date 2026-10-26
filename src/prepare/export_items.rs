@@ -1167,6 +1167,29 @@ pub(crate) fn hit_taken_item_listeners(
             }
             continue;
         }
+        // Go setStatProc's Deathbone Surge: each melee swing the wearer takes, landed or not, has
+        // a 15% chance, once a minute (the set aura's cooldown), to give 70 spell power for 10
+        // sec, a spell batch window later.
+        if heard && tanking && label == "Deathbone Guardian 3P" {
+            match aura_named(env, "Deathbone Surge") {
+                Some(proc_aura) if env.sim.aura(aura).icd.is_some() => {
+                    let bonus =
+                        Stats::from_pairs(&[(Stat::SpellDamage, 70.0), (Stat::HealingPower, 70.0)]);
+                    let id = ActionId::spell(1299746);
+                    effects.push(json!({
+                        "kind": "spell_data_stat_proc", "trigger_aura": label,
+                        "aura": env.sim.aura(proc_aura).label,
+                        "trigger_spells": Vec::<usize>::new(),
+                        "callbacks": ["on_spell_hit_taken"], "struck": true, "landed_only": false,
+                        "require_damage": false, "proc_chance": 0.15,
+                        "gain_log": format!("Gained {} from {}.", flat_string(&bonus), action_id_string(&id)),
+                        "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
+                    }));
+                }
+                _ => unrepresented.push(format!("{label}'s proc is not a chance stat proc")),
+            }
+            continue;
+        }
         if heard && tanking && absorb_id != 0 {
             match spell_data_absorb_proc(env, aura, trigger_id, absorb_id) {
                 Some(effect) => effects.push(effect),

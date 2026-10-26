@@ -1211,14 +1211,29 @@ const DAMAGE_SHIELD_REASON: &str = "a damage shield: hears only physical hits th
 /// A tank's party damage shields: Go `core.NewDamageShield`'s trigger, on each landed hit the
 /// player takes from a physical attack, casts the shield's spell (its action with the tag plus
 /// two) on the attacker a spell batch window later (the trigger is not immediate), a fixed magic
-/// hit of the shield's damage that cannot crit. The damage is the shield's bid in its category.
+/// hit of the shield's damage that cannot crit. The damage is the shield's bid in its category;
+/// the shield spell adds the wearer's spell power by its coefficient. Under Forever's rules a
+/// paladin's own Retribution Aura rank the rotation casts is one more shield.
 fn tank_damage_shields(env: &Environment) -> Vec<Value> {
     let mut effects = Vec::new();
-    for label in ["Retribution Aura (External)", "Thorns (External)"] {
-        let Some(aura) = env.sim.get_aura(env.player, label) else {
-            continue;
-        };
+    let mut auras: Vec<_> = ["Retribution Aura (External)", "Thorns (External)"]
+        .into_iter()
+        .filter_map(|label| env.sim.get_aura(env.player, label))
+        .collect();
+    if env.sim.rules == crate::prepare::sim::Rules::Forever {
+        let casts = crate::prepare::rotation::rotation_spells(&env.sim, env.player);
+        auras.extend(env.sim.unit(env.player).auras.iter().copied().filter(|&aura| {
+            let state = env.sim.aura(aura);
+            state.label.starts_with("Retribution Aura Rank ")
+                && state
+                    .action_id
+                    .as_ref()
+                    .is_some_and(|id| id.tag == 0 && casts.contains(&i64::from(id.spell_id)))
+        }));
+    }
+    for aura in auras {
         let state = env.sim.aura(aura);
+        let label = state.label.as_str();
         let Some(id) = state.action_id.clone() else {
             continue;
         };

@@ -149,7 +149,10 @@ fn every_paladin_case_prepares_as_go_does() {
         let golden: Golden = serde_json::from_slice(&fs::read(entry.path()).unwrap()).unwrap();
         assert_eq!(golden.case, case);
         let request = fs::read(directory().join(format!("{case}.request.json"))).unwrap();
-        match forever_engine::prepare_json(&request, case) {
+        // The goldens are the Go exporter's: prepare with the reference rules (the 26 October
+        // racials are Forever's own).
+        match forever_engine::prepare_json_with(&request, case, forever_engine::Rules::GoReference)
+        {
             Ok(prepared) => {
                 let diffs = differences(&golden, &prepared);
                 if !diffs.is_empty() {

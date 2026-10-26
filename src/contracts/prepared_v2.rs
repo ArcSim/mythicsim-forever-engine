@@ -2927,6 +2927,10 @@ pub enum Effect {
         spell_id: i32,
         aura: String,
         regen_multiplier: f64,
+        /// Forever's 26 October notes: Read Ley Line cannot be cast while an Innervate is up,
+        /// and an Innervate that lands removes Energized.
+        #[serde(default, skip_serializing_if = "is_false")]
+        innervate_replaces: bool,
     },
     /// Master of Elements: Fire and Frost crits refund part of the base cost.
     MasterOfElements {

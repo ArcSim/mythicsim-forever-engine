@@ -270,6 +270,12 @@ impl<A: Agent> Fight<A> {
             }
             return false;
         }
+        if self.innervate_blocks(spell) {
+            if log_failure {
+                self.cast_failure(spell, |_| "Innervate is active".into());
+            }
+            return false;
+        }
         if !self.meets_cost(spell) {
             if log_failure {
                 self.cast_failure(spell, |fight| fight.cost_failure(spell));

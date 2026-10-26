@@ -866,6 +866,11 @@ impl<A: Agent> Fight<A> {
                 .map(|(_, duration)| *duration)
         };
         let pet_aura_known = |pet: usize, id: &ActionId| self.pet_aura_known(pet, id);
+        // A pet the fight simulates, by its position among the player's pets.
+        let pet_aura = |pet: usize, id: &ActionId| {
+            let side = self.pet_side(self.pet_agent_labels.get(pet)?)?;
+            self.rotation_aura(side, id)
+        };
         let icd_aura = |unit: Unit, id: &ActionId| self.rotation_icd_aura(unit, id);
         let lookup = Lookup {
             aura: &aura,
@@ -875,6 +880,12 @@ impl<A: Agent> Fight<A> {
             dot: &dot,
             dot_base_duration: &dot_base_duration,
             pet_aura_known: &pet_aura_known,
+            pet_aura: &pet_aura,
+            simulated_pet_with_mana: &|pet: usize| {
+                let side = self.pet_side(self.pet_agent_labels.get(pet)?)?;
+                let Side::Pet(slot) = side else { return None };
+                (self.unit(side).powers.max_mana > 0.0).then_some(slot)
+            },
             item_swap: self.item_swap.is_some(),
             bars: self.rotation_bars(),
             icd_aura: &icd_aura,
@@ -1414,7 +1425,8 @@ impl<A: Agent> Fight<A> {
                 ValueType::Int => compare(*op, self.get_int(lhs), self.get_int(rhs)),
                 ValueType::Float => compare_float(*op, self.get_float(lhs), self.get_float(rhs)),
                 ValueType::Duration => compare(*op, self.get_duration(lhs), self.get_duration(rhs)),
-                ValueType::String => false,
+                // Go compares the strings byte by byte.
+                ValueType::String => compare(*op, self.get_string(lhs), self.get_string(rhs)),
             },
             Compiled::Coerced { inner, .. } => match inner.value_type() {
                 ValueType::Bool => self.get_bool(inner),
@@ -1424,6 +1436,24 @@ impl<A: Agent> Fight<A> {
                 ValueType::String => false,
             },
             _ => false,
+        }
+    }
+
+    /// Go `GetString`: a constant's own text, or a value coerced to a string as Go formats it.
+    fn get_string(&mut self, value: &Compiled) -> String {
+        match value {
+            Compiled::Const(constant) => constant.string.clone(),
+            Compiled::Coerced { inner, .. } => match inner.value_type() {
+                ValueType::Int => self.get_int(inner).to_string(),
+                ValueType::Float => crate::rotation::go_float_string(self.get_float(inner)),
+                ValueType::Duration => {
+                    crate::rotation::go_duration_string(self.get_duration(inner))
+                }
+                ValueType::String => self.get_string(inner),
+                // Go panics coercing a bool to a string; a comparison never asks.
+                ValueType::Bool => String::new(),
+            },
+            _ => String::new(),
         }
     }
 
@@ -1503,6 +1533,7 @@ impl<A: Agent> Fight<A> {
                 (self.duration - self.now) as f64 / self.duration as f64
             }
             Compiled::CurrentMana => self.player.mana,
+            Compiled::PetCurrentMana(slot) => self.unit(Side::Pet(*slot)).mana,
             Compiled::CurrentEnergy => self.energy_bar().current,
             Compiled::CurrentRage => self.current_rage(),
             Compiled::MaxEnergy => self.energy_bar().max,

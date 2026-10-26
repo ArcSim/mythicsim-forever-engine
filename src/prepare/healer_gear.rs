@@ -37,6 +37,7 @@ use super::dbcenums;
 use super::env::Environment;
 use super::forever_items::Registration;
 use super::parse_effects::{parse_effects, ParseOptions};
+use super::shared_items::{dpm_for_mask, EffectSource};
 use super::shared_on_use::StackingStatBonusCd;
 use super::shared_on_use::{self, OnUseKind};
 use super::sim::{AuraConfig, NEVER_EXPIRES, SECOND};
@@ -615,7 +616,11 @@ const FURIOUS_STORM: &[&str] = &["The Elements 5P", "The Five Thunders 4P"];
 /// The stat auras this module's procs activate, for the stat aura combinations.
 pub(crate) fn stat_auras(env: &Environment) -> Vec<String> {
     if !applies(env) {
-        return Vec::new();
+        return if env.rules == Rules::Forever {
+            stacking_stat_auras(env)
+        } else {
+            Vec::new()
+        };
     }
     let unit = env.player;
     let mut labels = Vec::new();
@@ -630,11 +635,17 @@ pub(crate) fn stat_auras(env: &Environment) -> Vec<String> {
             labels.push(label.to_string());
         }
     }
-    // The stacks of a stacking on-use trinket the reference registers.
+    labels.extend(stacking_stat_auras(env));
+    labels
+}
+
+/// The stacks of a stacking on-use trinket the reference registers.
+fn stacking_stat_auras(env: &Environment) -> Vec<String> {
+    let mut labels = Vec::new();
     for registration in super::forever_items_generated::ITEMS {
         if let Registration::Stacking(config) = registration {
             let label = format!("{} Proc", config.name);
-            if env.sim.get_aura(unit, &label).is_some() {
+            if env.sim.get_aura(env.player, &label).is_some() {
                 labels.push(label);
             }
         }
@@ -737,6 +748,11 @@ pub(crate) fn use_item_effect(
     unrepresented: &mut Vec<String>,
 ) -> Option<Value> {
     if !applies(env) {
+        // A stacking on-use trinket under Forever's rules, for any spec: Badge of the
+        // Swarmguard is a rogue's or a warrior's. Go's exporter has no effect for it.
+        if env.rules == Rules::Forever {
+            return stacking_cd_effect(env, spell, item, unrepresented);
+        }
         return None;
     }
     match item {
@@ -840,14 +856,42 @@ fn stacking_cd_effect(
     let stack_proc = effect.message("stack_proc");
     let trigger = stacking_trigger(&config);
     let trigger_spells = proc_trigger_spells(env, &trigger);
-    // A rate needs the spells it hears: none of a healer's reach Badge of the Swarmguard's.
-    let rated = stack_proc.is_some_and(|proc| proc.f64("ppm") != 0.0 || proc.i32("icd_ms") != 0);
-    if window == stat_label || (rated && !trigger_spells.is_empty()) {
+    let ppm = stack_proc.map_or(0.0, |proc| proc.f64("ppm"));
+    let icd = stack_proc.is_some_and(|proc| proc.i32("icd_ms") != 0);
+    if window == stat_label || (icd && !trigger_spells.is_empty()) {
         unrepresented.push(format!(
-            "stacking trinket {item} stacks on a proc rate or its own window"
+            "stacking trinket {item} stacks on a cooldown or its own window"
         ));
         return Some(Value::Null);
     }
+    // Go `attachStackingCDTrigger`: a rate rolls the item's procs per minute manager over the
+    // trigger's mask (`dpmForMask`), as Badge of the Swarmguard's 10 a minute on melee and
+    // ranged hits, and no fixed chance before it.
+    let manager = if ppm != 0.0 && !trigger_spells.is_empty() {
+        let source = EffectSource {
+            id: item,
+            is_enchant: false,
+        };
+        let Some(dpm) = dpm_for_mask(&env.sim, unit, source, ppm, config.proc_mask) else {
+            unrepresented.push(format!("stacking trinket {item} has no proc manager"));
+            return Some(Value::Null);
+        };
+        let book = &env.sim.unit(unit).spellbook;
+        let chances: Vec<Value> = trigger_spells
+            .iter()
+            .filter_map(|&position| {
+                let mask = env.sim.spell(book[position]).proc_mask;
+                dpm.proc_masks
+                    .iter()
+                    .zip(&dpm.proc_chances)
+                    .find(|(manager_mask, _)| manager_mask.matches(mask))
+                    .map(|(_, chance)| json!({"spell": position, "chance": chance}))
+            })
+            .collect();
+        Some(chances)
+    } else {
+        None
+    };
     let chance = stack_proc
         .map(|proc| proc.f64("proc_chance"))
         .filter(|chance| *chance != 0.0)
@@ -862,12 +906,19 @@ fn stacking_cd_effect(
             callbacks.push(name);
         }
     }
-    Some(json!({
+    let mut effect = json!({
         "kind": "stacking_cd_on_use", "item_id": item, "stat_aura": stat_label,
         "window_aura": window, "decay": false,
         "trigger_spells": trigger_spells, "callbacks": callbacks,
         "landed_only": config.outcome == HitOutcome::LANDED, "proc_chance": chance,
-    }))
+    });
+    if let Some(chances) = manager {
+        effect["proc_chance"] = json!(1.0);
+        effect["chances"] = json!(chances);
+        effect["require_damage"] = json!(config.require_damage_dealt);
+        effect["rng_label"] = json!(config.name);
+    }
+    Some(effect)
 }
 
 fn stacking_trigger(config: &StackingStatBonusCd) -> ProcTrigger {

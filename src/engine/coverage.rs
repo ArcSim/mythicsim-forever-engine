@@ -840,6 +840,8 @@ fn swap_activated_auras(effect: &Effect) -> Vec<&str> {
 const SWAP_EFFECT_FIELDS: &[(&str, &[&str])] = &[
     ("seal_of_righteousness", &["swing_speed", "hand_multiplier"]),
     ("seal_of_command", &["proc_chance"]),
+    // The healing power the heals snapshot, which the swap set's weapon moves.
+    ("paladin_heals", &["player", "target"]),
     ("crusader", &["chances"]),
     ("spell_data_damage_proc", &["chances", "trigger_spells"]),
     ("extra_attack_proc", &["chances"]),
@@ -1130,6 +1132,39 @@ fn swap_change_limit(
     match parts.as_slice() {
         // The stats follow the stat auras, the swap's own among them.
         ["player", "stats", _] | ["player", "mana", _] => None,
+        // Spirit Weapons' threat, which a Rockbiter aura the swap switches multiplies in as it is
+        // gained and divides out as it fades.
+        ["player", "pseudo_stats", "threat_multiplier"] => {
+            let reset = prepared.player.pseudo_stats.threat_multiplier;
+            let follows = prepared.effects.iter().any(|effect| match effect {
+                Effect::RockbiterWeapon {
+                    aura,
+                    threat_multiplier: Some(threat),
+                    ..
+                } if switched.contains(&aura.as_str()) => {
+                    let active = prepared
+                        .player
+                        .auras
+                        .iter()
+                        .any(|candidate| candidate.label == *aura && candidate.active);
+                    let worn = if active {
+                        reset / threat
+                    } else {
+                        reset * threat
+                    };
+                    change
+                        .value
+                        .as_f64()
+                        .is_some_and(|value| value.to_bits() == worn.to_bits())
+                }
+                _ => false,
+            });
+            if follows {
+                None
+            } else {
+                refuse()
+            }
+        }
         ["player", "auras", index, field] if matches!(*field, "active" | "blocked_at_reset") => {
             let label = &prepared
                 .player
@@ -1769,6 +1804,35 @@ pub(crate) fn rotation_spell<'a>(prepared: &'a PreparedV2, id: &ActionId) -> Opt
     rotation_spell_index(prepared, id).map(|index| &prepared.player.spells[index])
 }
 
+/// Go `GetAPLCastSpell`, as the runtime presses a cast: a registered spell without the APL flag
+/// defers to an APL-flagged spell of the same action under another tag (the queue of an
+/// on-next-swing ability, such as a Raptor Strike a spell picker names untagged), then to
+/// [`rotation_spell`].
+pub(crate) fn rotation_cast_spell<'a>(
+    prepared: &'a PreparedV2,
+    id: &ActionId,
+) -> Option<&'a Spell> {
+    let spells = &prepared.player.spells;
+    if let Some(spell) = spells
+        .iter()
+        .find(|spell| spell.action_id.as_ref() == Some(id))
+    {
+        if !spell.has_flag("SpellFlagAPL") {
+            let same = |other: &ActionId| {
+                other.spell_id == id.spell_id
+                    && other.item_id == id.item_id
+                    && other.other_id == id.other_id
+            };
+            if let Some(apl) = spells.iter().find(|spell| {
+                spell.has_flag("SpellFlagAPL") && spell.action_id.as_ref().is_some_and(same)
+            }) {
+                return Some(apl);
+            }
+        }
+    }
+    rotation_spell(prepared, id)
+}
+
 /// The spell a major cooldown casts: its own when an earlier spell shares its action ID,
 /// otherwise the first spell with the ID, as the runtime binds it.
 fn cooldown_spell<'a>(prepared: &'a PreparedV2, cooldown: &MajorCooldown) -> Option<&'a Spell> {
@@ -2048,11 +2112,11 @@ pub(crate) fn prepared_coverage(
         }
         reasons.extend(coded(
             "resource_unsupported",
-            energy_without_bar(prepared, rotation),
+            rage_without_bar(prepared, rotation),
         ));
         reasons.extend(coded(
-            "resource_unsupported",
-            rage_without_bar(prepared, rotation),
+            "rotation_unsupported",
+            unsummoned_pet_mana(prepared, rotation),
         ));
         let mut reachable = Vec::new();
         let mut registered_prepull = 0;
@@ -2077,7 +2141,7 @@ pub(crate) fn prepared_coverage(
                 match target.resolve(prepared.encounter.target_count.max(1) as usize) {
                     None => {}
                     Some(unit) => {
-                        if let Some(spell) = rotation_spell(prepared, id) {
+                        if let Some(spell) = rotation_cast_spell(prepared, id) {
                             registered_prepull += 1;
                             reachable.push(spell);
                             if unit != Unit::Target(0) {
@@ -2107,7 +2171,7 @@ pub(crate) fn prepared_coverage(
                 Action::ActivateAuraWithStacks { id, .. } => known(id, true),
                 Action::TriggerIcd(id) => find_icd_aura(prepared, Unit::Player, id).is_some(),
                 Action::CastAtPlayer(id) => {
-                    let spell = rotation_spell(prepared, id);
+                    let spell = rotation_cast_spell(prepared, id);
                     reachable.extend(spell);
                     spell.is_some()
                 }
@@ -2242,7 +2306,7 @@ pub(crate) fn prepared_coverage(
                     for id in
                         action.reachable_spells(prepared.encounter.target_count.max(1) as usize)
                     {
-                        reachable.extend(rotation_spell(prepared, id));
+                        reachable.extend(rotation_cast_spell(prepared, id));
                     }
                 }
             }
@@ -2582,36 +2646,6 @@ fn rage_without_bar(prepared: &PreparedV2, rotation: &Rotation) -> Vec<String> {
     reasons
 }
 
-/// Go gives energy and combo point values no value on a unit without an energy bar, which
-/// drops the term; the runtime reads the bar, so such a rotation is unsupported.
-fn energy_without_bar(prepared: &PreparedV2, rotation: &Rotation) -> Vec<String> {
-    if prepared.player.energy.is_some() {
-        return Vec::new();
-    }
-    let mut reasons = Vec::new();
-    for item in &rotation.priority_list {
-        let mut uses = false;
-        if let Some(condition) = &item.condition {
-            condition.visit(&mut |value| {
-                uses |= matches!(
-                    value,
-                    Value::CurrentEnergy
-                        | Value::MaxEnergy
-                        | Value::CurrentComboPoints
-                        | Value::TimeToNextEnergyTick
-                );
-            });
-        }
-        if uses {
-            reasons.push(format!(
-                "rotation item {} reads energy or combo points, which the player lacks",
-                item.position
-            ));
-        }
-    }
-    reasons
-}
-
 /// What a move of the player needs that the runtime does not follow: the speed the exporter
 /// read, which the auras that change it then multiply as Go does.
 fn player_movement_limits(prepared: &PreparedV2, prepull: bool) -> Vec<String> {
@@ -2650,6 +2684,8 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
         dot: &dot,
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
+        pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
+        simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -2790,6 +2826,8 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
         dot: &dot,
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
+        pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
+        simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -2863,6 +2901,8 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
         dot: &dot,
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
+        pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
+        simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -3223,6 +3263,82 @@ fn find_icd_aura(prepared: &PreparedV2, unit: Unit, id: &ActionId) -> Option<Act
 }
 
 /// Go `GetAuraByID` on a unit's exported auras.
+/// Go `GetAuraByID` on the player's pet at a position among its pets (as
+/// [`crate::core::fight::pet::pet_agent_auras`] orders them) while the fight simulates it.
+fn simulated_pet_aura(
+    prepared: &PreparedV2,
+    pet: usize,
+    id: &ActionId,
+) -> Option<FoundAura<ActionId>> {
+    let mut pets: Vec<(i32, Option<&[crate::contracts::prepared_v2::Aura]>)> = prepared
+        .pets
+        .iter()
+        .map(|pet| (pet.index, Some(pet.auras.as_slice())))
+        .collect();
+    for effect in &prepared.effects {
+        if let Effect::InertPet { unit_index, .. } = effect {
+            pets.push((*unit_index, None));
+        }
+    }
+    pets.sort_by_key(|(index, _)| *index);
+    find_unit_aura(pets.get(pet)?.1?, id)
+}
+
+/// The player's pet at a position among its pets, while the fight simulates it and it has a mana
+/// bar: its place among the simulated pets, as the runtime numbers them.
+fn simulated_pet_with_mana(prepared: &PreparedV2, pet: usize) -> Option<u8> {
+    let mut pets: Vec<(i32, Option<usize>)> = prepared
+        .pets
+        .iter()
+        .enumerate()
+        .map(|(slot, pet)| (pet.index, Some(slot)))
+        .collect();
+    for effect in &prepared.effects {
+        if let Effect::InertPet { unit_index, .. } = effect {
+            pets.push((*unit_index, None));
+        }
+    }
+    pets.sort_by_key(|(index, _)| *index);
+    let slot = pets.get(pet)?.1?;
+    (prepared.pets[slot].mana.max > 0.0).then(|| u8::try_from(slot).ok())?
+}
+
+/// Rotation items that read the mana of a pet the fight never summons, whose mana Go reads off
+/// a unit the runtime does not keep.
+fn unsummoned_pet_mana(prepared: &PreparedV2, rotation: &Rotation) -> Vec<String> {
+    let simulated = |pet: usize| {
+        let mut pets: Vec<(i32, bool)> =
+            prepared.pets.iter().map(|pet| (pet.index, true)).collect();
+        for effect in &prepared.effects {
+            if let Effect::InertPet { unit_index, .. } = effect {
+                pets.push((*unit_index, false));
+            }
+        }
+        pets.sort_by_key(|(index, _)| *index);
+        pets.get(pet).is_none_or(|(_, simulated)| *simulated)
+    };
+    let mut reasons = Vec::new();
+    for item in &rotation.priority_list {
+        let mut unsummoned = None;
+        if let Some(condition) = &item.condition {
+            condition.visit(&mut |value| {
+                if let Value::PetCurrentMana(pet) = value {
+                    if !simulated(*pet) {
+                        unsummoned = Some(*pet);
+                    }
+                }
+            });
+        }
+        if let Some(pet) = unsummoned {
+            reasons.push(format!(
+                "rotation item {} reads the mana of pet {pet}, which the fight never summons",
+                item.position
+            ));
+        }
+    }
+    reasons
+}
+
 fn find_unit_aura(
     auras: &[crate::contracts::prepared_v2::Aura],
     id: &ActionId,
@@ -3258,6 +3374,8 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
         dot: &dot,
         dot_base_duration: &dot_base_duration,
         pet_aura_known: &pet_aura_known,
+        pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
+        simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),

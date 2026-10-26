@@ -346,12 +346,17 @@ impl Paladin {
             unit,
             &ProcTrigger {
                 name: seal_label("Seal of Light", &label, rank),
-                // Go `SealOfLightFifteenPPM` (MythicSim patch 169): NewLegacyPPMManager(15, melee).
-                dpm: Some(std::rc::Rc::new(sim.new_ppm_manager(
-                    unit,
-                    15.0,
-                    ProcMask::MELEE,
-                ))),
+                // Go `SealOfLightFifteenPPM` (MythicSim patch 169): NewLegacyPPMManager(15, melee),
+                // which an item swap rebuilds for the weapons in the hands.
+                dpm: Some(std::rc::Rc::new(
+                    sim.new_ppm_manager(unit, 15.0, ProcMask::MELEE)
+                        .rebuilt_by_swap(
+                            sim,
+                            unit,
+                            crate::prepare::item_swap::ManagerChance::Ppm(15.0),
+                            crate::prepare::item_swap::ManagerMask::Static(ProcMask::MELEE),
+                        ),
+                )),
                 action_id: spell_action(rank.id),
                 metrics_action_id: spell_action(rank.id),
                 duration: SEAL_DURATION,

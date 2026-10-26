@@ -8,7 +8,6 @@ use super::{Agent, AuraRef, Fight, SpellId, SpellResult};
 /// A stacking on-use trinket's window and the stats aura it drives.
 #[derive(Clone, Debug)]
 pub(crate) struct StackingCd {
-    pub(crate) label: String,
     pub(crate) stat_aura: AuraRef,
     pub(crate) decay: bool,
     /// The chance each spell it hears rolls, by spellbook position.
@@ -17,6 +16,10 @@ pub(crate) struct StackingCd {
     pub(crate) heals: bool,
     pub(crate) casts: bool,
     pub(crate) landed_only: bool,
+    /// A hit that dealt no damage is not heard.
+    pub(crate) require_damage: bool,
+    /// The label the chance rolls under: Go's trigger name, else the window's.
+    pub(crate) rng_label: String,
 }
 
 /// An aura that shields the player for a share of each direct heal while it is up.
@@ -72,14 +75,17 @@ impl<A: Agent> Fight<A> {
             StackEvent::Heal => state.heals,
             StackEvent::Cast => state.casts,
         };
-        if !heard || (state.landed_only && result.is_some_and(|result| !result.landed())) {
+        if !heard
+            || (state.landed_only && result.is_some_and(|result| !result.landed()))
+            || (state.require_damage && result.is_some_and(|result| result.damage == 0.0))
+        {
             return;
         }
         let Some(chance) = state.chances.get(spell).copied().flatten() else {
             return;
         };
         // Go `Proc(chance, label)`, reading the label in place.
-        if !self.rng.proc(chance, &self.stacking_cds[index].label) {
+        if !self.rng.proc(chance, &self.stacking_cds[index].rng_label) {
             return;
         }
         let result = result.copied().unwrap_or(SpellResult {

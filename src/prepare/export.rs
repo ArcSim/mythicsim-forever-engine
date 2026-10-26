@@ -1228,14 +1228,20 @@ fn tank_damage_shields(env: &Environment) -> Vec<Value> {
         .collect();
     if env.sim.rules == crate::prepare::sim::Rules::Forever {
         let casts = crate::prepare::rotation::rotation_spells(&env.sim, env.player);
-        auras.extend(env.sim.unit(env.player).auras.iter().copied().filter(|&aura| {
-            let state = env.sim.aura(aura);
-            state.label.starts_with("Retribution Aura Rank ")
-                && state
-                    .action_id
-                    .as_ref()
-                    .is_some_and(|id| id.tag == 0 && casts.contains(&i64::from(id.spell_id)))
-        }));
+        auras.extend(
+            env.sim
+                .unit(env.player)
+                .auras
+                .iter()
+                .copied()
+                .filter(|&aura| {
+                    let state = env.sim.aura(aura);
+                    state.label.starts_with("Retribution Aura Rank ")
+                        && state.action_id.as_ref().is_some_and(|id| {
+                            id.tag == 0 && casts.contains(&i64::from(id.spell_id))
+                        })
+                }),
+        );
     }
     for aura in auras {
         let state = env.sim.aura(aura);

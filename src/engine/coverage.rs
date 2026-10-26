@@ -1140,6 +1140,7 @@ fn flametongue_totem_held(prepared: &PreparedV2, switched: &[&str]) -> bool {
 }
 
 /// Why the runtime cannot follow one value the swapped state changes, if it cannot.
+#[allow(clippy::too_many_arguments)]
 fn swap_change_limit(
     prepared: &PreparedV2,
     change: &SwapChange,

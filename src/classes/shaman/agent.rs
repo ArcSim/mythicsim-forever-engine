@@ -205,9 +205,11 @@ struct WeaponValues {
     maelstrom: maelstrom_weapon::Chances,
     /// The hands that carry Rockbiter and the main hand's swing speed (patch 181).
     rockbiter: Option<(bool, bool, f64)>,
-    /// Windfury Weapon's heard spells, chances and whether it blocks the party totem.
-    windfury: Option<(Vec<usize>, Vec<(usize, f64)>, bool)>,
+    windfury: Option<WindfuryValues>,
 }
+
+/// Windfury Weapon's heard spells, chances and whether it blocks the party totem.
+type WindfuryValues = (Vec<usize>, Vec<(usize, f64)>, bool);
 
 impl WeaponValues {
     fn of(effects: &[Effect], spells: usize) -> WeaponValues {

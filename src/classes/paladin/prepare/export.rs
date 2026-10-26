@@ -607,7 +607,12 @@ impl Paladin {
     }
 
     /// Go `registerSealOfLight`'s seal, self heal and judgement for each rank.
-    fn export_seal_of_light(&self, env: &Environment, effects: &mut Vec<Value>, notes: &mut Vec<String>) {
+    fn export_seal_of_light(
+        &self,
+        env: &Environment,
+        effects: &mut Vec<Value>,
+        notes: &mut Vec<String>,
+    ) {
         let sim = &env.sim;
         let unit = env.player;
         let label = sim.unit(unit).label.clone();
@@ -630,7 +635,9 @@ impl Paladin {
             let judgement_aura = format!("Judgement of Light Rank {}", rank.rank_number());
             let proc_rank = rank.refs()[0];
             if chances.is_none() {
-                let dpm = sim.get_aura(unit, &aura).and_then(|aura| sim.aura(aura).dpm.clone());
+                let dpm = sim
+                    .get_aura(unit, &aura)
+                    .and_then(|aura| sim.aura(aura).dpm.clone());
                 chances = dpm.map(|dpm| {
                     crate::prepare::export_items::dpm_chances(env, &dpm, |spell| {
                         spell.proc_mask.matches(ProcMask::MELEE)

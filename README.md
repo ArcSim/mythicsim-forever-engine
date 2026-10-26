@@ -189,6 +189,13 @@ the Go goldens and exporter uses. The departures:
   chance at 200 mana) and The Furious Storm (The Elements 5, The Five Thunders 4: a cast's 4%
   chance at 65 spell power for 10 seconds), which the reference registers. Totem of Life's 80 is
   added to Lesser Healing Wave's roll, as the reference adds Libram of Light's to Flash of Light.
+  More set and item bonuses that need the fight: Vestments of Faith's Armor of Faith (a Greater
+  Heal crit shields its player for 500) and Epiphany (a cast's 5% chance at 24 mana per 5
+  seconds for 30 seconds), Dreamwalker Raiment's Healing Touch crit returning 30% of its cost,
+  Vestments of Transcendence's rank 5 Renew on each Greater Heal, and Idol of Rejuvenation's 5%
+  on Regrowth's direct heal while a Rejuvenation of the druid's is up (read as "on a target
+  under your Rejuvenation", since heals land on whoever needs them). Bonuses that help only the
+  heal's target (Dreamwalker's Rejuvenation mana, Totemic Power, Holy Power) are left out.
   The healer trinkets on use: Talisman of Ascendance, which the reference registers, stacks
   Ascendance on each landed heal; Zandalarian Hero Charm, which it does not, starts at twelve
   stacks of 17 spell damage and 34 healing (its tooltip; the row is a dummy) and loses one each

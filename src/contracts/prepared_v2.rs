@@ -3569,6 +3569,18 @@ pub enum Effect {
         aura: String,
         charges: i32,
     },
+    /// Water Shield (Forever's rules): the cast puts up `globes`; a crit of a `trigger_spells`
+    /// spell spends one a spell batch window later for `mana_fraction` of maximum mana, at most
+    /// one each `icd_ns`.
+    WaterShield {
+        spell_id: i32,
+        aura: String,
+        globes: i32,
+        mana_fraction: f64,
+        icd_ns: i64,
+        trigger_spells: Vec<usize>,
+        metrics_action_id: ActionId,
+    },
     /// Grace of Air Totem: the air totem's aura, whose Agility is a class stat aura.
     GraceOfAirTotem {
         spell_id: i32,
@@ -4929,6 +4941,7 @@ impl Effect {
             Effect::WindfuryWeapon { .. } => "windfury_weapon",
             Effect::MagmaTotem { .. } => "magma_totem",
             Effect::LightningShield { .. } => "lightning_shield",
+            Effect::WaterShield { .. } => "water_shield",
             Effect::GraceOfAirTotem { .. } => "grace_of_air_totem",
             Effect::ManaSpringTotem { .. } => "mana_spring_totem",
             Effect::WindfuryTotemSelf { .. } => "windfury_totem_self",

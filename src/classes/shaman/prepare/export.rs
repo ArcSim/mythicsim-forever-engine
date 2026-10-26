@@ -392,6 +392,38 @@ impl Shaman {
                 "charges": i32::from(row.proc_charges),
             }));
         }
+        // shields.go registerWaterShieldSpell (Forever's rules; Go's exporter does not describe
+        // it): three globes of 2% maximum mana, one every 3.5 sec at most, each spent by a
+        // critical spell or heal of the shaman's own (MythicSim patch 145), Fire Nova aside, a
+        // spell batch window later. The self proc rate that also spends them is refused.
+        if sim.rules == crate::prepare::sim::Rules::Forever {
+            if let Some(aura) = sim.get_aura(player, "Water Shield") {
+                let row = must_find(408510);
+                let trigger = ProcTrigger {
+                    callback: crate::prepare::aura_helpers::CallbackMask(
+                        crate::prepare::aura_helpers::CallbackMask::ON_SPELL_HIT_DEALT.0
+                            | crate::prepare::aura_helpers::CallbackMask::ON_HEAL_DEALT.0,
+                    ),
+                    proc_mask: ProcMask(ProcMask::SPELL_DAMAGE.0 | ProcMask::SPELL_HEALING.0),
+                    can_proc_from_procs: row.can_proc_from_procs(),
+                    ..ProcTrigger::default()
+                };
+                let book = &sim.unit(player).spellbook;
+                let trigger_spells: Vec<usize> = proc_trigger_spells(env, &trigger)
+                    .into_iter()
+                    .filter(|&position| {
+                        sim.spell(book[position]).class_spell_mask & super::masks::FIRE_NOVA == 0
+                    })
+                    .collect();
+                effects.push(json!({
+                    "kind": "water_shield", "spell_id": 408510, "aura": sim.aura(aura).label,
+                    "globes": 3, "mana_fraction": 0.02,
+                    "icd_ns": i64::from(row.icd_ms) * MILLISECOND,
+                    "trigger_spells": trigger_spells,
+                    "metrics_action_id": {"spell_id": 408510},
+                }));
+            }
+        }
         // Since the 16 October 2026 beta notes no air totem category stands between the
         // shaman's own totems and the party's: only the party's Windfury Totem still contests
         // the shaman's own, through the Windfury Totem category.

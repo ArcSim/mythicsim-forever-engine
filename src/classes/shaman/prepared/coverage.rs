@@ -36,6 +36,7 @@ const EFFECTS: &[&str] = &[
     "lava_burst",
     "lightning_bolt",
     "lightning_shield",
+    "water_shield",
     "magma_totem",
     "mana_spring_totem",
     "maelstrom_weapon",
@@ -71,6 +72,10 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
     }
     if spell.class_spell.is_none() && id.spell_id == LIGHTNING_SHIELD && id.tag == 0 {
         return Some("lightning_shield");
+    }
+    // Go registers Water Shield's cast (client 408510) without a class mask.
+    if spell.class_spell.is_none() && id.spell_id == 408510 && id.tag == 0 {
+        return Some("water_shield");
     }
     if spell.class_spell.is_none() && id.spell_id == ROCKBITER_WEAPON_PROC && id.tag == 0 {
         return Some("rockbiter_threat");
@@ -133,7 +138,9 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
             ("player", reset_aura),
         ],
         Effect::Stormstrike { aura, .. } => vec![("target", aura)],
-        Effect::LightningShield { aura, .. } => vec![("player", aura)],
+        Effect::LightningShield { aura, .. } | Effect::WaterShield { aura, .. } => {
+            vec![("player", aura)]
+        }
         Effect::WindfuryWeapon { trigger_aura, .. } => vec![("player", trigger_aura)],
         Effect::FlametongueTotem {
             aura, trigger_aura, ..

@@ -25,6 +25,7 @@ use super::{
         searing_totem::{self, SearingTotem},
         stormstrike::{self, Stormstrike},
         totems::{self, Expirations, StrengthOfEarth},
+        water_shield::{self, WaterShield},
         weapon_imbues, weapon_sync,
         windfury_totem::{self, WindfuryTotem},
         windfury_weapon::{self, WindfuryWeapon},
@@ -60,6 +61,8 @@ pub(crate) enum ShamanSpell {
     FrostShock,
     MagmaTotem,
     LightningShield,
+    /// Water Shield's cast (Forever's rules).
+    WaterShield,
     GraceOfAirTotem,
     ManaSpringTotem,
     WindfuryTotem,
@@ -113,6 +116,8 @@ pub(crate) enum ShamanAura {
     RockbiterWeapon,
     /// The listener that casts Rockbiter Weapon Proc (patch 181).
     RockbiterThreat,
+    /// Water Shield, whose own triggers spend its globes.
+    WaterShield,
 }
 
 /// Shaman state that Go keeps in the `Shaman` struct and its closures.
@@ -161,6 +166,7 @@ pub(crate) struct ShamanAgent {
     magma: Option<(f64, i64)>,
     /// Lightning Shield's aura and charges.
     lightning_shield: Option<(AuraRef, i32)>,
+    water_shield: Option<WaterShield>,
     grace_of_air: Option<StrengthOfEarth>,
     mana_spring: Option<StrengthOfEarth>,
     flametongue_totem: Option<totems::FlametongueTotem>,
@@ -295,6 +301,11 @@ impl ShamanAgent {
                     if spell.class_spell.is_none() && *spell_id == id.spell_id && id.tag == 0 =>
                 {
                     return Some(ShamanSpell::LightningShield);
+                }
+                Effect::WaterShield { spell_id, .. }
+                    if spell.class_spell.is_none() && *spell_id == id.spell_id && id.tag == 0 =>
+                {
+                    return Some(ShamanSpell::WaterShield);
                 }
                 Effect::FlametongueWeapon { hands } => {
                     if let Some(hand) = hands.iter().position(|hand| Some(hand.spell) == position) {
@@ -448,6 +459,9 @@ impl ShamanAgent {
                 }
                 Effect::RockbiterWeapon { aura, .. } => {
                     vec![(aura.clone(), ShamanAura::RockbiterWeapon)]
+                }
+                Effect::WaterShield { aura, .. } => {
+                    vec![(aura.clone(), ShamanAura::WaterShield)]
                 }
                 Effect::RockbiterThreat { aura, .. } => {
                     vec![(aura.clone(), ShamanAura::RockbiterThreat)]
@@ -790,6 +804,26 @@ impl ShamanAgent {
                 } => fight.agent.magma = Some((*pulse_damage, *duration_ns)),
                 Effect::LightningShield { aura, charges, .. } => {
                     fight.agent.lightning_shield = Some((fight.player_aura(aura)?, *charges));
+                }
+                Effect::WaterShield {
+                    aura,
+                    globes,
+                    mana_fraction,
+                    icd_ns,
+                    trigger_spells,
+                    metrics_action_id,
+                    ..
+                } => {
+                    let metrics = fight.new_mana_metrics(metrics_action_id.clone());
+                    fight.agent.water_shield = Some(water_shield::bind(
+                        &mut fight,
+                        aura,
+                        *globes,
+                        *mana_fraction,
+                        *icd_ns,
+                        trigger_spells,
+                        metrics,
+                    )?);
                 }
                 Effect::GraceOfAirTotem {
                     aura, duration_ns, ..
@@ -1187,10 +1221,26 @@ impl Agent for ShamanAgent {
                     .agent
                     .lightning_shield
                     .expect("Lightning Shield is bound");
-                // Go deactivateShields; Water Shield is a talent no supported build casts.
+                // Go deactivateShields.
                 fight.deactivate_aura(aura);
+                if let Some(water) = fight.agent.water_shield.clone() {
+                    fight.deactivate_aura(water.aura);
+                }
                 fight.activate_aura(aura);
                 fight.set_stacks(aura, charges);
+            }
+            ShamanSpell::WaterShield => {
+                let water = fight
+                    .agent
+                    .water_shield
+                    .clone()
+                    .expect("Water Shield is bound");
+                // Go deactivateShields.
+                if let Some((lightning, _)) = fight.agent.lightning_shield {
+                    fight.deactivate_aura(lightning);
+                }
+                fight.deactivate_aura(water.aura);
+                water.cast(fight);
             }
             ShamanSpell::GraceOfAirTotem => {
                 let totem = fight
@@ -1362,6 +1412,14 @@ impl Agent for ShamanAgent {
                 let state = fight.agent.flurry.expect("Flurry is bound");
                 state.on_spell_hit_dealt(fight, spell, result);
             }
+            ShamanAura::WaterShield => {
+                let state = fight
+                    .agent
+                    .water_shield
+                    .clone()
+                    .expect("Water Shield is bound");
+                state.on_hit(fight, spell, result);
+            }
             ShamanAura::WindfuryImbue => {
                 let state = fight
                     .agent
@@ -1428,6 +1486,24 @@ impl Agent for ShamanAgent {
         }
     }
 
+    /// Go `OnHealDealt`: Water Shield's crit trigger hears heals too.
+    fn on_heal_dealt(
+        fight: &mut Fight<Self>,
+        _aura: AuraRef,
+        kind: ShamanAura,
+        spell: SpellId,
+        result: &SpellResult,
+    ) {
+        if kind == ShamanAura::WaterShield {
+            let state = fight
+                .agent
+                .water_shield
+                .clone()
+                .expect("Water Shield is bound");
+            state.on_hit(fight, spell, result);
+        }
+    }
+
     fn on_delayed_proc(
         fight: &mut Fight<Self>,
         _aura: AuraRef,
@@ -1435,6 +1511,15 @@ impl Agent for ShamanAgent {
         spell: SpellId,
         result: SpellResult,
     ) {
+        if kind == ShamanAura::WaterShield {
+            let state = fight
+                .agent
+                .water_shield
+                .clone()
+                .expect("Water Shield is bound");
+            state.spend(fight);
+            return;
+        }
         match kind {
             ShamanAura::FlurryTrigger => {
                 let state = fight.agent.flurry.expect("Flurry is bound");

@@ -201,6 +201,17 @@ the Go goldens and exporter uses. The departures:
   Swiftness is movement speed, Gore Drinker is not modelled, and the Touch of the Grave
   attribute clears and the Curse, Rogue and Power Word: Shield attribute bits are read by
   nothing the engine computes.
+- Winter's Chill is "your next Cone of Cold" (`winters_chill`, Forever preparation), from client
+  1.60.1.70630 (talent 11180 and aura 12579): only Frostbolt, Frost Blast and a Fingers of Frost
+  empowered Ice Lance can apply it, each stack makes the Cone of Cold deal 5% more damage and
+  gain 7% of the mage's spell damage (12579 and 11180 effect 3, a flat share added before the
+  hit is worked out), and the Cone of Cold uses every stack up as its cast completes. The stacks
+  stay on the mage rather than the target (the client puts 12579 on the target), so rotations
+  that test the aura keep working, and an area Cone of Cold gives every target the bonus. The
+  reference stacks from any landed Frost damage and never consumes. The rest of the Mage rows
+  of that build (Ice Barrier and Frigid Power, Frost Warding's absorb, Frost Blast's 0.271
+  coefficient, Arcane Wrath's 6 second cooldown, Missile Barrage ignoring missiles and hearing
+  Frost Blast) were already in the imported data and the code through hotfix push 112753.
 - A damage bonus applied after the calculation is threat too (`threat_follows_damage_bonus`,
   Forever preparation), from MythicSim's Discord (26 October 2026, Vrelk: a Shadow Priest with
   no threat talents had less threat than damage). Improved Mind Flay's ramp, Ice Lance on a

@@ -3117,6 +3117,14 @@ pub enum Effect {
         max_stacks: i32,
         /// Each stack's Cone of Cold damage (client 70425).
         damage_per_stack: f64,
+        /// Client 1.60.1.70630: each stack also adds this share of the mage's spell damage to
+        /// the next Cone of Cold (11180 effect 3, 7%).
+        #[serde(default, skip_serializing_if = "is_zero_f64")]
+        spell_power_per_stack: f64,
+        /// Client 1.60.1.70630: only Frostbolt, Frost Blast and a Fingers of Frost empowered Ice
+        /// Lance add a stack, and the next Cone of Cold uses them all up.
+        #[serde(default, skip_serializing_if = "is_false")]
+        cone_of_cold_consumes: bool,
         duration_ns: i64,
         trigger_aura: String,
         aura: String,

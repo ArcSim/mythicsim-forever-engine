@@ -677,8 +677,9 @@ fn stormshroud_casts_lightning_and_restores_energy() {
 
 /// The raid's Judgement of Light heals whoever lands a melee hit on the target, half the time, a
 /// spell batch window later (Go buffs/paladin.go `AttachJudgementOfLightHeal`); the health
-/// metrics are the target's. A pet that strikes in melee would be healed too, which the runtime
-/// does not follow, so the gate refuses it. Production fallbacks to Go, 25 October 2026.
+/// metrics are the target's. A pet that strikes in melee rolls the same chance, and its heal
+/// changes nothing, as a pet is always at full health. Production fallbacks to Go, 25 October
+/// 2026, and a Demonology Warlock's Succubus, 27 October 2026.
 #[test]
 fn judgement_of_light_heals_the_player_under_the_targets_metrics() {
     let value = prepared_request("production-combat-rogue", |request| {
@@ -701,8 +702,9 @@ fn judgement_of_light_heals_the_player_under_the_targets_metrics() {
     let hunter = prepared_request("beast-mastery-hunter-pet-uptime-half", |request| {
         request["raid"]["debuffs"]["judgementOfLight"] = true.into();
     });
-    assert!(refusals(hunter).iter().any(|reason| reason
-        .starts_with("proc_unsupported: target aura \"Judgement of Light (External)\" heals pet")));
+    assert!(!refusals(hunter)
+        .iter()
+        .any(|reason| reason.contains("Judgement of Light")));
 }
 
 /// Deathbone Guardian's three pieces roll on the melee hits the wearer takes. Nothing strikes a

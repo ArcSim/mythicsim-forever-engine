@@ -471,3 +471,17 @@ fn vampiric_embrace_on_another_target_heals_the_priest() {
     assert!(casts.len() >= 2 && casts[1] > 0.0, "{casts:?}");
     assert!(resource_gain(&player, 15286, "ResourceTypeHealth") > 0.0);
 }
+
+/// The raid's Judgement of Light beside a Succubus: the demon's melee hits roll the heal's chance
+/// as the player's do, and the demon, always at full health, gains nothing from it.
+#[test]
+fn judgement_of_light_runs_beside_a_melee_demon() {
+    let (value, _) = run("demonology-warlock-succubus-judgement-of-light");
+    assert!(kinds(&value).contains(&"judgement_of_light"));
+    assert!(
+        value["pets"]
+            .as_array()
+            .is_some_and(|pets| !pets.is_empty()),
+        "the Succubus is simulated"
+    );
+}

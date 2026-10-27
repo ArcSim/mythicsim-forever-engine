@@ -879,7 +879,8 @@ pub(crate) fn export_state(
     let target_type = env.sim.unit(target).mob_type.clone();
     let forever = env.sim.rules == super::sim::Rules::Forever;
     for (mob_type, bonus) in &env.attack_table(player, target).mob_type_bonus_stats {
-        if !bonus.is_zero() && !(forever && *mob_type != target_type) {
+        let inert = forever && *mob_type != target_type;
+        if !bonus.is_zero() && !inert {
             unrepresented.push(format!(
                 "mob type bonus stats for {mob_type} are unsupported"
             ));

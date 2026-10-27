@@ -1,6 +1,6 @@
 # Forever gap requests
 
-Production Quick Sim requests that the Rust engine refused on 24 to 27 October 2026, which then
+Production Quick Sim requests that the Rust engine refused between 5 and 27 October 2026, which then
 ran in the Go engine or needed its exporter to prepare them. The character names are replaced and the iterations cut to 50. Each one
 stands for a group of the refused requests and is read by
 [tests/forever_gaps.rs](../../tests/forever_gaps.rs), which prepares it under Forever's rules,
@@ -28,3 +28,19 @@ checks the gate passes and runs it.
 | `enhancement-shaman-swap-fiery-weapon` | a swap weapon with Fiery Weapon |
 | `protection-paladin-judgement-of-light-three-targets` | the raid's Judgement of Light on three targets |
 | `demonology-warlock-unsummoned-pet-mana` | the mana percent of a demon the fight never summons |
+| `combat-rogue-darkmantle-armor` | Darkmantle Armor (4)'s energy |
+| `combat-rogue-darkmantle-riposte` | Riposte without a tank |
+| `dps-warrior-pummel` | Pummel |
+| `dps-warrior-battlegear-of-heroism` | Battlegear of Heroism (4) |
+| `elemental-shaman-the-elements` | The Furious Storm for a spec other than Restoration |
+| `demonology-warlock-mob-type-bonus` | a bonus against demons on a target of another type |
+| `combat-rogue-battle-squawk` | a fight that outlasts Battle Squawk |
+| `demonology-warlock-assigned-curse` | the assigned curse at all targets |
+| `retribution-paladin-swap-thunderfury` | a swap onto Thunderfury |
+| `retribution-paladin-swap-crit-taken` | a swap that changes the crit the player takes |
+| `retribution-paladin-swap-runeblade` | a swap onto the Runeblade of Baron Rivendare |
+| `hunter-gorilla-thunderstomp` | the Gorilla's Thunderstomp on five targets |
+| `hunter-prepull-group-move` | a prepull group reference that moves to a starting range |
+| `protection-warrior-fire-hardened-hauberk` | a rage gain on use |
+| `demonology-warlock-orb-of-soranruk` | a heal over time on use |
+| `demonology-warlock-sequence-other-targets` | sequence steps at the next target |

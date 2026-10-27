@@ -284,3 +284,138 @@ fn a_prepull_sequence_step_may_read_an_aura() {
         assert_eq!(action(&player, spell, 0).0, 50.0, "spell {spell}");
     }
 }
+
+/// Casts of the player's action with this item.
+fn item_casts(player: &Value, item_id: i64) -> f64 {
+    player["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"]["itemId"].as_i64() == Some(item_id))
+        .flat_map(|action| action["targets"].as_array().unwrap())
+        .map(|target| target["casts"].as_f64().unwrap_or(0.0))
+        .sum()
+}
+
+/// The exported effects of a kind.
+fn effects<'a>(prepared: &'a Value, kind: &str) -> Vec<&'a Value> {
+    prepared["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|effect| effect["kind"] == kind)
+        .collect()
+}
+
+/// Darkmantle Armor (4): the rogue's landed melee hits roll for 20 energy (27787).
+#[test]
+fn darkmantle_armor_gains_energy() {
+    let (value, player) = run("combat-rogue-darkmantle-armor");
+    assert!(kinds(&value).contains(&"energy_proc"));
+    assert!(resource_gain(&player, 27787, "ResourceTypeEnergy") > 0.0);
+}
+
+/// Riposte (14251) runs without a tank under Forever's rules, beside Darkmantle Armor.
+#[test]
+fn riposte_runs_without_a_tank() {
+    let (value, _) = run("combat-rogue-darkmantle-riposte");
+    assert!(kinds(&value).contains(&"riposte"));
+}
+
+/// Pummel (6554) in a Warrior's rotation casts.
+#[test]
+fn pummel_casts() {
+    let (value, player) = run("dps-warrior-pummel");
+    assert!(kinds(&value).contains(&"pummel"));
+    assert!(action(&player, 6554, 0).0 > 0.0, "Pummel casts");
+}
+
+/// Battlegear of Heroism (4) restores health and rage on a melee hit.
+#[test]
+fn battlegear_of_heroism_procs() {
+    let (value, _) = run("dps-warrior-battlegear-of-heroism");
+    assert!(kinds(&value).contains(&"health_rage_proc"));
+}
+
+/// The Elements (5) puts up The Furious Storm off the shaman's spells.
+#[test]
+fn the_furious_storm_procs_for_any_spec() {
+    let (value, _) = run("elemental-shaman-the-elements");
+    assert!(effects(&value, "spell_data_stat_proc")
+        .iter()
+        .any(|effect| effect["aura"] == "The Furious Storm"));
+}
+
+/// A bonus against demons is inert against a target of another type.
+#[test]
+fn a_mob_type_bonus_against_another_type_is_inert() {
+    run("demonology-warlock-mob-type-bonus");
+}
+
+/// Battle Squawk in a fight that outlasts it: its melee speed comes off when it expires.
+#[test]
+fn battle_squawk_expires() {
+    let (value, _) = run("combat-rogue-battle-squawk");
+    assert!(kinds(&value).contains(&"battle_squawk"));
+}
+
+/// The Warlock's assigned curse at all targets.
+#[test]
+fn the_assigned_curse_runs() {
+    run("demonology-warlock-assigned-curse");
+}
+
+/// Swaps onto Thunderfury, onto gear that changes the crit the player takes, and onto the
+/// Runeblade of Baron Rivendare, whose Unholy Aura (17625) restores health.
+#[test]
+fn retribution_swaps_onto_thunderfury_and_runeblade_run() {
+    let (value, _) = run("retribution-paladin-swap-thunderfury");
+    assert!(kinds(&value).contains(&"thunderfury"));
+    run("retribution-paladin-swap-crit-taken");
+    let (value, player) = run("retribution-paladin-swap-runeblade");
+    assert!(kinds(&value).contains(&"health_regen_aura"));
+    assert!(resource_gain(&player, 17625, "ResourceTypeHealth") > 0.0);
+}
+
+/// The Gorilla's Thunderstomp (1264455) strikes every target of a five-target fight.
+#[test]
+fn thunderstomp_strikes_several_targets() {
+    let (value, _) = run("hunter-gorilla-thunderstomp");
+    assert!(effects(&value, "hunter_pet_strike")
+        .iter()
+        .any(|effect| effect["spell_id"] == 1264455 && effect["cleave_targets"] == 4));
+}
+
+/// A prepull reference to a group whose one action moves to a variable's range.
+#[test]
+fn a_prepull_group_reference_moves() {
+    run("hunter-prepull-group-move");
+}
+
+/// Fire Hardened Hauberk (6972) gains rage on use, once a fight, and Orb of Soran'ruk's heal
+/// over time stays unused as in Go.
+#[test]
+fn on_use_rage_and_an_unused_heal_over_time_run() {
+    let (value, player) = run("protection-warrior-fire-hardened-hauberk");
+    assert!(effects(&value, "energize_on_use")
+        .iter()
+        .any(|effect| effect["power"] == "rage"));
+    assert_eq!(item_casts(&player, 6972), 50.0);
+    let (_, player) = run("demonology-warlock-orb-of-soranruk");
+    assert_eq!(item_casts(&player, 6898), 0.0);
+}
+
+/// Sequence steps cast Curse of the Elements (1311680) at the next target.
+#[test]
+fn sequence_steps_cast_at_another_target() {
+    let (_, player) = run("demonology-warlock-sequence-other-targets");
+    let on_second = player["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"]["spellId"] == 1311680)
+        .filter_map(|action| action["targets"].get(1))
+        .map(|target| target["casts"].as_f64().unwrap_or(0.0))
+        .sum::<f64>();
+    assert!(on_second > 0.0);
+}

@@ -36,6 +36,7 @@ mod heal_proc;
 pub(crate) mod healer_gear;
 pub(crate) mod healing;
 pub(crate) mod heals;
+pub(crate) mod health_regen;
 mod log;
 pub(crate) mod melee;
 pub(crate) mod metrics;
@@ -1534,6 +1535,12 @@ pub(crate) enum Action {
     },
     /// The party Windfury Totem's periodic refresh.
     WindfuryRefresh,
+    /// A tick of a regenerating aura's periodic action, by its position and the generation of
+    /// the gain that started it.
+    HealthRegenTick {
+        regen: usize,
+        generation: u32,
+    },
     /// A tick of an aura's periodic stack adder, with the ticks left including this one.
     StackTick {
         aura: AuraRef,
@@ -1877,6 +1884,7 @@ pub(crate) struct Fight<A: Agent> {
     /// Gear procs that heal and give rage, by their aura's position.
     pub(crate) health_rage_procs: Vec<gear_procs::HealthRageProc>,
     pub(crate) energy_procs: Vec<gear_procs::EnergyProc>,
+    pub(crate) health_regens: Vec<health_regen::HealthRegen>,
     /// Gear procs that stack an armor debuff on the target, by their aura's position.
     pub(crate) armor_debuff_procs: Vec<gear_procs::ArmorDebuffProc>,
     /// Spell data stat procs, by their position among the effects of their kind.
@@ -4037,6 +4045,7 @@ impl<A: Agent> Fight<A> {
             stat_procs: Vec::new(),
             health_rage_procs: Vec::new(),
             energy_procs: Vec::new(),
+            health_regens: Vec::new(),
             armor_debuff_procs: Vec::new(),
             eureka: None,
             pets: pet::inert_pets(effects)?,
@@ -4936,6 +4945,7 @@ impl<A: Agent> Fight<A> {
             }
         }
         fight.bind_gear_procs(effects)?;
+        fight.bind_health_regens(effects)?;
         fight.bind_on_use_damage(effects);
         fight.autos.melee = prepared.melee.auto_swing_melee;
         fight.autos.dual_wielding = prepared.melee.dual_wielding;
@@ -5978,6 +5988,9 @@ impl<A: Agent> Fight<A> {
                 period,
                 ticks_left,
             } => self.stack_tick(aura, period, ticks_left),
+            Action::HealthRegenTick { regen, generation } => {
+                self.health_regen_tick(regen, generation)
+            }
             Action::WindfuryRefresh => {
                 let windfury = self.windfury.as_ref().expect("Windfury Totem is bound");
                 let (totem, period) = (windfury.totem, windfury.period);

@@ -622,6 +622,9 @@ impl<A: Agent> Fight<A> {
             let line = format!("Aura gained: {}", action_string(&id));
             self.unit_log(aura.side, &line);
         }
+        if !self.health_regens.is_empty() {
+            self.health_regen_gained(aura);
+        }
         self.on_gain(aura);
     }
 
@@ -681,6 +684,9 @@ impl<A: Agent> Fight<A> {
         self.track_exclusive_deactivate(aura);
         if let Side::Pet(_) = aura.side {
             self.pet_aura_expired(aura);
+        }
+        if !self.health_regens.is_empty() {
+            self.health_regen_expired(aura);
         }
         self.on_expire(aura);
     }

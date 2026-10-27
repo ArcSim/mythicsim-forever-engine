@@ -261,6 +261,7 @@ const COMMON_EFFECTS: &[&str] = &[
     "health_rage_proc",
     "energy_proc",
     "battle_squawk",
+    "health_regen_aura",
     "armor_debuff_proc",
     "damage_on_use",
     "stoneform",
@@ -533,7 +534,9 @@ fn common_claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         Effect::HealthRageProc { trigger_aura, .. } | Effect::EnergyProc { trigger_aura, .. } => {
             vec![("player", trigger_aura)]
         }
-        Effect::BattleSquawk { aura, .. } => vec![("player", aura)],
+        Effect::BattleSquawk { aura, .. } | Effect::HealthRegenAura { aura, .. } => {
+            vec![("player", aura)]
+        }
         Effect::SpellDataAbsorbProc {
             trigger_aura, aura, ..
         } => vec![("player", trigger_aura), ("player", aura)],
@@ -682,11 +685,14 @@ fn judgement_of_light_aura_limits(prepared: &PreparedV2, aura: &str) -> Vec<Stri
 /// Runeblade of Baron Rivendare's Unholy Aura starts a periodic action as it gains, which gives
 /// the wearer 60 health every five seconds; the runtime runs no such action.
 fn unholy_aura_regeneration(prepared: &PreparedV2) -> Vec<String> {
+    let regenerates = prepared.effects.iter().any(
+        |effect| matches!(effect, Effect::HealthRegenAura { aura, .. } if aura == "Unholy Aura"),
+    );
     prepared
         .player
         .auras
         .iter()
-        .filter(|aura| aura.label == "Unholy Aura")
+        .filter(|aura| aura.label == "Unholy Aura" && !regenerates)
         .map(|_| {
             "player aura \"Unholy Aura\" regenerates health every five seconds, which the \
              runtime does not run"
@@ -1179,6 +1185,16 @@ fn swap_change_limit(
     match parts.as_slice() {
         // The stats follow the stat auras, the swap's own among them.
         ["player", "stats", _] | ["player", "mana", _] => None,
+        // The player's movement speed after the reset, which the speed auras' gain and expiry
+        // move: the swap changes it only through auras it switches.
+        ["effects", index, "speed_multiplier"]
+            if index.parse::<usize>().ok().is_some_and(|index| {
+                matches!(prepared.effects.get(index), Some(Effect::PlayerMovement { speed_auras, .. })
+                    if speed_auras.iter().all(|aura| switched.contains(&aura.as_str())))
+            }) =>
+        {
+            None
+        }
         // The crit the player takes on a Goblin Sapper Charge's half, which the swap sets on the
         // player as its own target. A tank's, which the target's swings read, is not followed.
         ["player", "pseudo_stats", "reduced_crit_taken_percent"] if prepared.enemy.is_none() => {

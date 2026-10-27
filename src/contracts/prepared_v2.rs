@@ -2650,6 +2650,15 @@ pub enum Effect {
         rage: f64,
         metrics_action_id: ActionId,
     },
+    /// classic items_weapons.go Runeblade of Baron Rivendare's Unholy Aura (Forever's rules): its
+    /// gain starts a periodic action that gives the wearer `health` every `period_ns`, which its
+    /// expiry cancels.
+    HealthRegenAura {
+        aura: String,
+        period_ns: i64,
+        health: f64,
+        metrics_action_id: ActionId,
+    },
     /// core/battle_squawk.go (Forever's rules): the party's squawks, up from the reset in the
     /// exported melee state, take their melee speed back as their stacks fall to none at the
     /// aura's expiry, `per_stack` each.
@@ -4982,6 +4991,7 @@ impl Effect {
             Effect::HealthRageProc { .. } => "health_rage_proc",
             Effect::EnergyProc { .. } => "energy_proc",
             Effect::BattleSquawk { .. } => "battle_squawk",
+            Effect::HealthRegenAura { .. } => "health_regen_aura",
             Effect::DamageOnUse { .. } => "damage_on_use",
             Effect::ArmorDebuffProc { .. } => "armor_debuff_proc",
             Effect::SunderArmorRamp { .. } => "sunder_armor_ramp",

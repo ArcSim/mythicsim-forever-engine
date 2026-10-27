@@ -2251,6 +2251,17 @@ pub(crate) fn gear_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
             }
         }
     }
+    // classic items_weapons.go Runeblade of Baron Rivendare, under Forever's rules (Go's exporter
+    // does not run the regeneration): Unholy Aura gives 60 health every 5 seconds while it holds.
+    if let Some(aura) =
+        aura_named(env, "Unholy Aura").filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        effects.push(json!({
+            "kind": "health_regen_aura", "aura": env.sim.aura(aura).label,
+            "period_ns": 5 * super::sim::SECOND, "health": 60.0,
+            "metrics_action_id": json!({"spell_id": 17625}),
+        }));
+    }
     // warrior items.go Battlegear of Heroism 4 piece, under Forever's rules (Go's exporter leaves
     // its listener unclaimed): Warrior's Resolve, as Battlegear of Valor's.
     if let Some(set) = aura_named(env, "Battlegear of Heroism 4P")

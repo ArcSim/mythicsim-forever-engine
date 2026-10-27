@@ -2251,6 +2251,31 @@ pub(crate) fn gear_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
             }
         }
     }
+    // warrior items.go Battlegear of Heroism 4 piece, under Forever's rules (Go's exporter leaves
+    // its listener unclaimed): Warrior's Resolve, as Battlegear of Valor's.
+    if let Some(set) = aura_named(env, "Battlegear of Heroism 4P")
+        .filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        match env.sim.aura(set).dpm.as_ref() {
+            None => unrepresented.push("Battlegear of Heroism 4P has no proc manager".to_string()),
+            Some(dpm) => {
+                let rage = if env.sim.unit(env.player).rage_bar.enabled {
+                    10.0
+                } else {
+                    0.0
+                };
+                effects.push(json!({
+                    "kind": "health_rage_proc", "trigger_aura": env.sim.aura(set).label,
+                    "rng_label": "Warrior's Resolve",
+                    "chances": dpm_chances(env, dpm, |spell| {
+                        spell.proc_mask.matches(ProcMask::MELEE) && !spell.flags.matches(SpellFlag::PROC)
+                    }),
+                    "heal_min": 88.0, "heal_max": 133.0, "rage": rage,
+                    "metrics_action_id": json!({"spell_id": 450589}),
+                }));
+            }
+        }
+    }
     // rogue items.go Darkmantle Armor 4 piece, Rogue Armor Energize, under Forever's rules (Go's
     // exporter leaves the listener unclaimed): landed white hits roll a legacy one proc a minute
     // manager under the trigger's name; a batch window later a player with an energy bar gains

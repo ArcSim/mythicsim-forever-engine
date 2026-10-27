@@ -2256,6 +2256,29 @@ pub(crate) fn item_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
 /// Warrior's Resolve and the Puncture Armor weapon procs.
 pub(crate) fn gear_proc_effects(env: &Environment, unrepresented: &mut Vec<String>) -> Vec<Value> {
     let mut effects = Vec::new();
+    // Under Forever's rules: Mark of the Champion's bonus against Undead and Demons, when every
+    // target is of one of those types (Go reads each target's own type). Go's melee attack power
+    // reads the bonus's ranged attack power, which the item sets to the same value.
+    let undead_or_demon = env.encounter.targets.iter().all(|&target| {
+        matches!(
+            env.sim.unit(target).mob_type.as_str(),
+            "MobTypeUndead" | "MobTypeDemon"
+        )
+    });
+    for (label, attack_power, spell_damage) in [
+        ("Mark of the Champion (Physical)", 150.0, 0.0),
+        ("Mark of the Champion (Spell)", 0.0, 85.0),
+    ] {
+        if env.sim.rules != super::sim::Rules::Forever || !undead_or_demon {
+            break;
+        }
+        if aura_named(env, label).is_some() {
+            effects.push(json!({
+                "kind": "mob_type_bonus", "aura": label, "attack_power": attack_power,
+                "ranged_attack_power": attack_power, "spell_damage": spell_damage,
+            }));
+        }
+    }
     // Under Forever's rules (Go's exporter refuses the swap): with an item swap, the item and
     // enchant speed auras the swap gains and expires, as core/enchant_speed.go attaches them.
     let swaps = env.sim.item_swap(env.player).is_some();

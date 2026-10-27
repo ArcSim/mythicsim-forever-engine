@@ -2674,6 +2674,16 @@ pub enum Effect {
         aura: String,
         per_stack: f64,
     },
+    /// items_trinkets.go Mark of the Champion (Forever's rules, targets of its mob types): while
+    /// the aura holds, the player's attack tables add the bonus. Go's melee attack power reads
+    /// `ranged_attack_power`, its ranged attack power the same, and a magic spell's bonus damage
+    /// `spell_damage`.
+    MobTypeBonus {
+        aura: String,
+        attack_power: f64,
+        ranged_attack_power: f64,
+        spell_damage: f64,
+    },
     /// core/enchant_speed.go `registerSpeedAura` (Forever's rules, with an item swap): an item
     /// or enchant's speed aura multiplies the melee, ranged and cast speed while up. The one
     /// worn from the start is in the exported speeds; the swap gains and expires them.
@@ -5016,6 +5026,7 @@ impl Effect {
             Effect::EnergyProc { .. } => "energy_proc",
             Effect::BattleSquawk { .. } => "battle_squawk",
             Effect::SpeedAura { .. } => "speed_aura",
+            Effect::MobTypeBonus { .. } => "mob_type_bonus",
             Effect::HealthRegenAura { .. } => "health_regen_aura",
             Effect::DamageOnUse { .. } => "damage_on_use",
             Effect::ArmorDebuffProc { .. } => "armor_debuff_proc",

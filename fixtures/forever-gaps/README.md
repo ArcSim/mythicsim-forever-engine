@@ -50,3 +50,4 @@ checks the gate passes and runs it.
 | `demonology-warlock-succubus-judgement-of-light` | the raid's Judgement of Light beside a Succubus, which strikes in melee (a production request with the debuff added) |
 | `enhancement-shaman-swap-speed-enchant` | a swap onto a weapon with Iron Counterweight, an enchant speed aura (a Best Gear comparison, 27 October 2026) |
 | `feral-bear-druid-swap-defense` | a tank's swap onto Headspike, whose Defense changes the target's swings (28 October 2026) |
+| `dps-warrior-mark-of-the-champion-undead` | Mark of the Champion against an Undead target (28 October 2026) |

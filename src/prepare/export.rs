@@ -874,8 +874,12 @@ pub(crate) fn export_state(
     let target = env.encounter.targets[0];
     let player = env.player;
     // Go `prepare`: stats against a mob type are the fight's, which prepared v2 does not carry.
+    // Go reads only the bonus against the target's own type; under Forever's rules a bonus
+    // against another type is inert.
+    let target_type = env.sim.unit(target).mob_type.clone();
+    let forever = env.sim.rules == super::sim::Rules::Forever;
     for (mob_type, bonus) in &env.attack_table(player, target).mob_type_bonus_stats {
-        if !bonus.is_zero() {
+        if !bonus.is_zero() && !(forever && *mob_type != target_type) {
             unrepresented.push(format!(
                 "mob type bonus stats for {mob_type} are unsupported"
             ));

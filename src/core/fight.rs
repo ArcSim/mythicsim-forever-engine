@@ -1890,6 +1890,9 @@ pub(crate) struct Fight<A: Agent> {
     /// Purging gives: its aura and the bonus the player's spells take while it holds, when the
     /// targets are of its mob type.
     pub(crate) mob_type_spell_damage: Option<(AuraRef, f64)>,
+    /// Go `AttackTable.MobTypeBonusStats` from Mark of the Champion: each aura and its ranged
+    /// attack power (which Go's melee attack power reads too) and spell damage bonus.
+    pub(crate) mob_type_bonuses: Vec<(AuraRef, f64, f64)>,
     /// Item damage procs built from client rows, by their aura's position.
     pub(crate) damage_procs: Vec<DamageProc>,
     /// Enchant heal procs, by their position among the heal proc effects.
@@ -4103,6 +4106,7 @@ impl<A: Agent> Fight<A> {
             chili: None,
             revelation: None,
             mob_type_spell_damage: None,
+            mob_type_bonuses: Vec::new(),
             damage_procs: Vec::new(),
             spell_stat_procs: Vec::new(),
             aura_mods: Vec::new(),
@@ -4765,6 +4769,17 @@ impl<A: Agent> Fight<A> {
                     ..
                 } if target.mob_type.as_deref() == Some(mob_type.as_str()) => {
                     fight.mob_type_spell_damage = Some((fight.player_aura(aura)?, *spell_damage));
+                }
+                Effect::MobTypeBonus {
+                    aura,
+                    ranged_attack_power,
+                    spell_damage,
+                    ..
+                } => {
+                    let aura = fight.player_aura(aura)?;
+                    fight
+                        .mob_type_bonuses
+                        .push((aura, *ranged_attack_power, *spell_damage));
                 }
                 Effect::EmeraldDragonWhelp { .. } => fight.bind_whelp(effect)?,
                 Effect::Revelation { .. } => fight.bind_revelation(effect)?,

@@ -508,3 +508,18 @@ fn a_tanks_swap_that_changes_defense_runs() {
     let (value, _) = run("feral-bear-druid-swap-defense");
     assert!(value["enemy"]["rolls"].as_array().unwrap().len() > 1);
 }
+
+/// Mark of the Champion against an Undead target: its 150 attack power against Undead and
+/// Demons is the player's while the item is worn.
+#[test]
+fn mark_of_the_champion_against_undead_runs() {
+    let (value, _) = run("dps-warrior-mark-of-the-champion-undead");
+    let bonus = effects(&value, "mob_type_bonus");
+    assert!(
+        bonus
+            .iter()
+            .any(|effect| effect["aura"] == "Mark of the Champion (Physical)"
+                && effect["ranged_attack_power"] == 150.0),
+        "{bonus:?}"
+    );
+}

@@ -2650,6 +2650,13 @@ pub enum Effect {
         rage: f64,
         metrics_action_id: ActionId,
     },
+    /// core/battle_squawk.go (Forever's rules): the party's squawks, up from the reset in the
+    /// exported melee state, take their melee speed back as their stacks fall to none at the
+    /// aura's expiry, `per_stack` each.
+    BattleSquawk {
+        aura: String,
+        per_stack: f64,
+    },
     /// Rogue items.go Darkmantle Armor (4), Rogue Armor Energize (Forever's rules): landed hits
     /// roll each spell's chance from the set's proc manager under the label; a batch window
     /// later the handler gives `energy` to a player with an energy bar.
@@ -4974,6 +4981,7 @@ impl Effect {
             Effect::HealOnUse { .. } => "heal_on_use",
             Effect::HealthRageProc { .. } => "health_rage_proc",
             Effect::EnergyProc { .. } => "energy_proc",
+            Effect::BattleSquawk { .. } => "battle_squawk",
             Effect::DamageOnUse { .. } => "damage_on_use",
             Effect::ArmorDebuffProc { .. } => "armor_debuff_proc",
             Effect::SunderArmorRamp { .. } => "sunder_armor_ramp",

@@ -1169,7 +1169,19 @@ pub(crate) fn export_state(
     if let Some(squawk) = env.sim.get_aura(player, "Battle Squawk") {
         if env.sim.aura(squawk).expires < env.encounter.duration + env.encounter.duration_variation
         {
-            unrepresented.push("a fight that outlasts Battle Squawk is unsupported".to_string());
+            // Forever's rules run its expiry: the stacks fall to none and take their melee speed
+            // back, 5% each, as Go's OnStacksChange does.
+            if env.sim.rules == super::sim::Rules::Forever {
+                if let Some(list) = prepared["effects"].as_array_mut() {
+                    list.push(json!({
+                        "kind": "battle_squawk", "aura": env.sim.aura(squawk).label,
+                        "per_stack": 1.05,
+                    }));
+                }
+            } else {
+                unrepresented
+                    .push("a fight that outlasts Battle Squawk is unsupported".to_string());
+            }
         }
         let pet_follows = env.sim.unit(player).pets.iter().any(|pet| {
             env.sim

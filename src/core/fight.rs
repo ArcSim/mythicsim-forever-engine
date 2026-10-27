@@ -3377,6 +3377,15 @@ impl<A: Agent> Fight<A> {
                         ranged,
                         cast,
                     }
+                } else if let Some(per_stack) = effects.iter().find_map(|effect| match effect {
+                    Effect::BattleSquawk { aura, per_stack }
+                        if side == Side::Player && *aura == exported.label =>
+                    {
+                        Some(*per_stack)
+                    }
+                    _ => None,
+                }) {
+                    AuraBehavior::BattleSquawk { per_stack }
                 } else if let Some((multiplier, schools)) =
                     effects.iter().find_map(|effect| match effect {
                         Effect::ShatterCurse {

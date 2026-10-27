@@ -80,6 +80,10 @@ pub(crate) enum AuraBehavior<K> {
         attack: f64,
         cast: f64,
     },
+    /// Battle Squawk: the melee speed each stack gives, taken back as the stacks fall to none.
+    BattleSquawk {
+        per_stack: f64,
+    },
     /// Go `AttachHastePseudoStats`: melee, ranged and cast speed multipliers, each attached only
     /// when it changes speed, in that order.
     MultiplySpeeds {
@@ -733,6 +737,11 @@ impl<A: Agent> Fight<A> {
             AuraBehavior::StackingStats { offset, width, .. } => {
                 let field = ((1u32 << width) - 1) << offset;
                 self.set_stat_mask((self.stat_mask & !field) | ((new as u32) << offset));
+            }
+            // The reset's stacks are in the exported melee speed; their fall to none takes it
+            // back.
+            AuraBehavior::BattleSquawk { per_stack } if new == 0 => {
+                self.multiply_melee_speed(per_stack.powi(-old));
             }
             _ => {}
         }

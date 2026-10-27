@@ -171,9 +171,11 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
                 ],
             );
             // 16 October beta notes: "Blood Fury: Cooldown increased to 3 minutes (was 2 minutes)."
+            // The 26 October notes' 27 October additions take it back: "Blood Fury's cooldown
+            // reduced to 2 minutes (was 3 minutes)."
             let blood_fury_cd = Cooldown {
                 timer: Some(sim.new_timer(unit)),
-                duration: 3 * MINUTE,
+                duration: if oct26 { 2 * MINUTE } else { 3 * MINUTE },
             };
             sim.aura_mut(blood_fury_aura.aura).icd = Some(blood_fury_cd);
             let blood_fury = sim.register_spell(
@@ -258,12 +260,14 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
 
             let sim = &mut env.sim;
             let action_id = ActionId::spell(20554);
+            // 27 October additions to the 26 October notes: "Berserking duration increased to 15
+            // seconds (was 10 seconds)."
             let berserking_aura = sim.register_aura(
                 unit,
                 AuraConfig {
                     label: "Berserking".to_string(),
                     action_id: Some(action_id.clone()),
-                    duration: 10 * SECOND,
+                    duration: if oct26 { 15 * SECOND } else { 10 * SECOND },
                     ..AuraConfig::default()
                 },
             );
@@ -618,6 +622,13 @@ fn apply_touch_of_the_grave(sim: &mut Sim, unit: UnitId) {
         "ClassWarrior" | "ClassPaladin" | "ClassRogue" => (1260189, 0.2),
         _ => (1260201, 0.3),
     };
+    // 27 October additions to the 26 October notes: "Touch of the Grave internal cooldown
+    // reduced to 15 seconds (was 25 seconds)."
+    let icd = if sim.rules == Rules::Forever {
+        15 * SECOND
+    } else {
+        25 * SECOND
+    };
     // The drain heals through health metrics Go creates here; they are not prepared state.
     sim.register_spell(
         unit,
@@ -644,7 +655,7 @@ fn apply_touch_of_the_grave(sim: &mut Sim, unit: UnitId) {
             proc_mask: ProcMask::MELEE | ProcMask::RANGED | ProcMask::SPELL_DAMAGE,
             outcome: HitOutcome::LANDED,
             proc_chance,
-            icd: 25 * SECOND,
+            icd,
             ..ProcTrigger::default()
         },
     );

@@ -2359,6 +2359,7 @@ pub(crate) fn prepared_coverage(
                 Action::StrictSequence(steps) => {
                     let spells: Vec<_> = steps
                         .iter()
+                        .filter(|step| !step.change_target)
                         .map(|step| {
                             step.target
                                 .resolve(targets)
@@ -2369,9 +2370,10 @@ pub(crate) fn prepared_coverage(
                         false
                     } else {
                         prepull_sequences += 1;
-                        let unsupported = steps
-                            .iter()
-                            .any(|step| step.target.resolve(targets) != Some(Unit::Target(0)));
+                        let unsupported = steps.iter().any(|step| {
+                            step.change_target
+                                || step.target.resolve(targets) != Some(Unit::Target(0))
+                        });
                         if unsupported || prepull_sequences > 1 {
                             reasons.push(Refusal::new(
                                 "prepull_unsupported",
@@ -2671,6 +2673,18 @@ fn other_target_casts(
     let targets = prepared.encounter.target_count.max(1) as usize;
     let mut reasons = BTreeSet::new();
     let mut spells = Vec::new();
+    // A rotation that changes target casts at the current target, next or previous wherever
+    // the current target has moved, so those casts count as casts at other targets.
+    let dynamic = rotation_changes_target(rotation);
+    let relative = |unit: &crate::rotation::UnitRef| {
+        dynamic
+            && matches!(
+                unit,
+                crate::rotation::UnitRef::CurrentTarget
+                    | crate::rotation::UnitRef::NextTarget
+                    | crate::rotation::UnitRef::PreviousTarget
+            )
+    };
     for item in &rotation.priority_list {
         // A step of a sequence is cast on its unit as a cast is, with the player only for a
         // helpful spell.
@@ -2678,11 +2692,12 @@ fn other_target_casts(
             if unreachable.contains(&item.position) {
                 continue;
             }
-            for step in steps {
+            for step in steps.iter().filter(|step| !step.change_target) {
                 let Some(spell) = rotation_spell(prepared, &step.spell) else {
                     continue;
                 };
                 match step.target.resolve(targets) {
+                    Some(Unit::Target(0)) if relative(&step.target) => spells.push(spell),
                     None | Some(Unit::Target(0)) => {}
                     Some(Unit::Player) if spell.has_flag("SpellFlagHelpful") => {}
                     Some(Unit::Player) => {
@@ -2702,7 +2717,9 @@ fn other_target_casts(
             spell: id, target, ..
         } = &item.action
         {
-            if !matches!(target.resolve(targets), None | Some(Unit::Target(0)))
+            let resolved = target.resolve(targets);
+            if (!matches!(resolved, None | Some(Unit::Target(0)))
+                || resolved.is_some() && relative(target))
                 && rotation_spell(prepared, id).is_some()
                 && !unreachable.contains(&item.position)
             {
@@ -2721,7 +2738,7 @@ fn other_target_casts(
             continue;
         };
         let position = match unit {
-            Unit::Target(0) => continue,
+            Unit::Target(0) if !relative(target) => continue,
             Unit::Target(position) => position,
             Unit::Player => 0,
         };
@@ -3269,31 +3286,66 @@ pub(crate) fn assigned_curse(prepared: &PreparedV2) -> Option<(String, ActionId)
     Some((option, id))
 }
 
-/// Go `APLActionChangeTarget` moves the current target, which the runtime keeps on the first
-/// target: a change to another unit is refused.
+/// Go `APLActionChangeTarget` moves the player's current target. The runtime follows a change
+/// in the priority list or a strict sequence; before the pull the current target stays the
+/// first, so a change there to another unit is refused.
 fn change_target_limits(prepared: &PreparedV2, rotation: &Rotation) -> Vec<String> {
     let targets = prepared.encounter.target_count.max(1) as usize;
     let mut reasons = Vec::new();
-    let actions = rotation
-        .priority_list
-        .iter()
-        .map(|item| (item.position, &item.action, "rotation item"))
-        .chain(
-            rotation
-                .prepull
-                .iter()
-                .map(|prepull| (prepull.position, &prepull.action, "prepull action")),
-        );
-    for (position, action, kind) in actions {
-        if let Action::ChangeTarget(unit) = action.scheduled() {
+    for prepull in &rotation.prepull {
+        if let Action::ChangeTarget(unit) = prepull.action.scheduled() {
             if !matches!(unit.resolve(targets), None | Some(Unit::Target(0))) {
                 reasons.push(format!(
-                    "{kind} {position}: a change of target to a unit other than the first target is unsupported"
+                    "prepull action {}: a change of target to a unit other than the first target is unsupported",
+                    prepull.position
                 ));
             }
         }
     }
+    // A change to the player: Go's current target would be the player itself.
+    for item in rotation
+        .priority_list
+        .iter()
+        .chain(rotation.groups.iter().flat_map(|group| group.items.iter()))
+    {
+        let player = match item.action.scheduled() {
+            Action::ChangeTarget(unit) => unit.resolve(targets) == Some(Unit::Player),
+            Action::StrictSequence(steps) => steps.iter().any(|step| {
+                step.change_target && step.target.resolve(targets) == Some(Unit::Player)
+            }),
+            _ => false,
+        };
+        if player {
+            reasons.push(format!(
+                "rotation item {}: a change of target to the player is unsupported",
+                item.position
+            ));
+        }
+    }
     reasons
+}
+
+/// Whether the rotation can move the player's current target off the first target: a change of
+/// target in the priority list, a group or a strict sequence to a unit other than the current
+/// target.
+pub(crate) fn rotation_changes_target(rotation: &Rotation) -> bool {
+    let moves = |unit: &crate::rotation::UnitRef| {
+        !matches!(
+            unit,
+            crate::rotation::UnitRef::CurrentTarget | crate::rotation::UnitRef::Target(0)
+        )
+    };
+    rotation
+        .priority_list
+        .iter()
+        .chain(rotation.groups.iter().flat_map(|group| group.items.iter()))
+        .any(|item| match item.action.scheduled() {
+            Action::ChangeTarget(unit) => moves(unit),
+            Action::StrictSequence(steps) => steps
+                .iter()
+                .any(|step| step.change_target && moves(&step.target)),
+            _ => false,
+        })
 }
 
 /// Go's dot increase values of Penance read its bolt's damage, which the runtime does not

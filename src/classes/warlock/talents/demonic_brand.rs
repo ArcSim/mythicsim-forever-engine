@@ -4,14 +4,18 @@
 //! casts the demon's brand hit, which cannot miss and adds a share of the warlock's spell
 //! power and school power.
 //!
-//! Go tracks the most recently branded target to mirror its charges on the marker; with the
-//! one target in scope, a brand that is active was always set on it.
+//! Each target carries its own brand (Go `DemonicBrandAuras`), set by the Searing Pain that
+//! lands on it and spent by the demon's hits on it. The marker mirrors the most recently
+//! branded target's charges.
 
 use crate::core::fight::{Agent, AuraRef, Fight, Outcome, Side, SpellId, SpellResult};
 
 #[derive(Clone, Debug)]
 pub(crate) struct DemonicBrand {
+    /// The brand on the first target, whose copy on each target its hits read.
     target_aura: AuraRef,
+    /// Go `latestTarget`: the target the last brand landed on.
+    latest_target: std::cell::Cell<Option<Side>>,
     charges: i32,
     trigger_spells: Vec<SpellId>,
     demon: Option<DemonBrand>,
@@ -72,6 +76,7 @@ pub(crate) fn bind<A: Agent>(
     };
     Ok(DemonicBrand {
         target_aura,
+        latest_target: std::cell::Cell::new(None),
         charges,
         trigger_spells: trigger_spells.to_vec(),
         demon,
@@ -100,8 +105,10 @@ impl DemonicBrand {
         let Some(demon) = &self.demon else {
             return;
         };
-        fight.activate_aura(self.target_aura);
-        fight.set_stacks(self.target_aura, self.charges);
+        let brand = fight.aura_on(self.target_aura, result.target);
+        fight.activate_aura(brand);
+        fight.set_stacks(brand, self.charges);
+        self.latest_target.set(Some(result.target));
         fight.activate_aura(demon.marker);
         fight.set_stacks(demon.marker, self.charges);
     }
@@ -120,12 +127,15 @@ impl DemonicBrand {
         if !result.landed() || !fight.spells[spell].direct_proc {
             return;
         }
-        if !fight.aura(self.target_aura).active {
+        let brand = fight.aura_on(self.target_aura, result.target);
+        if !fight.aura(brand).active {
             return;
         }
-        fight.remove_stack(self.target_aura);
-        let stacks = fight.aura(self.target_aura).stacks;
-        fight.set_stacks(demon.marker, stacks);
+        fight.remove_stack(brand);
+        if self.latest_target.get() == Some(result.target) {
+            let stacks = fight.aura(brand).stacks;
+            fight.set_stacks(demon.marker, stacks);
+        }
         fight.cast(demon.spell, result.target);
     }
 

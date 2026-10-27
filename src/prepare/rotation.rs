@@ -1089,19 +1089,24 @@ fn group_casts(
                 .resolve(targets)
                 .and_then(|_| apl_cast_spell(env, &step.spell))
         })),
+        // A change of target casts nothing; Go builds it for a unit it finds.
         Action::StrictSequence(steps) => {
-            let found: Vec<Option<SpellId>> = steps
+            let found: Vec<Option<Option<SpellId>>> = steps
                 .iter()
                 .map(|step| {
-                    step.target
-                        .resolve(targets)
-                        .and_then(|_| apl_cast_spell(env, &step.spell))
+                    step.target.resolve(targets).and_then(|_| {
+                        if step.change_target {
+                            Some(None)
+                        } else {
+                            apl_cast_spell(env, &step.spell).map(Some)
+                        }
+                    })
                 })
                 .collect();
             if found.iter().all(Option::is_some) {
-                casts.extend(found.into_iter().flatten());
+                casts.extend(found.into_iter().flatten().flatten());
             } else {
-                pruned.extend(found.into_iter().flatten());
+                pruned.extend(found.into_iter().flatten().flatten());
             }
         }
         _ => {}

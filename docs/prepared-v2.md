@@ -583,7 +583,8 @@ as the engine consumes more fields.
 The rotation subset covers `castSpell` at the current target or, with a `target`, at a
 target by `Target` index, the `NextTarget` or the `PreviousTarget`, `castFriendlySpell` at the current target or at the
 player (the first player of the raid, or the unit itself), `autocastOtherCooldowns`, `strictSequence` and
-`sequence` of casts, `channelSpell` with `interruptIf`, `allowRecast` and a `target`, constant-time
+`sequence` of casts (a strict sequence's step may also be a `changeTarget`), `changeTarget`,
+`channelSpell` with `interruptIf`, `allowRecast` and a `target`, constant-time
 prepull casts, moves and moves for a duration, `move` and `moveDuration` in the priority list,
 `groupReference` of the rotation's `groups` with its `valueVariables`,
 `cmp` with any comparison operator, `and`, `or`, `not`, `const`, `currentMana`,
@@ -631,9 +632,17 @@ sequence runs one step each time it is ready, inside the sequence flag, and stop
 done. A channel's interrupt condition is evaluated on each tick and each GCD wake, with Go's
 check of whether the rotation would recast the same channel. An aura value's `sourceUnit`, a dot value's
 `targetUnit` and a cast's `target` resolve as Go's `UnitReference` does in a fight of identical
-targets: `Self` and `Player` index 0 are the player; `CurrentTarget` is the first target, since a
-change of target to any other unit is refused; `NextTarget` and `PreviousTarget` wrap around the
-targets; `Target` with an index is that target, and past the fight's targets it is no unit.
+targets: `Self` and `Player` index 0 are the player; `CurrentTarget` is the player's current
+target, the first at each reset; `NextTarget` and `PreviousTarget` wrap around the targets from
+it; `Target` with an index is that target, and past the fight's targets it is no unit. A
+`changeTarget` in the priority list, a group or a strict sequence moves the current target as
+Go's `APLActionChangeTarget` does, once a timestep: the runtime compiles a copy of the rotation
+for each current target, only for a rotation that changes target, and swaps in the copy for the
+new one, carrying each action's state (a sequence's step, a wait, a schedule) across. Casts with
+no unit, the player's auto attacks, major cooldowns, potions and casting procs follow it; a
+pet keeps the first target, as Go's pets keep their own. A change of target before the pull to
+another unit, or to the player, is refused, and so is a cast at another target that the class
+gate refuses (a Druid's Faerie Fire, whose debuff stays on the first target).
 Go reads only the fields a type uses: `Self`, `CurrentTarget`, `NextTarget` and `PreviousTarget`
 ignore an index and an owner, and the one player of the raid is index 0, so any other `Player`
 names no unit either. No reference means the player for an aura value and the current target

@@ -940,7 +940,7 @@ impl<A: Agent> Fight<A> {
             // the player is too.
             SpellBehavior::CastsSpell(inner) => {
                 let target = if target == Side::Player {
-                    Side::Target
+                    self.current_target_side()
                 } else {
                     target
                 };
@@ -1775,7 +1775,7 @@ impl<A: Agent> Fight<A> {
             let target = if self.spells[spell].flags.helpful {
                 Side::Player
             } else {
-                Side::Target
+                self.current_target_side()
             };
             self.cast(spell, target);
             self.major_cooldowns[cooldown].uses += 1;

@@ -337,11 +337,11 @@ impl<A: Agent> Fight<A> {
                 average,
                 variance,
                 periodic: true,
+                bar,
                 ..
             } => {
                 let gain = self.effect_roll(average, variance);
-                let metrics = self.item_metrics(spell);
-                self.add_mana(gain, metrics);
+                self.energize_bar(spell, bar, gain);
             }
             _ => {}
         }

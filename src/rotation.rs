@@ -769,6 +769,11 @@ pub enum Action {
         name: String,
         variables: Vec<(String, Value)>,
     },
+    /// Go `APLActionGroupReference` before the pull, of a group only it references whose
+    /// actions are moves without conditions: its Execute runs the first that is ready, and a
+    /// move before the pull is ready while the player neither moves nor casts. Parsed only as
+    /// a prepull action, with the range Go reads.
+    PrepullGroupMove(Value),
     /// Go `APLActionItemSwap`: swap to the item swap's set (`true`) or back to the request's
     /// equipment, ready only while the other set is worn.
     ItemSwap(bool),
@@ -799,7 +804,9 @@ impl Action {
             Action::Multidot { max_overlap, .. } | Action::StrictMultidot { max_overlap, .. } => {
                 max_overlap.iter().collect()
             }
-            Action::Move(value) | Action::MoveDuration(value) => vec![value],
+            Action::Move(value) | Action::MoveDuration(value) | Action::PrepullGroupMove(value) => {
+                vec![value]
+            }
             Action::Wait(value) | Action::WaitUntil(value) => value.iter().collect(),
             Action::StrictSequence(steps) | Action::Sequence { steps, .. } => steps
                 .iter()
@@ -862,6 +869,7 @@ impl Action {
             Action::ActivateAura(_)
             | Action::Move(_)
             | Action::MoveDuration(_)
+            | Action::PrepullGroupMove(_)
             | Action::ItemSwap(_)
             | Action::Wait(_)
             | Action::WaitUntil(_)
@@ -1054,10 +1062,103 @@ pub fn parse(rotation: &Json) -> Result<Rotation, Vec<String>> {
     }
     VARIABLES.with(|scope| scope.borrow_mut().clear());
     reasons.extend(group_sequence_reads(&parsed));
+    reasons.extend(prepull_group_moves(&mut parsed));
     if reasons.is_empty() {
         Ok(parsed)
     } else {
         Err(reasons)
+    }
+}
+
+/// Go `APLActionGroupReference` before the pull: Go finalizes the prepull actions first, so the
+/// reference binds the first instance of its group no priority list reference holds. Rust runs
+/// a group only the reference names whose actions are moves without conditions, read with the
+/// rotation's variables: the first move is the one Execute finds ready, or none is.
+fn prepull_group_moves(rotation: &mut Rotation) -> Vec<String> {
+    fn references(item: &Item, name: &str) -> bool {
+        match &item.action {
+            Action::GroupReference { name: other, .. } => other == name,
+            Action::Schedule { inner, .. } => references(inner, name),
+            _ => false,
+        }
+    }
+    let mut reasons = Vec::new();
+    let names: Vec<String> = rotation
+        .prepull
+        .iter()
+        .filter_map(|prepull| match &prepull.action {
+            Action::GroupReference { name, .. } => Some(name.clone()),
+            _ => None,
+        })
+        .collect();
+    for prepull in &mut rotation.prepull {
+        let Action::GroupReference { name, variables } = &prepull.action else {
+            continue;
+        };
+        let position = prepull.position;
+        let mut refuse = |reason: &str| {
+            reasons.push(format!("prepull action {position}: {reason}"));
+        };
+        let groups: Vec<&Group> = rotation
+            .groups
+            .iter()
+            .filter(|group| &group.name == name)
+            .collect();
+        let shared = names.iter().filter(|other| *other == name).count() > 1
+            || rotation
+                .priority_list
+                .iter()
+                .chain(rotation.groups.iter().flat_map(|group| group.items.iter()))
+                .any(|item| references(item, name));
+        let [group] = groups.as_slice() else {
+            refuse("a prepull reference to a group not named once is unsupported");
+            continue;
+        };
+        if shared || !variables.is_empty() || !group.variables.is_empty() {
+            refuse(
+                "a prepull reference to a group with variables or other references is unsupported",
+            );
+            continue;
+        }
+        // A condition that is a constant reads its boolean: an action whose condition is false
+        // is never ready.
+        let mut ranges = Vec::new();
+        for item in &group.items {
+            let ready = match item.condition.as_ref().map(constant) {
+                None => true,
+                Some(Some(condition)) => condition.boolean,
+                Some(None) => {
+                    ranges.clear();
+                    break;
+                }
+            };
+            match &item.action {
+                Action::Move(range) if constant(range).is_some() => {
+                    if ready {
+                        ranges.push(range.clone());
+                    }
+                }
+                _ => {
+                    ranges.clear();
+                    break;
+                }
+            }
+        }
+        let Some(range) = ranges.into_iter().next() else {
+            refuse("a prepull reference to a group of actions other than moves to a constant is unsupported");
+            continue;
+        };
+        prepull.action = Action::PrepullGroupMove(range);
+    }
+    reasons
+}
+
+/// The constant a value is, directly or as the value of a variable.
+fn constant(value: &Value) -> Option<&Const> {
+    match value {
+        Value::Const(constant) => Some(constant),
+        Value::Variable { resolved, .. } => constant(resolved),
+        _ => None,
     }
 }
 
@@ -1269,6 +1370,8 @@ fn parse_prepull(item: &Json, position: usize) -> Result<Option<Prepull>, String
         ("itemSwap", config) => Action::ItemSwap(parse_swap_set("itemSwap", config)?),
         ("cancelAura", config) => Action::CancelAura(parse_aura_action("cancelAura", config)?),
         ("triggerIcd", config) => Action::TriggerIcd(parse_aura_action("triggerIcd", config)?),
+        // Resolved into the group's move once the groups are parsed.
+        ("groupReference", config) => parse_group_reference(config)?,
         ("activateAuraWithStacks", config) => {
             let object = config
                 .as_object()
@@ -3600,6 +3703,8 @@ pub struct Lookup<'a, R> {
     /// Whether the player's pet at a position is one the fight never summons that has a mana
     /// bar: Go resets its mana to full and nothing spends it.
     pub unsummoned_pet_with_mana: &'a dyn Fn(usize) -> bool,
+    /// That pet's full mana where the input states it.
+    pub unsummoned_pet_max_mana: &'a dyn Fn(usize) -> Option<f64>,
     /// Go `ItemSwap.IsEnabled`: whether the character swaps items.
     pub item_swap: bool,
     /// The player's resource bars as the rotation is built, which values of a bar the player
@@ -3734,9 +3839,14 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
         Value::CurrentMana => Compiled::CurrentMana,
         // Go `newValueCurrentMana` on a pet: no value for a pet without a mana bar. A pet the
         // fight never summons is refused by the gate.
-        Value::PetCurrentMana(pet) => {
-            Compiled::PetCurrentMana((lookup.simulated_pet_with_mana)(*pet)?)
-        }
+        // A pet the fight never summons keeps the full mana Go's reset gives it.
+        Value::PetCurrentMana(pet) => match (lookup.simulated_pet_with_mana)(*pet) {
+            Some(slot) => Compiled::PetCurrentMana(slot),
+            None => Compiled::Const(
+                parse_const(&format!("{}", (lookup.unsummoned_pet_max_mana)(*pet)?))
+                    .expect("a float constant"),
+            ),
+        },
         // Go `newValueCurrentManaPercent` on a pet: no value without a mana bar, and a full bar
         // for a pet the fight never summons, whose mana the reset fills and nothing spends.
         Value::PetCurrentManaPercent(pet) => match (lookup.simulated_pet_with_mana)(*pet) {
@@ -4281,6 +4391,7 @@ mod tests {
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
             unsummoned_pet_with_mana: &|_| false,
+            unsummoned_pet_max_mana: &|_| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -4322,6 +4433,7 @@ mod tests {
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
             unsummoned_pet_with_mana: &|_| false,
+            unsummoned_pet_max_mana: &|_| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -4464,6 +4576,7 @@ mod tests {
         let summoned = Lookup {
             simulated_pet_with_mana: &|pet| (pet == 0).then_some(1),
             unsummoned_pet_with_mana: &|_| false,
+            unsummoned_pet_max_mana: &|_| None,
             ..only_auras(&none, &|_, _| None)
         };
         assert_eq!(
@@ -5162,6 +5275,7 @@ mod tests {
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
             unsummoned_pet_with_mana: &|_| false,
+            unsummoned_pet_max_mana: &|_| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -5672,6 +5786,7 @@ mod tests {
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
             unsummoned_pet_with_mana: &|_| false,
+            unsummoned_pet_max_mana: &|_| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,

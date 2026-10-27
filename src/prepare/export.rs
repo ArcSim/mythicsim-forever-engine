@@ -874,8 +874,13 @@ pub(crate) fn export_state(
     let target = env.encounter.targets[0];
     let player = env.player;
     // Go `prepare`: stats against a mob type are the fight's, which prepared v2 does not carry.
+    // Go reads only the bonus against the target's own type; under Forever's rules a bonus
+    // against another type is inert.
+    let target_type = env.sim.unit(target).mob_type.clone();
+    let forever = env.sim.rules == super::sim::Rules::Forever;
     for (mob_type, bonus) in &env.attack_table(player, target).mob_type_bonus_stats {
-        if !bonus.is_zero() {
+        let inert = forever && *mob_type != target_type;
+        if !bonus.is_zero() && !inert {
             unrepresented.push(format!(
                 "mob type bonus stats for {mob_type} are unsupported"
             ));
@@ -1165,7 +1170,19 @@ pub(crate) fn export_state(
     if let Some(squawk) = env.sim.get_aura(player, "Battle Squawk") {
         if env.sim.aura(squawk).expires < env.encounter.duration + env.encounter.duration_variation
         {
-            unrepresented.push("a fight that outlasts Battle Squawk is unsupported".to_string());
+            // Forever's rules run its expiry: the stacks fall to none and take their melee speed
+            // back, 5% each, as Go's OnStacksChange does.
+            if env.sim.rules == super::sim::Rules::Forever {
+                if let Some(list) = prepared["effects"].as_array_mut() {
+                    list.push(json!({
+                        "kind": "battle_squawk", "aura": env.sim.aura(squawk).label,
+                        "per_stack": 1.05,
+                    }));
+                }
+            } else {
+                unrepresented
+                    .push("a fight that outlasts Battle Squawk is unsupported".to_string());
+            }
         }
         let pet_follows = env.sim.unit(player).pets.iter().any(|pet| {
             env.sim

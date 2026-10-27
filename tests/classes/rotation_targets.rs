@@ -85,12 +85,14 @@ fn a_class_not_checked_against_casts_at_other_targets_is_refused() {
     );
 }
 
+/// A Searing Pain (17923) at another target would brand it, which Rust leaves on the first
+/// target; a Shadow Bolt (25307) brands nothing and runs.
 #[test]
 fn demonic_brand_stays_on_the_first_target() {
     let refusals = refusal_codes(with_items(
         "production-demonology-warlock",
         3,
-        vec![cast_at(25307, SECOND())],
+        vec![cast_at(17923, SECOND())],
     ));
     assert!(
         refusals.contains(&(
@@ -99,6 +101,11 @@ fn demonic_brand_stays_on_the_first_target() {
         )),
         "{refusals:?}"
     );
+    assert_supported(with_items(
+        "production-demonology-warlock",
+        3,
+        vec![cast_at(25307, SECOND())],
+    ));
 }
 
 /// A channel with a dot on its target keeps the dot aura on the first target; Evocation's

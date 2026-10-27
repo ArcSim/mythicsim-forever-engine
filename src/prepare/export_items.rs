@@ -430,7 +430,21 @@ pub(crate) fn use_item_effect(
     if let Some(effect) = env.agent.class_item_use_effect(env, spell, item) {
         return Some(vec![effect]);
     }
+    // Forever's rules: a heal over time on use (Orb of Soran'ruk) has no runtime behavior. Go
+    // files it as a survival cooldown, which the automatic use never casts without timings or a
+    // defensive health threshold; the gate refuses a rotation or a threshold that reaches it.
+    if env.sim.rules == super::sim::Rules::Forever && periodic_heal_on_use(item) {
+        return Some(Vec::new());
+    }
     Some(energize_on_use_effects(env, spell, item, unrepresented))
+}
+
+/// Whether the item's one use effect is a client heal over time on the wearer.
+fn periodic_heal_on_use(item: i32) -> bool {
+    only_on_use_effect(item).is_some_and(|effect| {
+        let heal = find(effect.i32("buff_id")).proc_heal_effect();
+        !heal.is_nil() && heal.aura == dbcenums::A_PERIODIC_HEAL
+    })
 }
 
 /// The default case of the item loop: shared.NewSpellDataEnergizeOnUse: an item use spell that
@@ -453,9 +467,21 @@ fn energize_on_use_effects(
                 }
                 let row = find(item_effect.i32("buff_id"));
                 let effect = row.proc_energize_effect();
-                if effect.is_nil() || effect.misc != dbcenums::POWER_MANA {
-                    continue;
-                }
+                // Go `energizedBarOf`: mana, rage or energy, on a character with that bar.
+                let unit = env.sim.unit(env.player);
+                let power = match effect.misc {
+                    _ if effect.is_nil() => continue,
+                    dbcenums::POWER_MANA => None,
+                    dbcenums::POWER_RAGE if unit.rage_bar.enabled => Some("rage"),
+                    dbcenums::POWER_ENERGY if unit.energy_bar.enabled => Some("energy"),
+                    _ => continue,
+                };
+                // Rage is stated in tenths.
+                let scale = if dbcenums::power_in_tenths(effect.misc) {
+                    0.1
+                } else {
+                    1.0
+                };
                 let periodic = effect.aura == dbcenums::A_PERIODIC_ENERGIZE;
                 let mut ticks = 1.0;
                 if periodic {
@@ -469,11 +495,14 @@ fn energize_on_use_effects(
                 found = true;
                 let mut energize = json!({
                     "kind": "energize_on_use", "item_id": item, "spell_id": row.id,
-                    "average": effect.average(level), "variance": effect.variance,
-                    "whole": effect.max(level) * ticks,
+                    "average": effect.average(level) * scale, "variance": effect.variance,
+                    "whole": effect.max(level) * ticks * scale,
                 });
                 if periodic {
                     energize["periodic"] = json!(true);
+                }
+                if let Some(power) = power {
+                    energize["power"] = json!(power);
                 }
                 effects.push(energize);
             }
@@ -2249,6 +2278,59 @@ pub(crate) fn gear_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
                     "metrics_action_id": json!({"spell_id": 450589}),
                 }));
             }
+        }
+    }
+    // classic items_weapons.go Runeblade of Baron Rivendare, under Forever's rules (Go's exporter
+    // does not run the regeneration): Unholy Aura gives 60 health every 5 seconds while it holds.
+    if let Some(aura) =
+        aura_named(env, "Unholy Aura").filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        effects.push(json!({
+            "kind": "health_regen_aura", "aura": env.sim.aura(aura).label,
+            "period_ns": 5 * super::sim::SECOND, "health": 60.0,
+            "metrics_action_id": json!({"spell_id": 17625}),
+        }));
+    }
+    // warrior items.go Battlegear of Heroism 4 piece, under Forever's rules (Go's exporter leaves
+    // its listener unclaimed): Warrior's Resolve, as Battlegear of Valor's.
+    if let Some(set) = aura_named(env, "Battlegear of Heroism 4P")
+        .filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        match env.sim.aura(set).dpm.as_ref() {
+            None => unrepresented.push("Battlegear of Heroism 4P has no proc manager".to_string()),
+            Some(dpm) => {
+                let rage = if env.sim.unit(env.player).rage_bar.enabled {
+                    10.0
+                } else {
+                    0.0
+                };
+                effects.push(json!({
+                    "kind": "health_rage_proc", "trigger_aura": env.sim.aura(set).label,
+                    "rng_label": "Warrior's Resolve",
+                    "chances": dpm_chances(env, dpm, |spell| {
+                        spell.proc_mask.matches(ProcMask::MELEE) && !spell.flags.matches(SpellFlag::PROC)
+                    }),
+                    "heal_min": 88.0, "heal_max": 133.0, "rage": rage,
+                    "metrics_action_id": json!({"spell_id": 450589}),
+                }));
+            }
+        }
+    }
+    // rogue items.go Darkmantle Armor 4 piece, Rogue Armor Energize, under Forever's rules (Go's
+    // exporter leaves the listener unclaimed): landed white hits roll a legacy one proc a minute
+    // manager under the trigger's name; a batch window later a player with an energy bar gains
+    // 20 energy.
+    if let Some(set) = aura_named(env, "Darkmantle Armor 4P")
+        .filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        match env.sim.aura(set).dpm.as_ref() {
+            None => unrepresented.push("Darkmantle Armor 4P has no proc manager".to_string()),
+            Some(dpm) => effects.push(json!({
+                "kind": "energy_proc", "trigger_aura": env.sim.aura(set).label,
+                "rng_label": "Rogue Armor Energize",
+                "chances": dpm_chances(env, dpm, |spell| !spell.flags.matches(SpellFlag::PROC)),
+                "energy": 20.0, "metrics_action_id": json!({"spell_id": 27787}),
+            })),
         }
     }
     // classic items_trinkets.go Darkmoon Card: Heroism: landed melee hits roll a legacy two procs a

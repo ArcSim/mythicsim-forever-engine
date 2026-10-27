@@ -230,13 +230,19 @@ fn several_targets(_prepared: &PreparedV2, reachable: &[&Spell]) -> Vec<String> 
 }
 
 /// A cast aimed at another target lands its spell, its curse and its debuffs there as in Go,
-/// except the debuff Demonology's pet attack leaves, which Rust applies to the first target.
-fn other_target_casts(prepared: &PreparedV2, _spells: &[&Spell]) -> Vec<String> {
-    if prepared
-        .effects
-        .iter()
-        .any(|effect| effect.kind() == "demonic_brand")
-    {
+/// except the brand a Searing Pain leaves for Demonology's pet attack, which Rust applies to
+/// the first target.
+fn other_target_casts(prepared: &PreparedV2, spells: &[&Spell]) -> Vec<String> {
+    let brands = prepared.effects.iter().any(|effect| match effect {
+        Effect::DemonicBrand { trigger_spells, .. } => spells.iter().any(|&spell| {
+            trigger_spells
+                .iter()
+                .filter_map(|&position| prepared.player.spells.get(position))
+                .any(|trigger| std::ptr::eq(trigger, spell))
+        }),
+        _ => false,
+    });
+    if brands {
         return vec!["Demonic Brand lands on the first target only".into()];
     }
     Vec::new()

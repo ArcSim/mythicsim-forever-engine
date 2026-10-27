@@ -256,13 +256,20 @@ fn apply_hand_written_item(env: &mut Environment, item: i32) -> Result<bool, Ref
     match item {
         11815 => hand_of_justice(env),
         23570 => jom_gabbar(env),
-        // The aura raises the attack tables' mob type bonus stats, which the exporter lists as
-        // unrepresented, so the request is not Rust's to prepare.
+        // The aura raises the attack tables' mob type bonus stats against Undead and Demons,
+        // which the exporter lists as unrepresented, so the request is not Rust's to prepare.
+        // Under Forever's rules a target of another type never takes the bonus (Go reads the
+        // target's own type), so the item does nothing there.
         23206 | 23207 => {
-            return Err(Refusal::new(
-                "item_effect",
-                format!("item {item} adds mob type bonus stats, which are not prepared"),
-            ))
+            let target = env.encounter.targets[0];
+            let mob_type = env.sim.unit(target).mob_type.as_str();
+            let applies = matches!(mob_type, "MobTypeUndead" | "MobTypeDemon");
+            if env.sim.rules != super::sim::Rules::Forever || applies {
+                return Err(Refusal::new(
+                    "item_effect",
+                    format!("item {item} adds mob type bonus stats, which are not prepared"),
+                ));
+            }
         }
         2801 => blade_of_hanna(env),
         // items_70425.go: Lord Sakrasis' Scepter's Holy Smite states no rate, so Go registers it

@@ -246,13 +246,20 @@ impl Hunter {
             }
             return Some(pet_row_strike(id, row, "melee_special"));
         }
-        // newThunderstomp: a cleave of magic hits, so one hit on a single target.
+        // newThunderstomp: a cleave of magic hits, so one hit on a single target. Forever's rules
+        // describe the cleave on more: the row's targets at most, each a roll of its own.
         let thunderstomp = data.thunderstomp_triggered.highest();
         if thunderstomp.id == id {
-            if active_target_count(sim) > 1 {
-                return None;
+            let mut strike = pet_row_strike(id, thunderstomp, "magic");
+            let targets = active_target_count(sim);
+            if targets > 1 {
+                if sim.rules != crate::prepare::sim::Rules::Forever {
+                    return None;
+                }
+                let cap = i32::from(thunderstomp.max_targets);
+                strike["cleave_targets"] = json!(if cap > 0 { cap } else { targets as i32 });
             }
-            return Some(pet_row_strike(id, thunderstomp, "magic"));
+            return Some(strike);
         }
         // newSwipe: its cast condition needs three active targets, and it cleaves them, each a
         // roll of the row on the melee special table. Forever's rules describe the cleave; Go's

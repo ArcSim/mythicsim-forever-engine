@@ -159,6 +159,8 @@ pub(crate) enum PetAbility {
         magic: bool,
         /// A client row's average and variance.
         roll: Option<(f64, f64)>,
+        /// The targets a cleave hits at most, one for a single hit.
+        cleave: usize,
     },
     /// Go `newPetBleed`: a hit roll without damage, then the dot when it landed.
     Bleed {
@@ -203,12 +205,14 @@ impl PetAbility {
                 outcome,
                 average,
                 variance,
+                cleave_targets,
                 ..
             } => Some(PetAbility::Strike {
                 min: *min_damage,
                 max: *max_damage,
                 draws: *draws,
                 roll: average.zip(*variance),
+                cleave: cleave_targets.map_or(Some(1), |n| usize::try_from(n).ok())?,
                 magic: match outcome.as_str() {
                     "melee_special" => false,
                     "magic" => true,
@@ -265,24 +269,29 @@ impl PetAbility {
                 draws,
                 magic,
                 roll,
+                cleave,
             } => {
-                // Go Effect.Roll for a client row, Simulation.Roll for a literal range.
-                let base = match roll {
-                    Some((average, variance)) => fight.effect_roll(average, variance),
-                    None if draws => fight.go_roll(min, max),
-                    None => min,
-                };
-                let result = if magic {
-                    fight.calc_damage(spell, target, base)
-                } else {
-                    fight.calc_physical_damage(
-                        spell,
-                        target,
-                        base,
-                        PhysicalOutcome::MeleeSpecialHitAndCrit { count: true },
-                    )
-                };
-                fight.deal_damage(spell, result, false);
+                // Go `CalcAndDealCleaveDamageWithVariance` for a cleave: each target's roll is
+                // dealt before the next is rolled; one target for a single hit.
+                for side in fight.cleave_targets(target, cleave.max(1)) {
+                    // Go Effect.Roll for a client row, Simulation.Roll for a literal range.
+                    let base = match roll {
+                        Some((average, variance)) => fight.effect_roll(average, variance),
+                        None if draws => fight.go_roll(min, max),
+                        None => min,
+                    };
+                    let result = if magic {
+                        fight.calc_damage(spell, side, base)
+                    } else {
+                        fight.calc_physical_damage(
+                            spell,
+                            side,
+                            base,
+                            PhysicalOutcome::MeleeSpecialHitAndCrit { count: true },
+                        )
+                    };
+                    fight.deal_damage(spell, result, false);
+                }
             }
             PetAbility::Bleed { ranged, .. } => {
                 let table = if ranged {

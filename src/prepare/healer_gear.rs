@@ -759,19 +759,23 @@ const FURIOUS_STORM: &[&str] = &["The Elements 5P", "The Five Thunders 4P"];
 
 /// The stat auras this module's procs activate, for the stat aura combinations.
 pub(crate) fn stat_auras(env: &Environment) -> Vec<String> {
-    if !applies(env) {
-        return if env.rules == Rules::Forever {
-            stacking_stat_auras(env)
-        } else {
-            Vec::new()
-        };
-    }
     let unit = env.player;
+    let furious_storm = env.rules == Rules::Forever
+        && FURIOUS_STORM
+            .iter()
+            .any(|set| env.sim.get_aura(unit, set).is_some());
+    if !applies(env) {
+        if env.rules != Rules::Forever {
+            return Vec::new();
+        }
+        let mut labels = stacking_stat_auras(env);
+        if furious_storm {
+            labels.push("The Furious Storm".to_string());
+        }
+        return labels;
+    }
     let mut labels = Vec::new();
-    if FURIOUS_STORM
-        .iter()
-        .any(|set| env.sim.get_aura(unit, set).is_some())
-    {
+    if furious_storm {
         labels.push("The Furious Storm".to_string());
     }
     for label in [UNSTABLE_POWER, EPIPHANY] {
@@ -800,7 +804,13 @@ fn stacking_stat_auras(env: &Environment) -> Vec<String> {
 /// The healer gear's listeners: mana on cast and The Furious Storm.
 pub(crate) fn export_effects(env: &Environment, unrepresented: &mut Vec<String>) -> Vec<Value> {
     if !applies(env) {
-        return Vec::new();
+        // The Furious Storm acts on damage spells too, so Forever's rules describe it for any
+        // spec.
+        return if env.rules == Rules::Forever {
+            furious_storm_effects(env)
+        } else {
+            Vec::new()
+        };
     }
     let unit = env.player;
     let book = &env.sim.unit(unit).spellbook;
@@ -935,6 +945,15 @@ pub(crate) fn export_effects(env: &Environment, unrepresented: &mut Vec<String>)
             "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
         }));
     }
+    effects.extend(furious_storm_effects(env));
+    effects
+}
+
+/// The Furious Storm (The Elements 5, The Five Thunders 4): a damage or healing spell's cast
+/// has a 4% chance at 65 spell power for 10 seconds.
+fn furious_storm_effects(env: &Environment) -> Vec<Value> {
+    let unit = env.player;
+    let mut effects = Vec::new();
     for set in FURIOUS_STORM {
         let (Some(trigger), Some(aura)) = (
             env.sim.get_aura(unit, set),

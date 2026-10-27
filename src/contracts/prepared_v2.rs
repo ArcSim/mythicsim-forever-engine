@@ -1704,6 +1704,14 @@ impl ExternalActivation {
     }
 }
 
+/// The bar other than mana an item use's gain fills.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum EnergizedPower {
+    Rage,
+    Energy,
+}
+
 /// Behavior Rust must execute, with the parameters Go keeps in closures. Each variant
 /// names the Go source that defines it in docs/prepared-v2.md.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -2650,6 +2658,32 @@ pub enum Effect {
         rage: f64,
         metrics_action_id: ActionId,
     },
+    /// classic items_weapons.go Runeblade of Baron Rivendare's Unholy Aura (Forever's rules): its
+    /// gain starts a periodic action that gives the wearer `health` every `period_ns`, which its
+    /// expiry cancels.
+    HealthRegenAura {
+        aura: String,
+        period_ns: i64,
+        health: f64,
+        metrics_action_id: ActionId,
+    },
+    /// core/battle_squawk.go (Forever's rules): the party's squawks, up from the reset in the
+    /// exported melee state, take their melee speed back as their stacks fall to none at the
+    /// aura's expiry, `per_stack` each.
+    BattleSquawk {
+        aura: String,
+        per_stack: f64,
+    },
+    /// Rogue items.go Darkmantle Armor (4), Rogue Armor Energize (Forever's rules): landed hits
+    /// roll each spell's chance from the set's proc manager under the label; a batch window
+    /// later the handler gives `energy` to a player with an energy bar.
+    EnergyProc {
+        trigger_aura: String,
+        rng_label: String,
+        chances: Vec<SpellChance>,
+        energy: f64,
+        metrics_action_id: ActionId,
+    },
     /// common/forever items_weapons.go Bashguuder and Rivenspike: a weapon proc whose handler,
     /// a batch window later, stacks the target's Puncture Armor; each stack count sets the
     /// target's armor change, as Go measures it.
@@ -2893,6 +2927,10 @@ pub enum Effect {
         /// Whether it has a mana bar, which gives it Go's time to out of mana.
         #[serde(default, skip_serializing_if = "std::ops::Not::not")]
         mana_bar: bool,
+        /// Under Forever's rules, the maximum mana of a pet with a mana bar, which Go's reset
+        /// fills and nothing spends: what a rotation's `currentMana` of the pet reads.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        max_mana: Option<f64>,
     },
     /// The Orc racial Shatter Curse: a survival cooldown whose aura multiplies the player's
     /// damage taken of the named schools. Go autocasts it only below a nonzero defensive
@@ -3192,6 +3230,9 @@ pub enum Effect {
         whole: f64,
         #[serde(default, skip_serializing_if = "is_false")]
         periodic: bool,
+        /// The bar the gain fills; none for mana.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        power: Option<EnergizedPower>,
     },
     /// A stat proc common/shared/shared_utils.go applySpellDataProc builds from client rows: a
     /// listener on the spells it hears through `callbacks`, at a chance behind the trigger
@@ -3976,6 +4017,12 @@ pub enum Effect {
         spell_id: i32,
         base_damage: f64,
     },
+    /// Pummel (Forever's rules): a fixed client base on the special hit table, refunded on a
+    /// miss, in Berserker Stance.
+    Pummel {
+        spell_id: i32,
+        base_damage: f64,
+    },
     /// Bloodrage: instant and periodic rage for a share of base health.
     Bloodrage {
         spell_id: i32,
@@ -4646,6 +4693,10 @@ pub enum Effect {
         average: Option<f64>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         variance: Option<f64>,
+        /// Forever's rules: a cleave that hits the target and the next ones up to this many,
+        /// each a roll of its own, as Go `CalcAndDealCleaveDamageWithVariance` does.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        cleave_targets: Option<i32>,
     },
     /// A hunter pet ability whose landed hit applies a dot: the hit's table, `melee_special` or
     /// `ranged`, the dot's tick base and its tick outcome.
@@ -4953,6 +5004,9 @@ impl Effect {
             Effect::SpellDataAbsorbProc { .. } => "spell_data_absorb_proc",
             Effect::HealOnUse { .. } => "heal_on_use",
             Effect::HealthRageProc { .. } => "health_rage_proc",
+            Effect::EnergyProc { .. } => "energy_proc",
+            Effect::BattleSquawk { .. } => "battle_squawk",
+            Effect::HealthRegenAura { .. } => "health_regen_aura",
             Effect::DamageOnUse { .. } => "damage_on_use",
             Effect::ArmorDebuffProc { .. } => "armor_debuff_proc",
             Effect::SunderArmorRamp { .. } => "sunder_armor_ramp",
@@ -5114,6 +5168,7 @@ impl Effect {
             Effect::Taunt { .. } => "taunt",
             Effect::IntimidatingShout { .. } => "intimidating_shout",
             Effect::ConcussionBlow { .. } => "concussion_blow",
+            Effect::Pummel { .. } => "pummel",
             Effect::Bloodthrill { .. } => "bloodthrill",
             Effect::WeaponmasterSword { .. } => "weaponmaster_sword",
             Effect::Revenge { .. } => "revenge",

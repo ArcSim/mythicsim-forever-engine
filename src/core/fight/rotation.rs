@@ -32,17 +32,21 @@ pub(crate) enum Act {
     /// `castFriendlySpell` at the player.
     Cast(SpellId, Side),
     Autocast,
-    /// Go `APLActionStrictSequence`: its casts and the next one to run.
+    /// Go `APLActionStrictSequence`: its casts, the units they are cast on, and the next one
+    /// to run.
     StrictSequence {
         spells: Vec<SpellId>,
+        targets: Vec<Side>,
         /// Each step's own condition, `None` for one without.
         conditions: Vec<Option<Rc<Cond>>>,
         next: usize,
     },
-    /// Go `APLActionSequence`: its name, its casts and the next one to run.
+    /// Go `APLActionSequence`: its name, its casts, the units they are cast on, and the next
+    /// one to run.
     Sequence {
         name: Rc<str>,
         spells: Vec<SpellId>,
+        targets: Vec<Side>,
         /// Each step's own condition.
         conditions: Vec<Option<Rc<Cond>>>,
         next: usize,
@@ -156,6 +160,9 @@ pub(crate) enum PrepullAct {
     Move(f64),
     /// Go `APLActionMoveDuration`: the player moves for the duration.
     MoveDuration(i64),
+    /// Go `APLActionGroupReference.Execute` of a group of moves: the player runs to the range
+    /// unless it is already moving or casting.
+    GroupMove(f64),
     /// Go `APLActionCancelAura`.
     CancelAura(AuraRef),
     /// Go `APLActionActivateAuraWithStacks`, its stacks capped at the aura's maximum.
@@ -858,6 +865,16 @@ impl<A: Agent> Fight<A> {
             ParsedAction::Move(Value::Const(range)) => {
                 Some((prepull.do_at_ns, PrepullAct::Move(range.float)))
             }
+            ParsedAction::PrepullGroupMove(range) => {
+                let mut range = range;
+                while let Value::Variable { resolved, .. } = range {
+                    range = resolved;
+                }
+                let Value::Const(range) = range else {
+                    return None;
+                };
+                Some((prepull.do_at_ns, PrepullAct::GroupMove(range.float)))
+            }
             ParsedAction::MoveDuration(Value::Const(duration)) => Some((
                 prepull.do_at_ns,
                 PrepullAct::MoveDuration(duration.duration_ns),
@@ -905,6 +922,13 @@ impl<A: Agent> Fight<A> {
                     .get(pet)
                     .is_some_and(|label| self.pet_side(label).is_none())
                     && self.pet_agent_mana_bars.get(pet).copied().unwrap_or(false)
+            },
+            unsummoned_pet_max_mana: &|pet: usize| {
+                let label = self.pet_agent_labels.get(pet)?;
+                if self.pet_side(label).is_some() {
+                    return None;
+                }
+                self.pet_agent_max_mana.get(pet).copied().flatten()
             },
             item_swap: self.item_swap.is_some(),
             bars: self.rotation_bars(),
@@ -1038,13 +1062,15 @@ impl<A: Agent> Fight<A> {
         max_dots.min(targets)
     }
 
-    /// Go `newActionCastSpell` of a sequence's step: the spell the step casts, none for an
-    /// unknown spell or a target that names no unit. The runtime casts a step on the first
-    /// target, which the gate checks.
-    fn step_spell(&self, step: &Step) -> Option<SpellId> {
+    /// Go `newActionCastSpell` of a sequence's step: the spell the step casts and the unit it is
+    /// cast on, none for an unknown spell or a target that names no unit.
+    fn step_spell(&self, step: &Step) -> Option<(SpellId, Side)> {
         let spell = self.apl_cast_spell(&step.spell)?;
-        step.target.resolve(self.targets.len())?;
-        Some(spell)
+        let side = match step.target.resolve(self.targets.len())? {
+            Unit::Player => Side::Player,
+            Unit::Target(position) => Side::target(position),
+        };
+        Some((spell, side))
     }
 
     /// Go's action constructors: the action a parsed one builds, or `None` where Go builds none.
@@ -1086,9 +1112,12 @@ impl<A: Agent> Fight<A> {
             // lacks drops the whole action (ElliotWood/Forever#625).
             ParsedAction::StrictSequence(steps) => {
                 // Go builds every step before it looks for a missing one.
-                let spells: Vec<Option<SpellId>> =
+                let casts: Vec<Option<(SpellId, Side)>> =
                     steps.iter().map(|step| self.step_spell(step)).collect();
-                let spells = spells.into_iter().collect::<Option<Vec<SpellId>>>()?;
+                let casts = casts
+                    .into_iter()
+                    .collect::<Option<Vec<(SpellId, Side)>>>()?;
+                let (spells, targets): (Vec<SpellId>, Vec<Side>) = casts.into_iter().unzip();
                 if spells.is_empty() {
                     return None;
                 }
@@ -1105,6 +1134,7 @@ impl<A: Agent> Fight<A> {
                 }
                 Act::StrictSequence {
                     spells,
+                    targets,
                     conditions,
                     next: 0,
                 }
@@ -1113,9 +1143,10 @@ impl<A: Agent> Fight<A> {
             // condition that is a constant false), and the action when none remain.
             ParsedAction::Sequence { name, steps } => {
                 let mut spells = Vec::with_capacity(steps.len());
+                let mut targets = Vec::with_capacity(steps.len());
                 let mut conditions = Vec::with_capacity(steps.len());
                 for step in steps {
-                    let Some(spell) = self.step_spell(step) else {
+                    let Some((spell, target)) = self.step_spell(step) else {
                         continue;
                     };
                     let condition = match compile_condition(step.condition.as_ref(), lookup) {
@@ -1126,6 +1157,7 @@ impl<A: Agent> Fight<A> {
                         }
                     };
                     spells.push(spell);
+                    targets.push(target);
                     conditions.push(condition);
                 }
                 if spells.is_empty() {
@@ -1134,6 +1166,7 @@ impl<A: Agent> Fight<A> {
                 Act::Sequence {
                     name: Rc::from(name.as_str()),
                     spells,
+                    targets,
                     conditions,
                     next: 0,
                 }
@@ -1285,6 +1318,8 @@ impl<A: Agent> Fight<A> {
             // Go `newActionMove` and `newActionMoveDuration` always build the action. A value
             // that gives none panics where Go reads it, which the gate refuses.
             ParsedAction::Move(range) => Act::Move(Rc::new(compile_raw_value(range, lookup)?)),
+            // Parsed only as a prepull action, which `prepull_act` builds.
+            ParsedAction::PrepullGroupMove(_) => return None,
             ParsedAction::MoveDuration(duration) => {
                 Act::MoveDuration(Rc::new(compile_raw_value(duration, lookup)?))
             }
@@ -2668,9 +2703,10 @@ impl<A: Agent> Fight<A> {
         let (spell, target, condition) = match self.rotation[item].action {
             Act::StrictSequence {
                 ref spells,
+                ref targets,
                 ref conditions,
                 next,
-            } => (spells[next], Side::Target, conditions[next].clone()),
+            } => (spells[next], targets[next], conditions[next].clone()),
             Act::StrictMultidot {
                 spell,
                 ref ready,
@@ -2766,13 +2802,16 @@ impl<A: Agent> Fight<A> {
             Ready::SequenceStep(item) => {
                 self.apl.in_sequence = true;
                 let Act::Sequence {
-                    ref spells, next, ..
+                    ref spells,
+                    ref targets,
+                    next,
+                    ..
                 } = self.rotation[item].action
                 else {
                     unreachable!("item is a sequence");
                 };
-                let spell = spells[next];
-                self.cast_or_queue(spell, Side::Target);
+                let (spell, target) = (spells[next], targets[next]);
+                self.cast_or_queue(spell, target);
                 if self.can_queue_spell() {
                     self.advance_sequence(item);
                 } else {

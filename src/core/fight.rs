@@ -36,6 +36,7 @@ mod heal_proc;
 pub(crate) mod healer_gear;
 pub(crate) mod healing;
 pub(crate) mod heals;
+pub(crate) mod health_regen;
 mod log;
 pub(crate) mod melee;
 pub(crate) mod metrics;
@@ -64,7 +65,9 @@ pub(crate) use metrics::{ActionTotals, FightReport};
 pub(crate) use spell_mod::{ModId, ModKind};
 
 use crate::{
-    contracts::prepared_v2::{ActionId, Effect, ExclusiveMembership, PreparedV2, Schools},
+    contracts::prepared_v2::{
+        ActionId, Effect, EnergizedPower, ExclusiveMembership, PreparedV2, Schools,
+    },
     core::{
         queue::{Handle, PendingQueue},
         rng::SimRng,
@@ -493,6 +496,7 @@ pub(crate) enum SpellBehavior<S> {
         whole: f64,
         /// Each tick of the spell's self hot gains a roll, rather than the cast.
         periodic: bool,
+        bar: EnergizedBar,
     },
     /// Go racials.go Touch of the Grave's drain: shadow damage from the caster's maximum
     /// health, healing the caster for the damage dealt.
@@ -1363,6 +1367,15 @@ pub(crate) struct MajorCooldown {
     pub(crate) uses: usize,
 }
 
+/// Go spell_data_energize.go `energizedBar`: the bar an item use's gain fills, with the item's
+/// own metrics for rage and energy.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) enum EnergizedBar {
+    Mana,
+    Rage(usize),
+    Energy(usize),
+}
+
 /// Go `proto.ResourceType` of a resource metric.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum ResourceKind {
@@ -1522,6 +1535,8 @@ pub(crate) enum Action {
     PrepullMove(f64),
     /// A rotation prepull action: Go `APLActionMoveDuration.Execute`.
     PrepullMoveDuration(i64),
+    /// A rotation prepull action: Go `APLActionGroupReference.Execute` of a group of moves.
+    PrepullGroupMove(f64),
     /// A tick of the raid's Sunder Armor ramp on a target, by its position, with the ticks
     /// done so far.
     SunderTick(u8, i32),
@@ -1534,6 +1549,12 @@ pub(crate) enum Action {
     },
     /// The party Windfury Totem's periodic refresh.
     WindfuryRefresh,
+    /// A tick of a regenerating aura's periodic action, by its position and the generation of
+    /// the gain that started it.
+    HealthRegenTick {
+        regen: usize,
+        generation: u32,
+    },
     /// A tick of an aura's periodic stack adder, with the ticks left including this one.
     StackTick {
         aura: AuraRef,
@@ -1816,6 +1837,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) pet_agent_labels: Vec<String>,
     /// Whether each of those pets has a mana bar, in the same order.
     pub(crate) pet_agent_mana_bars: Vec<bool>,
+    /// The full mana an inert one of those pets states, in the same order.
+    pub(crate) pet_agent_max_mana: Vec<Option<f64>>,
     /// Go `APLRotation.curValidations` while [`Self::presentation`] builds the rotation's
     /// lines again to collect Go's validation messages; `None` the rest of the time.
     pub(crate) checks: std::cell::RefCell<Option<Vec<rotation_checks::Check>>>,
@@ -1874,6 +1897,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) stat_procs: Vec<StatProc>,
     /// Gear procs that heal and give rage, by their aura's position.
     pub(crate) health_rage_procs: Vec<gear_procs::HealthRageProc>,
+    pub(crate) energy_procs: Vec<gear_procs::EnergyProc>,
+    pub(crate) health_regens: Vec<health_regen::HealthRegen>,
     /// Gear procs that stack an armor debuff on the target, by their aura's position.
     pub(crate) armor_debuff_procs: Vec<gear_procs::ArmorDebuffProc>,
     /// Spell data stat procs, by their position among the effects of their kind.
@@ -2630,13 +2655,38 @@ impl<A: Agent> Fight<A> {
                             variance,
                             whole,
                             periodic,
+                            power,
                             ..
-                        } if *item_id == item => Some(SpellBehavior::EnergizeOnUse {
-                            average: *average,
-                            variance: *variance,
-                            whole: *whole,
-                            periodic: *periodic,
-                        }),
+                        } if *item_id == item => {
+                            // Go `energizedBarOf`: the item's own metrics on a rage or energy
+                            // bar, registered with the cooldown.
+                            let id = ActionId {
+                                item_id: item,
+                                ..ActionId::default()
+                            };
+                            let bar = match power {
+                                None => EnergizedBar::Mana,
+                                Some(EnergizedPower::Rage) => EnergizedBar::Rage(resource(
+                                    Side::Player,
+                                    id,
+                                    false,
+                                    ResourceKind::Rage,
+                                )),
+                                Some(EnergizedPower::Energy) => EnergizedBar::Energy(resource(
+                                    Side::Player,
+                                    id,
+                                    false,
+                                    ResourceKind::Energy,
+                                )),
+                            };
+                            Some(SpellBehavior::EnergizeOnUse {
+                                average: *average,
+                                variance: *variance,
+                                whole: *whole,
+                                periodic: *periodic,
+                                bar,
+                            })
+                        }
                         Effect::SpellCostAuraOnUse { item_id, aura, .. }
                         | Effect::SpellModAuraOnUse { item_id, aura, .. }
                         | Effect::ShieldOnHeal { item_id, aura, .. }
@@ -3374,6 +3424,15 @@ impl<A: Agent> Fight<A> {
                         ranged,
                         cast,
                     }
+                } else if let Some(per_stack) = effects.iter().find_map(|effect| match effect {
+                    Effect::BattleSquawk { aura, per_stack }
+                        if side == Side::Player && *aura == exported.label =>
+                    {
+                        Some(*per_stack)
+                    }
+                    _ => None,
+                }) {
+                    AuraBehavior::BattleSquawk { per_stack }
                 } else if let Some((multiplier, schools)) =
                     effects.iter().find_map(|effect| match effect {
                         Effect::ShatterCurse {
@@ -4024,6 +4083,8 @@ impl<A: Agent> Fight<A> {
             absorb_procs: Vec::new(),
             stat_procs: Vec::new(),
             health_rage_procs: Vec::new(),
+            energy_procs: Vec::new(),
+            health_regens: Vec::new(),
             armor_debuff_procs: Vec::new(),
             eureka: None,
             pets: pet::inert_pets(effects)?,
@@ -4032,6 +4093,7 @@ impl<A: Agent> Fight<A> {
             pet_agent_auras: pet::pet_agent_auras(prepared),
             pet_agent_labels: pet::pet_agent_labels(prepared),
             pet_agent_mana_bars: pet::pet_agent_mana_bars(prepared),
+            pet_agent_max_mana: pet::pet_agent_max_mana(prepared),
             checks: std::cell::RefCell::new(None),
             presentation: None,
             heartbeat_offset: 0,
@@ -4922,6 +4984,7 @@ impl<A: Agent> Fight<A> {
             }
         }
         fight.bind_gear_procs(effects)?;
+        fight.bind_health_regens(effects)?;
         fight.bind_on_use_damage(effects);
         fight.autos.melee = prepared.melee.auto_swing_melee;
         fight.autos.dual_wielding = prepared.melee.dual_wielding;
@@ -5459,6 +5522,7 @@ impl<A: Agent> Fight<A> {
                 }
                 rotation::PrepullAct::TriggerIcd(aura) => Action::PrepullTriggerIcd(aura),
                 rotation::PrepullAct::Move(range) => Action::PrepullMove(range),
+                rotation::PrepullAct::GroupMove(range) => Action::PrepullGroupMove(range),
                 rotation::PrepullAct::MoveDuration(duration) => {
                     Action::PrepullMoveDuration(duration)
                 }
@@ -5928,6 +5992,16 @@ impl<A: Agent> Fight<A> {
                 self.move_to(Side::Player, range);
             }
             Action::PrepullMoveDuration(duration) => self.move_duration(Side::Player, duration),
+            // Go `APLActionMove.IsReady` before the pull: not moving and no cast in progress.
+            Action::PrepullGroupMove(range) => {
+                if !self.player.moving && self.player.hardcast.expires < self.now {
+                    if self.log.is_some() {
+                        let line = format!("[DEBUG] Moving to {range:.1} yards");
+                        self.player_log(&line);
+                    }
+                    self.move_to(Side::Player, range);
+                }
+            }
             Action::SunderTick(target, done) => self.sunder_tick(target, done),
             Action::DeathCheck => self.death_check(),
             Action::FixedUptime { index, first } => self.fixed_uptime_roll(index, first),
@@ -5964,6 +6038,9 @@ impl<A: Agent> Fight<A> {
                 period,
                 ticks_left,
             } => self.stack_tick(aura, period, ticks_left),
+            Action::HealthRegenTick { regen, generation } => {
+                self.health_regen_tick(regen, generation)
+            }
             Action::WindfuryRefresh => {
                 let windfury = self.windfury.as_ref().expect("Windfury Totem is bound");
                 let (totem, period) = (windfury.totem, windfury.period);

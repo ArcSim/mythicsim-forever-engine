@@ -85,27 +85,35 @@ fn a_class_not_checked_against_casts_at_other_targets_is_refused() {
     );
 }
 
-/// A Searing Pain (17923) at another target would brand it, which Rust leaves on the first
-/// target; a Shadow Bolt (25307) brands nothing and runs.
+/// A Searing Pain (17923) at another target brands that target, whose own charges the demon's
+/// hits on it spend, as Go's `DemonicBrandAuras` does.
 #[test]
-fn demonic_brand_stays_on_the_first_target() {
-    let refusals = refusal_codes(with_items(
+fn demonic_brand_lands_on_each_target() {
+    assert_supported(with_items(
         "production-demonology-warlock",
         3,
         vec![cast_at(17923, SECOND())],
     ));
-    assert!(
-        refusals.contains(&(
-            "several_targets_unsupported",
-            "Demonic Brand lands on the first target only".into()
-        )),
-        "{refusals:?}"
-    );
+}
+
+/// A change of target moves the current target: the casts after it land where it points.
+#[test]
+fn a_change_of_target_is_followed() {
     assert_supported(with_items(
         "production-demonology-warlock",
         3,
-        vec![cast_at(25307, SECOND())],
+        vec![json!({"action": {"changeTarget": {"newTarget": {"type": "NextTarget"}}}})],
     ));
+    // Before the pull the current target stays the first.
+    let mut value = with_items("production-demonology-warlock", 3, vec![]);
+    value["player"]["rotation"]["prepullActions"] = json!([{
+        "action": {"changeTarget": {"newTarget": {"type": "NextTarget"}}},
+        "doAtValue": {"const": {"val": "-1s"}},
+    }]);
+    assert!(refused(value)
+        .iter()
+        .any(|(code, reason)| *code == "several_targets_unsupported"
+            && reason.contains("a change of target to a unit other than the first target")));
 }
 
 /// A channel with a dot on its target keeps the dot aura on the first target; Evocation's

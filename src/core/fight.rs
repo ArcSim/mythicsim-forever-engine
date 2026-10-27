@@ -1790,6 +1790,12 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) cooldown_order: Vec<usize>,
     cooldown_min_ready: i64,
     pub(crate) rotation: Vec<rotation::Item>,
+    /// The player's current target, by position: Go `Character.CurrentTarget`, which a change
+    /// of target moves.
+    pub(crate) player_target: usize,
+    /// For a rotation that changes target, the copy of the rotation compiled for each current
+    /// target by position, the one in place left empty; none otherwise.
+    pub(crate) rotation_copies: Vec<Vec<rotation::Item>>,
     /// How many of the items are the priority list's; the rest are the group instances'.
     pub(crate) priority_len: usize,
     /// Where each group instance's items are.
@@ -4017,6 +4023,8 @@ impl<A: Agent> Fight<A> {
             rotation: Vec::new(),
             priority_len: 0,
             group_ranges: Vec::new(),
+            player_target: 0,
+            rotation_copies: Vec::new(),
             rotation_sequences: Vec::new(),
             assigned_curse: crate::engine::coverage::assigned_curse(prepared),
             rotation_reads: prepared.player.rotation_reads.clone(),
@@ -4624,6 +4632,37 @@ impl<A: Agent> Fight<A> {
         fight.rotation.extend(channels);
         fight.prepull = prepull;
         fight.prepull_lists = lists;
+        // A rotation that changes target: a copy for each current target, whose current, next
+        // and previous targets resolve against it, swapped in as the target changes.
+        if fight.targets.len() > 1 && crate::engine::coverage::rotation_changes_target(&parsed) {
+            fight.rotation_copies.push(Vec::new());
+            for position in 1..fight.targets.len() {
+                let mut items = crate::rotation::with_current_target(position, || {
+                    let compilation = fight.compile_rotation(&parsed)?;
+                    if compilation.priority != fight.priority_len
+                        || compilation.groups != fight.group_ranges
+                    {
+                        return Err(format!(
+                            "the rotation compiled for target {} differs in shape",
+                            position + 1
+                        ));
+                    }
+                    let mut items = compilation.items;
+                    let base = items.len();
+                    let (_, channels, _) = fight.compile_prepull(&parsed, base);
+                    items.extend(channels);
+                    Ok::<_, String>(items)
+                })?;
+                if items.len() != fight.rotation.len() {
+                    return Err(format!(
+                        "the rotation compiled for target {} differs in shape",
+                        position + 1
+                    ));
+                }
+                items.shrink_to_fit();
+                fight.rotation_copies.push(items);
+            }
+        }
         fight.presentation = Some(fight.presentation(&parsed, &player.rotation));
         for effect in effects {
             if let Effect::SunderArmorRamp {
@@ -5934,7 +5973,7 @@ impl<A: Agent> Fight<A> {
                 }
             }
             Action::Pushback { chance } => self.pushback_handler(chance),
-            Action::Prepull(spell) => self.cast_or_queue(spell, Side::Target),
+            Action::Prepull(spell) => self.cast_or_queue(spell, self.current_target_side()),
             Action::PrepullAtPlayer(spell) => self.cast_or_queue(spell, Side::Player),
             Action::PrepullChannel(spell, item) => self.prepull_channel(spell, item),
             Action::PrepullSequence(item) => self.prepull_sequence(item),
@@ -5945,7 +5984,7 @@ impl<A: Agent> Fight<A> {
             Action::PrepullList(swap1, list) => match self.prepull_lists[list].clone() {
                 rotation::PrepullList::Spells(spells) => {
                     for spell in spells {
-                        self.cast_or_queue(spell, Side::Target);
+                        self.cast_or_queue(spell, self.current_target_side());
                     }
                 }
                 // Go: nothing while the other set is worn, else each aura as an activate aura

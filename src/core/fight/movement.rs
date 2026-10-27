@@ -147,7 +147,12 @@ impl<A: Agent> Fight<A> {
             }
             None => {
                 let (_, spell) = self.movement_parts(side);
-                self.cast(spell, Side::Target);
+                let target = if side == Side::Player {
+                    self.current_target_side()
+                } else {
+                    Side::Target
+                };
+                self.cast(spell, target);
             }
         }
         let src_position = self.unit_config(side).distance;

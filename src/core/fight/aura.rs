@@ -1248,7 +1248,7 @@ impl<A: Agent> Fight<A> {
                     // A cast carries no result: the proc answers the current target.
                     let result = SpellResult {
                         armor_multiplier: 0.0,
-                        target: Side::Target,
+                        target: self.current_target_side(),
                         attacker: Side::Player,
                         outcome: 0,
                         damage: 0.0,
@@ -1702,15 +1702,16 @@ impl<A: Agent> Fight<A> {
             self.schedule_delayed_proc_at(self.now + delay, aura, spell, *result);
             return;
         }
-        self.cast(damage_spell, Self::damage_proc_target(spell, result));
+        let target = self.damage_proc_target(spell, result);
+        self.cast(damage_spell, target);
     }
 
     /// Go procDamageTarget: a proc of a hit taken answers its attacker, which for the swing of a
     /// copy of the boss is that copy.
-    fn damage_proc_target(spell: Option<SpellId>, result: &SpellResult) -> Side {
+    fn damage_proc_target(&self, spell: Option<SpellId>, result: &SpellResult) -> Side {
         match (result.target == Side::Player, spell) {
             (true, None) => result.attacker,
-            (true, Some(_)) => Side::Target,
+            (true, Some(_)) => self.current_target_side(),
             (false, _) => result.target,
         }
     }
@@ -1876,7 +1877,8 @@ impl<A: Agent> Fight<A> {
             AuraBehavior::EnergizeProc(index) => self.energize_proc_handler(index),
             AuraBehavior::SpellDataDamageProc(proc) => {
                 let damage_spell = self.damage_procs[proc].spell;
-                self.cast(damage_spell, Self::damage_proc_target(Some(spell), &result));
+                let target = self.damage_proc_target(Some(spell), &result);
+                self.cast(damage_spell, target);
             }
             AuraBehavior::HealthOnCast(index) => {
                 let (health, metrics) = (

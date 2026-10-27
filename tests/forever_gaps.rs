@@ -419,3 +419,45 @@ fn sequence_steps_cast_at_another_target() {
         .sum::<f64>();
     assert!(on_second > 0.0);
 }
+
+/// The casts of the player's action with this spell on each target.
+fn casts_by_target(player: &Value, spell_id: i64) -> Vec<f64> {
+    let mut casts = Vec::new();
+    for action in player["actions"].as_array().unwrap() {
+        if action["id"]["spellId"] != spell_id {
+            continue;
+        }
+        for (position, target) in action["targets"].as_array().unwrap().iter().enumerate() {
+            if casts.len() <= position {
+                casts.resize(position + 1, 0.0);
+            }
+            casts[position] += target["casts"].as_f64().unwrap_or(0.0);
+        }
+    }
+    casts
+}
+
+/// A Balance Druid moves to the next target once Moonfire (9835) and Insect Swarm (24977) are up,
+/// so both dots land on all five targets.
+#[test]
+fn a_change_of_target_in_the_priority_list_moves_the_dots() {
+    let (_, player) = run("balance-druid-change-target");
+    for spell in [9835, 24977] {
+        let casts = casts_by_target(&player, spell);
+        assert!(
+            casts.len() >= 5 && casts[..5].iter().all(|&count| count > 0.0),
+            "spell {spell}: {casts:?}"
+        );
+    }
+}
+
+/// A strict sequence changes target between its Curses of the Elements (1311680), then stays on
+/// the last target it moved to, where Hellfire (11684) is cast.
+#[test]
+fn a_change_of_target_in_a_strict_sequence_moves_the_casts() {
+    let (_, player) = run("demonology-warlock-sequence-change-target");
+    let curses = casts_by_target(&player, 1311680);
+    assert!(curses.len() >= 5 && curses[4] > 0.0, "{curses:?}");
+    let hellfire = casts_by_target(&player, 11684);
+    assert!(hellfire.len() >= 5 && hellfire[4] > 0.0, "{hellfire:?}");
+}

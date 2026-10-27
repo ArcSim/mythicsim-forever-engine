@@ -44,3 +44,5 @@ checks the gate passes and runs it.
 | `protection-warrior-fire-hardened-hauberk` | a rage gain on use |
 | `demonology-warlock-orb-of-soranruk` | a heal over time on use |
 | `demonology-warlock-sequence-other-targets` | sequence steps at the next target |
+| `balance-druid-change-target` | a change of target to the next target in the priority list |
+| `demonology-warlock-sequence-change-target` | changes of target inside a strict sequence |

@@ -708,7 +708,13 @@ impl<A: Agent> Fight<A> {
         if side == Side::Player && hand != Hand::Ranged && self.autos.ranged_auto {
             self.stop_ranged_until(now);
         }
-        self.cast(spell, Side::Target);
+        // Go swings at the unit's current target; a pet's stays the first.
+        let target = if side == Side::Player {
+            self.current_target_side()
+        } else {
+            Side::Target
+        };
+        self.cast(spell, target);
         // Go ReactToEvent(false, true) after the swing, unless the player is tanking.
         if side != Side::Player || !self.tanked() {
             self.react_to_event(side);
@@ -902,7 +908,7 @@ impl<A: Agent> Fight<A> {
             .mh
             .spell
             .expect("an enabled weapon attack has a spell");
-        self.cast(spell, Side::Target);
+        self.cast(spell, self.current_target_side());
     }
 
     /// Go `Unit.ReactToEvent(sim, false, false)`: the rotation runs, then evaluates again now,

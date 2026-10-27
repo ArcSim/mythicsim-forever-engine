@@ -78,16 +78,33 @@ pub enum Unit {
     Target(usize),
 }
 
+thread_local! {
+    /// The player's current target a rotation is compiled for, by position: the first target
+    /// unless [`with_current_target`] compiles a copy for another.
+    static CURRENT_TARGET: std::cell::Cell<usize> = const { std::cell::Cell::new(0) };
+}
+
+/// Runs `f` with the current target that unit references resolve against at `position`, as Go
+/// `UnitReference.Get` reads the player's `CurrentTarget` where it is asked.
+pub fn with_current_target<T>(position: usize, f: impl FnOnce() -> T) -> T {
+    let old = CURRENT_TARGET.with(|current| current.replace(position));
+    let result = f();
+    CURRENT_TARGET.with(|current| current.set(old));
+    result
+}
+
 impl UnitRef {
     /// Go `Environment.GetUnit` in a fight of `targets` targets, all enabled: the unit, or
-    /// `None` where Go finds no unit. The previous and next targets wrap around the encounter.
+    /// `None` where Go finds no unit. The current target is the first unless a copy is compiled
+    /// for another ([`with_current_target`]); the previous and next targets wrap around it.
     pub fn resolve(self, targets: usize) -> Option<Unit> {
         let targets = targets.max(1);
+        let current = CURRENT_TARGET.with(std::cell::Cell::get) % targets;
         match self {
             UnitRef::Player => Some(Unit::Player),
-            UnitRef::CurrentTarget => Some(Unit::Target(0)),
-            UnitRef::PreviousTarget => Some(Unit::Target(targets - 1)),
-            UnitRef::NextTarget => Some(Unit::Target(1 % targets)),
+            UnitRef::CurrentTarget => Some(Unit::Target(current)),
+            UnitRef::PreviousTarget => Some(Unit::Target((current + targets - 1) % targets)),
+            UnitRef::NextTarget => Some(Unit::Target((current + 1) % targets)),
             UnitRef::Target(index) => (index < targets).then_some(Unit::Target(index)),
             UnitRef::Nobody => None,
         }
@@ -786,14 +803,18 @@ pub enum Action {
     },
 }
 
-/// A cast that is a step of a sequence: the spell and the unit Go casts it on, which Go builds no
-/// action for when it names none.
+/// A step of a sequence: a cast of the spell on the unit Go casts it on, or, in a strict
+/// sequence, Go `APLActionChangeTarget` to the unit. Go builds no action for a unit it finds
+/// nothing for.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Step {
+    /// The spell a cast step casts; none for a change of target.
     pub spell: ActionId,
     pub target: UnitRef,
     /// A sequence step's own condition, which Go checks as it asks whether the step is ready.
     pub condition: Option<Value>,
+    /// The step changes the player's current target to `target` and casts nothing.
+    pub change_target: bool,
 }
 
 impl Action {
@@ -831,7 +852,7 @@ impl Action {
         match self {
             Action::Sequence { steps, .. } => steps
                 .iter()
-                .filter(|step| step.target.resolve(targets).is_some())
+                .filter(|step| !step.change_target && step.target.resolve(targets).is_some())
                 .map(|step| &step.spell)
                 .collect(),
             Action::Schedule { inner, .. } => inner.action.reachable_spells(targets),
@@ -859,9 +880,11 @@ impl Action {
         match self {
             Action::CastSpell { spell: id, .. } | Action::CastAtPlayer(id) => vec![id],
             Action::AutocastOtherCooldowns => Vec::new(),
-            Action::StrictSequence(steps) | Action::Sequence { steps, .. } => {
-                steps.iter().map(|step| &step.spell).collect()
-            }
+            Action::StrictSequence(steps) | Action::Sequence { steps, .. } => steps
+                .iter()
+                .filter(|step| !step.change_target)
+                .map(|step| &step.spell)
+                .collect(),
             Action::Schedule { inner, .. } => inner.action.spells(),
             Action::ChannelSpell { spell, .. }
             | Action::Multidot { spell, .. }
@@ -1715,6 +1738,24 @@ fn parse_strict_sequence(config: &Json) -> Result<Action, String> {
                 }
                 spells.push(step)
             }
+            // Go builds any action as a step; a change of target is the one Rust runs.
+            ("changeTarget", config) => {
+                let Action::ChangeTarget(target) = parse_change_target(config)? else {
+                    unreachable!("a change of target parses as one");
+                };
+                let condition = match action.get("condition") {
+                    Some(condition) => {
+                        Some(parse_value(condition).map_err(|reasons| reasons.join("; "))?)
+                    }
+                    None => None,
+                };
+                spells.push(Step {
+                    spell: ActionId::default(),
+                    target,
+                    condition,
+                    change_target: true,
+                })
+            }
             (name, _) => return Err(format!("strictSequence action {name} is unsupported")),
         }
     }
@@ -1929,6 +1970,7 @@ fn parse_step(config: &Json) -> Result<Step, String> {
         spell,
         target,
         condition: None,
+        change_target: false,
     })
 }
 
@@ -5074,11 +5116,13 @@ mod tests {
                     spell: ActionId::spell(14751),
                     target: UnitRef::CurrentTarget,
                     condition: None,
+                    change_target: false,
                 },
                 Step {
                     spell: ActionId::spell(10947),
                     target: UnitRef::CurrentTarget,
                     condition: None,
+                    change_target: false,
                 }
             ])
         );
@@ -5134,11 +5178,13 @@ mod tests {
                         spell: ActionId::spell(2458),
                         target: UnitRef::CurrentTarget,
                         condition: None,
+                        change_target: false,
                     },
                     Step {
                         spell: ActionId::spell(1719),
                         target: UnitRef::CurrentTarget,
                         condition: None,
+                        change_target: false,
                     }
                 ]
             }
@@ -5421,6 +5467,7 @@ mod tests {
                         spell: ActionId::spell(1),
                         target: unit,
                         condition: None,
+                        change_target: false,
                     }]
                 })
             );

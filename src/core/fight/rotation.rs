@@ -156,6 +156,9 @@ pub(crate) enum PrepullAct {
     Move(f64),
     /// Go `APLActionMoveDuration`: the player moves for the duration.
     MoveDuration(i64),
+    /// Go `APLActionGroupReference.Execute` of a group of moves: the player runs to the range
+    /// unless it is already moving or casting.
+    GroupMove(f64),
     /// Go `APLActionCancelAura`.
     CancelAura(AuraRef),
     /// Go `APLActionActivateAuraWithStacks`, its stacks capped at the aura's maximum.
@@ -858,6 +861,16 @@ impl<A: Agent> Fight<A> {
             ParsedAction::Move(Value::Const(range)) => {
                 Some((prepull.do_at_ns, PrepullAct::Move(range.float)))
             }
+            ParsedAction::PrepullGroupMove(range) => {
+                let mut range = range;
+                while let Value::Variable { resolved, .. } = range {
+                    range = resolved;
+                }
+                let Value::Const(range) = range else {
+                    return None;
+                };
+                Some((prepull.do_at_ns, PrepullAct::GroupMove(range.float)))
+            }
             ParsedAction::MoveDuration(Value::Const(duration)) => Some((
                 prepull.do_at_ns,
                 PrepullAct::MoveDuration(duration.duration_ns),
@@ -1292,6 +1305,8 @@ impl<A: Agent> Fight<A> {
             // Go `newActionMove` and `newActionMoveDuration` always build the action. A value
             // that gives none panics where Go reads it, which the gate refuses.
             ParsedAction::Move(range) => Act::Move(Rc::new(compile_raw_value(range, lookup)?)),
+            // Parsed only as a prepull action, which `prepull_act` builds.
+            ParsedAction::PrepullGroupMove(_) => return None,
             ParsedAction::MoveDuration(duration) => {
                 Act::MoveDuration(Rc::new(compile_raw_value(duration, lookup)?))
             }

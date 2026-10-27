@@ -1523,6 +1523,8 @@ pub(crate) enum Action {
     PrepullMove(f64),
     /// A rotation prepull action: Go `APLActionMoveDuration.Execute`.
     PrepullMoveDuration(i64),
+    /// A rotation prepull action: Go `APLActionGroupReference.Execute` of a group of moves.
+    PrepullGroupMove(f64),
     /// A tick of the raid's Sunder Armor ramp on a target, by its position, with the ticks
     /// done so far.
     SunderTick(u8, i32),
@@ -5483,6 +5485,7 @@ impl<A: Agent> Fight<A> {
                 }
                 rotation::PrepullAct::TriggerIcd(aura) => Action::PrepullTriggerIcd(aura),
                 rotation::PrepullAct::Move(range) => Action::PrepullMove(range),
+                rotation::PrepullAct::GroupMove(range) => Action::PrepullGroupMove(range),
                 rotation::PrepullAct::MoveDuration(duration) => {
                     Action::PrepullMoveDuration(duration)
                 }
@@ -5952,6 +5955,16 @@ impl<A: Agent> Fight<A> {
                 self.move_to(Side::Player, range);
             }
             Action::PrepullMoveDuration(duration) => self.move_duration(Side::Player, duration),
+            // Go `APLActionMove.IsReady` before the pull: not moving and no cast in progress.
+            Action::PrepullGroupMove(range) => {
+                if !self.player.moving && self.player.hardcast.expires < self.now {
+                    if self.log.is_some() {
+                        let line = format!("[DEBUG] Moving to {range:.1} yards");
+                        self.player_log(&line);
+                    }
+                    self.move_to(Side::Player, range);
+                }
+            }
             Action::SunderTick(target, done) => self.sunder_tick(target, done),
             Action::DeathCheck => self.death_check(),
             Action::FixedUptime { index, first } => self.fixed_uptime_roll(index, first),

@@ -2270,7 +2270,9 @@ pub(crate) fn prepared_coverage(
                 continue;
             }
             // Go registers every move: its range is read when it runs.
-            if let Action::Move(_) | Action::MoveDuration(_) = &prepull.action {
+            if let Action::Move(_) | Action::MoveDuration(_) | Action::PrepullGroupMove(_) =
+                &prepull.action
+            {
                 registered_prepull += 1;
                 prepull_moves = true;
             }

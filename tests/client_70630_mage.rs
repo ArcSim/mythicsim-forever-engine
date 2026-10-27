@@ -149,8 +149,7 @@ fn a_cone_of_cold_uses_the_stacks_up_and_adds_seven_percent_of_spell_damage_each
 
     let stacks = stack_changes(&forever)
         .into_iter()
-        .filter(|(at, ..)| *at < forever_cone)
-        .last()
+        .rfind(|(at, ..)| *at < forever_cone)
         .map(|(_, _, to)| to)
         .unwrap();
     assert!(stacks >= 3, "{stacks}");

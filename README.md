@@ -182,6 +182,36 @@ the Go goldens and exporter uses. The departures:
   15 seconds (was 10% for 30). Attuned and Charged, which a Ley Line or an elemental convergence
   grants before the pull and which double those two, are not assumed. Client 1.60.1.70532 still
   has the old rows; the notes are the source until a client build carries the new ones.
+- The non-Mage rows of client 1.60.1.70630 that change a number (Forever preparation; the data is
+  1.60.1.70425 and the reference keeps its values). Hunter's Mark rank 4 (14325, SpellEffect
+  690991) gives every attacker 143 ranged Attack Power (was 71). The Spellstone's damage effects
+  (1233765, 1233768, 1233770, "Increase Shadow Dam") name the Shadow school alone (mask 32; was
+  Fire and Shadow, 36). Blood Craze (16488) carries the No Threat attribute (Attributes_1 0x400),
+  so its heal over time puts out no threat. The Mage Revelation buff (1248808, SpellEffect
+  1251976) also names bit 32768 of the second class mask word, which holds Arcane Barrage and
+  Arcane Wrath. Rows that need nothing: Bloodthrill's marker aura (1289681) now lasts 5 seconds,
+  the window the engine already opens (Overpower's 5 seconds, 1282733); Elemental Focus keeps its
+  10% (ProcChance 10 moved to the effect as 100 and base 10); Amplify Curse hands Bane of Agony's
+  50% to an aura on the target (a class mask of Agony's own, tooltip `$o1*($w2/100+1)`), which
+  the whole tick factor of patch 177 already is. Holy Fire rank 1 (54), Twilight Focus's class
+  mask, Fire Nova's line of sight bit and Dark Inspiration's aura type (80 to 137, still 15%
+  Spirit) already agree with the data, and the engine starts Elemental Mastery's cooldown at the
+  cast, as 70630 has it (the cooldown-on-event bit is gone). Lava Burst rank 3 and Windfury
+  Weapon rank 2 are not the ranks cast, Multi-Shot 1289053 is a mob's bolt barrage, Feral
+  Swiftness is movement speed, Gore Drinker is not modelled, and the Touch of the Grave
+  attribute clears and the Curse, Rogue and Power Word: Shield attribute bits are read by
+  nothing the engine computes.
+- Winter's Chill is "your next Cone of Cold" (`winters_chill`, Forever preparation), from client
+  1.60.1.70630 (talent 11180 and aura 12579): only Frostbolt, Frost Blast and a Fingers of Frost
+  empowered Ice Lance can apply it, each stack makes the Cone of Cold deal 5% more damage and
+  gain 7% of the mage's spell damage (12579 and 11180 effect 3, a flat share added before the
+  hit is worked out), and the Cone of Cold uses every stack up as its cast completes. The stacks
+  stay on the mage rather than the target (the client puts 12579 on the target), so rotations
+  that test the aura keep working, and an area Cone of Cold gives every target the bonus. The
+  reference stacks from any landed Frost damage and never consumes. The rest of the Mage rows
+  of that build (Ice Barrier and Frigid Power, Frost Warding's absorb, Frost Blast's 0.271
+  coefficient, Arcane Wrath's 6 second cooldown, Missile Barrage ignoring missiles and hearing
+  Frost Blast) were already in the imported data and the code through hotfix push 112753.
 - A damage bonus applied after the calculation is threat too (`threat_follows_damage_bonus`,
   Forever preparation), from MythicSim's Discord (26 October 2026, Vrelk: a Shadow Priest with
   no threat talents had less threat than damage). Improved Mind Flay's ramp, Ice Lance on a

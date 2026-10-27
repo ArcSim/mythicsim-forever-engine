@@ -18,7 +18,7 @@ use super::dbcenums;
 use super::env::Environment;
 use super::parse_effects::{dry_run, parse_effects, ParseOptions};
 use super::sim::{
-    AuraConfig, AuraId, BuildPhase, Duration, Sim, UnitId, MILLISECOND, NEVER_EXPIRES,
+    AuraConfig, AuraId, BuildPhase, Duration, Rules, Sim, UnitId, MILLISECOND, NEVER_EXPIRES,
 };
 use super::spelldata::{must_find, Ladder};
 use super::Refusal;
@@ -192,6 +192,9 @@ impl Meta {
             }
             MetaKind::Debuff => {
                 let mut options = self.options(talent_points);
+                if sim.rules == Rules::Forever {
+                    options.amount_as = forever_amounts(self.spell);
+                }
                 if !self.category.is_empty() {
                     if self.per_stat {
                         options.per_stat_category = Some(self.category.to_string());
@@ -316,6 +319,19 @@ pub(crate) fn tristate(effect: i32, regular: i32, improved: i32) -> i32 {
         1 => regular,
         2 => improved,
         _ => 0,
+    }
+}
+
+/// Rows the frozen spell data (client 1.60.1.70425) states differently from Forever's current
+/// client, as (effect position, amount) pairs a debuff reads under Forever's rules. The Go
+/// reference keeps the data's amounts.
+///
+/// Client 1.60.1.70630 raises Hunter's Mark rank 4 (14325, SpellEffect 690991, aura 127: ranged
+/// Attack Power for every attacker) from 71 to 143.
+fn forever_amounts(spell: i32) -> Vec<(i32, f64)> {
+    match spell {
+        14325 => vec![(2, 143.0)],
+        _ => Vec::new(),
     }
 }
 

@@ -180,14 +180,25 @@ pub(super) fn effects(talents: &Message, sim: &Sim, unit: UnitId) -> Vec<Value> 
     let winters_chill = talents.i32("winters_chill");
     if winters_chill > 0 {
         let trigger = data.winters_chill_triggered.highest();
-        effects.push(json!({
+        let mut effect = json!({
             "kind": "winters_chill", "talent_rank": winters_chill,
             "proc_chance": data.winters_chill.effect_at(2).fraction_at(winters_chill),
             "max_stacks": data.winters_chill.effect_at(1).value_at(winters_chill) as i32,
             "damage_per_stack": trigger.effect_n(1).percent(),
             "duration_ns": nanos(trigger.duration()),
             "trigger_aura": "Winters Chill Talent", "aura": "Winter's Chill",
-        }));
+        });
+        // Client 1.60.1.70630 (SpellEffect 11180 effect 3 and 12579 effect 2, +7 each; 11180
+        // SpellAuraOptions ProcCharges 1; 12579 ProcTypeMask 131072): the stacks are "your next
+        // Cone of Cold", which they make deal 7% more of the mage's spell damage each, and only
+        // Frostbolt, Frost Blast and an empowered Ice Lance apply them. The reference keeps
+        // the 70425 rule: any landed Frost damage, stacks that stay.
+        if sim.rules == Rules::Forever {
+            effect["spell_power_per_stack"] =
+                json!(data.winters_chill.effect_at(3).fraction_at(winters_chill));
+            effect["cone_of_cold_consumes"] = json!(true);
+        }
+        effects.push(effect);
     }
     // ice_lance.go
     if talents.bool("ice_lance") {

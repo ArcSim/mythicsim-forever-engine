@@ -51,3 +51,6 @@ checks the gate passes and runs it.
 | `enhancement-shaman-swap-speed-enchant` | a swap onto a weapon with Iron Counterweight, an enchant speed aura (a Best Gear comparison, 27 October 2026) |
 | `feral-bear-druid-swap-defense` | a tank's swap onto Headspike, whose Defense changes the target's swings (28 October 2026) |
 | `dps-warrior-mark-of-the-champion-undead` | Mark of the Champion against an Undead target (28 October 2026) |
+| `assassination-rogue-change-target-rupture` | a Rogue that moves to the next target to keep Rupture on four (28 October 2026) |
+| `combat-rogue-change-target` | the same for a Combat Rogue |
+| `shadow-priest-chastise` | Chastise in a Shadow Priest's rotation |

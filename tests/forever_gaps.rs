@@ -523,3 +523,24 @@ fn mark_of_the_champion_against_undead_runs() {
         "{bonus:?}"
     );
 }
+
+/// A Rogue moves to the next target once Rupture (11275) and Deadly Poison are up on the one it
+/// is on: Rupture lands on all four targets, each with its own dot.
+#[test]
+fn a_rogue_keeps_rupture_on_several_targets() {
+    let (_, player) = run("assassination-rogue-change-target-rupture");
+    let ruptures = casts_by_target(&player, 11275);
+    assert!(
+        ruptures.len() >= 4 && ruptures[..4].iter().all(|&casts| casts > 0.0),
+        "{ruptures:?}"
+    );
+    run("combat-rogue-change-target");
+}
+
+/// Chastise (1277335) in a Shadow Priest's rotation: Go casts it only at a Humanoid, which this
+/// target is not, so it never casts.
+#[test]
+fn chastise_casts_only_at_a_humanoid() {
+    let (_, player) = run("shadow-priest-chastise");
+    assert_eq!(action(&player, 1277335, 0).0, 0.0);
+}

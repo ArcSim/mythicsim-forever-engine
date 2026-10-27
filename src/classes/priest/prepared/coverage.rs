@@ -76,6 +76,8 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "power_infusion" => Some("power_infusion"),
         "shadowform" => Some("shadowform"),
         "smite" if spell.damage_effect.is_some() => Some("smite"),
+        // Chastise deals its roll as Smite does; the agent checks its Humanoid target.
+        "chastise" if spell.damage_effect.is_some() => Some("smite"),
         "holy_fire" if spell.damage_effect.is_some() && spell.dot.is_some() => Some("holy_fire"),
         "penance" if spell.dot.as_ref().is_some_and(|dot| dot.channeled) => Some("penance"),
         "heal" => Some("heals"),

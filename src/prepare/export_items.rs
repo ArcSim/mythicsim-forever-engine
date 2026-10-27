@@ -2256,6 +2256,20 @@ pub(crate) fn item_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
 /// Warrior's Resolve and the Puncture Armor weapon procs.
 pub(crate) fn gear_proc_effects(env: &Environment, unrepresented: &mut Vec<String>) -> Vec<Value> {
     let mut effects = Vec::new();
+    // Under Forever's rules (Go's exporter refuses the swap): with an item swap, the item and
+    // enchant speed auras the swap gains and expires, as core/enchant_speed.go attaches them.
+    let swaps = env.sim.item_swap(env.player).is_some();
+    if swaps && env.sim.rules == super::sim::Rules::Forever {
+        for &(aura, [melee, ranged, cast]) in &env.sim.speed_auras {
+            if env.sim.aura(aura).unit != env.player {
+                continue;
+            }
+            effects.push(json!({
+                "kind": "speed_aura", "aura": env.sim.aura(aura).label,
+                "melee_multiplier": melee, "ranged_multiplier": ranged, "cast_multiplier": cast,
+            }));
+        }
+    }
     // item_sets_classic.go Battlegear of Valor 5 piece, Warrior's Resolve: landed melee hits roll
     // a legacy one proc a minute manager under the trigger's name; a batch window later the
     // handler heals Roll(88, 133) and, with a rage bar, gives 10 rage, both Go literals.

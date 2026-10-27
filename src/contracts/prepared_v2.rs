@@ -2674,6 +2674,15 @@ pub enum Effect {
         aura: String,
         per_stack: f64,
     },
+    /// core/enchant_speed.go `registerSpeedAura` (Forever's rules, with an item swap): an item
+    /// or enchant's speed aura multiplies the melee, ranged and cast speed while up. The one
+    /// worn from the start is in the exported speeds; the swap gains and expires them.
+    SpeedAura {
+        aura: String,
+        melee_multiplier: f64,
+        ranged_multiplier: f64,
+        cast_multiplier: f64,
+    },
     /// Rogue items.go Darkmantle Armor (4), Rogue Armor Energize (Forever's rules): landed hits
     /// roll each spell's chance from the set's proc manager under the label; a batch window
     /// later the handler gives `energy` to a player with an energy bar.
@@ -5006,6 +5015,7 @@ impl Effect {
             Effect::HealthRageProc { .. } => "health_rage_proc",
             Effect::EnergyProc { .. } => "energy_proc",
             Effect::BattleSquawk { .. } => "battle_squawk",
+            Effect::SpeedAura { .. } => "speed_aura",
             Effect::HealthRegenAura { .. } => "health_regen_aura",
             Effect::DamageOnUse { .. } => "damage_on_use",
             Effect::ArmorDebuffProc { .. } => "armor_debuff_proc",

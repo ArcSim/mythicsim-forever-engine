@@ -261,6 +261,7 @@ const COMMON_EFFECTS: &[&str] = &[
     "health_rage_proc",
     "energy_proc",
     "battle_squawk",
+    "speed_aura",
     "health_regen_aura",
     "armor_debuff_proc",
     "damage_on_use",
@@ -534,7 +535,9 @@ fn common_claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         Effect::HealthRageProc { trigger_aura, .. } | Effect::EnergyProc { trigger_aura, .. } => {
             vec![("player", trigger_aura)]
         }
-        Effect::BattleSquawk { aura, .. } | Effect::HealthRegenAura { aura, .. } => {
+        Effect::BattleSquawk { aura, .. }
+        | Effect::HealthRegenAura { aura, .. }
+        | Effect::SpeedAura { aura, .. } => {
             vec![("player", aura)]
         }
         Effect::SpellDataAbsorbProc {
@@ -1160,6 +1163,42 @@ fn swap_change_limit(
             }) =>
         {
             None
+        }
+        // The melee speed after the reset, which the item and enchant speed auras the swap
+        // switches multiply in as they are gained and divide out as they fade.
+        ["melee", "melee_speed_multiplier"] => {
+            let mut worn = prepared.melee.melee_speed_multiplier;
+            for effect in &prepared.effects {
+                if let Effect::SpeedAura {
+                    aura,
+                    melee_multiplier,
+                    ..
+                } = effect
+                {
+                    if !switched.contains(&aura.as_str()) {
+                        continue;
+                    }
+                    let active = prepared
+                        .player
+                        .auras
+                        .iter()
+                        .any(|candidate| candidate.label == *aura && candidate.active);
+                    worn = if active {
+                        worn / melee_multiplier
+                    } else {
+                        worn * melee_multiplier
+                    };
+                }
+            }
+            let follows = change
+                .value
+                .as_f64()
+                .is_some_and(|value| (value - worn).abs() <= 1e-12 * worn.abs());
+            if follows {
+                None
+            } else {
+                refuse()
+            }
         }
         // The crit the player takes on a Goblin Sapper Charge's half, which the swap sets on the
         // player as its own target. A tank's, which the target's swings read, is not followed.

@@ -3430,6 +3430,26 @@ impl<A: Agent> Fight<A> {
                         ranged,
                         cast,
                     }
+                } else if let Some((melee, ranged, cast)) =
+                    effects.iter().find_map(|effect| match effect {
+                        Effect::SpeedAura {
+                            aura,
+                            melee_multiplier,
+                            ranged_multiplier,
+                            cast_multiplier,
+                        } if side == Side::Player && *aura == exported.label => Some((
+                            *melee_multiplier,
+                            *ranged_multiplier,
+                            *cast_multiplier,
+                        )),
+                        _ => None,
+                    })
+                {
+                    AuraBehavior::SwapSpeed {
+                        melee,
+                        ranged,
+                        cast,
+                    }
                 } else if let Some(per_stack) = effects.iter().find_map(|effect| match effect {
                     Effect::BattleSquawk { aura, per_stack }
                         if side == Side::Player && *aura == exported.label =>

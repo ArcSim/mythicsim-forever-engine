@@ -4682,6 +4682,10 @@ pub enum Effect {
         average: Option<f64>,
         #[serde(default, skip_serializing_if = "Option::is_none")]
         variance: Option<f64>,
+        /// Forever's rules: a cleave that hits the target and the next ones up to this many,
+        /// each a roll of its own, as Go `CalcAndDealCleaveDamageWithVariance` does.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        cleave_targets: Option<i32>,
     },
     /// A hunter pet ability whose landed hit applies a dot: the hit's table, `melee_special` or
     /// `ranged`, the dot's tick base and its tick outcome.

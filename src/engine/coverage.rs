@@ -2672,18 +2672,27 @@ fn other_target_casts(
     let mut reasons = BTreeSet::new();
     let mut spells = Vec::new();
     for item in &rotation.priority_list {
-        // The runtime casts a step of a sequence on the first target.
+        // A step of a sequence is cast on its unit as a cast is, with the player only for a
+        // helpful spell.
         if let Action::Sequence { steps, .. } | Action::StrictSequence(steps) = &item.action {
+            if unreachable.contains(&item.position) {
+                continue;
+            }
             for step in steps {
-                if !matches!(step.target.resolve(targets), None | Some(Unit::Target(0)))
-                    && rotation_spell(prepared, &step.spell).is_some()
-                    && !unreachable.contains(&item.position)
-                {
-                    reasons.insert(format!(
-                        "rotation item {}: a step of a sequence casting {} at a unit other than \
-                         the first target is unsupported",
-                        item.position, step.spell
-                    ));
+                let Some(spell) = rotation_spell(prepared, &step.spell) else {
+                    continue;
+                };
+                match step.target.resolve(targets) {
+                    None | Some(Unit::Target(0)) => {}
+                    Some(Unit::Player) if spell.has_flag("SpellFlagHelpful") => {}
+                    Some(Unit::Player) => {
+                        reasons.insert(format!(
+                            "rotation item {}: a step of a sequence casting {} on the player is \
+                             unsupported",
+                            item.position, step.spell
+                        ));
+                    }
+                    Some(Unit::Target(_)) => spells.push(spell),
                 }
             }
             continue;

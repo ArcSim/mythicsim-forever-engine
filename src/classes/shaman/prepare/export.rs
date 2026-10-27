@@ -408,6 +408,38 @@ impl Shaman {
                 "trigger_spells": proc_trigger_spells(env, &water_shield_crit_trigger()),
             }));
         }
+        // item_sets.go Stormcaller's Garb (3), under Forever's rules (Go's exporter refuses its
+        // listener): a landed Lightning Bolt, Chain Lightning, Overload or Shock rolls 20% and a
+        // batch window later gives 50 Nature damage for 8 sec.
+        if sim.rules == crate::prepare::sim::Rules::Forever {
+            let set = sim.get_aura(player, "Stormcaller's Garb 3P");
+            let wrath = sim.get_aura(player, "Stormcaller's Wrath");
+            if let (Some(set), Some(wrath)) = (set, wrath) {
+                let trigger = ProcTrigger {
+                    name: "Stormcaller Spelldamage Bonus".to_string(),
+                    callback: crate::prepare::aura_helpers::CallbackMask::ON_SPELL_HIT_DEALT,
+                    outcome: crate::prepare::aura_helpers::HitOutcome::LANDED,
+                    class_spell_mask: super::masks::LIGHTNING_BOLT
+                        | super::masks::CHAIN_LIGHTNING
+                        | super::masks::OVERLOAD
+                        | super::masks::SHOCK,
+                    can_proc_from_procs: true,
+                    proc_chance: 0.20,
+                    ..ProcTrigger::default()
+                };
+                let bonus = Stats::from_pairs(&[(Stat::NatureDamage, 50.0)]);
+                let id = crate::contracts::prepared_v2::ActionId::spell(26121);
+                effects.push(json!({
+                    "kind": "spell_data_stat_proc", "trigger_aura": sim.aura(set).label,
+                    "aura": sim.aura(wrath).label,
+                    "trigger_spells": proc_trigger_spells(env, &trigger),
+                    "callbacks": ["on_spell_hit_dealt"], "landed_only": true,
+                    "require_damage": false, "proc_chance": trigger.proc_chance,
+                    "gain_log": format!("Gained {} from {}.", flat_string(&bonus), action_id_string(&id)),
+                    "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
+                }));
+            }
+        }
         // Since the 16 October 2026 beta notes no air totem category stands between the
         // shaman's own totems and the party's: only the party's Windfury Totem still contests
         // the shaman's own, through the Windfury Totem category.

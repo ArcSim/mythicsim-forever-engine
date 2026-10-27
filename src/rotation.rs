@@ -217,6 +217,8 @@ pub enum Value {
     /// `currentMana` with one of the player's pets, by its position among them, as its source
     /// unit.
     PetCurrentMana(usize),
+    /// `currentManaPercent` with one of the player's pets as its source unit.
+    PetCurrentManaPercent(usize),
     CurrentEnergy,
     MaxEnergy,
     CurrentComboPoints,
@@ -240,6 +242,11 @@ pub enum Value {
     /// `auraIsActive` with one of the player's pets, by its position among them, as its source
     /// unit: the pet's aura while it is simulated, else an aura that is never up.
     PetAuraIsActive {
+        pet: usize,
+        id: ActionId,
+    },
+    /// `auraRemainingTime` with one of the player's pets as its source unit.
+    PetAuraRemainingTime {
         pet: usize,
         id: ActionId,
     },
@@ -590,6 +597,7 @@ impl Value {
             | Value::SpellNumCharges(_)
             | Value::CurrentComboPoints => ValueType::Int,
             Value::AuraRemainingTime(_)
+            | Value::PetAuraRemainingTime { .. }
             | Value::DotRemainingTime(_)
             | Value::SpellCastTime(_)
             | Value::SpellTimeToReady(_)
@@ -606,6 +614,7 @@ impl Value {
             | Value::SpellFullCooldown(_)
             | Value::TimeToNextEnergyTick => ValueType::Duration,
             Value::CurrentManaPercent
+            | Value::PetCurrentManaPercent(_)
             | Value::CurrentHealthPercent
             | Value::CurrentMana
             | Value::PetCurrentMana(_)
@@ -778,8 +787,7 @@ pub enum Action {
 pub struct Step {
     pub spell: ActionId,
     pub target: UnitRef,
-    /// A strict sequence step's own condition, which Go checks as it asks whether the step is
-    /// ready.
+    /// A sequence step's own condition, which Go checks as it asks whether the step is ready.
     pub condition: Option<Value>,
 }
 
@@ -793,7 +801,7 @@ impl Action {
             }
             Action::Move(value) | Action::MoveDuration(value) => vec![value],
             Action::Wait(value) | Action::WaitUntil(value) => value.iter().collect(),
-            Action::StrictSequence(steps) => steps
+            Action::StrictSequence(steps) | Action::Sequence { steps, .. } => steps
                 .iter()
                 .filter_map(|step| step.condition.as_ref())
                 .collect(),
@@ -1257,6 +1265,7 @@ fn parse_prepull(item: &Json, position: usize) -> Result<Option<Prepull>, String
             }
         }
         ("channelSpell", config) => parse_channel_spell(config)?,
+        ("strictSequence", config) => parse_strict_sequence(config)?,
         ("itemSwap", config) => Action::ItemSwap(parse_swap_set("itemSwap", config)?),
         ("cancelAura", config) => Action::CancelAura(parse_aura_action("cancelAura", config)?),
         ("triggerIcd", config) => Action::TriggerIcd(parse_aura_action("triggerIcd", config)?),
@@ -1609,8 +1618,8 @@ fn parse_strict_sequence(config: &Json) -> Result<Action, String> {
     Ok(Action::StrictSequence(spells))
 }
 
-/// Go `newActionSequence` for sequences of unconditional casts, with the name reset sequence
-/// actions and sequence values find it by.
+/// Go `newActionSequence` for sequences of casts, each with its own condition, with the name
+/// reset sequence actions and sequence values find it by.
 fn parse_sequence(config: &Json) -> Result<Action, String> {
     let object = config.as_object().ok_or("sequence must be an object")?;
     for key in object.keys() {
@@ -1628,8 +1637,16 @@ fn parse_sequence(config: &Json) -> Result<Action, String> {
         let action = action
             .as_object()
             .ok_or("sequence action must be an object")?;
-        match single(action, &["uuid"])? {
-            ("castSpell", cast) => spells.push(parse_step(cast)?),
+        match single(action, &["uuid", "condition"])? {
+            ("castSpell", cast) => {
+                let mut step = parse_step(cast)?;
+                // Go builds each step as an action of its own, condition included.
+                if let Some(condition) = action.get("condition") {
+                    step.condition =
+                        Some(parse_value(condition).map_err(|reasons| reasons.join("; "))?);
+                }
+                spells.push(step)
+            }
             (name, _) => return Err(format!("sequence action {name} is unsupported")),
         }
     }
@@ -2169,8 +2186,20 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
             }
         }
         "currentManaPercent" => {
-            only(&[])?;
-            Ok(Value::CurrentManaPercent)
+            only(&["sourceUnit"])?;
+            // Go `GetSourceUnit`, as for `currentMana`.
+            match config.get("sourceUnit") {
+                None => Ok(Value::CurrentManaPercent),
+                Some(source) => match pet_position(source) {
+                    Some(pet) => Ok(Value::PetCurrentManaPercent(pet)),
+                    None if parse_value_unit_ref(Some(source), UnitRef::Player)
+                        == Ok(UnitRef::Player) =>
+                    {
+                        Ok(Value::CurrentManaPercent)
+                    }
+                    None => Err(vec![unsupported_unit(name, "sourceUnit", Some(source))]),
+                },
+            }
         }
         // Without a source unit, the player itself.
         "currentHealthPercent" => {
@@ -2655,7 +2684,7 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                 .ok_or_else(|| vec!["not has no val".to_string()])?;
             Ok(Value::Not(Box::new(parse_value(value)?)))
         }
-        "auraIsKnown" | "auraIsActive" | "auraIsInactive"
+        "auraIsKnown" | "auraIsActive" | "auraIsInactive" | "auraRemainingTime"
             if config
                 .get("sourceUnit")
                 .and_then(|unit| unit.get("type"))
@@ -2700,6 +2729,7 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                     Ok(match name {
                         "auraIsKnown" => Value::PetAuraIsKnown { pet, id },
                         "auraIsActive" => Value::PetAuraIsActive { pet, id },
+                        "auraRemainingTime" => Value::PetAuraRemainingTime { pet, id },
                         // Go `newValueAuraIsInactive`: `!aura.IsActive()`, a constant true for an
                         // aura the pet lacks.
                         _ => Value::Not(Box::new(Value::PetAuraIsActive { pet, id })),
@@ -2804,6 +2834,8 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                 return match name {
                     "auraIsActive" => Ok(Value::Unbuilt("auraIsActive")),
                     "auraNumStacks" => Ok(Value::Unbuilt("auraNumStacks")),
+                    // Go `newValueAuraRemainingTime`: no value without an aura id.
+                    "auraRemainingTime" => Ok(Value::Unbuilt("auraRemainingTime")),
                     _ => Err(vec![format!("{name} has no auraId")]),
                 };
             };
@@ -3180,6 +3212,8 @@ pub enum Compiled<R> {
     CurrentMana,
     /// The mana of a pet the fight simulates, by its place among the simulated pets.
     PetCurrentMana(u8),
+    /// The same pet's mana as a share of its maximum.
+    PetCurrentManaPercent(u8),
     CurrentEnergy,
     MaxEnergy,
     MaxMana,
@@ -3356,6 +3390,7 @@ impl<R> Compiled<R> {
             | Compiled::SpellFullCooldown(_)
             | Compiled::TimeToNextEnergyTick => ValueType::Duration,
             Compiled::CurrentManaPercent
+            | Compiled::PetCurrentManaPercent(_)
             | Compiled::CurrentHealthPercent
             | Compiled::CurrentMana
             | Compiled::PetCurrentMana(_)
@@ -3562,6 +3597,9 @@ pub struct Lookup<'a, R> {
     /// The player's pet at a position among its pets, while the fight simulates it and it has a
     /// mana bar: its place among the simulated pets.
     pub simulated_pet_with_mana: &'a dyn Fn(usize) -> Option<u8>,
+    /// Whether the player's pet at a position is one the fight never summons that has a mana
+    /// bar: Go resets its mana to full and nothing spends it.
+    pub unsummoned_pet_with_mana: &'a dyn Fn(usize) -> bool,
     /// Go `ItemSwap.IsEnabled`: whether the character swaps items.
     pub item_swap: bool,
     /// The player's resource bars as the rotation is built, which values of a bar the player
@@ -3699,6 +3737,24 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
         Value::PetCurrentMana(pet) => {
             Compiled::PetCurrentMana((lookup.simulated_pet_with_mana)(*pet)?)
         }
+        // Go `newValueCurrentManaPercent` on a pet: no value without a mana bar, and a full bar
+        // for a pet the fight never summons, whose mana the reset fills and nothing spends.
+        Value::PetCurrentManaPercent(pet) => match (lookup.simulated_pet_with_mana)(*pet) {
+            Some(slot) => Compiled::PetCurrentManaPercent(slot),
+            None if (lookup.unsummoned_pet_with_mana)(*pet) => {
+                Compiled::Const(parse_const("100%").expect("percent constant"))
+            }
+            None => return None,
+        },
+        // Go `newValueAuraRemainingTime` on a pet: a constant zero for an aura the pet lacks or
+        // for a pet never summoned, whose auras never go up.
+        Value::PetAuraRemainingTime { pet, id } => match (lookup.pet_aura)(*pet, id) {
+            Some(found) => Compiled::AuraRemainingTime(found.aura),
+            None => {
+                (lookup.pet_aura_known)(*pet, id);
+                Compiled::Const(parse_const("0ms").expect("duration constant"))
+            }
+        },
         // Go `newValueCurrentEnergy` and its siblings: no value (and a warning) for a player
         // without an energy bar, as a Balance Druid's rotation reading energy has.
         Value::CurrentEnergy => {
@@ -4224,6 +4280,7 @@ mod tests {
             pet_aura_known: &|_, _| false,
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -4264,6 +4321,7 @@ mod tests {
             pet_aura_known: &known,
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -4405,6 +4463,7 @@ mod tests {
         let none = |_: &ActionId| -> Option<FoundAura<ActionId>> { None };
         let summoned = Lookup {
             simulated_pet_with_mana: &|pet| (pet == 0).then_some(1),
+            unsummoned_pet_with_mana: &|_| false,
             ..only_auras(&none, &|_, _| None)
         };
         assert_eq!(
@@ -5102,6 +5161,7 @@ mod tests {
             pet_aura_known: &|_, _| false,
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -5611,6 +5671,7 @@ mod tests {
             pet_aura_known: &|_, _| false,
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,

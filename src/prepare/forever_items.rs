@@ -637,7 +637,7 @@ fn apply_hand_written_enchant(env: &mut Environment, enchant: i32) -> bool {
                 SpellFlag::NO_ON_CAST_COMPLETE | SpellFlag::PASSIVE_SPELL | SpellFlag::PROC;
 
             let dpm = dynamic_legacy_proc_for_enchant(&env.sim, unit, id, ppm, 0.0);
-            env.sim.make_proc_trigger_aura(
+            let aura = env.sim.make_proc_trigger_aura(
                 unit,
                 &ProcTrigger {
                     name: format!("Enchant Weapon - {name}"),
@@ -650,6 +650,8 @@ fn apply_hand_written_enchant(env: &mut Environment, enchant: i32) -> bool {
                     ..ProcTrigger::default()
                 },
             );
+            // Go `ItemSwap.RegisterEnchantProc`: the proc holds while a hand carries the enchant.
+            env.sim.register_enchant_proc(unit, id, aura);
             true
         }
     }

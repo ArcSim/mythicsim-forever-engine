@@ -1260,8 +1260,8 @@ impl<A: Agent> Fight<A> {
         }
     }
 
-    /// Go `auraTracker.OnPeriodicDamageDealt` on the caster, which skips no inactive aura. No
-    /// target aura in scope acts on periodic damage taken.
+    /// Go `auraTracker.OnPeriodicDamageDealt` on the caster, which skips no inactive aura, then
+    /// `OnPeriodicDamageTaken` on the target for its class auras (Vampiric Embrace).
     pub(crate) fn on_periodic_damage(&mut self, spell: SpellId, result: &SpellResult) {
         let side = self.spells[spell].caster;
         let list = List::PeriodicDamageDealt as usize;
@@ -1275,6 +1275,20 @@ impl<A: Agent> Fight<A> {
                 }
                 AuraBehavior::RevelationTrigger => self.revelation_callback(aura, spell, result),
                 _ => {}
+            }
+        }
+        // Go `OnPeriodicDamageTaken` on the target, for the class auras that listen to it.
+        let side = result.target;
+        let list = List::PeriodicDamageTaken as usize;
+        let snapshot = self.trackers[side.index()].lists[list].snapshot();
+        for position in 0..snapshot.len {
+            let index = self.trackers[side.index()].lists[list].read(snapshot, position);
+            let aura = AuraRef { side, index };
+            if !self.aura(aura).active {
+                continue;
+            }
+            if let AuraBehavior::Class(kind) = self.aura(aura).behavior {
+                A::on_periodic_damage_taken(self, aura, kind, spell, result);
             }
         }
     }
@@ -1489,9 +1503,13 @@ impl<A: Agent> Fight<A> {
     /// The handler: Go `Proc(judgementProcChance, "Judgement of Light - Heal")`, then the
     /// attacker gains the heal under the target's health metrics. The gate keeps the attacker
     /// the player: it refuses the aura beside a pet that strikes in melee.
-    fn judgement_of_light_heal(&mut self, index: usize, spell: SpellId) {
+    fn judgement_of_light_heal(&mut self, index: usize, judged: Side, spell: SpellId) {
         let state = &self.judgements_of_light[index];
-        let (chance, heal, metrics) = (state.chance, state.heal, state.metrics);
+        let metrics = match judged {
+            Side::Extra(extra) => state.copy_metrics[extra as usize],
+            _ => state.metrics,
+        };
+        let (chance, heal) = (state.chance, state.heal);
         if !self
             .rng
             .proc(chance, &self.judgements_of_light[index].rng_label)
@@ -1846,7 +1864,9 @@ impl<A: Agent> Fight<A> {
                 );
                 self.gain_health(health, metrics);
             }
-            AuraBehavior::JudgementOfLight(index) => self.judgement_of_light_heal(index, spell),
+            AuraBehavior::JudgementOfLight(index) => {
+                self.judgement_of_light_heal(index, aura.side, spell)
+            }
             AuraBehavior::ManaOnCast(index) => self.mana_on_cast_handler(index, spell),
             AuraBehavior::StackingCdWindow(index) => self.stacking_cd_handler(index),
             AuraBehavior::Class(kind) => A::on_delayed_proc(self, aura, kind, spell, result),

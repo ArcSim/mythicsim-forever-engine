@@ -43,6 +43,8 @@ pub(crate) enum Act {
     Sequence {
         name: Rc<str>,
         spells: Vec<SpellId>,
+        /// Each step's own condition.
+        conditions: Vec<Option<Rc<Cond>>>,
         next: usize,
     },
     /// Go `APLActionChannelSpell` with an interrupt condition.
@@ -162,6 +164,9 @@ pub(crate) enum PrepullAct {
     TriggerIcd(AuraRef),
     /// Go `APLActionChangeTarget` to the first target.
     ChangeTarget,
+    /// Go `APLActionStrictSequence.Execute`, which a prepull runs without asking whether it is
+    /// ready: the item holding the sequence takes control of the rotation.
+    StrictSequence(usize),
 }
 
 /// The spells or auras a prepull action that runs several of them holds.
@@ -695,8 +700,8 @@ impl<A: Agent> Fight<A> {
     }
 
     /// Go `newAPLAction` of a prepull action, without its condition: the action at its time,
-    /// or `None` where Go builds none. A channel's interrupt item joins `channels`, numbered
-    /// from `base`, and a list of spells or auras joins `lists`.
+    /// or `None` where Go builds none. A channel's interrupt item or a strict sequence joins
+    /// `channels`, numbered from `base`, and a list of spells or auras joins `lists`.
     pub(super) fn prepull_act(
         &self,
         prepull: &crate::rotation::Prepull,
@@ -749,6 +754,13 @@ impl<A: Agent> Fight<A> {
                         Some((prepull.do_at_ns, PrepullAct::Channel(spell, item)))
                     }
                 }
+            }
+            // Go `newActionStrictSequence`, as the priority list builds it.
+            ParsedAction::StrictSequence(_) => {
+                let act = self.compile_action(&prepull.action, lookup, None, &mut Vec::new())?;
+                channels.push(Item::new(None, act));
+                let item = base + channels.len() - 1;
+                Some((prepull.do_at_ns, PrepullAct::StrictSequence(item)))
             }
             ParsedAction::CastAllStatBuffCooldowns(stats) => {
                 lists.push(PrepullList::Spells(self.cast_all_spells(stats)));
@@ -887,6 +899,12 @@ impl<A: Agent> Fight<A> {
                 let side = self.pet_side(self.pet_agent_labels.get(pet)?)?;
                 let Side::Pet(slot) = side else { return None };
                 (self.unit(side).powers.max_mana > 0.0).then_some(slot)
+            },
+            unsummoned_pet_with_mana: &|pet: usize| {
+                self.pet_agent_labels
+                    .get(pet)
+                    .is_some_and(|label| self.pet_side(label).is_none())
+                    && self.pet_agent_mana_bars.get(pet).copied().unwrap_or(false)
             },
             item_swap: self.item_swap.is_some(),
             bars: self.rotation_bars(),
@@ -1091,18 +1109,32 @@ impl<A: Agent> Fight<A> {
                     next: 0,
                 }
             }
-            // Go newActionSequence drops unknown casts, and the action when none remain.
+            // Go newActionSequence drops the steps it builds no action for (an unknown cast, a
+            // condition that is a constant false), and the action when none remain.
             ParsedAction::Sequence { name, steps } => {
-                let spells: Vec<SpellId> = steps
-                    .iter()
-                    .filter_map(|step| self.step_spell(step))
-                    .collect();
+                let mut spells = Vec::with_capacity(steps.len());
+                let mut conditions = Vec::with_capacity(steps.len());
+                for step in steps {
+                    let Some(spell) = self.step_spell(step) else {
+                        continue;
+                    };
+                    let condition = match compile_condition(step.condition.as_ref(), lookup) {
+                        CompiledCondition::Pruned => continue,
+                        CompiledCondition::Always => None,
+                        CompiledCondition::When(condition) => {
+                            Some(Rc::new(Cond::lower(&condition)))
+                        }
+                    };
+                    spells.push(spell);
+                    conditions.push(condition);
+                }
                 if spells.is_empty() {
                     return None;
                 }
                 Act::Sequence {
                     name: Rc::from(name.as_str()),
                     spells,
+                    conditions,
                     next: 0,
                 }
             }
@@ -1551,6 +1583,10 @@ impl<A: Agent> Fight<A> {
             }
             Compiled::CurrentMana => self.player.mana,
             Compiled::PetCurrentMana(slot) => self.unit(Side::Pet(*slot)).mana,
+            Compiled::PetCurrentManaPercent(slot) => {
+                let side = Side::Pet(*slot);
+                self.unit(side).mana / self.active_pet(side).config.max_mana
+            }
             Compiled::CurrentEnergy => self.energy_bar().current,
             Compiled::CurrentRage => self.current_rage(),
             Compiled::MaxEnergy => self.energy_bar().max,
@@ -2039,8 +2075,8 @@ impl<A: Agent> Fight<A> {
         ready
     }
 
-    /// A strict sequence step's own condition, as Go's step `IsReady` reads it: the walk's
-    /// promise lasts no longer than the condition's answer.
+    /// A sequence step's own condition, as Go's step `IsReady` reads it: the walk's promise
+    /// lasts no longer than the condition's answer.
     fn step_condition_holds(&mut self, condition: Option<&Cond>) -> bool {
         let Some(condition) = condition else {
             return true;
@@ -2403,17 +2439,24 @@ impl<A: Agent> Fight<A> {
         cast.effective_time()
     }
 
-    /// Go `APLActionSequence.IsReady`: the next step's readiness inside the sequence.
+    /// Go `APLActionSequence.IsReady`: the next step's readiness inside the sequence, its
+    /// condition first.
     fn sequence_step_ready(&mut self, item: usize) -> bool {
         let Act::Sequence {
-            ref spells, next, ..
+            ref spells,
+            ref conditions,
+            next,
+            ..
         } = self.rotation[item].action
         else {
             unreachable!("item is a sequence");
         };
         let step = spells.get(next).copied();
+        let condition = conditions.get(next).cloned().flatten();
         self.apl.in_sequence = true;
-        let ready = step.is_some_and(|spell| self.cast_ready(spell));
+        let ready = step.is_some_and(|spell| {
+            self.step_condition_holds(condition.as_deref()) && self.cast_ready(spell)
+        });
         self.apl.in_sequence = false;
         ready
     }
@@ -2875,6 +2918,15 @@ impl<A: Agent> Fight<A> {
 
     /// Go `APLActionChannelSpell.Execute` in the prepull: the cast, then the rotation reads the
     /// channel's interrupt condition.
+    /// Go `APLActionStrictSequence.Execute` before the pull: the sequence takes control, and
+    /// the rotation runs its steps once it acts. A second one while one holds control is
+    /// refused by the gate.
+    pub(crate) fn prepull_sequence(&mut self, item: usize) {
+        self.apl.in_sequence = true;
+        assert!(self.apl.controlling.is_none(), "nested controlling actions");
+        self.apl.controlling = Some(item);
+    }
+
     pub(crate) fn prepull_channel(&mut self, spell: SpellId, item: usize) {
         self.cast_or_queue(spell, Side::Target);
         let Act::Channel { allow_recast, .. } = self.rotation[item].action else {

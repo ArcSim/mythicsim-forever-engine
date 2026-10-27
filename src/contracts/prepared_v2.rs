@@ -472,6 +472,15 @@ pub struct ImprovedSealOfFury {
     pub no_threat: bool,
 }
 
+/// The Bear's Swipe cleave: the targets it hits and each hit's roll.
+#[derive(Clone, Copy, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct PetCleave {
+    pub max_targets: i32,
+    pub average: f64,
+    pub variance: f64,
+}
+
 /// A Seal of Light rank: its seal, the self heal its proc casts and the heal's amount, and its
 /// judgement with the judgement's target aura.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -2791,6 +2800,16 @@ pub enum Effect {
         crit_spells: Vec<usize>,
         spender_spells: Vec<usize>,
     },
+    /// Priest talents_shadow.go applyVampiricEmbrace (Forever's rules): the cast always lands
+    /// and puts up `aura` on the target; a batch window after each of the priest's Shadow hits
+    /// or ticks on it that deals damage, the priest gains `heal_fraction` of the damage as
+    /// health under the metrics of `metrics_action_id`.
+    VampiricEmbrace {
+        spell_id: i32,
+        aura: String,
+        heal_fraction: f64,
+        metrics_action_id: ActionId,
+    },
     /// Shadow Weaving: landed Shadow spells stack a Shadow damage bonus.
     ShadowWeaving {
         trigger_aura: String,
@@ -4636,10 +4655,14 @@ pub enum Effect {
         tick_base: f64,
         tick_outcome: String,
     },
-    /// The Bear's Swipe, whose cast condition needs this many active targets.
+    /// The Bear's Swipe, whose cast condition needs this many active targets. With them up
+    /// (Forever's rules) it cleaves `max_targets` of them, each a roll of `average` and
+    /// `variance` on the melee special table.
     HunterPetSwipe {
         spell_id: i32,
         min_targets: i32,
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        cleave: Option<PetCleave>,
     },
     /// The Scorpid's Scorpid Poison: a melee special hit roll, then one stack of a dot whose
     /// tick is the Go literal base on the multiplier at the cast.
@@ -4877,6 +4900,7 @@ impl Effect {
             Effect::Shadowform { .. } => "shadowform",
             Effect::InnerFocus { .. } => "inner_focus",
             Effect::ShadowWeaving { .. } => "shadow_weaving",
+            Effect::VampiricEmbrace { .. } => "vampiric_embrace",
             Effect::DarkSacrifice { .. } => "dark_sacrifice",
             Effect::InertPet { .. } => "inert_pet",
             Effect::Smite {} => "smite",

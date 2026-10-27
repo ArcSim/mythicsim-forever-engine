@@ -514,6 +514,19 @@ fn fold(env: &Environment, value: &Message) -> Folds {
             Some(known) => one(Fold::Const(Ty::Bool, known)),
             None => Folds::from([Fold::FALSE, Fold::TRUE]),
         },
+        // Go `newValueSpellCanCast`, `IsReady`, `TimeToReady` and `CastTime`: nil when
+        // `GetAPLSpell` finds no spell.
+        "spell_can_cast" | "spell_is_ready" | "spell_time_to_ready" | "spell_cast_time" => {
+            let ty = if matches!(kind, "spell_can_cast" | "spell_is_ready") {
+                Ty::Bool
+            } else {
+                Ty::Other
+            };
+            match config.message("spell_id") {
+                Some(id) if apl_spell(env, &proto_to_action_id(id)).is_some() => one(Fold::Dyn(ty)),
+                _ => one(Fold::Nil),
+            }
+        }
         "spell_is_known" => match config.message("spell_id") {
             Some(id) => one(Fold::Const(
                 Ty::Bool,

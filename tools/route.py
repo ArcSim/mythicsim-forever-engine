@@ -19,7 +19,9 @@ fault     A step failed: the request could not be read, the exporter, the gate o
 The engine prepares the request itself first, in Rust. When Rust preparation does not cover
 the request, the engine says so and the pinned Go exporter prepares it instead; the decision's
 `preparation` names the `provider` and, for Go, the `code` and `reason` Rust gave. With
---go-prepare the Go exporter always prepares.
+--go-prepare the Go exporter always prepares. With FOREVER_GO_FALLBACK off in the
+environment ("0", "false", "off" or "no", the worker's switch) nothing runs Go: Rust
+preparation's refusal is a fallback with that code, which the worker fails.
 
 The decision is printed as one JSON line and written to --output/decision.json. A request
 without a random seed gets a fresh one, as Go would draw, recorded as `seed`.
@@ -138,6 +140,21 @@ def write_request(request_path, output, seed, decision):
     return request_file
 
 
+def go_off():
+    """The worker's FOREVER_GO_FALLBACK switch, which its environment passes down: off ("0",
+    "false", "off" or "no") means no Go step at all, so the Go exporter prepares nothing."""
+    return os.environ.get("FOREVER_GO_FALLBACK", "").strip().lower() in ("0", "false", "off", "no")
+
+
+def refuse_unprepared(decision):
+    """With Go off, Rust preparation's refusal is the decision: a fallback the worker fails."""
+    preparation = decision["preparation"]
+    code = preparation["code"]
+    decision["preparation"] = {"provider": "rust", "code": code, "reason": preparation["reason"]}
+    decision.update(status="fallback", refusals=[{"code": code, "reason": preparation["reason"]}],
+                    codes=[code])
+
+
 def not_prepared(stdout, decision):
     """Record that Rust preparation refused the request, from the engine's report."""
     try:
@@ -150,7 +167,8 @@ def not_prepared(stdout, decision):
 
 def prepare(request_path, output, bundle, timeout, seed, decision, go_prepare=False):
     """Seed and prepare one request into `decision`: in Rust when it covers the request, else
-    with the Go exporter. Returns the prepared file. Raises Fault."""
+    with the Go exporter, or with Go off none and the decision holds a fallback. Returns the
+    prepared file, or None. Raises Fault."""
     request_file = write_request(request_path, output, seed, decision)
     prepared = output / "prepared.json"
     timings = decision["timings_ms"]
@@ -162,6 +180,9 @@ def prepare(request_path, output, bundle, timeout, seed, decision, go_prepare=Fa
             decision["preparation"] = {"provider": "rust"}
             return prepared
         not_prepared(done.stdout, decision)
+        if go_off():
+            refuse_unprepared(decision)
+            return None
     run_step("prepare", [bundle / "bin" / EXPORTER, "prepare", "--infile", request_file, "--outfile", prepared,
                          "--scenario", "route"], timeout, timings)
     decision.setdefault("preparation", {"provider": "go"})
@@ -191,6 +212,8 @@ def gate(request_path, output, bundle, timeout, seed, decision, go_prepare=False
     before any runs. Returns the prepared file when the gate supports it; otherwise the decision
     holds a fallback. Raises Fault."""
     prepared = prepare(request_path, output, bundle, timeout, seed, decision, go_prepare)
+    if prepared is None:
+        return None
     done = run_step("check", [bundle / "bin" / ENGINE, "check", "--infile", prepared], timeout,
                     decision["timings_ms"])
     return None if refuse(done.stdout, decision) else prepared
@@ -273,6 +296,9 @@ def route(request_path, output, bundle, timeout, seed=None, go_prepare=False):
         # supported. Only when Rust preparation refuses does the Go exporter prepare it.
         if not go_prepare and run_rust(None, output, bundle, timeout, decision, gated=True,
                                        request_file=request_file):
+            return decision
+        if not go_prepare and go_off():
+            refuse_unprepared(decision)
             return decision
         prepared = output / "prepared.json"
         run_step("prepare", [bundle / "bin" / EXPORTER, "prepare", "--infile", request_file,

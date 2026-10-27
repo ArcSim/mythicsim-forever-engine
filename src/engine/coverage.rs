@@ -641,8 +641,8 @@ fn undirected_procs(prepared: &PreparedV2) -> Vec<String> {
 }
 
 /// Judgement of Light heals whoever strikes the judged target, and the runtime heals only the
-/// player: a pet that strikes in melee would gain the heal itself. The runtime also follows the
-/// judgement on the one target the effect names, not on copies of it.
+/// player: a pet that strikes in melee would gain the heal itself. Each copy of the target
+/// carries its own judgement, under health metrics of its own.
 fn judgement_of_light_limits(prepared: &PreparedV2) -> Vec<String> {
     prepared
         .effects
@@ -658,11 +658,6 @@ fn judgement_of_light_limits(prepared: &PreparedV2) -> Vec<String> {
 /// [`judgement_of_light_limits`] for one judged aura.
 fn judgement_of_light_aura_limits(prepared: &PreparedV2, aura: &str) -> Vec<String> {
     let mut reasons = Vec::new();
-    if prepared.encounter.target_count > 1 {
-        reasons.push(format!(
-            "target aura {aura:?} heals the attackers of copies of the target"
-        ));
-    }
     let melee = |mask: &String| mask.starts_with("ProcMaskMelee");
     for pet in &prepared.pets {
         if pet
@@ -868,6 +863,8 @@ const SWAP_EFFECT_FIELDS: &[(&str, &[&str])] = &[
     ("flametongue_weapon", &["hands/base_damage"]),
     ("flametongue_totem", &["attack_damage"]),
     ("maelstrom_weapon", &["chances"]),
+    // The imbue's proc manager rebuilt for the weapon in the hand.
+    ("frostbrand_weapon", &["chances"]),
     // The imbue's proc manager rebuilt for the weapon in the hand, and whether a main hand
     // imbue blocks the party Windfury Totem (the trigger's gain takes the totem down).
     (
@@ -2203,6 +2200,7 @@ pub(crate) fn prepared_coverage(
         let mut last_prepull_swap: Option<bool> = None;
         let mut prepull_moves = false;
         let mut rotation_moves = false;
+        let mut prepull_sequences = 0;
         // Prepull parsing accepts casts, aura activations and moves.
         for prepull in &rotation.prepull {
             if prepull_pruned(prepared, prepull) {
@@ -2288,6 +2286,59 @@ pub(crate) fn prepared_coverage(
                 Action::CastAllStatBuffCooldowns(stats) => {
                     reachable.extend(cast_all_spells(prepared, stats));
                     true
+                }
+                // Go `newActionStrictSequence`: built only when every step is, and its Execute
+                // takes control of the rotation before the pull. The runtime follows steps at the
+                // first target whose conditions read only time and logic, which no other check
+                // gates, and one such sequence.
+                Action::StrictSequence(steps) => {
+                    let spells: Vec<_> = steps
+                        .iter()
+                        .map(|step| {
+                            step.target
+                                .resolve(targets)
+                                .and_then(|_| rotation_cast_spell(prepared, &step.spell))
+                        })
+                        .collect();
+                    if spells.iter().any(Option::is_none) {
+                        false
+                    } else {
+                        prepull_sequences += 1;
+                        let plain = |condition: &Value| {
+                            let mut plain = true;
+                            condition.visit(&mut |value| {
+                                plain &= matches!(
+                                    value,
+                                    Value::Const(_)
+                                        | Value::CurrentTime
+                                        | Value::RemainingTime
+                                        | Value::RemainingTimePercent
+                                        | Value::Compare { .. }
+                                        | Value::And(_)
+                                        | Value::Or(_)
+                                        | Value::Not(_)
+                                );
+                            });
+                            plain
+                        };
+                        let unsupported = steps.iter().any(|step| {
+                            step.condition.as_ref().is_some_and(|c| !plain(c))
+                                || step.target.resolve(targets) != Some(Unit::Target(0))
+                        });
+                        if unsupported || prepull_sequences > 1 {
+                            reasons.push(Refusal::new(
+                                "prepull_unsupported",
+                                format!(
+                                    "prepull action {}: a strictSequence with step conditions \
+                                     beyond time and logic, at another unit or after another is \
+                                     unsupported",
+                                    prepull.position
+                                ),
+                            ));
+                        }
+                        reachable.extend(spells.into_iter().flatten());
+                        true
+                    }
                 }
                 Action::ChangeTarget(unit) => unit.resolve(targets).is_some(),
                 // Go `newActionActivateAllStatBuffProcAuras`: none without a proc buff of the
@@ -2760,6 +2811,7 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
         pet_aura_known: &pet_aura_known,
         pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
+        unsummoned_pet_with_mana: &|pet: usize| unsummoned_pet_with_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -2902,6 +2954,7 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
         pet_aura_known: &pet_aura_known,
         pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
+        unsummoned_pet_with_mana: &|pet: usize| unsummoned_pet_with_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -2977,6 +3030,7 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
         pet_aura_known: &pet_aura_known,
         pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
+        unsummoned_pet_with_mana: &|pet: usize| unsummoned_pet_with_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -3377,8 +3431,27 @@ fn simulated_pet_with_mana(prepared: &PreparedV2, pet: usize) -> Option<u8> {
     (prepared.pets[slot].mana.max > 0.0).then(|| u8::try_from(slot).ok())?
 }
 
+/// Whether the player's pet at a position among its pets is one the fight never summons that
+/// has a mana bar.
+fn unsummoned_pet_with_mana(prepared: &PreparedV2, pet: usize) -> bool {
+    let mut pets: Vec<(i32, Option<bool>)> =
+        prepared.pets.iter().map(|pet| (pet.index, None)).collect();
+    for effect in &prepared.effects {
+        if let Effect::InertPet {
+            unit_index,
+            mana_bar,
+            ..
+        } = effect
+        {
+            pets.push((*unit_index, Some(*mana_bar)));
+        }
+    }
+    pets.sort_by_key(|(index, _)| *index);
+    pets.get(pet).and_then(|(_, mana_bar)| *mana_bar) == Some(true)
+}
+
 /// Rotation items that read the mana of a pet the fight never summons, whose mana Go reads off
-/// a unit the runtime does not keep.
+/// a unit the runtime does not keep. Its mana percent is a full bar, which the runtime knows.
 fn unsummoned_pet_mana(prepared: &PreparedV2, rotation: &Rotation) -> Vec<String> {
     let simulated = |pet: usize| {
         let mut pets: Vec<(i32, bool)> =
@@ -3450,6 +3523,7 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
         pet_aura_known: &pet_aura_known,
         pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
+        unsummoned_pet_with_mana: &|pet: usize| unsummoned_pet_with_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),

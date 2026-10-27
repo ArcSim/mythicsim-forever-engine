@@ -206,6 +206,8 @@ struct WeaponValues {
     /// The hands that carry Rockbiter and the main hand's swing speed (patch 181).
     rockbiter: Option<(bool, bool, f64)>,
     windfury: Option<WindfuryValues>,
+    /// Frostbrand Weapon's chances by spell, from the proc manager of the weapon in the hand.
+    frostbrand: Option<Vec<Option<f64>>>,
 }
 
 /// Windfury Weapon's heard spells, chances and whether it blocks the party totem.
@@ -239,6 +241,15 @@ impl WeaponValues {
                     ..
                 } => {
                     values.rockbiter = Some((*main_hand, *off_hand, *main_hand_swing_speed));
+                }
+                Effect::FrostbrandWeapon { chances, .. } => {
+                    let mut by_spell = vec![None; spells];
+                    for chance in chances {
+                        if let Some(slot) = by_spell.get_mut(chance.spell) {
+                            *slot = Some(chance.chance);
+                        }
+                    }
+                    values.frostbrand = Some(by_spell);
                 }
                 Effect::WindfuryWeapon {
                     trigger_spells,
@@ -1124,6 +1135,9 @@ impl Agent for ShamanAgent {
             totem.attack_damage = damage;
         }
         fight.agent.maelstrom_chances = set.maelstrom.clone();
+        if let Some(chances) = &set.frostbrand {
+            fight.agent.frostbrand_chances = chances.clone();
+        }
         if let (Some(state), Some((main_hand, off_hand, speed))) =
             (fight.agent.rockbiter_threat.as_mut(), set.rockbiter)
         {

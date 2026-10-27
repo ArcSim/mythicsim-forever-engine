@@ -3597,6 +3597,9 @@ pub struct Lookup<'a, R> {
     /// The player's pet at a position among its pets, while the fight simulates it and it has a
     /// mana bar: its place among the simulated pets.
     pub simulated_pet_with_mana: &'a dyn Fn(usize) -> Option<u8>,
+    /// Whether the player's pet at a position is one the fight never summons that has a mana
+    /// bar: Go resets its mana to full and nothing spends it.
+    pub unsummoned_pet_with_mana: &'a dyn Fn(usize) -> bool,
     /// Go `ItemSwap.IsEnabled`: whether the character swaps items.
     pub item_swap: bool,
     /// The player's resource bars as the rotation is built, which values of a bar the player
@@ -3734,10 +3737,15 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
         Value::PetCurrentMana(pet) => {
             Compiled::PetCurrentMana((lookup.simulated_pet_with_mana)(*pet)?)
         }
-        // Go `newValueCurrentManaPercent` on a pet: no value without a mana bar.
-        Value::PetCurrentManaPercent(pet) => {
-            Compiled::PetCurrentManaPercent((lookup.simulated_pet_with_mana)(*pet)?)
-        }
+        // Go `newValueCurrentManaPercent` on a pet: no value without a mana bar, and a full bar
+        // for a pet the fight never summons, whose mana the reset fills and nothing spends.
+        Value::PetCurrentManaPercent(pet) => match (lookup.simulated_pet_with_mana)(*pet) {
+            Some(slot) => Compiled::PetCurrentManaPercent(slot),
+            None if (lookup.unsummoned_pet_with_mana)(*pet) => {
+                Compiled::Const(parse_const("100%").expect("percent constant"))
+            }
+            None => return None,
+        },
         // Go `newValueAuraRemainingTime` on a pet: a constant zero for an aura the pet lacks or
         // for a pet never summoned, whose auras never go up.
         Value::PetAuraRemainingTime { pet, id } => match (lookup.pet_aura)(*pet, id) {
@@ -4272,6 +4280,7 @@ mod tests {
             pet_aura_known: &|_, _| false,
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -4312,6 +4321,7 @@ mod tests {
             pet_aura_known: &known,
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -4453,6 +4463,7 @@ mod tests {
         let none = |_: &ActionId| -> Option<FoundAura<ActionId>> { None };
         let summoned = Lookup {
             simulated_pet_with_mana: &|pet| (pet == 0).then_some(1),
+            unsummoned_pet_with_mana: &|_| false,
             ..only_auras(&none, &|_, _| None)
         };
         assert_eq!(
@@ -5150,6 +5161,7 @@ mod tests {
             pet_aura_known: &|_, _| false,
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -5659,6 +5671,7 @@ mod tests {
             pet_aura_known: &|_, _| false,
             pet_aura: &|_, _| None,
             simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,

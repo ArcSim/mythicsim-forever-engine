@@ -1503,9 +1503,13 @@ impl<A: Agent> Fight<A> {
     /// The handler: Go `Proc(judgementProcChance, "Judgement of Light - Heal")`, then the
     /// attacker gains the heal under the target's health metrics. The gate keeps the attacker
     /// the player: it refuses the aura beside a pet that strikes in melee.
-    fn judgement_of_light_heal(&mut self, index: usize, spell: SpellId) {
+    fn judgement_of_light_heal(&mut self, index: usize, judged: Side, spell: SpellId) {
         let state = &self.judgements_of_light[index];
-        let (chance, heal, metrics) = (state.chance, state.heal, state.metrics);
+        let metrics = match judged {
+            Side::Extra(extra) => state.copy_metrics[extra as usize],
+            _ => state.metrics,
+        };
+        let (chance, heal) = (state.chance, state.heal);
         if !self
             .rng
             .proc(chance, &self.judgements_of_light[index].rng_label)
@@ -1860,7 +1864,9 @@ impl<A: Agent> Fight<A> {
                 );
                 self.gain_health(health, metrics);
             }
-            AuraBehavior::JudgementOfLight(index) => self.judgement_of_light_heal(index, spell),
+            AuraBehavior::JudgementOfLight(index) => {
+                self.judgement_of_light_heal(index, aura.side, spell)
+            }
             AuraBehavior::ManaOnCast(index) => self.mana_on_cast_handler(index, spell),
             AuraBehavior::StackingCdWindow(index) => self.stacking_cd_handler(index),
             AuraBehavior::Class(kind) => A::on_delayed_proc(self, aura, kind, spell, result),

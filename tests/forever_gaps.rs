@@ -202,3 +202,27 @@ fn a_bears_swipe_cleaves_three_targets() {
     let pet = &player["pets"][0];
     assert!(action(pet, 1264502, 0).1 > 0.0, "Swipe damage");
 }
+
+/// Item swaps the second worker's sims carried: Frostbrand Weapon on the swap weapon, whose
+/// chances follow the weapon in the hand; Heart of Wyrmthalak's proc manager, which a swap
+/// rebuilds; and a swap weapon with Fiery Weapon, whose proc holds while a hand carries it.
+#[test]
+fn swaps_with_weapon_procs_run() {
+    run("enhancement-shaman-frostbrand-swap");
+    run("feral-druid-swap-heart-of-wyrmthalak");
+    let (_, player) = run("enhancement-shaman-swap-fiery-weapon");
+    assert!(action(&player, 13897, 0).1 > 0.0, "Fiery Weapon damage");
+}
+
+/// The raid's Judgement of Light on each of three targets, each with metrics of its own.
+#[test]
+fn judgement_of_light_runs_on_several_targets() {
+    run("protection-paladin-judgement-of-light-three-targets");
+}
+
+/// The mana percent of a demon the fight never summons reads its full bar, as Go's reset leaves
+/// it.
+#[test]
+fn an_unsummoned_pets_mana_percent_is_full() {
+    run("demonology-warlock-unsummoned-pet-mana");
+}

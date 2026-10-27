@@ -1202,6 +1202,8 @@ pub(crate) struct JudgementOfLight {
     pub(crate) heal: f64,
     /// The target's health metrics.
     pub(crate) metrics: usize,
+    /// Each target copy's own health metrics, as Go registers them on each target's aura.
+    pub(crate) copy_metrics: Vec<usize>,
     pub(crate) delay: i64,
 }
 
@@ -1812,6 +1814,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) pet_agent_auras: Vec<Vec<ActionId>>,
     /// The labels of those pets, in the same order.
     pub(crate) pet_agent_labels: Vec<String>,
+    /// Whether each of those pets has a mana bar, in the same order.
+    pub(crate) pet_agent_mana_bars: Vec<bool>,
     /// Go `APLRotation.curValidations` while [`Self::presentation`] builds the rotation's
     /// lines again to collect Go's validation messages; `None` the rest of the time.
     pub(crate) checks: std::cell::RefCell<Option<Vec<rotation_checks::Check>>>,
@@ -4027,6 +4031,7 @@ impl<A: Agent> Fight<A> {
             pet_trackers: Vec::new(),
             pet_agent_auras: pet::pet_agent_auras(prepared),
             pet_agent_labels: pet::pet_agent_labels(prepared),
+            pet_agent_mana_bars: pet::pet_agent_mana_bars(prepared),
             checks: std::cell::RefCell::new(None),
             presentation: None,
             heartbeat_offset: 0,
@@ -4152,6 +4157,7 @@ impl<A: Agent> Fight<A> {
                         chance: *proc_chance,
                         heal: *heal,
                         metrics,
+                        copy_metrics: Vec::new(),
                         delay: *delay_ns,
                     });
                 }
@@ -5273,6 +5279,14 @@ impl<A: Agent> Fight<A> {
                 other => other.clone(),
             });
             self.trackers[side.index()].auras = auras;
+            // Go `AttachJudgementOfLightHeal` registers the heal's metrics on each target.
+            for index in 0..self.judgements_of_light.len() {
+                let id = self.resources[self.judgements_of_light[index].metrics]
+                    .id
+                    .clone();
+                let metrics = self.new_resource_metrics_of(side, id, ResourceKind::Health);
+                self.judgements_of_light[index].copy_metrics.push(metrics);
+            }
             let main_armor = self.armor_category.as_ref().map(|(category, _)| *category);
             let on_first: Vec<usize> = (0..self.exclusive.len())
                 .filter(|&category| {

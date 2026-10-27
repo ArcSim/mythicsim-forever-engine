@@ -900,6 +900,12 @@ impl<A: Agent> Fight<A> {
                 let Side::Pet(slot) = side else { return None };
                 (self.unit(side).powers.max_mana > 0.0).then_some(slot)
             },
+            unsummoned_pet_with_mana: &|pet: usize| {
+                self.pet_agent_labels
+                    .get(pet)
+                    .is_some_and(|label| self.pet_side(label).is_none())
+                    && self.pet_agent_mana_bars.get(pet).copied().unwrap_or(false)
+            },
             item_swap: self.item_swap.is_some(),
             bars: self.rotation_bars(),
             icd_aura: &icd_aura,

@@ -23,3 +23,8 @@ checks the gate passes and runs it.
 | `combat-rogue-aura-value-without-aura` | an aura time without an aura |
 | `enhancement-shaman-stormcallers-garb` | Stormcaller's Garb (3) |
 | `hunter-bear-swipe-three-targets` | the Bear's Swipe on three targets |
+| `enhancement-shaman-frostbrand-swap` | Frostbrand Weapon on the swap weapon |
+| `feral-druid-swap-heart-of-wyrmthalak` | a swap with Heart of Wyrmthalak's proc manager |
+| `enhancement-shaman-swap-fiery-weapon` | a swap weapon with Fiery Weapon |
+| `protection-paladin-judgement-of-light-three-targets` | the raid's Judgement of Light on three targets |
+| `demonology-warlock-unsummoned-pet-mana` | the mana percent of a demon the fight never summons |

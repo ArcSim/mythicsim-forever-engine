@@ -846,6 +846,7 @@ const SWAP_EFFECT_FIELDS: &[(&str, &[&str])] = &[
     // Proc managers an item swap rebuilds for the weapons in the hands.
     ("stat_proc", &["chances"]),
     ("sulfuras_hand_of_ragnaros", &["chances"]),
+    ("thunderfury", &["chances"]),
     ("spell_data_damage_proc", &["chances", "trigger_spells"]),
     ("extra_attack_proc", &["chances"]),
     (
@@ -1178,6 +1179,11 @@ fn swap_change_limit(
     match parts.as_slice() {
         // The stats follow the stat auras, the swap's own among them.
         ["player", "stats", _] | ["player", "mana", _] => None,
+        // The crit the player takes on a Goblin Sapper Charge's half, which the swap sets on the
+        // player as its own target. A tank's, which the target's swings read, is not followed.
+        ["player", "pseudo_stats", "reduced_crit_taken_percent"] if prepared.enemy.is_none() => {
+            None
+        }
         // Spirit Weapons' threat, which a Rockbiter aura the swap switches multiplies in as it is
         // gained and divides out as it fades.
         ["player", "pseudo_stats", "threat_multiplier"] => {
@@ -1449,6 +1455,23 @@ fn fixed_stat_aura_changes(prepared: &PreparedV2) -> Vec<String> {
             .iter()
             .any(|mask| mask == "ProcMaskRangedAuto" || mask == "ProcMaskRangedSpecial")
     });
+    // Without a tank nothing swings at the player, so its defense is read by no hit; the crit
+    // it takes only by a Goblin Sapper Charge's half, whose value an item swap that changes it
+    // sets on the player.
+    let untanked = prepared.enemy.is_none();
+    let sapper = prepared
+        .effects
+        .iter()
+        .any(|effect| effect.kind() == "goblin_sapper");
+    let swap_sets_crit_taken = prepared.effects.iter().any(|effect| {
+        matches!(effect, Effect::ItemSwap { swapped, .. }
+            if swapped.iter().any(|change| change.path == "/player/pseudo_stats/reduced_crit_taken_percent"))
+    });
+    let inert = move |stat: &str| {
+        untanked
+            && (stat == "DefenseRating"
+                || (stat == "ReducedCritTakenPercent" && (!sapper || swap_sets_crit_taken)))
+    };
     prepared
         .effects
         .iter()
@@ -1460,7 +1483,9 @@ fn fixed_stat_aura_changes(prepared: &PreparedV2) -> Vec<String> {
             changed
                 .iter()
                 .filter(move |stat| {
-                    !followed_stat(stat) && (ranged || *stat != "RangedCritPercent")
+                    !followed_stat(stat)
+                        && (ranged || *stat != "RangedCritPercent")
+                        && !inert(stat.as_str())
                 })
                 .map(move |stat| {
                     format!("stat auras {auras:?} change {stat}, which the runtime holds fixed")

@@ -93,6 +93,10 @@ struct Variants {
     stat_procs: Vec<(usize, [Vec<Option<f64>>; 2])>,
     /// Sulfuras' chances, which its weapon proc manager rebuilds.
     sulfuras: Option<[Vec<Option<f64>>; 2]>,
+    /// Thunderfury's chances, likewise.
+    thunderfury: Option<[Vec<Option<f64>>; 2]>,
+    /// The crit the player takes under either set, which a hit on the player reads.
+    reduced_crit_taken: Option<[f64; 2]>,
     /// Damage procs whose effect roll reads the weapon in the hand (the party's Flametongue
     /// Totem hits for the main hand's speed): the proc spell and its average under either set.
     effect_rolls: Vec<(SpellId, [f64; 2])>,
@@ -302,8 +306,18 @@ impl<A: Agent> Fight<A> {
             return;
         };
         let worn = swap.worn.effects.clone();
+        let worn_crit_taken = swap.worn.player.pseudo_stats.reduced_crit_taken_percent;
         let spells = self.spells.len();
         let mut variants = Variants::default();
+        if let Some(main) = self
+            .self_target
+            .as_ref()
+            .map(|target| target.reduced_crit_taken_percent)
+        {
+            if main != worn_crit_taken {
+                variants.reduced_crit_taken = Some([main, worn_crit_taken]);
+            }
+        }
         let crusader = |effects: &[Effect]| {
             effects.iter().find_map(|effect| match effect {
                 Effect::Crusader { chances, .. } => Some(super::chances_by_spell(chances, spells)),
@@ -399,6 +413,19 @@ impl<A: Agent> Fight<A> {
         if let (Some(main), Some(swapped)) = (sulfuras(effects), sulfuras(&worn)) {
             if main != swapped {
                 variants.sulfuras = Some([main, swapped]);
+            }
+        }
+        let thunderfury = |effects: &[Effect]| {
+            effects.iter().find_map(|effect| match effect {
+                Effect::Thunderfury { chances, .. } => {
+                    Some(super::chances_by_spell(chances, spells))
+                }
+                _ => None,
+            })
+        };
+        if let (Some(main), Some(swapped)) = (thunderfury(effects), thunderfury(&worn)) {
+            if main != swapped {
+                variants.thunderfury = Some([main, swapped]);
             }
         }
         self.item_swap.as_mut().expect("bound").variants = variants;
@@ -619,6 +646,15 @@ impl<A: Agent> Fight<A> {
         }
         if let (Some(by_set), Some(sulfuras)) = (variants.sulfuras, self.sulfuras.as_mut()) {
             sulfuras.chances = by_set[index].clone();
+        }
+        if let (Some(by_set), Some(thunderfury)) = (variants.thunderfury, self.thunderfury.as_mut())
+        {
+            thunderfury.chances = by_set[index].clone();
+        }
+        if let (Some(by_set), Some(target)) =
+            (variants.reduced_crit_taken, self.self_target.as_mut())
+        {
+            target.reduced_crit_taken_percent = by_set[index];
         }
         for (proc, by_set) in variants.damage_procs {
             let (trigger_spells, chances) = by_set[index].clone();

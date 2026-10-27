@@ -1521,8 +1521,9 @@ impl<A: Agent> Fight<A> {
     }
 
     /// The handler: Go `Proc(judgementProcChance, "Judgement of Light - Heal")`, then the
-    /// attacker gains the heal under the target's health metrics. The gate keeps the attacker
-    /// the player: it refuses the aura beside a pet that strikes in melee.
+    /// attacker gains the heal under the target's health metrics. A pet's hit rolls the same
+    /// chance; its heal changes nothing, as no target strikes a pet and nothing else takes its
+    /// health, so a pet is always at full health.
     fn judgement_of_light_heal(&mut self, index: usize, judged: Side, spell: SpellId) {
         let state = &self.judgements_of_light[index];
         let metrics = match judged {

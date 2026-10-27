@@ -47,3 +47,4 @@ checks the gate passes and runs it.
 | `balance-druid-change-target` | a change of target to the next target in the priority list |
 | `demonology-warlock-sequence-change-target` | changes of target inside a strict sequence |
 | `shadow-priest-vampiric-embrace-three-targets` | Vampiric Embrace on several targets (the Vampiric Embrace request with three targets and its casts, Shadow Word: Pain and Mind Blast at the next target) |
+| `demonology-warlock-succubus-judgement-of-light` | the raid's Judgement of Light beside a Succubus, which strikes in melee (a production request with the debuff added) |

@@ -648,40 +648,6 @@ fn undirected_procs(prepared: &PreparedV2) -> Vec<String> {
         .collect()
 }
 
-/// Judgement of Light heals whoever strikes the judged target, and the runtime heals only the
-/// player: a pet that strikes in melee would gain the heal itself. Each copy of the target
-/// carries its own judgement, under health metrics of its own.
-fn judgement_of_light_limits(prepared: &PreparedV2) -> Vec<String> {
-    prepared
-        .effects
-        .iter()
-        .filter_map(|effect| match effect {
-            Effect::JudgementOfLight { aura, .. } => Some(aura),
-            _ => None,
-        })
-        .flat_map(|aura| judgement_of_light_aura_limits(prepared, aura))
-        .collect()
-}
-
-/// [`judgement_of_light_limits`] for one judged aura.
-fn judgement_of_light_aura_limits(prepared: &PreparedV2, aura: &str) -> Vec<String> {
-    let mut reasons = Vec::new();
-    let melee = |mask: &String| mask.starts_with("ProcMaskMelee");
-    for pet in &prepared.pets {
-        if pet
-            .spells
-            .iter()
-            .any(|spell| spell.proc_mask.iter().any(melee))
-        {
-            reasons.push(format!(
-                "target aura {aura:?} heals pet {:?}, which strikes in melee",
-                pet.label
-            ));
-        }
-    }
-    reasons
-}
-
 /// Runeblade of Baron Rivendare's Unholy Aura starts a periodic action as it gains, which gives
 /// the wearer 60 health every five seconds; the runtime runs no such action.
 fn unholy_aura_regeneration(prepared: &PreparedV2) -> Vec<String> {
@@ -2514,10 +2480,6 @@ pub(crate) fn prepared_coverage(
             several_target_limits(prepared, gate, &reachable),
         ));
         reasons.extend(coded("proc_unsupported", undirected_procs(prepared)));
-        reasons.extend(coded(
-            "proc_unsupported",
-            judgement_of_light_limits(prepared),
-        ));
         reasons.extend(coded("effect_unimplemented", shared_dot_auras(prepared)));
         reasons.extend(coded(
             "effect_unimplemented",

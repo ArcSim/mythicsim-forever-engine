@@ -485,3 +485,18 @@ fn judgement_of_light_runs_beside_a_melee_demon() {
         "the Succubus is simulated"
     );
 }
+
+/// A Manual Crowd Pummeler opener that swaps onto Dark Edge of Insanity with Iron Counterweight
+/// (enchant 34): the enchant's speed aura multiplies melee speed by 1.03 while the swap wears it.
+#[test]
+fn a_swap_onto_a_speed_enchant_runs() {
+    let (value, _) = run("enhancement-shaman-swap-speed-enchant");
+    let speed = effects(&value, "speed_aura");
+    assert!(
+        speed.iter().any(
+            |effect| effect["aura"] == "Enchant 34 Speed (ItemSlotMainHand)"
+                && effect["melee_multiplier"] == 1.03
+        ),
+        "{speed:?}"
+    );
+}

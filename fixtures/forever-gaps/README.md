@@ -48,3 +48,4 @@ checks the gate passes and runs it.
 | `demonology-warlock-sequence-change-target` | changes of target inside a strict sequence |
 | `shadow-priest-vampiric-embrace-three-targets` | Vampiric Embrace on several targets (the Vampiric Embrace request with three targets and its casts, Shadow Word: Pain and Mind Blast at the next target) |
 | `demonology-warlock-succubus-judgement-of-light` | the raid's Judgement of Light beside a Succubus, which strikes in melee (a production request with the debuff added) |
+| `enhancement-shaman-swap-speed-enchant` | a swap onto a weapon with Iron Counterweight, an enchant speed aura (a Best Gear comparison, 27 October 2026) |

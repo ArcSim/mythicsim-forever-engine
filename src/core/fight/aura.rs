@@ -91,6 +91,13 @@ pub(crate) enum AuraBehavior<K> {
         ranged: f64,
         cast: f64,
     },
+    /// An item or enchant speed aura an item swap gains and expires: as `MultiplySpeeds`, but
+    /// the reset's gain is already in the exported speeds.
+    SwapSpeed {
+        melee: f64,
+        ranged: f64,
+        cast: f64,
+    },
     /// Go `AttachMultiplicativePseudoStatBuff` on the player's damage taken of each school, as
     /// Orc Shatter Curse attaches it.
     MultiplySelfDamageTaken {
@@ -825,6 +832,15 @@ impl<A: Agent> Fight<A> {
                 ranged,
                 cast,
             } => self.multiply_speeds(melee, ranged, cast, false),
+            AuraBehavior::SwapSpeed {
+                melee,
+                ranged,
+                cast,
+            } => {
+                if !self.resetting_auras {
+                    self.multiply_speeds(melee, ranged, cast, false);
+                }
+            }
             AuraBehavior::MultiplySelfDamageTaken {
                 multiplier,
                 schools,
@@ -897,6 +913,11 @@ impl<A: Agent> Fight<A> {
                 self.multiply_cast_speed(1.0 / cast);
             }
             AuraBehavior::MultiplySpeeds {
+                melee,
+                ranged,
+                cast,
+            }
+            | AuraBehavior::SwapSpeed {
                 melee,
                 ranged,
                 cast,

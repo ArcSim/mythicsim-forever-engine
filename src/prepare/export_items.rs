@@ -430,7 +430,21 @@ pub(crate) fn use_item_effect(
     if let Some(effect) = env.agent.class_item_use_effect(env, spell, item) {
         return Some(vec![effect]);
     }
+    // Forever's rules: a heal over time on use (Orb of Soran'ruk) has no runtime behavior. Go
+    // files it as a survival cooldown, which the automatic use never casts without timings or a
+    // defensive health threshold; the gate refuses a rotation or a threshold that reaches it.
+    if env.sim.rules == super::sim::Rules::Forever && periodic_heal_on_use(item) {
+        return Some(Vec::new());
+    }
     Some(energize_on_use_effects(env, spell, item, unrepresented))
+}
+
+/// Whether the item's one use effect is a client heal over time on the wearer.
+fn periodic_heal_on_use(item: i32) -> bool {
+    only_on_use_effect(item).is_some_and(|effect| {
+        let heal = find(effect.i32("buff_id")).proc_heal_effect();
+        !heal.is_nil() && heal.aura == dbcenums::A_PERIODIC_HEAL
+    })
 }
 
 /// The default case of the item loop: shared.NewSpellDataEnergizeOnUse: an item use spell that
@@ -453,9 +467,21 @@ fn energize_on_use_effects(
                 }
                 let row = find(item_effect.i32("buff_id"));
                 let effect = row.proc_energize_effect();
-                if effect.is_nil() || effect.misc != dbcenums::POWER_MANA {
-                    continue;
-                }
+                // Go `energizedBarOf`: mana, rage or energy, on a character with that bar.
+                let unit = env.sim.unit(env.player);
+                let power = match effect.misc {
+                    _ if effect.is_nil() => continue,
+                    dbcenums::POWER_MANA => None,
+                    dbcenums::POWER_RAGE if unit.rage_bar.enabled => Some("rage"),
+                    dbcenums::POWER_ENERGY if unit.energy_bar.enabled => Some("energy"),
+                    _ => continue,
+                };
+                // Rage is stated in tenths.
+                let scale = if dbcenums::power_in_tenths(effect.misc) {
+                    0.1
+                } else {
+                    1.0
+                };
                 let periodic = effect.aura == dbcenums::A_PERIODIC_ENERGIZE;
                 let mut ticks = 1.0;
                 if periodic {
@@ -469,11 +495,14 @@ fn energize_on_use_effects(
                 found = true;
                 let mut energize = json!({
                     "kind": "energize_on_use", "item_id": item, "spell_id": row.id,
-                    "average": effect.average(level), "variance": effect.variance,
-                    "whole": effect.max(level) * ticks,
+                    "average": effect.average(level) * scale, "variance": effect.variance,
+                    "whole": effect.max(level) * ticks * scale,
                 });
                 if periodic {
                     energize["periodic"] = json!(true);
+                }
+                if let Some(power) = power {
+                    energize["power"] = json!(power);
                 }
                 effects.push(energize);
             }

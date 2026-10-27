@@ -6,8 +6,8 @@ use crate::{
 };
 
 use super::{
-    log::action_string, Action, Agent, AuraRef, Fight, ResourceKind, Side, SpellBehavior, SpellId,
-    PRIORITY_GCD, SPELL_PUSHBACK_DURATION,
+    log::action_string, Action, Agent, AuraRef, EnergizedBar, Fight, ResourceKind, Side,
+    SpellBehavior, SpellId, PRIORITY_GCD, SPELL_PUSHBACK_DURATION,
 };
 
 /// Go `MaxSpellQueueWindow`.
@@ -846,18 +846,18 @@ impl<A: Agent> Fight<A> {
                 average,
                 variance,
                 periodic,
+                bar,
                 ..
             } => {
                 if periodic {
-                    // Go `spell.SelfHot().Apply`: the ticks gain the mana.
+                    // Go `spell.SelfHot().Apply`: the ticks gain the resource.
                     let dot = self.spells[spell]
                         .dot
                         .expect("a periodic energize has its self hot");
                     self.apply_dot(dot);
                 } else {
                     let gain = self.effect_roll(average, variance);
-                    let metrics = self.item_metrics(spell);
-                    self.add_mana(gain, metrics);
+                    self.energize_bar(spell, bar, gain);
                 }
             }
             SpellBehavior::DiamondFlask(_) => {
@@ -1066,6 +1066,18 @@ impl<A: Agent> Fight<A> {
     }
 
     /// The mana metrics registered for an item or class spell action.
+    /// Go spell_data_energize.go `energizedBar.add`: the gain on the bar the item fills.
+    pub(crate) fn energize_bar(&mut self, spell: SpellId, bar: EnergizedBar, gain: f64) {
+        match bar {
+            EnergizedBar::Mana => {
+                let metrics = self.item_metrics(spell);
+                self.add_mana(gain, metrics);
+            }
+            EnergizedBar::Rage(metrics) => self.add_rage(gain, metrics),
+            EnergizedBar::Energy(metrics) => self.add_energy(gain, metrics),
+        }
+    }
+
     pub(crate) fn item_metrics(&mut self, spell: SpellId) -> usize {
         if let Some(metrics) = self.spells[spell].mana_metrics {
             return metrics;
@@ -1471,7 +1483,20 @@ impl<A: Agent> Fight<A> {
                     .map_or((0.0, 0.0), |bar| (bar.max, bar.current));
                 max - current >= (min + spread) - spill && *selected
             }
-            SpellBehavior::EnergizeOnUse { whole, .. } => max - mana >= *whole,
+            SpellBehavior::EnergizeOnUse { whole, bar, .. } => {
+                let room = match bar {
+                    EnergizedBar::Mana => max - mana,
+                    EnergizedBar::Rage(_) => self
+                        .rage
+                        .as_ref()
+                        .map_or(0.0, |rage| rage.max - rage.current),
+                    EnergizedBar::Energy(_) => self
+                        .energy
+                        .as_ref()
+                        .map_or(0.0, |energy| energy.max - energy.current),
+                };
+                room >= *whole
+            }
             SpellBehavior::PeriodicMana { min_deficit, .. } => max - mana >= *min_deficit,
             // Go: only a mana gain asks whether the mana fits.
             SpellBehavior::PotionResource {

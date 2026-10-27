@@ -1704,6 +1704,14 @@ impl ExternalActivation {
     }
 }
 
+/// The bar other than mana an item use's gain fills.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "lowercase")]
+pub enum EnergizedPower {
+    Rage,
+    Energy,
+}
+
 /// Behavior Rust must execute, with the parameters Go keeps in closures. Each variant
 /// names the Go source that defines it in docs/prepared-v2.md.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -3222,6 +3230,9 @@ pub enum Effect {
         whole: f64,
         #[serde(default, skip_serializing_if = "is_false")]
         periodic: bool,
+        /// The bar the gain fills; none for mana.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        power: Option<EnergizedPower>,
     },
     /// A stat proc common/shared/shared_utils.go applySpellDataProc builds from client rows: a
     /// listener on the spells it hears through `callbacks`, at a chance behind the trigger

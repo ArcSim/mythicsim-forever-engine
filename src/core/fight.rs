@@ -65,7 +65,9 @@ pub(crate) use metrics::{ActionTotals, FightReport};
 pub(crate) use spell_mod::{ModId, ModKind};
 
 use crate::{
-    contracts::prepared_v2::{ActionId, Effect, ExclusiveMembership, PreparedV2, Schools},
+    contracts::prepared_v2::{
+        ActionId, Effect, EnergizedPower, ExclusiveMembership, PreparedV2, Schools,
+    },
     core::{
         queue::{Handle, PendingQueue},
         rng::SimRng,
@@ -494,6 +496,7 @@ pub(crate) enum SpellBehavior<S> {
         whole: f64,
         /// Each tick of the spell's self hot gains a roll, rather than the cast.
         periodic: bool,
+        bar: EnergizedBar,
     },
     /// Go racials.go Touch of the Grave's drain: shadow damage from the caster's maximum
     /// health, healing the caster for the damage dealt.
@@ -1362,6 +1365,15 @@ pub(crate) struct MajorCooldown {
     pub(crate) survival: bool,
     pub(crate) timings: Vec<i64>,
     pub(crate) uses: usize,
+}
+
+/// Go spell_data_energize.go `energizedBar`: the bar an item use's gain fills, with the item's
+/// own metrics for rage and energy.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) enum EnergizedBar {
+    Mana,
+    Rage(usize),
+    Energy(usize),
 }
 
 /// Go `proto.ResourceType` of a resource metric.
@@ -2643,13 +2655,38 @@ impl<A: Agent> Fight<A> {
                             variance,
                             whole,
                             periodic,
+                            power,
                             ..
-                        } if *item_id == item => Some(SpellBehavior::EnergizeOnUse {
-                            average: *average,
-                            variance: *variance,
-                            whole: *whole,
-                            periodic: *periodic,
-                        }),
+                        } if *item_id == item => {
+                            // Go `energizedBarOf`: the item's own metrics on a rage or energy
+                            // bar, registered with the cooldown.
+                            let id = ActionId {
+                                item_id: item,
+                                ..ActionId::default()
+                            };
+                            let bar = match power {
+                                None => EnergizedBar::Mana,
+                                Some(EnergizedPower::Rage) => EnergizedBar::Rage(resource(
+                                    Side::Player,
+                                    id,
+                                    false,
+                                    ResourceKind::Rage,
+                                )),
+                                Some(EnergizedPower::Energy) => EnergizedBar::Energy(resource(
+                                    Side::Player,
+                                    id,
+                                    false,
+                                    ResourceKind::Energy,
+                                )),
+                            };
+                            Some(SpellBehavior::EnergizeOnUse {
+                                average: *average,
+                                variance: *variance,
+                                whole: *whole,
+                                periodic: *periodic,
+                                bar,
+                            })
+                        }
                         Effect::SpellCostAuraOnUse { item_id, aura, .. }
                         | Effect::SpellModAuraOnUse { item_id, aura, .. }
                         | Effect::ShieldOnHeal { item_id, aura, .. }

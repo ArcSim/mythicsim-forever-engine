@@ -1201,8 +1201,14 @@ fn swap_change_limit(
             }
         }
         // The crit the player takes on a Goblin Sapper Charge's half, which the swap sets on the
-        // player as its own target. A tank's, which the target's swings read, is not followed.
-        ["player", "pseudo_stats", "reduced_crit_taken_percent"] if prepared.enemy.is_none() => {
+        // player as its own target. A tank's is read by the target's swings, whose rolls follow
+        // the swap's stat aura among the combinations.
+        ["player", "pseudo_stats", "reduced_crit_taken_percent"]
+            if prepared
+                .enemy
+                .as_ref()
+                .is_none_or(|enemy| enemy.rolls.len() > 1) =>
+        {
             None
         }
         // Spirit Weapons' threat, which a Rockbiter aura the swap switches multiplies in as it is
@@ -1478,8 +1484,13 @@ fn fixed_stat_aura_changes(prepared: &PreparedV2) -> Vec<String> {
     });
     // Without a tank nothing swings at the player, so its defense is read by no hit; the crit
     // it takes only by a Goblin Sapper Charge's half, whose value an item swap that changes it
-    // sets on the player.
-    let untanked = prepared.enemy.is_none();
+    // sets on the player. A tank's are read by the target's swings, whose rolls preparation
+    // reads under every stat aura combination, so they follow the combination there.
+    let defense_followed = prepared.enemy.is_none()
+        || prepared
+            .enemy
+            .as_ref()
+            .is_some_and(|enemy| enemy.rolls.len() > 1);
     let sapper = prepared
         .effects
         .iter()
@@ -1489,7 +1500,7 @@ fn fixed_stat_aura_changes(prepared: &PreparedV2) -> Vec<String> {
             if swapped.iter().any(|change| change.path == "/player/pseudo_stats/reduced_crit_taken_percent"))
     });
     let inert = move |stat: &str| {
-        untanked
+        defense_followed
             && (stat == "DefenseRating"
                 || (stat == "ReducedCritTakenPercent" && (!sapper || swap_sets_crit_taken)))
     };

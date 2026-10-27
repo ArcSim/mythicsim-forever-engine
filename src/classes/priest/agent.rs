@@ -23,6 +23,8 @@ use super::{
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum PriestSpell {
     MindBlast,
+    /// Chastise (Forever): a rolled Holy hit, cast only at a Humanoid.
+    Chastise,
     ShadowWordDeath,
     ShadowWordPain,
     DevouringPlague,
@@ -61,6 +63,8 @@ pub(crate) enum PriestAura {
 /// Priest state that Go keeps in the `Priest` struct and its closures.
 #[derive(Default)]
 pub(crate) struct PriestAgent {
+    /// Whether the target is a Humanoid, the only creature Chastise can be cast at.
+    humanoid_target: bool,
     early_demise_crit: f64,
     /// Improved Mind Flay's step a tick (client 70425).
     mind_flay_ramp: f64,
@@ -221,6 +225,7 @@ impl PriestAgent {
             "shadowfiend" => Some(PriestSpell::Shadowfiend),
             "power_infusion" => Some(PriestSpell::PowerInfusion),
             "smite" if spell.damage_effect.is_some() => Some(PriestSpell::Smite),
+            "chastise" if spell.damage_effect.is_some() => Some(PriestSpell::Chastise),
             "holy_nova" if spell.damage_effect.is_some() => Some(PriestSpell::HolyNova),
             "holy_fire" if spell.damage_effect.is_some() && spell.dot.is_some() => {
                 Some(PriestSpell::HolyFire)
@@ -244,7 +249,10 @@ impl PriestAgent {
             .any(|effect| matches!(effect, Effect::VampiricEmbrace { .. }));
         let mut fight = Fight::new(
             prepared,
-            PriestAgent::default(),
+            PriestAgent {
+                humanoid_target: prepared.target.mob_type.as_deref() == Some("MobTypeHumanoid"),
+                ..PriestAgent::default()
+            },
             |spell| PriestAgent::spell(spell, unmasked, vampiric_embrace),
             |unit, label| {
                 auras
@@ -590,6 +598,11 @@ impl Agent for PriestAgent {
     type Spell = PriestSpell;
     type Aura = PriestAura;
 
+    /// chastise.go `ExtraCastCondition`: the target is a Humanoid.
+    fn extra_cast_condition(fight: &Fight<Self>, _spell: SpellId, behavior: PriestSpell) -> bool {
+        behavior != PriestSpell::Chastise || fight.agent.humanoid_target
+    }
+
     fn reset(fight: &mut Fight<Self>) {
         fight.agent.mending = None;
     }
@@ -630,7 +643,11 @@ impl Agent for PriestAgent {
                     None => book.cast(fight, rank),
                 }
             }
-            PriestSpell::MindBlast | PriestSpell::Smite => direct::apply(fight, spell, target),
+            // chastise.go: `CalcAndDealDamage` of the row's roll on `OutcomeMagicHitAndCrit`,
+            // as Smite.
+            PriestSpell::MindBlast | PriestSpell::Smite | PriestSpell::Chastise => {
+                direct::apply(fight, spell, target)
+            }
             // talents_holy.go: Go `CalcAndDealAoeDamageWithVariance`, which rolls, resolves and
             // deals the hit on each target in unit index order before the heal is cast on the
             // priest.

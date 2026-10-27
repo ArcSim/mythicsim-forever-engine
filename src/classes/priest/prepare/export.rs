@@ -465,8 +465,9 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
         }));
     }
     // talents_shadow.go applyVampiricEmbrace, under Forever's rules (Go's exporter leaves the
-    // cast unknown): the debuff on the first target heals the priest for a share of the Shadow
-    // damage the priest deals it. Its party share is the player's alone.
+    // cast unknown): the debuff on each target, the first's copied to the others, heals the
+    // priest for a share of the Shadow damage the priest deals that target. Its party share is
+    // the player's alone.
     if talents.bool("vampiric_embrace") && sim.rules == Rules::Forever {
         let rank = data.vampiric_embrace.highest();
         let target = env.encounter.targets[0];
@@ -477,9 +478,6 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
             .map(|&aura| sim.aura(aura))
             .find(|aura| aura.label.starts_with("Vampiric Embrace - "));
         if let Some(aura) = aura {
-            if env.encounter.targets.len() > 1 {
-                notes.push("Vampiric Embrace on several targets is unsupported".to_string());
-            }
             effects.push(json!({
                 "kind": "vampiric_embrace", "spell_id": rank.id, "aura": aura.label,
                 "heal_fraction": rank.effect(dbcenums::A_DUMMY, 0).average(CHARACTER_LEVEL) / 100.0,

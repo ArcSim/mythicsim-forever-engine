@@ -612,6 +612,8 @@ impl Agent for PriestAgent {
                     .expect("Vampiric Embrace is bound");
                 let result = fight.calc_outcome(spell, target, Outcome::AlwaysHit);
                 if result.outcome & OUTCOME_LANDED != 0 {
+                    // Go `NewEnemyAuraArray`: the debuff on the cast's own target.
+                    let aura = fight.aura_on(aura, target);
                     fight.activate_aura(aura);
                 }
                 fight.deal_damage(spell, result, false);

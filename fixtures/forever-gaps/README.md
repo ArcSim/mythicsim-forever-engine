@@ -46,3 +46,4 @@ checks the gate passes and runs it.
 | `demonology-warlock-sequence-other-targets` | sequence steps at the next target |
 | `balance-druid-change-target` | a change of target to the next target in the priority list |
 | `demonology-warlock-sequence-change-target` | changes of target inside a strict sequence |
+| `shadow-priest-vampiric-embrace-three-targets` | Vampiric Embrace on several targets (the Vampiric Embrace request with three targets and its casts, Shadow Word: Pain and Mind Blast at the next target) |

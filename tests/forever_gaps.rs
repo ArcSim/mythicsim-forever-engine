@@ -461,3 +461,13 @@ fn a_change_of_target_in_a_strict_sequence_moves_the_casts() {
     let hellfire = casts_by_target(&player, 11684);
     assert!(hellfire.len() >= 5 && hellfire[4] > 0.0, "{hellfire:?}");
 }
+
+/// Vampiric Embrace against three targets, cast on the next target with the priest's damage
+/// there: the debuff lands on that target and heals the priest from the damage it takes.
+#[test]
+fn vampiric_embrace_on_another_target_heals_the_priest() {
+    let (_, player) = run("shadow-priest-vampiric-embrace-three-targets");
+    let casts = casts_by_target(&player, 15286);
+    assert!(casts.len() >= 2 && casts[1] > 0.0, "{casts:?}");
+    assert!(resource_gain(&player, 15286, "ResourceTypeHealth") > 0.0);
+}

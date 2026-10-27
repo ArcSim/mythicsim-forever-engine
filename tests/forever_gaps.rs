@@ -500,3 +500,11 @@ fn a_swap_onto_a_speed_enchant_runs() {
         "{speed:?}"
     );
 }
+
+/// A tanking Bear's Manual Crowd Pummeler opener swaps onto Headspike (+7 Defense): the target's
+/// rolls under the swap's stat aura carry its Defense and the crit the bear takes.
+#[test]
+fn a_tanks_swap_that_changes_defense_runs() {
+    let (value, _) = run("feral-bear-druid-swap-defense");
+    assert!(value["enemy"]["rolls"].as_array().unwrap().len() > 1);
+}

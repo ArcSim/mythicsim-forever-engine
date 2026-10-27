@@ -183,6 +183,13 @@ impl Warrior {
         let hamstring = data.hamstring.highest();
         effects.push(json!({"kind": "hamstring", "spell_id": hamstring.id,
             "base_damage": hamstring.damage_effect().average(level)}));
+        // pummel.go: the same strike in Berserker Stance. Go's exporter has no effect for it, so
+        // only Forever's rules describe it.
+        if sim.rules == Rules::Forever {
+            let pummel = data.pummel.by_id(6554);
+            effects.push(json!({"kind": "pummel", "spell_id": pummel.id,
+                "base_damage": pummel.damage_effect().average(level)}));
+        }
         // bloodrage.go: instant and periodic rage scaled by Improved Bloodrage, and a share of
         // base health.
         let bloodrage = data.bloodrage.highest();

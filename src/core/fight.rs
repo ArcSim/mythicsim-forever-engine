@@ -1876,6 +1876,7 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) stat_procs: Vec<StatProc>,
     /// Gear procs that heal and give rage, by their aura's position.
     pub(crate) health_rage_procs: Vec<gear_procs::HealthRageProc>,
+    pub(crate) energy_procs: Vec<gear_procs::EnergyProc>,
     /// Gear procs that stack an armor debuff on the target, by their aura's position.
     pub(crate) armor_debuff_procs: Vec<gear_procs::ArmorDebuffProc>,
     /// Spell data stat procs, by their position among the effects of their kind.
@@ -4026,6 +4027,7 @@ impl<A: Agent> Fight<A> {
             absorb_procs: Vec::new(),
             stat_procs: Vec::new(),
             health_rage_procs: Vec::new(),
+            energy_procs: Vec::new(),
             armor_debuff_procs: Vec::new(),
             eureka: None,
             pets: pet::inert_pets(effects)?,

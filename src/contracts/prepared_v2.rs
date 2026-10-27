@@ -2650,6 +2650,16 @@ pub enum Effect {
         rage: f64,
         metrics_action_id: ActionId,
     },
+    /// Rogue items.go Darkmantle Armor (4), Rogue Armor Energize (Forever's rules): landed hits
+    /// roll each spell's chance from the set's proc manager under the label; a batch window
+    /// later the handler gives `energy` to a player with an energy bar.
+    EnergyProc {
+        trigger_aura: String,
+        rng_label: String,
+        chances: Vec<SpellChance>,
+        energy: f64,
+        metrics_action_id: ActionId,
+    },
     /// common/forever items_weapons.go Bashguuder and Rivenspike: a weapon proc whose handler,
     /// a batch window later, stacks the target's Puncture Armor; each stack count sets the
     /// target's armor change, as Go measures it.
@@ -3980,6 +3990,12 @@ pub enum Effect {
         spell_id: i32,
         base_damage: f64,
     },
+    /// Pummel (Forever's rules): a fixed client base on the special hit table, refunded on a
+    /// miss, in Berserker Stance.
+    Pummel {
+        spell_id: i32,
+        base_damage: f64,
+    },
     /// Bloodrage: instant and periodic rage for a share of base health.
     Bloodrage {
         spell_id: i32,
@@ -4957,6 +4973,7 @@ impl Effect {
             Effect::SpellDataAbsorbProc { .. } => "spell_data_absorb_proc",
             Effect::HealOnUse { .. } => "heal_on_use",
             Effect::HealthRageProc { .. } => "health_rage_proc",
+            Effect::EnergyProc { .. } => "energy_proc",
             Effect::DamageOnUse { .. } => "damage_on_use",
             Effect::ArmorDebuffProc { .. } => "armor_debuff_proc",
             Effect::SunderArmorRamp { .. } => "sunder_armor_ramp",
@@ -5118,6 +5135,7 @@ impl Effect {
             Effect::Taunt { .. } => "taunt",
             Effect::IntimidatingShout { .. } => "intimidating_shout",
             Effect::ConcussionBlow { .. } => "concussion_blow",
+            Effect::Pummel { .. } => "pummel",
             Effect::Bloodthrill { .. } => "bloodthrill",
             Effect::WeaponmasterSword { .. } => "weaponmaster_sword",
             Effect::Revenge { .. } => "revenge",

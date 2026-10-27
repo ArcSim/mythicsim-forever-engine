@@ -2251,6 +2251,23 @@ pub(crate) fn gear_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
             }
         }
     }
+    // rogue items.go Darkmantle Armor 4 piece, Rogue Armor Energize, under Forever's rules (Go's
+    // exporter leaves the listener unclaimed): landed white hits roll a legacy one proc a minute
+    // manager under the trigger's name; a batch window later a player with an energy bar gains
+    // 20 energy.
+    if let Some(set) = aura_named(env, "Darkmantle Armor 4P")
+        .filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        match env.sim.aura(set).dpm.as_ref() {
+            None => unrepresented.push("Darkmantle Armor 4P has no proc manager".to_string()),
+            Some(dpm) => effects.push(json!({
+                "kind": "energy_proc", "trigger_aura": env.sim.aura(set).label,
+                "rng_label": "Rogue Armor Energize",
+                "chances": dpm_chances(env, dpm, |spell| !spell.flags.matches(SpellFlag::PROC)),
+                "energy": 20.0, "metrics_action_id": json!({"spell_id": 27787}),
+            })),
+        }
+    }
     // classic items_trinkets.go Darkmoon Card: Heroism: landed melee hits roll a legacy two procs a
     // minute manager under the trigger's name; a batch window later the handler heals
     // Roll(120, 180), a Go literal, and gives no rage.

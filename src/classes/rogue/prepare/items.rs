@@ -458,9 +458,16 @@ fn darkmantle_2(env: &mut Environment, aura: AuraId) {
 /// Darkmantle Armor, 4 pieces: a white hit has a chance to restore 20 energy.
 fn darkmantle_4(env: &mut Environment, aura: AuraId) {
     let unit = env.player;
+    // Go `NewLegacyPPMManager`, which an item swap rebuilds for the weapons in the hands.
     let dpm = env
         .sim
-        .new_ppm_manager(unit, 1.0, ProcMask::MELEE_WHITE_HIT);
+        .new_ppm_manager(unit, 1.0, ProcMask::MELEE_WHITE_HIT)
+        .rebuilt_by_swap(
+            &env.sim,
+            unit,
+            crate::prepare::item_swap::ManagerChance::Ppm(1.0),
+            crate::prepare::item_swap::ManagerMask::Static(ProcMask::MELEE_WHITE_HIT),
+        );
     env.sim.attach_proc_trigger(
         aura,
         &ProcTrigger {

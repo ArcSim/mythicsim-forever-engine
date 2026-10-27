@@ -169,6 +169,8 @@ pub(crate) enum AuraBehavior<K> {
     /// A gear proc's trigger that heals and gives rage, by its position in
     /// `Fight::health_rage_procs`.
     HealthRageProc(usize),
+    /// An energy proc of the gear procs, by its position.
+    EnergyProc(usize),
     /// A gear proc's trigger that stacks an armor debuff on the target, by its position in
     /// `Fight::armor_debuff_procs`.
     ArmorDebuffTrigger(usize),
@@ -1415,6 +1417,9 @@ impl<A: Agent> Fight<A> {
                     AuraBehavior::HealthRageProc(proc) if dealt => {
                         self.health_rage_proc_callback(aura, proc, spell, result)
                     }
+                    AuraBehavior::EnergyProc(proc) if dealt => {
+                        self.energy_proc_callback(aura, proc, spell, result)
+                    }
                     AuraBehavior::ArmorDebuffTrigger(proc) if dealt => {
                         self.armor_debuff_proc_callback(aura, proc, spell, result)
                     }
@@ -1837,6 +1842,7 @@ impl<A: Agent> Fight<A> {
                 }
             }
             AuraBehavior::HealthRageProc(proc) => self.health_rage_proc_handler(proc),
+            AuraBehavior::EnergyProc(proc) => self.energy_proc_handler(proc),
             AuraBehavior::ArmorDebuffTrigger(proc) => {
                 self.armor_debuff_proc_handler(proc, result.target)
             }

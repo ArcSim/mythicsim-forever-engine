@@ -62,6 +62,7 @@ pub(crate) enum WarriorSpell {
     WhirlwindOffHand,
     Execute,
     Hamstring,
+    Pummel,
     Bloodrage,
     BerserkerRage,
     /// charge.go: the cast before the pull that runs to the target.
@@ -160,6 +161,7 @@ pub(crate) struct WarriorAgent {
     whirlwind: Option<Whirlwind>,
     execute: Option<Execute>,
     hamstring: f64,
+    pummel: f64,
     improved_hamstring: Option<ImprovedHamstring>,
     bloodrage: Option<Bloodrage>,
     berserker_rage: Option<BerserkerRage>,
@@ -279,6 +281,7 @@ impl WarriorAgent {
             "whirlwind_off_hand" if has("whirlwind") => Some(WarriorSpell::WhirlwindOffHand),
             "execute" if has("execute") => Some(WarriorSpell::Execute),
             "hamstring" if has("hamstring") => Some(WarriorSpell::Hamstring),
+            "pummel" if has("pummel") => Some(WarriorSpell::Pummel),
             "berserker_rage" if has("berserker_rage") => Some(WarriorSpell::BerserkerRage),
             "charge" if has("warrior_charge") => Some(WarriorSpell::Charge),
             "death_wish" if has("death_wish") => Some(WarriorSpell::DeathWish),
@@ -879,6 +882,7 @@ impl WarriorAgent {
                     })
                 }
                 Effect::Hamstring { base_damage, .. } => fight.agent.hamstring = *base_damage,
+                Effect::Pummel { base_damage, .. } => fight.agent.pummel = *base_damage,
                 Effect::Bloodrage {
                     spell_id,
                     instant_rage,
@@ -1238,6 +1242,11 @@ impl Agent for WarriorAgent {
                 let base = fight.agent.hamstring;
                 hamstring::apply(fight, spell, target, base);
             }
+            // pummel.go: Hamstring's strike, with Pummel's base.
+            WarriorSpell::Pummel => {
+                let base = fight.agent.pummel;
+                hamstring::apply(fight, spell, target, base);
+            }
             WarriorSpell::Bloodrage => {
                 let params = fight.agent.bloodrage.expect("Bloodrage is bound");
                 bloodrage::apply(fight, params);
@@ -1393,9 +1402,10 @@ impl Agent for WarriorAgent {
         let stance = fight.agent.stance;
         match behavior {
             // whirlwind.go, recklessness.go and berserker_rage.go: Berserker Stance.
-            WarriorSpell::Whirlwind | WarriorSpell::Recklessness | WarriorSpell::BerserkerRage => {
-                stance == Stance::Berserker
-            }
+            WarriorSpell::Whirlwind
+            | WarriorSpell::Recklessness
+            | WarriorSpell::BerserkerRage
+            | WarriorSpell::Pummel => stance == Stance::Berserker,
             // execute.go: Berserker or Battle Stance, in the execute phase.
             WarriorSpell::Execute => {
                 matches!(stance, Stance::Berserker | Stance::Battle) && fight.is_execute_phase_20()
@@ -1484,6 +1494,7 @@ impl Agent for WarriorAgent {
             | WarriorSpell::Recklessness
             | WarriorSpell::BerserkerRage
             | WarriorSpell::Hamstring
+            | WarriorSpell::Pummel
             | WarriorSpell::StanceLocked(_)
             | WarriorSpell::ShieldWall
             | WarriorSpell::ShieldBlock

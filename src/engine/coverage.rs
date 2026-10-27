@@ -2150,9 +2150,26 @@ pub(crate) fn prepared_coverage(
             }
         };
         let rotation = &flattened;
+        // The values the rotation reads: the priority list's, and those of a prepull strict
+        // sequence, whose steps the rotation runs once it takes control.
+        let mut read = flattened.clone();
+        read.priority_list
+            .extend(
+                rotation
+                    .prepull
+                    .iter()
+                    .filter_map(|prepull| match &prepull.action {
+                        action @ Action::StrictSequence(_) => Some(crate::rotation::Item {
+                            position: prepull.position,
+                            condition: None,
+                            action: action.clone(),
+                        }),
+                        _ => None,
+                    }),
+            );
         reasons.extend(coded(
             "aura_condition_unsupported",
-            aura_refresh_conditions(prepared, rotation),
+            aura_refresh_conditions(prepared, &read),
         ));
         reasons.extend(coded(
             "rotation_unsupported",
@@ -2160,17 +2177,17 @@ pub(crate) fn prepared_coverage(
         ));
         reasons.extend(coded(
             "rotation_unsupported",
-            dot_increase_limits(prepared, rotation),
+            dot_increase_limits(prepared, &read),
         ));
         reasons.extend(coded(
             "several_targets_unsupported",
             change_target_limits(prepared, rotation),
         ));
         if player.class != "ClassShaman" {
-            for item in &rotation.priority_list {
+            for item in &read.priority_list {
                 let mut totems = false;
-                if let Some(condition) = &item.condition {
-                    condition.visit(&mut |value| {
+                for read in item_values(item) {
+                    read.visit(&mut |value| {
                         totems |= matches!(value, Value::TotemRemainingTime { .. })
                     });
                 }
@@ -2187,11 +2204,11 @@ pub(crate) fn prepared_coverage(
         }
         reasons.extend(coded(
             "resource_unsupported",
-            rage_without_bar(prepared, rotation),
+            rage_without_bar(prepared, &read),
         ));
         reasons.extend(coded(
             "rotation_unsupported",
-            unsummoned_pet_mana(prepared, rotation),
+            unsummoned_pet_mana(prepared, &read),
         ));
         let mut reachable = Vec::new();
         let mut registered_prepull = 0;
@@ -2289,8 +2306,8 @@ pub(crate) fn prepared_coverage(
                 }
                 // Go `newActionStrictSequence`: built only when every step is, and its Execute
                 // takes control of the rotation before the pull. The runtime follows steps at the
-                // first target whose conditions read only time and logic, which no other check
-                // gates, and one such sequence.
+                // first target, whose conditions the value checks read with the priority list's,
+                // and one such sequence.
                 Action::StrictSequence(steps) => {
                     let spells: Vec<_> = steps
                         .iter()
@@ -2304,34 +2321,15 @@ pub(crate) fn prepared_coverage(
                         false
                     } else {
                         prepull_sequences += 1;
-                        let plain = |condition: &Value| {
-                            let mut plain = true;
-                            condition.visit(&mut |value| {
-                                plain &= matches!(
-                                    value,
-                                    Value::Const(_)
-                                        | Value::CurrentTime
-                                        | Value::RemainingTime
-                                        | Value::RemainingTimePercent
-                                        | Value::Compare { .. }
-                                        | Value::And(_)
-                                        | Value::Or(_)
-                                        | Value::Not(_)
-                                );
-                            });
-                            plain
-                        };
-                        let unsupported = steps.iter().any(|step| {
-                            step.condition.as_ref().is_some_and(|c| !plain(c))
-                                || step.target.resolve(targets) != Some(Unit::Target(0))
-                        });
+                        let unsupported = steps
+                            .iter()
+                            .any(|step| step.target.resolve(targets) != Some(Unit::Target(0)));
                         if unsupported || prepull_sequences > 1 {
                             reasons.push(Refusal::new(
                                 "prepull_unsupported",
                                 format!(
-                                    "prepull action {}: a strictSequence with step conditions \
-                                     beyond time and logic, at another unit or after another is \
-                                     unsupported",
+                                    "prepull action {}: a strictSequence at another unit or \
+                                     after another is unsupported",
                                     prepull.position
                                 ),
                             ));
@@ -2758,8 +2756,8 @@ fn rage_without_bar(prepared: &PreparedV2, rotation: &Rotation) -> Vec<String> {
     let mut reasons = Vec::new();
     for item in &rotation.priority_list {
         let mut uses = false;
-        if let Some(condition) = &item.condition {
-            condition.visit(&mut |value| uses |= matches!(value, Value::CurrentRage));
+        for read in item_values(item) {
+            read.visit(&mut |value| uses |= matches!(value, Value::CurrentRage));
         }
         if uses {
             reasons.push(format!(
@@ -2812,6 +2810,7 @@ fn flatten_groups(prepared: &PreparedV2, rotation: &Rotation) -> Result<Rotation
         pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
         unsummoned_pet_with_mana: &|pet: usize| unsummoned_pet_with_mana(prepared, pet),
+        unsummoned_pet_max_mana: &|pet: usize| unsummoned_pet_max_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -2955,6 +2954,7 @@ fn moves_without_values(prepared: &PreparedV2, rotation: &Rotation) -> Vec<Strin
         pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
         unsummoned_pet_with_mana: &|pet: usize| unsummoned_pet_with_mana(prepared, pet),
+        unsummoned_pet_max_mana: &|pet: usize| unsummoned_pet_max_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -3031,6 +3031,7 @@ fn prepull_pruned(prepared: &PreparedV2, prepull: &crate::rotation::Prepull) -> 
         pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
         unsummoned_pet_with_mana: &|pet: usize| unsummoned_pet_with_mana(prepared, pet),
+        unsummoned_pet_max_mana: &|pet: usize| unsummoned_pet_max_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),
@@ -3121,6 +3122,12 @@ fn live_category(
             || !MOVING_BID_CATEGORIES.contains(&membership.category.as_str()))
 }
 
+/// The values an item reads: its condition, then those of its action, as a channel's interrupt
+/// condition or a sequence's step conditions.
+fn item_values(item: &crate::rotation::Item) -> impl Iterator<Item = &Value> {
+    item.condition.iter().chain(item.action.values())
+}
+
 /// Go `ShouldRefreshExclusiveEffects` depends on the other effects of each exclusive category,
 /// which Rust reads from the runtime's categories, or from an exported reading: an aura holding
 /// its category alone, or one another aura holds for good. Any other reading is unsupported. An
@@ -3134,13 +3141,7 @@ fn aura_refresh_conditions(prepared: &PreparedV2, rotation: &Rotation) -> Vec<St
         !matches!(&item.action, Action::CastSpell { spell, .. }
             if rotation_spell_index(prepared, spell).is_none())
     });
-    let conditions = kept.flat_map(|item| {
-        let interrupt = match &item.action {
-            Action::ChannelSpell { interrupt_if, .. } => interrupt_if.as_ref(),
-            _ => None,
-        };
-        item.condition.iter().chain(interrupt)
-    });
+    let conditions = kept.flat_map(item_values);
     for condition in conditions {
         condition.visit(&mut |value| {
             let Value::AuraShouldRefresh {
@@ -3450,6 +3451,24 @@ fn unsummoned_pet_with_mana(prepared: &PreparedV2, pet: usize) -> bool {
     pets.get(pet).and_then(|(_, mana_bar)| *mana_bar) == Some(true)
 }
 
+/// The full mana a pet the fight never summons states, by its position among the pets.
+fn unsummoned_pet_max_mana(prepared: &PreparedV2, pet: usize) -> Option<f64> {
+    let mut pets: Vec<(i32, Option<f64>)> =
+        prepared.pets.iter().map(|pet| (pet.index, None)).collect();
+    for effect in &prepared.effects {
+        if let Effect::InertPet {
+            unit_index,
+            max_mana,
+            ..
+        } = effect
+        {
+            pets.push((*unit_index, *max_mana));
+        }
+    }
+    pets.sort_by_key(|(index, _)| *index);
+    pets.get(pet).and_then(|(_, max)| *max)
+}
+
 /// Rotation items that read the mana of a pet the fight never summons, whose mana Go reads off
 /// a unit the runtime does not keep. Its mana percent is a full bar, which the runtime knows.
 fn unsummoned_pet_mana(prepared: &PreparedV2, rotation: &Rotation) -> Vec<String> {
@@ -3467,10 +3486,10 @@ fn unsummoned_pet_mana(prepared: &PreparedV2, rotation: &Rotation) -> Vec<String
     let mut reasons = Vec::new();
     for item in &rotation.priority_list {
         let mut unsummoned = None;
-        if let Some(condition) = &item.condition {
-            condition.visit(&mut |value| {
+        for read in item_values(item) {
+            read.visit(&mut |value| {
                 if let Value::PetCurrentMana(pet) = value {
-                    if !simulated(*pet) {
+                    if !simulated(*pet) && unsummoned_pet_max_mana(prepared, *pet).is_none() {
                         unsummoned = Some(*pet);
                     }
                 }
@@ -3524,6 +3543,7 @@ fn unreachable_items(prepared: &PreparedV2, rotation: &Rotation) -> BTreeSet<usi
         pet_aura: &|pet: usize, id: &ActionId| simulated_pet_aura(prepared, pet, id),
         simulated_pet_with_mana: &|pet: usize| simulated_pet_with_mana(prepared, pet),
         unsummoned_pet_with_mana: &|pet: usize| unsummoned_pet_with_mana(prepared, pet),
+        unsummoned_pet_max_mana: &|pet: usize| unsummoned_pet_max_mana(prepared, pet),
         item_swap: has_item_swap(prepared),
         bars: rotation_bars(prepared),
         icd_aura: &|unit: Unit, id: &ActionId| find_icd_aura(prepared, unit, id),

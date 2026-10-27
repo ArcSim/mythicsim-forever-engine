@@ -1816,6 +1816,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) pet_agent_labels: Vec<String>,
     /// Whether each of those pets has a mana bar, in the same order.
     pub(crate) pet_agent_mana_bars: Vec<bool>,
+    /// The full mana an inert one of those pets states, in the same order.
+    pub(crate) pet_agent_max_mana: Vec<Option<f64>>,
     /// Go `APLRotation.curValidations` while [`Self::presentation`] builds the rotation's
     /// lines again to collect Go's validation messages; `None` the rest of the time.
     pub(crate) checks: std::cell::RefCell<Option<Vec<rotation_checks::Check>>>,
@@ -4032,6 +4034,7 @@ impl<A: Agent> Fight<A> {
             pet_agent_auras: pet::pet_agent_auras(prepared),
             pet_agent_labels: pet::pet_agent_labels(prepared),
             pet_agent_mana_bars: pet::pet_agent_mana_bars(prepared),
+            pet_agent_max_mana: pet::pet_agent_max_mana(prepared),
             checks: std::cell::RefCell::new(None),
             presentation: None,
             heartbeat_offset: 0,

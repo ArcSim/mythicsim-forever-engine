@@ -2893,6 +2893,10 @@ pub enum Effect {
         /// Whether it has a mana bar, which gives it Go's time to out of mana.
         #[serde(default, skip_serializing_if = "std::ops::Not::not")]
         mana_bar: bool,
+        /// Under Forever's rules, the maximum mana of a pet with a mana bar, which Go's reset
+        /// fills and nothing spends: what a rotation's `currentMana` of the pet reads.
+        #[serde(default, skip_serializing_if = "Option::is_none")]
+        max_mana: Option<f64>,
     },
     /// The Orc racial Shatter Curse: a survival cooldown whose aura multiplies the player's
     /// damage taken of the named schools. Go autocasts it only below a nonzero defensive

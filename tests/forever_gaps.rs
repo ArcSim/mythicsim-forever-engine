@@ -226,3 +226,61 @@ fn judgement_of_light_runs_on_several_targets() {
 fn an_unsummoned_pets_mana_percent_is_full() {
     run("demonology-warlock-unsummoned-pet-mana");
 }
+
+/// A request edited in place: its JSON text with each replacement made, which must change it.
+fn edited(name: &str, replacements: &[(&str, &str)]) -> Value {
+    let mut text = request(name).to_string();
+    for (from, to) in replacements {
+        assert!(text.contains(from), "{name} has no {from}");
+        text = text.replace(from, to);
+    }
+    serde_json::from_str(&text).unwrap()
+}
+
+/// Prepares an edited request under Forever's rules and checks that it passes the gate and runs.
+fn run_request(value: &Value) -> Value {
+    let prepared = prepare_json_with(value.to_string().as_bytes(), "rust", Rules::Forever).unwrap();
+    let prepared: PreparedV2 = serde_json::from_value(prepared).unwrap();
+    check_prepared(&prepared).unwrap_or_else(|error| panic!("{error:?}"));
+    let result = simulate_prepared(&prepared).unwrap().result;
+    result["raidMetrics"]["parties"][0]["players"][0].clone()
+}
+
+/// The raw mana of a demon the fight never summons is its full bar, as Go's reset leaves it:
+/// the Imp's 662 is below 700 and above 600, so Life Tap (11689) casts far more often under the
+/// first condition.
+#[test]
+fn an_unsummoned_pets_mana_is_its_full_bar() {
+    let pet_mana = |threshold: &str| {
+        edited(
+            "demonology-warlock-unsummoned-pet-mana",
+            &[
+                (
+                    r#""currentManaPercent":{"sourceUnit":{"owner":{"type":"Self"},"type":"Pet"}}"#,
+                    r#""currentMana":{"sourceUnit":{"owner":{"type":"Self"},"type":"Pet"}}"#,
+                ),
+                (r#""val":"20%""#, threshold),
+            ],
+        )
+    };
+    let below = run_request(&pet_mana(r#""val":"700""#));
+    let above = run_request(&pet_mana(r#""val":"600""#));
+    assert!(action(&below, 11689, 0).0 > 10.0 * action(&above, 11689, 0).0);
+}
+
+/// A prepull strict sequence whose step reads an aura: the step conditions are read with the
+/// priority list's, and each step casts once a fight.
+#[test]
+fn a_prepull_sequence_step_may_read_an_aura() {
+    let value = edited(
+        "shadow-priest-prepull-sequence",
+        &[(
+            r#""condition":{"cmp":{"lhs":{"currentTime":{}},"op":"OpGt","rhs":{"const":{"val":"0s"}}}}"#,
+            r#""condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":15473}}}}}"#,
+        )],
+    );
+    let player = run_request(&value);
+    for spell in [20554, 14751, 1309636] {
+        assert_eq!(action(&player, spell, 0).0, 50.0, "spell {spell}");
+    }
+}

@@ -906,6 +906,13 @@ impl<A: Agent> Fight<A> {
                     .is_some_and(|label| self.pet_side(label).is_none())
                     && self.pet_agent_mana_bars.get(pet).copied().unwrap_or(false)
             },
+            unsummoned_pet_max_mana: &|pet: usize| {
+                let label = self.pet_agent_labels.get(pet)?;
+                if self.pet_side(label).is_some() {
+                    return None;
+                }
+                self.pet_agent_max_mana.get(pet).copied().flatten()
+            },
             item_swap: self.item_swap.is_some(),
             bars: self.rotation_bars(),
             icd_aura: &icd_aura,

@@ -56,3 +56,4 @@ checks the gate passes and runs it.
 | `shadow-priest-chastise` | Chastise in a Shadow Priest's rotation |
 | `hunter-skysight` | Skysight, the Windshaper Skyborne racial, in a Hunter's rotation (28 October 2026) |
 | `protection-paladin-devotion-aura` | a tank's own Devotion Aura cast (the Protection Paladin reference build with Devotion Aura rank 7 first in its rotation while the aura is down) |
+| `protection-paladin-hammer-of-the-righteous` | Hammer of the Righteous in a Protection Paladin's rotation (the reference build with the cleave first in its rotation) |

@@ -570,3 +570,15 @@ fn a_tanks_own_devotion_aura_casts() {
             .any(|rank| rank["spell_id"] == 10293)));
     assert_eq!(action(&player, 10293, 0).0, 50.0);
 }
+
+#[test]
+fn hammer_of_the_righteous_cleaves() {
+    let (value, player) = run("protection-paladin-hammer-of-the-righteous");
+    let effect = &effects(&value, "hammer_of_the_righteous")[0];
+    assert_eq!(effect["spell_id"], 407632);
+    assert_eq!(effect["weapon_dps"], 3.0);
+    assert_eq!(effect["max_targets"], 4);
+    let (casts, damage, _) = action(&player, 407632, 0);
+    assert_eq!(casts, 978.0);
+    assert!(damage > 0.0);
+}

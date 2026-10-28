@@ -384,6 +384,18 @@ impl Paladin {
                 .push(json!({"spell_id": rank.id, "weapon_percent": rank.effect_n(2).percent()}));
         });
         effects.push(json!({"kind": "holy_strike", "ranks": holy_strikes}));
+        // hammer_of_the_righteous.go, under Forever's rules (Go's exporter leaves the cast
+        // unknown): the weapon DPS multiple is the row's effect 3, the targets its chain.
+        if sim.rules == crate::prepare::sim::Rules::Forever {
+            let rank = data.hammer_of_the_righteous.highest();
+            if sim.get_spell(unit, &ActionId::spell(rank.id)).is_some() {
+                effects.push(
+                    json!({"kind": "hammer_of_the_righteous", "spell_id": rank.id,
+                    "weapon_dps": rank.effect_n(3).base_points,
+                    "max_targets": rank.effect_n(1).chain_targets}),
+                );
+            }
+        }
         // hammer_of_wrath.go: the damage rolls are on the spells.
         effects.push(json!({"kind": "hammer_of_wrath"}));
         // exorcism.go and holy_wrath.go: the rolls are on the spells; both hit only an Undead

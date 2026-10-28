@@ -45,6 +45,8 @@ pub(crate) enum PaladinSpell {
     Judgement,
     /// A Holy Strike rank, by its position in the effect.
     HolyStrike(usize),
+    /// Hammer of the Righteous, whose weapon DPS multiple and most targets the agent holds.
+    HammerOfTheRighteous,
     HammerOfWrath,
     /// A Consecration rank, by its position in the effect.
     Consecration(usize),
@@ -121,6 +123,8 @@ pub(crate) struct PaladinAgent {
     pub(crate) seals: Seals,
     judgement_wake_delay: i64,
     holy_strike: Vec<f64>,
+    /// Hammer of the Righteous: its weapon DPS multiple and most targets.
+    hammer_of_the_righteous: Option<(f64, usize)>,
     consecration: Vec<ConsecrationRank>,
     vengeance: Option<Vengeance>,
     vindication: Option<Vindication>,
@@ -243,6 +247,12 @@ impl PaladinAgent {
             "judgement_of_fury" if damage && has("seal_of_fury") => {
                 Some(PaladinSpell::JudgementOfFury)
             }
+            "hammer_of_the_righteous" => effects.iter().find_map(|effect| match effect {
+                Effect::HammerOfTheRighteous { spell_id, .. } if *spell_id == id.spell_id => {
+                    Some(PaladinSpell::HammerOfTheRighteous)
+                }
+                _ => None,
+            }),
             "holy_strike" if damage => effects.iter().find_map(|effect| match effect {
                 Effect::HolyStrike { ranks } => ranks
                     .iter()
@@ -541,6 +551,14 @@ impl PaladinAgent {
                 }
                 Effect::Judgement { wake_delay_ns, .. } => {
                     fight.agent.judgement_wake_delay = *wake_delay_ns;
+                }
+                Effect::HammerOfTheRighteous {
+                    weapon_dps,
+                    max_targets,
+                    ..
+                } => {
+                    fight.agent.hammer_of_the_righteous =
+                        Some((*weapon_dps, (*max_targets).max(1) as usize));
                 }
                 Effect::HolyStrike { ranks } => {
                     fight.agent.holy_strike =
@@ -997,6 +1015,13 @@ impl Agent for PaladinAgent {
             PaladinSpell::Judgement => {
                 let delay = fight.agent.judgement_wake_delay;
                 judgement::apply(fight, spell, target, delay);
+            }
+            PaladinSpell::HammerOfTheRighteous => {
+                let (weapon_dps, max_targets) = fight
+                    .agent
+                    .hammer_of_the_righteous
+                    .expect("Hammer of the Righteous is bound");
+                strikes::hammer_of_the_righteous(fight, spell, target, weapon_dps, max_targets);
             }
             PaladinSpell::HolyStrike(rank) => {
                 let weapon_percent = fight.agent.holy_strike[rank];

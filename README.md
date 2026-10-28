@@ -182,7 +182,10 @@ the Go goldens and exporter uses. The departures:
   (`read_ley_line.innervate_replaces`). Skysight's Elemental Blessing is 15% movement speed for
   15 seconds (was 10% for 30). Attuned and Charged, which a Ley Line or an elemental convergence
   grants before the pull and which double those two, are not assumed. Client 1.60.1.70532 still
-  has the old rows; the notes are the source until a client build carries the new ones.
+  has the old rows; the notes are the source until a client build carries the new ones. The
+  notes' additions of 27 October (post 8): Orc Blood Fury's cooldown is 2 minutes (was 3),
+  Troll Berserking lasts 15 seconds (was 10) and Touch of the Grave's internal cooldown is 15
+  seconds (was 25); Attuned and Charged end on entering a raid, so they stay unassumed.
 - The non-Mage rows of client 1.60.1.70630 that change a number (Forever preparation; the data is
   1.60.1.70425 and the reference keeps its values). Hunter's Mark rank 4 (14325, SpellEffect
   690991) gives every attacker 143 ranged Attack Power (was 71). The Spellstone's damage effects

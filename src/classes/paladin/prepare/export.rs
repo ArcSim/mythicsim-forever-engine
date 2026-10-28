@@ -377,6 +377,28 @@ impl Paladin {
         if sim.rules == crate::prepare::sim::Rules::Forever && light_reached {
             self.export_seal_of_light(env, &mut effects, notes);
         }
+        // seal_of_wisdom.go and seal_of_justice.go, under Forever's rules where the rotation
+        // reaches a rank.
+        let mut wisdom_reached = false;
+        data.seal_of_wisdom.each(|_, rank| {
+            wisdom_reached |= rotation_spells.contains(&i64::from(rank.id));
+        });
+        if sim.rules == crate::prepare::sim::Rules::Forever && wisdom_reached {
+            self.export_seal_of_wisdom(env, &mut effects);
+        }
+        let justice = data.seal_of_justice.highest();
+        if sim.rules == crate::prepare::sim::Rules::Forever
+            && rotation_spells.contains(&i64::from(justice.id))
+        {
+            let judgement = data
+                .seal_of_justice_triggered
+                .by_id(justice.effect_n(2).base_value() as i32);
+            effects.push(json!({
+                "kind": "seal_of_justice", "seal_spell_id": justice.id,
+                "aura": Self::seal_aura_label("Seal of Justice", &label, justice),
+                "judgement_spell_id": judgement.id, "judgement_aura": "Judgement of Justice",
+            }));
+        }
         // holy_strike.go: the weapon percent of the normalized swing plus the flat roll.
         let mut holy_strikes = Vec::new();
         data.holy_strike.each(|_, rank| {
@@ -690,6 +712,46 @@ impl Paladin {
             "healing_taken_multiplier": pseudo.healing_taken_multiplier,
             "table_healing_dealt_multiplier": env.attack_table(unit, unit).healing_dealt_multiplier,
         }));
+        effects.extend(judgements);
+    }
+
+    /// Go `registerSealOfWisdom`'s seal, mana restore and judgement for each rank.
+    fn export_seal_of_wisdom(&self, env: &Environment, effects: &mut Vec<Value>) {
+        let sim = &env.sim;
+        let unit = env.player;
+        let label = sim.unit(unit).label.clone();
+        let data = spell_data();
+        let mut ranks = Vec::new();
+        let mut judgements = Vec::new();
+        data.seal_of_wisdom.each(|_, rank| {
+            let judgement_id = rank.effect_n(2).base_value() as i32;
+            let judgement_mana = data
+                .seal_of_wisdom_triggered
+                .by_id(super::seals::paired(
+                    &super::seals::JUDGEMENT_OF_WISDOM_MANA_IDS,
+                    rank.rank_number(),
+                ))
+                .energize_effect()
+                .average(CHARACTER_LEVEL);
+            let judgement_aura = format!("Judgement of Wisdom Rank {}", rank.rank_number());
+            let proc_rank = rank.refs()[0];
+            ranks.push(json!({
+                "seal_spell_id": rank.id,
+                "aura": Self::seal_aura_label("Seal of Wisdom", &label, rank),
+                "proc_spell_id": proc_rank.id,
+                "mana": proc_rank.energize_effect().average(CHARACTER_LEVEL),
+                "judgement_spell_id": judgement_id, "judgement_aura": judgement_aura,
+            }));
+            // buffs/paladin.go AttachJudgementOfWisdomMana.
+            judgements.push(json!({
+                "kind": "judgement_of_wisdom", "aura": judgement_aura,
+                "proc_chance": crate::prepare::buffs::paladin::JUDGEMENT_PROC_CHANCE,
+                "proc_mask": ProcMask::DIRECT.names(), "mana": judgement_mana,
+                "metrics_action_id": action_id(Some(&ActionId::spell(judgement_id))),
+                "delay_ns": crate::prepare::common_effects::SPELL_BATCH_WINDOW,
+            }));
+        });
+        effects.push(json!({"kind": "seal_of_wisdom", "ranks": ranks}));
         effects.extend(judgements);
     }
 

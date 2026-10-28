@@ -48,7 +48,8 @@ pub(super) const JUDGEMENT_OF_LIGHT_HEAL_IDS: [(i32, i32); 4] =
     [(1, 20267), (2, 20341), (3, 20342), (4, 20343)];
 
 /// The mana each rank's Judgement of Wisdom grants attackers.
-const JUDGEMENT_OF_WISDOM_MANA_IDS: [(i32, i32); 3] = [(1, 20268), (2, 20352), (3, 20353)];
+pub(super) const JUDGEMENT_OF_WISDOM_MANA_IDS: [(i32, i32); 3] =
+    [(1, 20268), (2, 20352), (3, 20353)];
 
 pub(super) fn paired(table: &[(i32, i32)], rank: i32) -> i32 {
     table

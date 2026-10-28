@@ -1715,6 +1715,9 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) energize_procs: Vec<energy::EnergizeProc>,
     pub(crate) health_on_cast: Vec<HealthOnCast>,
     pub(crate) judgements_of_light: Vec<JudgementOfLight>,
+    /// Go `Unit.JowManaMetrics` of the player, which takes the action of the first Judgement
+    /// of Wisdom that restores its mana: whether one has.
+    pub(crate) jow_metrics_named: bool,
     /// Listeners on the player's casts that restore mana: [`Effect::ManaOnCast`].
     pub(crate) mana_on_cast: Vec<energy::ManaOnCast>,
     /// A healer's stacking on-use trinkets: [`Effect::StackingCdOnUse`].
@@ -3323,6 +3326,9 @@ impl<A: Agent> Fight<A> {
                     .enumerate()
                     .map(|(pet, exported)| (Side::Pet(pet as u8), &exported.auras)),
             );
+        // Go `Unit.JowManaMetrics`: every Judgement of Wisdom on the target restores the
+        // attacker's mana under one metric.
+        let mut jow_metrics: Option<usize> = None;
         for (side, auras) in unit_auras {
             let unit = match side {
                 Side::Player => "player",
@@ -3363,10 +3369,13 @@ impl<A: Agent> Fight<A> {
                     )),
                     _ => None,
                 }) {
-                    let metrics = resource(Side::Player, jow.2.clone(), false, ResourceKind::Mana);
+                    let metrics = *jow_metrics.get_or_insert_with(|| {
+                        resource(Side::Player, jow.2.clone(), false, ResourceKind::Mana)
+                    });
                     AuraBehavior::JudgementOfWisdom {
                         chance: jow.0,
                         mana: jow.1,
+                        id: jow.2.clone(),
                         metrics,
                         delay: jow.3,
                     }
@@ -4013,6 +4022,7 @@ impl<A: Agent> Fight<A> {
             energize_procs: Vec::new(),
             health_on_cast: Vec::new(),
             judgements_of_light: Vec::new(),
+            jow_metrics_named: false,
             mana_on_cast: Vec::new(),
             stacking_cds: Vec::new(),
             shields_on_heal: Vec::new(),

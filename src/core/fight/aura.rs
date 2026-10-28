@@ -64,6 +64,9 @@ pub(crate) enum AuraBehavior<K> {
     JudgementOfWisdom {
         chance: f64,
         mana: f64,
+        /// The judgement's action, which names the attacker's metrics at its first restore.
+        id: ActionId,
+        /// The player's metrics, shared by every Judgement of Wisdom.
         metrics: usize,
         delay: i64,
     },
@@ -1821,7 +1824,9 @@ impl<A: Agent> Fight<A> {
     /// The delayed half of a proc trigger.
     pub(crate) fn delayed_proc(&mut self, aura: AuraRef, spell: SpellId, result: SpellResult) {
         match self.aura(aura).behavior.clone() {
-            AuraBehavior::JudgementOfWisdom { mana, metrics, .. } => {
+            AuraBehavior::JudgementOfWisdom {
+                mana, metrics, id, ..
+            } => {
                 // Go: melee and ranged hits always pay; spells must land.
                 if !self.spells[spell].melee_or_ranged_proc
                     && result.outcome & super::OUTCOME_LANDED == 0
@@ -1836,18 +1841,21 @@ impl<A: Agent> Fight<A> {
                     return;
                 }
                 let metrics = match caster {
-                    Side::Pet(_) => {
-                        let id = self.resources[metrics].id.clone();
-                        match self.active_pet(caster).jow_metrics {
-                            Some(existing) => existing,
-                            None => {
-                                let created = self.new_mana_metrics_of(caster, id);
-                                self.active_pet_mut(caster).jow_metrics = Some(created);
-                                created
-                            }
+                    Side::Pet(_) => match self.active_pet(caster).jow_metrics {
+                        Some(existing) => existing,
+                        None => {
+                            let created = self.new_mana_metrics_of(caster, id);
+                            self.active_pet_mut(caster).jow_metrics = Some(created);
+                            created
                         }
+                    },
+                    _ => {
+                        if !self.jow_metrics_named {
+                            self.resources[metrics].id = id;
+                            self.jow_metrics_named = true;
+                        }
+                        metrics
                     }
-                    _ => metrics,
                 };
                 self.add_mana(mana, metrics);
             }

@@ -1504,6 +1504,12 @@ pub(crate) enum Action {
     Pushback {
         chance: f64,
     },
+    /// A spell data damage proc's handler for the target's swing, which no spell of the
+    /// player's carries: the proc's hit on the attacker, a delay after the swing.
+    StruckDamageProc {
+        proc: usize,
+        target: Side,
+    },
     /// A rotation prepull action: Go `APLActionCastSpell.Execute`.
     Prepull(SpellId),
     /// A rotation prepull action: Go `APLActionCastFriendlySpell.Execute` at the player.
@@ -6028,6 +6034,10 @@ impl<A: Agent> Fight<A> {
                 }
             }
             Action::Pushback { chance } => self.pushback_handler(chance),
+            Action::StruckDamageProc { proc, target } => {
+                let spell = self.damage_procs[proc].spell;
+                self.cast(spell, target);
+            }
             Action::Prepull(spell) => self.cast_or_queue(spell, self.current_target_side()),
             Action::PrepullAtPlayer(spell) => self.cast_or_queue(spell, Side::Player),
             Action::PrepullChannel(spell, item) => self.prepull_channel(spell, item),

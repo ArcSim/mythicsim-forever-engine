@@ -619,3 +619,26 @@ fn warrior_strikes_and_freezing_trap_run() {
         assert_eq!(action(&player, spell_id, 0).0, casts, "{name}");
     }
 }
+
+/// Thorns (9910): the cast turns on the druid's own shield, which strikes the target a spell
+/// batch window after each swing a tank takes, for its fixed amount.
+#[test]
+fn a_druids_own_thorns_strikes_back() {
+    let (value, player) = run("feral-bear-druid-thorns");
+    assert_eq!(
+        effects(&value, "druid_thorns")[0]["aura"],
+        "Thorns (Player)"
+    );
+    let shield = effects(&value, "spell_data_damage_proc")
+        .into_iter()
+        .find(|effect| effect["trigger_aura"] == "Thorns (Player)")
+        .expect("the tank's own Thorns strikes back");
+    // core.NewDamageShield's fixed amount, which draws nothing.
+    assert!(shield["roll"].is_null());
+    assert_eq!(action(&player, 9910, 0).0, 993.0);
+    assert!(action(&player, 9910, 2).1 > 0.0);
+    // Off the target's threat nothing hits the druid, so the shield never strikes.
+    let (_, player) = run("balance-druid-thorns");
+    assert_eq!(action(&player, 9910, 0).0, 1634.0);
+    assert_eq!(action(&player, 9910, 2).1, 0.0);
+}

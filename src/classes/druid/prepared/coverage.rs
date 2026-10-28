@@ -28,6 +28,7 @@ const EFFECTS: &[&str] = &[
     "cat_form",
     "demoralizing_roar",
     "druid_forms",
+    "druid_thorns",
     "eclipse",
     "enrage",
     "faerie_fire",
@@ -84,6 +85,7 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "swipe" => Some("swipe"),
         "hurricane" => Some("hurricane"),
         "frenzied_regeneration" => Some("frenzied_regeneration"),
+        "thorns" => Some("druid_thorns"),
         _ => None,
     }
 }
@@ -108,6 +110,7 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         | Effect::BearForm { aura, .. }
         | Effect::Enrage { aura, .. }
         | Effect::Barkskin { aura, .. }
+        | Effect::DruidThorns { aura, .. }
         | Effect::FrenziedRegeneration { aura, .. } => vec![("player", aura)],
         Effect::NaturalReaction { trigger_aura, .. } => vec![("player", trigger_aura)],
         Effect::NaturesBounty { aura, .. } | Effect::UnendingLifeRefund { aura, .. } => {

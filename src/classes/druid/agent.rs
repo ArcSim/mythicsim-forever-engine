@@ -67,6 +67,8 @@ pub(crate) enum DruidSpell {
     /// The spell each Hurricane period casts.
     HurricaneTick,
     Barkskin,
+    /// thorns.go: the cast turns the druid's own Thorns on.
+    Thorns,
     FrenziedRegeneration,
     /// A survival cooldown Go never casts without a health threshold: only its cast checks run.
     Survival,
@@ -180,6 +182,8 @@ pub(crate) struct DruidAgent {
     natural_reaction: Option<NaturalReaction>,
     pub(crate) frenzied_regeneration: Option<AuraRef>,
     barkskin: Option<Barkskin>,
+    /// The druid's own Thorns aura.
+    thorns: Option<AuraRef>,
     frenzied_regeneration_spell: Option<FrenziedRegeneration>,
     natures_bounty: Option<Rc<NaturesBounty>>,
     unending_life: Option<Rc<UnendingLifeRefund>>,
@@ -227,6 +231,7 @@ impl Default for DruidAgent {
             natural_reaction: None,
             frenzied_regeneration: None,
             barkskin: None,
+            thorns: None,
             frenzied_regeneration_spell: None,
             natures_bounty: None,
             unending_life: None,
@@ -341,6 +346,9 @@ impl DruidAgent {
                 }
                 Effect::Barkskin { spell_id, .. } if *spell_id == id.spell_id && id.tag == 0 => {
                     return Some(DruidSpell::Barkskin)
+                }
+                Effect::DruidThorns { spell_id, .. } if *spell_id == id.spell_id && id.tag == 0 => {
+                    return Some(DruidSpell::Thorns)
                 }
                 _ => {}
             }
@@ -933,6 +941,9 @@ impl DruidAgent {
                     )?;
                     fight.agent.unending_life = Some(Rc::new(bound));
                 }
+                Effect::DruidThorns { aura, .. } => {
+                    fight.agent.thorns = Some(fight.player_aura(aura)?);
+                }
                 Effect::Barkskin { aura, .. } => {
                     let stat_bit = stat_bit(aura).ok_or("Barkskin is not a stat aura")?;
                     fight.agent.barkskin = Some(Barkskin {
@@ -1201,6 +1212,10 @@ impl Agent for DruidAgent {
                 .barkskin
                 .expect("Barkskin is bound")
                 .apply(fight),
+            DruidSpell::Thorns => {
+                let aura = fight.agent.thorns.expect("Thorns is bound");
+                fight.activate_aura(aura);
+            }
             DruidSpell::FrenziedRegeneration => fight
                 .agent
                 .frenzied_regeneration_spell

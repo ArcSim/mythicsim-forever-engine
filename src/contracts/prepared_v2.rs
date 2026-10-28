@@ -2107,6 +2107,12 @@ pub enum Effect {
         spell_id: i32,
         aura: String,
     },
+    /// Thorns (Forever's rules): the cast turns on the druid's own shield, which strikes back
+    /// through the shared damage shield effects.
+    DruidThorns {
+        spell_id: i32,
+        aura: String,
+    },
     /// Frenzied Regeneration: each period while its aura is up, up to a cap of Rage becomes a
     /// share of maximum health a point.
     FrenziedRegeneration {
@@ -5138,6 +5144,7 @@ impl Effect {
             Effect::PrimalBite { .. } => "primal_bite",
             Effect::Swipe { .. } => "swipe",
             Effect::Hurricane { .. } => "hurricane",
+            Effect::DruidThorns { .. } => "druid_thorns",
             Effect::NaturalReaction { .. } => "natural_reaction",
             Effect::Barkskin { .. } => "barkskin",
             Effect::NaturesBounty { .. } => "natures_bounty",

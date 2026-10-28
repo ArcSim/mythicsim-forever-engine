@@ -244,6 +244,7 @@ const COMMON_EFFECTS: &[&str] = &[
     "reckoning",
     "holy_shield",
     "read_ley_line",
+    "skysight",
     "shatter_curse",
     "speed_on_use",
     "spell_cost_aura_on_use",
@@ -410,6 +411,9 @@ fn common_spell_capability(spell: &Spell, prepared: &PreparedV2) -> Option<&'sta
         Effect::ReadLeyLine { spell_id, .. } if *spell_id == id.spell_id && id.tag == 0 => {
             Some("read_ley_line")
         }
+        Effect::Skysight { spell_id, .. } if *spell_id == id.spell_id && id.tag == 0 => {
+            Some("skysight")
+        }
         Effect::TemporaryStats {
             spell_id, item_id, ..
         } if *spell_id == id.spell_id && *item_id == id.item_id && id.tag == 0 => {
@@ -467,6 +471,7 @@ fn common_claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         | Effect::ShatterCurse { aura, .. }
         | Effect::Stoneform { aura, .. }
         | Effect::ReadLeyLine { aura, .. }
+        | Effect::Skysight { aura, .. }
         | Effect::TemporaryStats { aura, .. }
         | Effect::DiamondFlask { aura, .. }
         | Effect::AbsorbOnUse { aura, .. }

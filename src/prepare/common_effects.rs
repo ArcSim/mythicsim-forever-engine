@@ -263,6 +263,19 @@ fn racial_defensive_effects(env: &Environment) -> Vec<Value> {
         effects.push(json!({"kind": "stoneform", "spell_id": spell_id(aura), "aura": env.sim.aura(aura).label,
             "school_damage_taken_multiplier": 0.9, "schools": ["physical"]}));
     }
+    // core/racials.go Windshaper Skyborne: Skysight's cast activates Elemental Blessing, which
+    // multiplies the movement speed while up.
+    if let Some(aura) = env.sim.get_aura(player, "Elemental Blessing") {
+        for spell in &env.sim.unit(player).spellbook {
+            if env.sim.spell(*spell).related_self_buff == Some(aura) {
+                let (speed, _) = super::racials::skysight_speed_and_duration(env.sim.rules);
+                effects.push(
+                    json!({"kind": "skysight", "spell_id": env.sim.spell(*spell).action_id.spell_id,
+                    "aura": env.sim.aura(aura).label, "speed_multiplier": speed}),
+                );
+            }
+        }
+    }
     if let Some(aura) = env.sim.get_aura(player, "Energized") {
         for spell in &env.sim.unit(player).spellbook {
             if env.sim.spell(*spell).related_self_buff == Some(aura) {

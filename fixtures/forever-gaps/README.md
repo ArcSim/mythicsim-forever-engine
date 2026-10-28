@@ -54,3 +54,4 @@ checks the gate passes and runs it.
 | `assassination-rogue-change-target-rupture` | a Rogue that moves to the next target to keep Rupture on four (28 October 2026) |
 | `combat-rogue-change-target` | the same for a Combat Rogue |
 | `shadow-priest-chastise` | Chastise in a Shadow Priest's rotation |
+| `hunter-skysight` | Skysight, the Windshaper Skyborne racial, in a Hunter's rotation (28 October 2026) |

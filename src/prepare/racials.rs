@@ -356,11 +356,7 @@ pub(crate) fn apply_race_effects(env: &mut Environment) -> Result<(), Refusal> {
             // 26 October notes: "Skysight is now a 15% increased movement speed (was 10%), with a
             // 15-second duration." Charged's 30% needs an elemental convergence before the pull,
             // so it is not assumed.
-            let (speed, duration) = if oct26 {
-                (1.15, 15 * SECOND)
-            } else {
-                (1.1, 30 * SECOND)
-            };
+            let (speed, duration) = skysight_speed_and_duration(sim.rules);
             let elemental_blessing = sim.register_aura(
                 unit,
                 AuraConfig {
@@ -434,6 +430,15 @@ fn apply_skyborne_shared_racials(env: &mut Environment) {
 
 /// Energized's mana regeneration: 50% more under the 26 October notes, double in the Go
 /// reference.
+/// Skysight's Elemental Blessing: its movement speed multiplier and duration, the 26 October
+/// notes' under Forever's rules.
+pub(crate) fn skysight_speed_and_duration(rules: Rules) -> (f64, i64) {
+    match rules {
+        Rules::Forever => (1.15, 15 * SECOND),
+        Rules::GoReference => (1.1, 30 * SECOND),
+    }
+}
+
 pub(crate) fn read_ley_line_regen_multiplier(rules: Rules) -> f64 {
     match rules {
         Rules::Forever => 1.5,

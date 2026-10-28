@@ -91,6 +91,8 @@ pub(crate) enum AuraBehavior<K> {
         ranged: f64,
         cast: f64,
     },
+    /// Go `MultiplyMovementSpeed` of the player while up, as Skysight's Elemental Blessing.
+    MultiplyMovementSpeed(f64),
     /// An item or enchant speed aura an item swap gains and expires: as `MultiplySpeeds`, but
     /// the reset's gain is already in the exported speeds.
     SwapSpeed {
@@ -822,6 +824,7 @@ impl<A: Agent> Fight<A> {
             AuraBehavior::Dot(dot) => self.dot_on_gain(dot),
             AuraBehavior::RevelationBuff => self.revelation_buff_changed(true),
             AuraBehavior::Movement => self.movement_changed(aura.side, true),
+            AuraBehavior::MultiplyMovementSpeed(speed) => self.multiply_movement_speed(speed),
             AuraBehavior::Eureka => self.eureka_gain(),
             AuraBehavior::MultiplyAttackAndCastSpeed { attack, cast } => {
                 self.multiply_attack_speed(attack);
@@ -907,6 +910,7 @@ impl<A: Agent> Fight<A> {
             }
             AuraBehavior::RevelationBuff => self.revelation_buff_changed(false),
             AuraBehavior::Movement => self.movement_changed(aura.side, false),
+            AuraBehavior::MultiplyMovementSpeed(speed) => self.multiply_movement_speed(1.0 / speed),
             AuraBehavior::Eureka => self.eureka_expire(),
             AuraBehavior::MultiplyAttackAndCastSpeed { attack, cast } => {
                 self.multiply_attack_speed(1.0 / attack);

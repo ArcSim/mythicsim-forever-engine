@@ -83,7 +83,12 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "holy_shield" | "holy_shield_proc" => Some("holy_shield"),
         "holy_light" | "flash_of_light" | "holy_shock_heal" => Some("paladin_heals"),
         "lay_on_hands" => Some("lay_on_hands"),
-        "retribution_aura" => Some("paladin_aura_cast"),
+        "retribution_aura"
+        | "devotion_aura"
+        | "concentration_aura"
+        | "fire_resistance_aura"
+        | "frost_resistance_aura"
+        | "shadow_resistance_aura" => Some("paladin_aura_cast"),
         _ => None,
     }
 }

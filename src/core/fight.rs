@@ -1231,6 +1231,15 @@ struct SunderRamp {
     blocked: bool,
 }
 
+/// The raid's Expose Armor under Forever's rules (`ExternalExposeArmor`): the target opens at
+/// `armor_before` and the aura lands `delay` into the fight.
+#[derive(Clone, Debug)]
+struct ExternalExpose {
+    aura: AuraRef,
+    delay: i64,
+    armor_before: f64,
+}
+
 /// Go aura_helpers.go `ApplyFixedUptimeAura` for a player aura.
 #[derive(Clone, Copy, Debug)]
 pub(crate) struct FixedUptime {
@@ -1546,6 +1555,8 @@ pub(crate) enum Action {
     /// A tick of the raid's Sunder Armor ramp on a target, by its position, with the ticks
     /// done so far.
     SunderTick(u8, i32),
+    /// The raid's Expose Armor landing on a target, by its position (Forever's rules).
+    ExternalExpose(u8),
     /// Go trackChanceOfDeath's pending action: mark the player dead if health is still gone.
     DeathCheck,
     /// A fixed uptime aura's periodic roll, or its first roll.
@@ -1833,6 +1844,7 @@ pub(crate) struct Fight<A: Agent> {
     /// The player's weapon attacks.
     pub(crate) autos: melee::AutoAttacks,
     sunder: Option<SunderRamp>,
+    external_expose: Option<ExternalExpose>,
     /// Gnome's Eureka!, when the character has it.
     pub(crate) eureka: Option<racial::Eureka>,
     /// Registered pets that nothing summons.
@@ -4105,6 +4117,7 @@ impl<A: Agent> Fight<A> {
             log: None,
             autos: melee::AutoAttacks::default(),
             sunder: None,
+            external_expose: None,
             aura_logs,
             stat_combos,
             stat_health,
@@ -4714,6 +4727,29 @@ impl<A: Agent> Fight<A> {
             }
         }
         fight.presentation = Some(fight.presentation(&parsed, &player.rotation));
+        for effect in effects {
+            if let Effect::ExternalExposeArmor {
+                aura,
+                delay_ns,
+                armor_before,
+            } = effect
+            {
+                let index = fight.trackers[Side::Target.index()]
+                    .find(aura)
+                    .ok_or_else(|| format!("target aura {aura} is not registered"))?;
+                let aura = AuraRef {
+                    side: Side::Target,
+                    index,
+                };
+                // The reset leaves it down; it lands at its delay.
+                fight.set_aura_permanent(aura, false);
+                fight.external_expose = Some(ExternalExpose {
+                    aura,
+                    delay: *delay_ns,
+                    armor_before: *armor_before,
+                });
+            }
+        }
         for effect in effects {
             if let Effect::SunderArmorRamp {
                 aura,
@@ -5799,6 +5835,11 @@ impl<A: Agent> Fight<A> {
             if self.sunder.is_some() {
                 self.schedule(0, PRIORITY_DOT, Action::SunderTick(position as u8, 0));
             }
+            if let Some(expose) = &self.external_expose {
+                let delay = expose.delay;
+                self.targets[position].armor = expose.armor_before;
+                self.schedule(delay, PRIORITY_DOT, Action::ExternalExpose(position as u8));
+            }
         }
         if side == Side::Player {
             // Only the slots of the fight's targets and the player ever hold metrics.
@@ -6107,6 +6148,7 @@ impl<A: Agent> Fight<A> {
                 }
             }
             Action::SunderTick(target, done) => self.sunder_tick(target, done),
+            Action::ExternalExpose(target) => self.external_expose_lands(target),
             Action::DeathCheck => self.death_check(),
             Action::FixedUptime { index, first } => self.fixed_uptime_roll(index, first),
             Action::MovementEnd(side) => {
@@ -6267,6 +6309,18 @@ impl<A: Agent> Fight<A> {
             priority,
         };
         self.schedule(self.now + period, priority, Action::ClassPeriodic(periodic));
+    }
+
+    /// The raid's Expose Armor lands on a target under Forever's rules: the aura goes up and the
+    /// target takes its prepared armor, which counts it.
+    fn external_expose_lands(&mut self, target: u8) {
+        let expose = self.external_expose.clone().expect("the effect is bound");
+        let side = Side::target(target as usize);
+        let aura = self.aura_on(expose.aura, side);
+        self.activate_aura(aura);
+        let armor = self.config.melee.defender_armor;
+        let unit = &mut self.targets[target as usize];
+        unit.armor = armor + unit.armor_delta;
     }
 
     /// Go driveSunderArmor's periodic action on a target: activate, add a stack, and come back

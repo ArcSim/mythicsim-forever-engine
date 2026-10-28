@@ -269,6 +269,7 @@ const COMMON_EFFECTS: &[&str] = &[
     "damage_on_use",
     "stoneform",
     "sunder_armor_ramp",
+    "external_expose_armor",
     "temporary_stats",
     "touch_of_the_grave",
     "windfury_totem",
@@ -553,6 +554,7 @@ fn common_claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         Effect::ArmorDebuffProc {
             trigger_aura, aura, ..
         } => vec![("player", trigger_aura), ("target", aura)],
+        Effect::ExternalExposeArmor { aura, .. } => vec![("target", aura)],
         Effect::SpellCostAuraOnUse { aura, .. } | Effect::SpellModAuraOnUse { aura, .. } => {
             vec![("player", aura)]
         }

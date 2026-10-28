@@ -59,3 +59,9 @@ checks the gate passes and runs it.
 | `protection-paladin-hammer-of-the-righteous` | Hammer of the Righteous in a Protection Paladin's rotation (the reference build with the cleave first in its rotation) |
 | `retribution-paladin-seal-of-wisdom` | Seal of Wisdom rank 1 in a Retribution Paladin's rotation beside the raid's Judgement of Wisdom, whose mana shares one metric |
 | `retribution-paladin-seal-of-justice` | Seal of Justice and its judgement in a Retribution Paladin's rotation |
+| `protection-warrior-shield-bash` | Shield Bash in a Protection Warrior's rotation |
+| `arms-warrior-mocking-blow` | Mocking Blow in an Arms Warrior's rotation, in Battle Stance |
+| `protection-warrior-disarm` | Disarm in a Protection Warrior's rotation, in Defensive Stance |
+| `warrior-intercept` | Intercept from 25 yards by a Night Elf warrior who changes to Berserker Stance first, so the run takes the racial's 2% speed |
+| `arms-warrior-revenge` | Revenge in the rotation of an Arms Warrior off the target's threat, which nothing opens |
+| `hunter-freezing-trap` | Freezing Trap in a Hunter's rotation |

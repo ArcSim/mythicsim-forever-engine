@@ -2401,6 +2401,14 @@ pub enum Effect {
     },
     /// Paladin hammer_of_wrath.go: the damage rolls are on the spells.
     HammerOfWrath {},
+    /// Paladin hammer_of_the_righteous.go (Forever's rules): Holy damage of `weapon_dps` times
+    /// the main hand's damage a second, on the melee special table, at the target and the next
+    /// ones up to `max_targets`, each calculated and dealt in turn.
+    HammerOfTheRighteous {
+        spell_id: i32,
+        weapon_dps: f64,
+        max_targets: i32,
+    },
     /// Paladin exorcism.go: the rolls are on the spells; it hits only an Undead or Demon.
     Exorcism {},
     /// Paladin holy_wrath.go: the rolls are on the spells; a cast that pauses the swing and
@@ -5002,6 +5010,7 @@ impl Effect {
             Effect::PursuitOfJustice { .. } => "pursuit_of_justice",
             Effect::HolyStrike { .. } => "holy_strike",
             Effect::HammerOfWrath { .. } => "hammer_of_wrath",
+            Effect::HammerOfTheRighteous { .. } => "hammer_of_the_righteous",
             Effect::Exorcism { .. } => "exorcism",
             Effect::HolyWrath { .. } => "holy_wrath",
             Effect::Consecration { .. } => "consecration",

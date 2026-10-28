@@ -558,21 +558,30 @@ impl Paladin {
                 notes.push("Lay on Hands restoring the target's mana is unsupported".to_string());
             }
         }
-        // auras.go registerAuraSpell: a Retribution Aura rank's cast turns its aura on. Forever's
-        // rules describe it; Go's exporter leaves the cast unknown.
+        // auras.go registerAuraSpell: an aura rank's cast turns its aura on, for every paladin
+        // aura Go registers. Forever's rules describe it; Go's exporter leaves the cast unknown.
         if sim.rules == crate::prepare::sim::Rules::Forever {
             let mut ranks = Vec::new();
-            data.retribution_aura.each(|_, rank| {
-                if !rotation_spells.contains(&i64::from(rank.id)) {
-                    return;
-                }
-                let aura = sim
-                    .get_spell(unit, &ActionId::spell(rank.id))
-                    .and_then(|spell| sim.spell(spell).related_self_buff);
-                if let Some(aura) = aura {
-                    ranks.push(json!({"spell_id": rank.id, "aura": sim.aura(aura).label}));
-                }
-            });
+            for ladder in [
+                &data.retribution_aura,
+                &data.devotion_aura,
+                &data.concentration_aura,
+                &data.fire_resistance_aura,
+                &data.frost_resistance_aura,
+                &data.shadow_resistance_aura,
+            ] {
+                ladder.each(|_, rank| {
+                    if !rotation_spells.contains(&i64::from(rank.id)) {
+                        return;
+                    }
+                    let aura = sim
+                        .get_spell(unit, &ActionId::spell(rank.id))
+                        .and_then(|spell| sim.spell(spell).related_self_buff);
+                    if let Some(aura) = aura {
+                        ranks.push(json!({"spell_id": rank.id, "aura": sim.aura(aura).label}));
+                    }
+                });
+            }
             if !ranks.is_empty() {
                 effects.push(json!({"kind": "paladin_aura_cast", "ranks": ranks}));
             }
@@ -691,6 +700,21 @@ impl Paladin {
         });
         if sim.get_aura(unit, "Reduced avoidance").is_none() {
             return labels;
+        }
+        // auras.go registerAuraSpell, under Forever's rules: a Devotion Aura rank the rotation
+        // casts adds its armor, which the target's swings read.
+        if sim.rules == crate::prepare::sim::Rules::Forever {
+            data.devotion_aura.each(|_, rank| {
+                if !rotation_spells.contains(&i64::from(rank.id)) {
+                    return;
+                }
+                let aura = sim
+                    .get_spell(unit, &ActionId::spell(rank.id))
+                    .and_then(|spell| sim.spell(spell).related_self_buff);
+                if let Some(aura) = aura {
+                    labels.push(sim.aura(aura).label.clone());
+                }
+            });
         }
         if talents.i32("redoubt") > 0 {
             labels.push(format!("Redoubt{label}"));

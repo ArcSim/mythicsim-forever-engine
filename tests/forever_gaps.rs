@@ -555,3 +555,18 @@ fn skysight_casts_and_puts_up_its_blessing() {
         .any(|effect| effect["aura"] == "Elemental Blessing"));
     assert!(action(&player, 1259686, 0).0 > 0.0, "Skysight casts");
 }
+
+/// A Protection Paladin casts its own Devotion Aura (10293) while it is down: the cast turns the
+/// aura on, once a fight, and its armor reaches the target's swings through the rolls.
+#[test]
+fn a_tanks_own_devotion_aura_casts() {
+    let (value, player) = run("protection-paladin-devotion-aura");
+    assert!(effects(&value, "paladin_aura_cast")
+        .iter()
+        .any(|effect| effect["ranks"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|rank| rank["spell_id"] == 10293)));
+    assert_eq!(action(&player, 10293, 0).0, 50.0);
+}

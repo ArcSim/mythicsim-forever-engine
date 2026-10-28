@@ -298,7 +298,12 @@ impl PaladinAgent {
                     .map(PaladinSpell::LayOnHands),
                 _ => None,
             }),
-            "retribution_aura" => effects.iter().find_map(|effect| match effect {
+            "retribution_aura"
+            | "devotion_aura"
+            | "concentration_aura"
+            | "fire_resistance_aura"
+            | "frost_resistance_aura"
+            | "shadow_resistance_aura" => effects.iter().find_map(|effect| match effect {
                 Effect::PaladinAuraCast { ranks } => ranks
                     .iter()
                     .position(|rank| rank.spell_id == id.spell_id)

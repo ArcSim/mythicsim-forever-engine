@@ -1726,9 +1726,22 @@ impl<A: Agent> Fight<A> {
             self.timers[timer] = self.now + duration;
         }
         // A Go literal trigger without TriggerImmediately: the handler casts the hit a delay
-        // later, on the unit the trigger's hit landed on.
-        if let (Some(delay), Some(spell)) = (self.damage_procs[proc].delay, spell) {
-            self.schedule_delayed_proc_at(self.now + delay, aura, spell, *result);
+        // later, on the unit the trigger's hit landed on, or for the target's swing on its
+        // attacker.
+        if let Some(delay) = self.damage_procs[proc].delay {
+            match spell {
+                Some(spell) => {
+                    self.schedule_delayed_proc_at(self.now + delay, aura, spell, *result)
+                }
+                None => {
+                    let target = self.damage_proc_target(None, result);
+                    self.schedule(
+                        self.now + delay,
+                        super::PRIORITY_DOT,
+                        super::Action::StruckDamageProc { proc, target },
+                    );
+                }
+            }
             return;
         }
         let target = self.damage_proc_target(spell, result);

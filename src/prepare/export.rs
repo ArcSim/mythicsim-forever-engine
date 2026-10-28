@@ -1236,7 +1236,8 @@ const DAMAGE_SHIELD_REASON: &str = "a damage shield: hears only physical hits th
 /// two) on the attacker a spell batch window later (the trigger is not immediate), a fixed magic
 /// hit of the shield's damage that cannot crit. The damage is the shield's bid in its category;
 /// the shield spell adds the wearer's spell power by its coefficient. Under Forever's rules a
-/// paladin's own Retribution Aura rank the rotation casts is one more shield.
+/// paladin's own Retribution Aura rank or a druid's own Thorns the rotation casts is one more
+/// shield.
 fn tank_damage_shields(env: &Environment) -> Vec<Value> {
     let mut effects = Vec::new();
     let mut auras: Vec<_> = ["Retribution Aura (External)", "Thorns (External)"]
@@ -1253,7 +1254,8 @@ fn tank_damage_shields(env: &Environment) -> Vec<Value> {
                 .copied()
                 .filter(|&aura| {
                     let state = env.sim.aura(aura);
-                    state.label.starts_with("Retribution Aura Rank ")
+                    (state.label.starts_with("Retribution Aura Rank ")
+                        || state.label == "Thorns (Player)")
                         && state.action_id.as_ref().is_some_and(|id| {
                             id.tag == 0 && casts.contains(&i64::from(id.spell_id))
                         })
@@ -1280,13 +1282,21 @@ fn tank_damage_shields(env: &Environment) -> Vec<Value> {
         else {
             continue;
         };
-        effects.push(json!({
+        let mut effect = json!({
             "kind": "spell_data_damage_proc", "trigger_aura": label,
             "trigger_spells": Vec::<usize>::new(), "struck": true, "landed_only": true,
             "require_damage": false, "proc_chance": 1.0, "spell": position, "average": 0.0,
             "variance": 0.0, "roll": [damage, damage], "can_crit": false,
             "delay_ns": super::common_effects::SPELL_BATCH_WINDOW,
-        }));
+        });
+        // core.NewDamageShield deals the shield's damage as it is, with no roll. Go's exporter
+        // writes it as a roll of equal bounds, which draws; Forever's rules describe the fixed
+        // amount, which draws nothing.
+        if env.sim.rules == crate::prepare::sim::Rules::Forever {
+            effect["average"] = json!(damage);
+            effect["roll"] = Value::Null;
+        }
+        effects.push(effect);
     }
     effects
 }

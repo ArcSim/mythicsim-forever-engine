@@ -65,3 +65,5 @@ checks the gate passes and runs it.
 | `warrior-intercept` | Intercept from 25 yards by a Night Elf warrior who changes to Berserker Stance first, so the run takes the racial's 2% speed |
 | `arms-warrior-revenge` | Revenge in the rotation of an Arms Warrior off the target's threat, which nothing opens |
 | `hunter-freezing-trap` | Freezing Trap in a Hunter's rotation |
+| `feral-bear-druid-thorns` | a tank druid's own Thorns, first in the Bear reference build's rotation (its Crusader enchant and Swap1 set taken out), striking back a batch window after each swing it takes |
+| `balance-druid-thorns` | Thorns first in a Balance Druid's rotation, off the target's threat |

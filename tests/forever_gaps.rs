@@ -582,3 +582,23 @@ fn hammer_of_the_righteous_cleaves() {
     assert_eq!(casts, 978.0);
     assert!(damage > 0.0);
 }
+
+#[test]
+fn seal_of_wisdom_restores_mana_beside_the_raids_judgement() {
+    let (value, player) = run("retribution-paladin-seal-of-wisdom");
+    assert!(!effects(&value, "seal_of_wisdom").is_empty());
+    assert!(resource_gain(&player, 20168, "ResourceTypeMana") > 0.0);
+    // Go's JowManaMetrics: both judgements restore under the action of the first to restore.
+    let own = resource_gain(&player, 20186, "ResourceTypeMana");
+    let raid = resource_gain(&player, 20355, "ResourceTypeMana");
+    assert!(own + raid > 0.0);
+    assert!(own == 0.0 || raid == 0.0, "own {own} raid {raid}");
+}
+
+#[test]
+fn seal_of_justice_judges_justice() {
+    let (value, player) = run("retribution-paladin-seal-of-justice");
+    assert!(!effects(&value, "seal_of_justice").is_empty());
+    assert_eq!(action(&player, 20164, 0).0, 3983.0);
+    assert_eq!(action(&player, 20184, 0).0, 773.0);
+}

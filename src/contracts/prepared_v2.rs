@@ -494,6 +494,19 @@ pub struct SealOfLightRank {
     pub judgement_aura: String,
 }
 
+/// A Seal of Wisdom rank: its seal, the mana restore its proc casts and the restore's amount,
+/// and its judgement with the judgement's target aura.
+#[derive(Clone, Debug, Deserialize, Serialize)]
+#[serde(deny_unknown_fields)]
+pub struct SealOfWisdomRank {
+    pub seal_spell_id: i32,
+    pub aura: String,
+    pub proc_spell_id: i32,
+    pub mana: f64,
+    pub judgement_spell_id: i32,
+    pub judgement_aura: String,
+}
+
 /// A Seal of the Crusader rank: its seal, judgement, the judgement's target aura, the melee
 /// speed multiplier and the main hand auto damage it takes back.
 #[derive(Clone, Debug, Deserialize, Serialize)]
@@ -2329,6 +2342,20 @@ pub enum Effect {
         healing_dealt_multiplier: f64,
         healing_taken_multiplier: f64,
         table_healing_dealt_multiplier: f64,
+    },
+    /// Paladin seal_of_wisdom.go: every rank's seal, mana restore and judgement. A landed melee
+    /// hit that is no proc runs the handler a batch window later, which casts the restore on the
+    /// paladin. The judgement's debuff returns mana through a `judgement_of_wisdom` effect.
+    SealOfWisdom {
+        ranks: Vec<SealOfWisdomRank>,
+    },
+    /// Paladin seal_of_justice.go: the seal, whose stun raid bosses are immune to, and the
+    /// judgement, whose debuff does nothing in the sim.
+    SealOfJustice {
+        seal_spell_id: i32,
+        aura: String,
+        judgement_spell_id: i32,
+        judgement_aura: String,
     },
     /// Paladin seal_of_the_crusader.go: every rank's seal and judgement, and the spells the
     /// seal's main hand auto damage mod applies to. The judgement auras' Holy damage is their
@@ -5000,6 +5027,8 @@ impl Effect {
             Effect::ItemSwap { .. } => "item_swap",
             Effect::SealOfTheCrusader { .. } => "seal_of_the_crusader",
             Effect::SealOfLight { .. } => "seal_of_light",
+            Effect::SealOfWisdom { .. } => "seal_of_wisdom",
+            Effect::SealOfJustice { .. } => "seal_of_justice",
             Effect::SealOfFury { .. } => "seal_of_fury",
             Effect::HolyLightHaste { .. } => "holy_light_haste",
             Effect::PaladinHeals { .. } => "paladin_heals",

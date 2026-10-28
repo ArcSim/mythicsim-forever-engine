@@ -77,6 +77,11 @@ pub(crate) enum PaladinSpell {
     SealOfLightProc(usize),
     /// A Judgement of Light rank, by its position in the Seal of Light effect.
     JudgementOfLight(usize),
+    /// A Seal of Wisdom rank's mana restore, by its seal's position.
+    SealOfWisdomProc(usize),
+    /// A Judgement of Wisdom rank, by its position in the Seal of Wisdom effect.
+    JudgementOfWisdom(usize),
+    JudgementOfJustice,
 }
 
 /// Class auras with Rust behavior.
@@ -165,6 +170,9 @@ pub(crate) struct PaladinAgent {
     aura_casts: Vec<AuraRef>,
     /// Each Judgement of Light rank's target aura, by its position in the effect.
     light_judgements: Vec<AuraRef>,
+    /// Each Judgement of Wisdom rank's target aura, by its position in the effect.
+    wisdom_judgements: Vec<AuraRef>,
+    justice_judgement: Option<AuraRef>,
     eye_for_an_eye: Option<EyeForAnEye>,
     forbearance: Option<AuraRef>,
     pub(crate) templars_bulwark: Option<TemplarsBulwark>,
@@ -229,6 +237,30 @@ impl PaladinAgent {
                 _ => None,
             }),
             "seal_of_light" => seals::seal_index(effects, id.spell_id).map(PaladinSpell::Seal),
+            "seal_of_wisdom" | "seal_of_justice" => {
+                seals::seal_index(effects, id.spell_id).map(PaladinSpell::Seal)
+            }
+            "seal_of_wisdom_proc" => effects.iter().find_map(|effect| match effect {
+                Effect::SealOfWisdom { ranks } => ranks
+                    .iter()
+                    .find(|rank| rank.proc_spell_id == id.spell_id)
+                    .and_then(|rank| seals::seal_index(effects, rank.seal_spell_id))
+                    .map(PaladinSpell::SealOfWisdomProc),
+                _ => None,
+            }),
+            "judgement_of_wisdom" => effects.iter().find_map(|effect| match effect {
+                Effect::SealOfWisdom { ranks } => ranks
+                    .iter()
+                    .position(|rank| rank.judgement_spell_id == id.spell_id)
+                    .map(PaladinSpell::JudgementOfWisdom),
+                _ => None,
+            }),
+            "judgement_of_justice" => effects.iter().find_map(|effect| match effect {
+                Effect::SealOfJustice {
+                    judgement_spell_id, ..
+                } if *judgement_spell_id == id.spell_id => Some(PaladinSpell::JudgementOfJustice),
+                _ => None,
+            }),
             "seal_of_light_proc" => effects.iter().find_map(|effect| match effect {
                 Effect::SealOfLight { ranks, .. } => ranks
                     .iter()
@@ -514,6 +546,20 @@ impl PaladinAgent {
                     auras.push((rank.aura.clone(), PaladinAura::Seal(seal)));
                     seal += 1;
                 }
+            }
+        }
+        for effect in &prepared.effects {
+            if let Effect::SealOfWisdom { ranks } = effect {
+                for rank in ranks {
+                    auras.push((rank.aura.clone(), PaladinAura::Seal(seal)));
+                    seal += 1;
+                }
+            }
+        }
+        for effect in &prepared.effects {
+            if let Effect::SealOfJustice { aura, .. } = effect {
+                auras.push((aura.clone(), PaladinAura::Seal(seal)));
+                seal += 1;
             }
         }
         auras
@@ -868,6 +914,15 @@ impl PaladinAgent {
                         fight.agent.light_judgements.push(aura);
                     }
                 }
+                Effect::SealOfWisdom { ranks } => {
+                    for rank in ranks {
+                        let aura = target_aura(&fight, &rank.judgement_aura)?;
+                        fight.agent.wisdom_judgements.push(aura);
+                    }
+                }
+                Effect::SealOfJustice { judgement_aura, .. } => {
+                    fight.agent.justice_judgement = Some(target_aura(&fight, judgement_aura)?);
+                }
                 Effect::PaladinAuraCast { ranks } => {
                     for rank in ranks {
                         let aura = fight.player_aura(&rank.aura)?;
@@ -1081,6 +1136,16 @@ impl Agent for PaladinAgent {
             // seal_of_light.go: an outcome that always hits, then the rank's debuff.
             PaladinSpell::JudgementOfLight(rank) => {
                 let aura = fight.agent.light_judgements[rank];
+                crusader::judge(fight, spell, target, aura);
+            }
+            PaladinSpell::SealOfWisdomProc(seal) => seals::wisdom_proc(fight, seal),
+            // seal_of_wisdom.go and seal_of_justice.go: the same as Judgement of Light.
+            PaladinSpell::JudgementOfWisdom(rank) => {
+                let aura = fight.agent.wisdom_judgements[rank];
+                crusader::judge(fight, spell, target, aura);
+            }
+            PaladinSpell::JudgementOfJustice => {
+                let aura = fight.agent.justice_judgement.expect("bound");
                 crusader::judge(fight, spell, target, aura);
             }
             // auras.go registerAuraSpell: the cast turns the aura on.

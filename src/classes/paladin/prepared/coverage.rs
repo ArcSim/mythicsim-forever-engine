@@ -46,9 +46,11 @@ const EFFECTS: &[&str] = &[
     "sanctified_judgement",
     "seal_of_command",
     "seal_of_fury",
+    "seal_of_justice",
     "seal_of_light",
     "seal_of_righteousness",
     "seal_of_the_crusader",
+    "seal_of_wisdom",
     "shield_specialization",
     "swift_judgement",
     "templars_bulwark",
@@ -69,6 +71,8 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "seal_of_the_crusader" | "judgement_of_the_crusader" => Some("seal_of_the_crusader"),
         "seal_of_fury" | "seal_of_fury_proc" | "judgement_of_fury" => Some("seal_of_fury"),
         "seal_of_light" | "seal_of_light_proc" | "judgement_of_light" => Some("seal_of_light"),
+        "seal_of_wisdom" | "seal_of_wisdom_proc" | "judgement_of_wisdom" => Some("seal_of_wisdom"),
+        "seal_of_justice" | "judgement_of_justice" => Some("seal_of_justice"),
         "judgement" => Some("judgement"),
         "holy_strike" => Some("holy_strike"),
         "hammer_of_the_righteous" => Some("hammer_of_the_righteous"),
@@ -206,6 +210,20 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
                 ]
             })
             .collect(),
+        Effect::SealOfWisdom { ranks } => ranks
+            .iter()
+            .flat_map(|rank| {
+                [
+                    ("player", rank.aura.as_str()),
+                    ("target", &rank.judgement_aura),
+                ]
+            })
+            .collect(),
+        Effect::SealOfJustice {
+            aura,
+            judgement_aura,
+            ..
+        } => vec![("player", aura), ("target", judgement_aura)],
         Effect::SealOfTheCrusader { ranks, .. } => ranks
             .iter()
             .flat_map(|rank| {

@@ -104,7 +104,19 @@ fn player_movement_effect(env: &Environment) -> Option<Value> {
             speed_auras.push(a.label.clone());
         }
     }
-    if !moves && speed_auras.is_empty() {
+    // Under Forever's rules a rotation that reaches the Warrior's Charge or Intercept runs
+    // without a move in it, so a speed other than the base one is described too.
+    let unit = env.sim.unit(player);
+    let faster = env.sim.rules == crate::prepare::sim::Rules::Forever
+        && (unit.pseudo_stats.movement_speed_multiplier != 1.0
+            || unit.initial_pseudo_stats.movement_speed_multiplier != 1.0)
+        && {
+            let reached = super::rotation::rotation_spells(&env.sim, player);
+            crate::classes::warrior::prepare::RUN_SPELLS
+                .iter()
+                .any(|id| reached.contains(&i64::from(*id)))
+        };
+    if !moves && !faster && speed_auras.is_empty() {
         return None;
     }
     Some(json!({

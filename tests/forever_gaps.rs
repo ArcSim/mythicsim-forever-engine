@@ -602,3 +602,20 @@ fn seal_of_justice_judges_justice() {
     assert_eq!(action(&player, 20164, 0).0, 3983.0);
     assert_eq!(action(&player, 20184, 0).0, 773.0);
 }
+
+/// Shield Bash, Mocking Blow, Disarm, Intercept, Revenge off the target's threat and Freezing
+/// Trap, each first in its rotation: the casts each makes in 50 fights.
+#[test]
+fn warrior_strikes_and_freezing_trap_run() {
+    for (name, spell_id, casts) in [
+        ("protection-warrior-shield-bash", 1672, 531.0),
+        ("arms-warrior-mocking-blow", 20560, 78.0),
+        ("protection-warrior-disarm", 676, 129.0),
+        ("warrior-intercept", 20617, 50.0),
+        ("arms-warrior-revenge", 25288, 0.0),
+        ("hunter-freezing-trap", 1499, 209.0),
+    ] {
+        let (_, player) = run(name);
+        assert_eq!(action(&player, spell_id, 0).0, casts, "{name}");
+    }
+}

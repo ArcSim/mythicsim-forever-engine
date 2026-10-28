@@ -516,6 +516,14 @@ impl Hunter {
                 "base_damage": data.wing_clip.highest().effect_n(2).average(CHARACTER_LEVEL),
             }));
         }
+        // traps.go: Freezing Trap deals nothing. Go's exporter has no effect for it, so only
+        // Forever's rules describe it.
+        if let Some(spell) = self
+            .freezing_trap
+            .filter(|_| sim.rules == crate::prepare::sim::Rules::Forever)
+        {
+            effects.push(json!({"kind": "freezing_trap", "spell_id": spell_id_of(sim, spell)}));
+        }
         // traps.go: a magic hit roll without a hit count, dealt, then the dot when it landed.
         if let Some(spell) = self.immolation_trap {
             let rank = data.immolation_trap.highest();

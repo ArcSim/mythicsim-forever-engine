@@ -4084,6 +4084,43 @@ pub enum Effect {
         spell_id: i32,
         base_damage: f64,
     },
+    /// Shield Bash (Forever's rules): a fixed client base on the special hit table, refunded on
+    /// a miss, with a shield in Battle or Defensive Stance.
+    ShieldBash {
+        spell_id: i32,
+        base_damage: f64,
+        can_block: bool,
+    },
+    /// Mocking Blow (Forever's rules): a fixed client base on the special hit table, refunded on
+    /// a miss, in Battle Stance.
+    MockingBlow {
+        spell_id: i32,
+        base_damage: f64,
+    },
+    /// Disarm (Forever's rules): a special hit roll without damage that puts up the target's
+    /// aura, refunded on a miss, in Defensive Stance. The aura only tracks its uptime.
+    WarriorDisarm {
+        spell_id: i32,
+        aura: String,
+    },
+    /// Victory Rush (Forever's rules): castable while Victorious is up, which nothing in the
+    /// sim brings up, since no target dies.
+    VictoryRush {
+        spell_id: i32,
+        aura: String,
+    },
+    /// Intercept (Forever's rules): a cast at range in Berserker Stance that puts up its dash
+    /// aura for the spell's cooldown and runs the warrior to `overshoot` yards inside the
+    /// minimum range. The aura multiplies the movement speed, ends with the movement, and at its
+    /// end the stun's damage lands on the target with an outcome that always hits.
+    WarriorIntercept {
+        spell_id: i32,
+        aura: String,
+        speed_multiplier: f64,
+        overshoot: f64,
+        min_range: f64,
+        damage: f64,
+    },
     /// Bloodrage: instant and periodic rage for a share of base health.
     Bloodrage {
         spell_id: i32,
@@ -4667,6 +4704,11 @@ pub enum Effect {
         spell_id: i32,
         base_damage: f64,
     },
+    /// Freezing Trap (Forever's rules): a cast without an effect, which spends its mana, global
+    /// cooldown and the trap category's cooldown.
+    FreezingTrap {
+        spell_id: i32,
+    },
     /// Immolation Trap: a magic hit roll without a hit count, then a fire dot.
     ImmolationTrap {
         spell_id: i32,
@@ -5236,6 +5278,11 @@ impl Effect {
             Effect::IntimidatingShout { .. } => "intimidating_shout",
             Effect::ConcussionBlow { .. } => "concussion_blow",
             Effect::Pummel { .. } => "pummel",
+            Effect::ShieldBash { .. } => "shield_bash",
+            Effect::MockingBlow { .. } => "mocking_blow",
+            Effect::WarriorDisarm { .. } => "warrior_disarm",
+            Effect::VictoryRush { .. } => "victory_rush",
+            Effect::WarriorIntercept { .. } => "warrior_intercept",
             Effect::Bloodthrill { .. } => "bloodthrill",
             Effect::WeaponmasterSword { .. } => "weaponmaster_sword",
             Effect::Revenge { .. } => "revenge",
@@ -5300,6 +5347,7 @@ impl Effect {
             Effect::StriderKick { .. } => "strider_kick",
             Effect::WingClip { .. } => "wing_clip",
             Effect::ImmolationTrap { .. } => "immolation_trap",
+            Effect::FreezingTrap { .. } => "freezing_trap",
             Effect::ExplosiveTrap { .. } => "explosive_trap",
             Effect::Volley { .. } => "volley",
             Effect::Resourcefulness { .. } => "resourcefulness",

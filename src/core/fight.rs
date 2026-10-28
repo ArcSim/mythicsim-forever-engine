@@ -2728,6 +2728,7 @@ impl<A: Agent> Fight<A> {
                         | Effect::ShatterCurse { spell_id, aura, .. }
                         | Effect::Stoneform { spell_id, aura, .. }
                         | Effect::ReadLeyLine { spell_id, aura, .. }
+                        | Effect::Skysight { spell_id, aura, .. }
                             if id.spell_id == *spell_id && id.tag == 0 =>
                         {
                             activations.push((spells.len(), aura));
@@ -3503,6 +3504,15 @@ impl<A: Agent> Fight<A> {
                     _ => None,
                 }) {
                     AuraBehavior::MultiplyManaRegenSpeed(multiplier)
+                } else if let Some(speed) = effects.iter().find_map(|effect| match effect {
+                    Effect::Skysight {
+                        aura,
+                        speed_multiplier,
+                        ..
+                    } if side == Side::Player && *aura == exported.label => Some(*speed_multiplier),
+                    _ => None,
+                }) {
+                    AuraBehavior::MultiplyMovementSpeed(speed)
                 } else if let Some(index) = (side == Side::Player)
                     .then(|| {
                         effects

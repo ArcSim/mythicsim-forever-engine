@@ -2997,6 +2997,13 @@ pub enum Effect {
         school_damage_taken_multiplier: f64,
         schools: Vec<String>,
     },
+    /// The Windshaper Skyborne racial Skysight: a cast that only a rotation action uses, whose
+    /// aura Elemental Blessing multiplies the movement speed while up.
+    Skysight {
+        spell_id: i32,
+        aura: String,
+        speed_multiplier: f64,
+    },
     /// The High Order Skyborne racial Read Ley Line: a cast that only a rotation action
     /// uses, whose aura Energized multiplies mana regeneration.
     ReadLeyLine {
@@ -5066,6 +5073,7 @@ impl Effect {
             Effect::ShieldBlock { .. } => "shield_block",
             Effect::LastStand { .. } => "last_stand",
             Effect::ReadLeyLine { .. } => "read_ley_line",
+            Effect::Skysight { .. } => "skysight",
             Effect::PresenceOfMind { .. } => "presence_of_mind",
             Effect::IceLance { .. } => "ice_lance",
             Effect::ArcaneMissiles { .. } => "arcane_missiles",

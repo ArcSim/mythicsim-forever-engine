@@ -544,3 +544,14 @@ fn chastise_casts_only_at_a_humanoid() {
     let (_, player) = run("shadow-priest-chastise");
     assert_eq!(action(&player, 1277335, 0).0, 0.0);
 }
+
+/// Skysight (1259686), the Windshaper Skyborne racial, in a Hunter's rotation: the cast puts up
+/// Elemental Blessing, which multiplies the movement speed while it lasts.
+#[test]
+fn skysight_casts_and_puts_up_its_blessing() {
+    let (value, player) = run("hunter-skysight");
+    assert!(effects(&value, "skysight")
+        .iter()
+        .any(|effect| effect["aura"] == "Elemental Blessing"));
+    assert!(action(&player, 1259686, 0).0 > 0.0, "Skysight casts");
+}

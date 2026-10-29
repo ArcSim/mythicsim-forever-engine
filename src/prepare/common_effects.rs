@@ -18,6 +18,7 @@ pub(crate) fn common_effects(env: &mut Environment, unrepresented: &mut Vec<Stri
     effects.extend(racial_effects(env, unrepresented));
     effects.extend(battle_shout_effect(env));
     effects.extend(sunder_armor_effect(env, unrepresented));
+    effects.extend(super::buffs::external_expose_armor_effect(env));
     effects.extend(racial_defensive_effects(env));
     effects.extend(item_use_effects(env, unrepresented));
     effects.extend(super::external_cooldowns::external_cooldown_effects(

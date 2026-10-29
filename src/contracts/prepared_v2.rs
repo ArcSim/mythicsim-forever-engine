@@ -2292,6 +2292,16 @@ pub enum Effect {
         #[serde(default)]
         blocked: bool,
     },
+    /// The raid's Expose Armor under Forever's rules: the target opens the fight at
+    /// `armor_before`, its armor without Expose Armor, and the aura lands at full `delay_ns`
+    /// into the fight, taking the target to its prepared armor. The raid's Sunder Armor ramps
+    /// a stack every default GCD from the pull (`SunderArmorRamp`); landing at 3 s gives the
+    /// same armor-seconds over the opening, so a player gets the same damage from either.
+    ExternalExposeArmor {
+        aura: String,
+        delay_ns: i64,
+        armor_before: f64,
+    },
     /// Paladin judgement.go: a landed melee strike refreshes the active judgement debuffs.
     JudgementRefresh {
         trigger_aura: String,
@@ -5142,6 +5152,7 @@ impl Effect {
             Effect::DamageOnUse { .. } => "damage_on_use",
             Effect::ArmorDebuffProc { .. } => "armor_debuff_proc",
             Effect::SunderArmorRamp { .. } => "sunder_armor_ramp",
+            Effect::ExternalExposeArmor { .. } => "external_expose_armor",
             Effect::StatAuras { .. } => "stat_auras",
             Effect::CatForm { .. } => "cat_form",
             Effect::Prowl { .. } => "prowl",

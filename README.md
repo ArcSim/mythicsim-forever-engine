@@ -101,6 +101,14 @@ the Go goldens and exporter uses. The departures:
   Shadow Bolts a third of the time, all landed whole. The reference's level 63 boss partially
   resists 18% of them, 6% of the damage on average. The prepared target carries
   `no_level_partial_resist`.
+- The raid's Expose Armor, from MythicSim's Discord (28 October 2026, Bae and Vrelk): a player
+  who picks the raid's Expose Armor instead of its Sunder Armor should not gain from the pick, but
+  the reference applies Expose Armor at full from the pull while Sunder Armor ramps a stack every
+  default GCD, so a Hunter simmed 1,241 DPS with Expose Armor against 1,226 with Sunder Armor.
+  Under Forever's rules, Expose Armor alone lands at full 3 s into the fight, which leaves the same
+  6,750 armor-seconds of its 2,250 armor unapplied as Sunder Armor's ramp: the Marksmanship
+  production request sims 609.87 against 609.86. With both, Expose Armor stays up from the pull.
+  Forever preparation writes `external_expose_armor`.
 - Casting regeneration auras, from the client's mana regeneration interrupt aura (type 134),
   which acts as it is applied: Resourcefulness, Rapid Recuperation and Improved Stormstrike let
   more spirit regeneration continue while casting from the moment they are up. The reference

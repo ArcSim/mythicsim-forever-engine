@@ -1973,6 +1973,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) melee_keeps_auto_shot_timer: bool,
     /// Forever's rule that a move whose end time has come reads as arrived.
     pub(crate) move_arrives_at_destination: bool,
+    /// Forever's rule that the off hand's half swing wait counts from the melee attack's start.
+    pub(crate) off_hand_waits_from_attack_start: bool,
     /// Forever's rule that autocasting passes over a cooldown the GCD holds back.
     pub(crate) autocast_skips_unready_cooldowns: bool,
     /// Forever's rule that a damage bonus applied after the calculation raises threat too.
@@ -4186,6 +4188,7 @@ impl<A: Agent> Fight<A> {
             move_waits_for_queued_cast: player.move_waits_for_queued_cast,
             melee_keeps_auto_shot_timer: player.melee_keeps_auto_shot_timer,
             move_arrives_at_destination: player.move_arrives_at_destination,
+            off_hand_waits_from_attack_start: player.off_hand_waits_from_attack_start,
             autocast_skips_unready_cooldowns: player.autocast_skips_unready_cooldowns,
             threat_follows_damage_bonus: player.threat_follows_damage_bonus,
             burst: player.burst_window.map(burst::BurstWindow::new),

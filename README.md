@@ -163,6 +163,20 @@ the Go goldens and exporter uses. The departures:
   iteration has no swings or strikes: the Go golden of the Survival weave
   (`survival-hunter-aspect-of-the-beast-over-hawk`) has iterations at 400 to 510 DPS from it, and
   a held move makes it far more common.
+- The off hand's half swing wait counts from the start of the melee attack, from swing probe logs
+  on the Forever beta (16 to 17 October 2026, dual wield, 2.72 main hand and 2.33 off hand): an
+  Auto Shot turns the melee attack off, and a weave's `/startattack` turns it back on as the step
+  in begins. The off hand's first swing came exactly half its swing after the attack went on in
+  11 of 19 attack starts, and never half a swing after the Auto Shot turned it off (0 of 17,
+  always 0.06 to 0.15 seconds later). On six walks in longer than half the off hand swing, it
+  swung within 0.2 seconds of arriving, so the wait runs during the walk, and with the attack
+  left on for 21 seconds over five walks out and back in without a shot, both hands swung on
+  arrival every time. Forever preparation writes `off_hand_waits_from_attack_start`:
+  a walk from outside melee range to a destination inside it starts the attack as it begins, the
+  off hand swings no sooner than half its swing after that, and an attack still on adds no wait
+  when the Hunter steps back in. The reference adds the half swing on every arrival, so on a dual
+  wield weave that steps in after each Auto Shot and out after the main hand swing the off hand
+  almost never swung: 0.0 swings a fight on our weave request, now 28.3.
 - Multi-Shot's cast, from our Forever beta combat logs on Warcraft Logs (reports
   Par9kghHbAVYptwm, TBqwNKxVW8H3narp and mJGyPgZAtr2T4YpX, quiver at 15% speed): all 121
   Multi-Shots have a cast start, a median 0.45, 0.45 and 0.44 seconds before the shot, and 0.32

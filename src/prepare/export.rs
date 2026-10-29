@@ -1117,6 +1117,10 @@ pub(crate) fn export_state(
         // A move whose end time has come has arrived (README, Rust-only mechanics); the
         // reference can read the walk a hair short of the destination at that instant.
         prepared["player"]["move_arrives_at_destination"] = json!(true);
+        // The off hand's half swing wait counts from the melee attack's start, which a walk in
+        // after an Auto Shot begins (README, Rust-only mechanics); the reference counts it from
+        // every arrival in melee range.
+        prepared["player"]["off_hand_waits_from_attack_start"] = json!(true);
         // Autocasting looks past a cooldown the GCD holds back (README, Rust-only mechanics);
         // the reference stops at the first ready one.
         prepared["player"]["autocast_skips_unready_cooldowns"] = json!(true);

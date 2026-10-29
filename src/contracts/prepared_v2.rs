@@ -925,6 +925,12 @@ pub struct Player {
     /// Hunter who stepped in out of melee range for the rest of the fight.
     #[serde(default, skip_serializing_if = "is_false")]
     pub move_arrives_at_destination: bool,
+    /// Forever's rule: a dual wielder who also shoots has a melee attack that an Auto Shot turns
+    /// off and a walk into melee range turns back on as it starts, and the off hand's half swing
+    /// wait counts from then. An attack still on when the player steps back in adds no new wait.
+    /// False is the Go reference, which adds the half swing on every arrival in melee range.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub off_hand_waits_from_attack_start: bool,
     /// Forever's rule: Autocast Other Cooldowns passes over a ready cooldown that may not fire
     /// at this point of the GCD (an explosive while the GCD is ready or too little of it is
     /// left for its cast, any other while the GCD runs) and looks at the next one. False is the

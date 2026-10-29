@@ -114,6 +114,10 @@ pub(crate) struct AutoAttacks {
     /// Go `meleeWeaveWakeup`: the action that wakes a weaver's rotation when its out-of-range
     /// main hand swing comes ready. Go keeps it after it ran, until the next one replaces it.
     weave_wakeup: Option<Handle>,
+    /// Whether the unit's melee attack is on: an Auto Shot turns it off, and entering melee
+    /// range or a walk toward it turns it on. Only Forever's off hand rule reads it
+    /// ([`Fight::start_attack_for_walk_in`]).
+    melee_attack_on: bool,
 }
 
 impl AutoAttacks {
@@ -343,6 +347,7 @@ impl<A: Agent> Fight<A> {
         let ranged_haste = self.ranged_haste_multiplier();
         let autos = self.autos_of_mut(side);
         autos.weave_wakeup = None;
+        autos.melee_attack_on = false;
         for attack in [&mut autos.mh, &mut autos.oh, &mut autos.ranged] {
             attack.enabled = false;
         }
@@ -602,6 +607,9 @@ impl<A: Agent> Fight<A> {
             self.autos.attacks.push((side, hand));
             self.autos.min_time = self.autos.min_time.min(swing_at);
         }
+        // A unit that starts in melee range starts its attack at the pull.
+        let autos = self.autos_of_mut(side);
+        autos.melee_attack_on = autos.mh.enabled;
     }
 
     /// Go `Simulation.Step`'s weapon check: whether swings are due before the next action at
@@ -712,6 +720,10 @@ impl<A: Agent> Fight<A> {
             && !self.melee_keeps_auto_shot_timer
         {
             self.stop_ranged_until(now);
+        }
+        // An Auto Shot puts the bow out: the melee attack is off until it starts again.
+        if hand == Hand::Ranged {
+            self.autos_of_mut(side).melee_attack_on = false;
         }
         // Go swings at the unit's current target; a pet's stays the first.
         let target = if side == Side::Player {
@@ -848,6 +860,7 @@ impl<A: Agent> Fight<A> {
         let now = self.now;
         let distance = self.unit_config(side).distance;
         let haste = self.melee_haste_multiplier_of(side);
+        let from_attack_start = self.off_hand_waits_from_attack_start;
         let autos = self.autos_of_mut(side);
         autos.mh.swing_at = autos.mh.swing_at.max(now).max(0);
         if in_range(&autos.mh.weapon, distance) && !autos.mh.enabled {
@@ -855,10 +868,14 @@ impl<A: Agent> Fight<A> {
             self.add_weapon_attack(side, Hand::Main, haste);
         }
         let autos = self.autos_of_mut(side);
+        // Forever's rule: an attack still on, started by the walk in or left on since the last
+        // time in melee, adds no new wait.
+        let attack_was_on = from_attack_start && autos.melee_attack_on;
+        autos.melee_attack_on = true;
         if autos.dual_wielding && !autos.oh.enabled {
             // A unit that also shoots enters melee with the off hand half a swing behind.
             let mut offset = 0;
-            if autos.ranged_auto {
+            if autos.ranged_auto && !attack_was_on {
                 autos.oh.update_swing_duration(haste);
                 offset = autos.oh.cur_swing_duration / 2;
             }
@@ -867,6 +884,31 @@ impl<A: Agent> Fight<A> {
                 autos.oh.enabled = true;
                 self.add_weapon_attack(side, Hand::Off, haste);
             }
+        }
+    }
+
+    /// Forever's rule: a walk from outside the main hand's range to a destination inside it
+    /// starts the melee attack as it begins, as a weave's `/startattack` does, so the off hand's
+    /// half swing wait runs during the walk. An attack already on is left alone.
+    pub(crate) fn start_attack_for_walk_in(&mut self, side: Side, destination: f64) {
+        let autos = self.autos_of(side);
+        if !self.off_hand_waits_from_attack_start
+            || !autos.melee
+            || !autos.ranged_auto
+            || autos.melee_attack_on
+            || self.main_hand_in_range(side)
+            || !in_range(&autos.mh.weapon, destination)
+        {
+            return;
+        }
+        let now = self.now;
+        let haste = self.melee_haste_multiplier_of(side);
+        let autos = self.autos_of_mut(side);
+        autos.melee_attack_on = true;
+        if autos.dual_wielding {
+            autos.oh.update_swing_duration(haste);
+            let wait = autos.oh.cur_swing_duration / 2;
+            autos.oh.swing_at = autos.oh.swing_at.max(now + wait).max(0);
         }
     }
 

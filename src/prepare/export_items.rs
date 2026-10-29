@@ -1864,6 +1864,17 @@ fn proc_damage_shape(
     damage: &'static Spell,
     position: usize,
 ) -> Result<serde_json::Map<String, Value>, &'static str> {
+    proc_damage_shape_with(env, damage, position, true)
+}
+
+/// [`proc_damage_shape`], refusing ticks that roll a magic hit without a crit only where
+/// `refuse_magic_ticks` (the reference's rows).
+fn proc_damage_shape_with(
+    env: &Environment,
+    damage: &'static Spell,
+    position: usize,
+    refuse_magic_ticks: bool,
+) -> Result<serde_json::Map<String, Value>, &'static str> {
     let level = env.sim.unit(env.player).level;
     let (direct, periodic) = (damage.damage_effect(), damage.periodic_damage_effect());
     let defense = env.sim.spell(spell_at(env, position)).defense_type;
@@ -1876,7 +1887,10 @@ fn proc_damage_shape(
         return Err("spreads and leaves a damage over time");
     } else if !periodic.is_nil() && direct.is_nil() && damage.speed != 0.0 {
         return Err("missile carries only a damage over time");
-    } else if !periodic.is_nil() && proc_tick_outcome(damage) == "tick_magic_hit" {
+    } else if refuse_magic_ticks
+        && !periodic.is_nil()
+        && proc_tick_outcome(damage) == "tick_magic_hit"
+    {
         return Err("ticks roll a magic hit without a crit");
     } else if !matches!(
         defense,
@@ -1923,6 +1937,190 @@ fn proc_damage_shape(
         );
     }
     Ok(shape)
+}
+
+/// Under Forever's rules, the damage over time alone of a chance on hit `CHANCE_ON_HIT_ITEMS`
+/// registers (forever_items.rs), where the reference describes none: a magic one rolls the magic
+/// hit as it goes on and its ticks deal their amount, as Classic dots do, where the reference's
+/// row reads a magic hit on every tick; one with a missile goes on as the hit lands (its flight is
+/// not modelled); and one around the wielder, as Seeping Willow's, goes on every target. `None`
+/// for any other row, which [`proc_damage_shape`] describes.
+fn chance_on_hit_dot_shape(
+    env: &Environment,
+    damage: &'static Spell,
+    position: usize,
+) -> Option<serde_json::Map<String, Value>> {
+    let level = env.sim.unit(env.player).level;
+    let (direct, periodic) = (damage.damage_effect(), damage.periodic_damage_effect());
+    if periodic.is_nil() || damage.debuffs_the_target() {
+        return None;
+    }
+    if !direct.is_nil() {
+        // With a hit, the dot goes on where the hit landed: only a magic tick's shape changes.
+        if direct.hits_an_area() || direct.chain_targets > 1 {
+            return None;
+        }
+        let mut shape = proc_damage_shape_with(env, damage, position, false).ok()?;
+        shape["periodic"]["tick_outcome"] = json!(match proc_tick_outcome(damage) {
+            "tick_magic_hit" => "tick",
+            other => other,
+        });
+        return Some(shape);
+    }
+    let defense = env.sim.spell(spell_at(env, position)).defense_type;
+    let magic = defense == DefenseType::Magic;
+    let tick = match proc_tick_outcome(damage) {
+        "tick_magic_hit" => "tick",
+        other => other,
+    };
+    let mut periodic_shape = json!({
+        "tick_base": periodic.average(level), "tick_outcome": tick, "with_direct": false,
+    });
+    if magic {
+        periodic_shape["application"] = json!("magic_hit");
+    }
+    let mut shape = serde_json::Map::new();
+    shape.insert("spell".to_string(), json!(position));
+    shape.insert("average".to_string(), json!(0.0));
+    shape.insert("variance".to_string(), json!(0.0));
+    shape.insert("can_crit".to_string(), json!(!damage.cannot_crit()));
+    shape.insert("periodic".to_string(), periodic_shape);
+    if periodic.hits_an_area() {
+        shape.insert(
+            "area".to_string(),
+            json!({
+                "max_targets": i32::from(damage.max_targets), "splits": false,
+                "aoe_cap_multiplier": aoe_cap_multiplier(env),
+            }),
+        );
+    }
+    Some(shape)
+}
+
+/// Under Forever's rules: the chance on hit items `CHANCE_ON_HIT_ITEMS` registers
+/// (forever_items.rs), which the reference leaves unregistered. Each weapon or item proc rolls its
+/// manager's chance on the landed hits it hears, at the rate MythicSim assumes, and at once on the
+/// hit casts its damage spell, activates its buff (and its attack speed, where the buff changes
+/// it) or puts its armor debuff on the unit hit.
+fn chance_on_hit_item_effects(env: &Environment, unrepresented: &mut Vec<String>) -> Vec<Value> {
+    use super::shared_items::ProcKind;
+    let mut effects = Vec::new();
+    if env.sim.rules != super::sim::Rules::Forever {
+        return effects;
+    }
+    // The worn items, then with an item swap the swap set's, as item_effects.rs registers them.
+    let mut items: Vec<i32> = env
+        .sim
+        .character(env.player)
+        .equipment
+        .iter()
+        .map(|item| item.id)
+        .collect();
+    if let Some(swap) = env.sim.item_swap(env.player) {
+        items.extend(swap.un_equipped.iter().map(|item| item.id));
+    }
+    let mut seen = Vec::new();
+    for item in items {
+        if item == 0 || seen.contains(&item) {
+            continue;
+        }
+        seen.push(item);
+        for (kind, cfg) in super::forever_items::chance_on_hit_registrations(item) {
+            let Some(trigger) = aura_named(env, cfg.name) else {
+                continue;
+            };
+            let trigger = env.sim.aura(trigger);
+            let (Some(dpm), None) = (trigger.dpm.as_ref(), trigger.icd) else {
+                unrepresented.push(format!("{}'s chance on hit has no proc manager", cfg.name));
+                continue;
+            };
+            let chances = dpm_chances(env, dpm, |spell| {
+                !spell.flags.matches(SpellFlag::SUPPRESS_WEAPON_PROCS)
+                    && !spell.flags.matches(SpellFlag::PROC)
+            });
+            let (_, row) = cfg.rows();
+            match kind {
+                ProcKind::Damage => {
+                    let Some(position) = spell_position(env, &ActionId::spell(row.id)) else {
+                        unrepresented.push(not_single_target_magic_hit(cfg.name));
+                        continue;
+                    };
+                    let shape = match chance_on_hit_dot_shape(env, row, position)
+                        .map_or_else(|| proc_damage_shape(env, row, position), Ok)
+                    {
+                        Ok(shape) => shape,
+                        Err(refusal) => {
+                            unrepresented.push(format!("{}'s proc {refusal}", cfg.name));
+                            continue;
+                        }
+                    };
+                    let triggers: Vec<Value> = chances
+                        .iter()
+                        .map(|chance| chance["spell"].clone())
+                        .collect();
+                    let mut effect = json!({
+                        "kind": "spell_data_damage_proc", "trigger_aura": trigger.label,
+                        "trigger_spells": triggers, "landed_only": true, "require_damage": false,
+                        "proc_chance": 1.0, "chances": chances,
+                    });
+                    for (key, value) in shape {
+                        effect[key] = value;
+                    }
+                    effects.push(effect);
+                }
+                ProcKind::Proc | ProcKind::Aura => {
+                    let Some(aura) = aura_named(env, &spell_data_stat_proc_aura(cfg.name)) else {
+                        unrepresented.push(format!("{}'s chance on hit has no buff", cfg.name));
+                        continue;
+                    };
+                    let aura = env.sim.aura(aura);
+                    if aura.max_stacks > 0 {
+                        unrepresented.push(format!("{}'s buff stacks", cfg.name));
+                        continue;
+                    }
+                    effects.push(json!({
+                        "kind": "stat_proc", "trigger_aura": trigger.label,
+                        "rng_label": trigger.label, "aura": aura.label, "chances": chances,
+                    }));
+                    let melee: f64 = row
+                        .effects
+                        .iter()
+                        .filter(|effect| effect.aura == dbcenums::A_MOD_MELEE_HASTE_3)
+                        .map(|effect| 1.0 + effect.base_value() / 100.0)
+                        .product();
+                    if kind == ProcKind::Aura && melee != 1.0 {
+                        effects.push(json!({
+                            "kind": "speed_aura", "aura": aura.label, "melee_multiplier": melee,
+                            "ranged_multiplier": 1.0, "cast_multiplier": 1.0,
+                        }));
+                    }
+                }
+                ProcKind::Debuff => {
+                    let label = format!("{} {}", row.name, row.id);
+                    let mut scratch = env.fresh();
+                    let target = scratch.encounter.targets[0];
+                    let Some(debuff) = scratch.sim.get_aura(target, &label) else {
+                        unrepresented.push(format!("{} has no {label} aura", cfg.name));
+                        continue;
+                    };
+                    let mut armor = vec![0.0];
+                    let base = scratch.sim.stat(target, Stat::Armor);
+                    scratch.sim.activate(debuff);
+                    for stacks in 1..=scratch.sim.aura(debuff).max_stacks {
+                        scratch.sim.set_stacks(debuff, stacks);
+                        armor.push(scratch.sim.stat(target, Stat::Armor) - base);
+                    }
+                    effects.push(json!({
+                        "kind": "armor_debuff_proc", "trigger_aura": trigger.label,
+                        "rng_label": trigger.label, "chances": chances, "aura": label,
+                        "armor_by_stacks": armor, "immediate": true,
+                    }));
+                }
+                _ => unrepresented.push(format!("{}'s chance on hit is not described", cfg.name)),
+            }
+        }
+    }
+    effects
 }
 
 /// weapon_procs.go `weaponDamageProcEffects`: the spell shared_utils.go
@@ -2226,6 +2424,7 @@ pub(crate) fn melee_proc_effects(env: &Environment, unrepresented: &mut Vec<Stri
     }
     effects.extend(flurry_axe_effects(env, unrepresented));
     effects.extend(weapon_aura_proc_effects(env, unrepresented));
+    effects.extend(chance_on_hit_item_effects(env, unrepresented));
     super::classic_export::thunderfury_effect(env, unrepresented, &mut effects);
     super::classic_export::dragons_call_effect(env, unrepresented, &mut effects);
     super::classic_export::sulfuras_effect(env, unrepresented, &mut effects);

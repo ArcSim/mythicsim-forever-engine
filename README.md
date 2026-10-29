@@ -337,6 +337,20 @@ the Go goldens and exporter uses. The departures:
   October 2026 beta notes); the globes taken spell hits spend are not modelled, since the healer
   takes none. The prepared effects are `instant_cast_aura`, `mana_globes` and the heals' channel
   shapes (`tests/healer_spells.rs`).
+- Chance on hit items with no stated rate, a MythicSim assumption: Blizzard states no rate for
+  them. Their client trigger rows read `ProcChance` 101, the server's "chance on hit" sentinel,
+  with no procs per minute, and the reference leaves them unregistered (its generator's "states
+  no rate" blocks, and rows it had no constructor for), so a sim wearing Seeping Willow,
+  Empyrean Demolisher or Felstriker ran as if the effect did not exist and said nothing. Forever
+  preparation registers them from those blocks and the client rows (`CHANCE_ON_HIT_ITEMS`,
+  `tools/rust_item_effects.py`) at the rate Classic servers give a `ProcChance` of 101: 1.8% per
+  landed hit for each second of the hitting weapon's speed, 1.08 procs a minute. A weapon procs on
+  its own hits, special attacks included; any other item on the wearer's landed melee and ranged
+  hits; spells never. A damage over time the proc puts on alone rolls the magic hit as it goes on
+  where it is magic and its ticks deal their amount, one around the wielder goes on every target,
+  and one a missile carries goes on as the hit lands, its flight not modelled.
+  `docs/forever-chance-on-hit.md` lists the items by kind and those left out with the reason
+  (crowd control, threat, mana, heals, debuffs only a tank feels).
 
 ## Repository layout
 

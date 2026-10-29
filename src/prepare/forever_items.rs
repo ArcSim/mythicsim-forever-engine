@@ -14,7 +14,7 @@ use crate::contracts::prepared_v2::ActionId;
 use super::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger, StackingStatAura};
 use super::character::{cooldown_type, MajorCooldown};
 use super::env::Environment;
-use super::forever_items_generated::{ENCHANTS, ITEMS};
+use super::forever_items_generated::{CHANCE_ON_HIT_ITEMS, ENCHANTS, ITEMS};
 use super::itemhelpers::{self, WeaponProcTrigger};
 use super::parse_effects::{parse_effects, ParseOptions};
 use super::periodic_action::PeriodicActionOptions;
@@ -69,7 +69,45 @@ pub(crate) fn apply_item_effect(env: &mut Environment, item: i32) -> Result<bool
             _ => {}
         }
     }
+    if env.sim.rules == super::sim::Rules::Forever {
+        return Ok(apply_chance_on_hit_item(env, item));
+    }
     Ok(false)
+}
+
+/// Under Forever's rules: the chance on hit of an item the reference leaves unregistered for
+/// want of a stated rate or a constructor (`CHANCE_ON_HIT_ITEMS`), at the rate MythicSim assumes
+/// ([`shared_items::CHANCE_ON_HIT_PPM`]). Answers whether it registered one.
+fn apply_chance_on_hit_item(env: &mut Environment, item: i32) -> bool {
+    for (kind, cfg) in chance_on_hit_registrations(item) {
+        if shared_items::registers(kind, &cfg) {
+            shared_items::apply(env, kind, &cfg);
+            return true;
+        }
+    }
+    false
+}
+
+/// The Forever chance on hit registrations of an item, expanded to its variant.
+pub(crate) fn chance_on_hit_registrations(item: i32) -> Vec<(ProcKind, SpellDataProc)> {
+    let mut found = Vec::new();
+    for registration in CHANCE_ON_HIT_ITEMS {
+        if let Registration::Proc(kind, cfg, variants) = registration {
+            for expanded in expand_variants(*cfg, variants) {
+                if expanded.item_id == item {
+                    found.push((*kind, expanded));
+                }
+            }
+        }
+    }
+    found
+}
+
+/// Whether Forever's rules register a chance on hit for an item the reference has no effect for.
+pub(crate) fn has_chance_on_hit_item(item: i32) -> bool {
+    chance_on_hit_registrations(item)
+        .iter()
+        .any(|(kind, cfg)| shared_items::registers(*kind, cfg))
 }
 
 /// Go `NewEnchantEffect` for the IDs this package registers.

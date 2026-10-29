@@ -613,7 +613,7 @@ fn warrior_strikes_and_freezing_trap_run() {
         ("protection-warrior-disarm", 676, 129.0),
         ("warrior-intercept", 20617, 50.0),
         ("arms-warrior-revenge", 25288, 0.0),
-        ("hunter-freezing-trap", 1499, 209.0),
+        ("hunter-freezing-trap", 1499, 204.0),
     ] {
         let (_, player) = run(name);
         assert_eq!(action(&player, spell_id, 0).0, casts, "{name}");

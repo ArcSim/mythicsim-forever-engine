@@ -163,6 +163,16 @@ the Go goldens and exporter uses. The departures:
   iteration has no swings or strikes: the Go golden of the Survival weave
   (`survival-hunter-aspect-of-the-beast-over-hawk`) has iterations at 400 to 510 DPS from it, and
   a held move makes it far more common.
+- A rotation with a move keeps looking through the global cooldown: in game moving needs no
+  global cooldown, only casting waits on it, so a player watching a swing timer starts a walk
+  when its condition turns true. The reference's idle rotation sleeps until the global cooldown
+  ends unless a swing or a shot wakes it, so a walk whose condition turned true under the global
+  cooldown started at its end. A rotation that looks under the global cooldown queues the spell
+  for its end, so it also goes on from a queued instant as it goes off (one that cast; a queued
+  spell that fails does not run it again): the reference runs no rotation then, and a step
+  out waiting on that spell started a global cooldown late. Forever preparation writes
+  `rotation_with_moves_looks_through_gcd`; it acts only on a rotation with a Move in its priority
+  list, a group or a schedule, so every other rotation waits as before.
 - The off hand's half swing wait counts from the start of the melee attack, from swing probe logs
   on the Forever beta (16 to 17 October 2026, dual wield, 2.72 main hand and 2.33 off hand): an
   Auto Shot turns the melee attack off, and a weave's `/startattack` turns it back on as the step

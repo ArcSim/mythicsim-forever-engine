@@ -1413,6 +1413,214 @@ fn the_reference_swings_the_off_hand_half_a_swing_after_every_arrival() {
     }
 }
 
+const WALKER: &str = "marksmanship-hunter (#1)";
+
+/// The moving Marksmanship Hunter, 12 yards out, with a rotation of two lines: a walk out to 20
+/// yards once the fight is 0.9 s old, and Arcane Shot, an instant on the 1.5 s global cooldown,
+/// which it casts at the pull. The Auto Shot at the pull wakes the rotation under that global
+/// cooldown. The seconds of the first fight's Arcane Shot and of the start of its walk, under
+/// Forever's rule for a rotation with a move or the reference's.
+fn walk_under_the_gcd(forever: bool) -> (f64, f64) {
+    let mut value = fixture("marksmanship-hunter-moves");
+    value["player"]["rotation"]["priorityList"] = json!([
+        {"action": {
+            "condition": {"cmp": {
+                "op": "OpGe", "lhs": {"currentTime": {}}, "rhs": {"const": {"val": "0.9s"}}
+            }},
+            "move": {"rangeFromTarget": {"const": {"val": "20"}}}
+        }},
+        {"action": {"castSpell": {"spellId": {"spellId": 14287}}}}
+    ]);
+    if forever {
+        value["player"]["rotation_with_moves_looks_through_gcd"] = json!(true);
+    }
+    let logs = first_fight_log(value);
+    let arcane_shots: Vec<&str> = unit_lines(&logs, WALKER)
+        .into_iter()
+        .filter(|line| line.contains("Casting {SpellID: 14287}"))
+        .collect();
+    assert!(
+        arcane_shots[0].contains("Cast Time = 0s") && arcane_shots[0].contains("GCD = 1.5s"),
+        "{}",
+        arcane_shots[0]
+    );
+    let walks = movement_windows(&logs, WALKER);
+    let walk = walks
+        .iter()
+        .map(|&(start, _)| start)
+        .find(|&start| start >= 0.0)
+        .unwrap_or_else(|| panic!("no walk in the fight: {walks:?}"));
+    (at(arcane_shots[0]), walk)
+}
+
+/// Forever's rule: moving needs no global cooldown, so a rotation with a move keeps looking
+/// through it, and the walk
+/// starts within one reaction time of 0.9 s, under the Arcane Shot's global cooldown.
+#[test]
+fn a_rotation_with_a_move_walks_under_the_gcd_in_forever() {
+    let (arcane_shot, walk) = walk_under_the_gcd(true);
+    assert_eq!(arcane_shot, 0.0);
+    assert!((0.9..=1.0).contains(&walk), "walk at {walk}");
+}
+
+/// Only Forever preparation writes the rule. Under the reference the idle rotation sleeps until
+/// the global cooldown ends, so the walk whose condition turned true at 0.9 s starts at 1.5 s.
+#[test]
+fn the_reference_starts_a_move_only_when_the_gcd_ends() {
+    let request = fs::read(
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-survival-hunter.request.json"),
+    )
+    .unwrap();
+    let forever = forever_engine::prepare_json(&request, "x").unwrap();
+    let go = forever_engine::prepare_json_with(&request, "x", forever_engine::Rules::GoReference)
+        .unwrap();
+    assert_eq!(
+        forever["player"]["rotation_with_moves_looks_through_gcd"],
+        json!(true)
+    );
+    assert!(go["player"]
+        .get("rotation_with_moves_looks_through_gcd")
+        .is_none());
+    let (arcane_shot, walk) = walk_under_the_gcd(false);
+    assert!((walk - (arcane_shot + 1.5)).abs() < 0.005, "walk at {walk}");
+}
+
+/// Under the same rule the rotation goes on from a queued instant as it goes off. The Hunter
+/// casts Serpent Sting at the pull, looks through its global cooldown, queues Arcane Shot for its
+/// end and steps out to 20 yards once Arcane Shot is on cooldown: as it fires, not when its own
+/// global cooldown ends or the next Auto Shot wakes the rotation.
+#[test]
+fn a_step_out_after_a_queued_instant_starts_as_it_fires_in_forever() {
+    let mut value = fixture("marksmanship-hunter-moves");
+    value["player"]["rotation"]["priorityList"] = json!([
+        {"action": {
+            "condition": {"cmp": {
+                "op": "OpGt",
+                "lhs": {"spellTimeToReady": {"spellId": {"spellId": 14287}}},
+                "rhs": {"const": {"val": "0s"}}
+            }},
+            "move": {"rangeFromTarget": {"const": {"val": "20"}}}
+        }},
+        {"action": {
+            "condition": {"cmp": {
+                "op": "OpLt", "lhs": {"currentTime": {}}, "rhs": {"const": {"val": "0.5s"}}
+            }},
+            "castSpell": {"spellId": {"spellId": 25295}}
+        }},
+        {"action": {"castSpell": {"spellId": {"spellId": 14287}}}}
+    ]);
+    value["player"]["rotation_with_moves_looks_through_gcd"] = json!(true);
+    // A 120ms reaction keeps the rotation's looks, every reaction time from the Auto Shot at the
+    // pull, off the end of the global cooldown, where the rotation would cast Arcane Shot itself.
+    value["player"]["reaction_ns"] = json!(120_000_000);
+    let logs = first_fight_log(value);
+    let lines = unit_lines(&logs, WALKER);
+    assert!(
+        lines
+            .iter()
+            .any(|line| line.contains("Queueing up {SpellID: 14287}")),
+        "{logs}"
+    );
+    let arcane_shot = lines
+        .iter()
+        .find(|line| line.contains("Casting {SpellID: 14287}"))
+        .map(|line| at(line))
+        .unwrap();
+    assert!(
+        (arcane_shot - 1.5).abs() < 0.005,
+        "Arcane Shot at {arcane_shot}"
+    );
+    let walks = movement_windows(&logs, WALKER);
+    let walk = walks
+        .iter()
+        .map(|&(start, _)| start)
+        .find(|&start| start >= 0.0)
+        .unwrap_or_else(|| panic!("no walk in the fight: {walks:?}"));
+    assert!((walk - arcane_shot).abs() < 0.005, "walk at {walk}");
+}
+
+/// A queued spell that fails to cast does not run the rotation again. The Hunter casts Serpent
+/// Sting at the pull, queues Aimed Shot for the end of its global cooldown and starts walking out
+/// to 20 yards at 1.3 s, so the queued Aimed Shot, which cannot start while moving, fails. Running
+/// the rotation then would queue it again for the same instant, without end.
+#[test]
+fn a_queued_spell_that_fails_does_not_run_the_rotation_again_in_forever() {
+    let mut value = fixture("marksmanship-hunter-moves");
+    // Without the prepull Aimed Shot it is ready to queue under the first global cooldown.
+    value["player"]["rotation"]["prepullActions"]
+        .as_array_mut()
+        .unwrap()
+        .truncate(1);
+    value["player"]["prepull_actions"] = json!(1);
+    value["player"]["rotation"]["priorityList"] = json!([
+        {"action": {
+            "condition": {"cmp": {
+                "op": "OpGe", "lhs": {"currentTime": {}}, "rhs": {"const": {"val": "1.3s"}}
+            }},
+            "move": {"rangeFromTarget": {"const": {"val": "20"}}}
+        }},
+        {"action": {
+            "condition": {"cmp": {
+                "op": "OpLt", "lhs": {"currentTime": {}}, "rhs": {"const": {"val": "0.5s"}}
+            }},
+            "castSpell": {"spellId": {"spellId": 25295}}
+        }},
+        {"action": {"castSpell": {"spellId": {"spellId": 20904}}}}
+    ]);
+    value["player"]["rotation_with_moves_looks_through_gcd"] = json!(true);
+    // Without a log first, so a fight that never ends fails here rather than filling memory.
+    let mut quiet = value.clone();
+    quiet["sim"]["iterations"] = json!(1);
+    quiet["sim"]["debug_first_iteration"] = json!(false);
+    quiet["sim"]["debug"] = json!(false);
+    let (sender, receiver) = std::sync::mpsc::channel();
+    std::thread::spawn(move || sender.send(simulate_prepared(&parse(quiet)).is_ok()));
+    let ended = receiver.recv_timeout(std::time::Duration::from_secs(10));
+    assert_eq!(ended, Ok(true), "the fight did not end");
+    let logs = first_fight_log(value);
+    let lines = unit_lines(&logs, WALKER);
+    assert!(
+        lines
+            .iter()
+            .any(|line| line.contains("Queueing up {SpellID: 20904}")),
+        "{logs}"
+    );
+    assert!(
+        lines
+            .iter()
+            .any(|line| line.contains("{SpellID: 20904} failed to cast")),
+        "{logs}"
+    );
+}
+
+/// A rotation without a move keeps sleeping until the global cooldown ends under Forever's
+/// rule: the turret Marksmanship Hunter's raid metrics are the same to the digit with or without
+/// it.
+#[test]
+fn a_rotation_without_a_move_keeps_its_gcd_wait_in_forever() {
+    let request = fs::read(
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-marksmanship-hunter.request.json"),
+    )
+    .unwrap();
+    let mut forever = forever_engine::prepare_json(&request, "x").unwrap();
+    assert_eq!(
+        forever["player"]["rotation_with_moves_looks_through_gcd"],
+        json!(true)
+    );
+    assert!(!forever["player"]["rotation"].to_string().contains("\"move"));
+    forever["sim"]["iterations"] = json!(200);
+    let metrics =
+        |value: Value| simulate_prepared(&parse(value)).unwrap().result["raidMetrics"].clone();
+    let with_rule = metrics(forever.clone());
+    forever["player"]
+        .as_object_mut()
+        .unwrap()
+        .remove("rotation_with_moves_looks_through_gcd");
+    assert_eq!(with_rule, metrics(forever));
+}
+
 /// The player's mana metrics, by action id, and its damage per second, over a short run.
 fn mana_rows(mut value: Value, forever: bool) -> (Vec<(Value, f64, f64)>, f64) {
     value["sim"]["iterations"] = json!(200);

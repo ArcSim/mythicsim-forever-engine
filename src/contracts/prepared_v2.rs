@@ -925,6 +925,13 @@ pub struct Player {
     /// Hunter who stepped in out of melee range for the rest of the fight.
     #[serde(default, skip_serializing_if = "is_false")]
     pub move_arrives_at_destination: bool,
+    /// Forever's rule: a rotation with a Move anywhere in it keeps looking through the global
+    /// cooldown, so a walk starts when its condition turns true, as moving needs no global
+    /// cooldown, and goes on from a queued instant as it goes off. False is the Go reference,
+    /// whose idle rotation sleeps until the global cooldown ends, and a walk timed to a swing
+    /// timer or waiting on a queued instant starts late.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub rotation_with_moves_looks_through_gcd: bool,
     /// Forever's rule: a dual wielder who also shoots has a melee attack that an Auto Shot turns
     /// off and a walk into melee range turns back on as it starts, and the off hand's half swing
     /// wait counts from then. An attack still on when the player steps back in adds no new wait.

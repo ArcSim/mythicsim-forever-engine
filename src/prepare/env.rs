@@ -65,6 +65,8 @@ pub(crate) struct Environment {
         super::sim::AuraId,
         crate::contracts::prepared_v2::ExternalActivation,
     )>,
+    /// What a healer's gear changes under Forever's rules (`healer_gear`).
+    pub healer_gear: super::healer_gear::HealerGear,
     /// The first [`Environment::fresh`] simulation, which every later one copies.
     pristine: Rc<std::cell::OnceCell<Environment>>,
 }
@@ -221,6 +223,7 @@ impl Environment {
             external_activations: Vec::new(),
             factory,
             rules,
+            healer_gear: super::healer_gear::HealerGear::default(),
         };
         if let Some(debuffs) = raid.message("debuffs") {
             // The agent's constructor may have changed the raid's debuffs.
@@ -413,6 +416,7 @@ impl Environment {
         self.sim.apply_equipment(unit);
         super::item_effects::apply_item_effects(self)?;
         super::item_effects::apply_item_set_bonus_effects(self)?;
+        super::healer_gear::apply(self)?;
         self.sim.apply_build_phase_auras(unit, BuildPhase::GEAR);
 
         self.agent.apply_talents(&mut self.sim, unit);

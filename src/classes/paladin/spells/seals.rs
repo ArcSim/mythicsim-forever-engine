@@ -3,14 +3,17 @@
 //! landed white hits, and the damage a batch window after the hit. Seal of Fury's hit also
 //! grants an absorb shield while the paladin carries a shield. Seal of the Crusader has no
 //! proc: its aura changes attack power, melee speed and the main hand auto's damage while it
-//! holds.
+//! holds. Seal of Light (seal_of_light.go) rolls its proc manager at the hit and heals the
+//! paladin a batch window later. Seal of Wisdom (seal_of_wisdom.go) restores mana a batch window
+//! after every landed melee hit that is no proc. Seal of Justice (seal_of_justice.go) does
+//! nothing: raid bosses are immune to its stun.
 
 use crate::{
-    contracts::prepared_v2::Effect,
+    contracts::prepared_v2::{ActionId, Effect},
     core::{
         fight::{
-            melee::PhysicalOutcome, Action, AuraRef, Fight, ModId, ModKind, Outcome, Side, SpellId,
-            SpellResult, OUTCOME_LANDED, PRIORITY_LOW,
+            healing::Healing, melee::PhysicalOutcome, Action, AuraRef, Fight, ModId, ModKind,
+            Outcome, Side, SpellId, SpellResult, OUTCOME_LANDED, PRIORITY_LOW,
         },
         time::STARTING_CD_TIME,
     },
@@ -25,6 +28,9 @@ pub(crate) enum SealKind {
     Righteousness,
     Crusader,
     Fury,
+    Light,
+    Wisdom,
+    Justice,
 }
 
 impl SealKind {
@@ -35,6 +41,9 @@ impl SealKind {
             SealKind::Righteousness => "seal_of_righteousness",
             SealKind::Crusader => "seal_of_the_crusader",
             SealKind::Fury => "seal_of_fury",
+            SealKind::Light => "seal_of_light",
+            SealKind::Wisdom => "seal_of_wisdom",
+            SealKind::Justice => "seal_of_justice",
         }
     }
 }
@@ -49,7 +58,8 @@ pub(crate) struct Seal {
     pub(crate) judgement: SpellId,
     /// The damage spell the seal fires.
     pub(crate) proc_spell: SpellId,
-    /// Seal of Righteousness: the per-hit value per hundred of swing speed.
+    /// Seal of Righteousness: the per-hit value per hundred of swing speed; Seal of Fury: the
+    /// proc's damage; Seal of Light: the proc's heal.
     pub(crate) per_hit_value: f64,
     /// Seal of Command: the rank's own proc cooldown.
     pub(crate) icd_timer: usize,
@@ -121,6 +131,17 @@ pub(crate) struct Seals {
     pub(crate) fury_improved: Option<ImprovedFury>,
     /// Seal of Fury hits waiting their batch window: the spell, the result and the seal.
     pub(crate) fury_pending: Vec<Option<(SpellId, SpellResult, usize)>>,
+    /// Seal of Light's proc manager and its heal's multipliers.
+    pub(crate) light: Option<LightProc>,
+    /// Seal of Wisdom's ranks, by seal, with their restore's mana metrics.
+    pub(crate) wisdom: Vec<(usize, usize)>,
+}
+
+/// Seal of Light's 15 PPM manager, each spell's chance, and the heal's multipliers.
+#[derive(Clone, Debug)]
+pub(crate) struct LightProc {
+    pub(crate) chances: Vec<Option<f64>>,
+    pub(crate) healing: Healing,
 }
 
 /// The seals' values that follow the main hand weapon.
@@ -168,8 +189,8 @@ pub(crate) fn on_item_swap(fight: &mut Fight<PaladinAgent>, worn: bool) {
 }
 
 /// The position of a seal rank among every bound seal, in the order [`bind`] builds them:
-/// Seal of Command's ranks, then Seal of Righteousness's, Seal of the Crusader's and Seal of
-/// Fury's.
+/// Seal of Command's ranks, then Seal of Righteousness's, Seal of the Crusader's, Seal of
+/// Fury's, Seal of Light's, Seal of Wisdom's and Seal of Justice's.
 pub(crate) fn seal_index(effects: &[Effect], seal_spell_id: i32) -> Option<usize> {
     let mut index = 0;
     for effect in effects {
@@ -210,6 +231,38 @@ pub(crate) fn seal_index(effects: &[Effect], seal_spell_id: i32) -> Option<usize
                 }
                 index += 1;
             }
+        }
+    }
+    for effect in effects {
+        if let Effect::SealOfLight { ranks, .. } = effect {
+            for rank in ranks {
+                if rank.seal_spell_id == seal_spell_id {
+                    return Some(index);
+                }
+                index += 1;
+            }
+        }
+    }
+    for effect in effects {
+        if let Effect::SealOfWisdom { ranks } = effect {
+            for rank in ranks {
+                if rank.seal_spell_id == seal_spell_id {
+                    return Some(index);
+                }
+                index += 1;
+            }
+        }
+    }
+    for effect in effects {
+        if let Effect::SealOfJustice {
+            seal_spell_id: justice,
+            ..
+        } = effect
+        {
+            if *justice == seal_spell_id {
+                return Some(index);
+            }
+            index += 1;
         }
     }
     None
@@ -370,6 +423,90 @@ pub(crate) fn bind(fight: &mut Fight<PaladinAgent>, effects: &[Effect]) -> Resul
             }
         }
     }
+    for effect in effects {
+        if let Effect::SealOfLight {
+            ranks,
+            chances,
+            healing_dealt_multiplier,
+            healing_taken_multiplier,
+            table_healing_dealt_multiplier,
+        } = effect
+        {
+            for rank in ranks {
+                seals.seals.push(Seal {
+                    kind: SealKind::Light,
+                    spell: find(fight, rank.seal_spell_id, 0)?,
+                    aura: fight.player_aura(&rank.aura)?,
+                    judgement: find(fight, rank.judgement_spell_id, 0)?,
+                    proc_spell: find(fight, rank.proc_spell_id, 0)?,
+                    per_hit_value: rank.heal,
+                    icd_timer: 0,
+                    crusader: None,
+                    fury: None,
+                });
+            }
+            let mut by_spell = vec![None; fight.spells.len()];
+            for chance in chances {
+                if let Some(slot) = by_spell.get_mut(chance.spell) {
+                    *slot = Some(chance.chance);
+                }
+            }
+            seals.light = Some(LightProc {
+                chances: by_spell,
+                healing: Healing {
+                    dealt_multiplier: *healing_dealt_multiplier,
+                    taken_multiplier: *healing_taken_multiplier,
+                    table_multiplier: *table_healing_dealt_multiplier,
+                    healing_power: 0.0,
+                },
+            });
+        }
+    }
+    for effect in effects {
+        if let Effect::SealOfWisdom { ranks } = effect {
+            for rank in ranks {
+                let metrics = fight.new_mana_metrics(ActionId {
+                    spell_id: rank.proc_spell_id,
+                    ..ActionId::default()
+                });
+                seals.wisdom.push((seals.seals.len(), metrics));
+                seals.seals.push(Seal {
+                    kind: SealKind::Wisdom,
+                    spell: find(fight, rank.seal_spell_id, 0)?,
+                    aura: fight.player_aura(&rank.aura)?,
+                    judgement: find(fight, rank.judgement_spell_id, 0)?,
+                    proc_spell: find(fight, rank.proc_spell_id, 0)?,
+                    per_hit_value: rank.mana,
+                    icd_timer: 0,
+                    crusader: None,
+                    fury: None,
+                });
+            }
+        }
+    }
+    for effect in effects {
+        if let Effect::SealOfJustice {
+            seal_spell_id,
+            aura,
+            judgement_spell_id,
+            ..
+        } = effect
+        {
+            let judgement = find(fight, *judgement_spell_id, 0)?;
+            seals.seals.push(Seal {
+                kind: SealKind::Justice,
+                spell: find(fight, *seal_spell_id, 0)?,
+                aura: fight.player_aura(aura)?,
+                judgement,
+                // The seal fires nothing; its judgement stands in.
+                proc_spell: judgement,
+                per_hit_value: 0.0,
+                icd_timer: 0,
+                crusader: None,
+                fury: None,
+            });
+        }
+    }
     Ok(seals)
 }
 
@@ -425,21 +562,33 @@ pub(crate) fn crusader_toggle(fight: &mut Fight<PaladinAgent>, seal: usize, acti
 }
 
 /// The seal aura's proc trigger: landed white hits that are not procs, handled a batch
-/// window later. Seal of the Crusader has none.
+/// window later. Seal of the Crusader has none; Seal of Light hears every melee hit that is no
+/// proc and rolls its manager first.
 pub(crate) fn on_spell_hit_dealt(
     fight: &mut Fight<PaladinAgent>,
     aura: AuraRef,
     spell: SpellId,
     result: &SpellResult,
 ) {
-    if fight
+    let kind = fight
         .agent
         .seals
         .seals
         .iter()
-        .any(|seal| seal.aura == aura && seal.kind == SealKind::Crusader)
-    {
-        return;
+        .find(|seal| seal.aura == aura)
+        .map(|seal| seal.kind);
+    match kind {
+        Some(SealKind::Crusader | SealKind::Justice) => return,
+        Some(SealKind::Light) => return light_trigger(fight, aura, spell, result),
+        Some(SealKind::Wisdom) => {
+            // Go's trigger hears every landed melee hit that is no proc.
+            let state = &fight.spells[spell];
+            if !state.flags.proc && state.melee_proc && result.outcome & OUTCOME_LANDED != 0 {
+                fight.schedule_delayed_proc(aura, spell, *result);
+            }
+            return;
+        }
+        _ => {}
     }
     let state = &fight.spells[spell];
     if state.flags.proc || !state.white_hit || result.outcome & OUTCOME_LANDED == 0 {
@@ -457,8 +606,70 @@ pub(crate) fn on_delayed_proc(fight: &mut Fight<PaladinAgent>, seal: usize, targ
             let spell = fight.agent.seals.seals[seal].proc_spell;
             fight.cast(spell, target);
         }
-        SealKind::Crusader => unreachable!("Seal of the Crusader has no proc"),
+        // Go `procSpell.Cast(sim, &paladin.Unit)`.
+        SealKind::Light | SealKind::Wisdom => {
+            let spell = fight.agent.seals.seals[seal].proc_spell;
+            fight.cast(spell, Side::Player);
+        }
+        SealKind::Crusader | SealKind::Justice => {
+            unreachable!("Seal of the Crusader and Seal of Justice have no proc")
+        }
     }
+}
+
+/// Seal of Light's trigger, Go `AttachProcTriggerCallback` with the manager: a landed hit of
+/// a spell the manager hears (melee, no proc), its chance rolled under the seal's label, then
+/// the handler a batch window later.
+fn light_trigger(
+    fight: &mut Fight<PaladinAgent>,
+    aura: AuraRef,
+    spell: SpellId,
+    result: &SpellResult,
+) {
+    if result.outcome & OUTCOME_LANDED == 0 {
+        return;
+    }
+    let Some(chance) = fight
+        .agent
+        .seals
+        .light
+        .as_ref()
+        .and_then(|light| light.chances.get(spell).copied().flatten())
+    else {
+        return;
+    };
+    let label = fight.aura(aura).label.clone();
+    if !fight.proc(chance, &label) {
+        return;
+    }
+    fight.schedule_delayed_proc(aura, spell, *result);
+}
+
+/// Seal of Light's heal, Go `CalcAndDealHealing(heal, OutcomeAlwaysHit)` on the paladin.
+pub(crate) fn light_proc(fight: &mut Fight<PaladinAgent>, spell: SpellId, seal: usize) {
+    let heal = fight.agent.seals.seals[seal].per_hit_value;
+    let mut healing = fight
+        .agent
+        .seals
+        .light
+        .as_ref()
+        .expect("Seal of Light is bound")
+        .healing;
+    healing.healing_power = fight.player.powers.healing_power;
+    fight.calc_and_deal_self_healing(spell, heal, healing);
+}
+
+/// Seal of Wisdom's restore, Go `AddMana(mana, manaMetrics)` on the paladin.
+pub(crate) fn wisdom_proc(fight: &mut Fight<PaladinAgent>, seal: usize) {
+    let (_, metrics) = *fight
+        .agent
+        .seals
+        .wisdom
+        .iter()
+        .find(|(rank, _)| *rank == seal)
+        .expect("Seal of Wisdom is bound");
+    let mana = fight.agent.seals.seals[seal].per_hit_value;
+    fight.add_mana(mana, metrics);
 }
 
 /// Seal of Command's `tryProc`: the rank's cooldown, then the proc manager's roll.

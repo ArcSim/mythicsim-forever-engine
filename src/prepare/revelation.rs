@@ -14,7 +14,7 @@ use super::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger};
 use super::consumable_effects::proc_trigger_spells;
 use super::dbcenums;
 use super::env::Environment;
-use super::sim::{AuraCallback, AuraConfig, EventCallbacks, Sim, SECOND};
+use super::sim::{AuraCallback, AuraConfig, EventCallbacks, Rules, Sim, SECOND};
 use super::spell::{DefenseType, ProcMask, Spell, SpellFlag};
 use super::spelldata::{store, ClassFlags};
 
@@ -32,9 +32,21 @@ const BUFF_AURA: &str = "Revelation";
 
 /// Go `revelationBuffs`: each class's buff, client 1.60.1.70425, by its spell and the class mask
 /// it names. Warriors and rogues have none.
-fn class_buff(class: &str) -> Option<(i32, [u32; 4])> {
+///
+/// Client 1.60.1.70630 adds bit 32768 of the second mask word to the Mage buff (SpellEffect
+/// 1251976 of 1248808), which names Arcane Barrage and Arcane Wrath; Forever's rules follow it and
+/// the Go reference keeps 70425's mask.
+fn class_buff(class: &str, rules: Rules) -> Option<(i32, [u32; 4])> {
     Some(match class {
-        "ClassMage" => (1248808, [547494642, 0, 0, 8]),
+        "ClassMage" => (
+            1248808,
+            [
+                547494642,
+                if rules == Rules::Forever { 32768 } else { 0 },
+                0,
+                8,
+            ],
+        ),
         "ClassPriest" => (1323377, [161758864, 8486934, 128, 0]),
         "ClassWarlock" => (1323392, [541161, 8650816, 0, 0]),
         "ClassDruid" => (1323400, [4194341, 2, 0, 0]),
@@ -58,7 +70,7 @@ fn listener() -> ProcTrigger {
 pub(crate) fn apply_revelation(env: &mut Environment) {
     let unit = env.player;
     let class = env.sim.character(unit).class.clone();
-    let Some((buff_spell, _)) = class_buff(&class) else {
+    let Some((buff_spell, _)) = class_buff(&class, env.sim.rules) else {
         return;
     };
     let noop: AuraCallback = Rc::new(|_: &mut Sim, _| {});
@@ -146,7 +158,7 @@ pub(crate) fn revelation_effect(
     let ticks = env.sim.get_aura(unit, TICKS_TRIGGER_AURA)?;
     let buff = env.sim.get_aura(unit, BUFF_AURA)?;
     let class = &env.sim.character(unit).class;
-    let (_, mask) = class_buff(class)?;
+    let (_, mask) = class_buff(class, env.sim.rules)?;
     let mask = ClassFlags {
         family: super::resolve_proc::class_spell_family(class).unwrap_or(0),
         mask,
@@ -186,4 +198,25 @@ pub(crate) fn revelation_effect(
         "chance_at_no_crit": CHANCE_AT_NO_CRIT,
         "delay_ns": super::common_effects::SPELL_BATCH_WINDOW,
     }))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Client 1.60.1.70630 adds 32768 of the second mask word to the Mage buff under Forever's
+    /// rules; every other class, and the Go reference, keep the 70425 masks.
+    #[test]
+    fn the_mage_buff_names_the_second_word_bit_only_under_forever() {
+        let mask = |class, rules| class_buff(class, rules).unwrap().1;
+        assert_eq!(mask("ClassMage", Rules::Forever)[1], 32768);
+        assert_eq!(mask("ClassMage", Rules::GoReference)[1], 0);
+        assert_eq!(
+            mask("ClassMage", Rules::Forever)[0],
+            mask("ClassMage", Rules::GoReference)[0]
+        );
+        for class in ["ClassPriest", "ClassWarlock", "ClassPaladin"] {
+            assert_eq!(mask(class, Rules::Forever), mask(class, Rules::GoReference));
+        }
+    }
 }

@@ -1083,3 +1083,43 @@ pub(crate) fn pet_agent_labels(prepared: &PreparedV2) -> Vec<String> {
     pets.sort_by_key(|(index, _)| *index);
     pets.into_iter().map(|(_, label)| label).collect()
 }
+
+/// Whether each pet [`pet_agent_auras`] lists has a mana bar, in its order.
+pub(crate) fn pet_agent_mana_bars(prepared: &PreparedV2) -> Vec<bool> {
+    let mut pets: Vec<(i32, bool)> = prepared
+        .pets
+        .iter()
+        .map(|pet| (pet.index, pet.mana.max > 0.0))
+        .collect();
+    for effect in &prepared.effects {
+        if let Effect::InertPet {
+            unit_index,
+            mana_bar,
+            ..
+        } = effect
+        {
+            pets.push((*unit_index, *mana_bar));
+        }
+    }
+    pets.sort_by_key(|(index, _)| *index);
+    pets.into_iter().map(|(_, mana_bar)| mana_bar).collect()
+}
+
+/// The full mana each inert pet [`pet_agent_auras`] lists states, in its order; `None` for a
+/// simulated pet or one without the value.
+pub(crate) fn pet_agent_max_mana(prepared: &PreparedV2) -> Vec<Option<f64>> {
+    let mut pets: Vec<(i32, Option<f64>)> =
+        prepared.pets.iter().map(|pet| (pet.index, None)).collect();
+    for effect in &prepared.effects {
+        if let Effect::InertPet {
+            unit_index,
+            max_mana,
+            ..
+        } = effect
+        {
+            pets.push((*unit_index, *max_mana));
+        }
+    }
+    pets.sort_by_key(|(index, _)| *index);
+    pets.into_iter().map(|(_, max)| max).collect()
+}

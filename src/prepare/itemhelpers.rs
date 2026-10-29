@@ -42,7 +42,7 @@ pub(crate) fn create_weapon_proc_trigger(
     }
     let unit = env.player;
     let dpm = dynamic_legacy_proc_for_weapon(&env.sim, unit, config.item_id, config.ppm, 0.0);
-    Some(env.sim.make_proc_trigger_aura(
+    let aura = env.sim.make_proc_trigger_aura(
         unit,
         &ProcTrigger {
             name: format!("{} Proc", config.name),
@@ -54,7 +54,10 @@ pub(crate) fn create_weapon_proc_trigger(
             trigger_immediately: config.trigger_immediately,
             ..ProcTrigger::default()
         },
-    ))
+    );
+    // Go `ItemSwap.RegisterProc`: the trigger is up while a slot holds the weapon.
+    env.sim.register_item_proc(unit, config.item_id, aura);
+    Some(aura)
 }
 
 /// Go `WeaponProcDamage`.

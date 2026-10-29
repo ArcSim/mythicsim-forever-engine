@@ -444,6 +444,7 @@ impl Shaman {
                     sim.unit_mut(unit).pseudo_stats.threat_multiplier /= threat;
                 }),
             );
+            sim.set_state(self.rockbiter_swap_threat, threat);
         }
         // The item swap's reset runs this with the pull's weapons, so the aura starts each fight
         // as they say.

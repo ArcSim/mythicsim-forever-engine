@@ -17,11 +17,13 @@ use super::{
         bloodthirst::{self, Bloodthirst},
         challenging_shout,
         charge::{self, Charge},
+        concussion_blow,
         death_wish::{self, DeathWish},
-        demoralizing_shout,
+        demoralizing_shout, disarm,
         execute::{self, Execute},
         hamstring,
         heroic_strike::{self, Queue, Strike},
+        intercept::{self, Intercept},
         intimidating_shout, mortal_strike, overpower,
         rend::{self, Rend},
         retaliation::{self, Retaliation},
@@ -61,6 +63,14 @@ pub(crate) enum WarriorSpell {
     WhirlwindOffHand,
     Execute,
     Hamstring,
+    Pummel,
+    ShieldBash,
+    MockingBlow,
+    Disarm,
+    /// victory_rush.go: castable only while Victorious is up.
+    VictoryRush,
+    /// intercept.go: the cast at range that runs to the target.
+    Intercept,
     Bloodrage,
     BerserkerRage,
     /// charge.go: the cast before the pull that runs to the target.
@@ -101,6 +111,8 @@ pub(crate) enum WarriorSpell {
     Taunt,
     /// intimidating_shout.go: an always hit with no damage on the target.
     IntimidatingShout,
+    /// talents_protection.go: a special hit with no damage on the target, refunded on a miss.
+    ConcussionBlow,
     Retaliation,
     RetaliationHit,
     SweepingStrikes,
@@ -123,6 +135,8 @@ pub(crate) enum WarriorAura {
     BerserkerRage,
     /// charge.go's dash aura, which triples the movement speed.
     Dash,
+    /// intercept.go's dash aura, which also lands the stun's damage at its end.
+    InterceptDash,
     /// A strike's queue aura, by strike index.
     Queue(usize),
     BloodthrillTrigger,
@@ -157,6 +171,12 @@ pub(crate) struct WarriorAgent {
     whirlwind: Option<Whirlwind>,
     execute: Option<Execute>,
     hamstring: f64,
+    pummel: f64,
+    shield_bash: f64,
+    mocking_blow: f64,
+    disarm: Option<AuraRef>,
+    victorious: Option<AuraRef>,
+    intercept: Option<Intercept>,
     improved_hamstring: Option<ImprovedHamstring>,
     bloodrage: Option<Bloodrage>,
     berserker_rage: Option<BerserkerRage>,
@@ -276,6 +296,12 @@ impl WarriorAgent {
             "whirlwind_off_hand" if has("whirlwind") => Some(WarriorSpell::WhirlwindOffHand),
             "execute" if has("execute") => Some(WarriorSpell::Execute),
             "hamstring" if has("hamstring") => Some(WarriorSpell::Hamstring),
+            "pummel" if has("pummel") => Some(WarriorSpell::Pummel),
+            "shield_bash" if has("shield_bash") => Some(WarriorSpell::ShieldBash),
+            "mocking_blow" if has("mocking_blow") => Some(WarriorSpell::MockingBlow),
+            "disarm" if has("warrior_disarm") => Some(WarriorSpell::Disarm),
+            "victory_rush" if has("victory_rush") => Some(WarriorSpell::VictoryRush),
+            "intercept" if has("warrior_intercept") => Some(WarriorSpell::Intercept),
             "berserker_rage" if has("berserker_rage") => Some(WarriorSpell::BerserkerRage),
             "charge" if has("warrior_charge") => Some(WarriorSpell::Charge),
             "death_wish" if has("death_wish") => Some(WarriorSpell::DeathWish),
@@ -304,6 +330,7 @@ impl WarriorAgent {
             "intimidating_shout" if has("intimidating_shout") => {
                 Some(WarriorSpell::IntimidatingShout)
             }
+            "concussion_blow" if has("concussion_blow") => Some(WarriorSpell::ConcussionBlow),
             "retaliation" if has("retaliation") => Some(WarriorSpell::Retaliation),
             "retaliation_hit" if has("retaliation") => Some(WarriorSpell::RetaliationHit),
             "sweeping_strikes" if has("sweeping_strikes") => Some(WarriorSpell::SweepingStrikes),
@@ -405,6 +432,9 @@ impl WarriorAgent {
                     auras.push((aura.clone(), WarriorAura::BerserkerRage))
                 }
                 Effect::WarriorCharge { aura, .. } => auras.push((aura.clone(), WarriorAura::Dash)),
+                Effect::WarriorIntercept { aura, .. } => {
+                    auras.push((aura.clone(), WarriorAura::InterceptDash))
+                }
                 Effect::LastStand { aura, .. } => {
                     auras.push((aura.clone(), WarriorAura::LastStand))
                 }
@@ -875,6 +905,45 @@ impl WarriorAgent {
                     })
                 }
                 Effect::Hamstring { base_damage, .. } => fight.agent.hamstring = *base_damage,
+                Effect::Pummel { base_damage, .. } => fight.agent.pummel = *base_damage,
+                Effect::ShieldBash {
+                    base_damage,
+                    can_block,
+                    ..
+                } => {
+                    fight.agent.shield_bash = *base_damage;
+                    fight.agent.can_block = *can_block;
+                }
+                Effect::MockingBlow { base_damage, .. } => fight.agent.mocking_blow = *base_damage,
+                Effect::WarriorDisarm { aura, .. } => {
+                    let index = fight.trackers[Side::Target.index()]
+                        .find(aura)
+                        .ok_or_else(|| format!("target aura {aura} is not registered"))?;
+                    fight.agent.disarm = Some(AuraRef {
+                        side: Side::Target,
+                        index,
+                    });
+                }
+                Effect::VictoryRush { aura, .. } => {
+                    fight.agent.victorious = Some(fight.player_aura(aura)?);
+                }
+                Effect::WarriorIntercept {
+                    aura,
+                    speed_multiplier,
+                    overshoot,
+                    min_range,
+                    damage,
+                    ..
+                } => {
+                    fight.agent.intercept = Some(Intercept {
+                        aura: fight.player_aura(aura)?,
+                        speed_multiplier: *speed_multiplier,
+                        overshoot: *overshoot,
+                        min_range: *min_range,
+                        damage: *damage,
+                        cast: None,
+                    });
+                }
                 Effect::Bloodrage {
                     spell_id,
                     instant_rage,
@@ -1087,6 +1156,7 @@ impl WarriorAgent {
                 Effect::ShieldWall { can_block, .. }
                 | Effect::ShieldBlock { can_block, .. }
                 | Effect::ShieldSlam { can_block, .. }
+                | Effect::ShieldBash { can_block, .. }
                 | Effect::RageOnAvoid { can_block, .. } => Some(*can_block),
                 _ => None,
             })
@@ -1234,6 +1304,34 @@ impl Agent for WarriorAgent {
                 let base = fight.agent.hamstring;
                 hamstring::apply(fight, spell, target, base);
             }
+            // pummel.go: Hamstring's strike, with Pummel's base.
+            WarriorSpell::Pummel => {
+                let base = fight.agent.pummel;
+                hamstring::apply(fight, spell, target, base);
+            }
+            // shield_bash.go and mocking_blow.go: Pummel's strike.
+            WarriorSpell::ShieldBash => {
+                let base = fight.agent.shield_bash;
+                hamstring::apply(fight, spell, target, base);
+            }
+            WarriorSpell::MockingBlow => {
+                let base = fight.agent.mocking_blow;
+                hamstring::apply(fight, spell, target, base);
+            }
+            WarriorSpell::Disarm => {
+                let aura = fight.agent.disarm.expect("Disarm is bound");
+                disarm::apply(fight, spell, target, aura);
+            }
+            WarriorSpell::VictoryRush => {
+                unreachable!("Victorious never comes up, so Victory Rush is never cast")
+            }
+            WarriorSpell::Intercept => {
+                let mut params = fight.agent.intercept.expect("Intercept is bound");
+                intercept::apply(fight, spell, target, &mut params);
+                fight.agent.intercept = Some(params);
+                fight.activate_aura(params.aura);
+                intercept::run(fight, params);
+            }
             WarriorSpell::Bloodrage => {
                 let params = fight.agent.bloodrage.expect("Bloodrage is bound");
                 bloodrage::apply(fight, params);
@@ -1340,6 +1438,7 @@ impl Agent for WarriorAgent {
             WarriorSpell::ChallengingShout => challenging_shout::apply(fight, spell),
             WarriorSpell::Taunt => taunt::apply(fight, spell, target),
             WarriorSpell::IntimidatingShout => intimidating_shout::apply(fight, spell, target),
+            WarriorSpell::ConcussionBlow => concussion_blow::apply(fight, spell, target),
             WarriorSpell::Retaliation => {
                 let params = fight.agent.retaliation.expect("Retaliation is bound");
                 retaliation::apply(fight, params);
@@ -1388,9 +1487,24 @@ impl Agent for WarriorAgent {
         let stance = fight.agent.stance;
         match behavior {
             // whirlwind.go, recklessness.go and berserker_rage.go: Berserker Stance.
-            WarriorSpell::Whirlwind | WarriorSpell::Recklessness | WarriorSpell::BerserkerRage => {
-                stance == Stance::Berserker
+            WarriorSpell::Whirlwind
+            | WarriorSpell::Recklessness
+            | WarriorSpell::BerserkerRage
+            | WarriorSpell::Pummel
+            | WarriorSpell::Intercept => stance == Stance::Berserker,
+            // shield_bash.go: a shield, in Defensive or Battle Stance.
+            WarriorSpell::ShieldBash => {
+                fight.agent.can_block && matches!(stance, Stance::Defensive | Stance::Battle)
             }
+            // mocking_blow.go: Battle Stance.
+            WarriorSpell::MockingBlow => stance == Stance::Battle,
+            // disarm.go: Defensive Stance.
+            WarriorSpell::Disarm => stance == Stance::Defensive,
+            // victory_rush.go: Victorious up.
+            WarriorSpell::VictoryRush => fight
+                .agent
+                .victorious
+                .is_some_and(|victorious| fight.aura(victorious).active),
             // execute.go: Berserker or Battle Stance, in the execute phase.
             WarriorSpell::Execute => {
                 matches!(stance, Stance::Berserker | Stance::Battle) && fight.is_execute_phase_20()
@@ -1479,6 +1593,7 @@ impl Agent for WarriorAgent {
             | WarriorSpell::Recklessness
             | WarriorSpell::BerserkerRage
             | WarriorSpell::Hamstring
+            | WarriorSpell::Pummel
             | WarriorSpell::StanceLocked(_)
             | WarriorSpell::ShieldWall
             | WarriorSpell::ShieldBlock
@@ -1670,6 +1785,9 @@ impl Agent for WarriorAgent {
         if let (Side::Player, Some(params)) = (side, fight.agent.charge) {
             charge::on_movement(fight, params, kind);
         }
+        if let (Side::Player, Some(params)) = (side, fight.agent.intercept) {
+            intercept::on_movement(fight, params, kind);
+        }
     }
 
     fn reset(fight: &mut Fight<Self>) {
@@ -1701,6 +1819,9 @@ impl Agent for WarriorAgent {
             }
             WarriorAura::BerserkerRage => berserker_rage::on_gain(fight),
             WarriorAura::Dash => charge::on_gain(fight, fight.agent.charge.expect("bound")),
+            WarriorAura::InterceptDash => {
+                intercept::on_gain(fight, fight.agent.intercept.expect("bound"))
+            }
             WarriorAura::Enrage => {
                 let params = fight.agent.enrage.expect("Enrage is bound");
                 fight.activate_mod(params.damage_mod);
@@ -1736,6 +1857,9 @@ impl Agent for WarriorAgent {
             }
             WarriorAura::BerserkerRage => berserker_rage::on_expire(fight),
             WarriorAura::Dash => charge::on_expire(fight, fight.agent.charge.expect("bound")),
+            WarriorAura::InterceptDash => {
+                intercept::on_expire(fight, fight.agent.intercept.expect("bound"))
+            }
             WarriorAura::Queue(_) => {
                 fight.agent.queue.current = None;
                 fight.versions.class += 1;

@@ -418,11 +418,33 @@ pub(crate) fn use_item_effect(
             "period_ns": SECOND, "metrics_spell_id": 15604, "min_deficit": 630.0,
         })]);
     }
+    // A healer's on-use spell mods under Forever's rules.
+    if let Some(effect) = super::healer_gear::use_item_effect(env, spell, item, unrepresented) {
+        return Some(if effect.is_null() {
+            Vec::new()
+        } else {
+            vec![effect]
+        });
+    }
     // A use effect a class file registers itself.
     if let Some(effect) = env.agent.class_item_use_effect(env, spell, item) {
         return Some(vec![effect]);
     }
+    // Forever's rules: a heal over time on use (Orb of Soran'ruk) has no runtime behavior. Go
+    // files it as a survival cooldown, which the automatic use never casts without timings or a
+    // defensive health threshold; the gate refuses a rotation or a threshold that reaches it.
+    if env.sim.rules == super::sim::Rules::Forever && periodic_heal_on_use(item) {
+        return Some(Vec::new());
+    }
     Some(energize_on_use_effects(env, spell, item, unrepresented))
+}
+
+/// Whether the item's one use effect is a client heal over time on the wearer.
+fn periodic_heal_on_use(item: i32) -> bool {
+    only_on_use_effect(item).is_some_and(|effect| {
+        let heal = find(effect.i32("buff_id")).proc_heal_effect();
+        !heal.is_nil() && heal.aura == dbcenums::A_PERIODIC_HEAL
+    })
 }
 
 /// The default case of the item loop: shared.NewSpellDataEnergizeOnUse: an item use spell that
@@ -445,9 +467,21 @@ fn energize_on_use_effects(
                 }
                 let row = find(item_effect.i32("buff_id"));
                 let effect = row.proc_energize_effect();
-                if effect.is_nil() || effect.misc != dbcenums::POWER_MANA {
-                    continue;
-                }
+                // Go `energizedBarOf`: mana, rage or energy, on a character with that bar.
+                let unit = env.sim.unit(env.player);
+                let power = match effect.misc {
+                    _ if effect.is_nil() => continue,
+                    dbcenums::POWER_MANA => None,
+                    dbcenums::POWER_RAGE if unit.rage_bar.enabled => Some("rage"),
+                    dbcenums::POWER_ENERGY if unit.energy_bar.enabled => Some("energy"),
+                    _ => continue,
+                };
+                // Rage is stated in tenths.
+                let scale = if dbcenums::power_in_tenths(effect.misc) {
+                    0.1
+                } else {
+                    1.0
+                };
                 let periodic = effect.aura == dbcenums::A_PERIODIC_ENERGIZE;
                 let mut ticks = 1.0;
                 if periodic {
@@ -461,11 +495,14 @@ fn energize_on_use_effects(
                 found = true;
                 let mut energize = json!({
                     "kind": "energize_on_use", "item_id": item, "spell_id": row.id,
-                    "average": effect.average(level), "variance": effect.variance,
-                    "whole": effect.max(level) * ticks,
+                    "average": effect.average(level) * scale, "variance": effect.variance,
+                    "whole": effect.max(level) * ticks * scale,
                 });
                 if periodic {
                     energize["periodic"] = json!(true);
+                }
+                if let Some(power) = power {
+                    energize["power"] = json!(power);
                 }
                 effects.push(energize);
             }
@@ -1053,7 +1090,12 @@ pub(crate) fn melee_item_listeners(env: &Environment) -> Vec<Value> {
 /// takes: Go literal triggers in classic items (Essence of the Pure Flame's damage shield, The
 /// Lion Horn of Stormwind), and Uther's Strength and the chest absorption enchants, whose trigger
 /// rows spelldata decodes.
-const HIT_TAKEN_ITEM_PROCS: [(&str, i32, i32); 10] = [
+///
+/// Beyond the exporter's list, Deathbone Guardian's three piece Deathbone Surge
+/// (item_sets_classic.go `setStatProc`): a 15% chance on the melee hits the wearer takes, so
+/// without a tank it never rolls. A tank's is a struck stat proc under Forever's rules and stays
+/// refused as a reaction to the target's swings under Go's.
+const HIT_TAKEN_ITEM_PROCS: [(&str, i32, i32); 11] = [
     ("Essence of the Pure Flame", 0, 0),
     ("Force Reactive Disk", 0, 0),
     ("Naglering", 0, 0),
@@ -1064,6 +1106,7 @@ const HIT_TAKEN_ITEM_PROCS: [(&str, i32, i32); 10] = [
     ("Enchant Chest - Minor Absorption", 7445, 7423),
     ("Enchant Chest - Lesser Absorption", 7446, 7447),
     ("Enchant Chest - Absorption", 1249072, 1249073),
+    ("Deathbone Guardian 3P", 0, 0),
 ];
 
 /// main.go `damageShieldItems`: the damage shields of common/classic/items_trinkets.go and
@@ -1151,6 +1194,33 @@ pub(crate) fn hit_taken_item_listeners(
             match lion_horn_proc(env, aura) {
                 Some(effect) => effects.push(effect),
                 None => unrepresented.push(format!("{label}'s proc is not a chance stat proc")),
+            }
+            continue;
+        }
+        // Go setStatProc's Deathbone Surge: each melee swing the wearer takes, landed or not, has
+        // a 15% chance, once a minute (the set aura's cooldown), to give 70 spell power for 10
+        // sec, a spell batch window later. Forever's rules describe it; Go's exporter refuses it.
+        if heard
+            && tanking
+            && label == "Deathbone Guardian 3P"
+            && env.sim.rules == super::sim::Rules::Forever
+        {
+            match aura_named(env, "Deathbone Surge") {
+                Some(proc_aura) if env.sim.aura(aura).icd.is_some() => {
+                    let bonus =
+                        Stats::from_pairs(&[(Stat::SpellDamage, 70.0), (Stat::HealingPower, 70.0)]);
+                    let id = ActionId::spell(1299746);
+                    effects.push(json!({
+                        "kind": "spell_data_stat_proc", "trigger_aura": label,
+                        "aura": env.sim.aura(proc_aura).label,
+                        "trigger_spells": Vec::<usize>::new(),
+                        "callbacks": ["on_spell_hit_taken"], "struck": true, "landed_only": false,
+                        "require_damage": false, "proc_chance": 0.15,
+                        "gain_log": format!("Gained {} from {}.", flat_string(&bonus), action_id_string(&id)),
+                        "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
+                    }));
+                }
+                _ => unrepresented.push(format!("{label}'s proc is not a chance stat proc")),
             }
             continue;
         }
@@ -1330,6 +1400,139 @@ fn spell_data_damage_proc_effects(
         effects.push(exported);
     }
     effects
+}
+
+/// item_sets_classic.go `setMeleeDamageProc` bonuses: (set bonus aura, trigger name, trigger
+/// row, hit spell, Go literal range). Stormshroud Armor's Lightning (2 pieces, client 18979 and
+/// 18980: 10% on a melee hit for 20 nature with a variance of 0.5) and Volcanic Armor's Firebolt
+/// (3 pieces, 9233 and 9057, Go's range doubled from Era).
+const SET_MELEE_DAMAGE_PROCS: [(&str, &str, i32, i32, f64, f64); 2] = [
+    (
+        "Stormshroud Armor 2P",
+        "Lightning",
+        18979,
+        18980,
+        15.0,
+        25.0,
+    ),
+    (
+        "Volcanic Armor 3P",
+        "Firebolt Trigger (Volcanic Armor)",
+        9233,
+        9057,
+        30.0,
+        50.0,
+    ),
+];
+
+/// `setMeleeDamageProc`: a proc trigger on the landed melee hits the wearer deals, none flagged
+/// a proc, at the trigger row's stated chance rolled under the trigger's name; a spell batch
+/// window later the handler casts a magic hit of the Go literal range, which can crit, on the
+/// unit the trigger's hit landed on.
+fn set_melee_damage_proc_effects(env: &Environment, unrepresented: &mut Vec<String>) -> Vec<Value> {
+    let mut effects = Vec::new();
+    for (label, name, trigger_id, spell_id, min, max) in SET_MELEE_DAMAGE_PROCS {
+        let Some(aura) = aura_named(env, label) else {
+            continue;
+        };
+        let a = env.sim.aura(aura);
+        let position = spell_position(env, &ActionId::spell(spell_id));
+        let only_hits_dealt = a.callback_names().iter().all(|callback| {
+            callback == "on_spell_hit_dealt"
+                || matches!(
+                    callback.as_str(),
+                    "on_init" | "on_reset" | "on_done_iteration" | "on_gain" | "on_expire"
+                )
+        });
+        let Some(position) =
+            position.filter(|_| a.dpm.is_none() && a.icd.is_none() && only_hits_dealt)
+        else {
+            unrepresented.push(not_single_target_magic_hit(label));
+            continue;
+        };
+        let listener = ProcTrigger {
+            callback: CallbackMask::ON_SPELL_HIT_DEALT,
+            outcome: HitOutcome::LANDED,
+            proc_mask: ProcMask::MELEE,
+            ..ProcTrigger::default()
+        };
+        effects.push(json!({
+            "kind": "spell_data_damage_proc", "trigger_aura": label,
+            "trigger_spells": proc_trigger_spells(env, &listener),
+            "landed_only": true, "require_damage": false,
+            "proc_chance": super::resolve_proc::stated_chance(must_find(trigger_id)),
+            "spell": position, "average": 0.0, "variance": 0.0, "roll": [min, max],
+            "can_crit": true, "delay_ns": SPELL_BATCH_WINDOW, "rng_label": name,
+        }));
+    }
+    effects
+}
+
+/// buffs/flametongue_totem.go `driveFlametongueTotem` for a character the party's totem reaches
+/// and no class effect describes: the totem's permanent aura is the only member of its exclusive
+/// category, so `FlametongueTotemTrigger` is on all fight. The trigger hears the landed main hand
+/// autos (its extra condition keeps those of the main hand specials it adds, and Windfury
+/// Weapon's strike, which only a Shaman casts) and at once casts `FlametongueTotemAttack`: a
+/// magic Fire hit of the main hand's base damage, which can crit and takes no spell power. A
+/// category another aura shares, as a Windfury Totem's or a Shaman's own totems, can switch the
+/// trigger during the fight and stays unclaimed.
+fn party_flametongue_totem_effect(
+    env: &Environment,
+    unrepresented: &mut Vec<String>,
+) -> Option<Value> {
+    use super::buffs::flametongue::{
+        flametongue_totem_base_damage, FLAMETONGUE_TOTEM_TRIGGER_LABEL,
+    };
+    let player = env.player;
+    let trigger_aura = aura_named(env, FLAMETONGUE_TOTEM_TRIGGER_LABEL)?;
+    let sim = &env.sim;
+    let category = sim
+        .unit(player)
+        .categories
+        .iter()
+        .map(|id| &sim.categories[id.0])
+        .find(|category| category.name == super::buffs::generated::FLAMETONGUE_TOTEM.category)?;
+    let only_party_totem = category.effects.len() == 1
+        && sim.aura(sim.effects[category.effects[0].0].aura).label == "Flametongue Totem";
+    if !only_party_totem || !sim.aura(trigger_aura).active {
+        return None;
+    }
+    let weapon = &sim.character(player).equipment[super::items::slot::MAIN_HAND];
+    let attack = spell_position(env, &ActionId::spell(16389));
+    let mut trigger = proc_trigger(sim, Some(player), must_find(15036), &[]);
+    trigger.proc_mask = ProcMask(trigger.proc_mask.0 & ProcMask::MELEE_MH.0);
+    let names = callback_names(trigger.callback);
+    let certain = trigger.proc_chance == 0.0 || trigger.proc_chance == 1.0;
+    let (Some(attack), true, true, true) = (
+        attack,
+        weapon.swing_speed != 0.0,
+        certain && trigger.dpm.is_none() && trigger.icd == 0,
+        names == ["on_spell_hit_dealt"]
+            && (trigger.outcome == HitOutcome::EMPTY || trigger.outcome == HitOutcome::LANDED),
+    ) else {
+        unrepresented.push(format!(
+            "{FLAMETONGUE_TOTEM_TRIGGER_LABEL} is not a certain hit on landed main hand autos"
+        ));
+        return None;
+    };
+    // The trigger's mask with the main hand specials, which its extra condition narrows to the
+    // autos for anyone but a Shaman's Windfury Weapon.
+    let book = &sim.unit(player).spellbook;
+    let trigger_spells: Vec<usize> = proc_trigger_spells(env, &trigger)
+        .into_iter()
+        .filter(|&position| {
+            sim.spell(book[position])
+                .proc_mask
+                .matches(ProcMask::MELEE_MH_AUTO)
+        })
+        .collect();
+    Some(json!({
+        "kind": "spell_data_damage_proc", "trigger_aura": FLAMETONGUE_TOTEM_TRIGGER_LABEL,
+        "trigger_spells": trigger_spells, "landed_only": trigger.outcome == HitOutcome::LANDED,
+        "require_damage": trigger.require_damage_dealt, "proc_chance": 1.0, "spell": attack,
+        "average": flametongue_totem_base_damage(weapon.swing_speed), "variance": 0.0,
+        "can_crit": true,
+    }))
 }
 
 /// melee_procs.go `spellDataHealProcs`: enchants common/shared/shared_utils.go
@@ -1997,6 +2200,7 @@ fn set_stat_proc_effects(env: &Environment, unrepresented: &mut Vec<String>) -> 
 /// attack procs and the chili.
 pub(crate) fn melee_proc_effects(env: &Environment, unrepresented: &mut Vec<String>) -> Vec<Value> {
     let mut effects = spell_data_damage_proc_effects(env, unrepresented);
+    effects.extend(set_melee_damage_proc_effects(env, unrepresented));
     effects.extend(spell_data_heal_proc_effects(env, unrepresented));
     effects.extend(weapon_enchant_damage_proc_effects(env, unrepresented));
     effects.extend(proc_damage_item_effects(env, unrepresented));
@@ -2029,6 +2233,7 @@ pub(crate) fn melee_proc_effects(env: &Environment, unrepresented: &mut Vec<Stri
         effects.push(chili);
     }
     effects.extend(super::buffs::windfury_totem_effect(env, unrepresented));
+    effects.extend(party_flametongue_totem_effect(env, unrepresented));
     effects
 }
 
@@ -2039,6 +2244,7 @@ pub(crate) fn item_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
     effects.extend(gear_proc_effects(env, unrepresented));
     effects.extend(spell_data_stat_proc_effects(env, unrepresented));
     effects.extend(energy_proc_effects(env, unrepresented));
+    effects.extend(super::healer_gear::export_effects(env, unrepresented));
     effects
 }
 
@@ -2050,6 +2256,43 @@ pub(crate) fn item_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
 /// Warrior's Resolve and the Puncture Armor weapon procs.
 pub(crate) fn gear_proc_effects(env: &Environment, unrepresented: &mut Vec<String>) -> Vec<Value> {
     let mut effects = Vec::new();
+    // Under Forever's rules: Mark of the Champion's bonus against Undead and Demons, when every
+    // target is of one of those types (Go reads each target's own type). Go's melee attack power
+    // reads the bonus's ranged attack power, which the item sets to the same value.
+    let undead_or_demon = env.encounter.targets.iter().all(|&target| {
+        matches!(
+            env.sim.unit(target).mob_type.as_str(),
+            "MobTypeUndead" | "MobTypeDemon"
+        )
+    });
+    for (label, attack_power, spell_damage) in [
+        ("Mark of the Champion (Physical)", 150.0, 0.0),
+        ("Mark of the Champion (Spell)", 0.0, 85.0),
+    ] {
+        if env.sim.rules != super::sim::Rules::Forever || !undead_or_demon {
+            break;
+        }
+        if aura_named(env, label).is_some() {
+            effects.push(json!({
+                "kind": "mob_type_bonus", "aura": label, "attack_power": attack_power,
+                "ranged_attack_power": attack_power, "spell_damage": spell_damage,
+            }));
+        }
+    }
+    // Under Forever's rules (Go's exporter refuses the swap): with an item swap, the item and
+    // enchant speed auras the swap gains and expires, as core/enchant_speed.go attaches them.
+    let swaps = env.sim.item_swap(env.player).is_some();
+    if swaps && env.sim.rules == super::sim::Rules::Forever {
+        for &(aura, [melee, ranged, cast]) in &env.sim.speed_auras {
+            if env.sim.aura(aura).unit != env.player {
+                continue;
+            }
+            effects.push(json!({
+                "kind": "speed_aura", "aura": env.sim.aura(aura).label,
+                "melee_multiplier": melee, "ranged_multiplier": ranged, "cast_multiplier": cast,
+            }));
+        }
+    }
     // item_sets_classic.go Battlegear of Valor 5 piece, Warrior's Resolve: landed melee hits roll
     // a legacy one proc a minute manager under the trigger's name; a batch window later the
     // handler heals Roll(88, 133) and, with a rage bar, gives 10 rage, both Go literals.
@@ -2072,6 +2315,59 @@ pub(crate) fn gear_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
                     "metrics_action_id": json!({"spell_id": 450589}),
                 }));
             }
+        }
+    }
+    // classic items_weapons.go Runeblade of Baron Rivendare, under Forever's rules (Go's exporter
+    // does not run the regeneration): Unholy Aura gives 60 health every 5 seconds while it holds.
+    if let Some(aura) =
+        aura_named(env, "Unholy Aura").filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        effects.push(json!({
+            "kind": "health_regen_aura", "aura": env.sim.aura(aura).label,
+            "period_ns": 5 * super::sim::SECOND, "health": 60.0,
+            "metrics_action_id": json!({"spell_id": 17625}),
+        }));
+    }
+    // warrior items.go Battlegear of Heroism 4 piece, under Forever's rules (Go's exporter leaves
+    // its listener unclaimed): Warrior's Resolve, as Battlegear of Valor's.
+    if let Some(set) = aura_named(env, "Battlegear of Heroism 4P")
+        .filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        match env.sim.aura(set).dpm.as_ref() {
+            None => unrepresented.push("Battlegear of Heroism 4P has no proc manager".to_string()),
+            Some(dpm) => {
+                let rage = if env.sim.unit(env.player).rage_bar.enabled {
+                    10.0
+                } else {
+                    0.0
+                };
+                effects.push(json!({
+                    "kind": "health_rage_proc", "trigger_aura": env.sim.aura(set).label,
+                    "rng_label": "Warrior's Resolve",
+                    "chances": dpm_chances(env, dpm, |spell| {
+                        spell.proc_mask.matches(ProcMask::MELEE) && !spell.flags.matches(SpellFlag::PROC)
+                    }),
+                    "heal_min": 88.0, "heal_max": 133.0, "rage": rage,
+                    "metrics_action_id": json!({"spell_id": 450589}),
+                }));
+            }
+        }
+    }
+    // rogue items.go Darkmantle Armor 4 piece, Rogue Armor Energize, under Forever's rules (Go's
+    // exporter leaves the listener unclaimed): landed white hits roll a legacy one proc a minute
+    // manager under the trigger's name; a batch window later a player with an energy bar gains
+    // 20 energy.
+    if let Some(set) = aura_named(env, "Darkmantle Armor 4P")
+        .filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        match env.sim.aura(set).dpm.as_ref() {
+            None => unrepresented.push("Darkmantle Armor 4P has no proc manager".to_string()),
+            Some(dpm) => effects.push(json!({
+                "kind": "energy_proc", "trigger_aura": env.sim.aura(set).label,
+                "rng_label": "Rogue Armor Energize",
+                "chances": dpm_chances(env, dpm, |spell| !spell.flags.matches(SpellFlag::PROC)),
+                "energy": 20.0, "metrics_action_id": json!({"spell_id": 27787}),
+            })),
         }
     }
     // classic items_trinkets.go Darkmoon Card: Heroism: landed melee hits roll a legacy two procs a
@@ -2164,6 +2460,33 @@ pub(crate) fn energy_proc_effects(
             "energy": 20.0, "metrics_action_id": json!({"spell_id": 27787}),
             "delay_ns": SPELL_BATCH_WINDOW,
         }));
+    }
+    // item_sets_classic.go Stormshroud Armor (3), Revitalize: a set bonus proc trigger on landed
+    // melee hits, none flagged a proc, at the client's 4% (23863) rolled under its name, whose
+    // handler a spell batch window later restores 30 energy (23864). Go attaches it only to a
+    // character with an energy bar.
+    if let Some(aura) = aura_named(env, "Stormshroud Armor 3P") {
+        let listener = ProcTrigger {
+            callback: CallbackMask::ON_SPELL_HIT_DEALT,
+            outcome: HitOutcome::LANDED,
+            proc_mask: ProcMask::MELEE,
+            ..ProcTrigger::default()
+        };
+        let chance = super::resolve_proc::stated_chance(must_find(23863));
+        let chances: Vec<Value> = proc_trigger_spells(env, &listener)
+            .into_iter()
+            .map(|spell| json!({"spell": spell, "chance": chance}))
+            .collect();
+        let a = env.sim.aura(aura);
+        if a.dpm.is_some() || a.icd.is_some() {
+            unrepresented.push("Stormshroud Armor's energize is not a chance proc".to_string());
+        } else {
+            effects.push(json!({
+                "kind": "energize_proc", "trigger_aura": a.label, "rng_label": "Revitalize",
+                "chances": chances, "energy": 30.0,
+                "metrics_action_id": json!({"spell_id": 23864}), "delay_ns": SPELL_BATCH_WINDOW,
+            }));
+        }
     }
     effects
 }

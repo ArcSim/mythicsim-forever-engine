@@ -1206,6 +1206,33 @@ fn only_forever_preparation_refreshes_casting_regen_at_once() {
         json!(true)
     );
     assert!(go["player"].get("move_arrives_at_destination").is_none());
+    assert_eq!(
+        forever["player"]["threat_follows_damage_bonus"],
+        json!(true)
+    );
+    assert!(go["player"].get("threat_follows_damage_bonus").is_none());
+}
+
+/// Go `GetAPLCastSpell`: a rotation that names Raptor Strike untagged, as a spell picker writes
+/// it, presses the queue spell, since the untagged spell has no APL flag. The gate resolves the
+/// cast the way the runtime does, so the rotation is supported, and in melee range the queue
+/// replaces a swing with Raptor Strike.
+#[test]
+fn an_untagged_raptor_strike_presses_its_queue() {
+    let mut value = fixture("survival-hunter-strider-kick-while-moving");
+    value["player"]["rotation"]["prepullActions"] = json!([]);
+    value["player"]["prepull_actions"] = json!(0);
+    value["player"]["rotation"]["priorityList"] =
+        json!([{"action": {"castSpell": {"spellId": {"spellId": 14266}}}}]);
+    assert_eq!(
+        forever_engine::prepared_coverage(&parse(value.clone())),
+        Vec::<String>::new()
+    );
+    let logs = first_fight_log(value);
+    assert!(
+        logs.contains("Casting {SpellID: 14266, Tag: 3}"),
+        "the queue was never pressed:\n{logs}"
+    );
 }
 
 /// The production Marksmanship Hunter's request prepared with `rules`.

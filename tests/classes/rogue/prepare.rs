@@ -93,6 +93,13 @@ fn section<'a>(prepared: &'a Value, name: &str) -> &'a Value {
     }
 }
 
+/// An effect Rust preparation writes where the pinned exporter, frozen since Forever work moved
+/// to Rust, writes none: Nightslayer Armor's eight piece heal on Vanish (`health_on_cast`), which
+/// the runtime checks against Go's simulation instead.
+fn beyond_the_exporter(effect: &Value) -> bool {
+    effect["kind"] == "health_on_cast"
+}
+
 /// What differs from the golden: one line per part.
 fn differences(golden: &Golden, prepared: &Value) -> Vec<String> {
     let mut out = Vec::new();
@@ -108,7 +115,12 @@ fn differences(golden: &Golden, prepared: &Value) -> Vec<String> {
                 }
             }
             Value::Array(items) => {
-                let actual = actual.as_array().expect("a list section");
+                let actual: Vec<&Value> = actual
+                    .as_array()
+                    .expect("a list section")
+                    .iter()
+                    .filter(|item| name != "effects" || !beyond_the_exporter(item))
+                    .collect();
                 if actual.len() != items.len() {
                     out.push(format!(
                         "{name}: {} items in Go, {} in Rust",
@@ -147,7 +159,8 @@ fn every_rogue_case_prepares_as_go_does() {
         let golden: Golden = serde_json::from_slice(&fs::read(entry.path()).unwrap()).unwrap();
         assert_eq!(golden.case, case);
         let request = fs::read(directory().join(format!("{case}.request.json"))).unwrap();
-        match forever_engine::prepare_json(&request, case) {
+        match forever_engine::prepare_json_with(&request, case, forever_engine::Rules::GoReference)
+        {
             Ok(prepared) => {
                 let diffs = differences(&golden, &prepared);
                 if !diffs.is_empty() {

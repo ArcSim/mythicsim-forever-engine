@@ -4,7 +4,10 @@ The application worker runs engines as subprocesses. `tools/route.py` is the one
 command it calls to run a request in Rust: it takes a `RaidSimRequest`, has one Rust process
 prepare it, gate the prepared state with the coverage gate and run it when it is supported, and
 otherwise tells the worker to use Go. A request Rust preparation does not cover is prepared by
-the pinned Go exporter instead, and the decision's `preparation` names the provider. It runs from a bundle that
+the pinned Go exporter instead, and the decision's `preparation` names the provider. With the
+worker's `FOREVER_GO_FALLBACK` off (`0`, `false`, `off` or `no`; the worker's environment passes
+it down) nothing runs Go: Rust preparation's refusal is a `fallback` with its code, and the
+worker fails the request rather than run it in Go. It runs from a bundle that
 [`tools/shadow.py build`](shadow-sims.md#build-a-bundle) makes, so the worker needs
 neither Go nor Cargo, only Python 3.
 
@@ -26,7 +29,7 @@ The command prints one JSON decision and writes it to `NEW_FOLDER/decision.json`
 | `status` | Meaning | Exit status | What the worker does |
 | --- | --- | --- | --- |
 | `rust` | Rust ran the request. `result` names `NEW_FOLDER/result.json`, its `RaidSimResult` in the JSON Go prints, with the rotation line checks MythicSim's Go CLI adds (`sim --rotation-stats`, see [prepared v2](prepared-v2.md)); `identity` is the engine that made it | 0 | Serve the Rust result |
-| `fallback` | The gate refused the input. `refusals` lists each reason with its stable code, and `codes` the distinct codes. No result is written | 0 | Run the request in Go and count the fallback by its codes |
+| `fallback` | The gate refused the input, or with Go off Rust preparation did. `refusals` lists each reason with its stable code, and `codes` the distinct codes. No result is written | 0 | Run the request in Go and count the fallback by its codes; with Go off, fail it with the refusal |
 | `fault` | A step failed. `stage` is `request`, `prepare`, `check` or `rust`, and `error` says what failed; the gate runs in the same process as the simulation, and a `check` fault is an invalid prepared input or an unreadable refusal | 2 | Record a fault; the user can still be served by Go, but a fault is never counted as a fallback |
 
 A fault is anything that is not a decision: an unreadable request, a step that exits with

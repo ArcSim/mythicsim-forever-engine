@@ -41,7 +41,8 @@ fn poison_listener_needs_its_effect() {
     ));
 }
 
-/// Energy and combo point values need the energy bar Go would read them from.
+/// A spell that costs energy needs the energy bar. Energy and combo point values without one
+/// give no value, as Go's do, so they are not refused themselves.
 #[test]
 fn energy_values_need_an_energy_bar() {
     let mut value = combat_json();
@@ -51,9 +52,9 @@ fn energy_values_need_an_energy_bar() {
         .any(|(code, reason)| *code == "class_limit"
             && reason.ends_with("which costs energy the player lacks")));
     let reasons = reasons(value);
-    assert!(reasons
+    assert!(!reasons
         .iter()
-        .any(|reason| reason.ends_with("reads energy or combo points, which the player lacks")));
+        .any(|reason| reason.contains("reads energy or combo points")));
     assert!(reasons
         .iter()
         .any(|reason| reason.ends_with("which costs energy the player lacks")));
@@ -341,4 +342,29 @@ fn a_hand_reads_its_weapon_skill_table() {
         (glance / hit - 1.0).abs() < 0.05,
         "glances keep {glance}, hits {hit}"
     );
+}
+
+/// The game refuses a harmful spell on a friendly unit, so a Rupture line aimed at the player
+/// never casts and the fight runs as it would without it. Go builds the line and panics on the
+/// player's missing Rupture dot, the Subtlety Rogue sim of 25 October 2026 (2990f120), which the
+/// gate used to refuse as a cast on the player.
+#[test]
+fn rupture_aimed_at_the_player_never_casts() {
+    let base = fixture("production-subtlety-rogue");
+    let mut aimed = base.clone();
+    aimed["player"]["rotation"]["priorityList"]
+        .as_array_mut()
+        .unwrap()
+        .insert(
+            0,
+            serde_json::json!({"action": {"castSpell": {
+                "spellId": {"spellId": 11275}, "target": {"type": "Self"}}}}),
+        );
+    let prepared: PreparedV2 = serde_json::from_value(aimed.clone()).unwrap();
+    assert_eq!(prepared_coverage(&prepared), Vec::<String>::new());
+    let reference = combat_result(base, 20);
+    let result = combat_result(aimed, 20);
+    for part in ["raidMetrics", "encounterMetrics"] {
+        assert_eq!(result[part], reference[part], "{part}");
+    }
 }

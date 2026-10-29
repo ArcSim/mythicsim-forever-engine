@@ -41,6 +41,7 @@ pub(super) fn class_effects(
 ) -> Vec<Value> {
     let mut effects = rogue_effects(rogue, env);
     effects.extend(rogue.spec_effects(env, unrepresented));
+    effects.extend(super::items::nightslayer_8_effect(env));
     // `AdditiveEnergyRegenBonus` is only ever raised by `ApplyAdditiveEnergyRegenBonus`, which
     // nothing calls.
     effects

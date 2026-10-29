@@ -3,11 +3,12 @@
 //! Oil (Blizzard's Rogue and Warlock deep dive, 8 October 2026). The imbue is the Create spell's
 //! triggered aura at its highest rank, read from client data: Firestone (23483) adds Fire damage
 //! and spell critical strike chance, Spellstone (1237165) adds damage to the schools in its mask
-//! (Fire and Shadow at the pinned build, mask 36) and cast speed.
+//! (Fire and Shadow at the pinned build, mask 36; Shadow alone under Forever's rules, below) and
+//! cast speed.
 
 use crate::contracts::prepared_v2::ActionId;
 use crate::prepare::dbcenums;
-use crate::prepare::sim::{AuraConfig, BuildPhase, Sim, UnitId, NEVER_EXPIRES};
+use crate::prepare::sim::{AuraConfig, BuildPhase, Rules, Sim, UnitId, NEVER_EXPIRES};
 use crate::prepare::spelldata::Spell as Row;
 use crate::prepare::stats::{Stat, Stats};
 
@@ -24,17 +25,32 @@ const SCHOOL_DAMAGE_STATS: [(i32, Stat); 6] = [
     (64, Stat::ArcaneDamage),
 ];
 
+/// The Create Spellstone triggered auras (`create_spellstone_triggered`).
+const SPELLSTONE_RANKS: [i32; 3] = [1237162, 1237164, 1237165];
+
+/// Shadow, the school mask client 1.60.1.70630 gives the Spellstone's damage effect.
+const SPELLSTONE_SCHOOLS_70630: i32 = 32;
+
 /// Go `weaponStoneStats`: the imbue's school damage and spell crit as stats; its cast speed goes
 /// through the spell's speed pseudo stats.
-fn weapon_stone_stats(imbue: &Row) -> Stats {
+///
+/// Client 1.60.1.70630 narrows the Spellstone ranks' school mask (SpellEffect 1233765, 1233768 and
+/// 1233770 of 1237162, 1237164 and 1237165, "Increase Shadow Dam") from 36 to 32: Shadow only, no
+/// longer Fire. The frozen data (70425) still says 36, which the Go reference keeps.
+fn weapon_stone_stats(imbue: &Row, rules: Rules) -> Stats {
     let mut bonus = Stats::default();
     for e in &imbue.effects {
         if e.effect_type != dbcenums::E_APPLY_AURA {
             continue;
         }
         if e.aura == dbcenums::A_MOD_DAMAGE_DONE {
+            let schools = if rules == Rules::Forever && SPELLSTONE_RANKS.contains(&imbue.id) {
+                SPELLSTONE_SCHOOLS_70630
+            } else {
+                e.misc
+            };
             for (mask, stat) in SCHOOL_DAMAGE_STATS {
-                if e.misc & mask != 0 {
+                if schools & mask != 0 {
                     bonus[stat] += e.base_value();
                 }
             }
@@ -53,7 +69,7 @@ impl Warlock {
             "Spellstone" => spell_data().create_spellstone_triggered.highest(),
             _ => return,
         };
-        let bonus = weapon_stone_stats(imbue);
+        let bonus = weapon_stone_stats(imbue, sim.rules);
         let aura = sim.register_aura(
             unit,
             AuraConfig {

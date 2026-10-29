@@ -350,10 +350,12 @@ impl Rogue {
         }
         // talents_combat.go registerRiposte: its trigger hears parries the player makes, and
         // nothing attacks the player unless a target tanks it. A parry readies Riposte, a main
-        // hand weapon strike that spends the ready aura.
+        // hand weapon strike that spends the ready aura. Forever's rules describe it without a
+        // tank too, where the trigger never fires and Riposte is never ready, so a rotation
+        // that names it never casts it, as in Go.
         if let Some(aura) = sim.get_aura(player, "Riposte Trigger") {
             let label = sim.aura(aura).label.clone();
-            if env.tanking() {
+            if env.tanking() || sim.rules == crate::prepare::sim::Rules::Forever {
                 let ready = sim
                     .get_aura(player, "Riposte Ready")
                     .map(|aura| sim.aura(aura).label.clone())

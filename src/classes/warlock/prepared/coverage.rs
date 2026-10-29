@@ -14,7 +14,9 @@ pub(crate) const GATE: ClassGate = ClassGate {
     limits,
     several_targets: Some(several_targets),
     tanks_several_targets: false,
-    other_target_casts: Some(other_target_casts),
+    // A cast aimed at another target lands its spell, its curse and its debuffs there as in Go,
+    // Demonic Brand's included: each target carries its own brand.
+    other_target_casts: Some(crate::engine::coverage::no_limits),
 };
 
 /// Warlock effect kinds implemented in Rust and validated against the pinned Go reference.
@@ -227,17 +229,4 @@ fn limits(prepared: &PreparedV2, reachable: &[&Spell]) -> Vec<String> {
 /// ramp, Soul Siphon count and Immolate reader on the target it picks, as in Go.
 fn several_targets(_prepared: &PreparedV2, reachable: &[&Spell]) -> Vec<String> {
     crate::engine::coverage::spells_reaching_other_targets(reachable, &[])
-}
-
-/// A cast aimed at another target lands its spell, its curse and its debuffs there as in Go,
-/// except the debuff Demonology's pet attack leaves, which Rust applies to the first target.
-fn other_target_casts(prepared: &PreparedV2, _spells: &[&Spell]) -> Vec<String> {
-    if prepared
-        .effects
-        .iter()
-        .any(|effect| effect.kind() == "demonic_brand")
-    {
-        return vec!["Demonic Brand lands on the first target only".into()];
-    }
-    Vec::new()
 }

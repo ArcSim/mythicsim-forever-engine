@@ -4,12 +4,15 @@
 //!
 //! Wild Growth's ticks land on the party of five. Swiftmend consumes a Rejuvenation or Regrowth
 //! up on the player and heals what all of that heal over time's ticks would, as Forever's
-//! Swiftmend does (`classes::druid::spells::swiftmend`). Tranquility, a channel on the party, and
-//! Nature's Swiftness on a heal are not modelled yet.
+//! Swiftmend does (`classes::druid::spells::swiftmend`). Tranquility heals the party over its
+//! channel, and Nature's Swiftness makes the next Healing Touch or Regrowth instant.
 
-use crate::prepare::heals::{apply_heal_talent, register_heal, HealShape};
-use crate::prepare::sim::Sim;
-use crate::prepare::spell::SpellFlag;
+use crate::prepare::character::constants::CHARACTER_LEVEL;
+use crate::prepare::heals::{
+    apply_heal_talent, register_channel_heal, register_heal, ChannelHeal, HealShape,
+};
+use crate::prepare::sim::{AuraConfig, Cooldown, EventCallbacks, Sim, NEVER_EXPIRES, SECOND};
+use crate::prepare::spell::{CastConfig, SpellConfig, SpellFlag};
 use crate::prepare::spell_mod::{SpellModConfig, SpellModType};
 use crate::prepare::spelldata::store::must_find;
 
@@ -26,6 +29,10 @@ pub(crate) const REGROWTH: &[i32] = &[8936, 8938, 8939, 8940, 8941, 9750, 9856, 
 /// Wild Growth, a Forever talent: a heal over time on the target's party.
 const WILD_GROWTH: &[i32] = &[408120, 1238214, 1238215];
 const SWIFTMEND: i32 = 18562;
+/// Tranquility, by rank.
+const TRANQUILITY: &[i32] = &[740, 8918, 9862, 9863];
+/// Nature's Swiftness, a Restoration talent.
+const NATURES_SWIFTNESS: i32 = 17116;
 const PARTY: u32 = 5;
 
 /// The heal talents, as (talent, client row, ranks): Gift of Nature's direct and periodic
@@ -89,7 +96,90 @@ impl Druid {
                 false,
             );
         }
+        // Tranquility: a channel healing the party every 2 sec for 10 sec, its ranks sharing a
+        // 5 minute cooldown. The row puts the tick on a party aura, which the heal reads.
+        {
+            let timer = sim.new_timer(unit);
+            for &id in TRANQUILITY {
+                let row = must_find(id);
+                let Some(tick) = row
+                    .effects
+                    .iter()
+                    .find(|e| e.aura == crate::prepare::dbcenums::A_PERIODIC_HEAL)
+                else {
+                    continue;
+                };
+                let period = tick.period();
+                ranks.push(register_channel_heal(
+                    sim,
+                    unit,
+                    row,
+                    ChannelHeal {
+                        direct: None,
+                        tick: tick.average(CHARACTER_LEVEL),
+                        tick_coefficient: tick.coeff(),
+                        ticks: (row.duration() / period.max(1)) as i32,
+                        period,
+                        tick_can_crit: row.periodic_can_crit(),
+                    },
+                    masks::TRANQUILITY,
+                    HealShape::party(PARTY),
+                    Some(timer),
+                ));
+            }
+        }
         self.heals = ranks;
+    }
+
+    /// Nature's Swiftness (17116): on use, the next Healing Touch or Regrowth casts at once; a
+    /// 3 minute cooldown. Its aura's mods are the row's, on the druid's heals with a cast time.
+    pub(super) fn register_natures_swiftness(&self, sim: &mut Sim) {
+        if !self.talents.bool("natures_swiftness") {
+            return;
+        }
+        let unit = self.unit;
+        let row = must_find(NATURES_SWIFTNESS);
+        let aura = sim.register_aura(
+            unit,
+            AuraConfig {
+                label: "Nature's Swiftness".to_string(),
+                action_id: Some(crate::contracts::prepared_v2::ActionId::spell(row.id)),
+                duration: NEVER_EXPIRES,
+                // The cast it makes instant spends it.
+                events: EventCallbacks {
+                    on_cast_complete: true,
+                    ..Default::default()
+                },
+                ..AuraConfig::default()
+            },
+        );
+        sim.attach_spell_mod(
+            aura,
+            SpellModConfig {
+                kind: SpellModType::CastTimePct,
+                float_value: row.effect_n(1).percent(),
+                class_mask: masks::HEALING_TOUCH | masks::REGROWTH,
+                ..SpellModConfig::default()
+            },
+        );
+        let timer = sim.new_timer(unit);
+        sim.register_spell(
+            unit,
+            SpellConfig {
+                action_id: crate::contracts::prepared_v2::ActionId::spell(row.id),
+                spell_school: row.spell_school(),
+                flags: SpellFlag::APL | SpellFlag::NO_ON_CAST_COMPLETE,
+                cast: CastConfig {
+                    cd: Cooldown {
+                        timer: Some(timer),
+                        duration: row.cooldown().max(180 * SECOND),
+                    },
+                    ..CastConfig::default()
+                },
+                related_self_buff: Some(aura),
+                ..SpellConfig::default()
+            },
+        );
     }
 
     /// Applies the heal talents the druid took.

@@ -45,6 +45,7 @@ const EFFECTS: &[&str] = &[
     "searing_totem",
     "stormstrike",
     "strength_of_earth_totem",
+    "water_shield",
     "weapon_sync",
     "windfury_totem_self",
     "windfury_weapon",
@@ -57,6 +58,8 @@ const RAGE_OF_THE_FARSEER: i32 = 425336;
 /// Go `registerLightningShieldSpell` registers its cast (client 10432, the highest rank)
 /// without a class mask.
 const LIGHTNING_SHIELD: i32 = 10432;
+/// Water Shield's cast (client 408510) is registered without a class mask.
+const WATER_SHIELD: i32 = 408510;
 /// Go `registerRockbiterThreat` registers Rockbiter Weapon Proc (20871) without a class mask.
 const ROCKBITER_WEAPON_PROC: i32 = 20871;
 
@@ -71,6 +74,9 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
     }
     if spell.class_spell.is_none() && id.spell_id == LIGHTNING_SHIELD && id.tag == 0 {
         return Some("lightning_shield");
+    }
+    if spell.class_spell.is_none() && id.spell_id == WATER_SHIELD && id.tag == 0 {
+        return Some("water_shield");
     }
     if spell.class_spell.is_none() && id.spell_id == ROCKBITER_WEAPON_PROC && id.tag == 0 {
         return Some("rockbiter_threat");
@@ -133,7 +139,9 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
             ("player", reset_aura),
         ],
         Effect::Stormstrike { aura, .. } => vec![("target", aura)],
-        Effect::LightningShield { aura, .. } => vec![("player", aura)],
+        Effect::LightningShield { aura, .. } | Effect::WaterShield { aura, .. } => {
+            vec![("player", aura)]
+        }
         Effect::WindfuryWeapon { trigger_aura, .. } => vec![("player", trigger_aura)],
         Effect::FlametongueTotem {
             aura, trigger_aura, ..
@@ -183,15 +191,28 @@ fn limits(prepared: &PreparedV2, reachable: &[&Spell]) -> Vec<String> {
                 "rotation reaches {id}, a totem without a known behavior"
             ));
         }
-        for effect in &prepared.effects {
+        for (index, effect) in prepared.effects.iter().enumerate() {
+            // The totem is contested under either set an item swap wears.
+            let swapped_contested = prepared.effects.iter().any(|swap| match swap {
+                Effect::ItemSwap { swapped, .. } => swapped.iter().any(|change| {
+                    change.path == format!("/effects/{index}/contested")
+                        && change.value == serde_json::Value::Bool(true)
+                }),
+                _ => false,
+            });
             match effect {
                 Effect::WindfuryTotemSelf {
                     spell_id,
-                    contested: true,
+                    contested,
                     ..
-                } if *spell_id == id.spell_id && id.tag == 0 => reasons.push(format!(
+                } if (*contested || swapped_contested)
+                    && *spell_id == id.spell_id
+                    && id.tag == 0 =>
+                {
+                    reasons.push(format!(
                     "rotation reaches {id}, a Windfury Totem that contests the party's or Windfury Weapon"
-                )),
+                    ))
+                }
                 Effect::FlametongueTotem {
                     spell_id,
                     party_totem: true,

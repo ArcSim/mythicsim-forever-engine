@@ -159,6 +159,8 @@ pub(crate) enum PetAbility {
         magic: bool,
         /// A client row's average and variance.
         roll: Option<(f64, f64)>,
+        /// The targets a cleave hits at most, one for a single hit.
+        cleave: usize,
     },
     /// Go `newPetBleed`: a hit roll without damage, then the dot when it landed.
     Bleed {
@@ -166,8 +168,11 @@ pub(crate) enum PetAbility {
         tick_base: f64,
         outcome: Outcome,
     },
-    /// Go `newSwipe`, which needs three active targets and so is never cast on one.
-    Swipe,
+    /// Go `newSwipe`, which needs `min_targets` active targets, and cleaves when they are up.
+    Swipe {
+        min_targets: usize,
+        cleave: Option<crate::contracts::prepared_v2::PetCleave>,
+    },
     /// Go `newScorpidPoison`.
     ScorpidPoison { tick_base: f64, outcome: Outcome },
     /// Go `newDustCloud`, whose aura and armor the agent holds.
@@ -200,12 +205,14 @@ impl PetAbility {
                 outcome,
                 average,
                 variance,
+                cleave_targets,
                 ..
             } => Some(PetAbility::Strike {
                 min: *min_damage,
                 max: *max_damage,
                 draws: *draws,
                 roll: average.zip(*variance),
+                cleave: cleave_targets.map_or(Some(1), |n| usize::try_from(n).ok())?,
                 magic: match outcome.as_str() {
                     "melee_special" => false,
                     "magic" => true,
@@ -226,9 +233,14 @@ impl PetAbility {
                 tick_base: *tick_base,
                 outcome: crate::classes::hunter::spells::serpent_sting::tick_outcome(tick_outcome)?,
             }),
-            Effect::HunterPetSwipe { min_targets, .. } if *min_targets > 1 => {
-                Some(PetAbility::Swipe)
-            }
+            Effect::HunterPetSwipe {
+                min_targets,
+                cleave,
+                ..
+            } if *min_targets > 1 => Some(PetAbility::Swipe {
+                min_targets: usize::try_from(*min_targets).ok()?,
+                cleave: *cleave,
+            }),
             Effect::HunterPetScorpidPoison {
                 tick_base,
                 tick_can_crit,
@@ -257,24 +269,29 @@ impl PetAbility {
                 draws,
                 magic,
                 roll,
+                cleave,
             } => {
-                // Go Effect.Roll for a client row, Simulation.Roll for a literal range.
-                let base = match roll {
-                    Some((average, variance)) => fight.effect_roll(average, variance),
-                    None if draws => fight.go_roll(min, max),
-                    None => min,
-                };
-                let result = if magic {
-                    fight.calc_damage(spell, target, base)
-                } else {
-                    fight.calc_physical_damage(
-                        spell,
-                        target,
-                        base,
-                        PhysicalOutcome::MeleeSpecialHitAndCrit { count: true },
-                    )
-                };
-                fight.deal_damage(spell, result, false);
+                // Go `CalcAndDealCleaveDamageWithVariance` for a cleave: each target's roll is
+                // dealt before the next is rolled; one target for a single hit.
+                for side in fight.cleave_targets(target, cleave.max(1)) {
+                    // Go Effect.Roll for a client row, Simulation.Roll for a literal range.
+                    let base = match roll {
+                        Some((average, variance)) => fight.effect_roll(average, variance),
+                        None if draws => fight.go_roll(min, max),
+                        None => min,
+                    };
+                    let result = if magic {
+                        fight.calc_damage(spell, side, base)
+                    } else {
+                        fight.calc_physical_damage(
+                            spell,
+                            side,
+                            base,
+                            PhysicalOutcome::MeleeSpecialHitAndCrit { count: true },
+                        )
+                    };
+                    fight.deal_damage(spell, result, false);
+                }
             }
             PetAbility::Bleed { ranged, .. } => {
                 let table = if ranged {
@@ -289,7 +306,26 @@ impl PetAbility {
                     fight.apply_dot(dot);
                 }
             }
-            PetAbility::Swipe => panic!("Swipe is never cast on one target"),
+            // Go `CalcAndDealCleaveDamageWithVariance`: the target and the next ones, each a
+            // roll dealt before the next is rolled.
+            PetAbility::Swipe { cleave, .. } => {
+                let cleave = cleave.expect("Swipe casts only with its targets up");
+                let count = usize::try_from(cleave.max_targets)
+                    .unwrap_or(0)
+                    .min(fight.targets.len());
+                let mut side = target;
+                for _ in 0..count {
+                    let base = fight.effect_roll(cleave.average, cleave.variance);
+                    let result = fight.calc_physical_damage(
+                        spell,
+                        side,
+                        base,
+                        PhysicalOutcome::MeleeSpecialHitAndCrit { count: true },
+                    );
+                    fight.deal_damage(spell, result, false);
+                    side = fight.next_target(side);
+                }
+            }
             PetAbility::ScorpidPoison { tick_base, .. } => {
                 let table = PhysicalOutcome::MeleeSpecialHit { count: true };
                 let result = fight.calc_outcome(spell, target, Outcome::Table(table));

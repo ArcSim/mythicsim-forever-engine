@@ -69,6 +69,28 @@ pub(crate) fn bind<A: Agent>(
 }
 
 impl WindfuryWeapon {
+    /// The values that follow the weapon in the hand, as a set's export states them: the spells
+    /// the trigger hears, its chances, and whether a main hand imbue blocks the party totem.
+    pub(crate) fn follow_weapon(
+        &mut self,
+        triggers: &[usize],
+        chances: &[SpellChance],
+        blocks_windfury_totem: bool,
+    ) -> Result<(), String> {
+        let count = self.triggers.len();
+        let mut by_spell = vec![None; count];
+        for chance in chances {
+            *by_spell
+                .get_mut(chance.spell)
+                .ok_or_else(|| format!("Windfury Weapon names spell {}", chance.spell))? =
+                Some(chance.chance);
+        }
+        self.triggers = mask(count, triggers)?;
+        self.chances = by_spell;
+        self.blocks_windfury_totem = blocks_windfury_totem;
+        Ok(())
+    }
+
     /// The trigger aura's gain: a main hand imbue's exclusive effect outbids the party totem's,
     /// whose expiry turns its trigger off and takes the totem down.
     pub(crate) fn on_trigger_gain<A: Agent>(&self, fight: &mut Fight<A>) {
@@ -86,13 +108,21 @@ impl WindfuryWeapon {
         }
     }
 
+    /// The trigger aura's expiry, which only an item swap brings mid-fight: Go's category then
+    /// makes the party totem's effect active again (`SetActive` of the highest enabled effect),
+    /// whose gain puts its trigger back up while the totem is up.
     pub(crate) fn on_trigger_expire<A: Agent>(&self, fight: &mut Fight<A>) {
-        if let Some(windfury) = fight
+        let Some(windfury) = fight
             .windfury
             .as_mut()
             .filter(|_| self.blocks_windfury_totem)
-        {
-            windfury.blocked = false;
+        else {
+            return;
+        };
+        windfury.blocked = false;
+        let (trigger, totem) = (windfury.trigger, windfury.totem);
+        if fight.aura(totem).active && !fight.aura(trigger).active {
+            fight.activate_aura(trigger);
         }
     }
 

@@ -220,6 +220,7 @@ fn runeblade_of_baron_rivendare(env: &mut Environment) {
         }),
     );
     env.sim.apply_on_expire(aura, Rc::new(|_: &mut Sim, _| {}));
+    env.sim.register_item_proc(unit, 13505, aura);
 }
 
 /// Headmaster's Charge: use, 20 Intellect for 15 min on a 10 min cooldown.

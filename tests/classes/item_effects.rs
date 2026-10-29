@@ -532,3 +532,345 @@ fn a_stat_proc_of_hits_taken_hears_the_sappers_hit() {
     proc["trigger_spells"] = json!([]);
     assert_ne!(dps(&value), dps(&deaf));
 }
+
+/// A request of the fixture family with `edit` applied, prepared in Rust under the reference's
+/// rules.
+fn prepared_request(case: &str, edit: impl FnOnce(&mut Value)) -> Value {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join(format!("fixtures/mage/prepared-v2/{case}.request.json"));
+    let mut request: Value = serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
+    edit(&mut request);
+    forever_engine::prepare_json_with(
+        &serde_json::to_vec(&request).unwrap(),
+        case,
+        forever_engine::Rules::GoReference,
+    )
+    .unwrap_or_else(|err| panic!("{case}: {err}"))
+}
+
+/// Equip these items, by equipment slot, on the request's player.
+fn wear(request: &mut Value, items: &[(usize, i64)]) {
+    let slots = request["raid"]["parties"][0]["players"][0]["equipment"]["items"]
+        .as_array_mut()
+        .unwrap();
+    for &(slot, id) in items {
+        slots[slot] = json!({ "id": id });
+    }
+}
+
+fn combat(mut value: Value, iterations: u64) -> Value {
+    value["sim"]["iterations"] = json!(iterations);
+    value["sim"]["debug_first_iteration"] = json!(false);
+    let prepared: PreparedV2 = serde_json::from_value(value).unwrap();
+    forever_engine::simulate_prepared(&prepared).unwrap().result
+}
+
+/// A unit's resource metric of this spell: (events, gain).
+fn resource_of(unit: &Value, spell: i64) -> Option<(i64, f64)> {
+    unit["resources"].as_array()?.iter().find_map(|resource| {
+        (resource["id"]["spellId"] == spell).then(|| {
+            (
+                resource["events"].as_i64().unwrap(),
+                resource["gain"].as_f64().unwrap(),
+            )
+        })
+    })
+}
+
+fn player_of(result: &Value) -> &Value {
+    &result["raidMetrics"]["parties"][0]["players"][0]
+}
+
+/// A player action's casts and damage over every unit it hit.
+fn action_totals(result: &Value, spell: i64) -> (i64, f64) {
+    player_of(result)["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"]["spellId"] == spell)
+        .flat_map(|action| action["targets"].as_array().unwrap())
+        .fold((0, 0.0), |(casts, damage), target| {
+            (
+                casts + target["casts"].as_i64().unwrap_or(0),
+                damage + target["damage"].as_f64().unwrap_or(0.0),
+            )
+        })
+}
+
+fn has_effect(value: &Value, kind: &str, key: &str, label: &str) -> bool {
+    value["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|effect| effect["kind"] == kind && effect[key] == label)
+}
+
+/// Nightslayer Armor's eight pieces heal the rogue for 500 a spell batch window after each
+/// Vanish (Go sim/rogue/items.go, Clean Escape 23583), under the bonus's health metrics
+/// (23582). Production fallbacks to Go, 25 October 2026.
+#[test]
+fn nightslayer_heals_a_batch_window_after_each_vanish() {
+    let value = prepared_request("production-subtlety-rogue", |request| {
+        let set = [16821, 16823, 16820, 16825, 16826, 16827, 16822, 16824];
+        let slots = [0, 2, 4, 5, 6, 7, 8, 9];
+        wear(request, &slots.into_iter().zip(set).collect::<Vec<_>>());
+    });
+    assert!(has_effect(
+        &value,
+        "health_on_cast",
+        "trigger_aura",
+        "Nightslayer Armor 8P"
+    ));
+    assert_eq!(refusals(value.clone()), Vec::<String>::new());
+    let logs = first_fight_log(value.clone());
+    let time = |line: &str| -> f64 { line[1..line.find(']').unwrap()].parse().unwrap() };
+    let vanishes: Vec<f64> = logs
+        .lines()
+        .filter(|line| line.contains("Completed cast {SpellID: 1856}"))
+        .map(time)
+        .collect();
+    let heals: Vec<f64> = logs
+        .lines()
+        .filter(|line| line.contains("Gained 500.000 health from {SpellID: 23582}"))
+        .map(time)
+        .collect();
+    assert!(!vanishes.is_empty());
+    assert_eq!(heals.len(), vanishes.len());
+    for (heal, vanish) in heals.iter().zip(&vanishes) {
+        assert!((heal - vanish - 0.01).abs() < 1e-9, "{heal} after {vanish}");
+    }
+    let result = combat(value, 20);
+    let (vanish_casts, _) = action_totals(&result, 1856);
+    let (events, gain) = resource_of(player_of(&result), 23582).unwrap();
+    assert_eq!(events, vanish_casts);
+    assert_eq!(gain, 500.0 * events as f64);
+}
+
+/// Stormshroud Armor (item_sets_classic.go): two pieces cast Lightning (18980), a nature hit of
+/// 15 to 25, a spell batch window after 10% of the landed melee hits; three restore 30 energy
+/// (23864) after 4% of them. Production fallbacks to Go, 24 and 25 October 2026.
+#[test]
+fn stormshroud_casts_lightning_and_restores_energy() {
+    let value = prepared_request("production-combat-rogue", |request| {
+        wear(request, &[(2, 15058), (4, 15056), (8, 15057), (6, 21278)]);
+    });
+    assert!(has_effect(
+        &value,
+        "spell_data_damage_proc",
+        "trigger_aura",
+        "Stormshroud Armor 2P"
+    ));
+    assert!(has_effect(
+        &value,
+        "energize_proc",
+        "trigger_aura",
+        "Stormshroud Armor 3P"
+    ));
+    assert_eq!(refusals(value.clone()), Vec::<String>::new());
+    let result = combat(value, 20);
+    let (_, damage) = action_totals(&result, 18980);
+    assert!(damage > 0.0, "Lightning dealt {damage}");
+    let (events, gain) = resource_of(player_of(&result), 23864).unwrap();
+    assert!(events > 0);
+    assert_eq!(gain, 30.0 * events as f64);
+}
+
+/// The raid's Judgement of Light heals whoever lands a melee hit on the target, half the time, a
+/// spell batch window later (Go buffs/paladin.go `AttachJudgementOfLightHeal`); the health
+/// metrics are the target's. A pet that strikes in melee rolls the same chance, and its heal
+/// changes nothing, as a pet is always at full health. Production fallbacks to Go, 25 October
+/// 2026, and a Demonology Warlock's Succubus, 27 October 2026.
+#[test]
+fn judgement_of_light_heals_the_player_under_the_targets_metrics() {
+    let value = prepared_request("production-combat-rogue", |request| {
+        request["raid"]["debuffs"]["judgementOfLight"] = true.into();
+    });
+    assert!(has_effect(
+        &value,
+        "judgement_of_light",
+        "aura",
+        "Judgement of Light (External)"
+    ));
+    assert_eq!(refusals(value.clone()), Vec::<String>::new());
+    let result = combat(value, 20);
+    let target = &result["encounterMetrics"]["targets"][0];
+    let (events, gain) = resource_of(target, 20346).unwrap();
+    assert!(events > 0);
+    assert_eq!(gain, 61.0 * events as f64);
+    assert_eq!(resource_of(player_of(&result), 20346), None);
+
+    let hunter = prepared_request("beast-mastery-hunter-pet-uptime-half", |request| {
+        request["raid"]["debuffs"]["judgementOfLight"] = true.into();
+    });
+    assert!(!refusals(hunter)
+        .iter()
+        .any(|reason| reason.contains("Judgement of Light")));
+}
+
+/// Deathbone Guardian's three pieces roll on the melee hits the wearer takes. Nothing strikes a
+/// player who does not tank, so the bonus is inert there. A tank's is a struck stat proc under
+/// Forever's rules and stays refused under Go's.
+#[test]
+fn deathbone_surge_is_inert_without_a_tank() {
+    let deathbone = [(6, 14622), (7, 14620), (9, 14621)];
+    let value = prepared_request("production-combat-rogue", |request| {
+        wear(request, &deathbone)
+    });
+    assert!(has_effect(
+        &value,
+        "inert_listener",
+        "aura",
+        "Deathbone Guardian 3P"
+    ));
+    assert_eq!(refusals(value), Vec::<String>::new());
+
+    let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("fixtures/mage/prepared-v2/apl-protection-warrior-boss-target.request.json");
+    let mut request: Value = serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
+    wear(&mut request, &deathbone);
+    let refused = forever_engine::prepare_json_with(
+        &serde_json::to_vec(&request).unwrap(),
+        "deathbone-tank",
+        forever_engine::Rules::GoReference,
+    );
+    match refused {
+        Err(forever_engine::PrepareError::Refused(refusal)) => assert_eq!(
+            refusal.reason,
+            "player aura \"Deathbone Guardian 3P\" reacts to the target's swings"
+        ),
+        other => panic!("a tank's Deathbone Surge prepared: {other:?}"),
+    }
+    let forever = forever_engine::prepare_json_with(
+        &serde_json::to_vec(&request).unwrap(),
+        "deathbone-tank",
+        forever_engine::Rules::Forever,
+    )
+    .unwrap();
+    assert!(has_effect(
+        &forever,
+        "spell_data_stat_proc",
+        "aura",
+        "Deathbone Surge"
+    ));
+}
+
+/// The party's Flametongue Totem on a character no class effect describes: while it alone holds
+/// its category, the trigger casts the totem's Fire hit (16389) at once off each landed main hand
+/// auto, from the main hand's speed. A Windfury Totem outbids it, and the trigger never turns on.
+#[test]
+fn the_partys_flametongue_totem_hits_off_main_hand_autos() {
+    let value = prepared_request("production-combat-rogue", |request| {
+        let buffs = &mut request["raid"]["parties"][0]["buffs"];
+        buffs.as_object_mut().unwrap().remove("windfuryTotem");
+        buffs["flametongueTotem"] = true.into();
+    });
+    assert!(has_effect(
+        &value,
+        "spell_data_damage_proc",
+        "trigger_aura",
+        "Flametongue Totem Trigger"
+    ));
+    assert_eq!(refusals(value.clone()), Vec::<String>::new());
+    let (_, damage) = action_totals(&combat(value, 20), 16389);
+    assert!(damage > 0.0, "the totem's hit dealt {damage}");
+
+    let value = prepared_request("production-combat-rogue", |request| {
+        request["raid"]["parties"][0]["buffs"]["flametongueTotem"] = true.into();
+    });
+    assert!(!has_effect(
+        &value,
+        "spell_data_damage_proc",
+        "trigger_aura",
+        "Flametongue Totem Trigger"
+    ));
+    assert_eq!(refusals(value), Vec::<String>::new());
+}
+
+/// A Rogue fixture request with these items in their equipment slots, by slot index.
+fn rogue_request(items: &[(usize, i64)]) -> Value {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("tests/classes/rogue/prepare/assassination.request.json");
+    let mut request: Value = serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
+    let slots = request["raid"]["parties"][0]["players"][0]["equipment"]["items"]
+        .as_array_mut()
+        .unwrap();
+    for &(slot, id) in items {
+        slots[slot] = json!({ "id": id });
+    }
+    request["simOptions"]["iterations"] = json!(300);
+    request
+}
+
+fn prepare_forever(request: &Value) -> Value {
+    forever_engine::prepare_json_with(
+        request.to_string().as_bytes(),
+        "rust",
+        forever_engine::Rules::Forever,
+    )
+    .unwrap()
+}
+
+fn dps(prepared: &Value) -> f64 {
+    let prepared: PreparedV2 = serde_json::from_value(prepared.clone()).unwrap();
+    assert_eq!(prepared_coverage(&prepared), Vec::<String>::new());
+    let report = forever_engine::simulate_prepared(&prepared).unwrap();
+    report.result["raidMetrics"]["dps"]["avg"].as_f64().unwrap()
+}
+
+/// Badge of the Swarmguard under Forever's rules: its use opens a 30 second window in which
+/// landed melee and ranged hits that deal damage stack Insight of the Qiraji (200 armor
+/// penetration, 6 at most) at 10 procs a minute, Go's `NewStackingStatBonusCD` with a procs per
+/// minute manager over the trigger's mask. Go's exporter has no effect for it, so Rust prepares
+/// it itself. On six production rogue requests Rust's gain from the badge matched Go's engine
+/// within 0.1 DPS (Combat +43.1, Assassination +29.5 to +37.0, Subtlety +30.5 to +30.9).
+#[test]
+fn badge_of_the_swarmguard_stacks_on_a_proc_rate() {
+    let with = prepare_forever(&rogue_request(&[(12, 21670)]));
+    let badge = with["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|effect| effect["kind"] == "stacking_cd_on_use" && effect["item_id"] == 21670)
+        .expect("a stacking effect for the badge");
+    assert_eq!(badge["stat_aura"], "Badge of the Swarmguard Proc");
+    assert_ne!(badge["window_aura"], badge["stat_aura"]);
+    assert_eq!(badge["rng_label"], "Badge of the Swarmguard");
+    assert_eq!(badge["require_damage"], true);
+    assert_eq!(badge["landed_only"], true);
+    let heard = badge["trigger_spells"].as_array().unwrap();
+    let chances = badge["chances"].as_array().unwrap();
+    assert!(!heard.is_empty() && chances.len() == heard.len(), "{badge}");
+    for chance in chances {
+        let chance = chance["chance"].as_f64().unwrap();
+        // 10 a minute over a weapon of 1.3 to 3.8 seconds.
+        assert!(chance > 0.2 && chance < 0.65, "{chance}");
+    }
+    let without = prepare_forever(&rogue_request(&[]));
+    let (with, without) = (dps(&with), dps(&without));
+    assert!(
+        with > without * 1.01,
+        "the badge gained {with} over {without}"
+    );
+}
+
+/// The reference's rules keep Go's exporter, which has no effect for the badge.
+#[test]
+fn badge_of_the_swarmguard_is_unrepresented_under_go_rules() {
+    let request = rogue_request(&[(12, 21670)]);
+    let prepared = forever_engine::prepare_json_with(
+        request.to_string().as_bytes(),
+        "rust",
+        forever_engine::Rules::GoReference,
+    );
+    match prepared {
+        Err(error) => assert!(error.to_string().contains("21670"), "{error}"),
+        Ok(value) => assert!(
+            !value["effects"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|effect| effect["kind"] == "stacking_cd_on_use"),
+            "Go's rules prepared the badge"
+        ),
+    }
+}

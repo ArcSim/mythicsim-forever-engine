@@ -29,6 +29,20 @@ pub(crate) struct EnergyBar {
     pub(crate) encounter_start_metrics: usize,
 }
 
+/// A listener on the player's casts that restores mana a spell batch window later, in
+/// MythicSim's healer sims under Forever's rules: Sudden Insight, Idol of Longevity, The
+/// Earthfury's Mana Surge.
+#[derive(Clone, Debug)]
+pub(crate) struct ManaOnCast {
+    pub(crate) label: String,
+    pub(crate) chance: f64,
+    /// The mana each spell it hears restores, by spellbook position.
+    pub(crate) mana: Vec<Option<f64>>,
+    pub(crate) metrics: usize,
+    /// Only a heal that crits restores the mana.
+    pub(crate) crit_only: bool,
+}
+
 /// An item proc trigger that restores energy, such as Shadowcraft Armor's.
 #[derive(Clone, Debug)]
 pub(crate) struct EnergizeProc {
@@ -63,6 +77,67 @@ impl<A: Agent> Fight<A> {
             return;
         }
         self.schedule_delayed_proc_at(self.now + delay, aura, spell, *result);
+    }
+
+    /// A cast the mana listener hears rolls its chance, then the handler waits a spell batch
+    /// window.
+    pub(crate) fn mana_on_cast_callback(
+        &mut self,
+        aura: super::AuraRef,
+        index: usize,
+        spell: super::SpellId,
+    ) {
+        let proc = &self.mana_on_cast[index];
+        if proc.crit_only || proc.mana.get(spell).copied().flatten().is_none() {
+            return;
+        }
+        let chance = proc.chance;
+        // Go `Proc(chance, label)`, reading the label in place.
+        if !self.rng.proc(chance, &self.mana_on_cast[index].label) {
+            return;
+        }
+        let result = super::SpellResult {
+            armor_multiplier: 0.0,
+            target: Side::Player,
+            attacker: Side::Player,
+            outcome: 0,
+            damage: 0.0,
+            threat: 0.0,
+        };
+        self.schedule_delayed_proc(aura, spell, result);
+    }
+
+    /// A heal's crit the crit-only mana listener hears: the mana a spell batch window later.
+    pub(crate) fn mana_on_crit_callback(
+        &mut self,
+        aura: super::AuraRef,
+        index: usize,
+        spell: super::SpellId,
+        result: &super::SpellResult,
+    ) {
+        let proc = &self.mana_on_cast[index];
+        if !proc.crit_only
+            || result.outcome & super::damage::OUTCOME_CRIT == 0
+            || proc.mana.get(spell).copied().flatten().is_none()
+        {
+            return;
+        }
+        if !self.rng.proc(proc.chance, &self.mana_on_cast[index].label) {
+            return;
+        }
+        self.schedule_delayed_proc(aura, spell, *result);
+    }
+
+    /// The mana listener's handler: the cast's mana, for a character with a mana bar.
+    pub(crate) fn mana_on_cast_handler(&mut self, index: usize, spell: super::SpellId) {
+        if !self.has_mana_bar() {
+            return;
+        }
+        let proc = &self.mana_on_cast[index];
+        if let Some(mana) = proc.mana.get(spell).copied().flatten() {
+            let metrics = proc.metrics;
+            self.add_mana(mana, metrics);
+        }
     }
 
     /// The energize proc's handler: energy for a character with an energy bar.

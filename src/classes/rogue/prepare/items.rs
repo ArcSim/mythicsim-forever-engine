@@ -5,8 +5,12 @@
 
 use std::rc::Rc;
 
+use serde_json::{json, Value};
+
 use crate::prepare::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger};
 use crate::prepare::character::{cooldown_type, MajorCooldown};
+use crate::prepare::common_effects::SPELL_BATCH_WINDOW;
+use crate::prepare::consumable_effects::proc_trigger_spells;
 use crate::prepare::env::Environment;
 use crate::prepare::item_sets::ItemSet;
 use crate::prepare::sim::{AuraConfig, AuraId, BuildPhase, Cooldown, Sim, UnitId, SECOND};
@@ -329,6 +333,23 @@ fn nightslayer_8(env: &mut Environment, aura: AuraId) {
     );
 }
 
+/// The effect of Nightslayer Armor's eight piece trigger (`nightslayer_8`): a spell batch window
+/// after each Vanish cast, Go's literal 500 health, as Clean Escape (23583) heals, under health
+/// metrics of the bonus spell (23582). Nothing rolls.
+pub(super) fn nightslayer_8_effect(env: &Environment) -> Option<Value> {
+    let aura = env.sim.get_aura(env.player, "Nightslayer Armor 8P")?;
+    let trigger = ProcTrigger {
+        callback: CallbackMask::ON_CAST_COMPLETE,
+        class_spell_mask: masks::VANISH,
+        ..ProcTrigger::default()
+    };
+    Some(json!({
+        "kind": "health_on_cast", "trigger_aura": env.sim.aura(aura).label,
+        "trigger_spells": proc_trigger_spells(env, &trigger), "health": 500.0,
+        "metrics_action_id": {"spell_id": 23582}, "delay_ns": SPELL_BATCH_WINDOW,
+    }))
+}
+
 /// Bloodfang Armor, 3 pieces: 5% more chance to apply poisons.
 fn bloodfang_3(env: &mut Environment, aura: AuraId) {
     let state = rogue_state(env);
@@ -437,9 +458,16 @@ fn darkmantle_2(env: &mut Environment, aura: AuraId) {
 /// Darkmantle Armor, 4 pieces: a white hit has a chance to restore 20 energy.
 fn darkmantle_4(env: &mut Environment, aura: AuraId) {
     let unit = env.player;
+    // Go `NewLegacyPPMManager`, which an item swap rebuilds for the weapons in the hands.
     let dpm = env
         .sim
-        .new_ppm_manager(unit, 1.0, ProcMask::MELEE_WHITE_HIT);
+        .new_ppm_manager(unit, 1.0, ProcMask::MELEE_WHITE_HIT)
+        .rebuilt_by_swap(
+            &env.sim,
+            unit,
+            crate::prepare::item_swap::ManagerChance::Ppm(1.0),
+            crate::prepare::item_swap::ManagerMask::Static(ProcMask::MELEE_WHITE_HIT),
+        );
     env.sim.attach_proc_trigger(
         aura,
         &ProcTrigger {

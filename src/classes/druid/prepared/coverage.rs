@@ -15,7 +15,7 @@ pub(crate) const GATE: ClassGate = ClassGate {
     limits,
     several_targets: Some(several_targets),
     tanks_several_targets: true,
-    other_target_casts: None,
+    other_target_casts: Some(other_target_casts),
 };
 
 /// Druid effect kinds implemented in Rust and validated against the pinned Go reference.
@@ -28,6 +28,7 @@ const EFFECTS: &[&str] = &[
     "cat_form",
     "demoralizing_roar",
     "druid_forms",
+    "druid_thorns",
     "eclipse",
     "enrage",
     "faerie_fire",
@@ -84,6 +85,7 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "swipe" => Some("swipe"),
         "hurricane" => Some("hurricane"),
         "frenzied_regeneration" => Some("frenzied_regeneration"),
+        "thorns" => Some("druid_thorns"),
         _ => None,
     }
 }
@@ -108,6 +110,7 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         | Effect::BearForm { aura, .. }
         | Effect::Enrage { aura, .. }
         | Effect::Barkskin { aura, .. }
+        | Effect::DruidThorns { aura, .. }
         | Effect::FrenziedRegeneration { aura, .. } => vec![("player", aura)],
         Effect::NaturalReaction { trigger_aura, .. } => vec![("player", trigger_aura)],
         Effect::NaturesBounty { aura, .. } | Effect::UnendingLifeRefund { aura, .. } => {
@@ -265,4 +268,19 @@ fn limits(prepared: &PreparedV2, reachable: &[&Spell]) -> Vec<String> {
 /// swing at it, which the runtime follows.
 fn several_targets(_prepared: &PreparedV2, reachable: &[&Spell]) -> Vec<String> {
     crate::engine::coverage::spells_reaching_other_targets(reachable, &[])
+}
+
+/// A cast aimed at another target lands its spell, its dot and its debuff there as in Go,
+/// except Faerie Fire, whose debuff and armor change the runtime keeps on the first target.
+fn other_target_casts(_prepared: &PreparedV2, spells: &[&Spell]) -> Vec<String> {
+    spells
+        .iter()
+        .filter(|spell| spell.class_spell.as_deref() == Some("faerie_fire"))
+        .map(|spell| {
+            format!(
+                "{} at a target past the first lands on the first target only",
+                spell.action_id.clone().unwrap_or_default()
+            )
+        })
+        .collect()
 }

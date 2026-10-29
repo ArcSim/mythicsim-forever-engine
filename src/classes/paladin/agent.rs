@@ -45,6 +45,8 @@ pub(crate) enum PaladinSpell {
     Judgement,
     /// A Holy Strike rank, by its position in the effect.
     HolyStrike(usize),
+    /// Hammer of the Righteous, whose weapon DPS multiple and most targets the agent holds.
+    HammerOfTheRighteous,
     HammerOfWrath,
     /// A Consecration rank, by its position in the effect.
     Consecration(usize),
@@ -69,6 +71,17 @@ pub(crate) enum PaladinSpell {
     Heal(usize),
     /// A Lay on Hands rank, by its position in the effect.
     LayOnHands(usize),
+    /// A paladin aura's cast, by its rank's position in the effect.
+    AuraCast(usize),
+    /// A Seal of Light rank's heal, by its seal's position.
+    SealOfLightProc(usize),
+    /// A Judgement of Light rank, by its position in the Seal of Light effect.
+    JudgementOfLight(usize),
+    /// A Seal of Wisdom rank's mana restore, by its seal's position.
+    SealOfWisdomProc(usize),
+    /// A Judgement of Wisdom rank, by its position in the Seal of Wisdom effect.
+    JudgementOfWisdom(usize),
+    JudgementOfJustice,
 }
 
 /// Class auras with Rust behavior.
@@ -115,6 +128,8 @@ pub(crate) struct PaladinAgent {
     pub(crate) seals: Seals,
     judgement_wake_delay: i64,
     holy_strike: Vec<f64>,
+    /// Hammer of the Righteous: its weapon DPS multiple and most targets.
+    hammer_of_the_righteous: Option<(f64, usize)>,
     consecration: Vec<ConsecrationRank>,
     vengeance: Option<Vengeance>,
     vindication: Option<Vindication>,
@@ -145,9 +160,19 @@ pub(crate) struct PaladinAgent {
     /// Infusion of Light's and Holy Alacrity's auras and whether a crit is needed.
     holy_light_haste: Vec<HolyLightHaste>,
     heals: Option<Rc<Heals>>,
+    /// The heals as each set reads them, Main then Swap1, when an item swap changes the healing
+    /// power they snapshot.
+    heals_by_set: Option<[Rc<Heals>; 2]>,
     /// Each Lay on Hands rank's mana restore and mana metrics.
     lay_on_hands: Vec<(f64, usize)>,
     illumination: Option<Illumination>,
+    /// The aura each castable paladin aura rank turns on.
+    aura_casts: Vec<AuraRef>,
+    /// Each Judgement of Light rank's target aura, by its position in the effect.
+    light_judgements: Vec<AuraRef>,
+    /// Each Judgement of Wisdom rank's target aura, by its position in the effect.
+    wisdom_judgements: Vec<AuraRef>,
+    justice_judgement: Option<AuraRef>,
     eye_for_an_eye: Option<EyeForAnEye>,
     forbearance: Option<AuraRef>,
     pub(crate) templars_bulwark: Option<TemplarsBulwark>,
@@ -211,9 +236,55 @@ impl PaladinAgent {
                     .map(PaladinSpell::SealOfFuryProc),
                 _ => None,
             }),
+            "seal_of_light" => seals::seal_index(effects, id.spell_id).map(PaladinSpell::Seal),
+            "seal_of_wisdom" | "seal_of_justice" => {
+                seals::seal_index(effects, id.spell_id).map(PaladinSpell::Seal)
+            }
+            "seal_of_wisdom_proc" => effects.iter().find_map(|effect| match effect {
+                Effect::SealOfWisdom { ranks } => ranks
+                    .iter()
+                    .find(|rank| rank.proc_spell_id == id.spell_id)
+                    .and_then(|rank| seals::seal_index(effects, rank.seal_spell_id))
+                    .map(PaladinSpell::SealOfWisdomProc),
+                _ => None,
+            }),
+            "judgement_of_wisdom" => effects.iter().find_map(|effect| match effect {
+                Effect::SealOfWisdom { ranks } => ranks
+                    .iter()
+                    .position(|rank| rank.judgement_spell_id == id.spell_id)
+                    .map(PaladinSpell::JudgementOfWisdom),
+                _ => None,
+            }),
+            "judgement_of_justice" => effects.iter().find_map(|effect| match effect {
+                Effect::SealOfJustice {
+                    judgement_spell_id, ..
+                } if *judgement_spell_id == id.spell_id => Some(PaladinSpell::JudgementOfJustice),
+                _ => None,
+            }),
+            "seal_of_light_proc" => effects.iter().find_map(|effect| match effect {
+                Effect::SealOfLight { ranks, .. } => ranks
+                    .iter()
+                    .find(|rank| rank.proc_spell_id == id.spell_id)
+                    .and_then(|rank| seals::seal_index(effects, rank.seal_spell_id))
+                    .map(PaladinSpell::SealOfLightProc),
+                _ => None,
+            }),
+            "judgement_of_light" => effects.iter().find_map(|effect| match effect {
+                Effect::SealOfLight { ranks, .. } => ranks
+                    .iter()
+                    .position(|rank| rank.judgement_spell_id == id.spell_id)
+                    .map(PaladinSpell::JudgementOfLight),
+                _ => None,
+            }),
             "judgement_of_fury" if damage && has("seal_of_fury") => {
                 Some(PaladinSpell::JudgementOfFury)
             }
+            "hammer_of_the_righteous" => effects.iter().find_map(|effect| match effect {
+                Effect::HammerOfTheRighteous { spell_id, .. } if *spell_id == id.spell_id => {
+                    Some(PaladinSpell::HammerOfTheRighteous)
+                }
+                _ => None,
+            }),
             "holy_strike" if damage => effects.iter().find_map(|effect| match effect {
                 Effect::HolyStrike { ranks } => ranks
                     .iter()
@@ -267,6 +338,18 @@ impl PaladinAgent {
                     .iter()
                     .position(|rank| rank.spell_id == id.spell_id)
                     .map(PaladinSpell::LayOnHands),
+                _ => None,
+            }),
+            "retribution_aura"
+            | "devotion_aura"
+            | "concentration_aura"
+            | "fire_resistance_aura"
+            | "frost_resistance_aura"
+            | "shadow_resistance_aura" => effects.iter().find_map(|effect| match effect {
+                Effect::PaladinAuraCast { ranks } => ranks
+                    .iter()
+                    .position(|rank| rank.spell_id == id.spell_id)
+                    .map(PaladinSpell::AuraCast),
                 _ => None,
             }),
             "seal_of_the_crusader" => {
@@ -457,6 +540,28 @@ impl PaladinAgent {
                 }
             }
         }
+        for effect in &prepared.effects {
+            if let Effect::SealOfLight { ranks, .. } = effect {
+                for rank in ranks {
+                    auras.push((rank.aura.clone(), PaladinAura::Seal(seal)));
+                    seal += 1;
+                }
+            }
+        }
+        for effect in &prepared.effects {
+            if let Effect::SealOfWisdom { ranks } = effect {
+                for rank in ranks {
+                    auras.push((rank.aura.clone(), PaladinAura::Seal(seal)));
+                    seal += 1;
+                }
+            }
+        }
+        for effect in &prepared.effects {
+            if let Effect::SealOfJustice { aura, .. } = effect {
+                auras.push((aura.clone(), PaladinAura::Seal(seal)));
+                seal += 1;
+            }
+        }
         auras
     }
 
@@ -492,6 +597,14 @@ impl PaladinAgent {
                 }
                 Effect::Judgement { wake_delay_ns, .. } => {
                     fight.agent.judgement_wake_delay = *wake_delay_ns;
+                }
+                Effect::HammerOfTheRighteous {
+                    weapon_dps,
+                    max_targets,
+                    ..
+                } => {
+                    fight.agent.hammer_of_the_righteous =
+                        Some((*weapon_dps, (*max_targets).max(1) as usize));
                 }
                 Effect::HolyStrike { ranks } => {
                     fight.agent.holy_strike =
@@ -754,14 +867,37 @@ impl PaladinAgent {
                     player,
                     target,
                 } => {
-                    let bound = Heals::bind(
+                    let bound = Rc::new(Heals::bind(
                         ranks,
                         *flash_of_light_bonus,
                         (*blessing_holy_light, *blessing_flash_of_light),
                         player,
                         target,
-                    )?;
-                    fight.agent.heals = Some(Rc::new(bound));
+                    )?);
+                    // The swap set's weapon moves the healing power the heals read.
+                    let worn = fight.item_swap_worn_effects().and_then(|worn| {
+                        worn.into_iter().find_map(|effect| match effect {
+                            Effect::PaladinHeals {
+                                ranks,
+                                flash_of_light_bonus,
+                                blessing_holy_light,
+                                blessing_flash_of_light,
+                                player,
+                                target,
+                            } => Some(Heals::bind(
+                                &ranks,
+                                flash_of_light_bonus,
+                                (blessing_holy_light, blessing_flash_of_light),
+                                &player,
+                                &target,
+                            )),
+                            _ => None,
+                        })
+                    });
+                    if let Some(worn) = worn {
+                        fight.agent.heals_by_set = Some([bound.clone(), Rc::new(worn?)]);
+                    }
+                    fight.agent.heals = Some(bound);
                 }
                 Effect::LayOnHands { ranks } => {
                     for rank in ranks {
@@ -770,6 +906,27 @@ impl PaladinAgent {
                             ..ActionId::default()
                         });
                         fight.agent.lay_on_hands.push((rank.mana, metrics));
+                    }
+                }
+                Effect::SealOfLight { ranks, .. } => {
+                    for rank in ranks {
+                        let aura = target_aura(&fight, &rank.judgement_aura)?;
+                        fight.agent.light_judgements.push(aura);
+                    }
+                }
+                Effect::SealOfWisdom { ranks } => {
+                    for rank in ranks {
+                        let aura = target_aura(&fight, &rank.judgement_aura)?;
+                        fight.agent.wisdom_judgements.push(aura);
+                    }
+                }
+                Effect::SealOfJustice { judgement_aura, .. } => {
+                    fight.agent.justice_judgement = Some(target_aura(&fight, judgement_aura)?);
+                }
+                Effect::PaladinAuraCast { ranks } => {
+                    for rank in ranks {
+                        let aura = fight.player_aura(&rank.aura)?;
+                        fight.agent.aura_casts.push(aura);
                     }
                 }
                 Effect::Illumination {
@@ -885,6 +1042,9 @@ impl Agent for PaladinAgent {
 
     fn on_item_swap(fight: &mut Fight<Self>, worn: bool) {
         seals::on_item_swap(fight, worn);
+        if let Some(by_set) = &fight.agent.heals_by_set {
+            fight.agent.heals = Some(by_set[usize::from(worn)].clone());
+        }
     }
 
     fn apply_effects(
@@ -910,6 +1070,13 @@ impl Agent for PaladinAgent {
             PaladinSpell::Judgement => {
                 let delay = fight.agent.judgement_wake_delay;
                 judgement::apply(fight, spell, target, delay);
+            }
+            PaladinSpell::HammerOfTheRighteous => {
+                let (weapon_dps, max_targets) = fight
+                    .agent
+                    .hammer_of_the_righteous
+                    .expect("Hammer of the Righteous is bound");
+                strikes::hammer_of_the_righteous(fight, spell, target, weapon_dps, max_targets);
             }
             PaladinSpell::HolyStrike(rank) => {
                 let weapon_percent = fight.agent.holy_strike[rank];
@@ -964,6 +1131,27 @@ impl Agent for PaladinAgent {
             PaladinSpell::LayOnHands(rank) => {
                 let rank = fight.agent.lay_on_hands[rank];
                 Self::bound(&fight.agent.heals).lay_on_hands(fight, spell, target, rank)
+            }
+            PaladinSpell::SealOfLightProc(seal) => seals::light_proc(fight, spell, seal),
+            // seal_of_light.go: an outcome that always hits, then the rank's debuff.
+            PaladinSpell::JudgementOfLight(rank) => {
+                let aura = fight.agent.light_judgements[rank];
+                crusader::judge(fight, spell, target, aura);
+            }
+            PaladinSpell::SealOfWisdomProc(seal) => seals::wisdom_proc(fight, seal),
+            // seal_of_wisdom.go and seal_of_justice.go: the same as Judgement of Light.
+            PaladinSpell::JudgementOfWisdom(rank) => {
+                let aura = fight.agent.wisdom_judgements[rank];
+                crusader::judge(fight, spell, target, aura);
+            }
+            PaladinSpell::JudgementOfJustice => {
+                let aura = fight.agent.justice_judgement.expect("bound");
+                crusader::judge(fight, spell, target, aura);
+            }
+            // auras.go registerAuraSpell: the cast turns the aura on.
+            PaladinSpell::AuraCast(rank) => {
+                let aura = fight.agent.aura_casts[rank];
+                fight.activate_aura(aura);
             }
         }
     }

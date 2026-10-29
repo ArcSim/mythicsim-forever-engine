@@ -713,7 +713,13 @@ impl<A: Agent> Fight<A> {
         {
             self.stop_ranged_until(now);
         }
-        self.cast(spell, Side::Target);
+        // Go swings at the unit's current target; a pet's stays the first.
+        let target = if side == Side::Player {
+            self.current_target_side()
+        } else {
+            Side::Target
+        };
+        self.cast(spell, target);
         // Go ReactToEvent(false, true) after the swing, unless the player is tanking.
         if side != Side::Player || !self.tanked() {
             self.react_to_event(side);
@@ -907,7 +913,7 @@ impl<A: Agent> Fight<A> {
             .mh
             .spell
             .expect("an enabled weapon attack has a spell");
-        self.cast(spell, Side::Target);
+        self.cast(spell, self.current_target_side());
     }
 
     /// Go `Unit.ReactToEvent(sim, false, false)`: the rotation runs, then evaluates again now,
@@ -1005,9 +1011,11 @@ impl<A: Agent> Fight<A> {
         self.react_to_event(Side::Player);
     }
 
-    /// Go `Spell.RangedAttackPower` with no mob type bonus.
+    /// Go `Spell.RangedAttackPower`, with the player's mob type bonus.
     pub(crate) fn ranged_attack_power(&self) -> f64 {
-        self.player.powers.ranged_attack_power + self.config.defender_bonus_ranged_attack_power
+        self.player.powers.ranged_attack_power
+            + self.config.defender_bonus_ranged_attack_power
+            + self.mob_type_attack_power()
     }
 
     /// Go `Weapon.CalculateNormalizedWeaponDamage` for the ranged weapon.
@@ -1183,10 +1191,26 @@ impl<A: Agent> Fight<A> {
         self.melee_attack_power_of(Side::Player)
     }
 
-    /// Go `getAttackPowerValueImpl` of an acting unit, with no mob type bonus.
+    /// Go `getAttackPowerValueImpl` of an acting unit, with the player's mob type bonus.
     pub(crate) fn melee_attack_power_of(&self, side: Side) -> f64 {
+        let bonus = if side == Side::Player {
+            self.mob_type_attack_power()
+        } else {
+            0.0
+        };
         self.unit(side).powers.attack_power
             + self.unit_config(side).melee.defender_bonus_attack_power
+            + bonus
+    }
+
+    /// Go `AttackTable.MobTypeBonusStats[Defender.MobType][RangedAttackPower]` of the player,
+    /// which its melee and ranged attack power both read.
+    pub(crate) fn mob_type_attack_power(&self) -> f64 {
+        self.mob_type_bonuses
+            .iter()
+            .filter(|(aura, _, _)| self.aura(*aura).active)
+            .map(|(_, attack_power, _)| attack_power)
+            .sum()
     }
 
     /// Go `GetArmorDamageModifier` for the attacker against a target.

@@ -279,11 +279,18 @@ impl Shaman {
                             .fraction_at(talent("elemental_weapons"))),
             )]);
             let id = aura.action_id.clone().unwrap_or_default();
-            effects.push(json!({
+            let mut effect = json!({
                 "kind": "rockbiter_weapon", "aura": aura.label,
                 "gain_log": format!("Gained {} from {}.", flat_string(&bonus), action_id_string(&id)),
                 "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
-            }));
+            });
+            // Spirit Weapons' threat, which the aura multiplies in as it is gained and divides out
+            // as it fades when it follows the weapon in the hand. Go's exporter does not say.
+            let threat = sim.state(self.rockbiter_swap_threat);
+            if threat != 0.0 && sim.rules == crate::prepare::sim::Rules::Forever {
+                effect["threat_multiplier"] = json!(threat);
+            }
+            effects.push(effect);
         }
         // weapon_imbues.go registerRockbiterThreat (patch 181): the hands whose weapons carry Rockbiter
         // and the main hand's swing speed, read from the weapons worn now.
@@ -384,6 +391,54 @@ impl Shaman {
                 "kind": "lightning_shield", "spell_id": row.id, "aura": sim.aura(aura).label,
                 "charges": i32::from(row.proc_charges),
             }));
+        }
+        // registerWaterShieldSpell (talent): the cast puts up every globe; the shaman's own
+        // critical spells spend one for mana (Forever's rules only: Go never casts it). The hit
+        // taken trigger never fires in scope.
+        if let Some(aura) = sim
+            .get_aura(player, "Water Shield")
+            .filter(|_| sim.rules == crate::prepare::sim::Rules::Forever)
+        {
+            use super::shields::*;
+            effects.push(json!({
+                "kind": "water_shield", "spell_id": WATER_SHIELD_SPELL_ID,
+                "aura": sim.aura(aura).label, "globes": WATER_SHIELD_GLOBES,
+                "icd_ns": nanos(WATER_SHIELD_ICD), "mana_percent": WATER_SHIELD_MANA_PERCENT,
+                "mana_spell_id": WATER_SHIELD_MANA_SPELL_ID,
+                "trigger_spells": proc_trigger_spells(env, &water_shield_crit_trigger()),
+            }));
+        }
+        // item_sets.go Stormcaller's Garb (3), under Forever's rules (Go's exporter refuses its
+        // listener): a landed Lightning Bolt, Chain Lightning, Overload or Shock rolls 20% and a
+        // batch window later gives 50 Nature damage for 8 sec.
+        if sim.rules == crate::prepare::sim::Rules::Forever {
+            let set = sim.get_aura(player, "Stormcaller's Garb 3P");
+            let wrath = sim.get_aura(player, "Stormcaller's Wrath");
+            if let (Some(set), Some(wrath)) = (set, wrath) {
+                let trigger = ProcTrigger {
+                    name: "Stormcaller Spelldamage Bonus".to_string(),
+                    callback: crate::prepare::aura_helpers::CallbackMask::ON_SPELL_HIT_DEALT,
+                    outcome: crate::prepare::aura_helpers::HitOutcome::LANDED,
+                    class_spell_mask: super::masks::LIGHTNING_BOLT
+                        | super::masks::CHAIN_LIGHTNING
+                        | super::masks::OVERLOAD
+                        | super::masks::SHOCK,
+                    can_proc_from_procs: true,
+                    proc_chance: 0.20,
+                    ..ProcTrigger::default()
+                };
+                let bonus = Stats::from_pairs(&[(Stat::NatureDamage, 50.0)]);
+                let id = crate::contracts::prepared_v2::ActionId::spell(26121);
+                effects.push(json!({
+                    "kind": "spell_data_stat_proc", "trigger_aura": sim.aura(set).label,
+                    "aura": sim.aura(wrath).label,
+                    "trigger_spells": proc_trigger_spells(env, &trigger),
+                    "callbacks": ["on_spell_hit_dealt"], "landed_only": true,
+                    "require_damage": false, "proc_chance": trigger.proc_chance,
+                    "gain_log": format!("Gained {} from {}.", flat_string(&bonus), action_id_string(&id)),
+                    "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
+                }));
+            }
         }
         // Since the 16 October 2026 beta notes no air totem category stands between the
         // shaman's own totems and the party's: only the party's Windfury Totem still contests

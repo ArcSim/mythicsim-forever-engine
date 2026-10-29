@@ -54,7 +54,21 @@ pub(super) fn damage_effect(sim: &Sim, spell: SpellId) -> Option<Value> {
     if action.spell_id == 0 || action.tag != 0 {
         return None;
     }
-    let row = damage_rows().get(&action.spell_id)?;
+    let row = match damage_rows().get(&action.spell_id) {
+        Some(row) => *row,
+        // chastise.go, under Forever's rules (Go's exporter leaves the cast unknown): every
+        // rank rolls its own row.
+        None if sim.rules == crate::prepare::sim::Rules::Forever => {
+            let mut found = None;
+            spell_data().chastise.each(|_, row| {
+                if row.id == action.spell_id {
+                    found = Some(row);
+                }
+            });
+            found?
+        }
+        None => return None,
+    };
     let effect = row.damage_effect();
     if effect.is_nil() {
         return None;
@@ -85,6 +99,26 @@ fn spells_matching(sim: &Sim, unit: crate::prepare::sim::UnitId, mask: i64) -> V
         .iter()
         .enumerate()
         .filter(|(_, spell)| sim.spell(**spell).matches(mask))
+        .map(|(position, _)| position)
+        .collect()
+}
+
+/// The spellbook positions of the healer's heals (the heal mask) that a client effect's class
+/// flags name.
+fn heals_named(
+    sim: &Sim,
+    unit: crate::prepare::sim::UnitId,
+    flags: &crate::data::spells::ClassFlags,
+) -> Vec<usize> {
+    sim.unit(unit)
+        .spellbook
+        .iter()
+        .enumerate()
+        .filter(|(_, spell)| {
+            let spell = sim.spell(**spell);
+            spell.matches(masks::HEAL)
+                && crate::prepare::spell_mod::class_flags_matches(flags, &spell.class_flags)
+        })
         .map(|(position, _)| position)
         .collect()
 }
@@ -392,22 +426,30 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
     if let Some(aura) = priest.inner_focus_aura {
         // talents_discipline.go applyInnerFocus
         let rank = data.inner_focus.highest();
-        let spenders = spells_matching(sim, player, masks::ALL);
+        let cost = rank.effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_COST);
+        let crit = rank.effect(
+            dbcenums::A_ADD_FLAT_MODIFIER,
+            dbcenums::SPELLMOD_CRITICAL_CHANCE,
+        );
+        // The healer's heals (Rust only) carry the heal mask, outside Go's masks::ALL. The
+        // client's masks on Inner Focus's two effects name them: every heal spends its one
+        // charge, and the direct heals take its crit (Renew and Power Word: Shield do not).
+        // Without them a healer's Inner Focus never ended and made every heal free.
+        let mut spenders = spells_matching(sim, player, masks::ALL);
+        spenders.extend(heals_named(sim, player, &cost.class_flags));
+        let mut crit_spells = mod_spells(
+            sim,
+            player,
+            masks::ALL
+                & !(masks::SHADOW_WORD_DEATH | masks::DEVOURING_PLAGUE | masks::SHADOW_WORD_PAIN),
+            0,
+        );
+        crit_spells.extend(heals_named(sim, player, &crit.class_flags));
         effects.push(json!({
             "kind": "inner_focus", "spell_id": rank.id, "aura": sim.aura(aura).label,
-            "cost_percent": rank
-                .effect(dbcenums::A_ADD_PCT_MODIFIER, dbcenums::SPELLMOD_COST)
-                .average(CHARACTER_LEVEL) as i32,
-            "crit_percent": rank
-                .effect(dbcenums::A_ADD_FLAT_MODIFIER, dbcenums::SPELLMOD_CRITICAL_CHANCE)
-                .average(CHARACTER_LEVEL),
-            "crit_spells": mod_spells(
-                sim,
-                player,
-                masks::ALL
-                    & !(masks::SHADOW_WORD_DEATH | masks::DEVOURING_PLAGUE | masks::SHADOW_WORD_PAIN),
-                0,
-            ),
+            "cost_percent": cost.average(CHARACTER_LEVEL) as i32,
+            "crit_percent": crit.average(CHARACTER_LEVEL),
+            "crit_spells": crit_spells,
             "spender_spells": spenders,
         }));
     }
@@ -436,13 +478,34 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
                 .average(CHARACTER_LEVEL) / 100.0,
         }));
     }
+    // talents_shadow.go applyVampiricEmbrace, under Forever's rules (Go's exporter leaves the
+    // cast unknown): the debuff on each target, the first's copied to the others, heals the
+    // priest for a share of the Shadow damage the priest deals that target. Its party share is
+    // the player's alone.
+    if talents.bool("vampiric_embrace") && sim.rules == Rules::Forever {
+        let rank = data.vampiric_embrace.highest();
+        let target = env.encounter.targets[0];
+        let aura = sim
+            .unit(target)
+            .auras
+            .iter()
+            .map(|&aura| sim.aura(aura))
+            .find(|aura| aura.label.starts_with("Vampiric Embrace - "));
+        if let Some(aura) = aura {
+            effects.push(json!({
+                "kind": "vampiric_embrace", "spell_id": rank.id, "aura": aura.label,
+                "heal_fraction": rank.effect(dbcenums::A_DUMMY, 0).average(CHARACTER_LEVEL) / 100.0,
+                "metrics_action_id": action_id(Some(&ActionId::spell(rank.id))),
+            }));
+        }
+    }
     // smite.go: a cast on the rank's own row.
     effects.push(json!({"kind": "smite"}));
     // holy_fire.go: the hit rolls, a landed hit applies the snapshotting dot, then it is dealt.
     effects.push(json!({"kind": "holy_fire", "ranks": dot_ranks(&data.holy_fire)}));
     // penance.go: every rank, on the shared category cooldown, fires its own damage bolt, the
     // first the cast's tooltip names, on application and a channel tick a second.
-    if talents.bool("penance") {
+    if talents.bool("penance") && !priest.healer {
         let mut ranks = Vec::new();
         data.penance.each(|_, rank| {
             let bolt = rank.refs()[0];

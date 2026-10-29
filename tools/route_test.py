@@ -1,10 +1,12 @@
 import json
+import os
 from pathlib import Path
 import stat
 import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
@@ -167,6 +169,16 @@ class RouteTest(BundleTest):
         self.assertEqual(decision["preparation"], {"provider": "go"})
         self.assertEqual(self.calls(), ["prepare", "sim --gate"])
 
+    def test_with_go_off_a_request_rust_cannot_prepare_is_refused_without_the_exporter(self):
+        with mock.patch.dict(os.environ, {"FOREVER_GO_FALLBACK": "0"}):
+            decision = self.decide()
+        self.assertEqual(decision["status"], "fallback")
+        self.assertEqual(decision["codes"], ["class"])
+        self.assertEqual(decision["refusals"], [{"code": "class", "reason": "not prepared yet"}])
+        self.assertEqual(decision["preparation"]["provider"], "rust")
+        self.assertEqual(self.calls(), ["sim --request --gate"])
+        self.assertFalse((self.output / "result.json").exists())
+
     def test_a_refused_request_falls_back_with_its_codes(self):
         decision = self.decide(refusals=REFUSALS)
         self.assertEqual(decision["status"], "fallback")
@@ -298,6 +310,15 @@ class BatchTest(BundleTest):
         calls = (self.bundle / "bin" / "calls.log").read_text().split("\n")[:-1]
         self.assertEqual(calls, ["prepare --request", "check"] * 2 + ["sim"] * 2)
         self.assertEqual([entry["preparation"] for entry in decision["requests"]], [{"provider": "rust"}] * 2)
+
+    def test_with_go_off_a_batch_rust_cannot_prepare_runs_no_exporter(self):
+        with mock.patch.dict(os.environ, {"FOREVER_GO_FALLBACK": "off"}):
+            decision = self.decide_batch({"rust_prepares": True}, {})
+        self.assertEqual(decision["status"], "fallback")
+        calls = (self.bundle / "bin" / "calls.log").read_text().split("\n")[:-1]
+        self.assertEqual(calls, ["prepare --request", "check", "prepare --request"])
+        self.assertEqual(decision["requests"][1]["codes"], ["class"])
+        self.assertEqual(self.results(), [])
 
     def test_one_refused_candidate_sends_the_whole_batch_to_go(self):
         decision = self.decide_batch({}, {"refusals": REFUSALS}, {})

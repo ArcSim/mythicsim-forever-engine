@@ -79,7 +79,11 @@ pub(crate) fn on_spell_hit_dealt(
                     let proc_spell = fight.agent.seals.seals[seal].proc_spell;
                     fight.cast(proc_spell, result.target);
                 }
-                SealKind::Crusader => unreachable!("Seal of the Crusader leaves no Echo"),
+                // Go: the Echo of Justice has nothing to replay.
+                SealKind::Justice => {}
+                SealKind::Crusader | SealKind::Light | SealKind::Wisdom => {
+                    unreachable!("Seal of the Crusader, Light and Wisdom leave no Echo")
+                }
             }
         }
         fight.agent.echoes[index].seal = None;

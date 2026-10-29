@@ -76,6 +76,9 @@ pub(crate) struct ParseOptions {
     /// Go `ReadAuraAs`: every effect of the first aura is read as if the row stated the second,
     /// at the row's own amount.
     pub read_as: Vec<(i32, i32)>,
+    /// Effect positions (1 based) whose amount is read as the second value instead of the
+    /// row's, for a client change the frozen spell data does not carry yet.
+    pub amount_as: Vec<(i32, f64)>,
 }
 
 impl ParseOptions {
@@ -297,6 +300,13 @@ fn parse(
             continue;
         }
         let mut value = effect.average(level);
+        if let Some(&(_, amount)) = options
+            .amount_as
+            .iter()
+            .find(|(position, _)| *position == i as i32 + 1)
+        {
+            value = amount;
+        }
         if effect.points_per_resource != 0.0 && value == 0.0 {
             if !options.combo_points {
                 parsed.skipped.push((i as i32 + 1, effect.aura));

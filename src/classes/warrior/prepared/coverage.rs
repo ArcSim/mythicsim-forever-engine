@@ -34,8 +34,10 @@ const EFFECTS: &[&str] = &[
     "execute",
     "warrior_flurry",
     "hamstring",
+    "pummel",
     "heroic_strike_queue",
     "intimidating_shout",
+    "concussion_blow",
     "mortal_strike",
     "overpower",
     "overpower_window",
@@ -61,6 +63,11 @@ const EFFECTS: &[&str] = &[
     "warrior_stances",
     "weaponmaster_sword",
     "whirlwind",
+    "mocking_blow",
+    "shield_bash",
+    "victory_rush",
+    "warrior_disarm",
+    "warrior_intercept",
 ];
 
 /// The effect kind whose implementation executes a Warrior spell.
@@ -73,6 +80,12 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "whirlwind" | "whirlwind_off_hand" => Some("whirlwind"),
         "execute" => Some("execute"),
         "hamstring" => Some("hamstring"),
+        "pummel" => Some("pummel"),
+        "shield_bash" => Some("shield_bash"),
+        "mocking_blow" => Some("mocking_blow"),
+        "disarm" => Some("warrior_disarm"),
+        "victory_rush" => Some("victory_rush"),
+        "intercept" => Some("warrior_intercept"),
         "berserker_rage" => Some("berserker_rage"),
         "death_wish" => Some("death_wish"),
         "recklessness" => Some("recklessness"),
@@ -92,6 +105,7 @@ fn spell_capability(spell: &Spell) -> Option<&'static str> {
         "challenging_shout" => Some("challenging_shout"),
         "taunt" => Some("taunt"),
         "intimidating_shout" => Some("intimidating_shout"),
+        "concussion_blow" => Some("concussion_blow"),
         "retaliation" | "retaliation_hit" => Some("retaliation"),
         "sweeping_strikes" => Some("sweeping_strikes"),
         "battle_stance" | "berserker_stance" | "defensive_stance" => Some("warrior_stances"),
@@ -123,13 +137,17 @@ fn claims(effect: &Effect) -> Vec<(&'static str, &str)> {
         } => vec![("player", trigger_aura), ("player", aura)],
         Effect::Retaliation { aura, .. }
         | Effect::WarriorCharge { aura, .. }
+        | Effect::WarriorIntercept { aura, .. }
+        | Effect::VictoryRush { aura, .. }
         | Effect::ShieldWall { aura, .. }
         | Effect::ShieldBlock { aura, .. }
         | Effect::LastStand { aura, .. }
         | Effect::SweepingStrikes { aura, .. } => {
             vec![("player", aura)]
         }
-        Effect::ThunderClap { aura, .. } | Effect::DemoralizingShout { aura, .. } => {
+        Effect::ThunderClap { aura, .. }
+        | Effect::DemoralizingShout { aura, .. }
+        | Effect::WarriorDisarm { aura, .. } => {
             vec![("target", aura)]
         }
         Effect::RageOnAvoid { triggers, .. } => triggers

@@ -186,8 +186,8 @@ fn a_restoration_druid_is_prepared_with_its_heals() {
         .iter()
         .find(|effect| effect["kind"] == "heals")
         .expect("the heals are exported");
-    // Every rank of Healing Touch, Rejuvenation and Regrowth.
-    assert_eq!(heals["heals"].as_array().unwrap().len(), 11 + 11 + 9);
+    // Every rank of Healing Touch, Rejuvenation, Regrowth and Tranquility.
+    assert_eq!(heals["heals"].as_array().unwrap().len(), 11 + 11 + 9 + 4);
 }
 
 /// A bear tanking the target is prepared with the target's swing at it; the fixture harness

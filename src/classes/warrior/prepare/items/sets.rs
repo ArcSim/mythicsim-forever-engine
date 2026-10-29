@@ -304,7 +304,17 @@ fn battlegear_of_heroism_2(env: &mut Environment, aura: AuraId) {
 /// Chance on melee attack to heal for 88 to 132, and in Forever to return 10 Rage.
 fn battlegear_of_heroism_4(env: &mut Environment, aura: AuraId) {
     let unit = env.player;
-    let dpm = Rc::new(env.sim.new_ppm_manager(unit, 1.0, ProcMask::MELEE));
+    // Go `NewLegacyPPMManager`, which an item swap rebuilds for the weapons in the hands.
+    let dpm = Rc::new(
+        env.sim
+            .new_ppm_manager(unit, 1.0, ProcMask::MELEE)
+            .rebuilt_by_swap(
+                &env.sim,
+                unit,
+                crate::prepare::item_swap::ManagerChance::Ppm(1.0),
+                crate::prepare::item_swap::ManagerMask::Static(ProcMask::MELEE),
+            ),
+    );
     env.sim.attach_proc_trigger(
         aura,
         &ProcTrigger {

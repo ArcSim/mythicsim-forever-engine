@@ -192,6 +192,9 @@ pub(crate) struct Shaman {
     flametongue_totem_aura: Option<AuraId>,
     /// A Restoration shaman's heals, for the export.
     heals: Vec<crate::prepare::heals::HealRank>,
+    /// Spirit Weapons' threat multiplier on a Rockbiter Weapon aura that follows the weapon in
+    /// the hand, 0 when it is permanent or the talent is not taken.
+    rockbiter_swap_threat: StateSlot,
 }
 
 /// Go `Character.WeaponFromMainHand`.
@@ -301,6 +304,7 @@ pub(crate) fn new_shaman(
         sync_type,
         windfury_ap_bonus,
         chain_lightning_bounce_bonus: sim.new_state_slot(0.0),
+        rockbiter_swap_threat: sim.new_state_slot(0.0),
         flame_shock: None,
         magma_totem: None,
         flametongue_totem_aura: None,
@@ -475,8 +479,8 @@ impl PrepAgent for Shaman {
     }
 
     /// The Shaman auras whose gain and expiry change stats through `AddStatsDynamic`.
-    fn stat_auras(&self, _sim: &Sim, _unit: UnitId) -> Vec<String> {
-        [
+    fn stat_auras(&self, sim: &Sim, _unit: UnitId) -> Vec<String> {
+        let mut labels: Vec<String> = [
             "Strength Of Earth Totem (Self)",
             "Grace Of Air Totem (Self)",
             "Mana Spring Totem (Self)",
@@ -484,7 +488,12 @@ impl PrepAgent for Shaman {
         ]
         .iter()
         .map(|label| label.to_string())
-        .collect()
+        .collect();
+        // Stormcaller's Garb's proc aura, which Forever's rules describe.
+        if sim.rules == crate::prepare::sim::Rules::Forever {
+            labels.push("Stormcaller's Wrath".to_string());
+        }
+        labels
     }
 
     fn damage_effect(&self, sim: &Sim, spell: SpellId) -> Option<serde_json::Value> {

@@ -189,6 +189,9 @@ impl Warlock {
                 "Unknown" | "CurrentTarget" | "PreviousTarget" | "NextTarget" | "Self" => true,
                 "Target" => (target.i32("index") as usize) < enemies,
                 "Player" => target.i32("index") == 0,
+                // Go `GetUnit` names no unit for the sets of all players and all targets, so the
+                // constructor returns nil.
+                "AllPlayers" | "AllTargets" => false,
                 // A pet or owner reference is not prepared: the core action refuses it.
                 _ => return None,
             },

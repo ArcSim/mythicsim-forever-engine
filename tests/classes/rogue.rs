@@ -41,7 +41,8 @@ fn poison_listener_needs_its_effect() {
     ));
 }
 
-/// Energy and combo point values need the energy bar Go would read them from.
+/// A spell that costs energy needs the energy bar. Energy and combo point values without one
+/// give no value, as Go's do, so they are not refused themselves.
 #[test]
 fn energy_values_need_an_energy_bar() {
     let mut value = combat_json();
@@ -51,9 +52,9 @@ fn energy_values_need_an_energy_bar() {
         .any(|(code, reason)| *code == "class_limit"
             && reason.ends_with("which costs energy the player lacks")));
     let reasons = reasons(value);
-    assert!(reasons
+    assert!(!reasons
         .iter()
-        .any(|reason| reason.ends_with("reads energy or combo points, which the player lacks")));
+        .any(|reason| reason.contains("reads energy or combo points")));
     assert!(reasons
         .iter()
         .any(|reason| reason.ends_with("which costs energy the player lacks")));

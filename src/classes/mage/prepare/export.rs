@@ -12,7 +12,7 @@ use crate::contracts::request::Message;
 use crate::prepare::character::constants::CHARACTER_LEVEL;
 use crate::prepare::dbcenums;
 use crate::prepare::export::action_id;
-use crate::prepare::sim::{Duration, Sim, SpellId, UnitId, MILLISECOND, SECOND};
+use crate::prepare::sim::{Duration, Rules, Sim, SpellId, UnitId, MILLISECOND, SECOND};
 use crate::prepare::spell::DefenseType;
 use crate::prepare::spelldata::{Ladder, Spell as Row};
 
@@ -68,13 +68,30 @@ pub(super) fn damage_effect(sim: &Sim, spell: SpellId) -> Option<Value> {
     if action.spell_id == 0 || action.tag != 0 {
         return None;
     }
-    let row = damage_rows().get(&action.spell_id)?;
+    let row = match damage_rows().get(&action.spell_id) {
+        Some(row) => *row,
+        // Frost Blast (patch 153) rolls Frostbolt's way, but Go's exporter lists no row for it,
+        // so only Forever's rules describe it.
+        None if sim.rules == Rules::Forever => frost_blast_row(action.spell_id)?,
+        None => return None,
+    };
     let effect = row.damage_effect();
     if effect.is_nil() {
         // Go's exporter stops on a row without a damage effect; there is nothing to describe.
         return None;
     }
     Some(json!({"average": effect.average(CHARACTER_LEVEL), "variance": effect.variance}))
+}
+
+/// A Frost Blast rank's client row.
+fn frost_blast_row(id: i32) -> Option<&'static Row> {
+    let mut found = None;
+    spell_data().frost_blast.each(|_, row| {
+        if row.id == id {
+            found = Some(row);
+        }
+    });
+    found
 }
 
 fn nanos(d: Duration) -> i64 {
@@ -163,14 +180,25 @@ pub(super) fn effects(talents: &Message, sim: &Sim, unit: UnitId) -> Vec<Value> 
     let winters_chill = talents.i32("winters_chill");
     if winters_chill > 0 {
         let trigger = data.winters_chill_triggered.highest();
-        effects.push(json!({
+        let mut effect = json!({
             "kind": "winters_chill", "talent_rank": winters_chill,
             "proc_chance": data.winters_chill.effect_at(2).fraction_at(winters_chill),
             "max_stacks": data.winters_chill.effect_at(1).value_at(winters_chill) as i32,
             "damage_per_stack": trigger.effect_n(1).percent(),
             "duration_ns": nanos(trigger.duration()),
             "trigger_aura": "Winters Chill Talent", "aura": "Winter's Chill",
-        }));
+        });
+        // Client 1.60.1.70630 (SpellEffect 11180 effect 3 and 12579 effect 2, +7 each; 11180
+        // SpellAuraOptions ProcCharges 1; 12579 ProcTypeMask 131072): the stacks are "your next
+        // Cone of Cold", which they make deal 7% more of the mage's spell damage each, and only
+        // Frostbolt, Frost Blast and an empowered Ice Lance apply them. The reference keeps
+        // the 70425 rule: any landed Frost damage, stacks that stay.
+        if sim.rules == Rules::Forever {
+            effect["spell_power_per_stack"] =
+                json!(data.winters_chill.effect_at(3).fraction_at(winters_chill));
+            effect["cone_of_cold_consumes"] = json!(true);
+        }
+        effects.push(effect);
     }
     // ice_lance.go
     if talents.bool("ice_lance") {

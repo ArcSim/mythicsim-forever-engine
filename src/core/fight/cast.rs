@@ -6,8 +6,8 @@ use crate::{
 };
 
 use super::{
-    log::action_string, Action, Agent, AuraRef, Fight, ResourceKind, Side, SpellBehavior, SpellId,
-    PRIORITY_GCD, SPELL_PUSHBACK_DURATION,
+    log::action_string, Action, Agent, AuraRef, EnergizedBar, Fight, ResourceKind, Side,
+    SpellBehavior, SpellId, PRIORITY_GCD, SPELL_PUSHBACK_DURATION,
 };
 
 /// Go `MaxSpellQueueWindow`.
@@ -267,6 +267,12 @@ impl<A: Agent> Fight<A> {
         if !self.extra_cast_condition(spell) {
             if log_failure {
                 self.cast_failure(spell, |_| "extra spell condition".into());
+            }
+            return false;
+        }
+        if self.innervate_blocks(spell) {
+            if log_failure {
+                self.cast_failure(spell, |_| "Innervate is active".into());
             }
             return false;
         }
@@ -840,18 +846,18 @@ impl<A: Agent> Fight<A> {
                 average,
                 variance,
                 periodic,
+                bar,
                 ..
             } => {
                 if periodic {
-                    // Go `spell.SelfHot().Apply`: the ticks gain the mana.
+                    // Go `spell.SelfHot().Apply`: the ticks gain the resource.
                     let dot = self.spells[spell]
                         .dot
                         .expect("a periodic energize has its self hot");
                     self.apply_dot(dot);
                 } else {
                     let gain = self.effect_roll(average, variance);
-                    let metrics = self.item_metrics(spell);
-                    self.add_mana(gain, metrics);
+                    self.energize_bar(spell, bar, gain);
                 }
             }
             SpellBehavior::DiamondFlask(_) => {
@@ -934,7 +940,7 @@ impl<A: Agent> Fight<A> {
             // the player is too.
             SpellBehavior::CastsSpell(inner) => {
                 let target = if target == Side::Player {
-                    Side::Target
+                    self.current_target_side()
                 } else {
                     target
                 };
@@ -1060,6 +1066,18 @@ impl<A: Agent> Fight<A> {
     }
 
     /// The mana metrics registered for an item or class spell action.
+    /// Go spell_data_energize.go `energizedBar.add`: the gain on the bar the item fills.
+    pub(crate) fn energize_bar(&mut self, spell: SpellId, bar: EnergizedBar, gain: f64) {
+        match bar {
+            EnergizedBar::Mana => {
+                let metrics = self.item_metrics(spell);
+                self.add_mana(gain, metrics);
+            }
+            EnergizedBar::Rage(metrics) => self.add_rage(gain, metrics),
+            EnergizedBar::Energy(metrics) => self.add_energy(gain, metrics),
+        }
+    }
+
     pub(crate) fn item_metrics(&mut self, spell: SpellId) -> usize {
         if let Some(metrics) = self.spells[spell].mana_metrics {
             return metrics;
@@ -1465,7 +1483,20 @@ impl<A: Agent> Fight<A> {
                     .map_or((0.0, 0.0), |bar| (bar.max, bar.current));
                 max - current >= (min + spread) - spill && *selected
             }
-            SpellBehavior::EnergizeOnUse { whole, .. } => max - mana >= *whole,
+            SpellBehavior::EnergizeOnUse { whole, bar, .. } => {
+                let room = match bar {
+                    EnergizedBar::Mana => max - mana,
+                    EnergizedBar::Rage(_) => self
+                        .rage
+                        .as_ref()
+                        .map_or(0.0, |rage| rage.max - rage.current),
+                    EnergizedBar::Energy(_) => self
+                        .energy
+                        .as_ref()
+                        .map_or(0.0, |energy| energy.max - energy.current),
+                };
+                room >= *whole
+            }
             SpellBehavior::PeriodicMana { min_deficit, .. } => max - mana >= *min_deficit,
             // Go: only a mana gain asks whether the mana fits.
             SpellBehavior::PotionResource {
@@ -1530,7 +1561,9 @@ impl<A: Agent> Fight<A> {
         self.cooldown_should_activate(spell)
     }
 
-    /// Go `getFirstReadyMCD`.
+    /// Go `getFirstReadyMCD`. Under Forever's rule (`autocast_skips_unready_cooldowns`) it
+    /// passes over a cooldown that may not fire at this point of the GCD, as wowsims/forever
+    /// does since 21 and 22 October 2026 (10b0e65f2, fbf5d98e8).
     pub(crate) fn first_ready_cooldown(&mut self) -> Option<usize> {
         if self.now < self.cooldown_min_ready {
             return None;
@@ -1540,6 +1573,9 @@ impl<A: Agent> Fight<A> {
             if !self.spell_ready(self.major_cooldowns[cooldown].spell) {
                 continue;
             }
+            if self.autocast_skips_unready_cooldowns && !self.gcd_allows_cooldown(cooldown) {
+                continue;
+            }
             if self.should_activate_helper(cooldown) {
                 return Some(cooldown);
             }
@@ -1547,9 +1583,41 @@ impl<A: Agent> Fight<A> {
         None
     }
 
+    /// Whether a major cooldown may fire at this point of the GCD. Cooldowns go just before
+    /// the next spell, so once the GCD is ready; explosives, off the GCD with a short cast,
+    /// right after one starts, and one whose cast fits in the shortest GCD only while what is
+    /// left of the GCD still covers it, so it never delays the next spell. A reactive one goes
+    /// either way.
+    fn gcd_allows_cooldown(&self, cooldown: usize) -> bool {
+        let spell = self.major_cooldowns[cooldown].spell;
+        if self.spells[spell].flags.reactive {
+            return true;
+        }
+        let left = self.gcd_time_to_ready();
+        if !self.major_cooldowns[cooldown].explosive {
+            return left == 0;
+        }
+        let cast = self.spell_cast_time(spell);
+        left > 0 && !(left < cast && cast <= crate::prepare::spell::GCD_MIN)
+    }
+
+    /// Go `Spell.CastTime`: the default cast time with cast speed, unless the spell ignores
+    /// haste.
+    fn spell_cast_time(&self, spell: SpellId) -> i64 {
+        let state = &self.spells[spell];
+        if state.ignore_haste {
+            state.default_cast.cast_time
+        } else {
+            self.apply_cast_speed_for_spell(state.default_cast.cast_time, spell)
+        }
+    }
+
     /// Go `APLActionAutocastOtherCooldowns.IsReady`.
     pub(crate) fn autocast_ready(&mut self) -> Option<usize> {
         let cooldown = self.first_ready_cooldown()?;
+        if self.autocast_skips_unready_cooldowns {
+            return Some(cooldown);
+        }
         let spell = self.major_cooldowns[cooldown].spell;
         let explosive = self.major_cooldowns[cooldown].explosive;
         (self.gcd_ready() != explosive || self.spells[spell].flags.reactive).then_some(cooldown)
@@ -1573,10 +1641,22 @@ impl<A: Agent> Fight<A> {
                 until = until.min(self.spell_ready_at(spell));
                 continue;
             }
+            if self.autocast_skips_unready_cooldowns && !self.gcd_allows_cooldown(cooldown) {
+                // Passed over until the GCD lets it: a plain one until the GCD runs out, an
+                // explosive one until a cast starts the GCD.
+                if !self.major_cooldowns[cooldown].explosive {
+                    until = until.min(self.player.gcd);
+                }
+                continue;
+            }
             if !self.asking_is_quiet(spell) {
                 return None;
             }
             if self.should_activate_helper(cooldown) {
+                if self.autocast_skips_unready_cooldowns {
+                    // Accepted and allowed: autocasting is ready, nothing to cache.
+                    return None;
+                }
                 // Accepted, so only the GCD holds it back: a plain one until the GCD runs
                 // out, an explosive one until a cast starts the GCD.
                 if !self.major_cooldowns[cooldown].explosive {
@@ -1695,7 +1775,7 @@ impl<A: Agent> Fight<A> {
             let target = if self.spells[spell].flags.helpful {
                 Side::Player
             } else {
-                Side::Target
+                self.current_target_side()
             };
             self.cast(spell, target);
             self.major_cooldowns[cooldown].uses += 1;

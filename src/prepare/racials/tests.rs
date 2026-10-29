@@ -48,6 +48,10 @@ fn factory(sim: &mut Sim, unit: UnitId, _player: &Message) -> Result<Box<dyn Pre
 }
 
 fn environment(race: &str, player: &str, mob_type: &str) -> Environment {
+    environment_with(Rules::Forever, race, player, mob_type)
+}
+
+fn environment_with(rules: Rules, race: &str, player: &str, mob_type: &str) -> Environment {
     let request = format!(
         r#"{{"simOptions":{{"iterations":1,"randomSeed":"100"}},
         "raid":{{"parties":[{{"players":[{{"name":"Warrior","class":"ClassWarrior",
@@ -55,7 +59,7 @@ fn environment(race: &str, player: &str, mob_type: &str) -> Environment {
         "encounter":{{"duration":180,"targets":[{{"level":63,"mobType":"{mob_type}"}}]}}}}"#
     );
     let request = Request::from_json(request.as_bytes()).expect("a valid request");
-    match Environment::new(request.message(), factory) {
+    match Environment::with_rules(request.message(), factory, rules) {
         Ok(env) => env,
         Err(refusal) => panic!("{refusal}"),
     }
@@ -63,6 +67,11 @@ fn environment(race: &str, player: &str, mob_type: &str) -> Environment {
 
 fn warrior(race: &str, player: &str) -> Environment {
     environment(race, player, "MobTypeElemental")
+}
+
+/// The warrior as the Go reference prepares it, which keeps the 16 October racials.
+fn go_warrior(race: &str, player: &str) -> Environment {
+    environment_with(Rules::GoReference, race, player, "MobTypeElemental")
 }
 
 /// The equipment of one main hand weapon: Worn Mace (36), Worn Shortsword (25) and Worn Axe (37)
@@ -149,8 +158,15 @@ fn blood_fury_is_percent_based_and_reports_its_temporary_stats() {
     assert_eq!(env.sim.spell(spell_id).related_self_buff, Some(blood_fury));
     let icd = env.sim.aura(blood_fury).icd.expect("an ICD");
     assert_eq!(icd, env.sim.spell(spell_id).cd);
-    // 16 October beta notes: three minutes (was two).
-    assert_eq!(icd.duration, 3 * MINUTE);
+    // The 26 October notes' 27 October additions: two minutes (was three).
+    assert_eq!(icd.duration, 2 * MINUTE);
+    // 16 October beta notes: three minutes (was two), which the Go reference keeps.
+    let go = go_warrior("RaceOrc", "");
+    let go_blood_fury = aura(&go, "Blood Fury").expect("Blood Fury");
+    assert_eq!(
+        go.sim.aura(go_blood_fury).icd.expect("an ICD").duration,
+        3 * MINUTE
+    );
 }
 
 #[test]
@@ -170,6 +186,16 @@ fn berserking_is_a_flat_ten_percent_with_no_cost() {
     let mcds = &env.sim.character(unit).initial_major_cooldowns;
     assert_eq!(mcds.len(), 1);
     assert_eq!(mcds[0].cooldown_type, cooldown_type::DPS);
+    // The 26 October notes' 27 October additions: 15 seconds (was 10), which the Go reference
+    // keeps.
+    assert_eq!(env.sim.aura(berserking).duration, 15 * SECOND);
+    let go = go_warrior("RaceTroll", "");
+    assert_eq!(
+        go.sim
+            .aura(aura(&go, "Berserking").expect("Berserking"))
+            .duration,
+        10 * SECOND
+    );
 }
 
 #[test]
@@ -245,12 +271,35 @@ fn shatter_curse_is_a_survival_cooldown_on_the_six_magic_schools() {
 }
 
 #[test]
-fn tauren_endurance_and_dwarf_earth_fury_grant_two_percent_crit_damage() {
-    // 16 October beta notes: Endurance grants 2% increased critical damage (was 1% hit) and
-    // Earth Fury replaces Mace Specialization with the same.
+fn tauren_endurance_is_health_only_and_dwarf_artisans_precision_adds_hit() {
+    // 26 October notes: Endurance keeps only its 5% health; Earth Fury is removed and Artisan's
+    // Precision adds 1% hit with spells and attacks.
     let human = warrior("RaceHuman", "");
+    let crit_damage =
+        |env: &Environment| env.sim.unit(env.player).pseudo_stats.crit_damage_multiplier;
     for race in ["RaceTauren", "RaceDwarf"] {
         let env = warrior(race, "");
+        assert_eq!(crit_damage(&env), crit_damage(&human));
+        let hit = if race == "RaceDwarf" { 1.0 } else { 0.0 };
+        for stat_kind in [Stat::PhysicalHitPercent, Stat::SpellHitPercent] {
+            assert!((stat(&env, stat_kind) - stat(&human, stat_kind) - hit).abs() < 1e-9);
+        }
+    }
+    let tauren = warrior("RaceTauren", "");
+    let tauren_without = warrior("RaceTauren", r#","disableRacials":true"#);
+    assert!(
+        (stat(&tauren, Stat::Health) / stat(&tauren_without, Stat::Health) - 1.05).abs() < 1e-9
+    );
+    assert!(aura(&warrior("RaceDwarf", &weapon(36)), "Earth Fury").is_none());
+}
+
+#[test]
+fn go_reference_keeps_the_16_october_crit_damage_racials() {
+    // 16 October beta notes: Endurance grants 2% increased critical damage (was 1% hit) and
+    // Earth Fury replaces Mace Specialization with the same.
+    let human = go_warrior("RaceHuman", "");
+    for race in ["RaceTauren", "RaceDwarf"] {
+        let env = go_warrior(race, "");
         assert_eq!(
             stat(&env, Stat::PhysicalHitPercent),
             stat(&human, Stat::PhysicalHitPercent)
@@ -266,7 +315,7 @@ fn tauren_endurance_and_dwarf_earth_fury_grant_two_percent_crit_damage() {
         );
     }
     // Earth Fury is the multiplier alone, with no aura.
-    let dwarf = warrior("RaceDwarf", &weapon(36));
+    let dwarf = go_warrior("RaceDwarf", &weapon(36));
     assert!(aura(&dwarf, "Earth Fury").is_none());
 }
 
@@ -280,8 +329,16 @@ fn touch_of_the_grave_uses_the_melee_variant() {
         Some(1260189)
     );
     assert!(aura.events.on_spell_hit_dealt);
-    // 16 October beta notes: a 25 second internal cooldown (was 1 sec).
-    assert_eq!(aura.icd.map(|icd| icd.duration), Some(25 * SECOND));
+    // The 26 October notes' 27 October additions: 15 seconds (was 25).
+    assert_eq!(aura.icd.map(|icd| icd.duration), Some(15 * SECOND));
+    // 16 October beta notes: 25 seconds (was 1 sec), which the Go reference keeps.
+    let go = go_warrior("RaceUndead", "");
+    let go_touch = go.sim.aura(
+        go.sim
+            .get_aura(go.player, "Touch of the Grave")
+            .expect("Touch of the Grave"),
+    );
+    assert_eq!(go_touch.icd.map(|icd| icd.duration), Some(25 * SECOND));
     assert!(aura.icd.and_then(|icd| icd.timer).is_some());
     assert_eq!(aura.duration, crate::core::time::NEVER_EXPIRES);
     assert!(aura.active);
@@ -296,14 +353,20 @@ fn skyborne_racials_speed_up_swings_and_hit_elementals_harder() {
         let env = warrior(race, "");
         let unit = env.player;
         let pseudo = &env.sim.unit(unit).pseudo_stats;
-        // 16 October beta notes: Wind Blessed's haste is 3% (was 1%).
+        // 26 October notes: Wind Blessed's haste is 2% (was 3%).
         assert_eq!(
             pseudo.attack_speed_multiplier,
-            human_pseudo.attack_speed_multiplier * 1.03
+            human_pseudo.attack_speed_multiplier * 1.02
         );
         assert_eq!(
             pseudo.cast_speed_multiplier,
-            human_pseudo.cast_speed_multiplier * 1.03
+            human_pseudo.cast_speed_multiplier * 1.02
+        );
+        // 16 October beta notes, which the Go reference keeps: 3% (was 1%).
+        let go = go_warrior(race, "");
+        assert_eq!(
+            go.sim.unit(go.player).pseudo_stats.attack_speed_multiplier,
+            human_pseudo.attack_speed_multiplier * 1.03
         );
         let table = env.attack_table(unit, env.encounter.targets[0]);
         assert_eq!(table.damage_dealt_multiplier, 1.05);
@@ -339,30 +402,40 @@ fn beast_slaying_applies_only_to_beasts() {
 
 #[test]
 fn energized_and_elemental_blessing_change_regen_and_movement() {
-    let mut env = warrior("RaceWindshaperSkyborne", "");
-    let unit = env.player;
-    let blessing = aura(&env, "Elemental Blessing").expect("Elemental Blessing");
-    let before = env.sim.unit(unit).pseudo_stats.movement_speed_multiplier;
-    env.sim.activate(blessing);
-    assert_eq!(
-        env.sim.unit(unit).pseudo_stats.movement_speed_multiplier,
-        before * 1.1
-    );
-    env.sim.deactivate(blessing);
+    // 26 October notes: Skysight is 15% movement speed for 15 seconds (was 10% for 30), and
+    // Read Leyline 50% more regeneration for 15 seconds (was 100%).
+    for (rules, speed, blessing_duration, regen) in [
+        (Rules::Forever, 1.15, 15 * SECOND, 1.5),
+        (Rules::GoReference, 1.1, 30 * SECOND, 2.0),
+    ] {
+        let mut env = environment_with(rules, "RaceWindshaperSkyborne", "", "MobTypeElemental");
+        let unit = env.player;
+        let blessing = aura(&env, "Elemental Blessing").expect("Elemental Blessing");
+        assert_eq!(env.sim.aura(blessing).duration, blessing_duration);
+        let before = env.sim.unit(unit).pseudo_stats.movement_speed_multiplier;
+        env.sim.activate(blessing);
+        assert_eq!(
+            env.sim.unit(unit).pseudo_stats.movement_speed_multiplier,
+            before * speed
+        );
+        env.sim.deactivate(blessing);
+        assert!((env.sim.unit(unit).pseudo_stats.movement_speed_multiplier - before).abs() < 1e-12);
 
-    let mut env = warrior("RaceHighOrderSkyborne", "");
-    let energized = aura(&env, "Energized").expect("Energized");
-    // A warrior has no mana bar, so the aura changes nothing; a mana bar doubles the regen.
-    env.sim.activate(energized);
-    assert_eq!(env.sim.unit(env.player).mana_bar.mana_regen_multiplier, 0.0);
-    env.sim.deactivate(energized);
-    let unit = env.player;
-    env.sim.unit_mut(unit).mana_bar.enabled = true;
-    env.sim.unit_mut(unit).mana_bar.mana_regen_multiplier = 1.0;
-    env.sim.activate(energized);
-    assert_eq!(env.sim.unit(unit).mana_bar.mana_regen_multiplier, 2.0);
-    env.sim.deactivate(energized);
-    assert_eq!(env.sim.unit(unit).mana_bar.mana_regen_multiplier, 1.0);
+        let mut env = environment_with(rules, "RaceHighOrderSkyborne", "", "MobTypeElemental");
+        let energized = aura(&env, "Energized").expect("Energized");
+        assert_eq!(env.sim.aura(energized).duration, 15 * SECOND);
+        // A warrior has no mana bar, so the aura changes nothing; a mana bar gains the regen.
+        env.sim.activate(energized);
+        assert_eq!(env.sim.unit(env.player).mana_bar.mana_regen_multiplier, 0.0);
+        env.sim.deactivate(energized);
+        let unit = env.player;
+        env.sim.unit_mut(unit).mana_bar.enabled = true;
+        env.sim.unit_mut(unit).mana_bar.mana_regen_multiplier = 1.0;
+        env.sim.activate(energized);
+        assert_eq!(env.sim.unit(unit).mana_bar.mana_regen_multiplier, regen);
+        env.sim.deactivate(energized);
+        assert!((env.sim.unit(unit).mana_bar.mana_regen_multiplier - 1.0).abs() < 1e-12);
+    }
 }
 
 #[test]
@@ -390,20 +463,18 @@ fn expansive_mind_and_eureka_for_a_gnome_warrior() {
 }
 
 #[test]
-fn crit_racials_need_no_weapon() {
-    // 16 October beta notes: Human Ruthless (2%) and Orc Savage (1%) replace the sword and axe
-    // specializations and raise both crits with any weapon or none.
+fn ruthless_needs_no_weapon_and_savage_is_gone() {
+    // 26 October notes: Human Ruthless is 1% crit (was 2%) with any weapon or none, and Orc
+    // Savage is removed.
     let crit = |env: &Environment| stat(env, Stat::PhysicalCritPercent);
     let spell_crit = |env: &Environment| stat(env, Stat::SpellCritPercent);
-    for (race, label, percent) in [("RaceHuman", "Ruthless", 2.0), ("RaceOrc", "Savage", 1.0)] {
+    for (race, label, percent) in [("RaceHuman", "Ruthless", 1.0), ("RaceOrc", "Savage", 0.0)] {
         for gear in [String::new(), weapon(25), weapon(36), weapon(37)] {
             let env = warrior(race, &gear);
             let without = warrior(race, &format!(r#"{gear},"disableRacials":true"#));
             assert!((crit(&env) - crit(&without) - percent).abs() < 1e-9);
             assert!((spell_crit(&env) - spell_crit(&without) - percent).abs() < 1e-9);
-            // The crit is a base stat, with no aura.
             assert!(aura(&env, label).is_none());
-            // Withholding the old specialization no longer changes anything.
             let withheld = warrior(
                 race,
                 &format!(r#"{gear},"disableWeaponSpecialization":true"#),
@@ -412,6 +483,35 @@ fn crit_racials_need_no_weapon() {
         }
     }
     assert!(aura(&warrior("RaceDwarf", &weapon(36)), "Mace Specialization").is_none());
+}
+
+#[test]
+fn human_spirit_is_ten_percent() {
+    // 26 October notes: "Human Spirit now increases Spirit by 10% (was 5%)."
+    for (rules, multiplier) in [(Rules::Forever, 1.1), (Rules::GoReference, 1.05)] {
+        let with = environment_with(rules, "RaceHuman", "", "MobTypeElemental");
+        let without = environment_with(
+            rules,
+            "RaceHuman",
+            r#","disableRacials":true"#,
+            "MobTypeElemental",
+        );
+        let (a, b) = (stat(&with, Stat::Spirit), stat(&without, Stat::Spirit));
+        // Stat multipliers round the stat down: 45 base Spirit is 49 at 10%, 47 at 5%.
+        assert_eq!(a, (b * multiplier).floor());
+    }
+}
+
+#[test]
+fn go_reference_keeps_the_16_october_crit_racials() {
+    // 16 October beta notes: Human Ruthless (2%) and Orc Savage (1%) replace the sword and axe
+    // specializations and raise both crits with any weapon or none.
+    let crit = |env: &Environment| stat(env, Stat::PhysicalCritPercent);
+    for (race, percent) in [("RaceHuman", 2.0), ("RaceOrc", 1.0)] {
+        let env = go_warrior(race, &weapon(25));
+        let without = go_warrior(race, &format!(r#"{},"disableRacials":true"#, weapon(25)));
+        assert!((crit(&env) - crit(&without) - percent).abs() < 1e-9);
+    }
 }
 
 /// A warrior that registers a survival on-use cooldown with no GCD, as an item trinket does.

@@ -297,6 +297,8 @@ impl MageAgent {
                     trigger_aura,
                     proc_chance,
                     damage_per_stack,
+                    spell_power_per_stack,
+                    cone_of_cold_consumes,
                     ..
                 } => {
                     let bound = winters_chill::bind(
@@ -305,6 +307,7 @@ impl MageAgent {
                         trigger_aura,
                         *proc_chance,
                         *damage_per_stack,
+                        (*spell_power_per_stack, *cone_of_cold_consumes),
                     )?;
                     fight.agent.winters_chill = Some(Rc::new(bound));
                 }
@@ -764,7 +767,9 @@ impl Agent for MageAgent {
                     .as_ref()
                     .is_some_and(|fingers| fingers.frozen(fight));
                 let multiplier = frozen.then_some(fight.agent.ice_lance_frozen_multiplier);
-                ice_lance::apply(fight, spell, target, multiplier);
+                // Client 70630: an empowered lance applies Winter's Chill.
+                let chill = frozen.then(|| fight.agent.winters_chill.clone()).flatten();
+                ice_lance::apply(fight, spell, target, multiplier, chill.as_deref());
             }
             MageSpell::ArcaneMissiles => arcane_missiles::apply_channel(fight, spell),
             MageSpell::ArcaneMissile => arcane_missiles::apply_missile(fight, spell, target),
@@ -780,7 +785,11 @@ impl Agent for MageAgent {
                 mana_gems::apply(fight, spell, mana);
                 fight.agent.gems.used[gem] = true;
             }
-            MageSpell::AreaHit => area_hit::apply(fight, spell),
+            MageSpell::AreaHit => {
+                // Client 70630: Winter's Chill's stacks add to the next Cone of Cold's damage.
+                let chill = fight.agent.winters_chill.clone();
+                area_hit::apply(fight, spell, chill.as_deref());
+            }
             MageSpell::Flamestrike => flamestrike::apply(fight, spell),
             MageSpell::Blizzard => blizzard::apply_channel(fight, spell),
             MageSpell::BlizzardTick => {
@@ -1012,6 +1021,7 @@ impl Agent for MageAgent {
                 Self::arcane_concentration(fight).on_cast_complete(fight, spell)
             }
             MageAura::MissileBarrage => Self::missile_barrage(fight).on_cast_complete(fight, spell),
+            MageAura::WintersChill => Self::winters_chill(fight).on_cast_complete(fight, spell),
             MageAura::HeatingUp => Self::heating_up(fight).on_cast_complete(fight, spell),
             MageAura::HeatingUpFireBlast => {
                 Self::heating_up(fight).on_fire_blast_cast(fight, spell)

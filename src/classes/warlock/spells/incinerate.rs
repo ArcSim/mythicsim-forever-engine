@@ -19,7 +19,7 @@ pub(crate) fn apply<A: Agent>(
     });
     let mut result = fight.calc_damage(spell, target, base);
     if immolated {
-        result.damage *= immolate_bonus;
+        fight.scale_damage(spell, &mut result, immolate_bonus);
     }
     fight.deal_damage_after_travel(spell, result);
 }

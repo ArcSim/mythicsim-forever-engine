@@ -1,14 +1,13 @@
 //! The on-use trinkets of MythicSim's healer sims under Forever's rules (`prepare::healer_gear`):
 //! a window aura that moves a stacking stats aura's stacks while it is up
 //! ([`Effect::StackingCdOnUse`](crate::contracts::prepared_v2::Effect)), and an aura that
-//! shields the player each direct heal lands on ([`Effect::ShieldOnHeal`]).
+//! shields the player each direct heal lands on ([`Effect::ShieldOnHeal`](crate::contracts::prepared_v2::Effect)).
 
 use super::{Agent, AuraRef, Fight, SpellId, SpellResult};
 
 /// A stacking on-use trinket's window and the stats aura it drives.
 #[derive(Clone, Debug)]
 pub(crate) struct StackingCd {
-    pub(crate) label: String,
     pub(crate) stat_aura: AuraRef,
     pub(crate) decay: bool,
     /// The chance each spell it hears rolls, by spellbook position.
@@ -17,6 +16,10 @@ pub(crate) struct StackingCd {
     pub(crate) heals: bool,
     pub(crate) casts: bool,
     pub(crate) landed_only: bool,
+    /// A hit that dealt no damage is not heard.
+    pub(crate) require_damage: bool,
+    /// The label the chance rolls under: Go's trigger name, else the window's.
+    pub(crate) rng_label: String,
 }
 
 /// An aura that shields the player for a share of each direct heal while it is up.
@@ -25,6 +28,10 @@ pub(crate) struct ShieldOnHeal {
     pub(crate) share: f64,
     /// The item's spell, which the shields count on.
     pub(crate) spell: SpellId,
+    pub(crate) chance: f64,
+    /// Heals the healer instead of shielding.
+    pub(crate) heal: bool,
+    pub(crate) label: String,
 }
 
 /// Which of a window's events a callback is.
@@ -72,14 +79,17 @@ impl<A: Agent> Fight<A> {
             StackEvent::Heal => state.heals,
             StackEvent::Cast => state.casts,
         };
-        if !heard || (state.landed_only && result.is_some_and(|result| !result.landed())) {
+        if !heard
+            || (state.landed_only && result.is_some_and(|result| !result.landed()))
+            || (state.require_damage && result.is_some_and(|result| result.damage == 0.0))
+        {
             return;
         }
         let Some(chance) = state.chances.get(spell).copied().flatten() else {
             return;
         };
         // Go `Proc(chance, label)`, reading the label in place.
-        if !self.rng.proc(chance, &self.stacking_cds[index].label) {
+        if !self.rng.proc(chance, &self.stacking_cds[index].rng_label) {
             return;
         }
         let result = result.copied().unwrap_or(SpellResult {
@@ -113,7 +123,118 @@ impl<A: Agent> Fight<A> {
         if spell == state.spell || result.damage <= 0.0 {
             return;
         }
-        let (shield, amount) = (state.spell, state.share * result.damage);
-        self.deal_shield(shield, amount);
+        let (target, amount, heal) = (state.spell, state.share * result.damage, state.heal);
+        // Go `Proc(chance, label)`, reading the label in place.
+        if !self
+            .rng
+            .proc(state.chance, &self.shields_on_heal[index].label)
+        {
+            return;
+        }
+        if heal {
+            self.deal_flat_healing(target, amount);
+        } else {
+            self.deal_shield(target, amount);
+        }
+    }
+
+    /// Healing of a fixed amount on the player, counted on `spell`: no coefficient, multiplier
+    /// or crit, less the spell's overhealing share.
+    pub(crate) fn deal_flat_healing(&mut self, spell: SpellId, amount: f64) {
+        let index = super::Side::Player.index();
+        let (amount, _) = self.landed_healing(spell, index, amount);
+        let metrics = &mut self.spells[spell].metrics[index];
+        metrics.hits += 1;
+        metrics.total_healing += amount;
+        self.note_burst(amount);
+        if self.log.is_some() {
+            let line = format!(
+                "[{}] {} Hit for {amount:.3} healing.",
+                self.config.player_label,
+                super::log::action_string(&self.spells[spell].id),
+            );
+            self.player_log(&line);
+        }
+    }
+}
+
+/// An instant cast aura: its mods while up, and the spells whose cast spends it.
+#[derive(Clone, Debug)]
+pub(crate) struct InstantCast {
+    pub(crate) mods: Vec<super::ModId>,
+    pub(crate) spends: Vec<bool>,
+}
+
+impl<A: Agent> Fight<A> {
+    pub(crate) fn instant_cast_gained(&mut self, index: usize) {
+        for position in 0..self.instant_casts[index].mods.len() {
+            self.activate_mod(self.instant_casts[index].mods[position]);
+        }
+    }
+
+    pub(crate) fn instant_cast_expired(&mut self, index: usize) {
+        for position in 0..self.instant_casts[index].mods.len() {
+            self.deactivate_mod(self.instant_casts[index].mods[position]);
+        }
+    }
+
+    /// A cast the aura made instant spends it.
+    pub(crate) fn instant_cast_spent(&mut self, aura: AuraRef, index: usize, spell: SpellId) {
+        if self.aura(aura).active
+            && self.instant_casts[index]
+                .spends
+                .get(spell)
+                .copied()
+                .unwrap_or(false)
+        {
+            self.deactivate_aura(aura);
+        }
+    }
+}
+
+/// A self buff of globes, as Water Shield: [`Effect::ManaGlobes`](crate::contracts::prepared_v2::Effect).
+#[derive(Clone, Debug)]
+pub(crate) struct ManaGlobes {
+    pub(crate) fraction: f64,
+    pub(crate) icd: i64,
+    /// The internal cooldown, a runtime timer.
+    pub(crate) timer: usize,
+    pub(crate) metrics: usize,
+}
+
+impl<A: Agent> Fight<A> {
+    /// The buff going up with all its globes.
+    pub(crate) fn mana_globes_gained(&mut self, aura: AuraRef) {
+        let max = self.aura(aura).max_stacks;
+        self.set_stacks(aura, max);
+    }
+
+    /// A direct heal that crits spends a globe for its mana, once per internal cooldown.
+    pub(crate) fn mana_globes_on_heal(
+        &mut self,
+        aura: AuraRef,
+        index: usize,
+        result: &SpellResult,
+    ) {
+        let state = &self.mana_globes[index];
+        if !self.aura(aura).active
+            || result.outcome & super::damage::OUTCOME_CRIT == 0
+            || self.timers[state.timer] > self.now
+        {
+            return;
+        }
+        let (timer, icd, fraction, metrics) =
+            (state.timer, state.icd, state.fraction, state.metrics);
+        self.timers[timer] = self.now + icd;
+        self.changed(super::reads::TIMERS);
+        if self.has_mana_bar() {
+            let mana = fraction * self.unit(super::Side::Player).powers.max_mana;
+            self.add_mana(mana, metrics);
+        }
+        if self.aura(aura).stacks <= 1 {
+            self.deactivate_aura(aura);
+        } else {
+            self.remove_stack(aura);
+        }
     }
 }

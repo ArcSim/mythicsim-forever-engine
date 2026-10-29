@@ -1969,6 +1969,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) casting_regen_at_once: bool,
     /// Forever's rule that a rotation's move waits for a queued spell to fire.
     pub(crate) move_waits_for_queued_cast: bool,
+    /// Forever's rule that a melee swing leaves the Auto Shot timer alone.
+    pub(crate) melee_keeps_auto_shot_timer: bool,
     /// Forever's rule that a move whose end time has come reads as arrived.
     pub(crate) move_arrives_at_destination: bool,
     /// Forever's rule that autocasting passes over a cooldown the GCD holds back.
@@ -4182,6 +4184,7 @@ impl<A: Agent> Fight<A> {
             hp_percent_for_defensives: player.hp_percent_for_defensives,
             casting_regen_at_once: player.casting_regen_at_once,
             move_waits_for_queued_cast: player.move_waits_for_queued_cast,
+            melee_keeps_auto_shot_timer: player.melee_keeps_auto_shot_timer,
             move_arrives_at_destination: player.move_arrives_at_destination,
             autocast_skips_unready_cooldowns: player.autocast_skips_unready_cooldowns,
             threat_follows_damage_bonus: player.threat_follows_damage_bonus,

@@ -914,6 +914,11 @@ pub struct Player {
     /// spell's range before it fires.
     #[serde(default, skip_serializing_if = "is_false")]
     pub move_waits_for_queued_cast: bool,
+    /// Forever's rule: a melee swing leaves the Auto Shot timer where it was, so a shot due at a
+    /// time still fires then after a swing lands before it. False is the Go reference, under
+    /// which every melee swing restarts the timer as if a shot had just fired.
+    #[serde(default, skip_serializing_if = "is_false")]
+    pub melee_keeps_auto_shot_timer: bool,
     /// Forever's rule: a move whose end time has come reads as arrived, so a rotation woken at
     /// that instant, before the move's end action runs, sees the destination. False is the Go
     /// reference, which reads the millisecond-rounded walk a hair short of it and can leave a

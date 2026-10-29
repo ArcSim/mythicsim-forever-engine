@@ -146,6 +146,16 @@ the Go goldens and exporter uses. The departures:
   lost 19 DPS because it moved the Auto Shot onto the global cooldown more often. Forever
   preparation writes `move_waits_for_queued_cast`; a spell out of range where the player stands
   does not hold the move.
+- A melee swing leaves the Auto Shot timer alone, from Forever's bug tracker: the beta restarts
+  the timer on every melee swing ("Ranged swing timer is reset by melee",
+  https://github.com/ClassicWoWCommunity/forever-bugs/issues/14), and a Forever developer
+  answered on 6 October 2026 "For Hunters, this is a Bug with Auto Shot"
+  (https://github.com/ClassicWoWCommunity/forever-bugs/issues/14#issuecomment-6025122239), so the
+  rule models the game as intended. The reference restarts the timer as if a shot had just fired
+  on every white main or off hand swing and every Raptor Strike, so a weaving Hunter's next shot
+  came a full shot after the last melee hit instead of when it was due: on the Survival weave
+  reference request 32.8 Auto Shots a fight, now 39.3. Forever preparation writes
+  `melee_keeps_auto_shot_timer`.
 - A move arrives when its time is up (`move_arrives_at_destination`, Forever preparation): a
   rotation woken at the instant a move ends, before its end action runs, reads the destination.
   The reference reads the walk rounded to the millisecond, 5.001 yards for a step in to 5, takes

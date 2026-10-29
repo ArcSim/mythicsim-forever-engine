@@ -704,8 +704,13 @@ impl<A: Agent> Fight<A> {
         }
         attack.pending_swing_delay = (now - attack.natural_ready_at).max(0);
         attack.natural_ready_at = attack.swing_at;
-        // A melee swing resets the ranged auto timer, as if the shot had just fired.
-        if side == Side::Player && hand != Hand::Ranged && self.autos.ranged_auto {
+        // A melee swing resets the ranged auto timer, as if the shot had just fired. Forever's
+        // rule leaves the timer alone (README, Rust-only mechanics).
+        if side == Side::Player
+            && hand != Hand::Ranged
+            && self.autos.ranged_auto
+            && !self.melee_keeps_auto_shot_timer
+        {
             self.stop_ranged_until(now);
         }
         // Go swings at the unit's current target; a pet's stays the first.

@@ -637,6 +637,124 @@ fn the_ranged_auto_waits_for_a_move_to_end() {
     }
 }
 
+const STEPPER: &str = "survival-hunter (#1)";
+const STEPPER_SHOT: &str = "Casting {OtherID: 4}";
+const STEPPER_SWING: &str = "Casting {OtherID: 3, Tag: 1}";
+const STEPPER_RAPTOR: &str = "Casting {SpellID: 14266, Tag: 1}";
+
+/// A rotation move to `yards` while the fight time is from `from` to before `until` and the
+/// distance to the target compares with `than` by `op`.
+fn step_to(yards: &str, (from, until): (&str, &str), op: &str, than: &str) -> Value {
+    let time = |op: &str, val: &str| json!({"cmp": {"op": op, "lhs": {"currentTime": {}}, "rhs": {"const": {"val": val}}}});
+    json!({"action": {
+        "condition": {"and": {"vals": [
+            time("OpGe", from),
+            time("OpLt", until),
+            {"cmp": {"op": op, "lhs": {"unitDistance": {}}, "rhs": {"const": {"val": than}}}}
+        ]}},
+        "move": {"rangeFromTarget": {"const": {"val": yards}}}
+    }})
+}
+
+/// The weaving Survival Hunter with a 3.6 s bow, 12 yards out at the pull, where its first Auto
+/// Shot fires. With `step`, it walks in to 5 yards a tenth of a second in, its main hand swings
+/// on arrival (Raptor Strike replaces the swing with `raptor`), and it walks back out to 12
+/// yards at 1.3 s, standing still well before its next shot is due. The seconds of the first
+/// fight's Auto Shots, white main hand swings and Raptor Strikes, under Forever's Auto Shot rule
+/// or the reference's.
+fn shots_around_a_step_in(step: bool, raptor: bool, forever: bool) -> [Vec<f64>; 3] {
+    let mut value = fixture("survival-hunter-weaving-moves");
+    value["melee"]["ranged"]["swing_speed"] = json!(3.6);
+    value["player"]["rotation"]["prepullActions"][1]["action"]["move"]["rangeFromTarget"]
+        ["const"]["val"] = json!("12");
+    let mut moves = Vec::new();
+    if step {
+        moves.push(step_to("5", ("0.1s", "1.3s"), "OpGe", "12"));
+        if raptor {
+            moves.push(json!({"action": {"castSpell": {"spellId": {"spellId": 14266, "tag": 3}}}}));
+        }
+        moves.push(step_to("12", ("1.3s", "600s"), "OpLe", "5"));
+    }
+    value["player"]["rotation"]["priorityList"] = json!(moves);
+    if forever {
+        value["player"]["melee_keeps_auto_shot_timer"] = json!(true);
+    }
+    let logs = first_fight_log(value);
+    [STEPPER_SHOT, STEPPER_SWING, STEPPER_RAPTOR].map(|needle| {
+        unit_lines(&logs, STEPPER)
+            .into_iter()
+            .filter(|line| line.contains(needle))
+            .map(at)
+            .collect()
+    })
+}
+
+/// The one melee hit of the step in, which lands between the first two Auto Shots, and the
+/// second shot.
+fn hit_between_shots(shots: &[f64], hits: &[f64]) -> (f64, f64) {
+    assert!(shots.len() > 2, "{shots:?}");
+    assert_eq!(hits.len(), 1, "{hits:?}");
+    let hit = hits[0];
+    assert!(shots[0] < hit && hit < shots[1], "{hit} against {shots:?}");
+    (hit, shots[1])
+}
+
+/// Forever's rule, from Forever's bug tracker (issue 14, "Ranged swing timer is reset by melee",
+/// which a Forever developer confirmed on 6 October 2026 is a bug with Auto Shot): a white main
+/// hand swing leaves the Auto Shot timer where it was, so the shot due 3.13 s into the fight
+/// fires then, as it does for a Hunter who never steps in.
+#[test]
+fn a_melee_swing_leaves_the_auto_shot_timer_alone_in_forever() {
+    let [still, _, _] = shots_around_a_step_in(false, false, true);
+    let [shots, swings, _] = shots_around_a_step_in(true, false, true);
+    let (_, next) = hit_between_shots(&shots, &swings);
+    let due = still[1];
+    assert!((next - due).abs() < 0.005, "{next}, due at {due}");
+}
+
+/// Raptor Strike in place of the swing is a melee swing too, and leaves the timer alone as well.
+#[test]
+fn raptor_strike_leaves_the_auto_shot_timer_alone_in_forever() {
+    let [still, _, _] = shots_around_a_step_in(false, false, true);
+    let [shots, swings, raptors] = shots_around_a_step_in(true, true, true);
+    assert!(swings.is_empty(), "{swings:?}");
+    let (_, next) = hit_between_shots(&shots, &raptors);
+    let due = still[1];
+    assert!((next - due).abs() < 0.005, "{next}, due at {due}");
+}
+
+/// Only Forever preparation writes the rule. Under the reference every melee swing, white or
+/// Raptor Strike, restarts the Auto Shot timer as if a shot had just fired, so the next shot
+/// comes a full shot after the hit.
+#[test]
+fn the_reference_restarts_the_auto_shot_timer_on_every_melee_swing() {
+    let request = fs::read(
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-survival-hunter.request.json"),
+    )
+    .unwrap();
+    let forever = forever_engine::prepare_json(&request, "x").unwrap();
+    let go = forever_engine::prepare_json_with(&request, "x", forever_engine::Rules::GoReference)
+        .unwrap();
+    assert_eq!(
+        forever["player"]["melee_keeps_auto_shot_timer"],
+        json!(true)
+    );
+    assert!(go["player"].get("melee_keeps_auto_shot_timer").is_none());
+    let [still, _, _] = shots_around_a_step_in(false, false, false);
+    let speed = still[1] - still[0];
+    for raptor in [false, true] {
+        let [shots, swings, raptors] = shots_around_a_step_in(true, raptor, false);
+        let hits = if raptor { raptors } else { swings };
+        let (hit, next) = hit_between_shots(&shots, &hits);
+        assert!(next > still[1] + 0.5, "{next}, due at {}", still[1]);
+        assert!(
+            (next - (hit + speed)).abs() < 0.015,
+            "{next}, {hit} + {speed}"
+        );
+    }
+}
+
 /// A move in the priority list is supported for every class, and needs the speed the exporter
 /// read.
 #[test]

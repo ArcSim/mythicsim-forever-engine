@@ -1,0 +1,644 @@
+//! Production requests the Rust engine used to refuse, which then ran in the Go engine
+//! (fixtures/forever-gaps): each prepares under Forever's rules, passes the gate and runs, and
+//! the effect it lacked acts.
+
+use forever_engine::{
+    check_prepared, contracts::prepared_v2::PreparedV2, prepare_json_with, simulate_prepared, Rules,
+};
+use serde_json::Value;
+use std::{fs, path::Path};
+
+fn request(name: &str) -> Value {
+    let path = Path::new(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/fixtures/forever-gaps"
+    ))
+    .join(format!("{name}.request.json"));
+    serde_json::from_slice(&fs::read(path).unwrap()).unwrap()
+}
+
+fn prepared(name: &str, rules: Rules) -> Value {
+    prepare_json_with(request(name).to_string().as_bytes(), "rust", rules).unwrap()
+}
+
+fn kinds(prepared: &Value) -> Vec<&str> {
+    prepared["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|effect| effect["kind"].as_str().unwrap())
+        .collect()
+}
+
+/// The request under Forever's rules passes the gate; the player's metrics of one run.
+fn run(name: &str) -> (Value, Value) {
+    let value = prepared(name, Rules::Forever);
+    let prepared: PreparedV2 = serde_json::from_value(value.clone()).unwrap();
+    check_prepared(&prepared).unwrap_or_else(|error| panic!("{name}: {error:?}"));
+    let result = simulate_prepared(&prepared).unwrap().result;
+    let player = result["raidMetrics"]["parties"][0]["players"][0].clone();
+    assert!(player["dps"]["avg"].as_f64().unwrap() > 0.0, "{name}");
+    (value, player)
+}
+
+/// Casts, damage and healing of the player's action with this spell and tag.
+fn action(player: &Value, spell_id: i64, tag: i64) -> (f64, f64, f64) {
+    let mut totals = (0.0, 0.0, 0.0);
+    for action in player["actions"].as_array().unwrap() {
+        let id = &action["id"];
+        if id["spellId"].as_i64() != Some(spell_id) || id["tag"].as_i64().unwrap_or(0) != tag {
+            continue;
+        }
+        for target in action["targets"].as_array().unwrap() {
+            totals.0 += target["casts"].as_f64().unwrap_or(0.0);
+            totals.1 += target["damage"].as_f64().unwrap_or(0.0);
+            totals.2 += target["healing"].as_f64().unwrap_or(0.0);
+        }
+    }
+    totals
+}
+
+/// A seal twisting tank: Seal of Light (20349) heals the paladin off its 15 PPM manager
+/// (20340), and its judgement puts up Judgement of Light (20346). Go's exporter describes
+/// neither.
+#[test]
+fn seal_of_light_heals_a_tank_and_judges_light() {
+    let name = "protection-paladin-seal-of-light";
+    assert!(!kinds(&prepared(name, Rules::GoReference)).contains(&"seal_of_light"));
+    let (value, player) = run(name);
+    let kinds = kinds(&value);
+    assert!(kinds.contains(&"seal_of_light"), "{kinds:?}");
+    assert!(kinds.contains(&"judgement_of_light"), "{kinds:?}");
+    assert!(action(&player, 20349, 0).0 > 0.0, "Seal of Light casts");
+    assert!(action(&player, 20340, 0).2 > 0.0, "Seal of Light heals");
+    assert!(
+        action(&player, 20346, 0).0 > 0.0,
+        "Judgement of Light casts"
+    );
+}
+
+/// A tank's own Retribution Aura rank 2 (10298): the cast turns the aura on, and the shield
+/// (tag 2) strikes back at the target's landed swings.
+#[test]
+fn a_tanks_own_retribution_aura_strikes_back() {
+    let (value, player) = run("protection-paladin-retribution-aura");
+    assert!(kinds(&value).contains(&"paladin_aura_cast"));
+    assert_eq!(action(&player, 10298, 0).0, 50.0, "one cast per iteration");
+    assert!(action(&player, 10298, 2).1 > 0.0, "the shield's damage");
+}
+
+/// Thunder Clap beside a permanent slow in its exclusive category runs, its bid raised over
+/// the slow it shares the category with.
+#[test]
+fn thunder_clap_beside_a_permanent_slow_runs() {
+    let (_, player) = run("protection-warrior-thunder-clap");
+    assert!(action(&player, 11581, 0).0 > 0.0, "Thunder Clap casts");
+}
+
+/// Manual Crowd Pummeler openers that move Windfury Weapon to the swap weapon, against the
+/// party's Windfury Totem.
+#[test]
+fn a_windfury_weapon_swap_runs() {
+    let (value, _) = run("enhancement-shaman-windfury-swap");
+    assert!(kinds(&value).contains(&"windfury_weapon"));
+}
+
+/// Retribution swaps from the Manual Crowd Pummeler onto weapons with procs of their own.
+#[test]
+fn retribution_swaps_onto_weapons_with_procs_run() {
+    run("retribution-paladin-swap-blade-of-hanna");
+    let (_, player) = run("retribution-paladin-swap-sulfuras");
+    assert!(action(&player, 21162, 0).1 > 0.0, "Sulfuras's Fireball");
+}
+
+/// The gain of the player's resource row with this spell and type.
+fn resource_gain(player: &Value, spell_id: i64, kind: &str) -> f64 {
+    player["resources"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|row| row["id"]["spellId"].as_i64() == Some(spell_id) && row["type"] == kind)
+        .map(|row| row["gain"].as_f64().unwrap_or(0.0))
+        .sum()
+}
+
+/// Vampiric Embrace (15286): the cast on its cooldown puts the debuff up, and a batch window
+/// after each Shadow hit or tick on the target the priest gains health. Go's exporter leaves
+/// the cast unknown.
+#[test]
+fn vampiric_embrace_heals_the_priest() {
+    let name = "shadow-priest-vampiric-embrace";
+    assert!(!kinds(&prepared(name, Rules::GoReference)).contains(&"vampiric_embrace"));
+    let (value, player) = run(name);
+    assert!(kinds(&value).contains(&"vampiric_embrace"));
+    assert!(action(&player, 15286, 0).0 > 50.0, "Vampiric Embrace casts");
+    assert!(resource_gain(&player, 15286, "ResourceTypeHealth") > 0.0);
+}
+
+/// A strict sequence among the prepull actions takes control of the rotation, whose first
+/// step waits on a time condition: each step casts once a fight.
+#[test]
+fn a_prepull_strict_sequence_runs_its_steps_once() {
+    let (_, player) = run("shadow-priest-prepull-sequence");
+    for spell in [20554, 14751, 1309636] {
+        assert_eq!(action(&player, spell, 0).0, 50.0, "spell {spell}");
+    }
+}
+
+/// Sequence steps with conditions of their own, as strict sequences have.
+#[test]
+fn sequence_steps_carry_conditions() {
+    run("marksmanship-hunter-sequence-conditions");
+}
+
+/// Fourteen stat auras, more than the 4,096 combinations preparation used to read.
+#[test]
+fn fourteen_stat_auras_prepare() {
+    let (value, _) = run("enhancement-shaman-many-stat-auras");
+    assert!(kinds(&value).contains(&"stat_auras"));
+}
+
+/// A condition on a spell value that Go builds only for a known spell, which preparation used
+/// to leave to the Go exporter.
+#[test]
+fn spell_values_fold_as_go_builds_them() {
+    run("retribution-paladin-spell-value-fold");
+}
+
+/// A demon's mana percent and aura time read in the warlock's rotation, and an aura time
+/// without an aura, which Go builds no value for.
+#[test]
+fn pet_and_missing_aura_values_run() {
+    run("demonology-warlock-pet-values");
+    run("demonology-warlock-pet-aura-time");
+    run("combat-rogue-aura-value-without-aura");
+}
+
+/// Stormcaller's Garb (3): Lightning Bolt, Chain Lightning, Overload and Shock hits give
+/// Stormcaller's Wrath (26121).
+#[test]
+fn stormcallers_garb_procs_its_wrath() {
+    let (value, player) = run("enhancement-shaman-stormcallers-garb");
+    assert!(value["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .any(|effect| effect["kind"] == "spell_data_stat_proc"
+            && effect["aura"] == "Stormcaller's Wrath"));
+    let uptime = player["auras"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|aura| aura["id"]["spellId"].as_i64() == Some(26121))
+        .map(|aura| aura["uptimeSecondsAvg"].as_f64().unwrap_or(0.0))
+        .sum::<f64>();
+    assert!(uptime > 0.0, "Stormcaller's Wrath uptime");
+}
+
+/// The Bear's Swipe (1264502) with three targets up cleaves them.
+#[test]
+fn a_bears_swipe_cleaves_three_targets() {
+    let (_, player) = run("hunter-bear-swipe-three-targets");
+    let pet = &player["pets"][0];
+    assert!(action(pet, 1264502, 0).1 > 0.0, "Swipe damage");
+}
+
+/// Item swaps the second worker's sims carried: Frostbrand Weapon on the swap weapon, whose
+/// chances follow the weapon in the hand; Heart of Wyrmthalak's proc manager, which a swap
+/// rebuilds; and a swap weapon with Fiery Weapon, whose proc holds while a hand carries it.
+#[test]
+fn swaps_with_weapon_procs_run() {
+    run("enhancement-shaman-frostbrand-swap");
+    run("feral-druid-swap-heart-of-wyrmthalak");
+    let (_, player) = run("enhancement-shaman-swap-fiery-weapon");
+    assert!(action(&player, 13897, 0).1 > 0.0, "Fiery Weapon damage");
+}
+
+/// The raid's Judgement of Light on each of three targets, each with metrics of its own.
+#[test]
+fn judgement_of_light_runs_on_several_targets() {
+    run("protection-paladin-judgement-of-light-three-targets");
+}
+
+/// The mana percent of a demon the fight never summons reads its full bar, as Go's reset leaves
+/// it.
+#[test]
+fn an_unsummoned_pets_mana_percent_is_full() {
+    run("demonology-warlock-unsummoned-pet-mana");
+}
+
+/// A request edited in place: its JSON text with each replacement made, which must change it.
+fn edited(name: &str, replacements: &[(&str, &str)]) -> Value {
+    let mut text = request(name).to_string();
+    for (from, to) in replacements {
+        assert!(text.contains(from), "{name} has no {from}");
+        text = text.replace(from, to);
+    }
+    serde_json::from_str(&text).unwrap()
+}
+
+/// Prepares an edited request under Forever's rules and checks that it passes the gate and runs.
+fn run_request(value: &Value) -> Value {
+    let prepared = prepare_json_with(value.to_string().as_bytes(), "rust", Rules::Forever).unwrap();
+    let prepared: PreparedV2 = serde_json::from_value(prepared).unwrap();
+    check_prepared(&prepared).unwrap_or_else(|error| panic!("{error:?}"));
+    let result = simulate_prepared(&prepared).unwrap().result;
+    result["raidMetrics"]["parties"][0]["players"][0].clone()
+}
+
+/// The raw mana of a demon the fight never summons is its full bar, as Go's reset leaves it:
+/// the Imp's 662 is below 700 and above 600, so Life Tap (11689) casts far more often under the
+/// first condition.
+#[test]
+fn an_unsummoned_pets_mana_is_its_full_bar() {
+    let pet_mana = |threshold: &str| {
+        edited(
+            "demonology-warlock-unsummoned-pet-mana",
+            &[
+                (
+                    r#""currentManaPercent":{"sourceUnit":{"owner":{"type":"Self"},"type":"Pet"}}"#,
+                    r#""currentMana":{"sourceUnit":{"owner":{"type":"Self"},"type":"Pet"}}"#,
+                ),
+                (r#""val":"20%""#, threshold),
+            ],
+        )
+    };
+    let below = run_request(&pet_mana(r#""val":"700""#));
+    let above = run_request(&pet_mana(r#""val":"600""#));
+    assert!(action(&below, 11689, 0).0 > 10.0 * action(&above, 11689, 0).0);
+}
+
+/// A prepull strict sequence whose step reads an aura: the step conditions are read with the
+/// priority list's, and each step casts once a fight.
+#[test]
+fn a_prepull_sequence_step_may_read_an_aura() {
+    let value = edited(
+        "shadow-priest-prepull-sequence",
+        &[(
+            r#""condition":{"cmp":{"lhs":{"currentTime":{}},"op":"OpGt","rhs":{"const":{"val":"0s"}}}}"#,
+            r#""condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":15473}}}}}"#,
+        )],
+    );
+    let player = run_request(&value);
+    for spell in [20554, 14751, 1309636] {
+        assert_eq!(action(&player, spell, 0).0, 50.0, "spell {spell}");
+    }
+}
+
+/// Casts of the player's action with this item.
+fn item_casts(player: &Value, item_id: i64) -> f64 {
+    player["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"]["itemId"].as_i64() == Some(item_id))
+        .flat_map(|action| action["targets"].as_array().unwrap())
+        .map(|target| target["casts"].as_f64().unwrap_or(0.0))
+        .sum()
+}
+
+/// The exported effects of a kind.
+fn effects<'a>(prepared: &'a Value, kind: &str) -> Vec<&'a Value> {
+    prepared["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|effect| effect["kind"] == kind)
+        .collect()
+}
+
+/// Darkmantle Armor (4): the rogue's landed melee hits roll for 20 energy (27787).
+#[test]
+fn darkmantle_armor_gains_energy() {
+    let (value, player) = run("combat-rogue-darkmantle-armor");
+    assert!(kinds(&value).contains(&"energy_proc"));
+    assert!(resource_gain(&player, 27787, "ResourceTypeEnergy") > 0.0);
+}
+
+/// Riposte (14251) runs without a tank under Forever's rules, beside Darkmantle Armor.
+#[test]
+fn riposte_runs_without_a_tank() {
+    let (value, _) = run("combat-rogue-darkmantle-riposte");
+    assert!(kinds(&value).contains(&"riposte"));
+}
+
+/// Pummel (6554) in a Warrior's rotation casts.
+#[test]
+fn pummel_casts() {
+    let (value, player) = run("dps-warrior-pummel");
+    assert!(kinds(&value).contains(&"pummel"));
+    assert!(action(&player, 6554, 0).0 > 0.0, "Pummel casts");
+}
+
+/// Battlegear of Heroism (4) restores health and rage on a melee hit.
+#[test]
+fn battlegear_of_heroism_procs() {
+    let (value, _) = run("dps-warrior-battlegear-of-heroism");
+    assert!(kinds(&value).contains(&"health_rage_proc"));
+}
+
+/// The Elements (5) puts up The Furious Storm off the shaman's spells.
+#[test]
+fn the_furious_storm_procs_for_any_spec() {
+    let (value, _) = run("elemental-shaman-the-elements");
+    assert!(effects(&value, "spell_data_stat_proc")
+        .iter()
+        .any(|effect| effect["aura"] == "The Furious Storm"));
+}
+
+/// A bonus against demons is inert against a target of another type.
+#[test]
+fn a_mob_type_bonus_against_another_type_is_inert() {
+    run("demonology-warlock-mob-type-bonus");
+}
+
+/// Battle Squawk in a fight that outlasts it: its melee speed comes off when it expires.
+#[test]
+fn battle_squawk_expires() {
+    let (value, _) = run("combat-rogue-battle-squawk");
+    assert!(kinds(&value).contains(&"battle_squawk"));
+}
+
+/// The Warlock's assigned curse at all targets.
+#[test]
+fn the_assigned_curse_runs() {
+    run("demonology-warlock-assigned-curse");
+}
+
+/// Swaps onto Thunderfury, onto gear that changes the crit the player takes, and onto the
+/// Runeblade of Baron Rivendare, whose Unholy Aura (17625) restores health.
+#[test]
+fn retribution_swaps_onto_thunderfury_and_runeblade_run() {
+    let (value, _) = run("retribution-paladin-swap-thunderfury");
+    assert!(kinds(&value).contains(&"thunderfury"));
+    run("retribution-paladin-swap-crit-taken");
+    let (value, player) = run("retribution-paladin-swap-runeblade");
+    assert!(kinds(&value).contains(&"health_regen_aura"));
+    assert!(resource_gain(&player, 17625, "ResourceTypeHealth") > 0.0);
+}
+
+/// The Gorilla's Thunderstomp (1264455) strikes every target of a five-target fight.
+#[test]
+fn thunderstomp_strikes_several_targets() {
+    let (value, _) = run("hunter-gorilla-thunderstomp");
+    assert!(effects(&value, "hunter_pet_strike")
+        .iter()
+        .any(|effect| effect["spell_id"] == 1264455 && effect["cleave_targets"] == 4));
+}
+
+/// A prepull reference to a group whose one action moves to a variable's range.
+#[test]
+fn a_prepull_group_reference_moves() {
+    run("hunter-prepull-group-move");
+}
+
+/// Fire Hardened Hauberk (6972) gains rage on use, once a fight, and Orb of Soran'ruk's heal
+/// over time stays unused as in Go.
+#[test]
+fn on_use_rage_and_an_unused_heal_over_time_run() {
+    let (value, player) = run("protection-warrior-fire-hardened-hauberk");
+    assert!(effects(&value, "energize_on_use")
+        .iter()
+        .any(|effect| effect["power"] == "rage"));
+    assert_eq!(item_casts(&player, 6972), 50.0);
+    let (_, player) = run("demonology-warlock-orb-of-soranruk");
+    assert_eq!(item_casts(&player, 6898), 0.0);
+}
+
+/// Sequence steps cast Curse of the Elements (1311680) at the next target.
+#[test]
+fn sequence_steps_cast_at_another_target() {
+    let (_, player) = run("demonology-warlock-sequence-other-targets");
+    let on_second = player["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"]["spellId"] == 1311680)
+        .filter_map(|action| action["targets"].get(1))
+        .map(|target| target["casts"].as_f64().unwrap_or(0.0))
+        .sum::<f64>();
+    assert!(on_second > 0.0);
+}
+
+/// The casts of the player's action with this spell on each target.
+fn casts_by_target(player: &Value, spell_id: i64) -> Vec<f64> {
+    let mut casts = Vec::new();
+    for action in player["actions"].as_array().unwrap() {
+        if action["id"]["spellId"] != spell_id {
+            continue;
+        }
+        for (position, target) in action["targets"].as_array().unwrap().iter().enumerate() {
+            if casts.len() <= position {
+                casts.resize(position + 1, 0.0);
+            }
+            casts[position] += target["casts"].as_f64().unwrap_or(0.0);
+        }
+    }
+    casts
+}
+
+/// A Balance Druid moves to the next target once Moonfire (9835) and Insect Swarm (24977) are up,
+/// so both dots land on all five targets.
+#[test]
+fn a_change_of_target_in_the_priority_list_moves_the_dots() {
+    let (_, player) = run("balance-druid-change-target");
+    for spell in [9835, 24977] {
+        let casts = casts_by_target(&player, spell);
+        assert!(
+            casts.len() >= 5 && casts[..5].iter().all(|&count| count > 0.0),
+            "spell {spell}: {casts:?}"
+        );
+    }
+}
+
+/// A strict sequence changes target between its Curses of the Elements (1311680), then stays on
+/// the last target it moved to, where Hellfire (11684) is cast.
+#[test]
+fn a_change_of_target_in_a_strict_sequence_moves_the_casts() {
+    let (_, player) = run("demonology-warlock-sequence-change-target");
+    let curses = casts_by_target(&player, 1311680);
+    assert!(curses.len() >= 5 && curses[4] > 0.0, "{curses:?}");
+    let hellfire = casts_by_target(&player, 11684);
+    assert!(hellfire.len() >= 5 && hellfire[4] > 0.0, "{hellfire:?}");
+}
+
+/// Vampiric Embrace against three targets, cast on the next target with the priest's damage
+/// there: the debuff lands on that target and heals the priest from the damage it takes.
+#[test]
+fn vampiric_embrace_on_another_target_heals_the_priest() {
+    let (_, player) = run("shadow-priest-vampiric-embrace-three-targets");
+    let casts = casts_by_target(&player, 15286);
+    assert!(casts.len() >= 2 && casts[1] > 0.0, "{casts:?}");
+    assert!(resource_gain(&player, 15286, "ResourceTypeHealth") > 0.0);
+}
+
+/// The raid's Judgement of Light beside a Succubus: the demon's melee hits roll the heal's chance
+/// as the player's do, and the demon, always at full health, gains nothing from it.
+#[test]
+fn judgement_of_light_runs_beside_a_melee_demon() {
+    let (value, _) = run("demonology-warlock-succubus-judgement-of-light");
+    assert!(kinds(&value).contains(&"judgement_of_light"));
+    assert!(
+        value["pets"]
+            .as_array()
+            .is_some_and(|pets| !pets.is_empty()),
+        "the Succubus is simulated"
+    );
+}
+
+/// A Manual Crowd Pummeler opener that swaps onto Dark Edge of Insanity with Iron Counterweight
+/// (enchant 34): the enchant's speed aura multiplies melee speed by 1.03 while the swap wears it.
+#[test]
+fn a_swap_onto_a_speed_enchant_runs() {
+    let (value, _) = run("enhancement-shaman-swap-speed-enchant");
+    let speed = effects(&value, "speed_aura");
+    assert!(
+        speed.iter().any(
+            |effect| effect["aura"] == "Enchant 34 Speed (ItemSlotMainHand)"
+                && effect["melee_multiplier"] == 1.03
+        ),
+        "{speed:?}"
+    );
+}
+
+/// A tanking Bear's Manual Crowd Pummeler opener swaps onto Headspike (+7 Defense): the target's
+/// rolls under the swap's stat aura carry its Defense and the crit the bear takes.
+#[test]
+fn a_tanks_swap_that_changes_defense_runs() {
+    let (value, _) = run("feral-bear-druid-swap-defense");
+    assert!(value["enemy"]["rolls"].as_array().unwrap().len() > 1);
+}
+
+/// Mark of the Champion against an Undead target: its 150 attack power against Undead and
+/// Demons is the player's while the item is worn.
+#[test]
+fn mark_of_the_champion_against_undead_runs() {
+    let (value, _) = run("dps-warrior-mark-of-the-champion-undead");
+    let bonus = effects(&value, "mob_type_bonus");
+    assert!(
+        bonus
+            .iter()
+            .any(|effect| effect["aura"] == "Mark of the Champion (Physical)"
+                && effect["ranged_attack_power"] == 150.0),
+        "{bonus:?}"
+    );
+}
+
+/// A Rogue moves to the next target once Rupture (11275) and Deadly Poison are up on the one it
+/// is on: Rupture lands on all four targets, each with its own dot.
+#[test]
+fn a_rogue_keeps_rupture_on_several_targets() {
+    let (_, player) = run("assassination-rogue-change-target-rupture");
+    let ruptures = casts_by_target(&player, 11275);
+    assert!(
+        ruptures.len() >= 4 && ruptures[..4].iter().all(|&casts| casts > 0.0),
+        "{ruptures:?}"
+    );
+    run("combat-rogue-change-target");
+}
+
+/// Chastise (1277335) in a Shadow Priest's rotation: Go casts it only at a Humanoid, which this
+/// target is not, so it never casts.
+#[test]
+fn chastise_casts_only_at_a_humanoid() {
+    let (_, player) = run("shadow-priest-chastise");
+    assert_eq!(action(&player, 1277335, 0).0, 0.0);
+}
+
+/// Skysight (1259686), the Windshaper Skyborne racial, in a Hunter's rotation: the cast puts up
+/// Elemental Blessing, which multiplies the movement speed while it lasts.
+#[test]
+fn skysight_casts_and_puts_up_its_blessing() {
+    let (value, player) = run("hunter-skysight");
+    assert!(effects(&value, "skysight")
+        .iter()
+        .any(|effect| effect["aura"] == "Elemental Blessing"));
+    assert!(action(&player, 1259686, 0).0 > 0.0, "Skysight casts");
+}
+
+/// A Protection Paladin casts its own Devotion Aura (10293) while it is down: the cast turns the
+/// aura on, once a fight, and its armor reaches the target's swings through the rolls.
+#[test]
+fn a_tanks_own_devotion_aura_casts() {
+    let (value, player) = run("protection-paladin-devotion-aura");
+    assert!(effects(&value, "paladin_aura_cast")
+        .iter()
+        .any(|effect| effect["ranks"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|rank| rank["spell_id"] == 10293)));
+    assert_eq!(action(&player, 10293, 0).0, 50.0);
+}
+
+#[test]
+fn hammer_of_the_righteous_cleaves() {
+    let (value, player) = run("protection-paladin-hammer-of-the-righteous");
+    let effect = &effects(&value, "hammer_of_the_righteous")[0];
+    assert_eq!(effect["spell_id"], 407632);
+    assert_eq!(effect["weapon_dps"], 3.0);
+    assert_eq!(effect["max_targets"], 4);
+    let (casts, damage, _) = action(&player, 407632, 0);
+    assert_eq!(casts, 978.0);
+    assert!(damage > 0.0);
+}
+
+#[test]
+fn seal_of_wisdom_restores_mana_beside_the_raids_judgement() {
+    let (value, player) = run("retribution-paladin-seal-of-wisdom");
+    assert!(!effects(&value, "seal_of_wisdom").is_empty());
+    assert!(resource_gain(&player, 20168, "ResourceTypeMana") > 0.0);
+    // Go's JowManaMetrics: both judgements restore under the action of the first to restore.
+    let own = resource_gain(&player, 20186, "ResourceTypeMana");
+    let raid = resource_gain(&player, 20355, "ResourceTypeMana");
+    assert!(own + raid > 0.0);
+    assert!(own == 0.0 || raid == 0.0, "own {own} raid {raid}");
+}
+
+#[test]
+fn seal_of_justice_judges_justice() {
+    let (value, player) = run("retribution-paladin-seal-of-justice");
+    assert!(!effects(&value, "seal_of_justice").is_empty());
+    assert_eq!(action(&player, 20164, 0).0, 3983.0);
+    assert_eq!(action(&player, 20184, 0).0, 773.0);
+}
+
+/// Shield Bash, Mocking Blow, Disarm, Intercept, Revenge off the target's threat and Freezing
+/// Trap, each first in its rotation: the casts each makes in 50 fights.
+#[test]
+fn warrior_strikes_and_freezing_trap_run() {
+    for (name, spell_id, casts) in [
+        ("protection-warrior-shield-bash", 1672, 531.0),
+        ("arms-warrior-mocking-blow", 20560, 78.0),
+        ("protection-warrior-disarm", 676, 129.0),
+        ("warrior-intercept", 20617, 50.0),
+        ("arms-warrior-revenge", 25288, 0.0),
+        ("hunter-freezing-trap", 1499, 216.0),
+    ] {
+        let (_, player) = run(name);
+        assert_eq!(action(&player, spell_id, 0).0, casts, "{name}");
+    }
+}
+
+/// Thorns (9910): the cast turns on the druid's own shield, which strikes the target a spell
+/// batch window after each swing a tank takes, for its fixed amount.
+#[test]
+fn a_druids_own_thorns_strikes_back() {
+    let (value, player) = run("feral-bear-druid-thorns");
+    assert_eq!(
+        effects(&value, "druid_thorns")[0]["aura"],
+        "Thorns (Player)"
+    );
+    let shield = effects(&value, "spell_data_damage_proc")
+        .into_iter()
+        .find(|effect| effect["trigger_aura"] == "Thorns (Player)")
+        .expect("the tank's own Thorns strikes back");
+    // core.NewDamageShield's fixed amount, which draws nothing.
+    assert!(shield["roll"].is_null());
+    assert_eq!(action(&player, 9910, 0).0, 993.0);
+    assert!(action(&player, 9910, 2).1 > 0.0);
+    // Off the target's threat nothing hits the druid, so the shield never strikes.
+    let (_, player) = run("balance-druid-thorns");
+    assert_eq!(action(&player, 9910, 0).0, 1634.0);
+    assert_eq!(action(&player, 9910, 2).1, 0.0);
+}

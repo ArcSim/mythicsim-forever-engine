@@ -19,6 +19,7 @@ pub(crate) const DAMAGING: &[&str] = &[
     "frost_nova",
     "frostfire_bolt",
     "arcane_wrath",
+    "frost_blast",
 ];
 
 /// Go `MageSpellsAll`: every Mage class spell.
@@ -56,6 +57,7 @@ pub(crate) const ALL: &[&str] = &[
     "improved_blizzard",
     "frostfire_bolt",
     "arcane_wrath",
+    "frost_blast",
 ];
 
 /// Go `MageSpellInstantCast`.

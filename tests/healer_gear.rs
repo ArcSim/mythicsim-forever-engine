@@ -355,3 +355,277 @@ fn a_stacking_trinket_no_heal_reaches_is_worn_without_effect() {
     assert!(used[0]["trigger_spells"].as_array().unwrap().is_empty());
     heals(&forever);
 }
+
+/// Vestments of Faith (Naxxramas), a set the reference does not register: Renew 12% cheaper
+/// (2), a Greater Heal crit shields for 500 (4) and Epiphany, a cast's 5% chance at 24 mana per
+/// 5 sec for 30 sec (8).
+#[test]
+fn vestments_of_faith_shield_greater_heal_crits_and_proc_epiphany() {
+    let faith = [
+        (0, 22514),
+        (2, 22515),
+        (4, 22512),
+        (5, 22519),
+        (6, 22517),
+        (7, 22518),
+        (8, 22513),
+        (9, 22516),
+    ];
+    let forever = prepared(&request("holy-priest", &faith), Rules::Forever);
+    assert_eq!(heal(&forever, 25314)["crit_shield"], 500.0);
+    let epiphany: Vec<&Value> = effects(&forever, "spell_data_stat_proc")
+        .into_iter()
+        .filter(|effect| effect["aura"] == "Epiphany")
+        .collect();
+    assert_eq!(epiphany.len(), 1);
+    assert_eq!(epiphany[0]["proc_chance"], 0.05);
+    let result = heals(&forever);
+    let shielded: f64 = result["raidMetrics"]["parties"][0]["players"][0]["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"]["spellId"] == 25314)
+        .flat_map(|action| action["targets"].as_array().unwrap().iter())
+        .map(|target| target["shielding"].as_f64().unwrap_or(0.0))
+        .sum();
+    assert!(shielded > 0.0, "no Armor of Faith on Greater Heal crits");
+    assert!(aura_uptime(&result, 28804) > 0.0, "no Epiphany");
+}
+
+/// Dreamwalker Raiment (8): a Healing Touch crit returns 30% of what it cost.
+#[test]
+fn dreamwalker_refunds_a_share_of_a_healing_touch_crit() {
+    let dreamwalker = [
+        (0, 22490),
+        (2, 22491),
+        (4, 22488),
+        (5, 22495),
+        (6, 22493),
+        (7, 22494),
+        (8, 22489),
+        (9, 22492),
+    ];
+    let forever = prepared(&request("restoration-druid", &dreamwalker), Rules::Forever);
+    let refunds: Vec<&Value> = effects(&forever, "mana_on_cast")
+        .into_iter()
+        .filter(|effect| effect["crit_only"] == true)
+        .collect();
+    assert_eq!(refunds.len(), 1, "{refunds:?}");
+    let touch = positions(&forever, &[25297])[0];
+    let cost = forever["player"]["spells"][touch]["default_cast"]["cost"]
+        .as_f64()
+        .unwrap();
+    let entry = refunds[0]["spells"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|spell| spell["spell"] == touch)
+        .expect("Healing Touch refunds");
+    assert!((entry["mana"].as_f64().unwrap() - 0.3 * cost).abs() < 1e-9);
+    let result = heals(&forever);
+    let refunded = result["raidMetrics"]["parties"][0]["players"][0]["resources"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|resource| resource["id"]["spellId"] == 28719)
+        .expect("the refund's mana metrics");
+    assert!(refunded["events"].as_f64().unwrap() > 0.0);
+}
+
+/// Idol of Rejuvenation: Regrowth's direct heal is 5% more while a Rejuvenation is up.
+#[test]
+fn idol_of_rejuvenation_raises_regrowth_under_rejuvenation() {
+    let forever = prepared(
+        &request("restoration-druid", &[(16, 22398)]),
+        Rules::Forever,
+    );
+    let regrowth = heal(&forever, 9858);
+    assert_eq!(regrowth["hot_bonus"]["multiplier"], 1.05);
+    assert!(regrowth["hot_bonus"]["spell_ids"]
+        .as_array()
+        .unwrap()
+        .contains(&json!(25299)));
+    heals(&forever);
+}
+
+/// A heal's `then_hot` (Vestments of Transcendence's 8 piece, whose pieces the item data does
+/// not yet hold all of) puts the named heal over time rank up with it at no cost.
+#[test]
+fn a_heal_puts_its_linked_heal_over_time_up() {
+    let mut forever = prepared(&request("holy-priest", &[]), Rules::Forever);
+    let heals_effect = forever["effects"]
+        .as_array_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|effect| effect["kind"] == "heals")
+        .unwrap();
+    for heal in heals_effect["heals"].as_array_mut().unwrap() {
+        if heal["spell_id"] == 25314 {
+            heal["then_hot"] = json!(6077);
+        }
+    }
+    let result = heals(&forever);
+    let renew5: f64 = result["raidMetrics"]["parties"][0]["players"][0]["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"]["spellId"] == 6077)
+        .flat_map(|action| action["targets"].as_array().unwrap().iter())
+        .map(|target| target["healing"].as_f64().unwrap_or(0.0))
+        .sum();
+    assert!(renew5 > 0.0, "Greater Heal put no rank 5 Renew up");
+}
+
+/// The healer's healing on one spell, every fight together.
+fn healing_on(result: &Value, key: &str, id: i64) -> f64 {
+    result["raidMetrics"]["parties"][0]["players"][0]["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"][key] == id)
+        .flat_map(|action| action["targets"].as_array().unwrap().iter())
+        .map(|target| target["healing"].as_f64().unwrap_or(0.0))
+        .sum()
+}
+
+/// Blessed Prayer Beads heal on use and Enamored Water Spirit's totem restores mana, both
+/// pressed by the healer; Wushoolay's Charm of Spirits, a Lightning Shield trinket, is worn
+/// without effect rather than refused.
+#[test]
+fn healer_on_use_items_heal_restore_mana_or_do_nothing() {
+    let beads = heals(&prepared(
+        &request("holy-priest", &[(12, 19990)]),
+        Rules::Forever,
+    ));
+    assert!(
+        healing_on(&beads, "itemId", 19990) > 0.0,
+        "the beads healed nothing"
+    );
+    let spirit = heals(&prepared(
+        &request("restoration-shaman", &[(12, 20503)]),
+        Rules::Forever,
+    ));
+    let mana = spirit["raidMetrics"]["parties"][0]["players"][0]["resources"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|resource| resource["id"]["spellId"] == 24854)
+        .expect("the totem's mana metrics");
+    assert!(mana["gain"].as_f64().unwrap() > 0.0);
+    heals(&prepared(
+        &request("restoration-shaman", &[(12, 19956)]),
+        Rules::Forever,
+    ));
+}
+
+/// Idol of Synthesis: Swiftmend's cooldown is a second shorter for each heal over time up.
+#[test]
+fn idol_of_synthesis_cuts_swiftmend_per_heal_over_time() {
+    let forever = prepared(
+        &request("restoration-druid", &[(16, 272429)]),
+        Rules::Forever,
+    );
+    assert_eq!(
+        heal(&forever, 18562)["cooldown_per_hot_ns"],
+        1_000_000_000_i64
+    );
+    let plain = heals(&prepared(
+        &request("restoration-druid", &[]),
+        Rules::Forever,
+    ));
+    let idol = heals(&forever);
+    let casts = |result: &Value| -> f64 {
+        result["raidMetrics"]["parties"][0]["players"][0]["actions"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter(|action| action["id"]["spellId"] == 18562)
+            .flat_map(|action| action["targets"].as_array().unwrap().iter())
+            .map(|target| target["casts"].as_f64().unwrap_or(0.0))
+            .sum()
+    };
+    assert!(casts(&idol) > casts(&plain), "Swiftmend no more often");
+}
+
+/// Garments of the Oracle (3): a heal's 20% chance to heal the healer for 10% of it.
+/// Rotmender's Raiment (5): a heal's cast puts Rotmending up, at most every 2 sec.
+#[test]
+fn oracle_and_rotmending_heal_on_the_healers_heals() {
+    let oracle = [(0, 21348), (2, 21350), (4, 21351)];
+    let result = heals(&prepared(&request("holy-priest", &oracle), Rules::Forever));
+    assert!(
+        healing_on(&result, "spellId", 26169) > 0.0,
+        "no Oracle Healing Bonus"
+    );
+    let rotmender = [
+        (4, 286978),
+        (6, 286979),
+        (7, 286980),
+        (8, 271207),
+        (9, 271214),
+    ];
+    let forever = prepared(&request("restoration-druid", &rotmender), Rules::Forever);
+    let procs: Vec<&Value> = effects(&forever, "spell_data_heal_proc")
+        .into_iter()
+        .filter(|effect| effect["casts"] == true)
+        .collect();
+    assert_eq!(procs.len(), 1, "{procs:?}");
+    assert_eq!(procs[0]["average"], 200.0);
+    let result = heals(&forever);
+    assert!(
+        healing_on(&result, "spellId", 1321586) > 0.0,
+        "no Rotmending"
+    );
+}
+
+/// The Earthshatterer (8): Lightning Shield's 15 mana per 5 sec. Redemption Armor (4): Lay on
+/// Hands 12 minutes sooner.
+#[test]
+fn earthshatterer_and_redemption_read_their_bonuses() {
+    let earthshatterer = [
+        (0, 22466),
+        (2, 22467),
+        (4, 22464),
+        (5, 22471),
+        (6, 22469),
+        (7, 22470),
+        (8, 22465),
+        (9, 22468),
+    ];
+    let mp5 = |prepared: &Value| prepared["player"]["stats"]["MP5"].as_f64().unwrap_or(0.0);
+    let plain = prepared(&request("restoration-shaman", &[]), Rules::Forever);
+    let set = prepared(
+        &request("restoration-shaman", &earthshatterer),
+        Rules::Forever,
+    );
+    assert!(
+        mp5(&set) >= mp5(&plain) + 15.0 - 1e-9,
+        "{} vs {}",
+        mp5(&set),
+        mp5(&plain)
+    );
+    heals(&set);
+    let redemption = [(0, 22428), (2, 22429), (4, 22425), (5, 22424)];
+    let paladin = |items: &[(usize, i64)]| {
+        prepared(
+            &request("../mage/prepared-v2/holy-paladin-healing", items),
+            Rules::Forever,
+        )
+    };
+    let cooldown = |prepared: &Value| {
+        prepared["player"]["spells"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .find(|spell| {
+                [633, 2800, 10310].contains(&spell["action_id"]["spell_id"].as_i64().unwrap_or(0))
+            })
+            .map(|spell| spell["cd"]["duration_ns"].as_i64().unwrap())
+    };
+    if let (Some(before), Some(after)) = (cooldown(&paladin(&[])), cooldown(&paladin(&redemption)))
+    {
+        assert_eq!(after, before - 720_000_000_000);
+    } else {
+        panic!("no Lay on Hands");
+    }
+}

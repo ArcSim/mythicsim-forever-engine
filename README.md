@@ -1,8 +1,9 @@
 # MythicSim Forever Engine
 
-A Rust simulation engine for WoW Forever. [MythicSim](https://mythicsim.com/wow-forever/sim)
-runs Forever Quick Sims on it, and the Go engine for the rest; [Coverage](#coverage) lists
-which is which.
+A Rust simulation engine for WoW Forever. Every Forever sim on
+[MythicSim](https://mythicsim.com/wow-forever/sim) runs on it: Quick Sims, stat weights, Best
+Gear, the trinket and race boards, the Build Lab and the healer sims. [Coverage](#coverage) says
+what that covers and what it refuses.
 
 The engine began as an exact port of [MythicSim's Go fork](https://github.com/sage3648/mythicsim-forever-engine-go)
 of [wowsims Forever](https://github.com/ElliotWood/Forever): event order, random numbers and
@@ -38,28 +39,28 @@ the engine.
 3. Rust runs the fight.
 
 [`tools/route.py`](docs/routing.md) is what the MythicSim worker calls. It runs a request in
-Rust, or tells the worker to run it in Go and says why.
+Rust, or says why it cannot. With the worker's `FOREVER_GO_FALLBACK` off, as on MythicSim, a
+request Rust refuses fails with that reason; nothing runs in Go.
 
 ## Coverage
 
-MythicSim's Forever Quick Sims run in Rust, for every class and spec it offers: the Druid,
-Hunter, Mage, Paladin, Priest, Rogue, Shaman, Warlock and Warrior damage and tank specs, with
-their talents, gear, buffs, consumables, pets, tanking and 2 to 5 targets. Holy Paladin heal
-sims match Go too, under the reference's rules: heals cast on the player and counted in full, as
-Go counts them. Production prepares them with Forever's rules, which leave out overhealing.
+Every class and spec MythicSim offers runs in Rust: the Druid, Hunter, Mage, Paladin, Priest,
+Rogue, Shaman, Warlock and Warrior damage and tank specs, with their talents, gear, buffs,
+consumables, pets, tanking, item swaps and 2 to 5 targets, and the Holy Paladin, Priest,
+Restoration Shaman and Restoration Druid healer sims. Rust prepares the character as well as
+running the fight, so no part of a request goes through Go. Holy Paladin heal sims match Go
+too, under the reference's rules: heals cast on the player and counted in full, as Go counts
+them. Production prepares them with Forever's rules, which leave out overhealing.
 
-These still run in Go:
+The 812 production requests that fell back to Go, or needed the Go exporter to prepare them,
+between 24 and 27 October 2026 all prepare and run in Rust: tank damage shields, Seal of Light,
+Vampiric Embrace, item swaps onto weapons with procs, custom rotation sequences and the rest.
+The coverage gate still refuses what Rust cannot simulate exactly, each refusal with a stable
+reason code (see [routing](docs/routing.md)), and MythicSim fails such a request with that
+reason rather than run it in Go.
 
-- Quick Sims that ask for stat weights.
-- Best Gear, trinket boards, race boards and the Build Lab.
-- The one fight a Quick Sim's timeline and combat log show. It is replayed in Go, which gives
-  the same fight.
-- Quick Sims the coverage gate refuses, about 5% of them: some item swaps, some custom
-  rotation syntax and a few spells and set bonuses. Each refusal gives a reason code.
-- Quick Sims on MythicSim's second worker, which does not carry the Rust engine yet.
-
-A character Rust preparation does not cover yet is prepared by the Go exporter, and Rust
-still runs the fight.
+A Quick Sim's timeline and combat log show the run's first fight. Rust keeps no per-iteration
+DPS, so the fight nearest the median is not picked.
 
 ## The Go reference
 
@@ -100,6 +101,14 @@ the Go goldens and exporter uses. The departures:
   Shadow Bolts a third of the time, all landed whole. The reference's level 63 boss partially
   resists 18% of them, 6% of the damage on average. The prepared target carries
   `no_level_partial_resist`.
+- The raid's Expose Armor, from MythicSim's Discord (28 October 2026, Bae and Vrelk): a player
+  who picks the raid's Expose Armor instead of its Sunder Armor should not gain from the pick, but
+  the reference applies Expose Armor at full from the pull while Sunder Armor ramps a stack every
+  default GCD, so a Hunter simmed 1,241 DPS with Expose Armor against 1,226 with Sunder Armor.
+  Under Forever's rules, Expose Armor alone lands at full 3 s into the fight, which leaves the same
+  6,750 armor-seconds of its 2,250 armor unapplied as Sunder Armor's ramp: the Marksmanship
+  production request sims 609.87 against 609.86. With both, Expose Armor stays up from the pull.
+  Forever preparation writes `external_expose_armor`.
 - Casting regeneration auras, from the client's mana regeneration interrupt aura (type 134),
   which acts as it is applied: Resourcefulness, Rapid Recuperation and Improved Stormstrike let
   more spirit regeneration continue while casting from the moment they are up. The reference
@@ -145,6 +154,16 @@ the Go goldens and exporter uses. The departures:
   lost 19 DPS because it moved the Auto Shot onto the global cooldown more often. Forever
   preparation writes `move_waits_for_queued_cast`; a spell out of range where the player stands
   does not hold the move.
+- A melee swing leaves the Auto Shot timer alone, from Forever's bug tracker: the beta restarts
+  the timer on every melee swing ("Ranged swing timer is reset by melee",
+  https://github.com/ClassicWoWCommunity/forever-bugs/issues/14), and a Forever developer
+  answered on 6 October 2026 "For Hunters, this is a Bug with Auto Shot"
+  (https://github.com/ClassicWoWCommunity/forever-bugs/issues/14#issuecomment-6025122239), so the
+  rule models the game as intended. The reference restarts the timer as if a shot had just fired
+  on every white main or off hand swing and every Raptor Strike, so a weaving Hunter's next shot
+  came a full shot after the last melee hit instead of when it was due: on the Survival weave
+  reference request 32.8 Auto Shots a fight, now 39.3. Forever preparation writes
+  `melee_keeps_auto_shot_timer`.
 - A move arrives when its time is up (`move_arrives_at_destination`, Forever preparation): a
   rotation woken at the instant a move ends, before its end action runs, reads the destination.
   The reference reads the walk rounded to the millisecond, 5.001 yards for a step in to 5, takes
@@ -152,6 +171,108 @@ the Go goldens and exporter uses. The departures:
   iteration has no swings or strikes: the Go golden of the Survival weave
   (`survival-hunter-aspect-of-the-beast-over-hawk`) has iterations at 400 to 510 DPS from it, and
   a held move makes it far more common.
+- A rotation with a move keeps looking through the global cooldown: in game moving needs no
+  global cooldown, only casting waits on it, so a player watching a swing timer starts a walk
+  when its condition turns true. The reference's idle rotation sleeps until the global cooldown
+  ends unless a swing or a shot wakes it, so a walk whose condition turned true under the global
+  cooldown started at its end. A rotation that looks under the global cooldown queues the spell
+  for its end, so it also goes on from a queued instant as it goes off (one that cast; a queued
+  spell that fails does not run it again): the reference runs no rotation then, and a step
+  out waiting on that spell started a global cooldown late. Forever preparation writes
+  `rotation_with_moves_looks_through_gcd`; it acts only on a rotation with a Move in its priority
+  list, a group or a schedule, so every other rotation waits as before.
+- The off hand's half swing wait counts from the start of the melee attack, from swing probe logs
+  on the Forever beta (16 to 17 October 2026, dual wield, 2.72 main hand and 2.33 off hand): an
+  Auto Shot turns the melee attack off, and a weave's `/startattack` turns it back on as the step
+  in begins. The off hand's first swing came exactly half its swing after the attack went on in
+  11 of 19 attack starts, and never half a swing after the Auto Shot turned it off (0 of 17,
+  always 0.06 to 0.15 seconds later). On six walks in longer than half the off hand swing, it
+  swung within 0.2 seconds of arriving, so the wait runs during the walk, and with the attack
+  left on for 21 seconds over five walks out and back in without a shot, both hands swung on
+  arrival every time. Forever preparation writes `off_hand_waits_from_attack_start`:
+  a walk from outside melee range to a destination inside it starts the attack as it begins, the
+  off hand swings no sooner than half its swing after that, and an attack still on adds no wait
+  when the Hunter steps back in. The reference adds the half swing on every arrival, so on a dual
+  wield weave that steps in after each Auto Shot and out after the main hand swing the off hand
+  almost never swung: 0.0 swings a fight on our weave request, now 28.3.
+- Multi-Shot's cast, from our Forever beta combat logs on Warcraft Logs (reports
+  Par9kghHbAVYptwm, TBqwNKxVW8H3narp and mJGyPgZAtr2T4YpX, quiver at 15% speed): all 121
+  Multi-Shots have a cast start, a median 0.45, 0.45 and 0.44 seconds before the shot, and 0.32
+  under Rapid Fire in the third. Its client row (2643) has no cast time, so the reference casts
+  it at once.
+  Forever preparation gives it a 0.5 second cast, which the ranged haste multiplier divides as it
+  does Aimed Shot's (0.5 / 1.15 is 0.435, and 0.5 / (1.15 x 1.4) is 0.31 under Rapid Fire); its
+  global cooldown and cooldown are unchanged, and like any cast it cannot start while moving.
+- Autocast looks past a cooldown the GCD holds back (`autocast_skips_unready_cooldowns`,
+  Forever preparation), as wowsims/forever does since 21 and 22 October 2026 (10b0e65f2,
+  fbf5d98e8). Autocast Other Cooldowns took the first ready major cooldown and then applied the
+  GCD rule to it alone (an explosive only while the GCD runs, any other only once it is ready),
+  so a cooldown waiting for the GCD held back an explosive sorted after it, and through a run of
+  hardcasts an explosive held back every cooldown behind it. Now each ready cooldown that fails
+  the rule is passed over, and an explosive whose cast fits in the shortest GCD also waits while
+  less of the GCD is left than its cast, so it never delays the next spell. The reference stops at
+  the first ready cooldown.
+- Idol of the Dream (220606) adds 2 seconds to Rip (Improved Rip, 446212, client 1.60.1.70532:
+  a flat duration modifier on Rip's class mask), so Rip ticks once more at the same period; ported
+  from wowsims/forever 8d879a401. The reference registers no effect for it.
+- Jewel of the Guard Captain (270225) and Cleansed Vilebranch Icon (270276) give 8 spell damage
+  and healing, tripled in Forest and Grassland areas (Wowhead Forever); the imported data had 32.
+- Water Shield gives mana (`water_shield`, Forever preparation), from the client (1.60.1.70532)
+  and MythicSim's Discord (26 October 2026, Maro): a critical spell of the shaman's, damage or
+  heal, spends one of three globes for 2% of maximum mana, one globe every 3.5 seconds at most,
+  and the cast has no cooldown since 70532 (it had 15 seconds). The reference registers the talent
+  but no build could cast it.
+- The racial pass of Forever's development notes of 26 October 2026 (Forever preparation; the
+  reference keeps the 16 October racials). Human Ruthless gives 1% crit (was 2%) and Human Spirit
+  10% Spirit (was 5%). Dwarf Earth Fury is gone and Artisan's Precision gives 1% hit with
+  attacks and spells. Tauren Endurance is 5% health only. Orc Savage is gone and Command gives
+  Hunter and Warlock pets 5% more damage. Skyborne Wind Blessed is 2% haste (was 3%). Read
+  Ley Line's Energized is 50% more regeneration for 15 seconds (70532 had 100% for 30), cannot
+  be cast while an Innervate is up, and an Innervate that lands removes it
+  (`read_ley_line.innervate_replaces`). Skysight's Elemental Blessing is 15% movement speed for
+  15 seconds (was 10% for 30). Attuned and Charged, which a Ley Line or an elemental convergence
+  grants before the pull and which double those two, are not assumed. Client 1.60.1.70532 still
+  has the old rows; the notes are the source until a client build carries the new ones. The
+  notes' additions of 27 October (post 8): Orc Blood Fury's cooldown is 2 minutes (was 3),
+  Troll Berserking lasts 15 seconds (was 10) and Touch of the Grave's internal cooldown is 15
+  seconds (was 25); Attuned and Charged end on entering a raid, so they stay unassumed.
+- The non-Mage rows of client 1.60.1.70630 that change a number (Forever preparation; the data is
+  1.60.1.70425 and the reference keeps its values). Hunter's Mark rank 4 (14325, SpellEffect
+  690991) gives every attacker 143 ranged Attack Power (was 71). The Spellstone's damage effects
+  (1233765, 1233768, 1233770, "Increase Shadow Dam") name the Shadow school alone (mask 32; was
+  Fire and Shadow, 36). Blood Craze (16488) carries the No Threat attribute (Attributes_1 0x400),
+  so its heal over time puts out no threat. The Mage Revelation buff (1248808, SpellEffect
+  1251976) also names bit 32768 of the second class mask word, which holds Arcane Barrage and
+  Arcane Wrath. Rows that need nothing: Bloodthrill's marker aura (1289681) now lasts 5 seconds,
+  the window the engine already opens (Overpower's 5 seconds, 1282733); Elemental Focus keeps its
+  10% (ProcChance 10 moved to the effect as 100 and base 10); Amplify Curse hands Bane of Agony's
+  50% to an aura on the target (a class mask of Agony's own, tooltip `$o1*($w2/100+1)`), which
+  the whole tick factor of patch 177 already is. Holy Fire rank 1 (54), Twilight Focus's class
+  mask, Fire Nova's line of sight bit and Dark Inspiration's aura type (80 to 137, still 15%
+  Spirit) already agree with the data, and the engine starts Elemental Mastery's cooldown at the
+  cast, as 70630 has it (the cooldown-on-event bit is gone). Lava Burst rank 3 and Windfury
+  Weapon rank 2 are not the ranks cast, Multi-Shot 1289053 is a mob's bolt barrage, Feral
+  Swiftness is movement speed, Gore Drinker is not modelled, and the Touch of the Grave
+  attribute clears and the Curse, Rogue and Power Word: Shield attribute bits are read by
+  nothing the engine computes.
+- Winter's Chill is "your next Cone of Cold" (`winters_chill`, Forever preparation), from client
+  1.60.1.70630 (talent 11180 and aura 12579): only Frostbolt, Frost Blast and a Fingers of Frost
+  empowered Ice Lance can apply it, each stack makes the Cone of Cold deal 5% more damage and
+  gain 7% of the mage's spell damage (12579 and 11180 effect 3, a flat share added before the
+  hit is worked out), and the Cone of Cold uses every stack up as its cast completes. The stacks
+  stay on the mage rather than the target (the client puts 12579 on the target), so rotations
+  that test the aura keep working, and an area Cone of Cold gives every target the bonus. The
+  reference stacks from any landed Frost damage and never consumes. The rest of the Mage rows
+  of that build (Ice Barrier and Frigid Power, Frost Warding's absorb, Frost Blast's 0.271
+  coefficient, Arcane Wrath's 6 second cooldown, Missile Barrage ignoring missiles and hearing
+  Frost Blast) were already in the imported data and the code through hotfix push 112753.
+- A damage bonus applied after the calculation is threat too (`threat_follows_damage_bonus`,
+  Forever preparation), from MythicSim's Discord (26 October 2026, Vrelk: a Shadow Priest with
+  no threat talents had less threat than damage). Improved Mind Flay's ramp, Ice Lance on a
+  frozen target, Soul Siphon on Drain Life and Wrack, Amplify Curse on Curse of Agony and
+  Incinerate on an Immolated target raise a hit's damage after its threat is worked out; the
+  reference keeps the threat of the damage before the bonus, so Mind Flay made about 0.82
+  threat per damage with no threat talents.
 - Party damage for heals that follow it, an assumption until the logs hold them: Forever's level
   30 beta logs have no Prayer of Mending or Chain Heal yet. A healer's party of five takes hits
   at random, the tank about once a second and each of the other four about once every five
@@ -189,6 +310,22 @@ the Go goldens and exporter uses. The departures:
   chance at 200 mana) and The Furious Storm (The Elements 5, The Five Thunders 4: a cast's 4%
   chance at 65 spell power for 10 seconds), which the reference registers. Totem of Life's 80 is
   added to Lesser Healing Wave's roll, as the reference adds Libram of Light's to Flash of Light.
+  More set and item bonuses that need the fight: Vestments of Faith's Armor of Faith (a Greater
+  Heal crit shields its player for 500) and Epiphany (a cast's 5% chance at 24 mana per 5
+  seconds for 30 seconds), Dreamwalker Raiment's Healing Touch crit returning 30% of its cost,
+  Vestments of Transcendence's rank 5 Renew on each Greater Heal, and Idol of Rejuvenation's 5%
+  on Regrowth's direct heal while a Rejuvenation of the druid's is up (read as "on a target
+  under your Rejuvenation", since heals land on whoever needs them), Idol of Synthesis (a second
+  off Swiftmend's cooldown for each heal over time up as it is cast), Garments of the Oracle (3:
+  a heal's 20% chance to heal the healer for 10% of it), Rotmender's Raiment (5: a heal's cast,
+  at most every 2 seconds, puts up Rotmending's 40 every 3 seconds for 15 seconds, counted at
+  once), The Earthshatterer (4: the party's Mana Spring 25% stronger; 8: Lightning Shield's 15
+  mana per 5 seconds, read as kept up) and Redemption Armor (4: Lay on Hands 12 minutes sooner).
+  On use, Blessed Prayer Beads heal for 648 and Enamored Water Spirit's totem restores 33 mana
+  every 2 seconds for 24 seconds; Wushoolay's Charm of Spirits, a Lightning Shield trinket, is
+  worn without effect. Bonuses that help only the heal's target (Dreamwalker's Rejuvenation
+  mana, Totemic Power, Holy Power, Totemic Power's armor) change nothing the healer heals, and
+  The Eye of Divinity has no effect in Forever (its tooltip is flavour text).
   The healer trinkets on use: Talisman of Ascendance, which the reference registers, stacks
   Ascendance on each landed heal; Zandalarian Hero Charm, which it does not, starts at twelve
   stacks of 17 spell damage and 34 healing (its tooltip; the row is a dummy) and loses one each
@@ -198,6 +335,30 @@ the Go goldens and exporter uses. The departures:
   of the Swarmguard, is worn without effect. The prepared effects are `mana_on_cast`,
   `spell_mod_aura_on_use`, `stacking_cd_on_use`, `shield_on_heal` and the heals' shapes; a sim
   that is not a healer's keeps the reference's gear (`tests/healer_gear.rs`).
+- A healer's spells past its heals, from the client rows (1.60.1.70425): the reference has no
+  heal for them. A Discipline priest's Penance heals at once and once a second for two more,
+  each the bolt row's heal, and deals no damage. A Restoration druid channels Tranquility, its
+  periodic heal on the party of five every 2 seconds for 10 seconds, on a 5 minute cooldown.
+  Nature's Swiftness (the Druid's and the Shaman's) makes the next heal with a cast time instant,
+  and that cast spends it. Water Shield's three globes are each spent, at most once every 3.5
+  seconds, by a direct heal of the shaman's that crits, for 2% of the maximum mana (the 16
+  October 2026 beta notes); the globes taken spell hits spend are not modelled, since the healer
+  takes none. The prepared effects are `instant_cast_aura`, `mana_globes` and the heals' channel
+  shapes (`tests/healer_spells.rs`).
+- Chance on hit items with no stated rate, a MythicSim assumption: Blizzard states no rate for
+  them. Their client trigger rows read `ProcChance` 101, the server's "chance on hit" sentinel,
+  with no procs per minute, and the reference leaves them unregistered (its generator's "states
+  no rate" blocks, and rows it had no constructor for), so a sim wearing Seeping Willow,
+  Empyrean Demolisher or Felstriker ran as if the effect did not exist and said nothing. Forever
+  preparation registers them from those blocks and the client rows (`CHANCE_ON_HIT_ITEMS`,
+  `tools/rust_item_effects.py`) at the rate Classic servers give a `ProcChance` of 101: 1.8% per
+  landed hit for each second of the hitting weapon's speed, 1.08 procs a minute. A weapon procs on
+  its own hits, special attacks included; any other item on the wearer's landed melee and ranged
+  hits; spells never. A damage over time the proc puts on alone rolls the magic hit as it goes on
+  where it is magic and its ticks deal their amount, one around the wielder goes on every target,
+  and one a missile carries goes on as the hit lands, its flight not modelled.
+  `docs/forever-chance-on-hit.md` lists the items by kind and those left out with the reason
+  (crowd control, threat, mana, heals, debuffs only a tank feels).
 - Forever's Engineering ammo, from the Wowhead Forever tooltips: Swiftfeather Arrow (274387) and
   Swiftstrike Shot (274388), item level 65 and requiring level 60, each "Adds 24.5 damage per
   second". The reference's ammo stops at Miniature Cannon Balls, so the request schema adds them

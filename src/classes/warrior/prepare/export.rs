@@ -9,7 +9,7 @@ use crate::prepare::common_effects::{exclusive_category_effect, SPELL_BATCH_WIND
 use crate::prepare::dbcenums;
 use crate::prepare::env::Environment;
 use crate::prepare::rotation::rotation_spells;
-use crate::prepare::sim::{AuraId, Sim, UnitId, NEVER_EXPIRES, SECOND};
+use crate::prepare::sim::{AuraId, Rules, Sim, UnitId, NEVER_EXPIRES, SECOND};
 use crate::prepare::spell::{DefenseType, ProcMask};
 use crate::prepare::spelldata::Spell as Row;
 use crate::prepare::stats::Stat;
@@ -183,6 +183,40 @@ impl Warrior {
         let hamstring = data.hamstring.highest();
         effects.push(json!({"kind": "hamstring", "spell_id": hamstring.id,
             "base_damage": hamstring.damage_effect().average(level)}));
+        // pummel.go: the same strike in Berserker Stance. Go's exporter has no effect for it, so
+        // only Forever's rules describe it.
+        if sim.rules == Rules::Forever {
+            let pummel = data.pummel.by_id(6554);
+            effects.push(json!({"kind": "pummel", "spell_id": pummel.id,
+                "base_damage": pummel.damage_effect().average(level)}));
+        }
+        // shield_bash.go, mocking_blow.go, disarm.go, victory_rush.go and intercept.go, which
+        // Go's exporter has no effects for either.
+        if sim.rules == Rules::Forever {
+            let shield_bash = data.shield_bash.highest();
+            effects.push(json!({"kind": "shield_bash", "spell_id": shield_bash.id,
+                "base_damage": shield_bash.damage_effect().average(level),
+                "can_block": sim.unit(unit).pseudo_stats.can_block}));
+            let mocking_blow = data.mocking_blow.highest();
+            effects.push(json!({"kind": "mocking_blow", "spell_id": mocking_blow.id,
+                "base_damage": mocking_blow.damage_effect().average(level)}));
+            let disarm = data.disarm.highest();
+            effects.push(json!({"kind": "warrior_disarm", "spell_id": disarm.id,
+                "aura": format!("Disarm-{}", sim.unit(unit).label)}));
+            let victory_rush = data.victory_rush.highest();
+            effects.push(json!({"kind": "victory_rush", "spell_id": victory_rush.id,
+                "aura": "Victorious"}));
+            // The damage sits on the stun the charge triggers, not on Intercept itself.
+            let intercept = data.intercept.highest();
+            if let Some(spell) = Self::spell_of(sim, unit, intercept) {
+                effects.push(
+                    json!({"kind": "warrior_intercept", "spell_id": intercept.id,
+                    "aura": "Intercept", "speed_multiplier": 3.0, "overshoot": 3.5,
+                    "min_range": sim.spell(spell).min_range,
+                    "damage": intercept.effect_n(2).trigger().damage_effect().average(level)}),
+                );
+            }
+        }
         // bloodrage.go: instant and periodic rage scaled by Improved Bloodrage, and a share of
         // base health.
         let bloodrage = data.bloodrage.highest();
@@ -490,10 +524,17 @@ impl Warrior {
         // target, with the rage, global cooldown and cooldown the shared cast applies (Taunt
         // needs Defensive Stance). The fork has no taunt and no fear, so neither changes a
         // target's aim, swing or threat, and the shout does not reach the other targets.
+        // talents_protection.go Concussion Blow: a special hit outcome with no damage, refunded
+        // on a miss; the fork's stun changes no target's swing. Go's exporter has no effect for
+        // it, so only Forever's rules describe it.
         for (kind, rank) in [
             ("taunt", data.taunt.highest()),
             ("intimidating_shout", data.intimidating_shout.highest()),
+            ("concussion_blow", data.concussion_blow.highest()),
         ] {
+            if kind == "concussion_blow" && sim.rules != Rules::Forever {
+                continue;
+            }
             if let Some(spell) = Self::spell_of(sim, unit, rank) {
                 if let Some(position) = sim
                     .unit(unit)
@@ -577,8 +618,9 @@ impl Warrior {
                 );
             }
         };
-        // revenge.go
-        if !tanking {
+        // revenge.go. Under Forever's rules a warrior off the target's threat still has the
+        // strike, which no hit taken ever opens.
+        if !tanking && sim.rules != Rules::Forever {
             inert("Revenge - Trigger", &mut effects);
         } else if sim.get_aura(unit, "Revenge - Trigger").is_some() {
             let row = data.revenge.highest();
@@ -612,28 +654,53 @@ impl Warrior {
                         .copied()
                         .flatten()
                 });
-            let others = aura.and_then(|aura| {
+            // The category's other members, Cyclone aside: (bid, permanent and up at the reset).
+            let members = aura.and_then(|aura| {
                 (sim.aura(aura).exclusive_effects.len() == 1).then(|| {
                     let category = sim.effects[sim.aura(aura).exclusive_effects[0].0].category;
-                    sim.categories[category.0]
-                        .effects
+                    let effects = &sim.categories[category.0].effects;
+                    let cyclone = effects
                         .iter()
+                        .any(|member| sim.aura(sim.effects[member.0].aura).label == "Cyclone");
+                    let others: Vec<(f64, bool)> = effects
+                        .iter()
+                        .map(|member| &sim.effects[member.0])
                         .filter(|member| {
-                            let member = sim.effects[member.0].aura;
-                            member != aura && sim.aura(member).label != "Cyclone"
+                            member.aura != aura && sim.aura(member.aura).label != "Cyclone"
                         })
-                        .count()
+                        .map(|member| {
+                            let other = sim.aura(member.aura);
+                            (
+                                member.priority,
+                                other.active && other.duration == NEVER_EXPIRES,
+                            )
+                        })
+                        .collect();
+                    (cyclone, others)
                 })
             });
-            match (aura, others) {
-                (Some(aura), Some(0)) => {
-                    let multiplier = 1.0 - (slow * (1.0 + bonus)) / 100.0;
+            let multiplier = 1.0 - (slow * (1.0 + bonus)) / 100.0;
+            let bid = 1.0 - 1.0 / multiplier;
+            // A permanent slow of the same category up from the pull, as a raid's Thunder Clap
+            // debuff: on an equal or lower bid the clap takes the category while it is up (Go
+            // `keepsTie`, the same spell), and the slow back once it fades is the permanent
+            // one's. The clap so slows only by what it bids over it: none on an equal bid.
+            let relative = match &members {
+                Some((_, others)) if others.is_empty() => Some(bid),
+                Some((false, others)) if others.iter().all(|(_, permanent)| *permanent) => {
+                    let held = others.iter().map(|(bid, _)| *bid).fold(0.0, f64::max);
+                    Some(1.0 - (1.0 - bid.max(held)) / (1.0 - held))
+                }
+                _ => None,
+            };
+            match (aura, relative) {
+                (Some(aura), Some(bid)) => {
                     effects.push(json!({"kind": "thunder_clap", "spell_id": clap_row.id,
                         "base_damage": clap_row.damage_effect().average(level),
                         "attack_power_share": 0.0255,
                         "max_targets": i32::from(clap_row.max_targets),
                         "aura": sim.aura(aura).label,
-                        "bid": 1.0 - 1.0 / multiplier}));
+                        "bid": bid}));
                 }
                 _ => notes.push("Thunder Clap's slow shares its category".to_string()),
             }

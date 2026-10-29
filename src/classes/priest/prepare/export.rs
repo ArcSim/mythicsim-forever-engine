@@ -54,7 +54,21 @@ pub(super) fn damage_effect(sim: &Sim, spell: SpellId) -> Option<Value> {
     if action.spell_id == 0 || action.tag != 0 {
         return None;
     }
-    let row = damage_rows().get(&action.spell_id)?;
+    let row = match damage_rows().get(&action.spell_id) {
+        Some(row) => *row,
+        // chastise.go, under Forever's rules (Go's exporter leaves the cast unknown): every
+        // rank rolls its own row.
+        None if sim.rules == crate::prepare::sim::Rules::Forever => {
+            let mut found = None;
+            spell_data().chastise.each(|_, row| {
+                if row.id == action.spell_id {
+                    found = Some(row);
+                }
+            });
+            found?
+        }
+        None => return None,
+    };
     let effect = row.damage_effect();
     if effect.is_nil() {
         return None;
@@ -464,13 +478,34 @@ pub(super) fn effects(priest: &Priest, env: &Environment, notes: &mut Vec<String
                 .average(CHARACTER_LEVEL) / 100.0,
         }));
     }
+    // talents_shadow.go applyVampiricEmbrace, under Forever's rules (Go's exporter leaves the
+    // cast unknown): the debuff on each target, the first's copied to the others, heals the
+    // priest for a share of the Shadow damage the priest deals that target. Its party share is
+    // the player's alone.
+    if talents.bool("vampiric_embrace") && sim.rules == Rules::Forever {
+        let rank = data.vampiric_embrace.highest();
+        let target = env.encounter.targets[0];
+        let aura = sim
+            .unit(target)
+            .auras
+            .iter()
+            .map(|&aura| sim.aura(aura))
+            .find(|aura| aura.label.starts_with("Vampiric Embrace - "));
+        if let Some(aura) = aura {
+            effects.push(json!({
+                "kind": "vampiric_embrace", "spell_id": rank.id, "aura": aura.label,
+                "heal_fraction": rank.effect(dbcenums::A_DUMMY, 0).average(CHARACTER_LEVEL) / 100.0,
+                "metrics_action_id": action_id(Some(&ActionId::spell(rank.id))),
+            }));
+        }
+    }
     // smite.go: a cast on the rank's own row.
     effects.push(json!({"kind": "smite"}));
     // holy_fire.go: the hit rolls, a landed hit applies the snapshotting dot, then it is dealt.
     effects.push(json!({"kind": "holy_fire", "ranks": dot_ranks(&data.holy_fire)}));
     // penance.go: every rank, on the shared category cooldown, fires its own damage bolt, the
     // first the cast's tooltip names, on application and a channel tick a second.
-    if talents.bool("penance") {
+    if talents.bool("penance") && !priest.healer {
         let mut ranks = Vec::new();
         data.penance.each(|_, rank| {
             let bolt = rank.refs()[0];

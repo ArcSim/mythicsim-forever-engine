@@ -5,7 +5,10 @@ use std::rc::Rc;
 
 use crate::{
     contracts::prepared_v2::{Effect, PreparedV2, Spell as ExportedSpell},
-    core::fight::{heals::HealBook, Agent, AuraRef, DotId, Fight, Side, SpellId, SpellResult},
+    core::fight::{
+        heals::HealBook, Agent, AuraRef, DotId, Fight, Outcome, Side, SpellId, SpellResult,
+        OUTCOME_LANDED,
+    },
 };
 
 use super::{
@@ -20,6 +23,8 @@ use super::{
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum PriestSpell {
     MindBlast,
+    /// Chastise (Forever): a rolled Holy hit, cast only at a Humanoid.
+    Chastise,
     ShadowWordDeath,
     ShadowWordPain,
     DevouringPlague,
@@ -37,6 +42,7 @@ pub(crate) enum PriestSpell {
     Penance,
     /// A heal of MythicSim's healer sims (`core::fight::heals`).
     Heal,
+    VampiricEmbrace,
 }
 
 /// Class auras with Rust behavior.
@@ -50,11 +56,15 @@ pub(crate) enum PriestAura {
     SearingLight,
     SearingLightTrigger,
     ShadowfiendManaRestore,
+    /// Vampiric Embrace's debuff on the target.
+    VampiricEmbrace,
 }
 
 /// Priest state that Go keeps in the `Priest` struct and its closures.
 #[derive(Default)]
 pub(crate) struct PriestAgent {
+    /// Whether the target is a Humanoid, the only creature Chastise can be cast at.
+    humanoid_target: bool,
     early_demise_crit: f64,
     /// Improved Mind Flay's step a tick (client 70425).
     mind_flay_ramp: f64,
@@ -77,6 +87,8 @@ pub(crate) struct PriestAgent {
     pub(crate) mending: Option<prayer_of_mending::MendingRun>,
     power_infusion: Option<Rc<power_infusion::PowerInfusion>>,
     shadowfiend: Option<Rc<shadowfiend::Shadowfiend>>,
+    /// Vampiric Embrace's debuff, its heal share and health metrics.
+    vampiric_embrace: Option<(AuraRef, f64, usize)>,
 }
 
 /// Holy Nova's ranks resolved to spells.
@@ -93,6 +105,9 @@ fn class_auras(prepared: &PreparedV2) -> Vec<(&'static str, String, PriestAura)>
         .map(|(label, kind)| ("player", label, kind))
         .collect();
     for effect in &prepared.effects {
+        if let Effect::VampiricEmbrace { aura, .. } = effect {
+            auras.push(("target", aura.clone(), PriestAura::VampiricEmbrace));
+        }
         if let Effect::Shadowfiend {
             mana_restore_aura, ..
         } = effect
@@ -173,7 +188,11 @@ impl UnmaskedSpells {
 
 impl PriestAgent {
     /// The class behavior of an exported spell, if Rust implements it.
-    pub(crate) fn spell(spell: &ExportedSpell, unmasked: UnmaskedSpells) -> Option<PriestSpell> {
+    pub(crate) fn spell(
+        spell: &ExportedSpell,
+        unmasked: UnmaskedSpells,
+        vampiric_embrace: bool,
+    ) -> Option<PriestSpell> {
         let id = spell.action_id.clone().unwrap_or_default();
         let Some(class) = spell.class_spell.as_deref() else {
             let own = |known: Option<i32>| known == Some(id.spell_id) && id.tag == 0;
@@ -206,6 +225,7 @@ impl PriestAgent {
             "shadowfiend" => Some(PriestSpell::Shadowfiend),
             "power_infusion" => Some(PriestSpell::PowerInfusion),
             "smite" if spell.damage_effect.is_some() => Some(PriestSpell::Smite),
+            "chastise" if spell.damage_effect.is_some() => Some(PriestSpell::Chastise),
             "holy_nova" if spell.damage_effect.is_some() => Some(PriestSpell::HolyNova),
             "holy_fire" if spell.damage_effect.is_some() && spell.dot.is_some() => {
                 Some(PriestSpell::HolyFire)
@@ -214,6 +234,7 @@ impl PriestAgent {
                 Some(PriestSpell::Penance)
             }
             "heal" => Some(PriestSpell::Heal),
+            "vampiric_embrace" if vampiric_embrace => Some(PriestSpell::VampiricEmbrace),
             _ => None,
         }
     }
@@ -222,10 +243,17 @@ impl PriestAgent {
     pub(crate) fn fight(prepared: &PreparedV2) -> Result<Fight<PriestAgent>, String> {
         let auras = class_auras(prepared);
         let unmasked = UnmaskedSpells::of(&prepared.effects);
+        let vampiric_embrace = prepared
+            .effects
+            .iter()
+            .any(|effect| matches!(effect, Effect::VampiricEmbrace { .. }));
         let mut fight = Fight::new(
             prepared,
-            PriestAgent::default(),
-            |spell| PriestAgent::spell(spell, unmasked),
+            PriestAgent {
+                humanoid_target: prepared.target.mob_type.as_deref() == Some("MobTypeHumanoid"),
+                ..PriestAgent::default()
+            },
+            |spell| PriestAgent::spell(spell, unmasked, vampiric_embrace),
             |unit, label| {
                 auras
                     .iter()
@@ -255,6 +283,22 @@ impl PriestAgent {
             };
         for effect in &prepared.effects {
             match effect {
+                Effect::VampiricEmbrace {
+                    aura,
+                    heal_fraction,
+                    metrics_action_id,
+                    ..
+                } => {
+                    let aura = fight.trackers[Side::Target.index()]
+                        .find(aura)
+                        .map(|index| AuraRef {
+                            side: Side::Target,
+                            index,
+                        })
+                        .ok_or("Vampiric Embrace's debuff is not registered")?;
+                    let metrics = fight.new_health_metrics(metrics_action_id.clone());
+                    fight.agent.vampiric_embrace = Some((aura, *heal_fraction, metrics));
+                }
                 Effect::HolyNova {
                     ranks,
                     healing_dealt_multiplier,
@@ -530,9 +574,34 @@ impl PriestAgent {
     }
 }
 
+impl PriestAgent {
+    /// Vampiric Embrace's proc trigger on the target: a hit or tick of the priest's own Shadow
+    /// spell that deals damage, handled a spell batch window later.
+    fn vampiric_embrace_trigger(
+        fight: &mut Fight<Self>,
+        aura: AuraRef,
+        spell: SpellId,
+        result: &SpellResult,
+    ) {
+        let state = &fight.spells[spell];
+        if state.caster != Side::Player || state.school & SHADOW == 0 || result.damage == 0.0 {
+            return;
+        }
+        fight.schedule_delayed_proc(aura, spell, *result);
+    }
+}
+
+/// Go `SpellSchoolShadow`.
+const SHADOW: u8 = 1 << 5;
+
 impl Agent for PriestAgent {
     type Spell = PriestSpell;
     type Aura = PriestAura;
+
+    /// chastise.go `ExtraCastCondition`: the target is a Humanoid.
+    fn extra_cast_condition(fight: &Fight<Self>, _spell: SpellId, behavior: PriestSpell) -> bool {
+        behavior != PriestSpell::Chastise || fight.agent.humanoid_target
+    }
 
     fn reset(fight: &mut Fight<Self>) {
         fight.agent.mending = None;
@@ -547,6 +616,21 @@ impl Agent for PriestAgent {
 
     fn apply_effects(fight: &mut Fight<Self>, spell: SpellId, target: Side, behavior: PriestSpell) {
         match behavior {
+            // talents_shadow.go: the outcome always lands, the debuff goes up, then the outcome is
+            // dealt.
+            PriestSpell::VampiricEmbrace => {
+                let (aura, _, _) = fight
+                    .agent
+                    .vampiric_embrace
+                    .expect("Vampiric Embrace is bound");
+                let result = fight.calc_outcome(spell, target, Outcome::AlwaysHit);
+                if result.outcome & OUTCOME_LANDED != 0 {
+                    // Go `NewEnemyAuraArray`: the debuff on the cast's own target.
+                    let aura = fight.aura_on(aura, target);
+                    fight.activate_aura(aura);
+                }
+                fight.deal_damage(spell, result, false);
+            }
             PriestSpell::Heal => {
                 let book = fight.agent.heals.clone().expect("the heals are bound");
                 let rank = book
@@ -559,7 +643,11 @@ impl Agent for PriestAgent {
                     None => book.cast(fight, rank),
                 }
             }
-            PriestSpell::MindBlast | PriestSpell::Smite => direct::apply(fight, spell, target),
+            // chastise.go: `CalcAndDealDamage` of the row's roll on `OutcomeMagicHitAndCrit`,
+            // as Smite.
+            PriestSpell::MindBlast | PriestSpell::Smite | PriestSpell::Chastise => {
+                direct::apply(fight, spell, target)
+            }
             // talents_holy.go: Go `CalcAndDealAoeDamageWithVariance`, which rolls, resolves and
             // deals the hit on each target in unit index order before the heal is cast on the
             // priest.
@@ -649,12 +737,13 @@ impl Agent for PriestAgent {
                 let mut result = fight.snapshot_dot_tick_calc(dot);
                 let ticks = fight.dots[dot].tick_count() - 1;
                 let ramp = fight.agent.mind_flay_ramp;
-                result.damage *= if fight.agent.mind_flay_ramp_compounds {
+                let factor = if fight.agent.mind_flay_ramp_compounds {
                     (1.0 + ramp).powi(ticks)
                 } else {
                     ramp.mul_add(f64::from(ticks), 1.0)
                 };
                 let spell = fight.dots[dot].spell;
+                fight.scale_damage(spell, &mut result, factor);
                 fight.deal_damage(spell, result, true);
             }
             PriestSpell::ShadowWordPain
@@ -689,7 +778,8 @@ impl Agent for PriestAgent {
             | PriestAura::SearingLightTrigger
             | PriestAura::ShadowfiendManaRestore
             | PriestAura::DarkInspirationMindBlast
-            | PriestAura::DarkInspirationMindFlay => {}
+            | PriestAura::DarkInspirationMindFlay
+            | PriestAura::VampiricEmbrace => {}
         }
     }
 
@@ -702,7 +792,8 @@ impl Agent for PriestAgent {
             | PriestAura::SearingLightTrigger
             | PriestAura::ShadowfiendManaRestore
             | PriestAura::DarkInspirationMindBlast
-            | PriestAura::DarkInspirationMindFlay => {}
+            | PriestAura::DarkInspirationMindFlay
+            | PriestAura::VampiricEmbrace => {}
         }
     }
 
@@ -754,6 +845,30 @@ impl Agent for PriestAgent {
                 fight.schedule_delayed_proc(aura, spell, *result);
             }
             _ => {}
+        }
+    }
+
+    fn on_spell_hit_taken(
+        fight: &mut Fight<Self>,
+        aura: AuraRef,
+        kind: PriestAura,
+        spell: SpellId,
+        result: &SpellResult,
+    ) {
+        if kind == PriestAura::VampiricEmbrace {
+            Self::vampiric_embrace_trigger(fight, aura, spell, result);
+        }
+    }
+
+    fn on_periodic_damage_taken(
+        fight: &mut Fight<Self>,
+        aura: AuraRef,
+        kind: PriestAura,
+        spell: SpellId,
+        result: &SpellResult,
+    ) {
+        if kind == PriestAura::VampiricEmbrace {
+            Self::vampiric_embrace_trigger(fight, aura, spell, result);
         }
     }
 
@@ -815,6 +930,14 @@ impl Agent for PriestAgent {
             PriestAura::SearingLightTrigger => {
                 let aura = Self::searing_light(fight).aura;
                 fight.activate_aura(aura);
+            }
+            // The party's heal, of which the player is the one simulated.
+            PriestAura::VampiricEmbrace => {
+                let (_, share, metrics) = fight
+                    .agent
+                    .vampiric_embrace
+                    .expect("Vampiric Embrace is bound");
+                fight.gain_health(result.damage * share, metrics);
             }
             _ => {}
         }

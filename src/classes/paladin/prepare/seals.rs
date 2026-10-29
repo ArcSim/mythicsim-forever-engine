@@ -44,13 +44,14 @@ const SEAL_OF_RIGHTEOUSNESS_PROC_IDS: [(i32, i32); 8] = [
 
 /// The heal each rank's Judgement of Light grants attackers. It carries no rank subtext, so the
 /// pairing is by hand.
-const JUDGEMENT_OF_LIGHT_HEAL_IDS: [(i32, i32); 4] =
+pub(super) const JUDGEMENT_OF_LIGHT_HEAL_IDS: [(i32, i32); 4] =
     [(1, 20267), (2, 20341), (3, 20342), (4, 20343)];
 
 /// The mana each rank's Judgement of Wisdom grants attackers.
-const JUDGEMENT_OF_WISDOM_MANA_IDS: [(i32, i32); 3] = [(1, 20268), (2, 20352), (3, 20353)];
+pub(super) const JUDGEMENT_OF_WISDOM_MANA_IDS: [(i32, i32); 3] =
+    [(1, 20268), (2, 20352), (3, 20353)];
 
-fn paired(table: &[(i32, i32)], rank: i32) -> i32 {
+pub(super) fn paired(table: &[(i32, i32)], rank: i32) -> i32 {
     table
         .iter()
         .find(|(n, _)| *n == rank)
@@ -346,12 +347,17 @@ impl Paladin {
             unit,
             &ProcTrigger {
                 name: seal_label("Seal of Light", &label, rank),
-                // Go `SealOfLightFifteenPPM` (MythicSim patch 169): NewLegacyPPMManager(15, melee).
-                dpm: Some(std::rc::Rc::new(sim.new_ppm_manager(
-                    unit,
-                    15.0,
-                    ProcMask::MELEE,
-                ))),
+                // Go `SealOfLightFifteenPPM` (MythicSim patch 169): NewLegacyPPMManager(15, melee),
+                // which an item swap rebuilds for the weapons in the hands.
+                dpm: Some(std::rc::Rc::new(
+                    sim.new_ppm_manager(unit, 15.0, ProcMask::MELEE)
+                        .rebuilt_by_swap(
+                            sim,
+                            unit,
+                            crate::prepare::item_swap::ManagerChance::Ppm(15.0),
+                            crate::prepare::item_swap::ManagerMask::Static(ProcMask::MELEE),
+                        ),
+                )),
                 action_id: spell_action(rank.id),
                 metrics_action_id: spell_action(rank.id),
                 duration: SEAL_DURATION,

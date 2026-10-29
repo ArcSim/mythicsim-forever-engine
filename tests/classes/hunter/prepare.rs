@@ -229,21 +229,31 @@ fn a_pet_exists_only_with_a_type_and_an_uptime() {
     }
 }
 
-/// Thunderstomp cleaves every active target and Rust simulates one hit, so a Gorilla against two
-/// targets is prepared by Go with the ability named unrepresented, and Rust refuses it.
+/// Thunderstomp cleaves every active target. Go's exporter names the ability unrepresented
+/// against two targets; under Forever's rules Rust strikes both, with a roll each, up to its
+/// row's four targets.
 #[test]
-fn a_gorilla_against_two_targets_is_refused() {
+fn a_gorilla_against_two_targets_thunderstomps_both() {
     let request = fs::read(directory().join("beast-mastery-gorilla.request.json")).unwrap();
     let mut value: Value = serde_json::from_slice(&request).unwrap();
     let targets = value["encounter"]["targets"].as_array_mut().unwrap();
     targets.push(targets[0].clone());
-    match forever_engine::prepare_json(&serde_json::to_vec(&value).unwrap(), "x") {
+    let bytes = serde_json::to_vec(&value).unwrap();
+    match forever_engine::prepare_json_with(&bytes, "x", forever_engine::Rules::GoReference) {
         Err(forever_engine::PrepareError::Refused(refusal)) => {
             assert_eq!(refusal.code, "unrepresented");
             assert!(refusal.reason.contains("1264455"), "{}", refusal.reason);
         }
         other => panic!("expected a refusal, got {other:?}"),
     }
+    let prepared = forever_engine::prepare_json(&bytes, "x").unwrap();
+    let strike = prepared["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|effect| effect["spell_id"] == 1264455)
+        .expect("Thunderstomp");
+    assert_eq!(strike["cleave_targets"], 4);
 }
 
 /// Forever's pet hit, from its developers' tracker (22 October 2026): "Hunters give melee hit

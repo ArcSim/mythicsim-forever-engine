@@ -122,6 +122,7 @@ impl<A: Agent> Fight<A> {
             return;
         }
         self.update_position(side, false);
+        self.start_attack_for_walk_in(side, range);
         let distance = range - self.unit_config(side).distance;
         let speed = self.movement_speed(side);
         // Go time.Duration(math.Abs(d)/speed*1000) * time.Millisecond.
@@ -147,7 +148,12 @@ impl<A: Agent> Fight<A> {
             }
             None => {
                 let (_, spell) = self.movement_parts(side);
-                self.cast(spell, Side::Target);
+                let target = if side == Side::Player {
+                    self.current_target_side()
+                } else {
+                    Side::Target
+                };
+                self.cast(spell, target);
             }
         }
         let src_position = self.unit_config(side).distance;

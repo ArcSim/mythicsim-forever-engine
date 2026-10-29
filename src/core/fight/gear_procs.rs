@@ -19,6 +19,16 @@ pub(crate) struct HealthRageProc {
     rage_metrics: Option<usize>,
 }
 
+/// items.go Rogue Armor Energize: each spell's chance from the set's proc manager, the roll's
+/// label, the energy and its metrics.
+#[derive(Clone, Debug)]
+pub(crate) struct EnergyProc {
+    chances: Vec<Option<f64>>,
+    rng_label: String,
+    energy: f64,
+    metrics: usize,
+}
+
 /// items_weapons.go Puncture Armor and Annihilator's Armor Shatter: each spell's chance from the
 /// weapon's proc manager, the roll's label, the target's aura and the target's armor change at
 /// each stack count.
@@ -36,6 +46,7 @@ pub(crate) struct ArmorDebuffProc {
 pub(crate) fn behavior<K>(effects: &[Effect], side: Side, label: &str) -> Option<AuraBehavior<K>> {
     let mut health_rage = 0;
     let mut armor = 0;
+    let mut energy = 0;
     for effect in effects {
         match effect {
             Effect::HealthRageProc { trigger_aura, .. } => {
@@ -43,6 +54,12 @@ pub(crate) fn behavior<K>(effects: &[Effect], side: Side, label: &str) -> Option
                     return Some(AuraBehavior::HealthRageProc(health_rage));
                 }
                 health_rage += 1;
+            }
+            Effect::EnergyProc { trigger_aura, .. } => {
+                if side == Side::Player && trigger_aura == label {
+                    return Some(AuraBehavior::EnergyProc(energy));
+                }
+                energy += 1;
             }
             Effect::ArmorDebuffProc {
                 trigger_aura, aura, ..
@@ -104,6 +121,22 @@ impl<A: Agent> Fight<A> {
                         rage_metrics,
                     });
                 }
+                Effect::EnergyProc {
+                    rng_label,
+                    chances,
+                    energy,
+                    metrics_action_id,
+                    ..
+                } => {
+                    let metrics =
+                        self.new_resource_metrics(metrics_action_id.clone(), ResourceKind::Energy);
+                    self.energy_procs.push(EnergyProc {
+                        chances: by_spell(chances, self.spells.len()),
+                        rng_label: rng_label.clone(),
+                        energy: *energy,
+                        metrics,
+                    });
+                }
                 Effect::ArmorDebuffProc {
                     rng_label,
                     chances,
@@ -152,6 +185,37 @@ impl<A: Agent> Fight<A> {
             .proc(chance, &self.health_rage_procs[proc].rng_label)
         {
             self.schedule_delayed_proc(aura, spell, *result);
+        }
+    }
+
+    /// Go `AttachProcTriggerCallback` for Rogue Armor Energize: a landed hit the manager hears,
+    /// its roll under the trigger's name, then the handler a batch window later.
+    pub(crate) fn energy_proc_callback(
+        &mut self,
+        aura: AuraRef,
+        proc: usize,
+        spell: SpellId,
+        result: &SpellResult,
+    ) {
+        if result.outcome & super::OUTCOME_LANDED == 0 {
+            return;
+        }
+        let Some(chance) = self.energy_procs[proc].chances[spell] else {
+            return;
+        };
+        if self.rng.proc(chance, &self.energy_procs[proc].rng_label) {
+            self.schedule_delayed_proc(aura, spell, *result);
+        }
+    }
+
+    /// Rogue Armor Energize's handler: the energy, with an energy bar.
+    pub(crate) fn energy_proc_handler(&mut self, proc: usize) {
+        let (energy, metrics) = (
+            self.energy_procs[proc].energy,
+            self.energy_procs[proc].metrics,
+        );
+        if self.energy.is_some() {
+            self.add_energy(energy, metrics);
         }
     }
 

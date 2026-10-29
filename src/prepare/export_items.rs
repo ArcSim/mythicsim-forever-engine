@@ -430,7 +430,21 @@ pub(crate) fn use_item_effect(
     if let Some(effect) = env.agent.class_item_use_effect(env, spell, item) {
         return Some(vec![effect]);
     }
+    // Forever's rules: a heal over time on use (Orb of Soran'ruk) has no runtime behavior. Go
+    // files it as a survival cooldown, which the automatic use never casts without timings or a
+    // defensive health threshold; the gate refuses a rotation or a threshold that reaches it.
+    if env.sim.rules == super::sim::Rules::Forever && periodic_heal_on_use(item) {
+        return Some(Vec::new());
+    }
     Some(energize_on_use_effects(env, spell, item, unrepresented))
+}
+
+/// Whether the item's one use effect is a client heal over time on the wearer.
+fn periodic_heal_on_use(item: i32) -> bool {
+    only_on_use_effect(item).is_some_and(|effect| {
+        let heal = find(effect.i32("buff_id")).proc_heal_effect();
+        !heal.is_nil() && heal.aura == dbcenums::A_PERIODIC_HEAL
+    })
 }
 
 /// The default case of the item loop: shared.NewSpellDataEnergizeOnUse: an item use spell that
@@ -453,9 +467,21 @@ fn energize_on_use_effects(
                 }
                 let row = find(item_effect.i32("buff_id"));
                 let effect = row.proc_energize_effect();
-                if effect.is_nil() || effect.misc != dbcenums::POWER_MANA {
-                    continue;
-                }
+                // Go `energizedBarOf`: mana, rage or energy, on a character with that bar.
+                let unit = env.sim.unit(env.player);
+                let power = match effect.misc {
+                    _ if effect.is_nil() => continue,
+                    dbcenums::POWER_MANA => None,
+                    dbcenums::POWER_RAGE if unit.rage_bar.enabled => Some("rage"),
+                    dbcenums::POWER_ENERGY if unit.energy_bar.enabled => Some("energy"),
+                    _ => continue,
+                };
+                // Rage is stated in tenths.
+                let scale = if dbcenums::power_in_tenths(effect.misc) {
+                    0.1
+                } else {
+                    1.0
+                };
                 let periodic = effect.aura == dbcenums::A_PERIODIC_ENERGIZE;
                 let mut ticks = 1.0;
                 if periodic {
@@ -469,11 +495,14 @@ fn energize_on_use_effects(
                 found = true;
                 let mut energize = json!({
                     "kind": "energize_on_use", "item_id": item, "spell_id": row.id,
-                    "average": effect.average(level), "variance": effect.variance,
-                    "whole": effect.max(level) * ticks,
+                    "average": effect.average(level) * scale, "variance": effect.variance,
+                    "whole": effect.max(level) * ticks * scale,
                 });
                 if periodic {
                     energize["periodic"] = json!(true);
+                }
+                if let Some(power) = power {
+                    energize["power"] = json!(power);
                 }
                 effects.push(energize);
             }
@@ -1064,7 +1093,8 @@ pub(crate) fn melee_item_listeners(env: &Environment) -> Vec<Value> {
 ///
 /// Beyond the exporter's list, Deathbone Guardian's three piece Deathbone Surge
 /// (item_sets_classic.go `setStatProc`): a 15% chance on the melee hits the wearer takes, so
-/// without a tank it never rolls, and a tank's stays refused as a reaction to the target's swings.
+/// without a tank it never rolls. A tank's is a struck stat proc under Forever's rules and stays
+/// refused as a reaction to the target's swings under Go's.
 const HIT_TAKEN_ITEM_PROCS: [(&str, i32, i32); 11] = [
     ("Essence of the Pure Flame", 0, 0),
     ("Force Reactive Disk", 0, 0),
@@ -1164,6 +1194,33 @@ pub(crate) fn hit_taken_item_listeners(
             match lion_horn_proc(env, aura) {
                 Some(effect) => effects.push(effect),
                 None => unrepresented.push(format!("{label}'s proc is not a chance stat proc")),
+            }
+            continue;
+        }
+        // Go setStatProc's Deathbone Surge: each melee swing the wearer takes, landed or not, has
+        // a 15% chance, once a minute (the set aura's cooldown), to give 70 spell power for 10
+        // sec, a spell batch window later. Forever's rules describe it; Go's exporter refuses it.
+        if heard
+            && tanking
+            && label == "Deathbone Guardian 3P"
+            && env.sim.rules == super::sim::Rules::Forever
+        {
+            match aura_named(env, "Deathbone Surge") {
+                Some(proc_aura) if env.sim.aura(aura).icd.is_some() => {
+                    let bonus =
+                        Stats::from_pairs(&[(Stat::SpellDamage, 70.0), (Stat::HealingPower, 70.0)]);
+                    let id = ActionId::spell(1299746);
+                    effects.push(json!({
+                        "kind": "spell_data_stat_proc", "trigger_aura": label,
+                        "aura": env.sim.aura(proc_aura).label,
+                        "trigger_spells": Vec::<usize>::new(),
+                        "callbacks": ["on_spell_hit_taken"], "struck": true, "landed_only": false,
+                        "require_damage": false, "proc_chance": 0.15,
+                        "gain_log": format!("Gained {} from {}.", flat_string(&bonus), action_id_string(&id)),
+                        "expire_log": format!("Lost {} from fading {}.", flat_string(&bonus), action_id_string(&id)),
+                    }));
+                }
+                _ => unrepresented.push(format!("{label}'s proc is not a chance stat proc")),
             }
             continue;
         }
@@ -1807,6 +1864,17 @@ fn proc_damage_shape(
     damage: &'static Spell,
     position: usize,
 ) -> Result<serde_json::Map<String, Value>, &'static str> {
+    proc_damage_shape_with(env, damage, position, true)
+}
+
+/// [`proc_damage_shape`], refusing ticks that roll a magic hit without a crit only where
+/// `refuse_magic_ticks` (the reference's rows).
+fn proc_damage_shape_with(
+    env: &Environment,
+    damage: &'static Spell,
+    position: usize,
+    refuse_magic_ticks: bool,
+) -> Result<serde_json::Map<String, Value>, &'static str> {
     let level = env.sim.unit(env.player).level;
     let (direct, periodic) = (damage.damage_effect(), damage.periodic_damage_effect());
     let defense = env.sim.spell(spell_at(env, position)).defense_type;
@@ -1819,7 +1887,10 @@ fn proc_damage_shape(
         return Err("spreads and leaves a damage over time");
     } else if !periodic.is_nil() && direct.is_nil() && damage.speed != 0.0 {
         return Err("missile carries only a damage over time");
-    } else if !periodic.is_nil() && proc_tick_outcome(damage) == "tick_magic_hit" {
+    } else if refuse_magic_ticks
+        && !periodic.is_nil()
+        && proc_tick_outcome(damage) == "tick_magic_hit"
+    {
         return Err("ticks roll a magic hit without a crit");
     } else if !matches!(
         defense,
@@ -1866,6 +1937,190 @@ fn proc_damage_shape(
         );
     }
     Ok(shape)
+}
+
+/// Under Forever's rules, the damage over time alone of a chance on hit `CHANCE_ON_HIT_ITEMS`
+/// registers (forever_items.rs), where the reference describes none: a magic one rolls the magic
+/// hit as it goes on and its ticks deal their amount, as Classic dots do, where the reference's
+/// row reads a magic hit on every tick; one with a missile goes on as the hit lands (its flight is
+/// not modelled); and one around the wielder, as Seeping Willow's, goes on every target. `None`
+/// for any other row, which [`proc_damage_shape`] describes.
+fn chance_on_hit_dot_shape(
+    env: &Environment,
+    damage: &'static Spell,
+    position: usize,
+) -> Option<serde_json::Map<String, Value>> {
+    let level = env.sim.unit(env.player).level;
+    let (direct, periodic) = (damage.damage_effect(), damage.periodic_damage_effect());
+    if periodic.is_nil() || damage.debuffs_the_target() {
+        return None;
+    }
+    if !direct.is_nil() {
+        // With a hit, the dot goes on where the hit landed: only a magic tick's shape changes.
+        if direct.hits_an_area() || direct.chain_targets > 1 {
+            return None;
+        }
+        let mut shape = proc_damage_shape_with(env, damage, position, false).ok()?;
+        shape["periodic"]["tick_outcome"] = json!(match proc_tick_outcome(damage) {
+            "tick_magic_hit" => "tick",
+            other => other,
+        });
+        return Some(shape);
+    }
+    let defense = env.sim.spell(spell_at(env, position)).defense_type;
+    let magic = defense == DefenseType::Magic;
+    let tick = match proc_tick_outcome(damage) {
+        "tick_magic_hit" => "tick",
+        other => other,
+    };
+    let mut periodic_shape = json!({
+        "tick_base": periodic.average(level), "tick_outcome": tick, "with_direct": false,
+    });
+    if magic {
+        periodic_shape["application"] = json!("magic_hit");
+    }
+    let mut shape = serde_json::Map::new();
+    shape.insert("spell".to_string(), json!(position));
+    shape.insert("average".to_string(), json!(0.0));
+    shape.insert("variance".to_string(), json!(0.0));
+    shape.insert("can_crit".to_string(), json!(!damage.cannot_crit()));
+    shape.insert("periodic".to_string(), periodic_shape);
+    if periodic.hits_an_area() {
+        shape.insert(
+            "area".to_string(),
+            json!({
+                "max_targets": i32::from(damage.max_targets), "splits": false,
+                "aoe_cap_multiplier": aoe_cap_multiplier(env),
+            }),
+        );
+    }
+    Some(shape)
+}
+
+/// Under Forever's rules: the chance on hit items `CHANCE_ON_HIT_ITEMS` registers
+/// (forever_items.rs), which the reference leaves unregistered. Each weapon or item proc rolls its
+/// manager's chance on the landed hits it hears, at the rate MythicSim assumes, and at once on the
+/// hit casts its damage spell, activates its buff (and its attack speed, where the buff changes
+/// it) or puts its armor debuff on the unit hit.
+fn chance_on_hit_item_effects(env: &Environment, unrepresented: &mut Vec<String>) -> Vec<Value> {
+    use super::shared_items::ProcKind;
+    let mut effects = Vec::new();
+    if env.sim.rules != super::sim::Rules::Forever {
+        return effects;
+    }
+    // The worn items, then with an item swap the swap set's, as item_effects.rs registers them.
+    let mut items: Vec<i32> = env
+        .sim
+        .character(env.player)
+        .equipment
+        .iter()
+        .map(|item| item.id)
+        .collect();
+    if let Some(swap) = env.sim.item_swap(env.player) {
+        items.extend(swap.un_equipped.iter().map(|item| item.id));
+    }
+    let mut seen = Vec::new();
+    for item in items {
+        if item == 0 || seen.contains(&item) {
+            continue;
+        }
+        seen.push(item);
+        for (kind, cfg) in super::forever_items::chance_on_hit_registrations(item) {
+            let Some(trigger) = aura_named(env, cfg.name) else {
+                continue;
+            };
+            let trigger = env.sim.aura(trigger);
+            let (Some(dpm), None) = (trigger.dpm.as_ref(), trigger.icd) else {
+                unrepresented.push(format!("{}'s chance on hit has no proc manager", cfg.name));
+                continue;
+            };
+            let chances = dpm_chances(env, dpm, |spell| {
+                !spell.flags.matches(SpellFlag::SUPPRESS_WEAPON_PROCS)
+                    && !spell.flags.matches(SpellFlag::PROC)
+            });
+            let (_, row) = cfg.rows();
+            match kind {
+                ProcKind::Damage => {
+                    let Some(position) = spell_position(env, &ActionId::spell(row.id)) else {
+                        unrepresented.push(not_single_target_magic_hit(cfg.name));
+                        continue;
+                    };
+                    let shape = match chance_on_hit_dot_shape(env, row, position)
+                        .map_or_else(|| proc_damage_shape(env, row, position), Ok)
+                    {
+                        Ok(shape) => shape,
+                        Err(refusal) => {
+                            unrepresented.push(format!("{}'s proc {refusal}", cfg.name));
+                            continue;
+                        }
+                    };
+                    let triggers: Vec<Value> = chances
+                        .iter()
+                        .map(|chance| chance["spell"].clone())
+                        .collect();
+                    let mut effect = json!({
+                        "kind": "spell_data_damage_proc", "trigger_aura": trigger.label,
+                        "trigger_spells": triggers, "landed_only": true, "require_damage": false,
+                        "proc_chance": 1.0, "chances": chances,
+                    });
+                    for (key, value) in shape {
+                        effect[key] = value;
+                    }
+                    effects.push(effect);
+                }
+                ProcKind::Proc | ProcKind::Aura => {
+                    let Some(aura) = aura_named(env, &spell_data_stat_proc_aura(cfg.name)) else {
+                        unrepresented.push(format!("{}'s chance on hit has no buff", cfg.name));
+                        continue;
+                    };
+                    let aura = env.sim.aura(aura);
+                    if aura.max_stacks > 0 {
+                        unrepresented.push(format!("{}'s buff stacks", cfg.name));
+                        continue;
+                    }
+                    effects.push(json!({
+                        "kind": "stat_proc", "trigger_aura": trigger.label,
+                        "rng_label": trigger.label, "aura": aura.label, "chances": chances,
+                    }));
+                    let melee: f64 = row
+                        .effects
+                        .iter()
+                        .filter(|effect| effect.aura == dbcenums::A_MOD_MELEE_HASTE_3)
+                        .map(|effect| 1.0 + effect.base_value() / 100.0)
+                        .product();
+                    if kind == ProcKind::Aura && melee != 1.0 {
+                        effects.push(json!({
+                            "kind": "speed_aura", "aura": aura.label, "melee_multiplier": melee,
+                            "ranged_multiplier": 1.0, "cast_multiplier": 1.0,
+                        }));
+                    }
+                }
+                ProcKind::Debuff => {
+                    let label = format!("{} {}", row.name, row.id);
+                    let mut scratch = env.fresh();
+                    let target = scratch.encounter.targets[0];
+                    let Some(debuff) = scratch.sim.get_aura(target, &label) else {
+                        unrepresented.push(format!("{} has no {label} aura", cfg.name));
+                        continue;
+                    };
+                    let mut armor = vec![0.0];
+                    let base = scratch.sim.stat(target, Stat::Armor);
+                    scratch.sim.activate(debuff);
+                    for stacks in 1..=scratch.sim.aura(debuff).max_stacks {
+                        scratch.sim.set_stacks(debuff, stacks);
+                        armor.push(scratch.sim.stat(target, Stat::Armor) - base);
+                    }
+                    effects.push(json!({
+                        "kind": "armor_debuff_proc", "trigger_aura": trigger.label,
+                        "rng_label": trigger.label, "chances": chances, "aura": label,
+                        "armor_by_stacks": armor, "immediate": true,
+                    }));
+                }
+                _ => unrepresented.push(format!("{}'s chance on hit is not described", cfg.name)),
+            }
+        }
+    }
+    effects
 }
 
 /// weapon_procs.go `weaponDamageProcEffects`: the spell shared_utils.go
@@ -2169,6 +2424,7 @@ pub(crate) fn melee_proc_effects(env: &Environment, unrepresented: &mut Vec<Stri
     }
     effects.extend(flurry_axe_effects(env, unrepresented));
     effects.extend(weapon_aura_proc_effects(env, unrepresented));
+    effects.extend(chance_on_hit_item_effects(env, unrepresented));
     super::classic_export::thunderfury_effect(env, unrepresented, &mut effects);
     super::classic_export::dragons_call_effect(env, unrepresented, &mut effects);
     super::classic_export::sulfuras_effect(env, unrepresented, &mut effects);
@@ -2199,6 +2455,43 @@ pub(crate) fn item_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
 /// Warrior's Resolve and the Puncture Armor weapon procs.
 pub(crate) fn gear_proc_effects(env: &Environment, unrepresented: &mut Vec<String>) -> Vec<Value> {
     let mut effects = Vec::new();
+    // Under Forever's rules: Mark of the Champion's bonus against Undead and Demons, when every
+    // target is of one of those types (Go reads each target's own type). Go's melee attack power
+    // reads the bonus's ranged attack power, which the item sets to the same value.
+    let undead_or_demon = env.encounter.targets.iter().all(|&target| {
+        matches!(
+            env.sim.unit(target).mob_type.as_str(),
+            "MobTypeUndead" | "MobTypeDemon"
+        )
+    });
+    for (label, attack_power, spell_damage) in [
+        ("Mark of the Champion (Physical)", 150.0, 0.0),
+        ("Mark of the Champion (Spell)", 0.0, 85.0),
+    ] {
+        if env.sim.rules != super::sim::Rules::Forever || !undead_or_demon {
+            break;
+        }
+        if aura_named(env, label).is_some() {
+            effects.push(json!({
+                "kind": "mob_type_bonus", "aura": label, "attack_power": attack_power,
+                "ranged_attack_power": attack_power, "spell_damage": spell_damage,
+            }));
+        }
+    }
+    // Under Forever's rules (Go's exporter refuses the swap): with an item swap, the item and
+    // enchant speed auras the swap gains and expires, as core/enchant_speed.go attaches them.
+    let swaps = env.sim.item_swap(env.player).is_some();
+    if swaps && env.sim.rules == super::sim::Rules::Forever {
+        for &(aura, [melee, ranged, cast]) in &env.sim.speed_auras {
+            if env.sim.aura(aura).unit != env.player {
+                continue;
+            }
+            effects.push(json!({
+                "kind": "speed_aura", "aura": env.sim.aura(aura).label,
+                "melee_multiplier": melee, "ranged_multiplier": ranged, "cast_multiplier": cast,
+            }));
+        }
+    }
     // item_sets_classic.go Battlegear of Valor 5 piece, Warrior's Resolve: landed melee hits roll
     // a legacy one proc a minute manager under the trigger's name; a batch window later the
     // handler heals Roll(88, 133) and, with a rage bar, gives 10 rage, both Go literals.
@@ -2221,6 +2514,59 @@ pub(crate) fn gear_proc_effects(env: &Environment, unrepresented: &mut Vec<Strin
                     "metrics_action_id": json!({"spell_id": 450589}),
                 }));
             }
+        }
+    }
+    // classic items_weapons.go Runeblade of Baron Rivendare, under Forever's rules (Go's exporter
+    // does not run the regeneration): Unholy Aura gives 60 health every 5 seconds while it holds.
+    if let Some(aura) =
+        aura_named(env, "Unholy Aura").filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        effects.push(json!({
+            "kind": "health_regen_aura", "aura": env.sim.aura(aura).label,
+            "period_ns": 5 * super::sim::SECOND, "health": 60.0,
+            "metrics_action_id": json!({"spell_id": 17625}),
+        }));
+    }
+    // warrior items.go Battlegear of Heroism 4 piece, under Forever's rules (Go's exporter leaves
+    // its listener unclaimed): Warrior's Resolve, as Battlegear of Valor's.
+    if let Some(set) = aura_named(env, "Battlegear of Heroism 4P")
+        .filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        match env.sim.aura(set).dpm.as_ref() {
+            None => unrepresented.push("Battlegear of Heroism 4P has no proc manager".to_string()),
+            Some(dpm) => {
+                let rage = if env.sim.unit(env.player).rage_bar.enabled {
+                    10.0
+                } else {
+                    0.0
+                };
+                effects.push(json!({
+                    "kind": "health_rage_proc", "trigger_aura": env.sim.aura(set).label,
+                    "rng_label": "Warrior's Resolve",
+                    "chances": dpm_chances(env, dpm, |spell| {
+                        spell.proc_mask.matches(ProcMask::MELEE) && !spell.flags.matches(SpellFlag::PROC)
+                    }),
+                    "heal_min": 88.0, "heal_max": 133.0, "rage": rage,
+                    "metrics_action_id": json!({"spell_id": 450589}),
+                }));
+            }
+        }
+    }
+    // rogue items.go Darkmantle Armor 4 piece, Rogue Armor Energize, under Forever's rules (Go's
+    // exporter leaves the listener unclaimed): landed white hits roll a legacy one proc a minute
+    // manager under the trigger's name; a batch window later a player with an energy bar gains
+    // 20 energy.
+    if let Some(set) = aura_named(env, "Darkmantle Armor 4P")
+        .filter(|_| env.sim.rules == super::sim::Rules::Forever)
+    {
+        match env.sim.aura(set).dpm.as_ref() {
+            None => unrepresented.push("Darkmantle Armor 4P has no proc manager".to_string()),
+            Some(dpm) => effects.push(json!({
+                "kind": "energy_proc", "trigger_aura": env.sim.aura(set).label,
+                "rng_label": "Rogue Armor Energize",
+                "chances": dpm_chances(env, dpm, |spell| !spell.flags.matches(SpellFlag::PROC)),
+                "energy": 20.0, "metrics_action_id": json!({"spell_id": 27787}),
+            })),
         }
     }
     // classic items_trinkets.go Darkmoon Card: Heroism: landed melee hits roll a legacy two procs a

@@ -32,15 +32,27 @@ pub(crate) enum Act {
     /// `castFriendlySpell` at the player.
     Cast(SpellId, Side),
     Autocast,
-    /// Go `APLActionStrictSequence`: its casts and the next one to run.
+    /// Go `APLActionStrictSequence`: its casts, the units they are cast on, and the next one
+    /// to run.
     StrictSequence {
+        /// Each step's cast; [`NO_SPELL`] for a change of target.
         spells: Vec<SpellId>,
+        targets: Vec<Side>,
+        /// Each step that is Go `APLActionChangeTarget`: the target position it changes to, and
+        /// when it last ran.
+        changes: Vec<Option<(usize, i64)>>,
+        /// Each step's own condition, `None` for one without.
+        conditions: Vec<Option<Rc<Cond>>>,
         next: usize,
     },
-    /// Go `APLActionSequence`: its name, its casts and the next one to run.
+    /// Go `APLActionSequence`: its name, its casts, the units they are cast on, and the next
+    /// one to run.
     Sequence {
         name: Rc<str>,
         spells: Vec<SpellId>,
+        targets: Vec<Side>,
+        /// Each step's own condition.
+        conditions: Vec<Option<Rc<Cond>>>,
         next: usize,
     },
     /// Go `APLActionChannelSpell` with an interrupt condition.
@@ -99,9 +111,11 @@ pub(crate) enum Act {
     /// when it last ran, which lets it run once a timestep.
     ChangeTarget {
         last: i64,
+        /// The target position the current target moves to.
+        to: usize,
     },
     /// Go `APLActionCastWarlockAssignedCurse`: the curse, cast without queueing.
-    CastAssignedCurse(SpellId),
+    CastAssignedCurse(SpellId, Side),
     /// Go `APLActionCastAllStatBuffCooldowns`: its spells and those the last readiness check
     /// found ready.
     CastAllStatBuffCooldowns {
@@ -116,6 +130,82 @@ pub(crate) enum Act {
     },
 }
 
+/// A strict sequence step as compiled: its cast and the unit, or its change of target.
+type StepCast = (SpellId, Side, Option<(usize, i64)>);
+
+/// A step that casts nothing: a strict sequence's change of target.
+pub(crate) const NO_SPELL: SpellId = SpellId::MAX;
+
+impl Act {
+    /// Takes the state Go keeps in an action from the same item of another copy of the rotation,
+    /// compiled for another current target.
+    fn carry_state(&mut self, from: &Act) {
+        match (self, from) {
+            (
+                Act::StrictSequence { next, changes, .. },
+                Act::StrictSequence {
+                    next: from_next,
+                    changes: from_changes,
+                    ..
+                },
+            ) => {
+                *next = *from_next;
+                for (change, from_change) in changes.iter_mut().zip(from_changes) {
+                    if let (Some(change), Some(from_change)) = (change, from_change) {
+                        change.1 = from_change.1;
+                    }
+                }
+            }
+            (
+                Act::Sequence { next, .. },
+                Act::Sequence {
+                    next: from_next, ..
+                },
+            )
+            | (
+                Act::Schedule { next, .. },
+                Act::Schedule {
+                    next: from_next, ..
+                },
+            ) => {
+                *next = *from_next;
+            }
+            (
+                Act::Wait { until, .. },
+                Act::Wait {
+                    until: from_until, ..
+                },
+            ) => *until = *from_until,
+            (
+                Act::ChangeTarget { last, .. },
+                Act::ChangeTarget {
+                    last: from_last, ..
+                },
+            ) => {
+                *last = *from_last;
+            }
+            (
+                Act::StrictMultidot { ready, next, .. },
+                Act::StrictMultidot {
+                    ready: from_ready,
+                    next: from_next,
+                    ..
+                },
+            ) => {
+                ready.clone_from(from_ready);
+                *next = *from_next;
+            }
+            (
+                Act::CastAllStatBuffCooldowns { ready, .. },
+                Act::CastAllStatBuffCooldowns {
+                    ready: from_ready, ..
+                },
+            ) => ready.clone_from(from_ready),
+            _ => {}
+        }
+    }
+}
+
 /// The compiled rotation: the priority list's items first, then those of each group instance.
 #[derive(Debug)]
 pub(crate) struct Compilation {
@@ -126,6 +216,16 @@ pub(crate) struct Compilation {
     pub(crate) groups: Vec<Range<usize>>,
     /// The priority list's sequences by name, in the order Go's finalizing finds them.
     pub(crate) sequences: Vec<(Rc<str>, usize)>,
+}
+
+impl Compilation {
+    /// Whether a Move sits anywhere in the rotation: the priority list, a group instance or a
+    /// schedule's inner action. A prepull move does not count.
+    pub(crate) fn has_move(&self) -> bool {
+        self.items
+            .iter()
+            .any(|item| matches!(item.action, Act::Move(_)))
+    }
 }
 
 /// A prepull action: a cast, or Go `APLActionActivateAura`.
@@ -152,6 +252,9 @@ pub(crate) enum PrepullAct {
     Move(f64),
     /// Go `APLActionMoveDuration`: the player moves for the duration.
     MoveDuration(i64),
+    /// Go `APLActionGroupReference.Execute` of a group of moves: the player runs to the range
+    /// unless it is already moving or casting.
+    GroupMove(f64),
     /// Go `APLActionCancelAura`.
     CancelAura(AuraRef),
     /// Go `APLActionActivateAuraWithStacks`, its stacks capped at the aura's maximum.
@@ -160,6 +263,9 @@ pub(crate) enum PrepullAct {
     TriggerIcd(AuraRef),
     /// Go `APLActionChangeTarget` to the first target.
     ChangeTarget,
+    /// Go `APLActionStrictSequence.Execute`, which a prepull runs without asking whether it is
+    /// ready: the item holding the sequence takes control of the rotation.
+    StrictSequence(usize),
 }
 
 /// The spells or auras a prepull action that runs several of them holds.
@@ -201,8 +307,10 @@ enum Ready {
     CancelAura(AuraRef),
     /// The target changed to the first.
     ChangeTarget(usize),
+    /// A strict sequence's change of target: the item and the step.
+    SequenceChangeTarget(usize, usize),
     /// The assigned curse cast.
-    CastAssignedCurse(SpellId),
+    CastAssignedCurse(SpellId, Side),
     /// The stat buff cooldowns cast.
     CastAllStatBuffCooldowns(usize),
 }
@@ -496,10 +604,13 @@ impl<A: Agent> Fight<A> {
         }
     }
 
-    /// Go `APLActionChangeTarget.Execute`'s log line, of the first target.
+    /// Go `APLActionChangeTarget.Execute`'s log line, of the player's current target.
     pub(crate) fn log_change_target(&mut self) {
         if self.log.is_some() {
-            let line = format!("Changing target to {}", self.label_of(Side::Target));
+            let line = format!(
+                "Changing target to {}",
+                self.label_of(self.current_target_side())
+            );
             self.player_log(&line);
         }
     }
@@ -693,8 +804,8 @@ impl<A: Agent> Fight<A> {
     }
 
     /// Go `newAPLAction` of a prepull action, without its condition: the action at its time,
-    /// or `None` where Go builds none. A channel's interrupt item joins `channels`, numbered
-    /// from `base`, and a list of spells or auras joins `lists`.
+    /// or `None` where Go builds none. A channel's interrupt item or a strict sequence joins
+    /// `channels`, numbered from `base`, and a list of spells or auras joins `lists`.
     pub(super) fn prepull_act(
         &self,
         prepull: &crate::rotation::Prepull,
@@ -747,6 +858,13 @@ impl<A: Agent> Fight<A> {
                         Some((prepull.do_at_ns, PrepullAct::Channel(spell, item)))
                     }
                 }
+            }
+            // Go `newActionStrictSequence`, as the priority list builds it.
+            ParsedAction::StrictSequence(_) => {
+                let act = self.compile_action(&prepull.action, lookup, None, &mut Vec::new())?;
+                channels.push(Item::new(None, act));
+                let item = base + channels.len() - 1;
+                Some((prepull.do_at_ns, PrepullAct::StrictSequence(item)))
             }
             ParsedAction::CastAllStatBuffCooldowns(stats) => {
                 lists.push(PrepullList::Spells(self.cast_all_spells(stats)));
@@ -844,6 +962,16 @@ impl<A: Agent> Fight<A> {
             ParsedAction::Move(Value::Const(range)) => {
                 Some((prepull.do_at_ns, PrepullAct::Move(range.float)))
             }
+            ParsedAction::PrepullGroupMove(range) => {
+                let mut range = range;
+                while let Value::Variable { resolved, .. } = range {
+                    range = resolved;
+                }
+                let Value::Const(range) = range else {
+                    return None;
+                };
+                Some((prepull.do_at_ns, PrepullAct::GroupMove(range.float)))
+            }
             ParsedAction::MoveDuration(Value::Const(duration)) => Some((
                 prepull.do_at_ns,
                 PrepullAct::MoveDuration(duration.duration_ns),
@@ -866,6 +994,11 @@ impl<A: Agent> Fight<A> {
                 .map(|(_, duration)| *duration)
         };
         let pet_aura_known = |pet: usize, id: &ActionId| self.pet_aura_known(pet, id);
+        // A pet the fight simulates, by its position among the player's pets.
+        let pet_aura = |pet: usize, id: &ActionId| {
+            let side = self.pet_side(self.pet_agent_labels.get(pet)?)?;
+            self.rotation_aura(side, id)
+        };
         let icd_aura = |unit: Unit, id: &ActionId| self.rotation_icd_aura(unit, id);
         let lookup = Lookup {
             aura: &aura,
@@ -875,6 +1008,25 @@ impl<A: Agent> Fight<A> {
             dot: &dot,
             dot_base_duration: &dot_base_duration,
             pet_aura_known: &pet_aura_known,
+            pet_aura: &pet_aura,
+            simulated_pet_with_mana: &|pet: usize| {
+                let side = self.pet_side(self.pet_agent_labels.get(pet)?)?;
+                let Side::Pet(slot) = side else { return None };
+                (self.unit(side).powers.max_mana > 0.0).then_some(slot)
+            },
+            unsummoned_pet_with_mana: &|pet: usize| {
+                self.pet_agent_labels
+                    .get(pet)
+                    .is_some_and(|label| self.pet_side(label).is_none())
+                    && self.pet_agent_mana_bars.get(pet).copied().unwrap_or(false)
+            },
+            unsummoned_pet_max_mana: &|pet: usize| {
+                let label = self.pet_agent_labels.get(pet)?;
+                if self.pet_side(label).is_some() {
+                    return None;
+                }
+                self.pet_agent_max_mana.get(pet).copied().flatten()
+            },
             item_swap: self.item_swap.is_some(),
             bars: self.rotation_bars(),
             icd_aura: &icd_aura,
@@ -1007,13 +1159,15 @@ impl<A: Agent> Fight<A> {
         max_dots.min(targets)
     }
 
-    /// Go `newActionCastSpell` of a sequence's step: the spell the step casts, none for an
-    /// unknown spell or a target that names no unit. The runtime casts a step on the first
-    /// target, which the gate checks.
-    fn step_spell(&self, step: &Step) -> Option<SpellId> {
+    /// Go `newActionCastSpell` of a sequence's step: the spell the step casts and the unit it is
+    /// cast on, none for an unknown spell or a target that names no unit.
+    fn step_spell(&self, step: &Step) -> Option<(SpellId, Side)> {
         let spell = self.apl_cast_spell(&step.spell)?;
-        step.target.resolve(self.targets.len())?;
-        Some(spell)
+        let side = match step.target.resolve(self.targets.len())? {
+            Unit::Player => Side::Player,
+            Unit::Target(position) => Side::target(position),
+        };
+        Some((spell, side))
     }
 
     /// Go's action constructors: the action a parsed one builds, or `None` where Go builds none.
@@ -1055,26 +1209,83 @@ impl<A: Agent> Fight<A> {
             // lacks drops the whole action (ElliotWood/Forever#625).
             ParsedAction::StrictSequence(steps) => {
                 // Go builds every step before it looks for a missing one.
-                let spells: Vec<Option<SpellId>> =
-                    steps.iter().map(|step| self.step_spell(step)).collect();
-                let spells = spells.into_iter().collect::<Option<Vec<SpellId>>>()?;
-                if spells.is_empty() {
+                let casts: Vec<Option<StepCast>> = steps
+                    .iter()
+                    .map(|step| {
+                        if step.change_target {
+                            // Go `newActionChangeTarget`: none for a unit it finds nothing for.
+                            match step.target.resolve(self.targets.len())? {
+                                Unit::Target(position) => {
+                                    Some((NO_SPELL, Side::Player, Some((position, NEVER_EXPIRES))))
+                                }
+                                Unit::Player => None,
+                            }
+                        } else {
+                            self.step_spell(step)
+                                .map(|(spell, side)| (spell, side, None))
+                        }
+                    })
+                    .collect();
+                let casts = casts.into_iter().collect::<Option<Vec<_>>>()?;
+                if casts.is_empty() {
                     return None;
                 }
-                Act::StrictSequence { spells, next: 0 }
+                let mut spells = Vec::with_capacity(casts.len());
+                let mut targets = Vec::with_capacity(casts.len());
+                let mut changes = Vec::with_capacity(casts.len());
+                for (spell, side, change) in casts {
+                    spells.push(spell);
+                    targets.push(side);
+                    changes.push(change);
+                }
+                // A step whose condition is a constant false is pruned, so Go drops the action.
+                let mut conditions = Vec::with_capacity(steps.len());
+                for step in steps {
+                    conditions.push(match compile_condition(step.condition.as_ref(), lookup) {
+                        CompiledCondition::Pruned => return None,
+                        CompiledCondition::Always => None,
+                        CompiledCondition::When(condition) => {
+                            Some(Rc::new(Cond::lower(&condition)))
+                        }
+                    });
+                }
+                Act::StrictSequence {
+                    spells,
+                    targets,
+                    changes,
+                    conditions,
+                    next: 0,
+                }
             }
-            // Go newActionSequence drops unknown casts, and the action when none remain.
+            // Go newActionSequence drops the steps it builds no action for (an unknown cast, a
+            // condition that is a constant false), and the action when none remain.
             ParsedAction::Sequence { name, steps } => {
-                let spells: Vec<SpellId> = steps
-                    .iter()
-                    .filter_map(|step| self.step_spell(step))
-                    .collect();
+                let mut spells = Vec::with_capacity(steps.len());
+                let mut targets = Vec::with_capacity(steps.len());
+                let mut conditions = Vec::with_capacity(steps.len());
+                for step in steps {
+                    let Some((spell, target)) = self.step_spell(step) else {
+                        continue;
+                    };
+                    let condition = match compile_condition(step.condition.as_ref(), lookup) {
+                        CompiledCondition::Pruned => continue,
+                        CompiledCondition::Always => None,
+                        CompiledCondition::When(condition) => {
+                            Some(Rc::new(Cond::lower(&condition)))
+                        }
+                    };
+                    spells.push(spell);
+                    targets.push(target);
+                    conditions.push(condition);
+                }
                 if spells.is_empty() {
                     return None;
                 }
                 Act::Sequence {
                     name: Rc::from(name.as_str()),
                     spells,
+                    targets,
+                    conditions,
                     next: 0,
                 }
             }
@@ -1138,8 +1349,11 @@ impl<A: Agent> Fight<A> {
             // target that names no unit.
             ParsedAction::CastAssignedCurse(target) => {
                 let (_, curse) = lookup.assigned_curse?;
-                target.resolve(self.targets.len())?;
-                Act::CastAssignedCurse(self.apl_spell(curse)?)
+                let side = match target.resolve(self.targets.len())? {
+                    Unit::Target(position) => Side::target(position),
+                    Unit::Player => Side::Target,
+                };
+                Act::CastAssignedCurse(self.apl_spell(curse)?, side)
             }
             // Go `processMajorCooldowns`: the spells the input names for its stats; none leaves
             // an action that is never ready.
@@ -1148,14 +1362,16 @@ impl<A: Agent> Fight<A> {
                 ready: Vec::new(),
             },
             ParsedAction::ActivateAllStatBuffProcAuras { .. } => return None,
-            // Go `newActionChangeTarget`: no action for a unit Go finds nothing for; the gate
-            // admits only the first target, which the current target always is.
-            ParsedAction::ChangeTarget(unit) => {
-                unit.resolve(self.targets.len())?;
-                Act::ChangeTarget {
+            // Go `newActionChangeTarget`: no action for a unit Go finds nothing for. A relative
+            // unit resolves against the current target this copy of the rotation is for; the
+            // gate refuses a change to the player.
+            ParsedAction::ChangeTarget(unit) => match unit.resolve(self.targets.len())? {
+                Unit::Target(to) => Act::ChangeTarget {
                     last: NEVER_EXPIRES,
-                }
-            }
+                    to,
+                },
+                Unit::Player => return None,
+            },
             // Go `newActionCancelAura`: no action for an aura the player lacks.
             ParsedAction::CancelAura(id) => {
                 Act::CancelAura(self.rotation_aura(Side::Player, id)?.aura)
@@ -1225,6 +1441,8 @@ impl<A: Agent> Fight<A> {
             // Go `newActionMove` and `newActionMoveDuration` always build the action. A value
             // that gives none panics where Go reads it, which the gate refuses.
             ParsedAction::Move(range) => Act::Move(Rc::new(compile_raw_value(range, lookup)?)),
+            // Parsed only as a prepull action, which `prepull_act` builds.
+            ParsedAction::PrepullGroupMove(_) => return None,
             ParsedAction::MoveDuration(duration) => {
                 Act::MoveDuration(Rc::new(compile_raw_value(duration, lookup)?))
             }
@@ -1414,7 +1632,8 @@ impl<A: Agent> Fight<A> {
                 ValueType::Int => compare(*op, self.get_int(lhs), self.get_int(rhs)),
                 ValueType::Float => compare_float(*op, self.get_float(lhs), self.get_float(rhs)),
                 ValueType::Duration => compare(*op, self.get_duration(lhs), self.get_duration(rhs)),
-                ValueType::String => false,
+                // Go compares the strings byte by byte.
+                ValueType::String => compare(*op, self.get_string(lhs), self.get_string(rhs)),
             },
             Compiled::Coerced { inner, .. } => match inner.value_type() {
                 ValueType::Bool => self.get_bool(inner),
@@ -1424,6 +1643,24 @@ impl<A: Agent> Fight<A> {
                 ValueType::String => false,
             },
             _ => false,
+        }
+    }
+
+    /// Go `GetString`: a constant's own text, or a value coerced to a string as Go formats it.
+    fn get_string(&mut self, value: &Compiled) -> String {
+        match value {
+            Compiled::Const(constant) => constant.string.clone(),
+            Compiled::Coerced { inner, .. } => match inner.value_type() {
+                ValueType::Int => self.get_int(inner).to_string(),
+                ValueType::Float => crate::rotation::go_float_string(self.get_float(inner)),
+                ValueType::Duration => {
+                    crate::rotation::go_duration_string(self.get_duration(inner))
+                }
+                ValueType::String => self.get_string(inner),
+                // Go panics coercing a bool to a string; a comparison never asks.
+                ValueType::Bool => String::new(),
+            },
+            _ => String::new(),
         }
     }
 
@@ -1503,6 +1740,11 @@ impl<A: Agent> Fight<A> {
                 (self.duration - self.now) as f64 / self.duration as f64
             }
             Compiled::CurrentMana => self.player.mana,
+            Compiled::PetCurrentMana(slot) => self.unit(Side::Pet(*slot)).mana,
+            Compiled::PetCurrentManaPercent(slot) => {
+                let side = Side::Pet(*slot);
+                self.unit(side).mana / self.active_pet(side).config.max_mana
+            }
             Compiled::CurrentEnergy => self.energy_bar().current,
             Compiled::CurrentRage => self.current_rage(),
             Compiled::MaxEnergy => self.energy_bar().max,
@@ -1854,16 +2096,71 @@ impl<A: Agent> Fight<A> {
     /// Go `APLActionStrictSequence.IsReady`. A ready sequence leaves the sequence flag set,
     /// as Go does.
     fn sequence_ready(&mut self, item: usize) -> bool {
-        let Act::StrictSequence { ref spells, .. } = self.rotation[item].action else {
+        let Act::StrictSequence {
+            ref spells,
+            ref changes,
+            ref conditions,
+            ..
+        } = self.rotation[item].action
+        else {
             unreachable!("item is a strict sequence");
         };
-        let first = spells[0];
+        let (first, change, condition) = (spells[0], changes[0], conditions[0].clone());
+        // Go checks the GCD only for a sequence that casts.
+        let casts = changes.iter().any(Option::is_none);
         self.apl.in_sequence = true;
-        if self.gcd_time_to_ready() > MAX_SPELL_QUEUE_WINDOW || !self.cast_ready(first) {
+        if casts && self.gcd_time_to_ready() > MAX_SPELL_QUEUE_WINDOW
+            || !self.step_condition_holds(condition.as_deref())
+            || !self.step_ready(first, change)
+        {
             self.apl.in_sequence = false;
             return false;
         }
         true
+    }
+
+    /// Go `APLAction.IsReady` of a strict sequence's step without its condition: a change of
+    /// target runs once a timestep, a cast when it can be cast or queued.
+    fn step_ready(&mut self, spell: SpellId, change: Option<(usize, i64)>) -> bool {
+        match change {
+            Some((_, last)) => last != self.now,
+            None => self.cast_ready(spell),
+        }
+    }
+
+    /// The player's current target, Go `Character.CurrentTarget`.
+    pub(crate) fn current_target_side(&self) -> Side {
+        Side::target(self.player_target)
+    }
+
+    /// Go `APLActionChangeTarget.Execute`: the player's current target moves to the target at
+    /// `to`, and the rotation reads its units from the copy compiled for it.
+    pub(crate) fn change_target(&mut self, to: usize) {
+        self.change_rotation_copy(to);
+        self.log_change_target();
+    }
+
+    /// Puts the copy of the rotation compiled for the current target at `to` in place, carrying
+    /// each item's state over, and forgets the cached answers of the copy that leaves.
+    pub(crate) fn change_rotation_copy(&mut self, to: usize) {
+        if to == self.player_target {
+            return;
+        }
+        let from = self.player_target;
+        let mut next = std::mem::take(&mut self.rotation_copies[to]);
+        assert_eq!(
+            next.len(),
+            self.rotation.len(),
+            "the rotation copies differ"
+        );
+        for (item, old) in next.iter_mut().zip(&self.rotation) {
+            item.action.carry_state(&old.action);
+        }
+        self.rotation_copies[from] = std::mem::replace(&mut self.rotation, next);
+        self.player_target = to;
+        self.apl.proofs.clear();
+        self.apl.proofs.resize(self.rotation.len(), Proof::NONE);
+        self.apl.look = None;
     }
 
     /// Whether asking a cast item would leave no trace, so it may be answered without asking:
@@ -1981,6 +2278,17 @@ impl<A: Agent> Fight<A> {
             }
         }
         ready
+    }
+
+    /// A sequence step's own condition, as Go's step `IsReady` reads it: the walk's promise
+    /// lasts no longer than the condition's answer.
+    fn step_condition_holds(&mut self, condition: Option<&Cond>) -> bool {
+        let Some(condition) = condition else {
+            return true;
+        };
+        let (holds, until, _) = self.condition_stable(condition);
+        self.note_until(until);
+        holds
     }
 
     /// Whether an item's condition is false, keeping a proof of it that holds as long as the
@@ -2233,11 +2541,13 @@ impl<A: Agent> Fight<A> {
                 go.then_some(Ready::CastAllStatBuffCooldowns(item))
             }
             // Go `APLActionCastWarlockAssignedCurse.IsReady`: `CanCast`, which does not queue.
-            Act::CastAssignedCurse(spell) => self
+            Act::CastAssignedCurse(spell, side) => self
                 .can_cast(spell)
-                .then_some(Ready::CastAssignedCurse(spell)),
+                .then_some(Ready::CastAssignedCurse(spell, side)),
             // Go `APLActionChangeTarget.IsReady`: once a timestep.
-            Act::ChangeTarget { last } => (last != self.now).then_some(Ready::ChangeTarget(item)),
+            Act::ChangeTarget { last, .. } => {
+                (last != self.now).then_some(Ready::ChangeTarget(item))
+            }
             // Go `APLActionCancelAura.IsReady`: the aura is active.
             Act::CancelAura(aura) => self.aura(aura).active.then_some(Ready::CancelAura(aura)),
             // Go `APLActionResetSequence.IsReady`: its sequence has started.
@@ -2336,17 +2646,24 @@ impl<A: Agent> Fight<A> {
         cast.effective_time()
     }
 
-    /// Go `APLActionSequence.IsReady`: the next step's readiness inside the sequence.
+    /// Go `APLActionSequence.IsReady`: the next step's readiness inside the sequence, its
+    /// condition first.
     fn sequence_step_ready(&mut self, item: usize) -> bool {
         let Act::Sequence {
-            ref spells, next, ..
+            ref spells,
+            ref conditions,
+            next,
+            ..
         } = self.rotation[item].action
         else {
             unreachable!("item is a sequence");
         };
         let step = spells.get(next).copied();
+        let condition = conditions.get(next).cloned().flatten();
         self.apl.in_sequence = true;
-        let ready = step.is_some_and(|spell| self.cast_ready(spell));
+        let ready = step.is_some_and(|spell| {
+            self.step_condition_holds(condition.as_deref()) && self.cast_ready(spell)
+        });
         self.apl.in_sequence = false;
         ready
     }
@@ -2555,23 +2872,39 @@ impl<A: Agent> Fight<A> {
     /// Go `APLActionStrictSequence.GetNextAction`, of a strict sequence or of the one a strict
     /// multidot runs.
     fn sequence_next_action(&mut self, item: usize) -> Option<Ready> {
-        let (spell, target) = match self.rotation[item].action {
-            Act::StrictSequence { ref spells, next } => (spells[next], Side::Target),
+        let (step, spell, target, change, condition) = match self.rotation[item].action {
+            Act::StrictSequence {
+                ref spells,
+                ref targets,
+                ref changes,
+                ref conditions,
+                next,
+            } => (
+                next,
+                spells[next],
+                targets[next],
+                changes[next],
+                conditions[next].clone(),
+            ),
             Act::StrictMultidot {
                 spell,
                 ref ready,
                 next,
                 ..
-            } => (spell, ready[next]),
+            } => (next, spell, ready[next], None, None),
             _ => unreachable!("only strict sequences and waits control the rotation"),
         };
-        if self.cast_ready(spell) {
+        // Go `APLAction.IsReady` of the step: its condition, then its cast.
+        if self.step_condition_holds(condition.as_deref()) && self.step_ready(spell, change) {
             // Off the GCD the step advances now; otherwise the cast queues and the step
-            // stays until it fires.
+            // stays until it fires. A change of target off the GCD runs again later.
             if self.gcd_ready() {
                 self.advance_sequence(item);
             }
-            Some(Ready::Cast(spell, target))
+            Some(match change {
+                Some(_) => Ready::SequenceChangeTarget(item, step),
+                None => Ready::Cast(spell, target),
+            })
         } else if !self.can_queue_spell() {
             // A spell was queued this timestep: advance when its action fires.
             if !self.apl.queue_hooks.contains(&item) {
@@ -2600,6 +2933,7 @@ impl<A: Agent> Fight<A> {
             Act::StrictSequence {
                 ref spells,
                 ref mut next,
+                ..
             } => {
                 *next += 1;
                 *next == spells.len()
@@ -2650,13 +2984,16 @@ impl<A: Agent> Fight<A> {
             Ready::SequenceStep(item) => {
                 self.apl.in_sequence = true;
                 let Act::Sequence {
-                    ref spells, next, ..
+                    ref spells,
+                    ref targets,
+                    next,
+                    ..
                 } = self.rotation[item].action
                 else {
                     unreachable!("item is a sequence");
                 };
-                let spell = spells[next];
-                self.cast_or_queue(spell, Side::Target);
+                let (spell, target) = (spells[next], targets[next]);
+                self.cast_or_queue(spell, target);
                 if self.can_queue_spell() {
                     self.advance_sequence(item);
                 } else {
@@ -2740,20 +3077,35 @@ impl<A: Agent> Fight<A> {
                 } else {
                     ready.clone()
                 };
+                let target = self.current_target_side();
                 for spell in casts {
-                    self.cast_or_queue(spell, Side::Target);
+                    self.cast_or_queue(spell, target);
                 }
             }
-            // Go `APLActionCastWarlockAssignedCurse.Execute`: `Spell.Cast` on the first target.
-            Ready::CastAssignedCurse(spell) => {
-                self.cast(spell, Side::Target);
+            // Go `APLActionCastWarlockAssignedCurse.Execute`: `Spell.Cast` on the action's target.
+            Ready::CastAssignedCurse(spell, side) => {
+                self.cast(spell, side);
             }
             // Go `APLActionChangeTarget.Execute`: the first target stays the current one.
             Ready::ChangeTarget(item) => {
-                self.log_change_target();
-                if let Act::ChangeTarget { ref mut last } = self.rotation[item].action {
-                    *last = self.now;
-                }
+                let Act::ChangeTarget { ref mut last, to } = self.rotation[item].action else {
+                    unreachable!("item is a change of target");
+                };
+                *last = self.now;
+                self.change_target(to);
+            }
+            // Go `APLActionChangeTarget.Execute` as a strict sequence's step.
+            Ready::SequenceChangeTarget(item, step) => {
+                let Act::StrictSequence {
+                    ref mut changes, ..
+                } = self.rotation[item].action
+                else {
+                    unreachable!("item is a strict sequence");
+                };
+                let change = changes[step].as_mut().expect("the step changes target");
+                change.1 = self.now;
+                let to = change.0;
+                self.change_target(to);
             }
             // Go `APLActionCancelAura.Execute`.
             Ready::CancelAura(aura) => {
@@ -2790,7 +3142,7 @@ impl<A: Agent> Fight<A> {
                 }
             }
             Ready::Channel(item, spell) => {
-                self.cast_or_queue(spell, Side::Target);
+                self.cast_or_queue(spell, self.current_target_side());
                 let Act::Channel { allow_recast, .. } = self.rotation[item].action else {
                     unreachable!("item is a channel");
                 };
@@ -2802,8 +3154,17 @@ impl<A: Agent> Fight<A> {
 
     /// Go `APLActionChannelSpell.Execute` in the prepull: the cast, then the rotation reads the
     /// channel's interrupt condition.
+    /// Go `APLActionStrictSequence.Execute` before the pull: the sequence takes control, and
+    /// the rotation runs its steps once it acts. A second one while one holds control is
+    /// refused by the gate.
+    pub(crate) fn prepull_sequence(&mut self, item: usize) {
+        self.apl.in_sequence = true;
+        assert!(self.apl.controlling.is_none(), "nested controlling actions");
+        self.apl.controlling = Some(item);
+    }
+
     pub(crate) fn prepull_channel(&mut self, spell: SpellId, item: usize) {
-        self.cast_or_queue(spell, Side::Target);
+        self.cast_or_queue(spell, self.current_target_side());
         let Act::Channel { allow_recast, .. } = self.rotation[item].action else {
             unreachable!("item is a channel");
         };
@@ -2901,7 +3262,7 @@ impl<A: Agent> Fight<A> {
                 | Act::CancelAura(_)
                 | Act::ChangeTarget { .. }
                 | Act::CastAllStatBuffCooldowns { .. }
-                | Act::CastAssignedCurse(_)
+                | Act::CastAssignedCurse(..)
                 | Act::ResetSequence { .. } => {
                     if self.item_action_ready(item).is_some() {
                         return false;
@@ -2991,9 +3352,11 @@ impl<A: Agent> Fight<A> {
             self.player_log("No available actions!");
         }
         if self.player.rotation_timer <= self.now {
-            // A moving unit does not wait for its GCD.
+            // A moving unit does not wait for its GCD. Forever's rule (README, Rust-only
+            // mechanics): neither does a rotation with a move, so a walk timed to a swing timer
+            // starts when its condition turns true, as moving needs no GCD.
             let mut next = self.now + self.config.reaction;
-            if !self.player.moving {
+            if !self.player.moving && !self.rotation_with_moves_looks_through_gcd {
                 next = next.max(self.player.gcd);
             }
             self.wait_until(next);
@@ -3003,6 +3366,8 @@ impl<A: Agent> Fight<A> {
     /// Go `APLRotation.reset` and each action's `Reset`.
     pub(crate) fn rotation_reset(&mut self, side: Side) {
         if side == Side::Player {
+            // Go `Character.reset`: the current target is the first again.
+            self.change_rotation_copy(0);
             self.in_rotation = false;
             self.apl.controlling = None;
             self.apl.move_held_for_queue = false;
@@ -3013,8 +3378,15 @@ impl<A: Agent> Fight<A> {
             self.apl.look = None;
             for item in 0..self.rotation.len() {
                 match self.rotation[item].action {
-                    Act::StrictSequence { ref mut next, .. } => {
+                    Act::StrictSequence {
+                        ref mut next,
+                        ref mut changes,
+                        ..
+                    } => {
                         *next = 0;
+                        for (_, last) in changes.iter_mut().flatten() {
+                            *last = NEVER_EXPIRES;
+                        }
                         self.apl.queue_hooks.retain(|&hooked| hooked != item);
                         self.apl.in_sequence = false;
                     }
@@ -3023,7 +3395,7 @@ impl<A: Agent> Fight<A> {
                         self.apl.queue_hooks.retain(|&hooked| hooked != item);
                     }
                     Act::Schedule { ref mut next, .. } => *next = 0,
-                    Act::ChangeTarget { ref mut last } => *last = NEVER_EXPIRES,
+                    Act::ChangeTarget { ref mut last, .. } => *last = NEVER_EXPIRES,
                     Act::StrictMultidot {
                         ref mut next,
                         ref mut ready,

@@ -10,7 +10,7 @@ use crate::prepare::dbcenums;
 use crate::prepare::resolve_aura::aura_config;
 use crate::prepare::resolve_spell::{flags, spell_config};
 use crate::prepare::sim::AuraId;
-use crate::prepare::sim::{AuraConfig, EventCallbacks, Sim, UnitId};
+use crate::prepare::sim::{AuraConfig, EventCallbacks, Rules, Sim, UnitId};
 use crate::prepare::spell::SpellFlag;
 use crate::prepare::spell::{school, ProcMask};
 use crate::prepare::spell_mod::{SpellModConfig, SpellModType};
@@ -345,7 +345,13 @@ impl Mage {
     }
 
     /// Client 70425 made Winter's Chill a Cone of Cold empowerment: each stack makes the target
-    /// take 5% more damage from the mage's own Cone of Cold, up to 5 stacks, for 15 sec.
+    /// take 5% more damage from the mage's own Cone of Cold, up to 5 stacks, for 15 sec. Under
+    /// Forever's rules, client 1.60.1.70630 makes the stacks "your next Cone of Cold" (consumed
+    /// by it) and adds 7% of spell damage to that Cone of Cold per stack (see
+    /// `classes::mage::talents::winters_chill`). The stacks stay on the mage, not on the target:
+    /// the client puts 12579 on the target (ImplicitTarget 6), but the engine reads the aura by
+    /// name from the mage's side, so custom rotations that test it keep working, and the Cone of
+    /// Cold's own damage mod reads it there too.
     fn register_winter_chill(&self, sim: &mut Sim, unit: UnitId) {
         let rank = self.talents.i32("winters_chill");
         if rank == 0 {
@@ -386,6 +392,12 @@ impl Mage {
                         damage_per_stack * f64::from(new_stacks),
                     )
                 })),
+                // Client 1.60.1.70630: "your next Cone of Cold" uses the stacks up, which the
+                // runtime does when the cast completes (after its damage).
+                events: EventCallbacks {
+                    on_cast_complete: sim.rules == Rules::Forever,
+                    ..EventCallbacks::default()
+                },
                 ..AuraConfig::default()
             },
         );

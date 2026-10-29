@@ -514,6 +514,19 @@ fn fold(env: &Environment, value: &Message) -> Folds {
             Some(known) => one(Fold::Const(Ty::Bool, known)),
             None => Folds::from([Fold::FALSE, Fold::TRUE]),
         },
+        // Go `newValueSpellCanCast`, `IsReady`, `TimeToReady` and `CastTime`: nil when
+        // `GetAPLSpell` finds no spell.
+        "spell_can_cast" | "spell_is_ready" | "spell_time_to_ready" | "spell_cast_time" => {
+            let ty = if matches!(kind, "spell_can_cast" | "spell_is_ready") {
+                Ty::Bool
+            } else {
+                Ty::Other
+            };
+            match config.message("spell_id") {
+                Some(id) if apl_spell(env, &proto_to_action_id(id)).is_some() => one(Fold::Dyn(ty)),
+                _ => one(Fold::Nil),
+            }
+        }
         "spell_is_known" => match config.message("spell_id") {
             Some(id) => one(Fold::Const(
                 Ty::Bool,
@@ -1076,19 +1089,24 @@ fn group_casts(
                 .resolve(targets)
                 .and_then(|_| apl_cast_spell(env, &step.spell))
         })),
+        // A change of target casts nothing; Go builds it for a unit it finds.
         Action::StrictSequence(steps) => {
-            let found: Vec<Option<SpellId>> = steps
+            let found: Vec<Option<Option<SpellId>>> = steps
                 .iter()
                 .map(|step| {
-                    step.target
-                        .resolve(targets)
-                        .and_then(|_| apl_cast_spell(env, &step.spell))
+                    step.target.resolve(targets).and_then(|_| {
+                        if step.change_target {
+                            Some(None)
+                        } else {
+                            apl_cast_spell(env, &step.spell).map(Some)
+                        }
+                    })
                 })
                 .collect();
             if found.iter().all(Option::is_some) {
-                casts.extend(found.into_iter().flatten());
+                casts.extend(found.into_iter().flatten().flatten());
             } else {
-                pruned.extend(found.into_iter().flatten());
+                pruned.extend(found.into_iter().flatten().flatten());
             }
         }
         _ => {}

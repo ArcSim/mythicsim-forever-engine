@@ -12,7 +12,7 @@ use crate::prepare::character::{cooldown_type, MajorCooldown};
 use crate::prepare::dbcenums;
 use crate::prepare::sim::{
     school_array_index, AuraConfig, Cooldown, Duration, EventCallbacks, Sim, UnitId, MILLISECOND,
-    SECOND,
+    NEVER_EXPIRES, SECOND,
 };
 use crate::prepare::spell::{school, CastConfig, DefenseType, ProcMask, SpellConfig, SpellFlag};
 use crate::prepare::spell_mod::{SpellModConfig, SpellModType};
@@ -933,6 +933,13 @@ impl Shaman {
             AuraConfig {
                 label: "Nature's Swiftness".to_string(),
                 action_id: Some(spell_action(16188)),
+                // A Restoration healer sim's is up until a heal spends it (Rust only); Go
+                // registers it without a duration.
+                duration: if self.spec == super::Spec::Restoration {
+                    NEVER_EXPIRES
+                } else {
+                    0
+                },
                 events: EventCallbacks {
                     on_cast_complete: true,
                     ..EventCallbacks::default()
@@ -945,7 +952,8 @@ impl Shaman {
             SpellModConfig {
                 kind: SpellModType::CastTimePct,
                 float_value: -100.0,
-                class_mask: masks::CHAIN_LIGHTNING | masks::LIGHTNING_BOLT,
+                // The heals of a Restoration healer sim are Nature spells too.
+                class_mask: masks::CHAIN_LIGHTNING | masks::LIGHTNING_BOLT | masks::HEAL,
                 ..SpellModConfig::default()
             },
         );

@@ -246,20 +246,38 @@ impl Hunter {
             }
             return Some(pet_row_strike(id, row, "melee_special"));
         }
-        // newThunderstomp: a cleave of magic hits, so one hit on a single target.
+        // newThunderstomp: a cleave of magic hits, so one hit on a single target. Forever's rules
+        // describe the cleave on more: the row's targets at most, each a roll of its own.
         let thunderstomp = data.thunderstomp_triggered.highest();
         if thunderstomp.id == id {
-            if active_target_count(sim) > 1 {
-                return None;
+            let mut strike = pet_row_strike(id, thunderstomp, "magic");
+            let targets = active_target_count(sim);
+            if targets > 1 {
+                if sim.rules != crate::prepare::sim::Rules::Forever {
+                    return None;
+                }
+                let cap = i32::from(thunderstomp.max_targets);
+                strike["cleave_targets"] = json!(if cap > 0 { cap } else { targets as i32 });
             }
-            return Some(pet_row_strike(id, thunderstomp, "magic"));
+            return Some(strike);
         }
-        // newSwipe: its cast condition needs three active targets, and it cleaves them.
-        if data.swipe_triggered.highest().id == id {
+        // newSwipe: its cast condition needs three active targets, and it cleaves them, each a
+        // roll of the row on the melee special table. Forever's rules describe the cleave; Go's
+        // exporter refuses it.
+        let swipe = data.swipe_triggered.highest();
+        if swipe.id == id {
+            let mut effect = json!({"kind": "hunter_pet_swipe", "spell_id": id, "min_targets": 3});
             if active_target_count(sim) >= 3 {
-                return None;
+                if sim.rules != crate::prepare::sim::Rules::Forever {
+                    return None;
+                }
+                let damage = swipe.damage_effect();
+                effect["cleave"] = json!({
+                    "max_targets": i32::from(damage.chain_targets),
+                    "average": damage.average(CHARACTER_LEVEL), "variance": damage.variance,
+                });
             }
-            return Some(json!({"kind": "hunter_pet_swipe", "spell_id": id, "min_targets": 3}));
+            return Some(effect);
         }
         let bleed_rows = [
             &data.savage_rend_triggered,
@@ -497,6 +515,14 @@ impl Hunter {
                 "kind": "wing_clip", "spell_id": spell_id_of(sim, spell),
                 "base_damage": data.wing_clip.highest().effect_n(2).average(CHARACTER_LEVEL),
             }));
+        }
+        // traps.go: Freezing Trap deals nothing. Go's exporter has no effect for it, so only
+        // Forever's rules describe it.
+        if let Some(spell) = self
+            .freezing_trap
+            .filter(|_| sim.rules == crate::prepare::sim::Rules::Forever)
+        {
+            effects.push(json!({"kind": "freezing_trap", "spell_id": spell_id_of(sim, spell)}));
         }
         // traps.go: a magic hit roll without a hit count, dealt, then the dot when it landed.
         if let Some(spell) = self.immolation_trap {

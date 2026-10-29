@@ -78,16 +78,33 @@ pub enum Unit {
     Target(usize),
 }
 
+thread_local! {
+    /// The player's current target a rotation is compiled for, by position: the first target
+    /// unless [`with_current_target`] compiles a copy for another.
+    static CURRENT_TARGET: std::cell::Cell<usize> = const { std::cell::Cell::new(0) };
+}
+
+/// Runs `f` with the current target that unit references resolve against at `position`, as Go
+/// `UnitReference.Get` reads the player's `CurrentTarget` where it is asked.
+pub fn with_current_target<T>(position: usize, f: impl FnOnce() -> T) -> T {
+    let old = CURRENT_TARGET.with(|current| current.replace(position));
+    let result = f();
+    CURRENT_TARGET.with(|current| current.set(old));
+    result
+}
+
 impl UnitRef {
     /// Go `Environment.GetUnit` in a fight of `targets` targets, all enabled: the unit, or
-    /// `None` where Go finds no unit. The previous and next targets wrap around the encounter.
+    /// `None` where Go finds no unit. The current target is the first unless a copy is compiled
+    /// for another ([`with_current_target`]); the previous and next targets wrap around it.
     pub fn resolve(self, targets: usize) -> Option<Unit> {
         let targets = targets.max(1);
+        let current = CURRENT_TARGET.with(std::cell::Cell::get) % targets;
         match self {
             UnitRef::Player => Some(Unit::Player),
-            UnitRef::CurrentTarget => Some(Unit::Target(0)),
-            UnitRef::PreviousTarget => Some(Unit::Target(targets - 1)),
-            UnitRef::NextTarget => Some(Unit::Target(1 % targets)),
+            UnitRef::CurrentTarget => Some(Unit::Target(current)),
+            UnitRef::PreviousTarget => Some(Unit::Target((current + targets - 1) % targets)),
+            UnitRef::NextTarget => Some(Unit::Target((current + 1) % targets)),
             UnitRef::Target(index) => (index < targets).then_some(Unit::Target(index)),
             UnitRef::Nobody => None,
         }
@@ -214,6 +231,11 @@ pub enum Value {
     CurrentHealthPercent,
     RemainingTimePercent,
     CurrentMana,
+    /// `currentMana` with one of the player's pets, by its position among them, as its source
+    /// unit.
+    PetCurrentMana(usize),
+    /// `currentManaPercent` with one of the player's pets as its source unit.
+    PetCurrentManaPercent(usize),
     CurrentEnergy,
     MaxEnergy,
     CurrentComboPoints,
@@ -231,6 +253,17 @@ pub enum Value {
     /// `auraIsKnown` with one of the player's pets, by its position among them, as its
     /// source unit.
     PetAuraIsKnown {
+        pet: usize,
+        id: ActionId,
+    },
+    /// `auraIsActive` with one of the player's pets, by its position among them, as its source
+    /// unit: the pet's aura while it is simulated, else an aura that is never up.
+    PetAuraIsActive {
+        pet: usize,
+        id: ActionId,
+    },
+    /// `auraRemainingTime` with one of the player's pets as its source unit.
+    PetAuraRemainingTime {
         pet: usize,
         id: ActionId,
     },
@@ -545,6 +578,7 @@ impl Value {
             | Value::Not(_)
             | Value::AuraIsKnown(_)
             | Value::PetAuraIsKnown { .. }
+            | Value::PetAuraIsActive { .. }
             | Value::AuraIsActive(_)
             | Value::AuraShouldRefresh { .. }
             | Value::ActionGroupUsed { .. }
@@ -580,6 +614,7 @@ impl Value {
             | Value::SpellNumCharges(_)
             | Value::CurrentComboPoints => ValueType::Int,
             Value::AuraRemainingTime(_)
+            | Value::PetAuraRemainingTime { .. }
             | Value::DotRemainingTime(_)
             | Value::SpellCastTime(_)
             | Value::SpellTimeToReady(_)
@@ -596,8 +631,10 @@ impl Value {
             | Value::SpellFullCooldown(_)
             | Value::TimeToNextEnergyTick => ValueType::Duration,
             Value::CurrentManaPercent
+            | Value::PetCurrentManaPercent(_)
             | Value::CurrentHealthPercent
             | Value::CurrentMana
+            | Value::PetCurrentMana(_)
             | Value::RemainingTimePercent
             | Value::CurrentEnergy
             | Value::CurrentRage
@@ -749,6 +786,11 @@ pub enum Action {
         name: String,
         variables: Vec<(String, Value)>,
     },
+    /// Go `APLActionGroupReference` before the pull, of a group only it references whose
+    /// actions are moves without conditions: its Execute runs the first that is ready, and a
+    /// move before the pull is ready while the player neither moves nor casts. Parsed only as
+    /// a prepull action, with the range Go reads.
+    PrepullGroupMove(Value),
     /// Go `APLActionItemSwap`: swap to the item swap's set (`true`) or back to the request's
     /// equipment, ready only while the other set is worn.
     ItemSwap(bool),
@@ -761,12 +803,18 @@ pub enum Action {
     },
 }
 
-/// A cast that is a step of a sequence: the spell and the unit Go casts it on, which Go builds no
-/// action for when it names none.
+/// A step of a sequence: a cast of the spell on the unit Go casts it on, or, in a strict
+/// sequence, Go `APLActionChangeTarget` to the unit. Go builds no action for a unit it finds
+/// nothing for.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Step {
+    /// The spell a cast step casts; none for a change of target.
     pub spell: ActionId,
     pub target: UnitRef,
+    /// A sequence step's own condition, which Go checks as it asks whether the step is ready.
+    pub condition: Option<Value>,
+    /// The step changes the player's current target to `target` and casts nothing.
+    pub change_target: bool,
 }
 
 impl Action {
@@ -777,8 +825,14 @@ impl Action {
             Action::Multidot { max_overlap, .. } | Action::StrictMultidot { max_overlap, .. } => {
                 max_overlap.iter().collect()
             }
-            Action::Move(value) | Action::MoveDuration(value) => vec![value],
+            Action::Move(value) | Action::MoveDuration(value) | Action::PrepullGroupMove(value) => {
+                vec![value]
+            }
             Action::Wait(value) | Action::WaitUntil(value) => value.iter().collect(),
+            Action::StrictSequence(steps) | Action::Sequence { steps, .. } => steps
+                .iter()
+                .filter_map(|step| step.condition.as_ref())
+                .collect(),
             // Go builds the inner action without the group's variables.
             Action::Schedule { inner, .. } => {
                 let mut values: Vec<&Value> = inner.condition.iter().collect();
@@ -798,7 +852,7 @@ impl Action {
         match self {
             Action::Sequence { steps, .. } => steps
                 .iter()
-                .filter(|step| step.target.resolve(targets).is_some())
+                .filter(|step| !step.change_target && step.target.resolve(targets).is_some())
                 .map(|step| &step.spell)
                 .collect(),
             Action::Schedule { inner, .. } => inner.action.reachable_spells(targets),
@@ -826,9 +880,11 @@ impl Action {
         match self {
             Action::CastSpell { spell: id, .. } | Action::CastAtPlayer(id) => vec![id],
             Action::AutocastOtherCooldowns => Vec::new(),
-            Action::StrictSequence(steps) | Action::Sequence { steps, .. } => {
-                steps.iter().map(|step| &step.spell).collect()
-            }
+            Action::StrictSequence(steps) | Action::Sequence { steps, .. } => steps
+                .iter()
+                .filter(|step| !step.change_target)
+                .map(|step| &step.spell)
+                .collect(),
             Action::Schedule { inner, .. } => inner.action.spells(),
             Action::ChannelSpell { spell, .. }
             | Action::Multidot { spell, .. }
@@ -836,6 +892,7 @@ impl Action {
             Action::ActivateAura(_)
             | Action::Move(_)
             | Action::MoveDuration(_)
+            | Action::PrepullGroupMove(_)
             | Action::ItemSwap(_)
             | Action::Wait(_)
             | Action::WaitUntil(_)
@@ -1028,10 +1085,103 @@ pub fn parse(rotation: &Json) -> Result<Rotation, Vec<String>> {
     }
     VARIABLES.with(|scope| scope.borrow_mut().clear());
     reasons.extend(group_sequence_reads(&parsed));
+    reasons.extend(prepull_group_moves(&mut parsed));
     if reasons.is_empty() {
         Ok(parsed)
     } else {
         Err(reasons)
+    }
+}
+
+/// Go `APLActionGroupReference` before the pull: Go finalizes the prepull actions first, so the
+/// reference binds the first instance of its group no priority list reference holds. Rust runs
+/// a group only the reference names whose actions are moves without conditions, read with the
+/// rotation's variables: the first move is the one Execute finds ready, or none is.
+fn prepull_group_moves(rotation: &mut Rotation) -> Vec<String> {
+    fn references(item: &Item, name: &str) -> bool {
+        match &item.action {
+            Action::GroupReference { name: other, .. } => other == name,
+            Action::Schedule { inner, .. } => references(inner, name),
+            _ => false,
+        }
+    }
+    let mut reasons = Vec::new();
+    let names: Vec<String> = rotation
+        .prepull
+        .iter()
+        .filter_map(|prepull| match &prepull.action {
+            Action::GroupReference { name, .. } => Some(name.clone()),
+            _ => None,
+        })
+        .collect();
+    for prepull in &mut rotation.prepull {
+        let Action::GroupReference { name, variables } = &prepull.action else {
+            continue;
+        };
+        let position = prepull.position;
+        let mut refuse = |reason: &str| {
+            reasons.push(format!("prepull action {position}: {reason}"));
+        };
+        let groups: Vec<&Group> = rotation
+            .groups
+            .iter()
+            .filter(|group| &group.name == name)
+            .collect();
+        let shared = names.iter().filter(|other| *other == name).count() > 1
+            || rotation
+                .priority_list
+                .iter()
+                .chain(rotation.groups.iter().flat_map(|group| group.items.iter()))
+                .any(|item| references(item, name));
+        let [group] = groups.as_slice() else {
+            refuse("a prepull reference to a group not named once is unsupported");
+            continue;
+        };
+        if shared || !variables.is_empty() || !group.variables.is_empty() {
+            refuse(
+                "a prepull reference to a group with variables or other references is unsupported",
+            );
+            continue;
+        }
+        // A condition that is a constant reads its boolean: an action whose condition is false
+        // is never ready.
+        let mut ranges = Vec::new();
+        for item in &group.items {
+            let ready = match item.condition.as_ref().map(constant) {
+                None => true,
+                Some(Some(condition)) => condition.boolean,
+                Some(None) => {
+                    ranges.clear();
+                    break;
+                }
+            };
+            match &item.action {
+                Action::Move(range) if constant(range).is_some() => {
+                    if ready {
+                        ranges.push(range.clone());
+                    }
+                }
+                _ => {
+                    ranges.clear();
+                    break;
+                }
+            }
+        }
+        let Some(range) = ranges.into_iter().next() else {
+            refuse("a prepull reference to a group of actions other than moves to a constant is unsupported");
+            continue;
+        };
+        prepull.action = Action::PrepullGroupMove(range);
+    }
+    reasons
+}
+
+/// The constant a value is, directly or as the value of a variable.
+fn constant(value: &Value) -> Option<&Const> {
+    match value {
+        Value::Const(constant) => Some(constant),
+        Value::Variable { resolved, .. } => constant(resolved),
+        _ => None,
     }
 }
 
@@ -1239,9 +1389,12 @@ fn parse_prepull(item: &Json, position: usize) -> Result<Option<Prepull>, String
             }
         }
         ("channelSpell", config) => parse_channel_spell(config)?,
+        ("strictSequence", config) => parse_strict_sequence(config)?,
         ("itemSwap", config) => Action::ItemSwap(parse_swap_set("itemSwap", config)?),
         ("cancelAura", config) => Action::CancelAura(parse_aura_action("cancelAura", config)?),
         ("triggerIcd", config) => Action::TriggerIcd(parse_aura_action("triggerIcd", config)?),
+        // Resolved into the group's move once the groups are parsed.
+        ("groupReference", config) => parse_group_reference(config)?,
         ("activateAuraWithStacks", config) => {
             let object = config
                 .as_object()
@@ -1575,16 +1728,42 @@ fn parse_strict_sequence(config: &Json) -> Result<Action, String> {
         let action = action
             .as_object()
             .ok_or("strictSequence action must be an object")?;
-        match single(action, &["uuid"])? {
-            ("castSpell", cast) => spells.push(parse_step(cast)?),
+        match single(action, &["uuid", "condition"])? {
+            ("castSpell", cast) => {
+                let mut step = parse_step(cast)?;
+                // Go builds each step as an action of its own, condition included.
+                if let Some(condition) = action.get("condition") {
+                    step.condition =
+                        Some(parse_value(condition).map_err(|reasons| reasons.join("; "))?);
+                }
+                spells.push(step)
+            }
+            // Go builds any action as a step; a change of target is the one Rust runs.
+            ("changeTarget", config) => {
+                let Action::ChangeTarget(target) = parse_change_target(config)? else {
+                    unreachable!("a change of target parses as one");
+                };
+                let condition = match action.get("condition") {
+                    Some(condition) => {
+                        Some(parse_value(condition).map_err(|reasons| reasons.join("; "))?)
+                    }
+                    None => None,
+                };
+                spells.push(Step {
+                    spell: ActionId::default(),
+                    target,
+                    condition,
+                    change_target: true,
+                })
+            }
             (name, _) => return Err(format!("strictSequence action {name} is unsupported")),
         }
     }
     Ok(Action::StrictSequence(spells))
 }
 
-/// Go `newActionSequence` for sequences of unconditional casts, with the name reset sequence
-/// actions and sequence values find it by.
+/// Go `newActionSequence` for sequences of casts, each with its own condition, with the name
+/// reset sequence actions and sequence values find it by.
 fn parse_sequence(config: &Json) -> Result<Action, String> {
     let object = config.as_object().ok_or("sequence must be an object")?;
     for key in object.keys() {
@@ -1602,8 +1781,16 @@ fn parse_sequence(config: &Json) -> Result<Action, String> {
         let action = action
             .as_object()
             .ok_or("sequence action must be an object")?;
-        match single(action, &["uuid"])? {
-            ("castSpell", cast) => spells.push(parse_step(cast)?),
+        match single(action, &["uuid", "condition"])? {
+            ("castSpell", cast) => {
+                let mut step = parse_step(cast)?;
+                // Go builds each step as an action of its own, condition included.
+                if let Some(condition) = action.get("condition") {
+                    step.condition =
+                        Some(parse_value(condition).map_err(|reasons| reasons.join("; "))?);
+                }
+                spells.push(step)
+            }
             (name, _) => return Err(format!("sequence action {name} is unsupported")),
         }
     }
@@ -1779,7 +1966,12 @@ fn parse_step(config: &Json) -> Result<Step, String> {
         }
     }
     let spell = parse_action_id(object.get("spellId").ok_or("castSpell has no spellId")?)?;
-    Ok(Step { spell, target })
+    Ok(Step {
+        spell,
+        target,
+        condition: None,
+        change_target: false,
+    })
 }
 
 /// Go `GetTargetUnit` and `GetSourceUnit`: the unit a `UnitReference` names, or `default`
@@ -1825,6 +2017,28 @@ fn parse_unit_ref(reference: Option<&Json>, default: UnitRef) -> Result<UnitRef,
 /// [`parse_unit_ref`] for a value that reads a dot or an aura on a unit.
 fn parse_value_unit_ref(reference: Option<&Json>, default: UnitRef) -> Result<UnitRef, ()> {
     parse_unit_ref(reference, default)
+}
+
+/// Go `GetSourceUnit` on a pet of the player: its position among the player's pets, the first
+/// when the reference names none. `None` for any other reference.
+fn pet_position(source: &Json) -> Option<usize> {
+    let source = source.as_object()?;
+    let owner_is_self = source
+        .get("owner")
+        .and_then(Json::as_object)
+        .is_some_and(|owner| {
+            owner.len() == 1 && owner.get("type").and_then(Json::as_str) == Some("Self")
+        });
+    let known_keys = source
+        .keys()
+        .all(|key| ["type", "index", "owner"].contains(&key.as_str()));
+    if source.get("type").and_then(Json::as_str) != Some("Pet") || !owner_is_self || !known_keys {
+        return None;
+    }
+    match source.get("index") {
+        None => Some(0),
+        Some(index) => index.as_u64().and_then(|index| usize::try_from(index).ok()),
+    }
 }
 
 /// The reason a unit reference field is refused.
@@ -1982,8 +2196,11 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
             if !reasons.is_empty() {
                 return Err(reasons);
             }
-            // Go has no boolean or string getter for them and panics where it reads one.
-            if matches!(highest_type(&values), ValueType::Bool | ValueType::String) {
+            // Go has no boolean or string getter for them and panics where it reads one. One
+            // value stands for the operator (Go `newValueMin` returns it), so it is read as itself.
+            if values.len() > 1
+                && matches!(highest_type(&values), ValueType::Bool | ValueType::String)
+            {
                 return Err(vec![format!(
                     "{name} of booleans or strings is unsupported"
                 )]);
@@ -2114,8 +2331,20 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
             }
         }
         "currentManaPercent" => {
-            only(&[])?;
-            Ok(Value::CurrentManaPercent)
+            only(&["sourceUnit"])?;
+            // Go `GetSourceUnit`, as for `currentMana`.
+            match config.get("sourceUnit") {
+                None => Ok(Value::CurrentManaPercent),
+                Some(source) => match pet_position(source) {
+                    Some(pet) => Ok(Value::PetCurrentManaPercent(pet)),
+                    None if parse_value_unit_ref(Some(source), UnitRef::Player)
+                        == Ok(UnitRef::Player) =>
+                    {
+                        Ok(Value::CurrentManaPercent)
+                    }
+                    None => Err(vec![unsupported_unit(name, "sourceUnit", Some(source))]),
+                },
+            }
         }
         // Without a source unit, the player itself.
         "currentHealthPercent" => {
@@ -2131,8 +2360,21 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
             Ok(Value::RemainingTimePercent)
         }
         "currentMana" => {
-            only(&[])?;
-            Ok(Value::CurrentMana)
+            only(&["sourceUnit"])?;
+            // Go `GetSourceUnit`: the player, or one of its pets by its index (the first
+            // without one).
+            match config.get("sourceUnit") {
+                None => Ok(Value::CurrentMana),
+                Some(source) => match pet_position(source) {
+                    Some(pet) => Ok(Value::PetCurrentMana(pet)),
+                    None if parse_value_unit_ref(Some(source), UnitRef::Player)
+                        == Ok(UnitRef::Player) =>
+                    {
+                        Ok(Value::CurrentMana)
+                    }
+                    None => Err(vec![unsupported_unit(name, "sourceUnit", Some(source))]),
+                },
+            }
         }
         "currentTime" => {
             only(&[])?;
@@ -2541,10 +2783,28 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
         | "spellFullCooldown"
         | "spellInFlight" => {
             only(&["spellId"])?;
-            let id = config
-                .get("spellId")
-                .ok_or_else(|| vec![format!("{name} has no spellId")])
-                .and_then(|id| parse_action_id(id).map_err(|err| vec![err]))?;
+            // Go `GetAPLSpell(nil)` finds no spell: spellIsKnown is a constant false, and the
+            // values Go checked give no value. The rest stay refused.
+            let Some(id) = config.get("spellId") else {
+                return match name {
+                    "spellIsKnown" => Ok(Value::Const(parse_const("false").expect("a bool"))),
+                    "spellCpm" | "spellGcdHastedDuration" => {
+                        Err(vec![format!("{name} has no spellId")])
+                    }
+                    "spellIsReady" => Ok(Value::Unbuilt("spellIsReady")),
+                    "spellInFlight" => Ok(Value::Unbuilt("spellInFlight")),
+                    "spellCastTime" => Ok(Value::Unbuilt("spellCastTime")),
+                    "spellTimeToReady" => Ok(Value::Unbuilt("spellTimeToReady")),
+                    "spellCanCast" => Ok(Value::Unbuilt("spellCanCast")),
+                    "spellTravelTime" => Ok(Value::Unbuilt("spellTravelTime")),
+                    "spellIsChanneling" => Ok(Value::Unbuilt("spellIsChanneling")),
+                    "spellChanneledTicks" => Ok(Value::Unbuilt("spellChanneledTicks")),
+                    "spellNumCharges" => Ok(Value::Unbuilt("spellNumCharges")),
+                    "spellTimeToCharge" => Ok(Value::Unbuilt("spellTimeToCharge")),
+                    _ => Ok(Value::Unbuilt("spellFullCooldown")),
+                };
+            };
+            let id = parse_action_id(id).map_err(|err| vec![err])?;
             Ok(match name {
                 "spellIsKnown" => Value::SpellIsKnown(id),
                 "spellIsReady" => Value::SpellIsReady(id),
@@ -2569,7 +2829,7 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                 .ok_or_else(|| vec!["not has no val".to_string()])?;
             Ok(Value::Not(Box::new(parse_value(value)?)))
         }
-        "auraIsKnown"
+        "auraIsKnown" | "auraIsActive" | "auraIsInactive" | "auraRemainingTime"
             if config
                 .get("sourceUnit")
                 .and_then(|unit| unit.get("type"))
@@ -2611,7 +2871,14 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
                             .and_then(|index| usize::try_from(index).ok())
                             .ok_or_else(unsupported)?,
                     };
-                    Ok(Value::PetAuraIsKnown { pet, id })
+                    Ok(match name {
+                        "auraIsKnown" => Value::PetAuraIsKnown { pet, id },
+                        "auraIsActive" => Value::PetAuraIsActive { pet, id },
+                        "auraRemainingTime" => Value::PetAuraRemainingTime { pet, id },
+                        // Go `newValueAuraIsInactive`: `!aura.IsActive()`, a constant true for an
+                        // aura the pet lacks.
+                        _ => Value::Not(Box::new(Value::PetAuraIsActive { pet, id })),
+                    })
                 }
                 _ => Err(unsupported()),
             }
@@ -2707,10 +2974,17 @@ fn parse_value(value: &Json) -> Result<Value, Vec<String>> {
             // and stacks of an aura have `includeReactionTime`; Go's request reader rejects the
             // field on the others.
             only(&["auraId", "sourceUnit", "includeReactionTime"])?;
-            let id = config
-                .get("auraId")
-                .ok_or_else(|| vec![format!("{name} has no auraId")])
-                .and_then(|id| parse_action_id(id).map_err(|err| vec![err]))?;
+            // Go `newValueAuraIsActive` and `newValueAuraNumStacks` give no value without an aura.
+            let Some(id) = config.get("auraId") else {
+                return match name {
+                    "auraIsActive" => Ok(Value::Unbuilt("auraIsActive")),
+                    "auraNumStacks" => Ok(Value::Unbuilt("auraNumStacks")),
+                    // Go `newValueAuraRemainingTime`: no value without an aura id.
+                    "auraRemainingTime" => Ok(Value::Unbuilt("auraRemainingTime")),
+                    _ => Err(vec![format!("{name} has no auraId")]),
+                };
+            };
+            let id = parse_action_id(id).map_err(|err| vec![err])?;
             let unit =
                 parse_value_unit_ref(config.get("sourceUnit"), UnitRef::Player).map_err(|()| {
                     vec![unsupported_unit(
@@ -2844,7 +3118,66 @@ pub fn parse_const(text: &str) -> Result<Const, String> {
         constant.value_type = ValueType::Float;
         return Ok(constant);
     }
-    Err(format!("string constant {text:?} is unsupported"))
+    // Anything else stays a string, as "1,5s" with a comma does: Go compares it as text with
+    // the value on the other side formatted ([`go_duration_string`], [`go_float_string`]).
+    Ok(constant)
+}
+
+/// Go `time.Duration.String`, which a duration coerced to a string reads: "1h2m3.5s", "1.5s",
+/// "500ms", "1.234µs", "2ns", "0s".
+pub fn go_duration_string(ns: i64) -> String {
+    let negative = ns < 0;
+    let mut u = ns.unsigned_abs();
+    // Go `fmtFrac`: the fraction of v / 10^prec without trailing zeros, nor a point when none.
+    let frac = |v: u64, prec: u32| -> (String, u64) {
+        let mut digits = String::new();
+        let mut v = v;
+        let mut print = false;
+        for _ in 0..prec {
+            let digit = v % 10;
+            print = print || digit != 0;
+            if print {
+                digits.insert(0, char::from(b'0' + digit as u8));
+            }
+            v /= 10;
+        }
+        if print {
+            digits.insert(0, '.');
+        }
+        (digits, v)
+    };
+    let mut out = if u < 1_000_000_000 {
+        let (unit, prec) = match u {
+            0 => return "0s".to_string(),
+            1..=999 => ("ns", 0),
+            1_000..=999_999 => ("\u{b5}s", 3),
+            _ => ("ms", 6),
+        };
+        let (fraction, whole) = frac(u, prec);
+        format!("{whole}{fraction}{unit}")
+    } else {
+        let (fraction, seconds) = frac(u, 9);
+        u = seconds;
+        let mut text = format!("{}{fraction}s", u % 60);
+        u /= 60;
+        if u > 0 {
+            text = format!("{}m{text}", u % 60);
+            u /= 60;
+            if u > 0 {
+                text = format!("{u}h{text}");
+            }
+        }
+        text
+    };
+    if negative {
+        out.insert(0, '-');
+    }
+    out
+}
+
+/// Go `fmt.Sprintf("%.3f", v)`, which a float coerced to a string reads.
+pub fn go_float_string(value: f64) -> String {
+    format!("{value:.3}")
 }
 
 /// Go `strconv.Atoi` for the int32 values the APL stores.
@@ -3022,6 +3355,10 @@ pub enum Compiled<R> {
     CurrentHealthPercent,
     RemainingTimePercent,
     CurrentMana,
+    /// The mana of a pet the fight simulates, by its place among the simulated pets.
+    PetCurrentMana(u8),
+    /// The same pet's mana as a share of its maximum.
+    PetCurrentManaPercent(u8),
     CurrentEnergy,
     MaxEnergy,
     MaxMana,
@@ -3198,8 +3535,10 @@ impl<R> Compiled<R> {
             | Compiled::SpellFullCooldown(_)
             | Compiled::TimeToNextEnergyTick => ValueType::Duration,
             Compiled::CurrentManaPercent
+            | Compiled::PetCurrentManaPercent(_)
             | Compiled::CurrentHealthPercent
             | Compiled::CurrentMana
+            | Compiled::PetCurrentMana(_)
             | Compiled::RemainingTimePercent
             | Compiled::CurrentEnergy
             | Compiled::CurrentRage
@@ -3397,6 +3736,17 @@ pub struct Lookup<'a, R> {
     /// Go `GetAuraByID` on the player's pet at a position among its pets: whether it has the
     /// aura, false when there is no such pet.
     pub pet_aura_known: &'a dyn Fn(usize, &ActionId) -> bool,
+    /// Go `GetAuraByID` on the player's pet at a position among its pets, while the pet is
+    /// simulated: its aura, `None` for a pet that is never summoned or lacks the aura.
+    pub pet_aura: &'a dyn Fn(usize, &ActionId) -> Option<FoundAura<R>>,
+    /// The player's pet at a position among its pets, while the fight simulates it and it has a
+    /// mana bar: its place among the simulated pets.
+    pub simulated_pet_with_mana: &'a dyn Fn(usize) -> Option<u8>,
+    /// Whether the player's pet at a position is one the fight never summons that has a mana
+    /// bar: Go resets its mana to full and nothing spends it.
+    pub unsummoned_pet_with_mana: &'a dyn Fn(usize) -> bool,
+    /// That pet's full mana where the input states it.
+    pub unsummoned_pet_max_mana: &'a dyn Fn(usize) -> Option<f64>,
     /// Go `ItemSwap.IsEnabled`: whether the character swaps items.
     pub item_swap: bool,
     /// The player's resource bars as the rotation is built, which values of a bar the player
@@ -3529,10 +3879,46 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
         Value::CurrentHealthPercent => Compiled::CurrentHealthPercent,
         Value::RemainingTimePercent => Compiled::RemainingTimePercent,
         Value::CurrentMana => Compiled::CurrentMana,
-        Value::CurrentEnergy => Compiled::CurrentEnergy,
+        // Go `newValueCurrentMana` on a pet: no value for a pet without a mana bar. A pet the
+        // fight never summons is refused by the gate.
+        // A pet the fight never summons keeps the full mana Go's reset gives it.
+        Value::PetCurrentMana(pet) => match (lookup.simulated_pet_with_mana)(*pet) {
+            Some(slot) => Compiled::PetCurrentMana(slot),
+            None => Compiled::Const(
+                parse_const(&format!("{}", (lookup.unsummoned_pet_max_mana)(*pet)?))
+                    .expect("a float constant"),
+            ),
+        },
+        // Go `newValueCurrentManaPercent` on a pet: no value without a mana bar, and a full bar
+        // for a pet the fight never summons, whose mana the reset fills and nothing spends.
+        Value::PetCurrentManaPercent(pet) => match (lookup.simulated_pet_with_mana)(*pet) {
+            Some(slot) => Compiled::PetCurrentManaPercent(slot),
+            None if (lookup.unsummoned_pet_with_mana)(*pet) => {
+                Compiled::Const(parse_const("100%").expect("percent constant"))
+            }
+            None => return None,
+        },
+        // Go `newValueAuraRemainingTime` on a pet: a constant zero for an aura the pet lacks or
+        // for a pet never summoned, whose auras never go up.
+        Value::PetAuraRemainingTime { pet, id } => match (lookup.pet_aura)(*pet, id) {
+            Some(found) => Compiled::AuraRemainingTime(found.aura),
+            None => {
+                (lookup.pet_aura_known)(*pet, id);
+                Compiled::Const(parse_const("0ms").expect("duration constant"))
+            }
+        },
+        // Go `newValueCurrentEnergy` and its siblings: no value (and a warning) for a player
+        // without an energy bar, as a Balance Druid's rotation reading energy has.
+        Value::CurrentEnergy => {
+            lookup.bars.max_combo_points?;
+            Compiled::CurrentEnergy
+        }
         Value::CurrentRage => Compiled::CurrentRage,
         Value::IsExecutePhase(threshold) => Compiled::IsExecutePhase(*threshold),
-        Value::MaxEnergy => Compiled::MaxEnergy,
+        Value::MaxEnergy => {
+            lookup.bars.max_combo_points?;
+            Compiled::MaxEnergy
+        }
         Value::MaxMana => Compiled::MaxMana,
         Value::FrontOfTarget => Compiled::FrontOfTarget,
         // Go `newValueAuraShouldRefresh`: no value without the aura.
@@ -3554,8 +3940,14 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
                 overlap: Box::new(overlap),
             }
         }
-        Value::CurrentComboPoints => Compiled::CurrentComboPoints,
-        Value::TimeToNextEnergyTick => Compiled::TimeToNextEnergyTick,
+        Value::CurrentComboPoints => {
+            lookup.bars.max_combo_points?;
+            Compiled::CurrentComboPoints
+        }
+        Value::TimeToNextEnergyTick => {
+            lookup.bars.max_combo_points?;
+            Compiled::TimeToNextEnergyTick
+        }
         Value::RemainingTime => Compiled::RemainingTime,
         Value::CurrentTime => Compiled::CurrentTime,
         Value::NumberTargets => Compiled::NumberTargets,
@@ -3853,6 +4245,15 @@ fn compile_value<R>(value: &Value, lookup: &Lookup<R>) -> Option<Compiled<R>> {
         Value::ActionGroupUsed { used, .. } => Compiled::GroupUsed(*used),
         Value::AuraIsKnown(id) => bool_const(aura(id).is_some()),
         Value::PetAuraIsKnown { pet, id } => bool_const((lookup.pet_aura_known)(*pet, id)),
+        // Go `newValueAuraIsActive` on a pet: a constant false for an aura it lacks (with Go's
+        // warning) and for the aura of a pet never summoned, whose auras never go up.
+        Value::PetAuraIsActive { pet, id } => match (lookup.pet_aura)(*pet, id) {
+            Some(found) => Compiled::AuraIsActive(found.aura),
+            None => {
+                (lookup.pet_aura_known)(*pet, id);
+                bool_const(false)
+            }
+        },
         Value::AuraIsActive(id) => match aura(id) {
             Some(found) => Compiled::AuraIsActive(found.aura),
             None => bool_const(false),
@@ -4029,6 +4430,10 @@ mod tests {
             dot: &no_dot,
             dot_base_duration: &|_| None,
             pet_aura_known: &|_, _| false,
+            pet_aura: &|_, _| None,
+            simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
+            unsummoned_pet_max_mana: &|_| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -4067,6 +4472,10 @@ mod tests {
         let known = |pet: usize, aura: &ActionId| pet == 1 && *aura == id;
         let lookup = Lookup {
             pet_aura_known: &known,
+            pet_aura: &|_, _| None,
+            simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
+            unsummoned_pet_max_mana: &|_| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -4090,6 +4499,171 @@ mod tests {
             "sourceUnit": {"type": "Pet", "index": 0, "owner": {"type": "CurrentTarget"}}
         }});
         assert!(parse_value(&other).is_err());
+    }
+
+    /// Go `GetSourceUnit` on a pet of the player: `auraIsActive` reads the aura of a pet the fight
+    /// simulates, as a Demonology rotation asks whether its Succubus carries Demonic Brand, and
+    /// is never true for a pet that is never summoned or lacks the aura; `auraIsInactive` is its
+    /// negation.
+    #[test]
+    fn aura_is_active_reads_a_simulated_pet_of_the_player() {
+        let id = ActionId {
+            spell_id: 1293696,
+            ..ActionId::default()
+        };
+        let read = |name: &str| {
+            parse_value(&serde_json::json!({name: {
+                "auraId": {"spellId": 1293696},
+                "sourceUnit": {"type": "Pet", "index": 2, "owner": {"type": "Self"}}
+            }}))
+            .unwrap()
+        };
+        let active = read("auraIsActive");
+        assert_eq!(
+            active,
+            Value::PetAuraIsActive {
+                pet: 2,
+                id: id.clone()
+            }
+        );
+        assert_eq!(read("auraIsInactive"), Value::Not(Box::new(active.clone())));
+        let none = |_: &ActionId| -> Option<FoundAura<ActionId>> { None };
+        let simulated = |pet: usize, aura: &ActionId| {
+            (pet == 2 && *aura == id).then(|| FoundAura {
+                aura: aura.clone(),
+                max_stacks: 0,
+            })
+        };
+        let lookup = Lookup {
+            pet_aura: &simulated,
+            ..only_auras(&none, &|_, _| None)
+        };
+        assert_eq!(
+            compile_condition(Some(&active), &lookup),
+            CompiledCondition::When(Compiled::AuraIsActive(id.clone()))
+        );
+        let inert = only_auras(&none, &|_, _| None);
+        assert!(compile_condition(Some(&active), &inert).never_holds());
+    }
+
+    /// Go `time.Duration.String`, which a duration compared with a string constant reads.
+    #[test]
+    fn durations_format_as_go_prints_them() {
+        for (ns, text) in [
+            (0, "0s"),
+            (2, "2ns"),
+            (1_234, "1.234\u{b5}s"),
+            (500_000_000, "500ms"),
+            (1_500_000_000, "1.5s"),
+            (60_000_000_000, "1m0s"),
+            (3_723_500_000_000, "1h2m3.5s"),
+            (-1_500_000_000, "-1.5s"),
+        ] {
+            assert_eq!(go_duration_string(ns), text);
+        }
+        assert_eq!(go_float_string(0.5), "0.500");
+    }
+
+    /// Go keeps a constant it cannot read as a number, as "1,5s" with a comma, as a string, and
+    /// compares the other side with it as text.
+    #[test]
+    fn a_comma_decimal_is_a_string_constant() {
+        let constant = parse_const("1,5s").unwrap();
+        assert_eq!(constant.value_type, ValueType::String);
+        assert_eq!(constant.string, "1,5s");
+        assert!(constant.boolean);
+        assert_eq!(
+            (constant.int, constant.float, constant.duration_ns),
+            (0, 0.0, 0)
+        );
+        // Text order: "1.2s" sorts after "1,5s", "0s" before it.
+        assert!(go_duration_string(1_200_000_000).as_str() > "1,5s");
+        assert!(go_duration_string(0).as_str() < "1,5s");
+    }
+
+    /// Go `GetAPLSpell(nil)` and an aura value without an aura: spellIsKnown is a constant false,
+    /// spellIsReady and auraNumStacks give no value.
+    #[test]
+    fn values_without_their_spell_or_aura() {
+        let parse = |json: serde_json::Value| parse_value(&json).unwrap();
+        assert_eq!(
+            parse(serde_json::json!({"spellIsReady": {}})),
+            Value::Unbuilt("spellIsReady")
+        );
+        assert_eq!(
+            parse(serde_json::json!({"auraNumStacks": {}})),
+            Value::Unbuilt("auraNumStacks")
+        );
+        assert!(matches!(
+            parse(serde_json::json!({"spellIsKnown": {}})),
+            Value::Const(Const {
+                value_type: ValueType::Bool,
+                boolean: false,
+                ..
+            })
+        ));
+    }
+
+    /// Go `newValueCurrentMana` on a pet of the player, the first without an index: the mana of
+    /// a pet the fight simulates (a Demonology rotation's Dark Pact line), no value otherwise.
+    /// Energy values give no value for a player without an energy bar.
+    #[test]
+    fn pet_mana_and_missing_energy() {
+        let mana = parse_value(&serde_json::json!({"currentMana": {
+            "sourceUnit": {"type": "Pet", "owner": {"type": "Self"}}
+        }}))
+        .unwrap();
+        assert_eq!(mana, Value::PetCurrentMana(0));
+        let none = |_: &ActionId| -> Option<FoundAura<ActionId>> { None };
+        let summoned = Lookup {
+            simulated_pet_with_mana: &|pet| (pet == 0).then_some(1),
+            unsummoned_pet_with_mana: &|_| false,
+            unsummoned_pet_max_mana: &|_| None,
+            ..only_auras(&none, &|_, _| None)
+        };
+        assert_eq!(
+            compile_value(&mana, &summoned),
+            Some(Compiled::PetCurrentMana(1))
+        );
+        assert_eq!(compile_value(&mana, &only_auras(&none, &|_, _| None)), None);
+        let energy = parse_value(&serde_json::json!({"currentEnergy": {}})).unwrap();
+        assert_eq!(
+            compile_value(&energy, &only_auras(&none, &|_, _| None)),
+            None
+        );
+    }
+
+    /// Go `newValueMin` returns a single value as itself, so a `min` of one boolean is that
+    /// boolean; two booleans still reach Go's `Min`, which panics reading them.
+    #[test]
+    fn a_min_of_one_boolean_is_the_boolean() {
+        let one = serde_json::json!({"min": {"vals": [{"const": {"val": "true"}}]}});
+        assert!(matches!(parse_value(&one).unwrap(), Value::Min(values) if values.len() == 1));
+        let two = serde_json::json!({"min": {"vals": [
+            {"const": {"val": "true"}}, {"const": {"val": "false"}}
+        ]}});
+        assert!(parse_value(&two).is_err());
+    }
+
+    /// Go builds each strict sequence step as an action of its own, so a step may carry a
+    /// condition, which its readiness checks.
+    #[test]
+    fn a_strict_sequence_step_keeps_its_condition() {
+        let rotation = serde_json::json!({"type": "TypeAPL", "priorityList": [{"action": {
+            "strictSequence": {"actions": [
+                {"castSpell": {"spellId": {"spellId": 1311595}},
+                 "condition": {"cmp": {"lhs": {"currentManaPercent": {}}, "op": "OpGt",
+                                        "rhs": {"const": {"val": "40%"}}}}},
+                {"castSpell": {"spellId": {"spellId": 20930}}}
+            ]}
+        }}]});
+        let parsed = parse(&rotation).unwrap();
+        let Action::StrictSequence(steps) = &parsed.priority_list[0].action else {
+            panic!("a strict sequence");
+        };
+        assert!(steps[0].condition.is_some());
+        assert!(steps[1].condition.is_none());
+        assert_eq!(parsed.priority_list[0].action.values().len(), 1);
     }
 
     /// Go `APLValueAutoSwingTime` and `APLValueSpellCurrentCost`, read by the upstream Rogue
@@ -4243,7 +4817,7 @@ mod tests {
             (25, 25.0, 25_000_000_000)
         );
         assert_eq!(parse_const("TRUE").unwrap().value_type, ValueType::Bool);
-        assert!(parse_const("hello").is_err());
+        assert_eq!(parse_const("hello").unwrap().value_type, ValueType::String);
     }
 
     #[test]
@@ -4292,7 +4866,9 @@ mod tests {
                 Some(Value::TargetAura { unit: found, .. }) if found == unit
             ));
         }
-        let source = serde_json::json!({"type": "Pet", "owner": {"type": "Self"}});
+        // A pet of the player reads that pet (`aura_is_active_reads_a_simulated_pet_of_the_player`);
+        // a pet of another unit is unsupported.
+        let source = serde_json::json!({"type": "Pet", "owner": {"type": "CurrentTarget"}});
         let rotation =
             serde_json::json!({"type": "TypeAPL", "priorityList": [item(source.clone())]});
         assert_eq!(
@@ -4538,11 +5114,15 @@ mod tests {
             Action::StrictSequence(vec![
                 Step {
                     spell: ActionId::spell(14751),
-                    target: UnitRef::CurrentTarget
+                    target: UnitRef::CurrentTarget,
+                    condition: None,
+                    change_target: false,
                 },
                 Step {
                     spell: ActionId::spell(10947),
-                    target: UnitRef::CurrentTarget
+                    target: UnitRef::CurrentTarget,
+                    condition: None,
+                    change_target: false,
                 }
             ])
         );
@@ -4596,11 +5176,15 @@ mod tests {
                 steps: vec![
                     Step {
                         spell: ActionId::spell(2458),
-                        target: UnitRef::CurrentTarget
+                        target: UnitRef::CurrentTarget,
+                        condition: None,
+                        change_target: false,
                     },
                     Step {
                         spell: ActionId::spell(1719),
-                        target: UnitRef::CurrentTarget
+                        target: UnitRef::CurrentTarget,
+                        condition: None,
+                        change_target: false,
                     }
                 ]
             }
@@ -4734,6 +5318,10 @@ mod tests {
             dot: &dot,
             dot_base_duration: &|_| None,
             pet_aura_known: &|_, _| false,
+            pet_aura: &|_, _| None,
+            simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
+            unsummoned_pet_max_mana: &|_| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,
@@ -4877,7 +5465,9 @@ mod tests {
                     name: String::new(),
                     steps: vec![Step {
                         spell: ActionId::spell(1),
-                        target: unit
+                        target: unit,
+                        condition: None,
+                        change_target: false,
                     }]
                 })
             );
@@ -5240,6 +5830,10 @@ mod tests {
             dot: &no_dot,
             dot_base_duration: &|id| (id.spell_id == 7).then_some(18_000_000_000),
             pet_aura_known: &|_, _| false,
+            pet_aura: &|_, _| None,
+            simulated_pet_with_mana: &|_| None,
+            unsummoned_pet_with_mana: &|_| false,
+            unsummoned_pet_max_mana: &|_| None,
             item_swap: false,
             bars: Bars::default(),
             icd_aura: &|_, _| None,

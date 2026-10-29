@@ -637,6 +637,124 @@ fn the_ranged_auto_waits_for_a_move_to_end() {
     }
 }
 
+const STEPPER: &str = "survival-hunter (#1)";
+const STEPPER_SHOT: &str = "Casting {OtherID: 4}";
+const STEPPER_SWING: &str = "Casting {OtherID: 3, Tag: 1}";
+const STEPPER_RAPTOR: &str = "Casting {SpellID: 14266, Tag: 1}";
+
+/// A rotation move to `yards` while the fight time is from `from` to before `until` and the
+/// distance to the target compares with `than` by `op`.
+fn step_to(yards: &str, (from, until): (&str, &str), op: &str, than: &str) -> Value {
+    let time = |op: &str, val: &str| json!({"cmp": {"op": op, "lhs": {"currentTime": {}}, "rhs": {"const": {"val": val}}}});
+    json!({"action": {
+        "condition": {"and": {"vals": [
+            time("OpGe", from),
+            time("OpLt", until),
+            {"cmp": {"op": op, "lhs": {"unitDistance": {}}, "rhs": {"const": {"val": than}}}}
+        ]}},
+        "move": {"rangeFromTarget": {"const": {"val": yards}}}
+    }})
+}
+
+/// The weaving Survival Hunter with a 3.6 s bow, 12 yards out at the pull, where its first Auto
+/// Shot fires. With `step`, it walks in to 5 yards a tenth of a second in, its main hand swings
+/// on arrival (Raptor Strike replaces the swing with `raptor`), and it walks back out to 12
+/// yards at 1.3 s, standing still well before its next shot is due. The seconds of the first
+/// fight's Auto Shots, white main hand swings and Raptor Strikes, under Forever's Auto Shot rule
+/// or the reference's.
+fn shots_around_a_step_in(step: bool, raptor: bool, forever: bool) -> [Vec<f64>; 3] {
+    let mut value = fixture("survival-hunter-weaving-moves");
+    value["melee"]["ranged"]["swing_speed"] = json!(3.6);
+    value["player"]["rotation"]["prepullActions"][1]["action"]["move"]["rangeFromTarget"]
+        ["const"]["val"] = json!("12");
+    let mut moves = Vec::new();
+    if step {
+        moves.push(step_to("5", ("0.1s", "1.3s"), "OpGe", "12"));
+        if raptor {
+            moves.push(json!({"action": {"castSpell": {"spellId": {"spellId": 14266, "tag": 3}}}}));
+        }
+        moves.push(step_to("12", ("1.3s", "600s"), "OpLe", "5"));
+    }
+    value["player"]["rotation"]["priorityList"] = json!(moves);
+    if forever {
+        value["player"]["melee_keeps_auto_shot_timer"] = json!(true);
+    }
+    let logs = first_fight_log(value);
+    [STEPPER_SHOT, STEPPER_SWING, STEPPER_RAPTOR].map(|needle| {
+        unit_lines(&logs, STEPPER)
+            .into_iter()
+            .filter(|line| line.contains(needle))
+            .map(at)
+            .collect()
+    })
+}
+
+/// The one melee hit of the step in, which lands between the first two Auto Shots, and the
+/// second shot.
+fn hit_between_shots(shots: &[f64], hits: &[f64]) -> (f64, f64) {
+    assert!(shots.len() > 2, "{shots:?}");
+    assert_eq!(hits.len(), 1, "{hits:?}");
+    let hit = hits[0];
+    assert!(shots[0] < hit && hit < shots[1], "{hit} against {shots:?}");
+    (hit, shots[1])
+}
+
+/// Forever's rule, from Forever's bug tracker (issue 14, "Ranged swing timer is reset by melee",
+/// which a Forever developer confirmed on 6 October 2026 is a bug with Auto Shot): a white main
+/// hand swing leaves the Auto Shot timer where it was, so the shot due 3.13 s into the fight
+/// fires then, as it does for a Hunter who never steps in.
+#[test]
+fn a_melee_swing_leaves_the_auto_shot_timer_alone_in_forever() {
+    let [still, _, _] = shots_around_a_step_in(false, false, true);
+    let [shots, swings, _] = shots_around_a_step_in(true, false, true);
+    let (_, next) = hit_between_shots(&shots, &swings);
+    let due = still[1];
+    assert!((next - due).abs() < 0.005, "{next}, due at {due}");
+}
+
+/// Raptor Strike in place of the swing is a melee swing too, and leaves the timer alone as well.
+#[test]
+fn raptor_strike_leaves_the_auto_shot_timer_alone_in_forever() {
+    let [still, _, _] = shots_around_a_step_in(false, false, true);
+    let [shots, swings, raptors] = shots_around_a_step_in(true, true, true);
+    assert!(swings.is_empty(), "{swings:?}");
+    let (_, next) = hit_between_shots(&shots, &raptors);
+    let due = still[1];
+    assert!((next - due).abs() < 0.005, "{next}, due at {due}");
+}
+
+/// Only Forever preparation writes the rule. Under the reference every melee swing, white or
+/// Raptor Strike, restarts the Auto Shot timer as if a shot had just fired, so the next shot
+/// comes a full shot after the hit.
+#[test]
+fn the_reference_restarts_the_auto_shot_timer_on_every_melee_swing() {
+    let request = fs::read(
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-survival-hunter.request.json"),
+    )
+    .unwrap();
+    let forever = forever_engine::prepare_json(&request, "x").unwrap();
+    let go = forever_engine::prepare_json_with(&request, "x", forever_engine::Rules::GoReference)
+        .unwrap();
+    assert_eq!(
+        forever["player"]["melee_keeps_auto_shot_timer"],
+        json!(true)
+    );
+    assert!(go["player"].get("melee_keeps_auto_shot_timer").is_none());
+    let [still, _, _] = shots_around_a_step_in(false, false, false);
+    let speed = still[1] - still[0];
+    for raptor in [false, true] {
+        let [shots, swings, raptors] = shots_around_a_step_in(true, raptor, false);
+        let hits = if raptor { raptors } else { swings };
+        let (hit, next) = hit_between_shots(&shots, &hits);
+        assert!(next > still[1] + 0.5, "{next}, due at {}", still[1]);
+        assert!(
+            (next - (hit + speed)).abs() < 0.015,
+            "{next}, {hit} + {speed}"
+        );
+    }
+}
+
 /// A move in the priority list is supported for every class, and needs the speed the exporter
 /// read.
 #[test]
@@ -1386,4 +1504,116 @@ fn only_forever_preparation_refreshes_casting_regen_at_once() {
         json!(true)
     );
     assert!(go["player"].get("move_arrives_at_destination").is_none());
+    assert_eq!(
+        forever["player"]["threat_follows_damage_bonus"],
+        json!(true)
+    );
+    assert!(go["player"].get("threat_follows_damage_bonus").is_none());
+}
+
+/// Go `GetAPLCastSpell`: a rotation that names Raptor Strike untagged, as a spell picker writes
+/// it, presses the queue spell, since the untagged spell has no APL flag. The gate resolves the
+/// cast the way the runtime does, so the rotation is supported, and in melee range the queue
+/// replaces a swing with Raptor Strike.
+#[test]
+fn an_untagged_raptor_strike_presses_its_queue() {
+    let mut value = fixture("survival-hunter-strider-kick-while-moving");
+    value["player"]["rotation"]["prepullActions"] = json!([]);
+    value["player"]["prepull_actions"] = json!(0);
+    value["player"]["rotation"]["priorityList"] =
+        json!([{"action": {"castSpell": {"spellId": {"spellId": 14266}}}}]);
+    assert_eq!(
+        forever_engine::prepared_coverage(&parse(value.clone())),
+        Vec::<String>::new()
+    );
+    let logs = first_fight_log(value);
+    assert!(
+        logs.contains("Casting {SpellID: 14266, Tag: 3}"),
+        "the queue was never pressed:\n{logs}"
+    );
+}
+
+/// The production Marksmanship Hunter's request prepared with `rules`.
+fn production_marksmanship_prepared(rules: forever_engine::Rules) -> Value {
+    let request = fs::read(
+        Path::new(env!("CARGO_MANIFEST_DIR"))
+            .join("fixtures/mage/prepared-v2/production-marksmanship-hunter.request.json"),
+    )
+    .unwrap();
+    forever_engine::prepare_json_with(&request, "x", rules).unwrap()
+}
+
+/// Each Multi-Shot cast of the first fight with the ranged haste up as it starts: whether Rapid
+/// Fire (3045) and Quick Shots (6150) are up, and the cast line.
+fn multi_shot_casts(logs: &str) -> Vec<(bool, bool, &str)> {
+    let (mut rapid_fire, mut quick_shots) = (false, false);
+    let mut casts = Vec::new();
+    for line in unit_lines(logs, "marksmanship-hunter (#1)") {
+        for (aura, up) in [
+            ("{SpellID: 3045}", &mut rapid_fire),
+            ("{SpellID: 6150}", &mut quick_shots),
+        ] {
+            if line.ends_with(&format!("Aura gained: {aura}")) {
+                *up = true;
+            } else if line.ends_with(&format!("Aura faded: {aura}")) {
+                *up = false;
+            }
+        }
+        if line.contains("Casting {SpellID: 2643}") {
+            casts.push((rapid_fire, quick_shots, line));
+        }
+    }
+    casts
+}
+
+/// Forever's rule (README, Rust-only mechanics): Multi-Shot casts over half a second divided by
+/// the ranged haste multiplier, as Aimed Shot's two seconds are. Our Forever beta logs: 0.44 to
+/// 0.45 seconds with the quiver's 15% (0.5 / 1.15), 0.32 under Rapid Fire as well (0.5 / 1.61).
+/// Seed 8's first fight casts it with the quiver alone and with Rapid Fire up.
+#[test]
+fn multi_shot_casts_half_a_second_over_the_ranged_haste_in_forever() {
+    let mut value = production_marksmanship_prepared(forever_engine::Rules::Forever);
+    value["sim"]["seed"] = json!(8);
+    let logs = first_fight_log(value);
+    let casts = multi_shot_casts(&logs);
+    let expected = |rapid_fire: bool, quick_shots: bool| match (rapid_fire, quick_shots) {
+        (false, false) => "Cast Time = 434.782608ms",
+        (true, false) => "Cast Time = 310.559006ms",
+        (false, true) => "Cast Time = 334.44816ms",
+        (true, true) => "Cast Time = 238.891543ms",
+    };
+    for &(rapid_fire, quick_shots, line) in &casts {
+        assert!(line.contains(expected(rapid_fire, quick_shots)), "{line}");
+    }
+    for rapid_fire in [false, true] {
+        assert!(
+            casts.iter().any(|&(rf, qs, _)| rf == rapid_fire && !qs),
+            "no Multi-Shot with Rapid Fire {rapid_fire} and Quick Shots down: {casts:?}"
+        );
+    }
+}
+
+/// Only Forever preparation gives Multi-Shot its half second cast; under the reference's rules
+/// its row's cast time, none, keeps it instant.
+#[test]
+fn only_forever_preparation_gives_multi_shot_a_cast_time() {
+    let cast_time = |prepared: &Value| {
+        let spells = prepared["player"]["spells"].as_array().unwrap();
+        let multi_shot = spells
+            .iter()
+            .find(|spell| spell["action_id"] == json!({ "spell_id": 2643 }))
+            .expect("Multi-Shot");
+        multi_shot["default_cast"]["cast_time_ns"].clone()
+    };
+    let forever = production_marksmanship_prepared(forever_engine::Rules::Forever);
+    let mut go = production_marksmanship_prepared(forever_engine::Rules::GoReference);
+    assert_eq!(cast_time(&forever), json!(500_000_000));
+    assert_eq!(cast_time(&go), json!(0));
+    go["sim"]["seed"] = json!(8);
+    let logs = first_fight_log(go);
+    let casts = multi_shot_casts(&logs);
+    assert!(!casts.is_empty(), "{logs}");
+    for (_, _, line) in casts {
+        assert!(line.contains("Cast Time = 0s"), "{line}");
+    }
 }

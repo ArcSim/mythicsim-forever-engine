@@ -933,6 +933,9 @@ pub(crate) fn inert_pet_effect(
     }
     if unit.mana_bar.enabled {
         effect["mana_bar"] = json!(true);
+        if sim.rules == super::sim::Rules::Forever {
+            effect["max_mana"] = json!(unit.stats[Stat::Mana]);
+        }
     }
     effect
 }

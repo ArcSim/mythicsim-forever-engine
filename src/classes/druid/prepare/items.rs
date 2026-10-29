@@ -17,7 +17,7 @@ use super::{masks, Druid};
 
 /// The idols the druid package registers whose effect needs nothing of a druid (Go
 /// `core.NewItemEffect` over `agent.GetCharacter()`): Idol of the Moon (23197), Idol of Ferocity
-/// (22397), Idol of Brutality (23198) and Howling Idol (272427). A character of another class wears them as well, and
+/// (22397), Idol of Brutality (23198), Howling Idol (272427) and Idol of the Dream (220606). A character of another class wears them as well, and
 /// their spell mods find spells by class mask alone. Answers whether the item is one of them.
 pub(crate) fn apply_agentless_idol_effect(sim: &mut Sim, unit: UnitId, item: i32) -> bool {
     match item {
@@ -79,6 +79,23 @@ pub(crate) fn apply_agentless_idol_effect(sim: &mut Sim, unit: UnitId, item: i32
                 SpellModConfig {
                     class_mask: masks::SHIFTING_POWER,
                     kind: SpellModType::CooldownFlat,
+                    time_value: (row.effect_n(1).base_value() as i64) * MILLISECOND,
+                    ..SpellModConfig::default()
+                },
+            );
+            true
+        }
+        220606 => {
+            // Idol of the Dream: Improved Rip (446212, client 1.60.1.70532: A_ADD_FLAT_MODIFIER,
+            // SPELLMOD_DURATION on Rip's class mask, +2000 ms). Rip lasts 2 seconds longer with
+            // the same tick period and tick damage, so it ticks once more. Ported from
+            // wowsims/forever 8d879a401; Go's pinned engine registers no effect for it.
+            let row = crate::prepare::spelldata::store::must_find(446212);
+            sim.add_static_mod(
+                unit,
+                SpellModConfig {
+                    class_mask: masks::RIP,
+                    kind: SpellModType::DurationFlat,
                     time_value: (row.effect_n(1).base_value() as i64) * MILLISECOND,
                     ..SpellModConfig::default()
                 },

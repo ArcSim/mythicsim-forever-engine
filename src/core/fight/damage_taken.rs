@@ -30,7 +30,8 @@ pub(crate) struct SelfTarget {
     school_bonus_spell_damage: [f64; 8],
     bonus_spell_damage_taken: f64,
     bonus_physical_damage_taken: f64,
-    reduced_crit_taken_percent: f64,
+    /// The crit the player takes, which an item swap can change.
+    pub(crate) reduced_crit_taken_percent: f64,
 }
 
 /// The Goblin Sapper Charge's two rolls.

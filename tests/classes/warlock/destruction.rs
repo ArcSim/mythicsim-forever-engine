@@ -95,11 +95,20 @@ fn aura_source_units_outside_scope_are_unsupported() {
         let prepared: PreparedV2 = serde_json::from_value(value).unwrap();
         assert_eq!(check_prepared(&prepared), Ok(()));
     }
+    // A pet of the player reads that pet's aura (Demonology's Demonic Brand lines); a pet of
+    // another unit stays unsupported.
     let mut value = production();
     let condition =
         &mut value["player"]["rotation"]["priorityList"][CURSE_ITEM]["action"]["condition"];
     condition["not"]["val"]["auraIsActive"]["sourceUnit"] =
         json!({"type": "Pet", "owner": {"type": "Self"}});
+    let prepared: PreparedV2 = serde_json::from_value(value).unwrap();
+    assert_eq!(check_prepared(&prepared), Ok(()));
+    let mut value = production();
+    let condition =
+        &mut value["player"]["rotation"]["priorityList"][CURSE_ITEM]["action"]["condition"];
+    condition["not"]["val"]["auraIsActive"]["sourceUnit"] =
+        json!({"type": "Pet", "owner": {"type": "CurrentTarget"}});
     let reasons = reasons(value);
     assert!(
         reasons.iter().any(|reason| reason.starts_with(&format!(

@@ -268,7 +268,11 @@ fn forever_healer_sims_count_healing_less_overhealing() {
         "/fixtures/mage/prepared-v2"
     ));
     let request = |name: &str| fs::read(family.join(format!("{name}.request.json"))).unwrap();
-    let holy = request("holy-paladin-healing");
+    // Without racials: the 26 October racials are Forever's own, and this compares the
+    // overhealing split alone.
+    let mut holy: Value = serde_json::from_slice(&request("holy-paladin-healing")).unwrap();
+    holy["raid"]["parties"][0]["players"][0]["disableRacials"] = true.into();
+    let holy = serde_json::to_vec(&holy).unwrap();
     let forever = prepare_json_with(&holy, "rust", Rules::Forever).unwrap();
     let reference = prepare_json_with(&holy, "rust", Rules::GoReference).unwrap();
     let share = |spell: i64| {
@@ -470,5 +474,54 @@ fn the_first_fights_burst_is_its_best_ten_seconds_of_logged_healing() {
     assert!(
         low - 0.01 <= first && first <= high + 0.01,
         "burst {first}, logged {low} to {high}"
+    );
+}
+
+/// Inner Focus (14751) makes the healer's next heal free and then ends: its client row has one
+/// proc charge, and its cost effect's class mask names every heal. A heal spends it; a
+/// healer's Inner Focus that no heal spent made every later heal free until the fight ended.
+#[test]
+fn a_heal_spends_inner_focus() {
+    let mut request: Value =
+        serde_json::from_slice(&fs::read(fixtures().join("holy-priest.request.json")).unwrap())
+            .unwrap();
+    request["simOptions"]["iterations"] = json!(1);
+    let prepared = prepare(request.to_string().as_bytes(), "rust").unwrap();
+    check_prepared(&prepared).unwrap();
+    let result = simulate_prepared(&prepared).unwrap().result;
+    let lines: Vec<&str> = result["logs"].as_str().unwrap().lines().collect();
+    let gains: Vec<usize> = lines
+        .iter()
+        .enumerate()
+        .filter(|(_, line)| line.contains("Aura gained: {SpellID: 14751}"))
+        .map(|(i, _)| i)
+        .collect();
+    assert!(
+        gains.len() >= 2,
+        "{} Inner Focus casts in a 3 minute fight",
+        gains.len()
+    );
+    for &gained in &gains {
+        let faded = lines[gained..]
+            .iter()
+            .position(|line| line.contains("Aura faded: {SpellID: 14751}"))
+            .map(|offset| gained + offset)
+            .expect("Inner Focus fades");
+        let time = |line: &str| -> f64 { line[1..line.find(']').unwrap()].parse().unwrap() };
+        // Whatever spent it, it ends at once rather than at the fight's end.
+        assert!(
+            time(lines[faded]) - time(lines[gained]) < 3.0,
+            "Inner Focus up from {} to {}",
+            lines[gained],
+            lines[faded]
+        );
+    }
+    // After the last one, heals cost mana again.
+    let last = *gains.last().unwrap();
+    assert!(
+        lines[last..]
+            .iter()
+            .any(|line| line.contains("Spent") && line.contains("mana from")),
+        "no heal paid for mana after the last Inner Focus"
     );
 }

@@ -203,6 +203,24 @@ impl Druid {
             effects.push(crate::prepare::heals::heals_effect(env, &self.heals));
         }
 
+        // thorns.go: the cast turns the druid's own Thorns on. Forever's rules describe it; Go's
+        // exporter leaves the cast unknown.
+        if sim.rules == crate::prepare::sim::Rules::Forever {
+            let rotation = crate::prepare::rotation::rotation_spells(sim, unit);
+            let thorns = sim.unit(unit).spellbook.iter().copied().find(|&spell| {
+                let state = sim.spell(spell);
+                state.class_spell_mask == masks::THORNS
+                    && rotation.contains(&i64::from(state.action_id.spell_id))
+            });
+            if let Some(aura) = thorns.and_then(|spell| sim.spell(spell).related_self_buff) {
+                effects.push(json!({
+                    "kind": "druid_thorns",
+                    "spell_id": sim.spell(thorns.expect("found")).action_id.spell_id,
+                    "aura": sim.aura(aura).label,
+                }));
+            }
+        }
+
         // druid.go RegisterSpell: the forms each spell may be cast in. forms.go: the form the
         // druid starts each fight in.
         let mut forms = Vec::new();

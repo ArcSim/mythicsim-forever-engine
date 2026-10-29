@@ -38,8 +38,8 @@ impl Wrack {
     /// `OnTick` of a target's dot: the snapshot damage, Soul Siphon, then the tick dealt.
     pub(crate) fn tick<A: Agent>(&self, fight: &mut Fight<A>, dot: DotId) {
         let mut result = fight.snapshot_dot_tick_calc(dot);
-        result.damage *= self.soul_siphon;
         let spell = fight.dots[dot].spell;
+        fight.scale_damage(spell, &mut result, self.soul_siphon);
         fight.deal_damage(spell, result, true);
     }
 }

@@ -29,6 +29,33 @@ pub(crate) fn holy_strike(
     fight.deal_damage(spell, result, false);
 }
 
+/// Hammer of the Righteous: `weapon_dps` times the main hand's damage a second (Go
+/// `Weapon.DPS`), on the melee special table, calculated and dealt at each target in turn.
+pub(crate) fn hammer_of_the_righteous(
+    fight: &mut Fight<PaladinAgent>,
+    spell: SpellId,
+    target: Side,
+    weapon_dps: f64,
+    max_targets: usize,
+) {
+    let weapon = &fight.autos.mh.weapon;
+    let dps = if weapon.swing_speed == 0.0 {
+        0.0
+    } else {
+        (weapon.base_damage_min + weapon.base_damage_max) / 2.0 / weapon.swing_speed
+    };
+    let base = weapon_dps * dps;
+    for side in fight.cleave_targets(target, max_targets) {
+        let result = fight.calc_damage_with(
+            spell,
+            side,
+            base,
+            Outcome::Table(PhysicalOutcome::MeleeSpecialHitAndCrit { count: true }),
+        );
+        fight.deal_damage(spell, result, false);
+    }
+}
+
 /// Hammer of Wrath: the rolled damage on the ranged table, dealt when the hammer lands.
 pub(crate) fn hammer_of_wrath(fight: &mut Fight<PaladinAgent>, spell: SpellId, target: Side) {
     let base = fight.roll_damage_effect(spell);

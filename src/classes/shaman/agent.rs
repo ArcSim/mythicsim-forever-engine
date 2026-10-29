@@ -25,6 +25,7 @@ use super::{
         searing_totem::{self, SearingTotem},
         stormstrike::{self, Stormstrike},
         totems::{self, Expirations, StrengthOfEarth},
+        water_shield::WaterShield,
         weapon_imbues, weapon_sync,
         windfury_totem::{self, WindfuryTotem},
         windfury_weapon::{self, WindfuryWeapon},
@@ -60,6 +61,7 @@ pub(crate) enum ShamanSpell {
     FrostShock,
     MagmaTotem,
     LightningShield,
+    WaterShield,
     GraceOfAirTotem,
     ManaSpringTotem,
     WindfuryTotem,
@@ -113,6 +115,8 @@ pub(crate) enum ShamanAura {
     RockbiterWeapon,
     /// The listener that casts Rockbiter Weapon Proc (patch 181).
     RockbiterThreat,
+    /// Water Shield's globes, which the shaman's critical spells spend.
+    WaterShield,
 }
 
 /// Shaman state that Go keeps in the `Shaman` struct and its closures.
@@ -161,6 +165,9 @@ pub(crate) struct ShamanAgent {
     magma: Option<(f64, i64)>,
     /// Lightning Shield's aura and charges.
     lightning_shield: Option<(AuraRef, i32)>,
+    water_shield: Option<WaterShield>,
+    /// When Water Shield's next globe can go.
+    water_shield_ready: i64,
     grace_of_air: Option<StrengthOfEarth>,
     mana_spring: Option<StrengthOfEarth>,
     flametongue_totem: Option<totems::FlametongueTotem>,
@@ -177,6 +184,8 @@ pub(crate) struct ShamanAgent {
     rockbiter_logs: Option<(String, String)>,
     /// Rockbiter Weapon's stat aura bit, when an item swap switches it.
     rockbiter_stat_bit: Option<u32>,
+    /// Spirit Weapons' threat on a Rockbiter aura that follows the weapon in the hand.
+    rockbiter_threat_multiplier: Option<f64>,
     /// Rockbiter Weapon Proc and the hands that carry Rockbiter now (patch 181).
     rockbiter_threat: Option<RockbiterThreat>,
     /// Whether each spell's proc mask holds the main hand's or the off hand's melee bits.
@@ -196,7 +205,13 @@ struct WeaponValues {
     maelstrom: maelstrom_weapon::Chances,
     /// The hands that carry Rockbiter and the main hand's swing speed (patch 181).
     rockbiter: Option<(bool, bool, f64)>,
+    windfury: Option<WindfuryValues>,
+    /// Frostbrand Weapon's chances by spell, from the proc manager of the weapon in the hand.
+    frostbrand: Option<Vec<Option<f64>>>,
 }
+
+/// Windfury Weapon's heard spells, chances and whether it blocks the party totem.
+type WindfuryValues = (Vec<usize>, Vec<(usize, f64)>, bool);
 
 impl WeaponValues {
     fn of(effects: &[Effect], spells: usize) -> WeaponValues {
@@ -227,6 +242,30 @@ impl WeaponValues {
                 } => {
                     values.rockbiter = Some((*main_hand, *off_hand, *main_hand_swing_speed));
                 }
+                Effect::FrostbrandWeapon { chances, .. } => {
+                    let mut by_spell = vec![None; spells];
+                    for chance in chances {
+                        if let Some(slot) = by_spell.get_mut(chance.spell) {
+                            *slot = Some(chance.chance);
+                        }
+                    }
+                    values.frostbrand = Some(by_spell);
+                }
+                Effect::WindfuryWeapon {
+                    trigger_spells,
+                    chances,
+                    blocks_windfury_totem,
+                    ..
+                } => {
+                    values.windfury = Some((
+                        trigger_spells.clone(),
+                        chances
+                            .iter()
+                            .map(|chance| (chance.spell, chance.chance))
+                            .collect(),
+                        *blocks_windfury_totem,
+                    ));
+                }
                 _ => {}
             }
         }
@@ -240,6 +279,19 @@ fn has_effect(prepared: &PreparedV2, kind: &str) -> bool {
 }
 
 impl ShamanAgent {
+    /// A damage or heal result of the shaman's, which may spend a Water Shield globe.
+    fn water_shield_result(fight: &mut Fight<Self>, spell: SpellId, result: &SpellResult) {
+        let state = fight
+            .agent
+            .water_shield
+            .clone()
+            .expect("Water Shield is bound");
+        let ready = fight.agent.water_shield_ready;
+        if let Some(next) = state.on_result(fight, spell, result, ready) {
+            fight.agent.water_shield_ready = next;
+        }
+    }
+
     /// The class behavior of an exported spell, if Rust implements it.
     fn spell(prepared: &PreparedV2, spell: &ExportedSpell) -> Option<ShamanSpell> {
         let has = |kind| has_effect(prepared, kind);
@@ -276,6 +328,11 @@ impl ShamanAgent {
                     if spell.class_spell.is_none() && *spell_id == id.spell_id && id.tag == 0 =>
                 {
                     return Some(ShamanSpell::LightningShield);
+                }
+                Effect::WaterShield { spell_id, .. }
+                    if spell.class_spell.is_none() && *spell_id == id.spell_id && id.tag == 0 =>
+                {
+                    return Some(ShamanSpell::WaterShield);
                 }
                 Effect::FlametongueWeapon { hands } => {
                     if let Some(hand) = hands.iter().position(|hand| Some(hand.spell) == position) {
@@ -432,6 +489,9 @@ impl ShamanAgent {
                 }
                 Effect::RockbiterThreat { aura, .. } => {
                     vec![(aura.clone(), ShamanAura::RockbiterThreat)]
+                }
+                Effect::WaterShield { aura, .. } => {
+                    vec![(aura.clone(), ShamanAura::WaterShield)]
                 }
                 Effect::FlametongueWeapon { hands } => hands
                     .iter()
@@ -717,8 +777,10 @@ impl ShamanAgent {
                     aura,
                     gain_log,
                     expire_log,
+                    threat_multiplier,
                 } => {
                     fight.agent.rockbiter_logs = Some((gain_log.clone(), expire_log.clone()));
+                    fight.agent.rockbiter_threat_multiplier = *threat_multiplier;
                     // With an item swap that switches it, a stat aura whose bit carries its attack
                     // power.
                     fight.agent.rockbiter_stat_bit =
@@ -769,6 +831,26 @@ impl ShamanAgent {
                 } => fight.agent.magma = Some((*pulse_damage, *duration_ns)),
                 Effect::LightningShield { aura, charges, .. } => {
                     fight.agent.lightning_shield = Some((fight.player_aura(aura)?, *charges));
+                }
+                Effect::WaterShield {
+                    aura,
+                    globes,
+                    icd_ns,
+                    mana_percent,
+                    mana_spell_id,
+                    trigger_spells,
+                    ..
+                } => {
+                    let state = WaterShield::bind(
+                        &mut fight,
+                        aura,
+                        *globes,
+                        *icd_ns,
+                        *mana_percent,
+                        *mana_spell_id,
+                        trigger_spells,
+                    )?;
+                    fight.agent.water_shield = Some(state);
                 }
                 Effect::GraceOfAirTotem {
                     aura, duration_ns, ..
@@ -1053,12 +1135,37 @@ impl Agent for ShamanAgent {
             totem.attack_damage = damage;
         }
         fight.agent.maelstrom_chances = set.maelstrom.clone();
+        if let Some(chances) = &set.frostbrand {
+            fight.agent.frostbrand_chances = chances.clone();
+        }
         if let (Some(state), Some((main_hand, off_hand, speed))) =
             (fight.agent.rockbiter_threat.as_mut(), set.rockbiter)
         {
             state.main_hand = main_hand;
             state.off_hand = off_hand;
             state.main_hand_swing_speed = speed;
+        }
+        // RegisterWindfuryImbue rebuilds its proc manager for the weapon in the hand, and a
+        // main hand imbue outbids the party totem.
+        if let (Some(state), Some((triggers, chances, blocks))) =
+            (fight.agent.windfury_weapon.as_mut(), &set.windfury)
+        {
+            let chances: Vec<crate::contracts::prepared_v2::SpellChance> = chances
+                .iter()
+                .map(
+                    |&(spell, chance)| crate::contracts::prepared_v2::SpellChance { spell, chance },
+                )
+                .collect();
+            state
+                .follow_weapon(triggers, &chances, *blocks)
+                .expect("the swap set's Windfury Weapon names known spells");
+            // The swap's callbacks put the imbue's trigger up before the values follow the new
+            // weapon: a trigger already up that now blocks the totem takes it down, as its gain
+            // does in Go once the main hand carries the imbue.
+            let state = state.clone();
+            if fight.aura(state.trigger).active {
+                state.on_trigger_gain(fight);
+            }
         }
     }
 
@@ -1144,10 +1251,19 @@ impl Agent for ShamanAgent {
                     .agent
                     .lightning_shield
                     .expect("Lightning Shield is bound");
-                // Go deactivateShields; Water Shield is a talent no supported build casts.
+                // Go deactivateShields on its own shield. Client 70532 dropped "Only one
+                // Elemental Shield can be active" from Water Shield, so the two stand together.
                 fight.deactivate_aura(aura);
                 fight.activate_aura(aura);
                 fight.set_stacks(aura, charges);
+            }
+            ShamanSpell::WaterShield => {
+                let state = fight
+                    .agent
+                    .water_shield
+                    .clone()
+                    .expect("Water Shield is bound");
+                state.cast(fight);
             }
             ShamanSpell::GraceOfAirTotem => {
                 let totem = fight
@@ -1245,6 +1361,7 @@ impl Agent for ShamanAgent {
     fn reset(fight: &mut Fight<Self>) {
         fight.agent.totems = Expirations::default();
         fight.agent.flurry_icd = crate::core::time::STARTING_CD_TIME;
+        fight.agent.water_shield_ready = crate::core::time::STARTING_CD_TIME;
     }
 
     /// Stormstrike needs a weapon.
@@ -1368,7 +1485,20 @@ impl Agent for ShamanAgent {
                 let off_hand = fight.agent.melee_off_hand[spell];
                 state.on_spell_hit_dealt(fight, main_hand, off_hand, result);
             }
+            ShamanAura::WaterShield => Self::water_shield_result(fight, spell, result),
             _ => {}
+        }
+    }
+
+    fn on_heal_dealt(
+        fight: &mut Fight<Self>,
+        _aura: AuraRef,
+        kind: ShamanAura,
+        spell: SpellId,
+        result: &SpellResult,
+    ) {
+        if kind == ShamanAura::WaterShield {
+            Self::water_shield_result(fight, spell, result);
         }
     }
 
@@ -1558,6 +1688,9 @@ impl Agent for ShamanAgent {
                 if let Some(bit) = fight.agent.rockbiter_stat_bit {
                     fight.set_stat_mask(fight.stat_mask | bit);
                 }
+                if let Some(threat) = fight.agent.rockbiter_threat_multiplier {
+                    fight.player.threat_multiplier *= threat;
+                }
             }
             _ => {}
         }
@@ -1630,6 +1763,9 @@ impl Agent for ShamanAgent {
                 }
                 if let Some(bit) = fight.agent.rockbiter_stat_bit {
                     fight.set_stat_mask(fight.stat_mask & !bit);
+                }
+                if let Some(threat) = fight.agent.rockbiter_threat_multiplier {
+                    fight.player.threat_multiplier /= threat;
                 }
             }
             _ => {}

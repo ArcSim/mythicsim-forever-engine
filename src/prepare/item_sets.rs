@@ -48,7 +48,7 @@ pub(crate) fn implemented_sets() -> Vec<&'static ItemSet> {
 
 /// Go's search for the set an item belongs to: by its set ID first, so sets with different
 /// names that share an ID all count together, then by name.
-fn find_set<'a>(
+pub(crate) fn find_set<'a>(
     sets: &'a [ItemSetRow],
     set_id: i32,
     set_name: &str,

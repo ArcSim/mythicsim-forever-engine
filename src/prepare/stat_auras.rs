@@ -122,6 +122,7 @@ pub(crate) fn character_stat_auras(env: &Environment) -> Vec<String> {
     candidates.extend(env.agent.stat_auras(&env.sim, env.player));
     candidates.extend(spell_data_stat_proc_auras(env));
     candidates.extend(lion_horn_proc_aura(env));
+    candidates.extend(super::healer_gear::stat_auras(env));
     candidates.extend(simple_stat_active_auras(env));
     candidates.extend(
         super::export_items::WEAPON_AURA_PROC_AURAS
@@ -274,7 +275,7 @@ pub(crate) fn stat_auras_effect_reading(
     if labels.is_empty() {
         return Ok(None);
     }
-    if layout.bits > 12 {
+    if layout.bits > 14 {
         return Err(Refusal::new(
             "stat_auras",
             format!("{} stat auras exceed the combination limit", labels.len()),

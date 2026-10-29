@@ -321,3 +321,47 @@ fn an_off_hand_weapon_swap_is_refused() {
         "{err}"
     );
 }
+
+/// A fixture request prepared in Rust under Forever's rules.
+fn prepared_forever(name: &str) -> Value {
+    let path = Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join(format!("fixtures/mage/prepared-v2/{name}.request.json"));
+    let mut request: Value = serde_json::from_slice(&fs::read(path).unwrap()).unwrap();
+    request["simOptions"]["iterations"] = json!(20);
+    forever_engine::prepare_json_with(
+        request.to_string().as_bytes(),
+        name,
+        forever_engine::Rules::Forever,
+    )
+    .unwrap()
+}
+
+/// Under Forever's rules the Rockbiter aura that follows the weapon in the hand says Spirit
+/// Weapons' threat, which the runtime multiplies in and out as the swap puts Rockbiter on or off
+/// (Go's 1.3 / 0.7, about 1.86), so the swap runs. Go's exporter does not say it, so the
+/// exported fixture above stays refused.
+#[test]
+fn a_toggled_rockbiter_with_spirit_weapons_follows_under_forever_rules() {
+    let value = prepared_forever("item-swap-spirit-weapons");
+    let rockbiter = value["effects"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .find(|effect| effect["kind"] == "rockbiter_weapon")
+        .expect("Rockbiter Weapon");
+    let threat = rockbiter["threat_multiplier"].as_f64().unwrap();
+    assert!((1.85..1.87).contains(&threat), "{threat}");
+    let prepared: PreparedV2 = serde_json::from_value(value.clone()).unwrap();
+    assert_eq!(prepared_coverage(&prepared), Vec::<String>::new());
+    first_fight_log(value);
+}
+
+/// Seal of Light's proc manager is Go's NewLegacyPPMManager, which an item swap rebuilds; with
+/// it audited, a Retribution Paladin's Manual Crowd Pummeler opener prepares in Rust.
+#[test]
+fn a_retribution_swap_with_seal_of_light_prepares_in_rust() {
+    let value = prepared_forever("mcp-retribution-paladin");
+    let prepared: PreparedV2 = serde_json::from_value(value.clone()).unwrap();
+    assert_eq!(prepared_coverage(&prepared), Vec::<String>::new());
+    first_fight_log(value);
+}

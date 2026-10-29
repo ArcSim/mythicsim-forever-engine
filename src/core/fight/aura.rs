@@ -54,10 +54,19 @@ pub(crate) enum AuraBehavior<K> {
     },
     /// An item proc that restores energy: [`super::energy::EnergizeProc`], by index.
     EnergizeProc(usize),
+    /// A proc on the player's casts that restores health a delay later: by its position in
+    /// `Fight::health_on_cast`.
+    HealthOnCast(usize),
+    /// Go buffs/paladin.go `AttachJudgementOfLightHeal`, on the target: by its position in
+    /// `Fight::judgements_of_light`.
+    JudgementOfLight(usize),
     /// Go buffs/paladin.go `AttachJudgementOfWisdomMana`.
     JudgementOfWisdom {
         chance: f64,
         mana: f64,
+        /// The judgement's action, which names the attacker's metrics at its first restore.
+        id: ActionId,
+        /// The player's metrics, shared by every Judgement of Wisdom.
         metrics: usize,
         delay: i64,
     },
@@ -74,9 +83,22 @@ pub(crate) enum AuraBehavior<K> {
         attack: f64,
         cast: f64,
     },
+    /// Battle Squawk: the melee speed each stack gives, taken back as the stacks fall to none.
+    BattleSquawk {
+        per_stack: f64,
+    },
     /// Go `AttachHastePseudoStats`: melee, ranged and cast speed multipliers, each attached only
     /// when it changes speed, in that order.
     MultiplySpeeds {
+        melee: f64,
+        ranged: f64,
+        cast: f64,
+    },
+    /// Go `MultiplyMovementSpeed` of the player while up, as Skysight's Elemental Blessing.
+    MultiplyMovementSpeed(f64),
+    /// An item or enchant speed aura an item swap gains and expires: as `MultiplySpeeds`, but
+    /// the reset's gain is already in the exported speeds.
+    SwapSpeed {
         melee: f64,
         ranged: f64,
         cast: f64,
@@ -163,6 +185,8 @@ pub(crate) enum AuraBehavior<K> {
     /// A gear proc's trigger that heals and gives rage, by its position in
     /// `Fight::health_rage_procs`.
     HealthRageProc(usize),
+    /// An energy proc of the gear procs, by its position.
+    EnergyProc(usize),
     /// A gear proc's trigger that stacks an armor debuff on the target, by its position in
     /// `Fight::armor_debuff_procs`.
     ArmorDebuffTrigger(usize),
@@ -172,6 +196,17 @@ pub(crate) enum AuraBehavior<K> {
     SpellDataStatProc(usize),
     /// An aura whose spell mods, at this position in `Fight::aura_mods`, apply while active.
     SpellMods(usize),
+    /// A listener on the player's casts that restores mana, by its position in
+    /// `Fight::mana_on_cast`.
+    ManaOnCast(usize),
+    /// A healer's stacking on-use trinket's window, by its position in `Fight::stacking_cds`.
+    StackingCdWindow(usize),
+    /// A healer's on-use shield on heals, by its position in `Fight::shields_on_heal`.
+    ShieldOnHeal(usize),
+    /// A healer's instant cast aura, by its position in `Fight::instant_casts`.
+    InstantCast(usize),
+    /// A self buff of globes the player's crit heals spend: [`super::healer_gear::ManaGlobes`].
+    ManaGlobes(usize),
     /// The aura of a dot or channel.
     Dot(DotId),
     /// Go movement.go's Movement aura, which marks its unit moving.
@@ -599,6 +634,9 @@ impl<A: Agent> Fight<A> {
             let line = format!("Aura gained: {}", action_string(&id));
             self.unit_log(aura.side, &line);
         }
+        if !self.health_regens.is_empty() {
+            self.health_regen_gained(aura);
+        }
         self.on_gain(aura);
     }
 
@@ -659,6 +697,9 @@ impl<A: Agent> Fight<A> {
         if let Side::Pet(_) = aura.side {
             self.pet_aura_expired(aura);
         }
+        if !self.health_regens.is_empty() {
+            self.health_regen_expired(aura);
+        }
         self.on_expire(aura);
     }
 
@@ -714,6 +755,11 @@ impl<A: Agent> Fight<A> {
             AuraBehavior::StackingStats { offset, width, .. } => {
                 let field = ((1u32 << width) - 1) << offset;
                 self.set_stat_mask((self.stat_mask & !field) | ((new as u32) << offset));
+            }
+            // The reset's stacks are in the exported melee speed; their fall to none takes it
+            // back.
+            AuraBehavior::BattleSquawk { per_stack } if new == 0 => {
+                self.multiply_melee_speed(per_stack.powi(-old));
             }
             _ => {}
         }
@@ -781,6 +827,7 @@ impl<A: Agent> Fight<A> {
             AuraBehavior::Dot(dot) => self.dot_on_gain(dot),
             AuraBehavior::RevelationBuff => self.revelation_buff_changed(true),
             AuraBehavior::Movement => self.movement_changed(aura.side, true),
+            AuraBehavior::MultiplyMovementSpeed(speed) => self.multiply_movement_speed(speed),
             AuraBehavior::Eureka => self.eureka_gain(),
             AuraBehavior::MultiplyAttackAndCastSpeed { attack, cast } => {
                 self.multiply_attack_speed(attack);
@@ -791,6 +838,15 @@ impl<A: Agent> Fight<A> {
                 ranged,
                 cast,
             } => self.multiply_speeds(melee, ranged, cast, false),
+            AuraBehavior::SwapSpeed {
+                melee,
+                ranged,
+                cast,
+            } => {
+                if !self.resetting_auras {
+                    self.multiply_speeds(melee, ranged, cast, false);
+                }
+            }
             AuraBehavior::MultiplySelfDamageTaken {
                 multiplier,
                 schools,
@@ -828,6 +884,9 @@ impl<A: Agent> Fight<A> {
                     self.activate_mod(self.aura_mods[index][position]);
                 }
             }
+            AuraBehavior::StackingCdWindow(index) => self.stacking_cd_gained(index),
+            AuraBehavior::InstantCast(index) => self.instant_cast_gained(index),
+            AuraBehavior::ManaGlobes(_) => self.mana_globes_gained(aura),
             AuraBehavior::ArmorIgnoreFactor(delta) => {
                 if !self.resetting_auras {
                     self.config.melee.armor_ignore_factor += delta;
@@ -854,12 +913,18 @@ impl<A: Agent> Fight<A> {
             }
             AuraBehavior::RevelationBuff => self.revelation_buff_changed(false),
             AuraBehavior::Movement => self.movement_changed(aura.side, false),
+            AuraBehavior::MultiplyMovementSpeed(speed) => self.multiply_movement_speed(1.0 / speed),
             AuraBehavior::Eureka => self.eureka_expire(),
             AuraBehavior::MultiplyAttackAndCastSpeed { attack, cast } => {
                 self.multiply_attack_speed(1.0 / attack);
                 self.multiply_cast_speed(1.0 / cast);
             }
             AuraBehavior::MultiplySpeeds {
+                melee,
+                ranged,
+                cast,
+            }
+            | AuraBehavior::SwapSpeed {
                 melee,
                 ranged,
                 cast,
@@ -880,6 +945,8 @@ impl<A: Agent> Fight<A> {
                     self.deactivate_mod(self.aura_mods[index][position]);
                 }
             }
+            AuraBehavior::StackingCdWindow(index) => self.stacking_cd_expired(index),
+            AuraBehavior::InstantCast(index) => self.instant_cast_expired(index),
             AuraBehavior::WindfuryTotem => {
                 let trigger = self
                     .windfury
@@ -1168,14 +1235,48 @@ impl<A: Agent> Fight<A> {
             match self.aura(aura).behavior {
                 AuraBehavior::Class(kind) => A::on_cast_complete(self, aura, kind, spell),
                 AuraBehavior::RevelationBuff => self.revelation_cast_complete(spell),
+                // Go `AttachProcTriggerCallback`'s OnCastComplete: the spells it hears, no chance
+                // to roll, then the handler a delay later. A cast carries no result.
+                AuraBehavior::HealthOnCast(index) if self.health_on_cast[index].spells[spell] => {
+                    let result = SpellResult {
+                        armor_multiplier: 0.0,
+                        target: Side::Target,
+                        attacker: Side::Player,
+                        outcome: 0,
+                        damage: 0.0,
+                        threat: 0.0,
+                    };
+                    let delay = self.health_on_cast[index].delay;
+                    self.schedule_delayed_proc_at(self.now + delay, aura, spell, result);
+                }
                 AuraBehavior::SpellDataStatProc(proc) if self.spell_stat_procs[proc].casts => {
                     self.spell_stat_proc_callback(aura, proc, Some(spell), None)
                 }
+                AuraBehavior::ManaOnCast(index) => self.mana_on_cast_callback(aura, index, spell),
+                AuraBehavior::InstantCast(index) => self.instant_cast_spent(aura, index, spell),
+                AuraBehavior::HealProc(proc) if self.heal_procs[proc].casts => {
+                    let result = SpellResult {
+                        armor_multiplier: 0.0,
+                        target: Side::Player,
+                        attacker: Side::Player,
+                        outcome: 0,
+                        damage: 0.0,
+                        threat: 0.0,
+                    };
+                    self.heal_proc_callback(aura, proc, Some(spell), &result)
+                }
+                AuraBehavior::StackingCdWindow(index) => self.stacking_cd_callback(
+                    aura,
+                    index,
+                    spell,
+                    super::healer_gear::StackEvent::Cast,
+                    None,
+                ),
                 AuraBehavior::SpellDataDamageProc(proc) if self.damage_procs[proc].casts => {
                     // A cast carries no result: the proc answers the current target.
                     let result = SpellResult {
                         armor_multiplier: 0.0,
-                        target: Side::Target,
+                        target: self.current_target_side(),
                         attacker: Side::Player,
                         outcome: 0,
                         damage: 0.0,
@@ -1204,8 +1305,8 @@ impl<A: Agent> Fight<A> {
         }
     }
 
-    /// Go `auraTracker.OnPeriodicDamageDealt` on the caster, which skips no inactive aura. No
-    /// target aura in scope acts on periodic damage taken.
+    /// Go `auraTracker.OnPeriodicDamageDealt` on the caster, which skips no inactive aura, then
+    /// `OnPeriodicDamageTaken` on the target for its class auras (Vampiric Embrace).
     pub(crate) fn on_periodic_damage(&mut self, spell: SpellId, result: &SpellResult) {
         let side = self.spells[spell].caster;
         let list = List::PeriodicDamageDealt as usize;
@@ -1219,6 +1320,20 @@ impl<A: Agent> Fight<A> {
                 }
                 AuraBehavior::RevelationTrigger => self.revelation_callback(aura, spell, result),
                 _ => {}
+            }
+        }
+        // Go `OnPeriodicDamageTaken` on the target, for the class auras that listen to it.
+        let side = result.target;
+        let list = List::PeriodicDamageTaken as usize;
+        let snapshot = self.trackers[side.index()].lists[list].snapshot();
+        for position in 0..snapshot.len {
+            let index = self.trackers[side.index()].lists[list].read(snapshot, position);
+            let aura = AuraRef { side, index };
+            if !self.aura(aura).active {
+                continue;
+            }
+            if let AuraBehavior::Class(kind) = self.aura(aura).behavior {
+                A::on_periodic_damage_taken(self, aura, kind, spell, result);
             }
         }
     }
@@ -1239,6 +1354,18 @@ impl<A: Agent> Fight<A> {
                 AuraBehavior::RevelationTrigger => self.revelation_callback(aura, spell, result),
                 AuraBehavior::SpellDataStatProc(proc) if self.spell_stat_procs[proc].heals => {
                     self.spell_stat_proc_callback(aura, proc, Some(spell), Some(result))
+                }
+                AuraBehavior::StackingCdWindow(index) => self.stacking_cd_callback(
+                    aura,
+                    index,
+                    spell,
+                    super::healer_gear::StackEvent::Heal,
+                    Some(result),
+                ),
+                AuraBehavior::ShieldOnHeal(index) => self.shield_on_heal(index, spell, result),
+                AuraBehavior::ManaGlobes(index) => self.mana_globes_on_heal(aura, index, result),
+                AuraBehavior::ManaOnCast(index) => {
+                    self.mana_on_crit_callback(aura, index, spell, result)
                 }
                 _ => {}
             }
@@ -1282,6 +1409,9 @@ impl<A: Agent> Fight<A> {
                     AuraBehavior::JudgementOfWisdom { chance, delay, .. } => {
                         self.judgement_of_wisdom_callback(aura, spell, result, chance, delay)
                     }
+                    AuraBehavior::JudgementOfLight(index) if !dealt => {
+                        self.judgement_of_light_callback(aura, index, spell, result)
+                    }
                     AuraBehavior::TouchOfTheGrave { chance, delay, .. } if dealt => {
                         self.touch_of_the_grave_callback(aura, spell, result, chance, delay)
                     }
@@ -1324,11 +1454,14 @@ impl<A: Agent> Fight<A> {
                     {
                         self.damage_proc_callback(aura, proc, Some(spell), result)
                     }
-                    AuraBehavior::HealProc(proc) if dealt => {
+                    AuraBehavior::HealProc(proc) if dealt && !self.heal_procs[proc].casts => {
                         self.heal_proc_callback(aura, proc, Some(spell), result)
                     }
                     AuraBehavior::HealthRageProc(proc) if dealt => {
                         self.health_rage_proc_callback(aura, proc, spell, result)
+                    }
+                    AuraBehavior::EnergyProc(proc) if dealt => {
+                        self.energy_proc_callback(aura, proc, spell, result)
                     }
                     AuraBehavior::ArmorDebuffTrigger(proc) if dealt => {
                         self.armor_debuff_proc_callback(aura, proc, spell, result)
@@ -1365,6 +1498,13 @@ impl<A: Agent> Fight<A> {
                     AuraBehavior::EnergizeProc(index) if dealt => {
                         self.energize_proc_callback(aura, index, spell, result)
                     }
+                    AuraBehavior::StackingCdWindow(index) if dealt => self.stacking_cd_callback(
+                        aura,
+                        index,
+                        spell,
+                        super::healer_gear::StackEvent::Hit,
+                        Some(result),
+                    ),
                     _ => {}
                 }
             }
@@ -1389,6 +1529,45 @@ impl<A: Agent> Fight<A> {
             return;
         }
         self.schedule_delayed_proc_at(self.now + delay, aura, spell, *result);
+    }
+
+    /// Go `AttachJudgementOfLightHeal`'s trigger on the judged target: a landed melee hit that
+    /// is no proc runs the handler a spell batch window later, with no chance of its own.
+    fn judgement_of_light_callback(
+        &mut self,
+        aura: AuraRef,
+        index: usize,
+        spell: SpellId,
+        result: &SpellResult,
+    ) {
+        let state = &self.spells[spell];
+        if state.flags.proc || !state.melee_proc || result.outcome & super::OUTCOME_LANDED == 0 {
+            return;
+        }
+        let delay = self.judgements_of_light[index].delay;
+        self.schedule_delayed_proc_at(self.now + delay, aura, spell, *result);
+    }
+
+    /// The handler: Go `Proc(judgementProcChance, "Judgement of Light - Heal")`, then the
+    /// attacker gains the heal under the target's health metrics. A pet's hit rolls the same
+    /// chance; its heal changes nothing, as no target strikes a pet and nothing else takes its
+    /// health, so a pet is always at full health.
+    fn judgement_of_light_heal(&mut self, index: usize, judged: Side, spell: SpellId) {
+        let state = &self.judgements_of_light[index];
+        let metrics = match judged {
+            Side::Extra(extra) => state.copy_metrics[extra as usize],
+            _ => state.metrics,
+        };
+        let (chance, heal) = (state.chance, state.heal);
+        if !self
+            .rng
+            .proc(chance, &self.judgements_of_light[index].rng_label)
+        {
+            return;
+        }
+        if self.spells[spell].caster == Side::Player {
+            self.gain_health(heal, metrics);
+        }
     }
 
     /// Go `AttachProcTriggerCallback`'s delayed handler: run it a spell batch window from now.
@@ -1523,8 +1702,17 @@ impl<A: Agent> Fight<A> {
                 return;
             }
         }
-        if chance != 1.0 && self.random_for_aura(aura) > chance {
-            return;
+        if chance != 1.0 {
+            let roll = match &self.damage_procs[proc].rng_label {
+                Some(label) => {
+                    let label = label.clone();
+                    self.rng.next_f64(&label)
+                }
+                None => self.random_for_aura(aura),
+            };
+            if roll > chance {
+                return;
+            }
         }
         // Go `DynamicProcManager.Proc` under the trigger's name, after the static chance; a spell
         // its masks miss never procs.
@@ -1537,14 +1725,37 @@ impl<A: Agent> Fight<A> {
         if let Some((timer, duration)) = icd {
             self.timers[timer] = self.now + duration;
         }
-        // Go procDamageTarget: a proc of a hit taken answers its attacker, which for the
-        // swing of a copy of the boss is that copy.
-        let target = match (result.target == Side::Player, spell) {
-            (true, None) => result.attacker,
-            (true, Some(_)) => Side::Target,
-            (false, _) => result.target,
-        };
+        // A Go literal trigger without TriggerImmediately: the handler casts the hit a delay
+        // later, on the unit the trigger's hit landed on, or for the target's swing on its
+        // attacker.
+        if let Some(delay) = self.damage_procs[proc].delay {
+            match spell {
+                Some(spell) => {
+                    self.schedule_delayed_proc_at(self.now + delay, aura, spell, *result)
+                }
+                None => {
+                    let target = self.damage_proc_target(None, result);
+                    self.schedule(
+                        self.now + delay,
+                        super::PRIORITY_DOT,
+                        super::Action::StruckDamageProc { proc, target },
+                    );
+                }
+            }
+            return;
+        }
+        let target = self.damage_proc_target(spell, result);
         self.cast(damage_spell, target);
+    }
+
+    /// Go procDamageTarget: a proc of a hit taken answers its attacker, which for the swing of a
+    /// copy of the boss is that copy.
+    fn damage_proc_target(&self, spell: Option<SpellId>, result: &SpellResult) -> Side {
+        match (result.target == Side::Player, spell) {
+            (true, None) => result.attacker,
+            (true, Some(_)) => self.current_target_side(),
+            (false, _) => result.target,
+        }
     }
 
     /// Go `AttachProcTriggerCallback` for a spell data stat proc: the spells it hears, and for a
@@ -1626,7 +1837,9 @@ impl<A: Agent> Fight<A> {
     /// The delayed half of a proc trigger.
     pub(crate) fn delayed_proc(&mut self, aura: AuraRef, spell: SpellId, result: SpellResult) {
         match self.aura(aura).behavior.clone() {
-            AuraBehavior::JudgementOfWisdom { mana, metrics, .. } => {
+            AuraBehavior::JudgementOfWisdom {
+                mana, metrics, id, ..
+            } => {
                 // Go: melee and ranged hits always pay; spells must land.
                 if !self.spells[spell].melee_or_ranged_proc
                     && result.outcome & super::OUTCOME_LANDED == 0
@@ -1641,18 +1854,21 @@ impl<A: Agent> Fight<A> {
                     return;
                 }
                 let metrics = match caster {
-                    Side::Pet(_) => {
-                        let id = self.resources[metrics].id.clone();
-                        match self.active_pet(caster).jow_metrics {
-                            Some(existing) => existing,
-                            None => {
-                                let created = self.new_mana_metrics_of(caster, id);
-                                self.active_pet_mut(caster).jow_metrics = Some(created);
-                                created
-                            }
+                    Side::Pet(_) => match self.active_pet(caster).jow_metrics {
+                        Some(existing) => existing,
+                        None => {
+                            let created = self.new_mana_metrics_of(caster, id);
+                            self.active_pet_mut(caster).jow_metrics = Some(created);
+                            created
                         }
+                    },
+                    _ => {
+                        if !self.jow_metrics_named {
+                            self.resources[metrics].id = id;
+                            self.jow_metrics_named = true;
+                        }
+                        metrics
                     }
-                    _ => metrics,
                 };
                 self.add_mana(mana, metrics);
             }
@@ -1689,6 +1905,7 @@ impl<A: Agent> Fight<A> {
                 }
             }
             AuraBehavior::HealthRageProc(proc) => self.health_rage_proc_handler(proc),
+            AuraBehavior::EnergyProc(proc) => self.energy_proc_handler(proc),
             AuraBehavior::ArmorDebuffTrigger(proc) => {
                 self.armor_debuff_proc_handler(proc, result.target)
             }
@@ -1705,6 +1922,23 @@ impl<A: Agent> Fight<A> {
                 self.cast(spell, result.target);
             }
             AuraBehavior::EnergizeProc(index) => self.energize_proc_handler(index),
+            AuraBehavior::SpellDataDamageProc(proc) => {
+                let damage_spell = self.damage_procs[proc].spell;
+                let target = self.damage_proc_target(Some(spell), &result);
+                self.cast(damage_spell, target);
+            }
+            AuraBehavior::HealthOnCast(index) => {
+                let (health, metrics) = (
+                    self.health_on_cast[index].health,
+                    self.health_on_cast[index].metrics,
+                );
+                self.gain_health(health, metrics);
+            }
+            AuraBehavior::JudgementOfLight(index) => {
+                self.judgement_of_light_heal(index, aura.side, spell)
+            }
+            AuraBehavior::ManaOnCast(index) => self.mana_on_cast_handler(index, spell),
+            AuraBehavior::StackingCdWindow(index) => self.stacking_cd_handler(index),
             AuraBehavior::Class(kind) => A::on_delayed_proc(self, aura, kind, spell, result),
             _ => {}
         }

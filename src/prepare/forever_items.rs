@@ -252,17 +252,47 @@ const WEAPON_DAMAGE_PROCS: [WeaponDamageProc; 17] = [
     },
 ];
 
+/// items_trinkets.go Mark of the Champion: a permanent aura, which an item swap toggles, whose
+/// gain and expiry add and take away the attack tables' bonus against Undead and Demons.
+fn mark_of_the_champion(env: &mut Environment, item: i32) {
+    let unit = env.player;
+    let label = if item == 23206 {
+        "Mark of the Champion (Physical)"
+    } else {
+        "Mark of the Champion (Spell)"
+    };
+    let aura = env.sim.register_aura(
+        unit,
+        super::sim::AuraConfig {
+            label: label.to_string(),
+            action_id: Some(ActionId::item(item)),
+            ..super::sim::AuraConfig::default()
+        },
+    );
+    let aura = env.sim.make_permanent(aura);
+    env.sim
+        .apply_on_gain(aura, Rc::new(|_: &mut super::sim::Sim, _| {}));
+    env.sim
+        .apply_on_expire(aura, Rc::new(|_: &mut super::sim::Sim, _| {}));
+    env.sim.register_item_proc(unit, item, aura);
+}
+
 fn apply_hand_written_item(env: &mut Environment, item: i32) -> Result<bool, Refusal> {
     match item {
         11815 => hand_of_justice(env),
         23570 => jom_gabbar(env),
-        // The aura raises the attack tables' mob type bonus stats, which the exporter lists as
-        // unrepresented, so the request is not Rust's to prepare.
+        // The permanent aura raises the attack tables' mob type bonus stats against Undead and
+        // Demons, which Go's exporter lists as unrepresented. Under Forever's rules the export
+        // describes the bonus (`mob_type_bonus`) against targets of those types, and a target
+        // of another type never takes it (Go reads the target's own type).
         23206 | 23207 => {
-            return Err(Refusal::new(
-                "item_effect",
-                format!("item {item} adds mob type bonus stats, which are not prepared"),
-            ))
+            if env.sim.rules != super::sim::Rules::Forever {
+                return Err(Refusal::new(
+                    "item_effect",
+                    format!("item {item} adds mob type bonus stats, which are not prepared"),
+                ));
+            }
+            mark_of_the_champion(env, item);
         }
         2801 => blade_of_hanna(env),
         // items_70425.go: Lord Sakrasis' Scepter's Holy Smite states no rate, so Go registers it
@@ -396,7 +426,7 @@ fn blade_of_hanna(env: &mut Environment) {
             ..AuraConfig::default()
         },
     );
-    env.sim.make_proc_trigger_aura(
+    let trigger = env.sim.make_proc_trigger_aura(
         unit,
         &ProcTrigger {
             name: "Blade of Hanna".to_string(),
@@ -407,6 +437,12 @@ fn blade_of_hanna(env: &mut Environment) {
             ..ProcTrigger::default()
         },
     );
+    // Go registers no item swap callback, so its stacks keep counting whatever weapon the hand
+    // holds. Under Forever's rules the trigger is up while the hand holds the blade, as every
+    // other weapon proc's is (Go `ItemSwap.RegisterProc`).
+    if env.sim.rules == super::sim::Rules::Forever {
+        env.sim.register_item_proc(unit, 2801, trigger);
+    }
 }
 
 /// items_weapons.go Flurry Axe.
@@ -631,7 +667,7 @@ fn apply_hand_written_enchant(env: &mut Environment, enchant: i32) -> bool {
                 SpellFlag::NO_ON_CAST_COMPLETE | SpellFlag::PASSIVE_SPELL | SpellFlag::PROC;
 
             let dpm = dynamic_legacy_proc_for_enchant(&env.sim, unit, id, ppm, 0.0);
-            env.sim.make_proc_trigger_aura(
+            let aura = env.sim.make_proc_trigger_aura(
                 unit,
                 &ProcTrigger {
                     name: format!("Enchant Weapon - {name}"),
@@ -644,6 +680,8 @@ fn apply_hand_written_enchant(env: &mut Environment, enchant: i32) -> bool {
                     ..ProcTrigger::default()
                 },
             );
+            // Go `ItemSwap.RegisterEnchantProc`: the proc holds while a hand carries the enchant.
+            env.sim.register_enchant_proc(unit, id, aura);
             true
         }
     }

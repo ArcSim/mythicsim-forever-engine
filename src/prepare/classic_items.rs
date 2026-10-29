@@ -332,8 +332,18 @@ fn darkmoon_card_heroism(env: &mut Environment) {
 /// Darkmoon Card: Maelstrom: equip: chance to strike your melee target with lightning for 200 to
 /// 300 Nature damage (23687).
 fn darkmoon_card_maelstrom(env: &mut Environment) {
-    let trigger_dpm: TriggerDpmFn =
-        Rc::new(|sim, unit| Rc::new(sim.new_ppm_manager(unit, 1.0, ProcMask::MELEE)));
+    // Go `NewLegacyPPMManager`, which an item swap rebuilds for the weapons in the hands.
+    let trigger_dpm: TriggerDpmFn = Rc::new(|sim, unit| {
+        Rc::new(
+            sim.new_ppm_manager(unit, 1.0, ProcMask::MELEE)
+                .rebuilt_by_swap(
+                    sim,
+                    unit,
+                    super::item_swap::ManagerChance::Ppm(1.0),
+                    super::item_swap::ManagerMask::Static(ProcMask::MELEE),
+                ),
+        )
+    });
     apply_proc_damage_effect(
         env,
         &ProcDamageEffect {
@@ -360,8 +370,18 @@ fn darkmoon_card_maelstrom(env: &mut Environment) {
 /// Heart of Wyrmthalak: equip: melee and ranged attacks have a chance to deal 112 to 168 Fire
 /// damage (27655). The 0.4 PPM is master's.
 fn heart_of_wyrmthalak(env: &mut Environment) {
-    let trigger_dpm: TriggerDpmFn =
-        Rc::new(|sim, unit| Rc::new(sim.new_ppm_manager(unit, 0.4, ProcMask::MELEE_OR_RANGED)));
+    // Go `NewLegacyPPMManager`, which an item swap rebuilds for the weapons in the hands.
+    let trigger_dpm: TriggerDpmFn = Rc::new(|sim, unit| {
+        Rc::new(
+            sim.new_ppm_manager(unit, 0.4, ProcMask::MELEE_OR_RANGED)
+                .rebuilt_by_swap(
+                    sim,
+                    unit,
+                    super::item_swap::ManagerChance::Ppm(0.4),
+                    super::item_swap::ManagerMask::Static(ProcMask::MELEE_OR_RANGED),
+                ),
+        )
+    });
     apply_proc_damage_effect(
         env,
         &ProcDamageEffect {

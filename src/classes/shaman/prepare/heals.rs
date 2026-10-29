@@ -6,7 +6,8 @@
 //! under Forever's rules it jumps only to players the party's damage hit lately
 //! (`prepare::party_damage`).
 //! Healing Stream Totem heals the party of five every two seconds while it stands. Riptide's
-//! bonus to a Chain Heal on its target and Nature's Swiftness on a heal are not modelled yet.
+//! bonus to a Chain Heal on its target is not modelled yet; Nature's Swiftness makes the next
+//! heal with a cast time instant (`prepare::healer_gear`).
 
 use crate::contracts::prepared_v2::SmartHeal;
 use crate::prepare::heals::{

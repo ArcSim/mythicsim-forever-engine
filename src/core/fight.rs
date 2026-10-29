@@ -33,8 +33,10 @@ pub(crate) mod proc_damage;
 mod revelation;
 pub(crate) use on_use_damage::known as on_use_damage_known;
 mod heal_proc;
+pub(crate) mod healer_gear;
 pub(crate) mod healing;
 pub(crate) mod heals;
+pub(crate) mod health_regen;
 mod log;
 pub(crate) mod melee;
 pub(crate) mod metrics;
@@ -63,7 +65,9 @@ pub(crate) use metrics::{ActionTotals, FightReport};
 pub(crate) use spell_mod::{ModId, ModKind};
 
 use crate::{
-    contracts::prepared_v2::{ActionId, Effect, ExclusiveMembership, PreparedV2, Schools},
+    contracts::prepared_v2::{
+        ActionId, Effect, EnergizedPower, ExclusiveMembership, PreparedV2, Schools,
+    },
     core::{
         queue::{Handle, PendingQueue},
         rng::SimRng,
@@ -352,6 +356,15 @@ pub(crate) trait Agent: Sized {
         _result: &SpellResult,
     ) {
     }
+    /// Go `OnPeriodicDamageTaken` of a class aura on the target, for the player's tick.
+    fn on_periodic_damage_taken(
+        _fight: &mut Fight<Self>,
+        _aura: AuraRef,
+        _kind: Self::Aura,
+        _spell: SpellId,
+        _result: &SpellResult,
+    ) {
+    }
     /// Go `OnPeriodicDamageDealt` for an aura of the caster.
     fn on_periodic_damage_dealt(
         _fight: &mut Fight<Self>,
@@ -483,6 +496,7 @@ pub(crate) enum SpellBehavior<S> {
         whole: f64,
         /// Each tick of the spell's self hot gains a roll, rather than the cast.
         periodic: bool,
+        bar: EnergizedBar,
     },
     /// Go racials.go Touch of the Grave's drain: shadow damage from the caster's maximum
     /// health, healing the caster for the damage dealt.
@@ -1135,6 +1149,10 @@ pub(crate) struct DamageProc {
     /// A weapon proc's manager: each spell's chance, rolled with Go `Proc`.
     pub(crate) chances: Option<Vec<Option<f64>>>,
     pub(crate) spell: SpellId,
+    /// The wait before the handler casts the hit, or none to cast it at once.
+    pub(crate) delay: Option<i64>,
+    /// The label of the chance roll where it is not the trigger aura's.
+    pub(crate) rng_label: Option<String>,
 }
 
 /// A proc whose manager rolls on landed hits and whose handler a spell batch window later
@@ -1167,6 +1185,30 @@ pub(crate) struct SpellStatProc {
     pub(crate) require_damage: bool,
     pub(crate) chance: f64,
     pub(crate) aura: AuraRef,
+}
+
+/// A proc on the player's casts whose handler restores health a delay later: Nightslayer
+/// Armor's eight piece bonus on Vanish.
+#[derive(Clone, Debug)]
+pub(crate) struct HealthOnCast {
+    /// The spells it hears, by spellbook position.
+    pub(crate) spells: Vec<bool>,
+    pub(crate) health: f64,
+    pub(crate) metrics: usize,
+    pub(crate) delay: i64,
+}
+
+/// Go buffs/paladin.go `AttachJudgementOfLightHeal` on the judged target.
+#[derive(Clone, Debug)]
+pub(crate) struct JudgementOfLight {
+    pub(crate) rng_label: String,
+    pub(crate) chance: f64,
+    pub(crate) heal: f64,
+    /// The target's health metrics.
+    pub(crate) metrics: usize,
+    /// Each target copy's own health metrics, as Go registers them on each target's aura.
+    pub(crate) copy_metrics: Vec<usize>,
+    pub(crate) delay: i64,
 }
 
 /// Go core/consumes.go `registerDragonbreathChili`.
@@ -1325,6 +1367,15 @@ pub(crate) struct MajorCooldown {
     pub(crate) uses: usize,
 }
 
+/// Go spell_data_energize.go `energizedBar`: the bar an item use's gain fills, with the item's
+/// own metrics for rage and energy.
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub(crate) enum EnergizedBar {
+    Mana,
+    Rage(usize),
+    Energy(usize),
+}
+
 /// Go `proto.ResourceType` of a resource metric.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub(crate) enum ResourceKind {
@@ -1453,6 +1504,12 @@ pub(crate) enum Action {
     Pushback {
         chance: f64,
     },
+    /// A spell data damage proc's handler for the target's swing, which no spell of the
+    /// player's carries: the proc's hit on the attacker, a delay after the swing.
+    StruckDamageProc {
+        proc: usize,
+        target: Side,
+    },
     /// A rotation prepull action: Go `APLActionCastSpell.Execute`.
     Prepull(SpellId),
     /// A rotation prepull action: Go `APLActionCastFriendlySpell.Execute` at the player.
@@ -1460,6 +1517,9 @@ pub(crate) enum Action {
     /// A rotation prepull action: Go `APLActionChannelSpell.Execute`, with the item holding its
     /// interrupt condition.
     PrepullChannel(SpellId, usize),
+    /// A rotation prepull action: Go `APLActionStrictSequence.Execute`, with the item holding
+    /// the sequence.
+    PrepullSequence(usize),
     /// A rotation prepull action: Go `APLActionItemSwap.Execute`.
     PrepullItemSwap(bool),
     /// apl.go's swap back to Main before the pull.
@@ -1481,6 +1541,8 @@ pub(crate) enum Action {
     PrepullMove(f64),
     /// A rotation prepull action: Go `APLActionMoveDuration.Execute`.
     PrepullMoveDuration(i64),
+    /// A rotation prepull action: Go `APLActionGroupReference.Execute` of a group of moves.
+    PrepullGroupMove(f64),
     /// A tick of the raid's Sunder Armor ramp on a target, by its position, with the ticks
     /// done so far.
     SunderTick(u8, i32),
@@ -1493,6 +1555,12 @@ pub(crate) enum Action {
     },
     /// The party Windfury Totem's periodic refresh.
     WindfuryRefresh,
+    /// A tick of a regenerating aura's periodic action, by its position and the generation of
+    /// the gain that started it.
+    HealthRegenTick {
+        regen: usize,
+        generation: u32,
+    },
     /// A tick of an aura's periodic stack adder, with the ticks left including this one.
     StackTick {
         aura: AuraRef,
@@ -1651,6 +1719,21 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) fixed_uptime: Vec<FixedUptime>,
     /// Item procs that restore energy.
     pub(crate) energize_procs: Vec<energy::EnergizeProc>,
+    pub(crate) health_on_cast: Vec<HealthOnCast>,
+    pub(crate) judgements_of_light: Vec<JudgementOfLight>,
+    /// Go `Unit.JowManaMetrics` of the player, which takes the action of the first Judgement
+    /// of Wisdom that restores its mana: whether one has.
+    pub(crate) jow_metrics_named: bool,
+    /// Listeners on the player's casts that restore mana: [`Effect::ManaOnCast`].
+    pub(crate) mana_on_cast: Vec<energy::ManaOnCast>,
+    /// A healer's stacking on-use trinkets: [`Effect::StackingCdOnUse`].
+    pub(crate) stacking_cds: Vec<healer_gear::StackingCd>,
+    /// A healer's on-use shields on heals: [`Effect::ShieldOnHeal`].
+    pub(crate) shields_on_heal: Vec<healer_gear::ShieldOnHeal>,
+    /// A healer's instant cast auras: [`Effect::InstantCastAura`].
+    pub(crate) instant_casts: Vec<healer_gear::InstantCast>,
+    /// A healer's self buffs of globes: [`Effect::ManaGlobes`].
+    pub(crate) mana_globes: Vec<healer_gear::ManaGlobes>,
     /// Go `rageBar`, for a player that has one.
     pub(crate) rage: Option<rage::RageBar>,
     /// Single aura exclusive categories the runtime enforces.
@@ -1716,6 +1799,12 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) cooldown_order: Vec<usize>,
     cooldown_min_ready: i64,
     pub(crate) rotation: Vec<rotation::Item>,
+    /// The player's current target, by position: Go `Character.CurrentTarget`, which a change
+    /// of target moves.
+    pub(crate) player_target: usize,
+    /// For a rotation that changes target, the copy of the rotation compiled for each current
+    /// target by position, the one in place left empty; none otherwise.
+    pub(crate) rotation_copies: Vec<Vec<rotation::Item>>,
     /// How many of the items are the priority list's; the rest are the group instances'.
     pub(crate) priority_len: usize,
     /// Where each group instance's items are.
@@ -1761,6 +1850,10 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) pet_agent_auras: Vec<Vec<ActionId>>,
     /// The labels of those pets, in the same order.
     pub(crate) pet_agent_labels: Vec<String>,
+    /// Whether each of those pets has a mana bar, in the same order.
+    pub(crate) pet_agent_mana_bars: Vec<bool>,
+    /// The full mana an inert one of those pets states, in the same order.
+    pub(crate) pet_agent_max_mana: Vec<Option<f64>>,
     /// Go `APLRotation.curValidations` while [`Self::presentation`] builds the rotation's
     /// lines again to collect Go's validation messages; `None` the rest of the time.
     pub(crate) checks: std::cell::RefCell<Option<Vec<rotation_checks::Check>>>,
@@ -1789,6 +1882,10 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) external_cooldowns: Vec<external_cooldown::ExternalCooldown>,
     /// The auras other than the druid's own that carry Innervate's regeneration.
     innervate_regens: Vec<innervate::InnervateRegen>,
+    /// Forever's Read Ley Line, which an Innervate blocks and replaces.
+    ley_line_innervate: Option<innervate::LeyLineInnervate>,
+    /// The Innervate regeneration auras up on the player, the druid's own included.
+    innervates_up: u32,
     /// What Power Infusion multiplies, when the player has a copy of its aura.
     power_infusion: Option<power_infusion::PowerInfusion>,
     /// The player's healing dealt multiplier relative to its exported value, which Power
@@ -1802,6 +1899,9 @@ pub(crate) struct Fight<A: Agent> {
     /// Purging gives: its aura and the bonus the player's spells take while it holds, when the
     /// targets are of its mob type.
     pub(crate) mob_type_spell_damage: Option<(AuraRef, f64)>,
+    /// Go `AttackTable.MobTypeBonusStats` from Mark of the Champion: each aura and its ranged
+    /// attack power (which Go's melee attack power reads too) and spell damage bonus.
+    pub(crate) mob_type_bonuses: Vec<(AuraRef, f64, f64)>,
     /// Item damage procs built from client rows, by their aura's position.
     pub(crate) damage_procs: Vec<DamageProc>,
     /// Enchant heal procs, by their position among the heal proc effects.
@@ -1815,6 +1915,8 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) stat_procs: Vec<StatProc>,
     /// Gear procs that heal and give rage, by their aura's position.
     pub(crate) health_rage_procs: Vec<gear_procs::HealthRageProc>,
+    pub(crate) energy_procs: Vec<gear_procs::EnergyProc>,
+    pub(crate) health_regens: Vec<health_regen::HealthRegen>,
     /// Gear procs that stack an armor debuff on the target, by their aura's position.
     pub(crate) armor_debuff_procs: Vec<gear_procs::ArmorDebuffProc>,
     /// Spell data stat procs, by their position among the effects of their kind.
@@ -1867,10 +1969,16 @@ pub(crate) struct Fight<A: Agent> {
     pub(crate) casting_regen_at_once: bool,
     /// Forever's rule that a rotation's move waits for a queued spell to fire.
     pub(crate) move_waits_for_queued_cast: bool,
+    /// Forever's rule that a melee swing leaves the Auto Shot timer alone.
+    pub(crate) melee_keeps_auto_shot_timer: bool,
     /// Forever's rule that a move whose end time has come reads as arrived.
     pub(crate) move_arrives_at_destination: bool,
     /// Forever's rule that the off hand's half swing wait counts from the melee attack's start.
     pub(crate) off_hand_waits_from_attack_start: bool,
+    /// Forever's rule that autocasting passes over a cooldown the GCD holds back.
+    pub(crate) autocast_skips_unready_cooldowns: bool,
+    /// Forever's rule that a damage bonus applied after the calculation raises threat too.
+    pub(crate) threat_follows_damage_bonus: bool,
     /// A healer sim's burst healing window under Forever's rules (see [`burst`]).
     pub(crate) burst: Option<burst::BurstWindow>,
     /// How each exclusive effect of an aura a rotation asks about reads.
@@ -1906,6 +2014,8 @@ pub(crate) fn chances_by_spell(
 /// The damage proc a spell data damage proc or a weapon's extra attack proc runs, with its
 /// trigger spells and its proc manager's chances by spell, or none for another effect.
 pub(crate) fn damage_proc_of(effect: &Effect, spells: usize) -> Option<DamageProc> {
+    let mut delay = None;
+    let mut rng_label = None;
     let (trigger_spells, struck, casts, landed_only, require_damage, proc_chance, spell, chances) =
         match effect {
             Effect::SpellDataDamageProc {
@@ -1917,17 +2027,23 @@ pub(crate) fn damage_proc_of(effect: &Effect, spells: usize) -> Option<DamagePro
                 proc_chance,
                 spell,
                 chances,
+                delay_ns,
+                rng_label: label,
                 ..
-            } => (
-                trigger_spells.clone(),
-                *struck,
-                *casts,
-                *landed_only,
-                *require_damage,
-                *proc_chance,
-                *spell,
-                chances,
-            ),
+            } => {
+                delay = *delay_ns;
+                rng_label = label.clone();
+                (
+                    trigger_spells.clone(),
+                    *struck,
+                    *casts,
+                    *landed_only,
+                    *require_damage,
+                    *proc_chance,
+                    *spell,
+                    chances,
+                )
+            }
             // A weapon proc that casts the spell granting the extra attacks: it hears the
             // landed hits its proc manager has a chance for.
             Effect::ExtraAttackProc {
@@ -1964,6 +2080,8 @@ pub(crate) fn damage_proc_of(effect: &Effect, spells: usize) -> Option<DamagePro
         chance: proc_chance,
         chances,
         spell,
+        delay,
+        rng_label,
     })
 }
 
@@ -2559,15 +2677,46 @@ impl<A: Agent> Fight<A> {
                             variance,
                             whole,
                             periodic,
+                            power,
                             ..
-                        } if *item_id == item => Some(SpellBehavior::EnergizeOnUse {
-                            average: *average,
-                            variance: *variance,
-                            whole: *whole,
-                            periodic: *periodic,
-                        }),
+                        } if *item_id == item => {
+                            // Go `energizedBarOf`: the item's own metrics on a rage or energy
+                            // bar, registered with the cooldown.
+                            let id = ActionId {
+                                item_id: item,
+                                ..ActionId::default()
+                            };
+                            let bar = match power {
+                                None => EnergizedBar::Mana,
+                                Some(EnergizedPower::Rage) => EnergizedBar::Rage(resource(
+                                    Side::Player,
+                                    id,
+                                    false,
+                                    ResourceKind::Rage,
+                                )),
+                                Some(EnergizedPower::Energy) => EnergizedBar::Energy(resource(
+                                    Side::Player,
+                                    id,
+                                    false,
+                                    ResourceKind::Energy,
+                                )),
+                            };
+                            Some(SpellBehavior::EnergizeOnUse {
+                                average: *average,
+                                variance: *variance,
+                                whole: *whole,
+                                periodic: *periodic,
+                                bar,
+                            })
+                        }
                         Effect::SpellCostAuraOnUse { item_id, aura, .. }
-                            if *item_id == item && id.tag == 0 =>
+                        | Effect::SpellModAuraOnUse { item_id, aura, .. }
+                        | Effect::ShieldOnHeal { item_id, aura, .. }
+                        | Effect::StackingCdOnUse {
+                            item_id,
+                            window_aura: aura,
+                            ..
+                        } if *item_id == item && id.tag == 0 =>
                         {
                             activations.push((spells.len(), aura));
                             Some(SpellBehavior::None)
@@ -2592,12 +2741,15 @@ impl<A: Agent> Fight<A> {
                         | Effect::ShatterCurse { spell_id, aura, .. }
                         | Effect::Stoneform { spell_id, aura, .. }
                         | Effect::ReadLeyLine { spell_id, aura, .. }
+                        | Effect::Skysight { spell_id, aura, .. }
                             if id.spell_id == *spell_id && id.tag == 0 =>
                         {
                             activations.push((spells.len(), aura));
                             Some(SpellBehavior::None)
                         }
                         Effect::StackingOnUse { spell_id, aura, .. }
+                        | Effect::InstantCastAura { spell_id, aura, .. }
+                        | Effect::ManaGlobes { spell_id, aura, .. }
                             if id.spell_id == *spell_id && id.item_id == 0 && id.tag == 0 =>
                         {
                             activations.push((spells.len(), aura));
@@ -3184,6 +3336,9 @@ impl<A: Agent> Fight<A> {
                     .enumerate()
                     .map(|(pet, exported)| (Side::Pet(pet as u8), &exported.auras)),
             );
+        // Go `Unit.JowManaMetrics`: every Judgement of Wisdom on the target restores the
+        // attacker's mana under one metric.
+        let mut jow_metrics: Option<usize> = None;
         for (side, auras) in unit_auras {
             let unit = match side {
                 Side::Player => "player",
@@ -3224,10 +3379,13 @@ impl<A: Agent> Fight<A> {
                     )),
                     _ => None,
                 }) {
-                    let metrics = resource(Side::Player, jow.2.clone(), false, ResourceKind::Mana);
+                    let metrics = *jow_metrics.get_or_insert_with(|| {
+                        resource(Side::Player, jow.2.clone(), false, ResourceKind::Mana)
+                    });
                     AuraBehavior::JudgementOfWisdom {
                         chance: jow.0,
                         mana: jow.1,
+                        id: jow.2.clone(),
                         metrics,
                         delay: jow.3,
                     }
@@ -3295,6 +3453,35 @@ impl<A: Agent> Fight<A> {
                         ranged,
                         cast,
                     }
+                } else if let Some((melee, ranged, cast)) =
+                    effects.iter().find_map(|effect| match effect {
+                        Effect::SpeedAura {
+                            aura,
+                            melee_multiplier,
+                            ranged_multiplier,
+                            cast_multiplier,
+                        } if side == Side::Player && *aura == exported.label => Some((
+                            *melee_multiplier,
+                            *ranged_multiplier,
+                            *cast_multiplier,
+                        )),
+                        _ => None,
+                    })
+                {
+                    AuraBehavior::SwapSpeed {
+                        melee,
+                        ranged,
+                        cast,
+                    }
+                } else if let Some(per_stack) = effects.iter().find_map(|effect| match effect {
+                    Effect::BattleSquawk { aura, per_stack }
+                        if side == Side::Player && *aura == exported.label =>
+                    {
+                        Some(*per_stack)
+                    }
+                    _ => None,
+                }) {
+                    AuraBehavior::BattleSquawk { per_stack }
                 } else if let Some((multiplier, schools)) =
                     effects.iter().find_map(|effect| match effect {
                         Effect::ShatterCurse {
@@ -3336,6 +3523,15 @@ impl<A: Agent> Fight<A> {
                     _ => None,
                 }) {
                     AuraBehavior::MultiplyManaRegenSpeed(multiplier)
+                } else if let Some(speed) = effects.iter().find_map(|effect| match effect {
+                    Effect::Skysight {
+                        aura,
+                        speed_multiplier,
+                        ..
+                    } if side == Side::Player && *aura == exported.label => Some(*speed_multiplier),
+                    _ => None,
+                }) {
+                    AuraBehavior::MultiplyMovementSpeed(speed)
                 } else if let Some(index) = (side == Side::Player)
                     .then(|| {
                         effects
@@ -3492,6 +3688,66 @@ impl<A: Agent> Fight<A> {
                     .flatten()
                 {
                     AuraBehavior::EnergizeProc(index)
+                } else if let Some(index) = (side == Side::Player)
+                    .then(|| {
+                        effects
+                            .iter()
+                            .filter(|effect| matches!(effect, Effect::HealthOnCast { .. }))
+                            .position(|effect| {
+                                matches!(effect, Effect::HealthOnCast { trigger_aura, .. } if *trigger_aura == exported.label)
+                            })
+                    })
+                    .flatten()
+                {
+                    AuraBehavior::HealthOnCast(index)
+                } else if let Some(index) = (side == Side::Target)
+                    .then(|| {
+                        effects
+                            .iter()
+                            .filter(|effect| matches!(effect, Effect::JudgementOfLight { .. }))
+                            .position(|effect| {
+                                matches!(effect, Effect::JudgementOfLight { aura, .. } if *aura == exported.label)
+                            })
+                    })
+                    .flatten()
+                {
+                    AuraBehavior::JudgementOfLight(index)
+                } else if let Some(index) = (side == Side::Player)
+                    .then(|| {
+                        effects
+                            .iter()
+                            .filter(|effect| matches!(effect, Effect::ManaOnCast { .. }))
+                            .position(|effect| {
+                                matches!(effect, Effect::ManaOnCast { trigger_aura, .. } if *trigger_aura == exported.label)
+                            })
+                    })
+                    .flatten()
+                {
+                    AuraBehavior::ManaOnCast(index)
+                } else if let Some(index) = (side == Side::Player)
+                    .then(|| {
+                        effects
+                            .iter()
+                            .filter(|effect| matches!(effect, Effect::StackingCdOnUse { .. }))
+                            .position(|effect| {
+                                matches!(effect, Effect::StackingCdOnUse { window_aura, .. } if *window_aura == exported.label)
+                            })
+                    })
+                    .flatten()
+                {
+                    AuraBehavior::StackingCdWindow(index)
+                } else if let Some(index) = (side == Side::Player)
+                    .then(|| {
+                        effects
+                            .iter()
+                            .filter(|effect| matches!(effect, Effect::ShieldOnHeal { .. }))
+                            .position(|effect| {
+                                matches!(effect, Effect::ShieldOnHeal { aura, .. } if *aura == exported.label)
+                            })
+                    })
+                    .flatten()
+                {
+                    AuraBehavior::ShieldOnHeal(index)
                 } else if side == Side::Player
                     && effects.iter().any(|effect| {
                         matches!(effect, Effect::Crusader { trigger_aura, .. } if *trigger_aura == exported.label)
@@ -3774,6 +4030,14 @@ impl<A: Agent> Fight<A> {
             death: damage_taken::Death::default(),
             fixed_uptime: Vec::new(),
             energize_procs: Vec::new(),
+            health_on_cast: Vec::new(),
+            judgements_of_light: Vec::new(),
+            jow_metrics_named: false,
+            mana_on_cast: Vec::new(),
+            stacking_cds: Vec::new(),
+            shields_on_heal: Vec::new(),
+            instant_casts: Vec::new(),
+            mana_globes: Vec::new(),
             player: Player::initial(&config),
             cast_speed: config.cast_speed,
             targets: vec![
@@ -3812,6 +4076,8 @@ impl<A: Agent> Fight<A> {
             rotation: Vec::new(),
             priority_len: 0,
             group_ranges: Vec::new(),
+            player_target: 0,
+            rotation_copies: Vec::new(),
             rotation_sequences: Vec::new(),
             assigned_curse: crate::engine::coverage::assigned_curse(prepared),
             rotation_reads: prepared.player.rotation_reads.clone(),
@@ -3863,11 +4129,14 @@ impl<A: Agent> Fight<A> {
             windfury: None,
             external_cooldowns: Vec::new(),
             innervate_regens: Vec::new(),
+            ley_line_innervate: None,
+            innervates_up: 0,
             power_infusion: None,
             healing_dealt_factor: 1.0,
             chili: None,
             revelation: None,
             mob_type_spell_damage: None,
+            mob_type_bonuses: Vec::new(),
             damage_procs: Vec::new(),
             spell_stat_procs: Vec::new(),
             aura_mods: Vec::new(),
@@ -3876,6 +4145,8 @@ impl<A: Agent> Fight<A> {
             absorb_procs: Vec::new(),
             stat_procs: Vec::new(),
             health_rage_procs: Vec::new(),
+            energy_procs: Vec::new(),
+            health_regens: Vec::new(),
             armor_debuff_procs: Vec::new(),
             eureka: None,
             pets: pet::inert_pets(effects)?,
@@ -3883,6 +4154,8 @@ impl<A: Agent> Fight<A> {
             pet_trackers: Vec::new(),
             pet_agent_auras: pet::pet_agent_auras(prepared),
             pet_agent_labels: pet::pet_agent_labels(prepared),
+            pet_agent_mana_bars: pet::pet_agent_mana_bars(prepared),
+            pet_agent_max_mana: pet::pet_agent_max_mana(prepared),
             checks: std::cell::RefCell::new(None),
             presentation: None,
             heartbeat_offset: 0,
@@ -3913,8 +4186,11 @@ impl<A: Agent> Fight<A> {
             hp_percent_for_defensives: player.hp_percent_for_defensives,
             casting_regen_at_once: player.casting_regen_at_once,
             move_waits_for_queued_cast: player.move_waits_for_queued_cast,
+            melee_keeps_auto_shot_timer: player.melee_keeps_auto_shot_timer,
             move_arrives_at_destination: player.move_arrives_at_destination,
             off_hand_waits_from_attack_start: player.off_hand_waits_from_attack_start,
+            autocast_skips_unready_cooldowns: player.autocast_skips_unready_cooldowns,
+            threat_follows_damage_bonus: player.threat_follows_damage_bonus,
             burst: player.burst_window.map(burst::BurstWindow::new),
             aura_refresh: Vec::new(),
             derived_categories: Vec::new(),
@@ -3962,6 +4238,177 @@ impl<A: Agent> Fight<A> {
                     metrics,
                     delay: *delay_ns,
                 });
+            }
+        }
+        for effect in effects {
+            match effect {
+                Effect::HealthOnCast {
+                    trigger_spells,
+                    health,
+                    metrics_action_id,
+                    delay_ns,
+                    ..
+                } => {
+                    let mut spells = vec![false; fight.spells.len()];
+                    for &spell in trigger_spells {
+                        if let Some(slot) = spells.get_mut(spell) {
+                            *slot = true;
+                        }
+                    }
+                    let metrics =
+                        fight.new_resource_metrics(metrics_action_id.clone(), ResourceKind::Health);
+                    fight.health_on_cast.push(HealthOnCast {
+                        spells,
+                        health: *health,
+                        metrics,
+                        delay: *delay_ns,
+                    });
+                }
+                Effect::JudgementOfLight {
+                    proc_chance,
+                    rng_label,
+                    heal,
+                    metrics_action_id,
+                    delay_ns,
+                    ..
+                } => {
+                    // Go registers the heal's metrics on the judged target.
+                    let metrics = fight.new_resource_metrics_of(
+                        Side::Target,
+                        metrics_action_id.clone(),
+                        ResourceKind::Health,
+                    );
+                    fight.judgements_of_light.push(JudgementOfLight {
+                        rng_label: rng_label.clone(),
+                        chance: *proc_chance,
+                        heal: *heal,
+                        metrics,
+                        copy_metrics: Vec::new(),
+                        delay: *delay_ns,
+                    });
+                }
+                Effect::ManaOnCast {
+                    rng_label,
+                    proc_chance,
+                    spells,
+                    metrics_action_id,
+                    crit_only,
+                    ..
+                } => {
+                    let mut mana = vec![None; fight.spells.len()];
+                    for entry in spells {
+                        let slot = mana.get_mut(entry.spell).ok_or_else(|| {
+                            format!(
+                                "mana on cast of spell {} outside the spellbook",
+                                entry.spell
+                            )
+                        })?;
+                        *slot = Some(entry.mana);
+                    }
+                    let metrics =
+                        fight.new_resource_metrics(metrics_action_id.clone(), ResourceKind::Mana);
+                    fight.mana_on_cast.push(energy::ManaOnCast {
+                        label: rng_label.clone(),
+                        chance: *proc_chance,
+                        mana,
+                        metrics,
+                        crit_only: *crit_only,
+                    });
+                }
+                _ => {}
+            }
+        }
+        for effect in effects {
+            match effect {
+                Effect::StackingCdOnUse {
+                    stat_aura,
+                    window_aura,
+                    decay,
+                    trigger_spells,
+                    callbacks,
+                    landed_only,
+                    proc_chance,
+                    chances: manager,
+                    require_damage,
+                    rng_label,
+                    ..
+                } => {
+                    let mut chances = vec![None; fight.spells.len()];
+                    for &spell in trigger_spells {
+                        let slot = chances.get_mut(spell).ok_or_else(|| {
+                            format!("stacking trinket spell {spell} outside the spellbook")
+                        })?;
+                        *slot = Some(*proc_chance);
+                    }
+                    // A rate's manager: each heard spell rolls its own chance, and a spell its
+                    // masks miss never stacks.
+                    if let Some(manager) = manager {
+                        let heard = chances.clone();
+                        chances = vec![None; fight.spells.len()];
+                        for entry in manager {
+                            if heard.get(entry.spell).copied().flatten().is_none() {
+                                return Err(format!(
+                                    "stacking trinket chance for spell {} it does not hear",
+                                    entry.spell
+                                ));
+                            }
+                            chances[entry.spell] = Some(entry.chance);
+                        }
+                    }
+                    let heard = |name: &str| callbacks.iter().any(|callback| callback == name);
+                    if callbacks.iter().any(|callback| {
+                        !["on_spell_hit_dealt", "on_heal_dealt", "on_cast_complete"]
+                            .contains(&callback.as_str())
+                    }) {
+                        return Err(format!("a stacking trinket listens to {callbacks:?}"));
+                    }
+                    let stat = fight.player_aura(stat_aura)?;
+                    if fight.aura(stat).max_stacks == 0 {
+                        return Err(format!("stacking trinket aura {stat_aura} has no stacks"));
+                    }
+                    fight.stacking_cds.push(healer_gear::StackingCd {
+                        stat_aura: stat,
+                        decay: *decay,
+                        chances,
+                        hits: heard("on_spell_hit_dealt"),
+                        heals: heard("on_heal_dealt"),
+                        casts: heard("on_cast_complete"),
+                        landed_only: *landed_only,
+                        require_damage: *require_damage,
+                        rng_label: rng_label.clone().unwrap_or_else(|| window_aura.clone()),
+                    });
+                }
+                Effect::ShieldOnHeal {
+                    item_id,
+                    aura,
+                    share,
+                    chance,
+                    heal,
+                    spell_id,
+                } => {
+                    let spell = fight
+                        .spells
+                        .iter()
+                        .position(|state| {
+                            state.id.tag == 0
+                                && if *item_id != 0 {
+                                    state.id.item_id == *item_id
+                                } else {
+                                    state.id.spell_id == *spell_id && state.id.item_id == 0
+                                }
+                        })
+                        .ok_or_else(|| {
+                            format!("shield item {item_id} or spell {spell_id} has no spell")
+                        })?;
+                    fight.shields_on_heal.push(healer_gear::ShieldOnHeal {
+                        share: *share,
+                        spell,
+                        chance: *chance,
+                        heal: *heal,
+                        label: aura.clone(),
+                    });
+                }
+                _ => {}
             }
         }
         for effect in effects {
@@ -4241,6 +4688,37 @@ impl<A: Agent> Fight<A> {
         fight.rotation.extend(channels);
         fight.prepull = prepull;
         fight.prepull_lists = lists;
+        // A rotation that changes target: a copy for each current target, whose current, next
+        // and previous targets resolve against it, swapped in as the target changes.
+        if fight.targets.len() > 1 && crate::engine::coverage::rotation_changes_target(&parsed) {
+            fight.rotation_copies.push(Vec::new());
+            for position in 1..fight.targets.len() {
+                let mut items = crate::rotation::with_current_target(position, || {
+                    let compilation = fight.compile_rotation(&parsed)?;
+                    if compilation.priority != fight.priority_len
+                        || compilation.groups != fight.group_ranges
+                    {
+                        return Err(format!(
+                            "the rotation compiled for target {} differs in shape",
+                            position + 1
+                        ));
+                    }
+                    let mut items = compilation.items;
+                    let base = items.len();
+                    let (_, channels, _) = fight.compile_prepull(&parsed, base);
+                    items.extend(channels);
+                    Ok::<_, String>(items)
+                })?;
+                if items.len() != fight.rotation.len() {
+                    return Err(format!(
+                        "the rotation compiled for target {} differs in shape",
+                        position + 1
+                    ));
+                }
+                items.shrink_to_fit();
+                fight.rotation_copies.push(items);
+            }
+        }
         fight.presentation = Some(fight.presentation(&parsed, &player.rotation));
         for effect in effects {
             if let Effect::SunderArmorRamp {
@@ -4324,6 +4802,17 @@ impl<A: Agent> Fight<A> {
                 } if target.mob_type.as_deref() == Some(mob_type.as_str()) => {
                     fight.mob_type_spell_damage = Some((fight.player_aura(aura)?, *spell_damage));
                 }
+                Effect::MobTypeBonus {
+                    aura,
+                    ranged_attack_power,
+                    spell_damage,
+                    ..
+                } => {
+                    let aura = fight.player_aura(aura)?;
+                    fight
+                        .mob_type_bonuses
+                        .push((aura, *ranged_attack_power, *spell_damage));
+                }
                 Effect::EmeraldDragonWhelp { .. } => fight.bind_whelp(effect)?,
                 Effect::Revelation { .. } => fight.bind_revelation(effect)?,
                 Effect::SulfurasHandOfRagnaros { .. } => fight.bind_sulfuras(effect)?,
@@ -4389,6 +4878,7 @@ impl<A: Agent> Fight<A> {
         fight.bind_heal_procs(effects)?;
         fight.bind_power_infusion(effects)?;
         fight.bind_innervate_regens(effects);
+        fight.bind_read_ley_line(effects)?;
         fight.bind_external_cooldowns(effects, &player.auras)?;
         for effect in effects {
             if let Effect::AbsorbOnUse {
@@ -4486,6 +4976,94 @@ impl<A: Agent> Fight<A> {
                 fight.aura_mods.push(mods);
                 fight.aura_mut(aura).behavior = AuraBehavior::SpellMods(fight.aura_mods.len() - 1);
             }
+            // A healer's instant cast aura: its mods while up, and the casts that spend it.
+            if let Effect::InstantCastAura { aura, changes, .. } = effect {
+                let aura = fight.player_aura(aura)?;
+                let mut mods = Vec::new();
+                let mut spends = vec![false; fight.spells.len()];
+                for change in changes {
+                    let kind = spell_mod::ModKind::named(&change.kind).ok_or_else(|| {
+                        format!("spell mod {:?} on an instant cast aura", change.kind)
+                    })?;
+                    let slot = spends.get_mut(change.spell).ok_or_else(|| {
+                        format!(
+                            "instant cast of spell {} outside the spellbook",
+                            change.spell
+                        )
+                    })?;
+                    *slot = true;
+                    let (float, time) = if kind.is_time() {
+                        (0.0, change.value as i64)
+                    } else {
+                        (change.value, 0)
+                    };
+                    mods.push(fight.register_mod(kind, float, time, vec![change.spell]));
+                }
+                fight
+                    .instant_casts
+                    .push(healer_gear::InstantCast { mods, spends });
+                fight.aura_mut(aura).behavior =
+                    AuraBehavior::InstantCast(fight.instant_casts.len() - 1);
+            }
+            // A healer's self buff of globes, with its internal cooldown on a runtime timer.
+            if let Effect::ManaGlobes {
+                aura,
+                mana_fraction,
+                icd_ns,
+                metrics_action_id,
+                ..
+            } = effect
+            {
+                let aura = fight.player_aura(aura)?;
+                fight.timers.push(STARTING_CD_TIME);
+                let timer = fight.timers.len() - 1;
+                let metrics =
+                    fight.new_resource_metrics(metrics_action_id.clone(), ResourceKind::Mana);
+                fight.mana_globes.push(healer_gear::ManaGlobes {
+                    fraction: *mana_fraction,
+                    icd: *icd_ns,
+                    timer,
+                    metrics,
+                });
+                fight.aura_mut(aura).behavior =
+                    AuraBehavior::ManaGlobes(fight.mana_globes.len() - 1);
+            }
+            // A healer's on-use aura of spell mods: one dynamic mod per kind and amount, over the
+            // spells it changes.
+            if let Effect::SpellModAuraOnUse { aura, changes, .. } = effect {
+                let aura = fight.player_aura(aura)?;
+                let mut groups: Vec<(spell_mod::ModKind, f64, Vec<SpellId>)> = Vec::new();
+                for change in changes {
+                    let kind = spell_mod::ModKind::named(&change.kind)
+                        .ok_or_else(|| format!("spell mod {:?} on use", change.kind))?;
+                    if change.spell >= fight.spells.len() {
+                        return Err(format!(
+                            "spell mod on spell {} outside the spellbook",
+                            change.spell
+                        ));
+                    }
+                    match groups
+                        .iter_mut()
+                        .find(|(k, value, _)| *k == kind && *value == change.value)
+                    {
+                        Some((_, _, spells)) => spells.push(change.spell),
+                        None => groups.push((kind, change.value, vec![change.spell])),
+                    }
+                }
+                let mods = groups
+                    .into_iter()
+                    .map(|(kind, value, spells)| {
+                        let (float, time) = if kind.is_time() {
+                            (0.0, value as i64)
+                        } else {
+                            (value, 0)
+                        };
+                        fight.register_mod(kind, float, time, spells)
+                    })
+                    .collect();
+                fight.aura_mods.push(mods);
+                fight.aura_mut(aura).behavior = AuraBehavior::SpellMods(fight.aura_mods.len() - 1);
+            }
         }
         for effect in effects {
             if let Effect::StatProc {
@@ -4512,6 +5090,7 @@ impl<A: Agent> Fight<A> {
             }
         }
         fight.bind_gear_procs(effects)?;
+        fight.bind_health_regens(effects)?;
         fight.bind_on_use_damage(effects);
         fight.autos.melee = prepared.melee.auto_swing_melee;
         fight.autos.dual_wielding = prepared.melee.dual_wielding;
@@ -4869,6 +5448,14 @@ impl<A: Agent> Fight<A> {
                 other => other.clone(),
             });
             self.trackers[side.index()].auras = auras;
+            // Go `AttachJudgementOfLightHeal` registers the heal's metrics on each target.
+            for index in 0..self.judgements_of_light.len() {
+                let id = self.resources[self.judgements_of_light[index].metrics]
+                    .id
+                    .clone();
+                let metrics = self.new_resource_metrics_of(side, id, ResourceKind::Health);
+                self.judgements_of_light[index].copy_metrics.push(metrics);
+            }
             let main_armor = self.armor_category.as_ref().map(|(category, _)| *category);
             let on_first: Vec<usize> = (0..self.exclusive.len())
                 .filter(|&category| {
@@ -5024,6 +5611,7 @@ impl<A: Agent> Fight<A> {
                 rotation::PrepullAct::Cast(spell) => Action::Prepull(spell),
                 rotation::PrepullAct::CastAtPlayer(spell) => Action::PrepullAtPlayer(spell),
                 rotation::PrepullAct::Channel(spell, item) => Action::PrepullChannel(spell, item),
+                rotation::PrepullAct::StrictSequence(item) => Action::PrepullSequence(item),
                 rotation::PrepullAct::ItemSwap(to_swapped) => Action::PrepullItemSwap(to_swapped),
                 rotation::PrepullAct::SwapBackToMain => Action::PrepullSwapBack,
                 rotation::PrepullAct::ChangeTarget => Action::PrepullChangeTarget,
@@ -5040,6 +5628,7 @@ impl<A: Agent> Fight<A> {
                 }
                 rotation::PrepullAct::TriggerIcd(aura) => Action::PrepullTriggerIcd(aura),
                 rotation::PrepullAct::Move(range) => Action::PrepullMove(range),
+                rotation::PrepullAct::GroupMove(range) => Action::PrepullGroupMove(range),
                 rotation::PrepullAct::MoveDuration(duration) => {
                     Action::PrepullMoveDuration(duration)
                 }
@@ -5451,9 +6040,14 @@ impl<A: Agent> Fight<A> {
                 }
             }
             Action::Pushback { chance } => self.pushback_handler(chance),
-            Action::Prepull(spell) => self.cast_or_queue(spell, Side::Target),
+            Action::StruckDamageProc { proc, target } => {
+                let spell = self.damage_procs[proc].spell;
+                self.cast(spell, target);
+            }
+            Action::Prepull(spell) => self.cast_or_queue(spell, self.current_target_side()),
             Action::PrepullAtPlayer(spell) => self.cast_or_queue(spell, Side::Player),
             Action::PrepullChannel(spell, item) => self.prepull_channel(spell, item),
+            Action::PrepullSequence(item) => self.prepull_sequence(item),
             Action::PrepullItemSwap(to_swapped) => self.item_swap_action(to_swapped),
             // Go's `SwapItems` to Main, which logs nothing of its own.
             Action::PrepullSwapBack => self.swap_items(false, false),
@@ -5461,7 +6055,7 @@ impl<A: Agent> Fight<A> {
             Action::PrepullList(swap1, list) => match self.prepull_lists[list].clone() {
                 rotation::PrepullList::Spells(spells) => {
                     for spell in spells {
-                        self.cast_or_queue(spell, Side::Target);
+                        self.cast_or_queue(spell, self.current_target_side());
                     }
                 }
                 // Go: nothing while the other set is worn, else each aura as an activate aura
@@ -5508,6 +6102,16 @@ impl<A: Agent> Fight<A> {
                 self.move_to(Side::Player, range);
             }
             Action::PrepullMoveDuration(duration) => self.move_duration(Side::Player, duration),
+            // Go `APLActionMove.IsReady` before the pull: not moving and no cast in progress.
+            Action::PrepullGroupMove(range) => {
+                if !self.player.moving && self.player.hardcast.expires < self.now {
+                    if self.log.is_some() {
+                        let line = format!("[DEBUG] Moving to {range:.1} yards");
+                        self.player_log(&line);
+                    }
+                    self.move_to(Side::Player, range);
+                }
+            }
             Action::SunderTick(target, done) => self.sunder_tick(target, done),
             Action::DeathCheck => self.death_check(),
             Action::FixedUptime { index, first } => self.fixed_uptime_roll(index, first),
@@ -5544,6 +6148,9 @@ impl<A: Agent> Fight<A> {
                 period,
                 ticks_left,
             } => self.stack_tick(aura, period, ticks_left),
+            Action::HealthRegenTick { regen, generation } => {
+                self.health_regen_tick(regen, generation)
+            }
             Action::WindfuryRefresh => {
                 let windfury = self.windfury.as_ref().expect("Windfury Totem is bound");
                 let (totem, period) = (windfury.totem, windfury.period);

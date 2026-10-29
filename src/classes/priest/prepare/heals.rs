@@ -13,8 +13,10 @@
 
 use crate::contracts::prepared_v2::SmartHeal;
 use crate::core::time::NS_PER_SECOND;
+use crate::prepare::character::constants::CHARACTER_LEVEL;
 use crate::prepare::heals::{
-    apply_heal_talent, register_heal, register_heal_from, talent_rank, HealShape,
+    apply_heal_talent, register_channel_heal, register_heal, register_heal_from, talent_rank,
+    ChannelHeal, HealShape,
 };
 use crate::prepare::sim::{Duration, Sim, UnitId};
 use crate::prepare::spelldata::store::must_find;
@@ -47,6 +49,11 @@ fn mending_duration(row: &Row) -> Duration {
         .find(|&duration| duration > 0)
         .unwrap_or(30 * NS_PER_SECOND)
 }
+
+/// Penance, a Discipline talent, by rank: the cast rows.
+const PENANCE: &[i32] = &[402174, 1240720, 1240721, 1316995];
+/// Penance's channel ticks after the bolt that lands with the cast.
+const PENANCE_HEAL_TICKS: i32 = 2;
 
 /// Prayer of Healing reaches the priest's party.
 const PARTY: u32 = 5;
@@ -94,6 +101,33 @@ impl Priest {
         each(sim, POWER_WORD_SHIELD, HealShape::SINGLE, true);
         if self.talents.bool("binding_heal") {
             each(sim, BINDING_HEAL, HealShape::party(2), false);
+        }
+        // Penance on a friend, a Discipline talent: its heal bolt with the cast and on each of
+        // the channel's two ticks a second apart, ranks sharing their category cooldown. The
+        // cast's tooltip names the damage bolt first, then the heal bolt.
+        if self.talents.bool("penance") {
+            let timer = sim.new_timer(unit);
+            for &id in PENANCE {
+                let row = must_find(id);
+                let bolt = row.refs()[1].heal_effect();
+                let amount = bolt.average(CHARACTER_LEVEL);
+                ranks.push(register_channel_heal(
+                    sim,
+                    unit,
+                    row,
+                    ChannelHeal {
+                        direct: Some((amount, bolt.variance, bolt.coeff())),
+                        tick: amount,
+                        tick_coefficient: bolt.coeff(),
+                        ticks: PENANCE_HEAL_TICKS,
+                        period: NS_PER_SECOND,
+                        tick_can_crit: true,
+                    },
+                    masks::HEAL,
+                    HealShape::SINGLE,
+                    Some(timer),
+                ));
+            }
         }
         if self.talents.bool("prayer_of_mending") {
             let timer = sim.new_timer(unit);

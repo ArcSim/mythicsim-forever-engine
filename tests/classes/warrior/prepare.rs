@@ -60,8 +60,12 @@ fn differences(go: &Value, rust: &Value, path: &str, out: &mut Vec<String>) {
 }
 
 fn check(name: &str) {
-    let rust = forever_engine::prepare_json(&data(&format!("{name}.request.json")), name)
-        .unwrap_or_else(|err| panic!("{name} is not prepared: {err}"));
+    let rust = forever_engine::prepare_json_with(
+        &data(&format!("{name}.request.json")),
+        name,
+        forever_engine::Rules::GoReference,
+    )
+    .unwrap_or_else(|err| panic!("{name} is not prepared: {err}"));
     let golden: Value = serde_json::from_slice(&data(&format!("{name}.golden.json"))).unwrap();
     let mut diffs = Vec::new();
     for path in SECTIONS {
@@ -233,4 +237,55 @@ fn threat_follows_the_in_game_captures() {
     near(&effect("sunder_armor")["threat_per_attack_power"], 0.05);
     assert_eq!(effect("heroic_strike_queue")["cleave_threat_split"], true);
     assert_eq!(effect("rage_bar")["threat_multiplied"], true);
+}
+
+/// Concussion Blow (12809) under Forever's rules: a special hit outcome with no damage, refunded
+/// on a miss, cast on its 45 second cooldown. Go's exporter has no effect for it, so Go's rules
+/// leave it out. On four production Protection Warrior requests Rust casts it as often as Go's
+/// engine (4 a fight) and DPS and TPS agree within 0.06%.
+#[test]
+fn concussion_blow_is_cast_under_forever_rules() {
+    let mut request: Value = serde_json::from_slice(&data("protection.request.json")).unwrap();
+    request["simOptions"]["iterations"] = serde_json::json!(50);
+    request["raid"]["parties"][0]["players"][0]["rotation"] = serde_json::json!({
+        "type": "TypeAPL",
+        "priorityList": [
+            {"action": {"castSpell": {"spellId": {"spellId": 12809}}}},
+            {"action": {"castSpell": {"spellId": {"spellId": 11597}}}},
+        ],
+    });
+    let bytes = serde_json::to_vec(&request).unwrap();
+    let go =
+        forever_engine::prepare_json_with(&bytes, "concussion", forever_engine::Rules::GoReference)
+            .unwrap();
+    let kinds = |prepared: &Value| -> Vec<String> {
+        prepared["effects"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .map(|effect| effect["kind"].as_str().unwrap().to_string())
+            .collect()
+    };
+    assert!(!kinds(&go).contains(&"concussion_blow".to_string()));
+    let forever =
+        forever_engine::prepare_json_with(&bytes, "concussion", forever_engine::Rules::Forever)
+            .unwrap();
+    assert!(kinds(&forever).contains(&"concussion_blow".to_string()));
+    let prepared: forever_engine::contracts::prepared_v2::PreparedV2 =
+        serde_json::from_value(forever).unwrap();
+    assert_eq!(
+        forever_engine::prepared_coverage(&prepared),
+        Vec::<String>::new()
+    );
+    let result = forever_engine::simulate_prepared(&prepared).unwrap().result;
+    let casts: f64 = result["raidMetrics"]["parties"][0]["players"][0]["actions"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .filter(|action| action["id"]["spellId"] == 12809)
+        .flat_map(|action| action["targets"].as_array().unwrap().iter())
+        .map(|target| target["casts"].as_f64().unwrap_or(0.0))
+        .sum();
+    // Once a 45 second cooldown over the fight, 50 fights.
+    assert!(casts >= 50.0 * 3.0, "{casts} casts");
 }

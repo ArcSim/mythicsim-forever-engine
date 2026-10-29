@@ -3,7 +3,7 @@
 use crate::prepare::aura_helpers::{CallbackMask, HitOutcome, ProcTrigger, PseudoStatField};
 use crate::prepare::character::cooldown_type;
 use crate::prepare::dbcenums;
-use crate::prepare::sim::{AuraConfig, Sim, UnitId};
+use crate::prepare::sim::{AuraConfig, Rules, Sim, UnitId};
 use crate::prepare::spell::{
     school, CastConfig, DotConfig, ProcMask, SpellConfig, SpellFlag as F, GCD_DEFAULT,
 };
@@ -276,7 +276,14 @@ impl Warrior {
                 // A heal of max health: the Physical damage-done mods do not raise it.
                 flags: F::PASSIVE_SPELL | F::HELPFUL | F::NO_ON_CAST_COMPLETE | F::NO_SPELL_MODS,
                 damage_multiplier: 1.0,
-                threat_multiplier: 1.0,
+                // Client 1.60.1.70630 flags Blood Craze (16488, SpellMisc 327352) No Threat
+                // (Attributes_1 bit 0x400): its healing puts the warrior on no threat table. The
+                // Go reference keeps the heal's full threat.
+                threat_multiplier: if sim.rules == Rules::Forever {
+                    0.0
+                } else {
+                    1.0
+                },
                 hot: DotConfig {
                     aura: AuraConfig {
                         label: "Blood Craze".to_string(),

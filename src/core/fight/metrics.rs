@@ -455,6 +455,10 @@ pub(crate) struct TargetReport {
     tto: DistributionReport,
     actions: Vec<ActionMetricsReport>,
     auras: Vec<AuraMetricsReport>,
+    /// The target's own resource metrics, as the heal of a Judgement of Light on it; protojson
+    /// leaves the list out when it is empty.
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    resources: Vec<ResourceMetricsReport>,
 }
 
 #[derive(Clone, Debug, Serialize)]
@@ -958,6 +962,7 @@ impl<A: Agent> Fight<A> {
                     .map(action_report)
                     .collect(),
                 auras: self.aura_reports(side),
+                resources: self.resource_reports(side),
             })
             .collect();
         let dps = self.totals.dps.report();

@@ -63,6 +63,8 @@ const ESTIMATED: &[(&str, f64)] = &[
     ("Prayer of Mending", DIRECT),
     ("Riptide", OVER_TIME),
     ("Chain Heal", GROUP),
+    ("Tranquility", GROUP),
+    ("Penance", DIRECT),
     ("Wild Growth", GROUP),
 ];
 

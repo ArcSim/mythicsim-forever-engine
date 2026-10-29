@@ -194,6 +194,100 @@ pub(crate) fn register_heal_from(
     }
 }
 
+/// A channelled heal's numbers, which its rows state across several spells: the direct heal,
+/// if any, and each tick.
+#[derive(Clone, Copy, Debug)]
+pub(crate) struct ChannelHeal {
+    /// The heal that lands with the cast: its roll and coefficient.
+    pub direct: Option<(f64, f64, f64)>,
+    /// Each tick's amount and coefficient, how many and how far apart.
+    pub tick: f64,
+    pub tick_coefficient: f64,
+    pub ticks: i32,
+    pub period: Duration,
+    pub tick_can_crit: bool,
+}
+
+/// A channelled heal (Penance on a friend, Tranquility) as a heal rank: `row` states the cost,
+/// the cooldown and its category; the heal lands as its ticks, and the channel holds the
+/// healer for its whole length, read as a global cooldown that long. `cd_timer` is a cooldown
+/// the ranks share.
+pub(crate) fn register_channel_heal(
+    sim: &mut Sim,
+    unit: UnitId,
+    row: &'static Row,
+    heal: ChannelHeal,
+    class_mask: i64,
+    shape: HealShape,
+    cd_timer: Option<TimerId>,
+) -> HealRank {
+    let mana = row.mana_cost();
+    let cooldown = row.cooldown().max(row.category_cooldown());
+    let channel = heal.period * Duration::from(heal.ticks);
+    let config = SpellConfig {
+        action_id: ActionId {
+            spell_id: row.id,
+            ..ActionId::default()
+        },
+        spell_school: row.spell_school(),
+        defense_type: row.defense_type_core(),
+        proc_mask: ProcMask::SPELL_HEALING,
+        flags: SpellFlag::APL | SpellFlag::HELPFUL,
+        class_spell_mask: class_mask,
+        class_flags: row.class_flags,
+        rank: row.rank_number(),
+        max_range: f64::from(row.max_range),
+        cost: CostOptions {
+            mana_base_cost_percent: mana.base_cost_percent,
+            mana_flat_cost: mana.flat_cost,
+            ..CostOptions::default()
+        },
+        cast: CastConfig {
+            default_cast: Cast {
+                gcd: row.gcd().max(channel),
+                cast_time: 0,
+                ..Cast::default()
+            },
+            cd: if cooldown > 0 {
+                Cooldown {
+                    timer: Some(cd_timer.unwrap_or_else(|| sim.new_timer(unit))),
+                    duration: cooldown,
+                }
+            } else {
+                Cooldown::default()
+            },
+            ..CastConfig::default()
+        },
+        damage_multiplier: 1.0,
+        threat_multiplier: 1.0,
+        bonus_coefficient: heal.direct.map_or(0.0, |(_, _, coefficient)| coefficient),
+        hot: DotConfig {
+            aura: AuraConfig {
+                label: format!("{} {}", row.name, row.id),
+                ..AuraConfig::default()
+            },
+            tick_length: heal.period,
+            number_of_ticks: heal.ticks,
+            self_only: true,
+            bonus_coefficient: heal.tick_coefficient,
+            ..DotConfig::default()
+        },
+        ..SpellConfig::default()
+    };
+    let spell = sim.register_spell(unit, config);
+    HealRank {
+        spell,
+        row,
+        shape,
+        direct: heal
+            .direct
+            .map(|(average, variance, _)| (average, variance)),
+        tick: Some(heal.tick),
+        tick_can_crit: heal.tick_can_crit,
+        absorb: None,
+    }
+}
+
 /// A totem that heals the party while it stands (Healing Stream Totem): the totem's row states
 /// the cost, the cast and how long it stands, the heal's row the amount, period and coefficient
 /// of each tick. The spell carries both rows' client flags, so a talent naming either (a totem's
@@ -414,10 +508,12 @@ pub(crate) fn heals_effect(env: &Environment, ranks: &[HealRank]) -> Value {
             if let (Some(smart), Rules::Forever) = (rank.shape.smart, env.rules) {
                 heal["smart"] = json!(smart);
             }
+            // A healer's gear under Forever's rules (README, Rust-only mechanics).
+            super::healer_gear::heal_shape(env, rank.row, &mut heal);
             heal
         })
         .collect();
-    let smart = env.rules == Rules::Forever && ranks.iter().any(|rank| rank.shape.smart.is_some());
+    let smart = env.rules == Rules::Forever && heals.iter().any(|heal| heal.get("smart").is_some());
     let mut effect = json!({
         "kind": "heals",
         "heals": heals,

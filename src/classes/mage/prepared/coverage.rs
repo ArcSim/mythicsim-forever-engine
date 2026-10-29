@@ -56,6 +56,9 @@ const EFFECTS: &[&str] = &[
 fn spell_capability(spell: &Spell) -> Option<&'static str> {
     match spell.class_spell.as_deref()? {
         "frostbolt" => Some("frostbolt"),
+        // Frost Blast casts as Frostbolt does, once its rank's roll is described (Forever's
+        // rules only: Go's exporter has no row for it).
+        "frost_blast" if spell.damage_effect.is_some() => Some("frostbolt"),
         "arcane_blast" => Some("arcane_blast"),
         "arcane_wrath" => Some("arcane_wrath"),
         "arcane_power" => Some("arcane_power"),
